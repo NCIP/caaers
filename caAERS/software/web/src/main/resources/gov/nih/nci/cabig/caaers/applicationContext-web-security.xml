@@ -76,40 +76,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<!--========== TODO: ADMIN ===========-->
 		
-        <entry key="/pages/admin/reload"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/configure"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/configure"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/createInvestigator"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/searchInvestigator"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>       
-        <entry key="/pages/admin/viewInvestigator"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/createResearchStaff"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/searchResearchStaff"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/viewResearchStaff"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/import"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/importMeddra"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/createIND"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/createOrganization"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/searchIND"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/passwordPolicyConfigure"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/mandatoryFields"
-        	   value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/trackReports"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
+        <entry key="/pages/admin/reload" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/viewInvestigator" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createResearchStaff" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchResearchStaff" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/viewResearchStaff" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/import" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/importMeddra" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createIND" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createOrganization" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchIND" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/passwordPolicyConfigure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/mandatoryFields" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/trackReports" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
+        <entry key="/pages/admin/asaelSearch" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/asaelCreate" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/asaelEdit" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/asaelImport" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 
         <!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>

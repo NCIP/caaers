@@ -1,0 +1,44 @@
+<dataset>
+
+	<agents
+		id="1003"
+		name="agent three"
+		description="agent desc three"
+		nsc="7000003"
+		/>
+
+	<agents
+		id="1002"
+		name="agent two"
+		description="agent desc two"
+		nsc="7000002"
+		/>
+
+    <!-- START AGENT-TERMS-->
+
+    <ctc_versions id="3" name="CTCAE v3" />
+    <ctc_versions id="4" name="CTCAE v4" />
+    <meddra_versions id="10" name="meddra 10" />
+    
+    <CTC_CATEGORIES id="309" name="test/category 3" version_id="3" />
+    <CTC_CATEGORIES id="409" name="test/category 4" version_id="4" />
+
+    <CTC_TERMS id="3010" category_id="309" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043881" other_required="0" />
+    <CTC_TERMS id="3011" category_id="309" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043882" other_required="0" />
+    <CTC_TERMS id="4012" category_id="409" term="Tinnitus3" ctep_term="Tinnitus3" ctep_code="10043883" other_required="0" />
+    <CTC_TERMS id="4013" category_id="409" term="Tinnitus4" ctep_term="Tinnitus4" ctep_code="10043884" other_required="1" />
+
+    <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" version_id="10" />
+    <MEDDRA_LLT id="-12" meddra_code="3" meddra_term="Hello World" version_id="10" />
+
+    <agent_terms id="-4" agent_id="1003" term_id="4013" term_type="ctep" low_level_term_id="-11" />
+    <agent_terms id="-1" agent_id="1003" term_id="3010" term_type="ctep" />
+    <agent_terms id="-2" agent_id="1003" term_id="3011" term_type="ctep" />
+    <agent_terms id="-3" agent_id="1003" term_id="4012" term_type="ctep" />
+    <agent_terms id="-5" agent_id="1003" term_id="-11" term_type="meddra" />
+
+    <agent_terms id="-6" agent_id="1002" term_id="-12" term_type="meddra" />
+
+    <!-- END AGENT-TERMS-->
+
+</dataset>

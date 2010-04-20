@@ -84,5 +84,9 @@
 		<convert match="java.lang.Exception" converter="exception"/>
     	<convert match="java.lang.StackTraceElement" converter="bean"/>
 
+        <create creator="spring" javascript="agentFacade">
+            <param name="beanName" value="agentAjaxFacade" />
+        </create>
+
 	</allow>
 </dwr>

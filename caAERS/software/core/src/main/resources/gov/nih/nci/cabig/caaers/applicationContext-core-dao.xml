@@ -97,6 +97,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.LabLoad</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AgentSpecificMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
@@ -565,6 +568,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
     <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
+    <bean id="agentSpecificTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
     <bean id="searchDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SearchDao"/>
@@ -761,5 +765,7 @@ This applicationContext contains the definition of the DAOs
 
 	<bean id="reportVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao"/>
     <!-- Factory beans end here-->
+
+    <bean id="terminologyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepositoryImpl" autowire="byType"/>
 
 </beans>

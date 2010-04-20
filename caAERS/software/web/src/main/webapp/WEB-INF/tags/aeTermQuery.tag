@@ -3,6 +3,7 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@attribute name="isAjaxable" type="java.lang.Boolean" description="Should be set to true, if this tag is included in the response of an AJAX call, this ensures that the javascript objects defined here are properly enabled" %>
 <%@attribute name="isMeddra" required="true" type="java.lang.Boolean" description="Will tell whether the autocompleter should look for MedDRA or CTC" %>
@@ -15,6 +16,8 @@
 <%@attribute name="ctcCategories" type="java.util.List" description="The ctc categories that should be displayed within the category box of the popup" %>
 <%@attribute name="title" required="false" %> 
 <%@attribute name="noBackground" required="false" type="java.lang.Boolean" %>
+<%@attribute name="versionName" required="false" type="java.lang.String" %>
+<%@attribute name="study" required="true" type="gov.nih.nci.cabig.caaers.domain.Study" %>
 
 <tags:dwrJavascriptLink objects="createAE"/>
 
@@ -227,7 +230,7 @@
 		},
 
         showCategoryBox:function(){
-	 			this.showWindow('', '', 960, 600 );
+	 			this.showWindow('', '', 960, 500 );
 	 	}
  	});
 	
@@ -262,7 +265,7 @@
 	<c:if test="${not isMeddra}">
 
     <div id="chooseCategory">
-        <chrome:box title="Select Adverse Event Terms (${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name})">
+        <chrome:box title="Select Adverse Event Terms (${versionName})">
 
         <table width="100%" border="0" cellspacing="0" cellpadding="5">
         <tr bgcolor="#E4E4E4">
@@ -276,9 +279,14 @@
             <td align="left" valign="top">
                 <div style="overflow:auto; height:460px;">
                 <ul id="categories" class="ae-category">
-                    <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
+
+                    <c:if test="${fn:length(ctcCategories) == 0 and study ne null}">
+                        <c:set var="ctcCategories" value="${study.ctcCategories}" />
+                    </c:if>
+                    <c:forEach var="cat" items="${ctcCategories}">
                         <li id="li_${cat.id}"><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a>
                     </c:forEach>
+
                 </ul>
                 </div>
             </td>

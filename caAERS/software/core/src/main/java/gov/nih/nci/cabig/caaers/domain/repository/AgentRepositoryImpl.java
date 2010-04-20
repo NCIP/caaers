@@ -27,6 +27,15 @@ public class AgentRepositoryImpl implements AgentRepository {
 	}
 
 	/**
+	 * This method is used to retrieve an agent having its ID
+	 * @param id
+	 * @return Agent
+	 */
+	public Agent getAgentByID(Integer id) {
+		return agentDao.getById(id);
+	}
+
+	/**
 	 * This method is used to retrieve an agent having the specified nsc number.
 	 * @param nscNumber
 	 * @return

@@ -359,13 +359,16 @@
   	<chrome:box title="${tab.longTitle}" >
   		<chrome:flashMessage/>
 
-<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
-  		callbackFunctionName="myCallback"
-          noBackground="true"
-  	 	version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
-  	 	ignoreOtherSpecify="false" isAjaxable="true"/>
+          <tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
+                            callbackFunctionName="myCallback"
+                            noBackground="true"
+                            version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
+                            ignoreOtherSpecify="false" isAjaxable="true"
+                            versionName="${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name}"
+                            study="${command.study}"
+                  />
 
-  		<tags:tabFields tab="${tab}"/>
+          <tags:tabFields tab="${tab}"/>
   		<p><tags:instructions code="study.study_evalpdtypes.2" /></p>
 
           <tags:hasErrorsMessage/>

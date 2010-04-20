@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class implements the Data access related operations for the Agent domain object.
@@ -15,10 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Krikor Krumlian
  */
 @Transactional(readOnly=true)
-public class AgentDao extends GridIdentifiableDao<Agent> {
+public class AgentDao extends GridIdentifiableDao<Agent> implements MutableDomainObjectDao<Agent> {
 
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name",
-                    "nscNumber");
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name", "nscNumber");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 

@@ -18,10 +18,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObje
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -59,15 +56,10 @@ public class SearchStudyAjaxFacade {
     private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
     private StudyRepository studyRepository;
-
     private StudyDao studyDao;
-
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
-    
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
-
     private ParticipantDao participantDao;
-
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
     private InvestigatorDao investigatorDao;
@@ -77,6 +69,7 @@ public class SearchStudyAjaxFacade {
     private AdverseEventDao adverseEventDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
+    private AgentRepository agentRepository;
 
     public SearchStudyAjaxFacade() {
     }
@@ -1088,8 +1081,7 @@ public class SearchStudyAjaxFacade {
         return "";
     }
 
-    public String getInvestigatorTable(final Map parameterMap, final String type, final String text,
-                                       final HttpServletRequest request) {
+    public String getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
         List<Investigator> investigators = new ArrayList<Investigator>();
         if (type != null && text != null) {
@@ -1114,6 +1106,71 @@ public class SearchStudyAjaxFacade {
         }
 
         return "";
+    }
+
+    public String getAgentsTable(final Map parameterMap, final String text, final HttpServletRequest request) {
+        List<Agent> agents = new ArrayList<Agent>();
+        if (text != null) {
+            agents = agentRepository.getAgentsBySubnames(new String[] {text});
+        }
+        log.debug("Agents :: " + agents.size());
+
+        Context context = null;
+        if (parameterMap == null) {
+            context = new HttpServletRequestContext(request);
+        } else {
+            context = new HttpServletRequestContext(request, parameterMap);
+        }
+
+        TableModel model = new TableModelImpl(context);
+
+        try {
+            return buildAgentsTable(model, agents).toString();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public Object buildAgentsTable(final TableModel model, final List<Agent> agents) throws Exception {
+        Table table = model.getTableInstance();
+        table.setTableId("ajaxTable");
+        table.setForm("assembler");
+        table.setItems(agents);
+        table.setAction(model.getContext().getContextPath() + "/pages/admin/XYZ");
+        table.setTitle("");
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setOnInvokeAction("buildTable('assembler')");
+        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()) {
+        	table.setRowsDisplayed(100);
+        }
+
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
+        model.addTable(table);
+
+        Row row = model.getRowInstance();
+        row.setHighlightRow(Boolean.TRUE);
+        model.addRow(row);
+
+        Column agentNameColumn = model.getColumnInstance();
+        agentNameColumn.setTitle("Name");
+        agentNameColumn.setProperty("name");
+        agentNameColumn.setCell("gov.nih.nci.cabig.caaers.web.search.AgentLinkDisplayCell");
+        model.addColumn(agentNameColumn);
+
+        Column agentNSCColumn = model.getColumnInstance();
+        agentNSCColumn.setTitle("NSC");
+        agentNSCColumn.setProperty("nscNumber");
+        model.addColumn(agentNSCColumn);
+
+        return model.assemble();
     }
 
     public String getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
@@ -1486,10 +1543,17 @@ public class SearchStudyAjaxFacade {
 	}
 	
 	@Required
-	public void setInvestigatorRepository(
-			InvestigatorRepository investigatorRepository) {
+	public void setInvestigatorRepository(InvestigatorRepository investigatorRepository) {
 		this.investigatorRepository = investigatorRepository;
 	}
+
+    public AgentRepository getAgentRepository() {
+        return agentRepository;
+    }
+
+    public void setAgentRepository(AgentRepository agentRepository) {
+        this.agentRepository = agentRepository;
+    }
 }
 
 class ColumnValueObject {

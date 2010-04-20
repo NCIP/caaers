@@ -227,25 +227,22 @@
 	    </list>
 	  </property>
 	</bean>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Administration" p:mainController="configurationController">
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType" p:displayName="Administration" p:mainController="configurationController">
 	  <property name="pathMapping"><value>/admin/**</value></property>
 	  <property name="tasks">
 	    <list>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure caAERS" p:linkName="configurationController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="searchInvestigatorController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="searchResearchStaffController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import" p:linkName="importController"/>
-		    <!--
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
-		    -->
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="IND#" p:linkName="createINDController"/>                                                                                
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Track Reports" p:linkName="trackReportsController"/>	
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure caAERS" p:linkName="configurationController"/>
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="searchInvestigatorController"/>
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="searchResearchStaffController"/>
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import" p:linkName="importController"/>
+                <!--
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
+                -->
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="IND#" p:linkName="createINDController"/>
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Organization" p:linkName="createOrganizationController"/>
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
+              <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Agent Specific AE List" p:linkName="asaelSearchController"/>
 	    </list>
 	  </property>
 	</bean>
@@ -454,11 +451,9 @@
 	class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController">
 	<property name="authenticationMode" ref="authenticationMode"/>   
   </bean>
-  <bean name="/admin/createIND" id="createINDController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
-  <bean name="/admin/searchIND" id="searchINDController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
-  
+
+  <bean name="/admin/createIND" id="createINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
+  <bean name="/admin/searchIND" id="searchINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
   
   <bean name="/search/study" id="studyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
   <bean name="/search/participant" id="participantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
@@ -563,22 +558,27 @@
     <property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
   </bean>
   
-  <bean name="/rule/notification/edit" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController">
-    <property name="roles" ref="roles" />
-    <property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
-  </bean>
+    <bean name="/rule/notification/edit" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController">
+        <property name="roles" ref="roles" />
+        <property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
+    </bean>
   
-  <bean name="/rule/notification/list" id="listNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController" />
-  <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
-  <bean name="/rule/notification/export" id="exportReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ExportReportDefinitionController" />
-  <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
-  <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />
+    <bean name="/rule/notification/list" id="listNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController" />
+    <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
+    <bean name="/rule/notification/export" id="exportReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ExportReportDefinitionController" />
+    <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
+    <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />
 
-  <bean name="/study/export" id="exportStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ExportStudyController" />
-
+    <bean name="/study/export" id="exportStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ExportStudyController" />
+    
     <bean name="/admin/reload" id="messageReload" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MessageReloadController">
         <property name="messageSource" ref="messageSource" />
         <property name="caaersFieldsTree" ref="caaersFieldsTree" />
     </bean>
+
+    <bean name="/admin/asaelSearch" id="asaelSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentSearchController" />
+    <bean name="/admin/asaelCreate" id="asaelCreateController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentCreateController" />
+    <bean name="/admin/asaelEdit" id="asaelEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentEditController" />
+    <bean name="/admin/asaelImport" id="asaelImportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentImportController" />
 
 </beans>

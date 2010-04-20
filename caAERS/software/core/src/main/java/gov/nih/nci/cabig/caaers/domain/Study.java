@@ -1273,6 +1273,19 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return list;
     }
 
+    @Transient
+    /*
+    *
+    * @author Ion C. Olaru
+    * This methods retrieves the ASAEL and update/add it to Study Expected AE list.
+    * This is NOT removing terms from Study Expected AE list,
+    * since the user may have Expected AEs added from the Study flow UI.  
+    *
+    * */
+    public void synchronizeExpectedAEs() {
+        // todo
+    }
+
     public Boolean getVerbatimFirst() {
         return verbatimFirst;
     }

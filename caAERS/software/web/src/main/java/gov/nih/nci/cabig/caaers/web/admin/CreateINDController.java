@@ -27,12 +27,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 public class CreateINDController extends SimpleFormController {
+
     private InputFieldGroupMap fieldMap;
-
     private InvestigationalNewDrugDao investigationalNewDrugDao;
-
     private OrganizationDao organizationDao;
-
     private InvestigatorDao investigatorDao;
 
     public CreateINDController() {
@@ -41,17 +39,14 @@ public class CreateINDController extends SimpleFormController {
         setCommandClass(INDCommand.class);
         fieldMap = new InputFieldGroupMap();
         InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
-        InputField indNumberField = InputFieldFactory
-                        .createTextField("strINDNumber", "IND #", true);
+        InputField indNumberField = InputFieldFactory.createTextField("strINDNumber", "IND #", true);
 
         Map<Object, Object> holderTypeOptions = new LinkedHashMap<Object, Object>();
         holderTypeOptions.put("", "Select a value");
         holderTypeOptions.put("org", "Organization");
         holderTypeOptions.put("inv", "Investigator");
-        InputField holderTypeField = InputFieldFactory.createSelectField("holderType",
-                        "IND held by?", true, holderTypeOptions);
-        InputField sponsorField = InputFieldFactory.createAutocompleterField("strSponsorId",
-                        "IND Holder", true);
+        InputField holderTypeField = InputFieldFactory.createSelectField("holderType", "IND held by?", true, holderTypeOptions);
+        InputField sponsorField = InputFieldFactory.createAutocompleterField("strSponsorId", "IND Holder", true);
         sponsorField.getAttributes().put(InputField.ENABLE_CLEAR, true);
         // InputFieldAttributes.setDetails(sponsorField, "Enter a portion of the Sponsor name");
 
@@ -62,11 +57,9 @@ public class CreateINDController extends SimpleFormController {
     }
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-
     }
 
     @Override

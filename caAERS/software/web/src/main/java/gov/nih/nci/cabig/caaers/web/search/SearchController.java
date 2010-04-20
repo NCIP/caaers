@@ -30,6 +30,15 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 public abstract class SearchController extends SimpleFormController {
 
+    public static final int SEARCH_ADVERSE_EVENT = 2;
+    public static final int SEARCH_EXPEDITED_REPORT = 3;
+    public static final int SEARCH_IND = 5;
+    public static final int SEARCH_ORGANIZATION = 6;
+    public static final int SEARCH_RESEARCHSTAFF = 7;
+    public static final int SEARCH_PARTICIPANT = 8;
+    public static final int SEARCH_INVESTIGATOR = 9;
+    public static final int SEARCH_AGENT = 10;
+
     private StudyRepository studyRepository;
 
     private ConfigProperty configurationProperty;
@@ -86,30 +95,34 @@ public abstract class SearchController extends SimpleFormController {
                 case 1:
                     viewData = searchFacade.getParticipantTable(null, prop, value, request);
                     break;
-                case 2:
+                case SEARCH_ADVERSE_EVENT:
                     viewData = searchFacade.getAdverseEventTable(null, prop, value, request);
                     break;
-                case 3:
+                case SEARCH_EXPEDITED_REPORT:
                     viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
                     break;
                 case 4:
                     break;
-                case 5:
+                case SEARCH_IND:
                     viewData = searchFacade.getINDTable(null, prop, value, request);
                     break;
-                case 6:
+                case SEARCH_ORGANIZATION:
                     viewData = searchFacade.getOrganizationTable(null, prop, value, request);
                     break;
 
-                case 7:
+                case SEARCH_RESEARCHSTAFF:
                     viewData = searchFacade.getResearchStaffTable(null, prop, value, request);
                     break;
 
-                case 8:
+                case SEARCH_PARTICIPANT:
                     viewData = searchFacade.buildParticipantTable(null, prop, value, request);
                     break;
-                case 9:
+                case SEARCH_INVESTIGATOR:
                     viewData = searchFacade.getInvestigatorTable(null, prop, value, request);
+                    break;
+
+                case SEARCH_AGENT:
+                    viewData = searchFacade.getAgentsTable(null, value, request);
                     break;
 
                 default:

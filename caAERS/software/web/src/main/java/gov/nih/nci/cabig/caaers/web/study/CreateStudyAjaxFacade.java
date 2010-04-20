@@ -1,40 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Retireable;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
@@ -46,19 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainOb
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -67,6 +24,11 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.mvc.AbstractFormController;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author Rhett Sutphin

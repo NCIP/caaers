@@ -67,5 +67,7 @@
     <bean id="reportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
     <bean id="indAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
     <bean id="importAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportAjaxFacade"/>
-	
+
+    <bean id="agentAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentAjaxFacade" />
+
 </beans>

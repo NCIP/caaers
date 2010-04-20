@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
 import gov.nih.nci.cabig.caaers.web.study.SearchInvestigatorCommand;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.ServletRequestDataBinder;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class SearchInvestigatorController extends SearchController {
     private static final Log log = LogFactory.getLog(SearchInvestigatorController.class);
@@ -32,7 +31,7 @@ public class SearchInvestigatorController extends SearchController {
         String prop = request.getParameter("_prop");
         String value = request.getParameter("_value");
         log.debug(prop + "||" + value);
-        super.buildSearchResultTable(request, prop, value, 9);
+        super.buildSearchResultTable(request, prop, value, SEARCH_INVESTIGATOR);
 
     }
 }

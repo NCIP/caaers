@@ -377,5 +377,6 @@ default-lazy-init="true">
 	<bean id="agentRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.domain.repository.AgentRepositoryImpl" autowire="byType">
 		<property name="agentDao" ref="agentDao"/>
 	</bean> 	
- 
+
+    <bean id="agentSpecificAdverseEventListService" class="gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListServiceImpl" autowire="byType" />
 </beans>

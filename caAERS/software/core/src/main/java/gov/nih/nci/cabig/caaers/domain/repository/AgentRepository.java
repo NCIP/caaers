@@ -23,7 +23,14 @@ public interface AgentRepository {
 	 * @return
 	 */
 	public List<Agent> getAgentsBySubnames(String[] subnames);
-	
+
+    /**
+     * This method is used to retrieve an agent having its ID
+     * @param id
+     * @return Agent
+     */
+    public Agent getAgentByID(Integer id);
+
 	/**
 	 * This method is used to retrieve an agent having the specified name. 
 	 * @param name

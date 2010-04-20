@@ -286,7 +286,10 @@
                        			ignoreOtherSpecify="false"
                        			isAjaxable="true"
                        			version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
-                       		title="">
+                       		    title=""
+                                versionName="${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name}"
+                                study="${command.study}"    
+                             >
             			</tags:aeTermQuery>
                         </c:if>
 
