@@ -9,7 +9,9 @@ import gov.nih.nci.cabig.caaers.utils.FetcherUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 /**
@@ -28,7 +30,7 @@ public class CaaersParticipantIdFetcherImpl  implements IdFetcher {
 	 * 
 	 */
 	public List fetch(String loginId) {
-		List allowedParticipantIds = new ArrayList();
+		
 		gov.nih.nci.cabig.caaers.domain.User caaersUser = csmUserRepository.getUserByName(loginId);
 		
 		Integer userId = caaersUser.getId();
@@ -86,10 +88,11 @@ public class CaaersParticipantIdFetcherImpl  implements IdFetcher {
 		
 		
 		List<Object[]> participants = ajaxableDomainObjectRepository.findObjects(participantsDomainObjectQuery);
+		Set uniqueList = new HashSet();
 		
 		
 		for (Object[] participantId:participants) {
-			allowedParticipantIds.add((Integer)participantId[0]);
+			uniqueList.add((Integer)participantId[0]);
 			/*
 			Participant participant = participantDao.getParticipantById((Integer)participantId[0]);
 			if (isUserOrganizationPartOfStudySites(userOrganizationCodes,getAuthorizedStudies(participant,caaersUser.getId(),studyFilteringRequired))) {
@@ -97,7 +100,7 @@ public class CaaersParticipantIdFetcherImpl  implements IdFetcher {
 			}*/
 		}
 
-		return allowedParticipantIds;
+		return new ArrayList(uniqueList);
 	}
 	
 	/**
@@ -221,11 +224,6 @@ public class CaaersParticipantIdFetcherImpl  implements IdFetcher {
 	public void setAjaxableDomainObjectRepository(
 			AjaxableDomainObjectRepository ajaxableDomainObjectRepository) {
 		this.ajaxableDomainObjectRepository = ajaxableDomainObjectRepository;
-	}
-
-	public List fetch(String arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	
