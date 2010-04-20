@@ -361,5 +361,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="caaersFieldConfigurationManager" class="gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager">
     	<property name="caaersFieldDefinitionDao" ref="caaersFieldDefinitionDao" />
     </bean>
+    
+    
+	<bean id="authenticationSuccessListener" class="gov.nih.nci.cabig.caaers.web.listener.AuthenticationSuccessListener">
+		<property name="participantIdFetcher" ref="participantIdFetcher"/>
+	</bean>
 	
 </beans>
