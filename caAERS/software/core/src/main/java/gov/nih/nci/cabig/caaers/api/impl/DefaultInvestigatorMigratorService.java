@@ -155,7 +155,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     					saveInvestigator(xmlInvestigator);
     				}
     			}else{
-    				validateInvestigator(dbInvestigator,investigatorImportOutcome,wsErrors,true);
+    				validateInvestigator(xmlInvestigator,investigatorImportOutcome,wsErrors,true);
     				if(wsErrors.size() == 0){
         				syncInvestigator(xmlInvestigator,dbInvestigator);
         				saveInvestigator(dbInvestigator);
