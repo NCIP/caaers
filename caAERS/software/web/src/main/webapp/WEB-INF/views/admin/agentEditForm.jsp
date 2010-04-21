@@ -3,8 +3,9 @@
 
 <admin:agent3rdLevelMenu selected="search" />
 
-<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="true">
+<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="singleFields">
+        <%--<input type="hidden" name="_finish" value="true"/>--%>
 
 <div class="tabpane">
     <div class="content">
@@ -29,6 +30,8 @@
             <c:set var="isMeddra" value="false" />
             <c:set var="terminologyVersion" value="4" />
 
+            <ui:select options="${ctcVersion}" path="${command.ctc}" />
+
             <tags:aeTermQuery title="Choose CTC terms" isMeddra="${isMeddra}"
                               callbackFunctionName="addTerm"
                               noBackground="true"
@@ -46,12 +49,14 @@
                         <th scope="col" align="left" colspan="2"><b>Term</b></th>
                     </tr>
                     <c:forEach items="${command.agentSpecificTerms}" var="agentTerm" varStatus="status">
-                        <tr class="agentSpecific-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="AGENT_TERM_-${status.index}" bgcolor="white">
-                            <admin:oneAgentSpecificAE isOtherSpecify="${agentTerm.otherRequired}" index="${status.index}" term="${agentTerm}"/>
-                            <td style="text-align:center;" width="50px">
-                                 <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
-                            </td>
-                        </tr>
+                        <c:if test="${!agentTerm.deleted}">
+                            <tr class="agentSpecific-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="AGENT_TERM_-${status.index}" bgcolor="white">
+                                <admin:oneAgentSpecificAE isOtherSpecify="${agentTerm.otherRequired}" index="${status.index}" term="${agentTerm}"/>
+                                <td style="text-align:center;" width="50px">
+                                     <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
+                                </td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                  <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                 </table>
@@ -72,6 +77,13 @@
 
         agentFacade.addAgentSpecificTerms(${command.agent.id}, 'ctep', listOfTermIDs, function(ajaxOutput) {
             $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
+        });
+    }
+
+    function removeTerm(_index) {
+        if(!confirm( "Are you sure you want to delete this?" )) return false;
+        agentFacade.deleteAgentSpecificTerms(_index, function(ajaxOutput) {
+            $('termsTable').innerHTML = ajaxOutput.htmlContent;
         });
     }
 </script>

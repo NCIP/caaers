@@ -11,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serializable;
+
 /**
  * This class represents the Agent domain object associated with the Adverse event report.
  * 
@@ -20,7 +22,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_agents_id") })
-public class Agent extends AbstractMutableDomainObject {
+public class Agent extends AbstractIdentifiableDomainObject implements Serializable {
 
     private String name;
 

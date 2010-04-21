@@ -1,6 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -21,7 +25,8 @@ import java.util.Map;
 public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
 
     protected static final Log log = LogFactory.getLog(AbstractAgentTab.class);
-    protected Map<String, String> methodNameMap = new HashMap<String, String>();
+    private AgentSpecificTermDao agentSpecificTermDao;
+    private CtcDao ctcDao;
 
     public AbstractAgentTab(String lName, String sName, String vName) {
         super(lName, sName, vName);
@@ -30,7 +35,21 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, AgentCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
+        refdata.put("ctcVersion", ctcDao.getAll());
         return refdata;
+    }
+
+    @Override
+    public void postProcess(HttpServletRequest request, AgentCommand command, Errors errors) {
+        super.postProcess(request, command, errors);
+        if (request.getParameter(AbstractAjaxFacade.AJAX_REQUEST) != null) return;
+
+        for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
+            if (!t.getDeleted()) getAgentSpecificTermDao().save(t);
+            else {
+                getAgentSpecificTermDao().delete(t);
+            }
+        }
     }
 
     @Override
@@ -43,35 +62,25 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
         super.validate(command, commandBean, fieldGroups, errors);
     }
 
-    @Override
-    protected boolean methodInvocationRequest(HttpServletRequest request) {
-    	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
-    }
-
-    @Override
-    public String getMethodName(HttpServletRequest request) {
-    	String currentItem = request.getParameter("currentItem");
-    	String task = request.getParameter("task");
-        System.out.println(methodNameMap.get(task + currentItem));
-    	return methodNameMap.get(task + currentItem);
-    }
-
     //
-    public ModelAndView addSiteResearchStaff(HttpServletRequest request, Object object, Errors errors) {
-        ResearchStaffCommand  command = (ResearchStaffCommand)object;
-        SiteResearchStaff srs = new SiteResearchStaff();
-        command.getResearchStaff().addSiteResearchStaff(srs);
-        srs.setResearchStaff(command.getResearchStaff());
-        command.addSiteResearchStaffCommandHelper();
-
-        ModelAndView modelAndView = new ModelAndView("admin/ajax/researchStaffFormSection");
-        // modelAndView.getModel().put("objects", command.getResearchStaff().getSiteResearchStaffs());
-        modelAndView.getModel().put("indexes", new Integer[]{command.getResearchStaff().getSiteResearchStaffs().size() - 1});
-        return modelAndView;
-    }
-
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(AgentCommand command) {
         return new InputFieldGroupMap();
+    }
+
+    public AgentSpecificTermDao getAgentSpecificTermDao() {
+        return agentSpecificTermDao;
+    }
+
+    public void setAgentSpecificTermDao(AgentSpecificTermDao agentSpecificTermDao) {
+        this.agentSpecificTermDao = agentSpecificTermDao;
+    }
+
+    public CtcDao getCtcDao() {
+        return ctcDao;
+    }
+
+    public void setCtcDao(CtcDao ctcDao) {
+        this.ctcDao = ctcDao;
     }
 }

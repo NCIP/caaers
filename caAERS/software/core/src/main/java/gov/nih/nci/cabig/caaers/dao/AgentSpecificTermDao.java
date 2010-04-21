@@ -71,10 +71,14 @@ public class AgentSpecificTermDao extends GridIdentifiableDao<AgentSpecificTerm>
         return results;
     }
 
-/*
     @Override
+    @Transactional(readOnly = false)
     public void save(AgentSpecificTerm o) {
         getHibernateTemplate().saveOrUpdate(o);
     }
-*/
+
+    @Transactional(readOnly = false)
+    public void delete(AgentSpecificTerm o) {
+        getHibernateTemplate().delete(o);
+    }
 }

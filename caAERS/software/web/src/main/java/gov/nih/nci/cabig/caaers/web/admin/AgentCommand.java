@@ -17,6 +17,10 @@ public class AgentCommand {
 
     private List<AgentSpecificTerm> agentSpecificTerms = new ArrayList<AgentSpecificTerm>();
 
+    public void save() {
+        
+    }
+
     public Agent getAgent() {
         return agent;
     }

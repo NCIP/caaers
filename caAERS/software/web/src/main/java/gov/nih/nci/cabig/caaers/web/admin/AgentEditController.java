@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificMeddraLowLevelTerm;
@@ -10,12 +11,14 @@ import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +41,8 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
     private CtcCategoryDao ctcCategoryDao;
     private CtcDao ctcDao;
     private MeddraVersionDao meddraVersionDao;
+    private LowLevelTermDao lowLevelTermDao;
+    private AgentDao agentDao;
 
     @Override
     protected Agent getPrimaryDomainObject(AgentCommand command) {
@@ -46,12 +51,23 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
 
     @Override
     protected AgentDao getDao() {
-        return null;
+        return agentDao;
+    }
+
+    @Override
+    protected AgentCommand save(AgentCommand command, Errors errors) {
+        getDao().save(command.getAgent()); 
+        return command;    
     }
 
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        return null;  
+/*
+        ModelAndView mv = new ModelAndView("admin/viewAgent");
+        mv.addObject("command", command);
+        return mv;
+*/
+        return null;
     }
 
     @Override
@@ -75,6 +91,8 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
                 AgentSpecificMeddraLowLevelTerm t = (AgentSpecificMeddraLowLevelTerm)at;
                 c.setMeddraVersion(meddraVersionDao.getById(t.getTerm().getMeddraVersion().getId()));
             }
+        } else {
+            
         }
 
         return c;
@@ -110,6 +128,8 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
+        ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctcDao);
     }
 
     @Override
@@ -179,5 +199,21 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
 
     public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
         this.meddraVersionDao = meddraVersionDao;
+    }
+
+    public LowLevelTermDao getLowLevelTermDao() {
+        return lowLevelTermDao;
+    }
+
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
+
+    public AgentDao getAgentDao() {
+        return agentDao;
+    }
+
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
     }
 }

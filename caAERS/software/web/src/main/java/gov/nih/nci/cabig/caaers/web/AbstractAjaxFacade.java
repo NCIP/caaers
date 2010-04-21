@@ -80,7 +80,6 @@ public abstract class AbstractAjaxFacade {
 
         String url = String.format("%s?%s", getCurrentPageContextRelative(webContext), createQueryString(params));
         log.debug("Attempting to return contents of " + url);
-        System.out.println(url);
         
         try {
             String html = webContext.forwardToString(url);

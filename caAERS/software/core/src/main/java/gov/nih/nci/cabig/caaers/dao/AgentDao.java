@@ -21,11 +21,6 @@ public class AgentDao extends GridIdentifiableDao<Agent> implements MutableDomai
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
-    /**
-     * Get the Class representation of the domain object that this DAO is representing.
-     * 
-     * @return Class representation of the domain object that this DAO is representing.
-     */
     @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Agent> domainClass() {
         return Agent.class;
@@ -75,4 +70,9 @@ public class AgentDao extends GridIdentifiableDao<Agent> implements MutableDomai
         return results.size() > 0 ? results.get(0) : null;
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void save(Agent o) {
+        getHibernateTemplate().saveOrUpdate(o);
+    }
 }

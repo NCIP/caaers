@@ -24,6 +24,7 @@ import javax.persistence.*;
 public abstract class AgentSpecificTerm<T extends DomainObject> extends AbstractMutableDomainObject {
     private T term;
     private Agent agent;
+    private boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
@@ -57,5 +58,14 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
         AgentSpecificTerm term = (AgentSpecificTerm) BeanUtils.instantiateClass(getClass());
         BeanUtils.copyProperties(this, term, new String[]{"id", "gridId", "version", "agent"});
         return term;
+    }
+
+    @Transient
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

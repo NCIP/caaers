@@ -18,7 +18,6 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
 
     @OneToOne
     @JoinColumn(name = "term_id")
-    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.LOCK, CascadeType.EVICT})
     @Override
     public CtcTerm getTerm() {
         return super.getTerm();

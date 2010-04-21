@@ -72,12 +72,14 @@ public class AgentAjaxFacade extends AbstractAjaxFacade {
             for (int i : agentIDs) {
                     AgentSpecificCtcTerm at = new AgentSpecificCtcTerm();
                     at.setTerm(ctcTermDao.getById(i));
+                    at.setAgent(a);
                     c.getAgentSpecificTerms().add(at);
             }
         } else {
             for (int i : agentIDs) {
                     AgentSpecificMeddraLowLevelTerm at = new AgentSpecificMeddraLowLevelTerm();
                     at.setTerm(lowLevelTermDao.getById(i));
+                    at.setAgent(a);
                     c.getAgentSpecificTerms().add(at);
             }
         }
@@ -93,8 +95,24 @@ public class AgentAjaxFacade extends AbstractAjaxFacade {
         return out;
     }
 
-    //
+    public AjaxOutput deleteAgentSpecificTerms(int _index) {
+        AjaxOutput out = new AjaxOutput();
+        AgentCommand c = (AgentCommand)extractCommand();
+        // c.getAgentSpecificTerms().remove(_index);
+        c.getAgentSpecificTerms().get(_index).setDeleted(true);
 
+        Map<String, String> params = new LinkedHashMap<String, String>();
+        int lastIndex = c.getAgentSpecificTerms().size() - 1;
+
+        params.put("firstIndex", Integer.toString(0));
+        params.put("lastIndex", Integer.toString(lastIndex));
+        params.put("isADD", Boolean.toString(false));
+
+        out.setHtmlContent(renderAjaxView("agentSpecificTermSection", params));
+        return out;
+    }
+
+    //
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
