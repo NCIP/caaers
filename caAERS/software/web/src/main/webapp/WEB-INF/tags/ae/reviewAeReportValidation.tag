@@ -6,7 +6,6 @@
 
 <%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.report.Report" description="The report that is printed by this row." %>
 
-
 <tr>    				
 	<td>
     	<div class="label" align="left">${report.reportDefinition.label}</div>
@@ -43,10 +42,27 @@
 		<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${report.lastVersion.reportStatus}" lastVersion="${report.lastVersion}"/>
 	</td>
 	<td id="report-action">
-		<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable && isUserSAECoordinato}" >
+		<div>
+			<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+			<a id="actions-menu-${report.id }" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
+		</div>
+		<div id="options-actions-menu-${command.reportId}" style="display:none;z-index:1">
+			<ul>
+				<span id="sliderWFAction"></span>
+			</ul>
+			<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable && isUserSAECoordinato}" >
 				<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-					<a href="javascript:submitReport(${report.id });"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
+					<li><a class="submitter-green" href="#" onclick="javascript:submitReport(${report.id });" >Submit <img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" /></a></li>	
 				</c:if>
-		</c:if>
+			</c:if>
+			<c:if test="${command.study.caaersXMLType}">
+				<li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
+				<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+			</c:if>
+			<c:if test="${command.study.adeersPDFType}">
+				<li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
+				<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+			</c:if>
+		</div> 
 	</td>
 </tr>

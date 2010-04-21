@@ -148,6 +148,7 @@ color:#0033FF;
 								var entityStatusId = entityType + '-' + entityId + '-status';
 								$(entityStatusId).innerHTML = output.htmlContent;
 							}
+							alert('The action: "' + newStatus + '" was taken.');
 						});
 			}
 		
@@ -202,6 +203,7 @@ color:#0033FF;
 							var entityStatusId = entityType + '-' + entityId + '-status';
 							$(entityStatusId).innerHTML = output.htmlContent;
 						}
+						alert('The action: "' + newStatus + '" was taken.');
 					});
 				}
 			});

@@ -171,7 +171,7 @@
         try {
         	var sboxId = 'sliderWFAction-' + reportId;
             var sbox = $(sboxId);
-		
+			
             if (confirm('Are you sure you want to take the action - ' + value + ' ?')) {
             	var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
                 var sboxIndicator = $(sboxIndicatorId);
@@ -203,6 +203,7 @@
                                 });
                             }
                         }
+                        alert('The action: "' + value + '" was taken.');
                     }
                 });
             } else {

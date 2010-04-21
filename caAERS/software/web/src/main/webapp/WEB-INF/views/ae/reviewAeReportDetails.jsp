@@ -80,6 +80,25 @@
 			width:392px;
 			height:60%;
 		}
+		
+        td.completion-messages p {
+            margin-top: 0;
+        }
+        td.completion-messages h4 {
+            padding: 6px 0 2px 0;
+        }
+        td.completion-messages ul {
+            padding: 0;
+            margin: 0;
+        }
+        td.completion-messages ul li {
+            padding: 0;
+            margin: 0;
+            margin-left: 1em;
+        }
+		.fg-menu a:link, .fg-menu a:visited, .fg-menu a:hover, .fg-menu a:active {
+			font-size:10pt;
+		}
 	</style>
 </head>
 <body>
@@ -149,23 +168,9 @@
 								</a>
 								<a href="javascript:cancelEdit('${command.reportId }');" id="cancel-btn-${command.reportId }" style="display:none">
 									<img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" />
-								</a><br><br>
-								<%-- <b>Next Action</b>&nbsp;&nbsp;
-								<select id="sliderWFAction" onChange="routingHelper.validateAndAdvanceWorkflow();">
-									<option value="">Please select</option>
-								</select>
-								<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
-								--%>
-								
-								<div style="text-align:right;">
-									<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
-									<a id="actions-menu-${command.reportId }" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
-								</div>
-								<div id="options-actions-menu-${command.reportId}" style="display:none;z-index:1">
-									<ul>
-										<span id="sliderWFAction"></span>
-									</ul>
-								</div> 
+								</a>
+								<tags:indicator id="ajax_wait"/>
+								<br><br>
 								
 							</td>
 						</tr>
