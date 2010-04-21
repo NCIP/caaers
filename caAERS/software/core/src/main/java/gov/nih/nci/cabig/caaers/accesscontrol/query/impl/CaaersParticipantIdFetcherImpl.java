@@ -19,11 +19,9 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  * @author akkalas
  *
  */
-public class CaaersParticipantIdFetcherImpl  implements IdFetcher {
+public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
+
 	
-	private CSMUserRepository csmUserRepository;
-	private ParticipantDao participantDao;
-	private FetcherUtils fetcherUtils;
 	private AjaxableDomainObjectRepository ajaxableDomainObjectRepository;
 	
 	/**
@@ -207,18 +205,6 @@ public class CaaersParticipantIdFetcherImpl  implements IdFetcher {
         return roles;
 	}
 
-	
-	public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
-	}
-
-	public void setFetcherUtils(FetcherUtils fetcherUtils) {
-		this.fetcherUtils = fetcherUtils;
-	}
-
-	public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
-		this.csmUserRepository = csmUserRepository;
-	}
 
 
 	public void setAjaxableDomainObjectRepository(

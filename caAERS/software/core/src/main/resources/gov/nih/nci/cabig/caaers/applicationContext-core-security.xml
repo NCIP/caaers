@@ -496,6 +496,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     
     <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
-	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" autowire="byType"  />
-    
+    <bean id="abstractIdFetcher" abstract="true">
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+        <property name="csmUserRepository" ref="csmUserRepository" />
+        <property name="fetcherUtils" ref="fetcherUtils" />
+    </bean>
+	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher">
+        <property name="ajaxableDomainObjectRepository" ref="ajaxableDomainObjectRepository" />
+    </bean>
+    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher">
+    </bean>
 </beans>
