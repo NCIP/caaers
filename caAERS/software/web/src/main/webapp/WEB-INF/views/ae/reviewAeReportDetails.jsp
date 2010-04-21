@@ -154,8 +154,8 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="50%">
-								<div id="scrollbar_content-${command.reportId }">
+							<td width="50%" style="white-space: wrap">
+								<div id="scrollbar_content-${command.reportId }" style="height:185px;overflow-y:scroll;position:relative;width:500px;">
 							</td>
 							<td valign="top" align="right">
 								<textarea id="enter-comment-text-${command.reportId }" style="width:392px;height:60%"></textarea>
