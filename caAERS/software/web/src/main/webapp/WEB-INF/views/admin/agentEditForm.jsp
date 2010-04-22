@@ -26,16 +26,39 @@
 
         <chrome:division collapsable="false" collapsed="false" title="Agent Specific AE List">
 
-            <c:set var="versionName" value="CTC 4" />
-            <c:set var="isMeddra" value="false" />
-            <c:set var="terminologyVersion" value="4" />
+            <c:set var="versionName" value="${not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
+            <c:set var="isMeddra" value="${empty command.ctcVersion ? not empty command.meddraVersion ? true : false : false}" />
+            <c:set var="terminologyVersionID" value="${not empty command.ctcVersion ? command.ctcVersion.id : not empty command.meddraVersion ? command.meddraVersion.id  : 0}" />
+            <c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" />
+            <c:set var="terminologyType" value="${not empty command.ctcVersion ? 'ctep' : not empty command.meddraVersion ? 'meddra' : ''}" />
 
-            <ui:select options="${ctcVersion}" path="${command.ctc}" />
+<%--
+            VersionName:(${versionName})
+            TerminologyVersion: [${terminologyVersionID}]
+            Meddra: [${meddraVersionID}]
+--%>
+
+            <div class="row" id="terminologyRow">
+                <div class="label">Terminology</div>
+                <div class="value"><ui:select options="${terminology}" path="terminology" readonly="${command.terminology.code > 0}"/></div>
+            </div>
+
+            <div class="row" id="ctcRow" style="display: ${command.terminology.code eq '2' ? 'none' : ''};">
+                <div class="label">Ctc Version</div>
+                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion"  readonly="${command.ctcVersion.id > 0}"/></div>
+            </div>
+
+            <div class="row" id="meddraRow" style="">
+                <div class="label">Meddra Version</div>
+                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" readonly="${command.meddraVersion.id > 0}" /></div>
+            </div>
+
+            <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
 
             <tags:aeTermQuery title="Choose CTC terms" isMeddra="${isMeddra}"
                               callbackFunctionName="addTerm"
                               noBackground="true"
-                              version="${terminologyVersion}"
+                              version="${terminologyVersionID}"
                               ignoreOtherSpecify="false" isAjaxable="true"
                               versionName="${versionName}"
                               study="${null}"
@@ -75,7 +98,7 @@
             listOfTermIDs.push(termID);
         }.bind(this));
 
-        agentFacade.addAgentSpecificTerms(${command.agent.id}, 'ctep', listOfTermIDs, function(ajaxOutput) {
+        agentFacade.addAgentSpecificTerms(${command.agent.id}, '${terminologyType}', listOfTermIDs, function(ajaxOutput) {
             $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
         });
     }
@@ -85,6 +108,16 @@
         agentFacade.deleteAgentSpecificTerms(_index, function(ajaxOutput) {
             $('termsTable').innerHTML = ajaxOutput.htmlContent;
         });
+    }
+
+/*
+    Event.observe($('terminology'), "change", function() {
+        $('command').submit();
+    });
+*/
+
+    function changeTerminology() {
+        $('command').submit();
     }
 </script>
 

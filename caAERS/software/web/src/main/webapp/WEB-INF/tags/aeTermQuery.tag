@@ -280,7 +280,7 @@
                 <div style="overflow:auto; height:460px;">
                 <ul id="categories" class="ae-category">
 
-                    <c:if test="${fn:length(ctcCategories) == 0 and study ne null}">
+                    <c:if test="${study ne null and (ctcCategories eq null or fn:length(ctcCategories) == 0)}">
                         <c:set var="ctcCategories" value="${study.ctcCategories}" />
                     </c:if>
                     <c:forEach var="cat" items="${ctcCategories}">

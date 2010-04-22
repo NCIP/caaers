@@ -12,6 +12,8 @@ import java.util.List;
 public class AgentCommand {
 
     private Agent agent;
+
+    private Term terminology;
     private Ctc ctcVersion;
     private MeddraVersion meddraVersion;
 
@@ -47,5 +49,13 @@ public class AgentCommand {
 
     public void setMeddraVersion(MeddraVersion meddraVersion) {
         this.meddraVersion = meddraVersion;
+    }
+
+    public Term getTerminology() {
+        return terminology;
+    }
+
+    public void setTerminology(Term terminology) {
+        this.terminology = terminology;
     }
 }

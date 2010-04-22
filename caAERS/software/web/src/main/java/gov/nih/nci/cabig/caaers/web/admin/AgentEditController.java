@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
@@ -85,10 +82,12 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
             AgentSpecificTerm at = c.getAgentSpecificTerms().get(0);
             if (at instanceof AgentSpecificCtcTerm) {
                 AgentSpecificCtcTerm t = (AgentSpecificCtcTerm)at;
+                c.setTerminology(Term.CTC);
                 c.setCtcVersion(ctcDao.getById(t.getTerm().getCategory().getCtc().getId()));
-                c.setMeddraVersion(meddraVersionDao.getById(10));
+                // c.setMeddraVersion(meddraVersionDao.getById(10));
             } else {
                 AgentSpecificMeddraLowLevelTerm t = (AgentSpecificMeddraLowLevelTerm)at;
+                c.setTerminology(Term.MEDDRA);
                 c.setMeddraVersion(meddraVersionDao.getById(t.getTerm().getMeddraVersion().getId()));
             }
         } else {
@@ -128,8 +127,8 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
-        ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
+        ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
     }
 
     @Override
