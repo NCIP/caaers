@@ -510,7 +510,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
          <property name="idFetchers">
             <list>
                 <ref bean="participantIdFetcher"/>
+                <!--
                 <ref bean="studyIdFetcher"/>
+                -->
             </list>
          </property> 
      </bean>   
