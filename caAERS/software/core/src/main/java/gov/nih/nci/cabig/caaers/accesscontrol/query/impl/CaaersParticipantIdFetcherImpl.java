@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.AjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ajax.AjaxableDomainObjectRepository;
-import gov.nih.nci.cabig.caaers.utils.FetcherUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +18,6 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 
 	
-	private AjaxableDomainObjectRepository ajaxableDomainObjectRepository;
-	
 	/**
 	 * 
 	 */
@@ -39,7 +33,7 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 			"left outer join siteResearchStaff.organization as organizations " +
 			"where siteResearchStaff.researchStaff.id = " + userId;
 		
-		AjaxableDomainObjectQuery organizationsDomainObjectQuery = new AjaxableDomainObjectQuery(orgsQuery);
+		AbstractQuery organizationsDomainObjectQuery = new AbstractQuery(orgsQuery);
 		
 		
 		//List<Integer> userOrganizationCodes = new ArrayList<Integer>();
@@ -59,7 +53,7 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 			            //"left join stper.siteResearchStaff as siteResearchStaff " +
 			            //"left outer join siteResearchStaff.organization as organizations " +
 			    //" where  siteResearchStaff.researchStaff.id = "+userId;
-		AjaxableDomainObjectQuery participantsDomainObjectQuery = new AjaxableDomainObjectQuery(participantsQuery);
+		AbstractQuery participantsDomainObjectQuery = new AbstractQuery(participantsQuery);
 		
 		if (studyFilteringRequired) {
 			participantsQuery = participantsQuery +  
@@ -71,7 +65,7 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 			//for (Object[] obj:organizations) {
 				//userOrganizationCodes.add((Integer)obj[0]);
 			//}
-			List<Object[]> organizations = ajaxableDomainObjectRepository.findObjects(organizationsDomainObjectQuery);
+			List<Object[]> organizations = (List<Object[]>) this.search(organizationsDomainObjectQuery);
 			participantsDomainObjectQuery.filterByAnyAnd(" studyOrgs.organization.id IN (:ids)");
 			participantsDomainObjectQuery.setParameterList("ids",organizations);
 			//participantsQuery = participantsQuery + " where studyOrgs.organization.id IN (:ids)";
@@ -85,7 +79,7 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 		//if one of the above organization is a SCC .. 
 		
 		
-		List<Object[]> participants = ajaxableDomainObjectRepository.findObjects(participantsDomainObjectQuery);
+		List<Object[]> participants = (List<Object[]>) search(participantsDomainObjectQuery);
 		Set uniqueList = new HashSet();
 		
 		
@@ -205,12 +199,6 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
         return roles;
 	}
 
-
-
-	public void setAjaxableDomainObjectRepository(
-			AjaxableDomainObjectRepository ajaxableDomainObjectRepository) {
-		this.ajaxableDomainObjectRepository = ajaxableDomainObjectRepository;
-	}
 
 	
 }
