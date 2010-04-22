@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.Predicate;
+import org.apache.commons.collections15.list.PredicatedList;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -186,23 +188,7 @@ public abstract class Investigator extends User {
     	return getFullName();
     }
     
-    //Inner Class used instead of InstantiateFactory 
-    class SiteInvestigatorFactory implements Factory<SiteInvestigator>{
-    	
-    	Investigator investigator;
-    	
-    	public SiteInvestigatorFactory(Investigator investegator){
-    		this.investigator=investegator;
-    	}
-    	
-		public SiteInvestigator create() {
-			SiteInvestigator siteInvestigator = new SiteInvestigator();
-			siteInvestigator.setInvestigator(investigator);
-            siteInvestigator.setStartDate(DateUtils.today());
-			return siteInvestigator;
-		}
-    }
-    
+
     
 	public SiteInvestigator findSiteInvestigator(SiteInvestigator other){
 		for(SiteInvestigator siteInvestigator : getSiteInvestigators()){
@@ -259,5 +245,37 @@ public abstract class Investigator extends User {
     public void setWasLoginDisallowed(boolean wasLoginDisallowed) {
 		this.wasLoginDisallowed = wasLoginDisallowed;
 	}
+
+    /**
+     * All the SiteInvestigator where the investigator is active.
+     * @return
+     */
+    @Transient
+    public List<SiteInvestigator> getActiveSiteInvestigators(){
+       return  PredicatedList.decorate(getSiteInvestigators(), new Predicate<SiteInvestigator>(){
+            public boolean evaluate(SiteInvestigator siteInvestigator) {
+                return siteInvestigator.isActive();
+            }
+        });
+    }
+
+
+    //Inner Class used instead of InstantiateFactory
+    class SiteInvestigatorFactory implements Factory<SiteInvestigator>{
+
+    	Investigator investigator;
+
+    	public SiteInvestigatorFactory(Investigator investegator){
+    		this.investigator=investegator;
+    	}
+
+		public SiteInvestigator create() {
+			SiteInvestigator siteInvestigator = new SiteInvestigator();
+			siteInvestigator.setInvestigator(investigator);
+            siteInvestigator.setStartDate(DateUtils.today());
+			return siteInvestigator;
+		}
+    }
+        
     
 }

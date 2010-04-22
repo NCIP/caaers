@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.utils.FetcherUtils;
 import org.apache.commons.logging.Log;
@@ -12,8 +14,10 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A base class of all IdFetcher implementations, which provides the basic infrastructure level requirements.
@@ -25,6 +29,15 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
     protected CSMUserRepository csmUserRepository;
     protected FetcherUtils fetcherUtils;
+
+    /**
+     * Will fetch the user identified by the loginId. 
+     * @param loginId - username
+     * @return   - A user
+     */
+    public User findUser(String loginId){
+        return csmUserRepository.getUserByName(loginId);
+    }
 
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
@@ -51,6 +64,27 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         });
     }
 
+   
+
+
+    /**
+     * Find organization Id from SiteResearchStaff.
+     * @param siteResearchStaffList - List of SiteResearchStaff
+     * @return
+     */
+    protected Set<Integer> findOrganizationIdFromSiteResearchStaff(List<SiteResearchStaff> siteResearchStaffList){
+       HashSet<Integer> set = new HashSet<Integer>();
+       if(siteResearchStaffList != null){
+            for(SiteResearchStaff srs : siteResearchStaffList){
+               set.add(srs.getOrganization().getId());
+            }
+       }
+
+        return set;
+    }
+
+
+
     public CSMUserRepository getCsmUserRepository() {
         return csmUserRepository;
     }
@@ -66,4 +100,5 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     public void setFetcherUtils(FetcherUtils fetcherUtils) {
         this.fetcherUtils = fetcherUtils;
     }
+    
 }

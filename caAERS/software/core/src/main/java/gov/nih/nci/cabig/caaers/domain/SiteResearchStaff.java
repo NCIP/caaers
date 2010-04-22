@@ -170,6 +170,22 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
             srsr.setEndDate(date);
         }
     }
+
+    /**
+     * Will return true if the SiteResearchStaff  is having an active role identified by the roleCodes.
+     * @param roleCodes  - A list of role codes
+     * @return true, if the SiteResearchStaff is active on any of the roleCodes. Otherwise false. 
+     */
+    public boolean hasActiveRolesOfType(String... roleCodes){
+        for(SiteResearchStaffRole srr : getSiteResearchStaffRoles()){
+            if(srr.isActive()){
+               for(String roleCode : roleCodes){
+                   if(srr.getRoleCode().equals(roleCode)) return true;
+               }
+            }
+        }
+        return false;
+    }
     
     
     // /OBJECT METHODS

@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.Predicate;
+import org.apache.commons.collections15.list.PredicatedList;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -154,22 +156,7 @@ public abstract class ResearchStaff extends User {
     	getSiteResearchStaffs().add(siteResearchStaff);
     	siteResearchStaff.setResearchStaff(this);
     }
-	
-	// Inner Class used instead of InstantiateFactory
 
-	class SiteResearchStaffFactory implements Factory<SiteResearchStaff> {
-
-		ResearchStaff researchStaff;
-		public SiteResearchStaffFactory(ResearchStaff researchStaff) {
-			this.researchStaff = researchStaff;
-		}
-
-		public SiteResearchStaff create() {
-			SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
-			siteResearchStaff.setResearchStaff(researchStaff);
-			return siteResearchStaff;
-		}
-	}
 	
 	@Transient
 	public List<String> getAllRoles(){
@@ -236,5 +223,50 @@ public abstract class ResearchStaff extends User {
         }
         return false;
     }
+
+    /**
+     * Will return all the SiteResearchStaff  which are currently active. 
+     * @return
+     */
+    @Transient
+    public List<SiteResearchStaff> getActiveSiteResearchStaff(){
+        return  PredicatedList.decorate(getSiteResearchStaffs(), new Predicate<SiteResearchStaff>(){
+            public boolean evaluate(SiteResearchStaff siteResearchStaff) {
+                return siteResearchStaff.isActive();
+            }
+        });
+
+    }
+
+    /**
+     * Will return SiteResearchStaff having at least one active role provided in roleCodes parameter
+     * @param roleCodes - roles to check
+     * @return  A list of SiteResearchStaff
+     */
+    public List<SiteResearchStaff> findSiteResearchStaffByRoles(final String... roleCodes){
+
+       return  PredicatedList.decorate(getSiteResearchStaffs(), new Predicate<SiteResearchStaff>(){
+            public boolean evaluate(SiteResearchStaff srs) {
+               return srs.hasActiveRolesOfType(roleCodes);
+            }
+        });
+    }
+
+
+	// Inner Class used instead of InstantiateFactory
+
+	class SiteResearchStaffFactory implements Factory<SiteResearchStaff> {
+
+		ResearchStaff researchStaff;
+		public SiteResearchStaffFactory(ResearchStaff researchStaff) {
+			this.researchStaff = researchStaff;
+		}
+
+		public SiteResearchStaff create() {
+			SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+			siteResearchStaff.setResearchStaff(researchStaff);
+			return siteResearchStaff;
+		}
+	}
     
 }
