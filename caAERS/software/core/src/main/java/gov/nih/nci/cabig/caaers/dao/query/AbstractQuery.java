@@ -163,4 +163,13 @@ public class AbstractQuery {
     private void addToJoinsList(String object) {
         if (!joins.contains(object)) joins.add(object);
     }
+    
+    public void setParameterList(String name , List values){
+		setParameter(name, values);
+    }
+    
+    public void filterByAnyAnd(String clause) {
+    	andWhere(clause);
+    }
+    
 }
