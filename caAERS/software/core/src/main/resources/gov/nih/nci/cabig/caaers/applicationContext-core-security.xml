@@ -166,7 +166,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     and args(qry)"/>
             <aop:before pointcut-ref="executionOfParticipantQueryFilter" method="applyLoginFilter"/>			
 		</aop:aspect>
-		
+
+        <aop:aspect ref="studyQueryFilterByLoginIdAspect">		
+			<aop:pointcut id="executionOfStudyQueryFilter"
+                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.findStudies(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery))
+                    and args(qry)"/>
+            <aop:before pointcut-ref="executionOfStudyQueryFilter" method="applyLoginFilter"/>			
+		</aop:aspect>
+				
 
 
     </aop:config>
@@ -487,11 +494,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	 <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
 	 
 	 
-	<!-- QUERY ASPECTS -->
+	<!--  ASPECTS -->
+
 	<bean id="participantQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.ParticipantQueryFilterByLoginIdAspect">
     	<property name="idFetcher" ref="participantIdFetcher"/>
     </bean>
-	
+
+	<bean id="studyQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.StudyQueryFilterByLoginIdAspect">
+    	<property name="idFetcher" ref="studyIdFetcher"/>
+    </bean>
+    	
 	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	 
 
     
