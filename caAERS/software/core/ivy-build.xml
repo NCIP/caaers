@@ -143,9 +143,11 @@
     <target name="generate-jaxb"
             description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
         <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
-            <classpath>
-                <path refid="xjc.task.path"/>
-            </classpath>
+        	<classpath>
+        		<fileset dir="${lib.dir}" excludes="cxf*.jar">
+        			<include name="**/*.jar" />
+        		</fileset>
+        	</classpath>
         </taskdef>
 
         <mkdir dir="${generated.src.dir}"/>
