@@ -504,7 +504,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     	<property name="idFetcher" ref="studyIdFetcher"/>
     </bean>
     	
-	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	 
+	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	
+	
+	 <bean id="filteredDataLoader" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
+         <property name="idFetchers">
+            <list>
+                <ref bean="participantIdFetcher"/>
+                <ref bean="studyIdFetcher"/>
+            </list>
+         </property> 
+     </bean>   
+      
 
     
     <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
