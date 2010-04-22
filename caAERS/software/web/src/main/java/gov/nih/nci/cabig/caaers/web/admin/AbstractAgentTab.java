@@ -56,7 +56,6 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
 
     @Override
     public void postProcess(HttpServletRequest request, AgentCommand command, Errors errors) {
-        System.out.println("Tab post process...");
         super.postProcess(request, command, errors);
         if (request.getParameter(AbstractAjaxFacade.AJAX_REQUEST) != null) return;
 

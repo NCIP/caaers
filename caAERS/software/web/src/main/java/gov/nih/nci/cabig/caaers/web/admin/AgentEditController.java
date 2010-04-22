@@ -53,6 +53,7 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
 
     @Override
     protected AgentCommand save(AgentCommand command, Errors errors) {
+        System.out.println("controller save");
         getDao().save(command.getAgent()); 
         return command;    
     }
@@ -73,6 +74,7 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
         agent = agentRepository.getAgentByID(Integer.parseInt(request.getParameter("agentID")));
         AgentCommand c = new AgentCommand();
         c.setAgent(agent);
+        c.getAgentSpecificTerms().clear();
         c.getAgentSpecificTerms().addAll(service.getListByAgent(agent.getId()));
 
         int categoryID;
