@@ -501,9 +501,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="csmUserRepository" ref="csmUserRepository" />
         <property name="fetcherUtils" ref="fetcherUtils" />
     </bean>
-	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher">
-        <property name="ajaxableDomainObjectRepository" ref="ajaxableDomainObjectRepository" />
-    </bean>
+	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher"/>
     <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher">
     </bean>
 </beans>
