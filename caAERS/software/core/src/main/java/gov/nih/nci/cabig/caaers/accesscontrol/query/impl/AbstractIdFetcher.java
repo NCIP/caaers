@@ -37,7 +37,12 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
                 Map<String, Object> queryParameterMap = query.getParameterMap();
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
-                    hibernateQuery.setParameter(key, value);
+                    if (value instanceof List) {
+                    	hibernateQuery.setParameterList(key, (List) value);
+                    } else {
+                    	hibernateQuery.setParameter(key, value);
+                    }
+                    //hibernateQuery.setParameter(key, value);
 
                 }
                 return hibernateQuery.list();
