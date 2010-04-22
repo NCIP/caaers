@@ -1,13 +1,13 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
-<tags:dwrJavascriptLink objects="agentFacade"/>
 
 <admin:agent3rdLevelMenu />
 
 <div class="tabpane">
     <div class="content">
 
-        <chrome:box title="Agent" autopad="false">
+        <chrome:box title="Agent View" autopad="false">
 
+<%--
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.name" text="" path="command.agent.name" /></div>
             <div class="value">${command.agent.name}</div>
@@ -36,6 +36,7 @@
             </tags:table>
 
         </chrome:division>
+--%>
 
         </chrome:box>
 

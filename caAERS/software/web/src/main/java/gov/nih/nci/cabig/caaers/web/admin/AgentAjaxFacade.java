@@ -55,7 +55,7 @@ import org.springframework.web.servlet.mvc.AbstractFormController;
 public class AgentAjaxFacade extends AbstractAjaxFacade {
 
     private static final Log log = LogFactory.getLog(AgentAjaxFacade.class);
-    private static Class<?>[] CONTROLLERS = {AgentEditController.class};
+    private static Class<?>[] CONTROLLERS = {AgentEditController.class, AgentCreateController.class};
     private AgentRepository agentRepository;
     private CtcTermDao ctcTermDao;
     private LowLevelTermDao lowLevelTermDao;

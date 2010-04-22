@@ -102,7 +102,7 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
 		return new FlowFactory<AgentCommand>() {
 			public Flow<AgentCommand> createFlow(AgentCommand cmd) {
 				Flow<AgentCommand> flow = new Flow<AgentCommand>("Agents");
-				flow.addTab(new AgentTab<AgentCommand>());
+				flow.addTab(new AgentTab<AgentCommand>("Agent ", "Agent", "admin/agentEditForm"));
 				return flow;
 			}
 		};

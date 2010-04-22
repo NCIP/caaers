@@ -17,8 +17,8 @@ public class AgentTab<C extends AgentCommand> extends AbstractAgentTab {
 
     protected static final Log log = LogFactory.getLog(AgentTab.class);
 
-    public AgentTab() {
-        super("Agent ", "Agent", "admin/agentEditForm");
+    public AgentTab(String lName, String sName, String vName) {
+        super(lName, sName, vName);
     }
 
     @Override
