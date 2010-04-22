@@ -172,4 +172,10 @@ public class AbstractQuery {
     	andWhere(clause);
     }
     
+    public void filterINQuery(String inClause , List ids){
+		andWhere(inClause);
+		setParameter("ids", ids);
+    }
+    
+    
 }
