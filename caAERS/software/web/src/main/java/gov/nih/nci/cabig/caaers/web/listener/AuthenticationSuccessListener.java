@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.listener;
 
 import gov.nih.nci.cabig.caaers.accesscontrol.BaseSecurityFilterer;
-
-import java.util.List;
+import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
@@ -12,9 +11,6 @@ import org.acegisecurity.userdetails.User;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
-import com.semanticbits.security.contentfilter.IdFetcher;
-import com.semanticbits.security.contentfilter.cache.QueryCacheManager;
-
 /**
  * Event Listener
  * @author akkalas
@@ -22,7 +18,7 @@ import com.semanticbits.security.contentfilter.cache.QueryCacheManager;
  */
 public class AuthenticationSuccessListener  extends BaseSecurityFilterer implements ApplicationListener {
 	
-	private IdFetcher participantIdFetcher;
+	private FilteredDataLoader filteredDataLoader;
 	
 	/**
 	 * Capture AuthenticationSuccessEvent event . THis is the entry point to get the data from DB and cache.
@@ -58,19 +54,22 @@ public class AuthenticationSuccessListener  extends BaseSecurityFilterer impleme
 				userName = principal.toString();
 			}
 			System.out.println("user name " + userName);
-			// need to change - to load data assynchrosly 
+			//need to change - to load data assynchrosly 
+			filteredDataLoader.loadByUserName(userName, sessionId);
+			
+			/*
+			
 			List listOfIds = participantIdFetcher.fetch(userName);
 			String className = participantIdFetcher.getClass().getName();
 			//cache the data .. 
 			QueryCacheManager.addDataToCache(sessionId, className, listOfIds);
+			*/
 
 		}		
 	}
-
-
-
-	public void setParticipantIdFetcher(IdFetcher participantIdFetcher) {
-		this.participantIdFetcher = participantIdFetcher;
+	
+	public void setFilteredDataLoader(FilteredDataLoader filteredDataLoader) {
+		this.filteredDataLoader = filteredDataLoader;
 	}
 
 
