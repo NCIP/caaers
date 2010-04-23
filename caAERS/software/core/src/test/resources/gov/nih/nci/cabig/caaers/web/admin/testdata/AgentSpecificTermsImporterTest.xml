@@ -1,0 +1,27 @@
+<dataset>
+
+	<agents
+		id="1003"
+		name="Agent Name – 01"
+		description="Agent Name – 01"
+		nsc="726190"
+		/>
+
+	<agents
+		id="1002"
+		name="Agent Name – 02"
+		description="Agent Name – 02"
+		nsc="726191"
+		/>
+
+    <!-- START AGENT-TERMS-->
+
+    <ctc_versions id="4" name="CTCAE v4" />
+    <CTC_CATEGORIES id="409" name="Gastrointestinal disorders" version_id="4" />
+
+    <CTC_TERMS id="4010" category_id="409" term="Abdominal distension" ctep_term="Abdominal distension" ctep_code="10043881" other_required="0" />
+    <CTC_TERMS id="4011" category_id="409" term="Abdominal pain" ctep_term="Abdominal distension" ctep_code="10043882" other_required="0" />
+
+    <!-- END AGENT-TERMS-->
+
+</dataset>
