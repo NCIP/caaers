@@ -166,7 +166,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     and args(qry)"/>
             <aop:before pointcut-ref="executionOfParticipantQueryFilter" method="applyLoginFilter"/>			
 		</aop:aspect>
-
+<!--
         <aop:aspect ref="studyQueryFilterByLoginIdAspect">		
 			<aop:pointcut id="executionOfStudyQueryFilter"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.findStudies(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery))
@@ -174,7 +174,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             <aop:before pointcut-ref="executionOfStudyQueryFilter" method="applyLoginFilter"/>			
 		</aop:aspect>
 				
-
+-->
 
     </aop:config>
 
