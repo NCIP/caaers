@@ -252,11 +252,11 @@ public abstract class Investigator extends User {
      */
     @Transient
     public List<SiteInvestigator> getActiveSiteInvestigators(){
-       return  PredicatedList.decorate(getSiteInvestigators(), new Predicate<SiteInvestigator>(){
-            public boolean evaluate(SiteInvestigator siteInvestigator) {
-                return siteInvestigator.isActive();
-            }
-        });
+        List<SiteInvestigator> sinvList = new ArrayList<SiteInvestigator>();
+        for(SiteInvestigator si : getSiteInvestigators()){
+            if(si.isActive()) sinvList.add(si);
+        }
+        return sinvList;
     }
 
 

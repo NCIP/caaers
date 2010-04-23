@@ -1,17 +1,11 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import gov.nih.nci.cabig.caaers.accesscontrol.BaseSecurityFilterer;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.utils.FetcherUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
-
-import com.semanticbits.security.contentfilter.IdFetcher;
-import org.apache.commons.collections.CollectionUtils;
 
 
 /**
@@ -47,11 +41,18 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
     public List fetch(String loginId) {
 
        User user = findUser(loginId);
+       List<Integer> studyIdList = null;
        if(user instanceof ResearchStaff){
-           return findAccessibleStudyId((ResearchStaff)user);
+           studyIdList =  findAccessibleStudyId((ResearchStaff)user);
        }else{
-           return findAccessibleStudyId((Investigator) user);
+           studyIdList =  findAccessibleStudyId((Investigator) user);
        }
+        
+       if(log.isDebugEnabled()){
+         log.debug("Study IDs accessible for [ " + loginId + " ] are : " + String.valueOf(studyIdList));
+       }
+        
+       return studyIdList;
 
     }
 
@@ -87,16 +88,16 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
 
         if(CollectionUtils.isNotEmpty(orgFilterIdSet)){
             //find all the studies associated to users organization.
-            StringBuilder hql = new StringBuilder("select so.study.id from StudyOrganization so where so.organization.id in (:orgIdSet)");
+            StringBuilder hql = new StringBuilder("select distinct so.study.id from StudyOrganization so where so.organization.id in (:orgIdSet)");
             HQLQuery query = new HQLQuery(hql.toString());
             query.getParameterMap().put("orgIdSet", orgFilterIdSet);
 
             List<Integer> resultList = (List<Integer>) search(query);
-            studyIdSet.addAll(resultList);
+            if(CollectionUtils.isNotEmpty(resultList)) studyIdSet.addAll(resultList);
         }
 
         //find all the studies where he is active
-        StringBuilder hql = new StringBuilder("select so.study.id from StudyPersonnel sp ")
+        StringBuilder hql = new StringBuilder("select distinct so.study.id from StudyPersonnel sp ")
                 .append("join sp.studyOrganization so ")
                 .append("join sp.siteResearchStaff srs ")
                 .append("join srs.researchStaff rs ")
@@ -112,9 +113,11 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
         query.getParameterMap().put("enDate", d);
 
         List<Integer> resultList = (List<Integer>) search(query);
-        studyIdSet.addAll(resultList);
-
-
+        
+        if(studyIdSet.isEmpty()) return resultList;
+        
+        if(CollectionUtils.isNotEmpty(resultList)) studyIdSet.addAll(resultList);
+        
         return new ArrayList<Integer>(studyIdSet);
     }
 
@@ -130,9 +133,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
          *Investigator Study assignment filtering, i.e. can access all studies assigned to him. 
          */
 
-        Set<Integer> studyIdSet = new HashSet<Integer>();
-
-        StringBuilder hql = new StringBuilder("select so.study.id from StudyInvestigator sti ")
+        StringBuilder hql = new StringBuilder("select distinct so.study.id from StudyInvestigator sti ")
                .append("join sti.studyOrganization so ")
                .append("join sti.siteInvestigator si ")
                .append("join si.investigator i ")
@@ -147,9 +148,8 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
         query.getParameterMap().put("enDate", d);
 
         List<Integer> resultList = (List<Integer>) search(query);
-        studyIdSet.addAll(resultList);
+        return resultList;
 
-       return new ArrayList<Integer>(studyIdSet);
     }
 
 

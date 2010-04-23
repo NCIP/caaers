@@ -89,21 +89,13 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
 
     public void testParticipantIDFetcher1_0(){
 
-        int l = 100;
 
-        StringBuilder hql = new StringBuilder("select so.id from StudyOrganization so where " +
-                " so.study in ( select sp.study from StudyFundingSponsor sp where ( ");
-        for(int i = 0; i < l; i++){
-            hql.append("sp.organization.id in (:orgIdSet" ).append(i).append(") or ");
-        }
-        hql.append("sp.organization.id in (:orgIdSet").append(l-1).append(" )" ).append(") )");
+        StringBuilder hql = new StringBuilder("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a " +
+                " join a.studySite ss where ss.study = so.study" +
+                " and so.organization.id in (:orgIdSet)  ");
 
         HQLQuery query = new HQLQuery(hql.toString());
-        for(int i =0; i < l; i++){
-          int n = i * 10;
-          query.getParameterMap().put("orgIdSet" + i ,orgIds(n, n+10));  
-        }
-        st = System.currentTimeMillis();
+        query.getParameterMap().put("orgIdSet", Arrays.asList(new Integer[]{6}));
 
         List<Integer> resultList = (List<Integer>) fetcher.search(query);
         System.out.println("result Count : " + resultList.size());
@@ -115,15 +107,59 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
     public void testParticipantIDFetcher1_1(){
 
 
-        StringBuilder hql = new StringBuilder("select so.id from StudyOrganization so, StudyFundingSponsor sp where " +
-                " so.study = sp.study and sp.organization.id in (:orgIdSet)  ");
+        StringBuilder hql = new StringBuilder("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a " +
+                " join a.studySite ss  " +
+                " join so.studyPersonnelsInternal sp " +
+                " join sp.siteResearchStaff srs " +
+                " join srs.researchStaff rs " +
+                " where ss.study = so.study ") 
+                .append(" and rs.loginId = :loginId ")
+                .append(" and sp.startDate<= :stDate ")
+                .append(" and (sp.endDate is null or sp.endDate >= :enDate ) " )
+                .append(" and sp.retiredIndicator <> true");
+
+        Date d = new Date();
         HQLQuery query = new HQLQuery(hql.toString());
-        query.getParameterMap().put("orgIdSet", orgIds());
+       // query.getParameterMap().put("orgIdSet", Arrays.asList(new Integer[]{6}));
+        query.getParameterMap().put("loginId", "aj1");
+        query.getParameterMap().put("stDate", d);
+        query.getParameterMap().put("enDate", d);
 
         List<Integer> resultList = (List<Integer>) fetcher.search(query);
         System.out.println("result Count : " + resultList.size());
         System.out.println(new HashSet(resultList));
+        
     }
+
+
+
+    public void testOrganizationIDFetcher1_0(){
+
+
+        StringBuilder hql = new StringBuilder("select distinct so.organization.id from  StudyOrganization so ,StudyPersonnel sp " +
+                " join sp.studyOrganization ss  " +
+                " join sp.siteResearchStaff srs " +
+                " join srs.researchStaff rs " +
+                " where ss.study = so.study ")
+                .append(" and rs.loginId = :loginId ")
+                .append(" and sp.startDate<= :stDate ")
+                .append(" and (sp.endDate is null or sp.endDate >= :enDate ) " )
+                .append(" and sp.retiredIndicator <> true");
+
+        Date d = new Date();
+        HQLQuery query = new HQLQuery(hql.toString());
+       // query.getParameterMap().put("orgIdSet", Arrays.asList(new Integer[]{6}));
+        query.getParameterMap().put("loginId", "sponsor");
+        query.getParameterMap().put("stDate", d);
+        query.getParameterMap().put("enDate", d);
+
+        List<Integer> resultList = (List<Integer>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
+
+    }
+
+
 
 
     private List<Integer> orgIds(){

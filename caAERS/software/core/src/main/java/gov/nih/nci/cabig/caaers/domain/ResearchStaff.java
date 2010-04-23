@@ -230,11 +230,12 @@ public abstract class ResearchStaff extends User {
      */
     @Transient
     public List<SiteResearchStaff> getActiveSiteResearchStaff(){
-        return  PredicatedList.decorate(getSiteResearchStaffs(), new Predicate<SiteResearchStaff>(){
-            public boolean evaluate(SiteResearchStaff siteResearchStaff) {
-                return siteResearchStaff.isActive();
-            }
-        });
+        List<SiteResearchStaff> srsList = new ArrayList<SiteResearchStaff>();
+        for(SiteResearchStaff  srs : getSiteResearchStaffs()){
+            if(srs.isActive()) srsList.add(srs);
+        }
+        
+        return srsList;
 
     }
 
@@ -244,12 +245,13 @@ public abstract class ResearchStaff extends User {
      * @return  A list of SiteResearchStaff
      */
     public List<SiteResearchStaff> findSiteResearchStaffByRoles(final String... roleCodes){
+       List<SiteResearchStaff> srsList = new ArrayList<SiteResearchStaff>();
+        for(SiteResearchStaff  srs : getSiteResearchStaffs()){
+            if(srs.hasActiveRolesOfType(roleCodes)) srsList.add(srs);
+        }
 
-       return  PredicatedList.decorate(getSiteResearchStaffs(), new Predicate<SiteResearchStaff>(){
-            public boolean evaluate(SiteResearchStaff srs) {
-               return srs.hasActiveRolesOfType(roleCodes);
-            }
-        });
+        return srsList;
+       
     }
 
 

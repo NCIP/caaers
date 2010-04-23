@@ -11,56 +11,26 @@ import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 /**
- * 
- * @author akkalas
+ * Will find the organizations that can be accessed by the user.
+ *
+ * Rules :
+ *  Investigator         - Study Assignment + all study organizations belong to his organization for those studies
+ *  AE Coordinator       - Study Assignment + all study organizations belong to his organization for those studies
+ *  Subject Coordinator  - Study Assignment + all study organizations belong to his organization for those studies
+ *  Data Coordinator     - Study Assignment + all study organizations belong to his organization for those studies
+ *  Report Reviewer      - Study Assignment + all study organizations belong to his organization for those studies
+ *
+ *  Study Coordinator  - No filtering needed
+ *  Site Coordinator   - No filtering needed
+ *
+ * @author Biju Joseph
  *
  */
-public class CaaersOrganizationIdFetcherImpl extends BaseSecurityFilterer implements IdFetcher {
-	
-	private UserDao userDao;
-	private StudySiteDao studySiteDao;
-	private OrganizationDao organizationDao;
-	
-	/**
-	 * 
-	 */
-	public List<String> fetch(String loginId) {
-		List<String> allowedOrganizationIds = new ArrayList<String>();
-		gov.nih.nci.cabig.caaers.domain.User caaersUser = userDao.getByLoginId(loginId);
-		List<String> userOrganizationCodes = getUserOrganizations(caaersUser);
-		
-		List<Organization> allOrganizations = organizationDao.getAll();
-		for (Organization organization:allOrganizations) {
-			if (userOrganizationCodes.contains(organization.getNciInstituteCode())) {
-				allowedOrganizationIds.add(organization.getId()+"");
-        	}
-		}
-		return allowedOrganizationIds;
-	}
-	
-	@Override
-    public List<String> getUserOrganizations(gov.nih.nci.cabig.caaers.domain.User caaersUser) {
-        List<String> userOrganizationCodes = new ArrayList<String>();
-        userOrganizationCodes.addAll(super.getUserOrganizations(caaersUser));
-        userOrganizationCodes.addAll(studySiteDao.getSitesOfCoordinatedStudiesByOrganizationCodes(userOrganizationCodes));
-        return userOrganizationCodes;
+public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implements IdFetcher{
+
+    public List fetch(String s) {
+        return null;  
     }
-	
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
 
-	public void setStudySiteDao(StudySiteDao studySiteDao) {
-		this.studySiteDao = studySiteDao;
-	}
-
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
-
-	public List fetch(String id, Object query) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    
 }
