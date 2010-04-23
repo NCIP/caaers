@@ -1,0 +1,436 @@
+
+<dataset>
+
+    <conditions
+        id="-18"
+        condition_name="Condition 018"
+        />
+
+    <ctc_versions
+            id="3"
+            name="CTCAE v3.0"
+            />
+    <meddra_versions
+            id="4"
+            name="CTCAE v3.0"
+            />
+    <agents id="-990" name="abcd" description="biju" nsc="123"/>
+    <agents id="-991" name="abcd" description="biju2" nsc="1223"/>
+
+    <!-- START STUDY-TERMS-->
+
+        <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
+        <CTC_TERMS id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />
+        <CTC_TERMS id="3010" category_id="302" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043883" other_required="1" />
+        <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" />
+
+        <EXPECTED_AES id="-7" study_id="-2" term_id="3010" term_type="ctep" />
+        <EXPECTED_AES id="-8" study_id="-2" term_id="3012" term_type="ctep"/>
+        <EXPECTED_AES id="-9" study_id="-3" term_id="-11" term_type="meddra" />
+
+    <!-- END STUDY-TERMS-->
+
+    <ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="National Cancer Institute"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+    <ORGANIZATIONS
+            id="-1002"
+            version="1"
+            name="CALGB"
+            description_text="CALGB"
+            nci_institute_code="DEFAULT"
+            />
+
+
+    <ORGANIZATIONS
+            id="-1003"
+            version="1"
+            name="Cancer and Leukemia Group B"
+            description_text="NUCC"
+            nci_institute_code="CALGB"/>
+
+    <STUDIES
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title"
+            long_title="Long Title"
+            description="Description"
+            grid_id=""
+            load_status="1"
+            />
+    <STUDIES
+            id="-3"
+            multi_institution_indicator="0"
+            short_title="Shorter"
+            long_title="Lengthy Title" description="Different description"
+            grid_id="f2321"
+            load_status="1"
+            />
+
+    <STUDIES
+            grid_id="gridStudy"
+            id="-4"
+            multi_institution_indicator="0"
+            short_title="Shortest"
+            long_title="Event Lengthier Title"
+            description="Yet another different description"
+            load_status="0"
+            />
+    <STUDIES
+            id="-5"
+            multi_institution_indicator="0"
+            short_title="No participant assigned to this study"
+            long_title="No participant assigned to this study"
+            description="Is this a valid Description"
+            grid_id=""
+            load_status="1"
+            />
+
+    <STUDIES id="-999" short_title="dummy" load_status="0"/>
+    <!-- To overcome, dbunit metadat issue on identifiers  -->
+    <DISEASE_TERMINOLOGIES
+            id="-11"
+            term_code="1"
+            study_id="-2"
+            />
+
+    <DISEASE_TERMINOLOGIES
+            id="-12"
+            term_code="1"
+            study_id="-3"
+            />
+
+    <DISEASE_TERMINOLOGIES
+            id="-13"
+            term_code="1"
+            study_id="-4"
+            />
+    <DISEASE_TERMINOLOGIES
+            id="-14"
+            term_code="1"
+            study_id="-5"
+            />
+
+    <TERMINOLOGIES
+            id="-10"
+            term_code="1"
+            ctc_id="3"
+            study_id="-4"
+            />
+
+    <TERMINOLOGIES
+            id="-11"
+            term_code="1"
+            ctc_id="3"
+            study_id="-3"
+            />
+
+    <TERMINOLOGIES
+            id="-12"
+            term_code="1"
+            ctc_id="3"
+            study_id="-2"
+            />
+
+    <TERMINOLOGIES
+            id="-13"
+            term_code="1"
+            ctc_id="3"
+            study_id="-5"
+            />
+
+    <PARTICIPANTS
+            id="-100"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1"/>
+
+
+    <!--  stu_id=-999 to overcome dbunit metatdata based on first row issue-->
+    <IDENTIFIERS
+            id="-200"
+            participant_id="-100"
+            stu_id="-999"
+            value="13js77"
+            type="MRN"
+            system_name="system name"
+            organization_id="-1003"
+            discriminator_column="2"/>
+    <!-- the stu_id column really ought to be called study_id -->
+    <IDENTIFIERS
+            id="-15"
+            stu_id="-3"
+            value="1138-42"
+            type="local"
+            organization_id="-1003"
+            discriminator_column="1"/>
+    <IDENTIFIERS
+            id="-16"
+            stu_id="-2"
+            value="1138-43"
+            type="Coordinating Center Identifier"
+            organization_id="-1003"
+            discriminator_column="1"/>
+    <IDENTIFIERS
+            id="-17"
+            stu_id="-2"
+            value="1138-425"
+            type="uniqueness"
+            organization_id="-1003"
+            discriminator_column="1"/>
+
+    <IDENTIFIERS
+            id="-18"
+            stu_id="-4"
+            value="1138-421"
+            type="uniqueness"
+            system_name="system_name"
+            discriminator_column="2"/>
+    <IDENTIFIERS
+            id="-166"
+            stu_id="-4"
+            value="3333"
+            type="Coordinating Center Identifier"
+            system_name="CTEP"
+            discriminator_column="1"/>
+    <IDENTIFIERS
+            id="-19"
+            stu_id="-5"
+            value="908-23153-221"
+            type="local"
+            organization_id="-1003"
+            discriminator_column="1"/>
+    <IDENTIFIERS
+            id="-20"
+            stu_id="-5"
+            value="-9442608"
+            type="uniqueness"
+            organization_id="-1003"
+            discriminator_column="1"/>
+
+    <IDENTIFIERS
+            id="-21"
+            stu_id="-5"
+            value="FSSI-01"
+            type="uniqueness"
+            organization_id="-1003"
+            discriminator_column="1"/>
+
+    <!--
+ <ORGANIZATIONS
+     id="-1050"
+      name="National Cancer Institute"
+     description_text="National Cancer Institute"
+     nci_institute_code="code"/>
+
+ <STUDY_ORGANIZATIONS
+     id="-3000"
+     site_id="-1050"
+     study_id="-2"
+     type="SST"
+     />
+    -->
+    <PARTICIPANT_ASSIGNMENTS
+            id="-10"
+            date_of_enrollment="2006-12-12"
+            participant_id="-100"
+            study_site_id="-1000"
+            load_status="1"
+            />
+
+
+    <!--
+        <ADDRESSES
+            id="-100"
+            version="1"
+            street_address="12359 sunrise valley drive"
+            city="Reston"
+            state_code="VA"
+            postal_code="20191"
+            country_code="USA" />
+
+        <ADDRESSES
+            id="-101"
+            version="1"
+            street_address="Coppermine Dr"
+            city="Herndon"
+            state_code="VA"
+            postal_code="20171"
+            country_code="USA" />
+    -->
+    <STUDY_ORGANIZATIONS
+            id="-1000"
+            version="1"
+            start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1003"
+            type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+            id="-1009"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1003"
+            type="SST"/>
+
+    <INVESTIGATORS
+            id="-3004"
+            first_name="Aaron"
+            last_name="Burr"
+            email_address="ab@nci.com"
+            phone_number="555-555-5555"/>
+
+    <INVESTIGATORS
+               id="-3005"
+               first_name="second investigator"
+               last_name="Burr"
+               email_address="ab@nci.com"
+               phone_number="555-555-5555"/>
+
+    <SITE_INVESTIGATORS
+            id="-4004"
+            site_id="-1003"
+            investigator_id="-3004"/>
+
+    <SITE_INVESTIGATORS
+               id="-4005"
+               site_id="-1003"
+               investigator_id="-3005"/>
+
+
+    <study_investigators
+    		id="-22"
+            role_code="role"
+           start_date="2006-10-10"
+            site_investigators_id="-4004"
+            study_sites_id="-1000"
+            />
+
+    <study_investigators
+    		   id="-23"
+               role_code="role"
+              start_date="2006-10-10"
+               site_investigators_id="-4005"
+               study_sites_id="-1000"
+               />
+
+
+    <STUDY_ORGANIZATIONS
+            id="-1001"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1001"
+            type="SFS"
+            />
+    <STUDY_ORGANIZATIONS
+            id="-1004"
+            version="1"
+            start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1002"
+            type="SCC"
+            />
+    <STUDY_ORGANIZATIONS
+            id="-1002"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-3"
+            site_id="-1003"
+            type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+            id="-1003"
+            version="1"
+            start_date="2006-10-10"
+            study_id="-3"
+            site_id="-1001"
+            type="SFS"
+            />
+    <STUDY_ORGANIZATIONS
+            id="-1005"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-3"
+            site_id="-1002"
+            type="SCC"/>
+    <STUDY_ORGANIZATIONS
+            id="-1006"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-5"
+            site_id="-1003"
+            type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+            id="-1007"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-5"
+            site_id="-1001"
+            type="SFS"
+            />
+    <STUDY_ORGANIZATIONS
+            id="-1008"
+            version="1"
+            start_date="2006-10-10"
+            study_id="-5"
+            site_id="-1002"
+            type="SCC"
+            />
+
+    <STUDY_DISEASES id="-4" study_id="-2" term_type="dcp" meddra_code="1233212"/>
+
+    <investigational_new_drugs id="-881" ind_number="-881"/>
+    <investigational_new_drugs id="-882" ind_number="-882"/>
+    <investigational_new_drugs id="-883" ind_number="-883"/>
+    <investigational_new_drugs id="-884" ind_number="-884"/>
+    <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881"/>
+    <ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882"/>
+    <ctc_categories id="-6" name="abcd" version_id="3"/>
+    <ctc_terms id="-5" category_id="-6" term="term1" ctep_term="term1"/>
+
+    <meddra_llt id="-7" meddra_code="700m" version_id="4"/>
+    <ctc_terms id="-51" category_id="-6" term="term1" ctep_term="term1"/>
+    <meddra_llt id="-71" meddra_code="700m" version_id="4"/>
+
+    <!--  due to FK references -->
+
+    <ctc_grades/>
+
+	<study_agents />
+    <ind_holders/>
+    <study_agent_inds/>
+    <treatment_assignment/>
+    <epochs/>
+    <arms/>
+    <solicited_events/>
+
+    <spa_disease_histories/>
+    <SPA_PRIOR_THERAPIES/>
+    <SPA_CONCOMITANT_MEDICATIONS/>
+    <SPA_PRE_EXISTING_CONDS/>
+
+    <study_therapy id="-1" study_id="-3" study_therapy_type="1" />
+    <study_therapy id="-2" study_id="-3" study_therapy_type="2" />
+    <study_therapy id="-3" study_id="-3" study_therapy_type="3" />
+    <study_therapy id="-4" study_id="-3" study_therapy_type="4" />
+    <study_therapy id="-5" study_id="-3" study_therapy_type="5" />
+    <study_index/>
+
+</dataset>
