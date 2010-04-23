@@ -510,12 +510,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
          <property name="idFetchers">
             <list>
                 <ref bean="participantIdFetcher"/>
-                <!--
-                <ref bean="studyIdFetcher"/>
-                -->
+                <!--<ref bean="studyIdFetcher"/>-->
             </list>
          </property> 
+         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
      </bean>   
+     
+    <util:map id="idFetcherIndexDaoMap"
+              map-class="java.util.LinkedHashMap">
+        <entry key-ref="participantIdFetcher"
+               value-ref="participantIndexDao"/>
+        <entry key-ref="studyIdFetcher"
+               value-ref="studyIndexDao"/>                 
+    </util:map>
       
 
     
