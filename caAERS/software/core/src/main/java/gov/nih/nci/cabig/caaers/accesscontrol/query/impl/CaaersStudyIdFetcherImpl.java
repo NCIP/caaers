@@ -103,7 +103,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
                 .append("where rs.loginId = :loginId ")
                 .append("and sp.startDate<= :stDate ")
                 .append("and (sp.endDate is null or sp.endDate >= :enDate ) " )
-                .append("and sp.retired <> true");
+                .append("and sp.retiredIndicator <> true");
 
         Date d = new Date();
         HQLQuery query = new HQLQuery(hql.toString());
@@ -139,7 +139,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
                .append("where i = :inv ")
                .append("and sti.startDate<=:stDate ")
                .append("and ( sti.endDate is null or sti.endDate >= :enDate ) ")
-               .append("and sti.retired <> true");
+               .append("and sti.retiredIndicator <> true");
         Date d = new Date();
         HQLQuery query = new HQLQuery(hql.toString());
         query.getParameterMap().put("inv", inv);
