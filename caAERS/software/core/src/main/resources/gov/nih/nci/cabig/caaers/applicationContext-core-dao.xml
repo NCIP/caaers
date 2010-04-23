@@ -641,8 +641,18 @@ This applicationContext contains the definition of the DAOs
     <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
     
     
-    <bean id="participantIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantIndexDao"/>
-    <bean id="studyIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyIndexDao"/>
+    <bean id="participantIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantIndexDao">
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
+    </bean>
+    <bean id="studyIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyIndexDao">
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
+    </bean>
     
     <!-- validator beans starts here-->
     <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
