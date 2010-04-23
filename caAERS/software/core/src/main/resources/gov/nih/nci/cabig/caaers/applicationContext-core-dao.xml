@@ -214,6 +214,9 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
 				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
 				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
+				
+				<value>gov.nih.nci.cabig.caaers.domain.StudyIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ParticipantIndex</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -392,6 +395,9 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
 				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
 				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
+				
+				<value>gov.nih.nci.cabig.caaers.domain.StudyIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ParticipantIndex</value>
             </list>
         </property>
         <!--
@@ -633,6 +639,11 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
     <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
+    
+    
+    <bean id="participantIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantIndexDao"/>
+    <bean id="studyIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyIndexDao"/>
+    
     <!-- validator beans starts here-->
     <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
 
