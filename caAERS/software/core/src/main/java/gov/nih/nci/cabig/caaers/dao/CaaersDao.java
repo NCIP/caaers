@@ -408,4 +408,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return objectArray;
 
     }
+	
+	public int[] updateIndex(final List pIds , final String userName){
+		return null;
+	}
+	public void clearIndex(String userName) {
+		
+	}
 }
