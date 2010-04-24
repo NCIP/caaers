@@ -379,4 +379,5 @@ default-lazy-init="true">
 	</bean> 	
 
     <bean id="agentSpecificAdverseEventListService" class="gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListServiceImpl" autowire="byType" />
+    <bean id="AgentSpecificTermsImporter" class="gov.nih.nci.cabig.caaers.web.admin.AgentSpecificTermsImporter" autowire="byType" />
 </beans>

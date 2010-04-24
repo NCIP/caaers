@@ -99,9 +99,19 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
     	assertEquals("Rash: dermatitis associated with radiation", ctcTerm.getTerm());
     }
     
-    public void testGetCtcTerm_4(){
+    public void testGetCtcTerm_4() { 
     	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "1_Rash: dermatitis associated with radiation" },new Integer(3),new Integer(301));
     	assertNull(ctcTerm);
     }
-    
+
+    /*
+    * Get the list of Ctc Term providing term name, category name and ctcae version
+    * */
+    public void testGetCtcTermByNameCategoryCtcVersion() {
+        List<CtcTerm> terms = getDao().getCtcTerm("DERMATOLOGY/SKIN", 2, "Burn");
+        assertEquals(1, terms.size());
+        assertEquals("Burn", terms.get(0).getTerm());
+        assertEquals("DERMATOLOGY/SKIN", terms.get(0).getCategory().getName());
+        assertEquals(2, terms.get(0).getCategory().getCtc().getId().intValue());
+    }
 }

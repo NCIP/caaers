@@ -1,7 +1,7 @@
 <dataset>
 
 	<agents
-		id="1003"
+		id="1001"
 		name="Agent Name – 01"
 		description="Agent Name – 01"
 		nsc="726190"
@@ -21,6 +21,8 @@
 
     <CTC_TERMS id="4010" category_id="409" term="Abdominal distension" ctep_term="Abdominal distension" ctep_code="10043881" other_required="0" />
     <CTC_TERMS id="4011" category_id="409" term="Abdominal pain" ctep_term="Abdominal distension" ctep_code="10043882" other_required="0" />
+    <CTC_TERMS id="4012" category_id="409" term="Vomiting" ctep_term="Abdominal distension" ctep_code="10043882" other_required="0" />
+    <CTC_TERMS id="4013" category_id="409" term="Headache" ctep_term="Abdominal distension" ctep_code="10043882" other_required="0" />
 
     <!-- END AGENT-TERMS-->
 

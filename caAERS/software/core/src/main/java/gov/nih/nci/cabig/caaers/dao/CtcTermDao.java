@@ -78,10 +78,7 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
      */
     @SuppressWarnings("unchecked")
     public List<CtcTerm> getByCtepCodeandVersion(String ctepCode, int versionId){
-    	
-    	return getHibernateTemplate().find("select term from CtcTerm term join term.category as category join category.ctc as ctcversion where term.ctepCode = ? and ctcversion.id = ? ",
-    			new Object[] {ctepCode,versionId});
-    	
+    	return getHibernateTemplate().find("select term from CtcTerm term join term.category as category join category.ctc as ctcversion where term.ctepCode = ? and ctcversion.id = ? ", new Object[] {ctepCode,versionId});
     }
 
     /**
@@ -132,4 +129,12 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
         return getHibernateTemplate().find("from CtcTerm");
     }
 
+    /*
+    * @author Ion C. Olaru
+    * Get the Entity Ctc Term By Category name, ctcaeVersion & termName
+    * 
+    * */
+    public List<CtcTerm> getCtcTerm(String categoryName, Integer ctcaeVersion, String termName) {
+        return getHibernateTemplate().find("from CtcTerm t where t.term = ? and t.category.name = ? and t.category.ctc.id = ?", new Object[] {termName, categoryName, ctcaeVersion});
+    }
 }

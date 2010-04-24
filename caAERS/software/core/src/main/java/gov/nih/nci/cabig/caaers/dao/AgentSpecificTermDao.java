@@ -71,6 +71,14 @@ public class AgentSpecificTermDao extends GridIdentifiableDao<AgentSpecificTerm>
         return results;
     }
 
+    /**
+     * Get CTC AgentTerms by its Agent & Term
+     */
+    public List<AgentSpecificCtcTerm> getCtcTerm(Integer agentID, Integer termID) {
+        List<AgentSpecificCtcTerm> results = getHibernateTemplate().find("from AgentSpecificCtcTerm at where at.agent.id = ? and at.term.id = ?", new Object[] {agentID, termID});
+        return results;
+    }
+
     @Override
     @Transactional(readOnly = false)
     public void save(AgentSpecificTerm o) {

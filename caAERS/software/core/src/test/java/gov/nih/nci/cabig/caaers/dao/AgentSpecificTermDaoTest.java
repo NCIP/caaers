@@ -87,4 +87,17 @@ public class AgentSpecificTermDaoTest extends DaoTestCase<AgentSpecificTermDao> 
             System.out.println(m.getOtherMeddraTerm());
         }
     }
+
+    public void testGetCtcTermByAgentAndTerm() {
+        List<AgentSpecificCtcTerm> l = getDao().getCtcTerm(1003, 4013);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertEquals(-4, l.get(0).getId().intValue());
+        assertEquals(1003, l.get(0).getAgent().getId().intValue());
+        assertEquals(4013, l.get(0).getTerm().getId().intValue());
+
+        // meddra term
+        l = getDao().getCtcTerm(1003, -11);
+        assertEquals(0, l.size());
+    }
 }
