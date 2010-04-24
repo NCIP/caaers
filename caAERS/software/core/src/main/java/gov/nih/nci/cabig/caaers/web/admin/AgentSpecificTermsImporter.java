@@ -49,6 +49,9 @@ public class AgentSpecificTermsImporter {
 
     public static File file = new File("/home/dell/Desktop/asael.xls");
 
+    public AgentSpecificTermsImporter() {
+    }
+    
     public AgentSpecificTermsImporter(File f) {
         file = f;
     }
