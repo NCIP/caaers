@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
@@ -55,7 +57,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
                     } else {
                     	hibernateQuery.setParameter(key, value);
                     }
-                    //hibernateQuery.setParameter(key, value);
 
                 }
                 return hibernateQuery.list();
@@ -63,6 +64,46 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
         });
     }
+
+
+
+    /**
+     * Will return a list consisting of ID of subject that could be accessed by the loginId
+     * @param loginId - username
+     * @return
+     */
+	public List fetch(String loginId) {
+
+        List<Integer> participantIdList = null;
+
+        User user = findUser(loginId);
+
+        if(user instanceof ResearchStaff){
+            participantIdList =  fetch((ResearchStaff)user);
+        }else{
+            participantIdList =  fetch((Investigator) user);
+        }
+
+       if(log.isDebugEnabled()){
+         log.debug(getClass().getName() + " found, IDs accessible for [ " + loginId + " ] are : " + String.valueOf(participantIdList));
+       }
+
+       return participantIdList;
+	}
+
+    /**
+     * Will fetch Ids of entities accessible to investigators
+     * @param inv - An investigator
+     * @return List of IDs of entities
+     */
+    public abstract List<Integer> fetch(Investigator inv);
+
+    /**
+     * Will fetch Ids of entities accessible to research staff
+     * @param rs - An research staff
+     * @return List of IDs of entities
+     */
+    public abstract List<Integer> fetch(ResearchStaff rs);
 
    
 

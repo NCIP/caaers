@@ -10,6 +10,19 @@ import java.util.*;
 
 /**
  * Will return the ID of the studies that a particular user has access to.
+ * The rules are
+ *
+ *Research Staff:
+ *  AE Coordinator	Study assignment
+ *  Subject Coordinator	Study assignment
+ *  Data Coordinator	Study assignment
+ *  Central Office Report Reviewer	Study assignment
+ *
+ *  Study Coordinator	Organization association
+ *  Site Coordinator	Organization association
+ *
+ *
+ *Investigator  Study assignment
  *
  * @author Srini Akkala
  * @author Biju Joseph
@@ -18,43 +31,6 @@ import java.util.*;
 public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 
 
-    /**
-     * Will list the ID of all the studies the given login have access to.
-     *
-     * The rules are
-     *
-     *Research Staff:
-     *  AE Coordinator	Study assignment
-     *  Subject Coordinator	Study assignment
-     *  Data Coordinator	Study assignment
-     *  Central Office Report Reviewer	Study assignment
-     *
-     *  Study Coordinator	Organization association
-     *  Site Coordinator	Organization association
-     *
-     * 
-     *Investigator  Study assignment
-     *
-     * @param loginId - a user id. 
-     * @return  A list consisting of Study Id. 
-     */
-    public List fetch(String loginId) {
-
-       User user = findUser(loginId);
-       List<Integer> studyIdList = null;
-       if(user instanceof ResearchStaff){
-           studyIdList =  findAccessibleStudyId((ResearchStaff)user);
-       }else{
-           studyIdList =  findAccessibleStudyId((Investigator) user);
-       }
-        
-       if(log.isDebugEnabled()){
-         log.debug("Study IDs accessible for [ " + loginId + " ] are : " + String.valueOf(studyIdList));
-       }
-        
-       return studyIdList;
-
-    }
 
     /**
      * Will give:
@@ -67,7 +43,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
       * @param rs - A ResearchStaff
      * @return    - A list consisting of Study Id. 
      */
-    protected List<Integer> findAccessibleStudyId(ResearchStaff rs){
+    public List<Integer> fetch(ResearchStaff rs){
      /*
       *  Study Coordinator, Site Coordinator can access all the studies that are associated to his organization. 
       *  All other roles should be associated to the study to see it.
@@ -128,7 +104,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
      * @param inv
      * @return
      */
-    protected List<Integer> findAccessibleStudyId(Investigator inv){
+    public List<Integer> fetch(Investigator inv){
         /*
          *Investigator Study assignment filtering, i.e. can access all studies assigned to him. 
          */

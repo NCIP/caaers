@@ -2,30 +2,34 @@ package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 
 /**
- *
- * Will find all the subjects that can be accessed by the given user.
- *
- * Rules:
- *
- * Reaearch Staff
- *  Site Coordinator - Subject's belonging to organization
- *
- * For all other ResearchStaff and Investigator roles
- *  Study assignment + Subject's belonging to organization
- *
- * @author Srini Akkala
+ * Will return the ID of AdverseEvent which the logged-in user have access.
  * @author Biju Joseph
- *
+ * @author Srini Akkala
  */
-public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
+public class CaaersAdverseEventIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 
     /**
+     * A user can access all adverse events from Subjects that they have access to
+     * @param loginId - A username
+     * @return
+     */
+    public List fetch(String loginId) {
+        return null;
+    }
+
+
+    /**
+     * The adverse events that are belonging to subjects the user can access, can be accessed by the user.
+     *
      * Site Coordinator has access to subjects
      *  -  registered on study-sites which are associated to his organizations
      *  PLUS
@@ -36,7 +40,7 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
      *   - that are associated to the study-sites where he is associated
      *   PLUS
      *   - that are associated to study-sites of those studies where he is associated at coordinating-site or sponsor-site
-     *  
+     *
      * @param rs - A research staff.
      * @return
      */
@@ -45,17 +49,19 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 
         //determine the Sites where the research staff is a  Site Coordinator.
         List<SiteResearchStaff> orgAccessFilterList = rs.findSiteResearchStaffByRoles(UserGroupType.caaers_site_cd.getCsmName());
-        
+
          //The Organization ID for Organization filtering.
         Set<Integer> orgFilterIdSet = findOrganizationIdFromSiteResearchStaff(orgAccessFilterList);
         Set<Integer> participantIdSet = new HashSet<Integer>();
 
         if(CollectionUtils.isNotEmpty(orgFilterIdSet)){
             //subjects at his site + subjects at sites that are coordinated/sponsored.
-            StringBuilder hql = new StringBuilder("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a ")
+            StringBuilder hql = new StringBuilder("select distinct ae.id from  StudyOrganization so ,StudyParticipantAssignment a ")
+                    .append(" join a.reportingPeriods rp ")
+                    .append(" join rp.adverseEvents ae ")
                     .append(" join a.studySite ss where ss.study = so.study ")
                     .append(" and so.organization.id in (:orgIdSet) ");
-            
+
             HQLQuery query = new HQLQuery(hql.toString());
             query.getParameterMap().put("orgIdSet", orgFilterIdSet);
 
@@ -63,13 +69,15 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
             if(CollectionUtils.isNotEmpty(resultList)) participantIdSet.addAll(resultList);
         }
 
-        //subjects of his site on studies he is also associated-to + subjects in sites of that are coordinated/sponsored by his site.  
-        StringBuilder hql = new StringBuilder("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a " +
-                " join a.studySite ss  " +
-                " join so.studyPersonnelsInternal sp " +
-                " join sp.siteResearchStaff srs " +
-                " join srs.researchStaff rs " +
-                " where ss.study = so.study ")
+        //subjects of his site on studies he is also associated-to + subjects in sites of that are coordinated/sponsored by his site.
+        StringBuilder hql = new StringBuilder("select distinct ae.id from  StudyOrganization so ,StudyParticipantAssignment a " )
+                .append(" join a.reportingPeriods rp ")
+                .append(" join rp.adverseEvents ae ")
+                .append(" join a.studySite ss  " )
+                .append(" join so.studyPersonnelsInternal sp " )
+                .append(" join sp.siteResearchStaff srs " )
+                .append(" join srs.researchStaff rs " )
+                .append(" where ss.study = so.study ")
                 .append(" and rs.loginId = :loginId ")
                 .append(" and sp.startDate<= :stDate ")
                 .append(" and (sp.endDate is null or sp.endDate >= :enDate ) " )
@@ -93,7 +101,9 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 
 
     /**
-     * For investigators, 
+     * The adverse events that are belonging to subjects the user can access, can be accessed by the user.
+     *
+     * For investigators,
      *   - that are associated to the study-sites where he is associated
      *   PLUS
      *   - that are associated to study-sites of those studies where he is associated at coordinating-site or sponsor-site
@@ -104,7 +114,9 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
     public List<Integer> fetch(Investigator inv){
 
         //subjects of his site on studies he is also associated-to + subjects in sites of that are coordinated/sponsored by his site.
-        StringBuilder hql = new StringBuilder("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a " )
+        StringBuilder hql = new StringBuilder("select distinct ae.id from  StudyOrganization so ,StudyParticipantAssignment a " )
+                .append(" join a.reportingPeriods rp ")
+                .append(" join rp.adverseEvents ae ")
                 .append(" join a.studySite ss  " )
                 .append(" join so.studyInvestigatorsInternal sti " )
                 .append(" join sti.siteInvestigator si " )
@@ -128,5 +140,4 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
     }
 
 
-	
 }
