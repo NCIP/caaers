@@ -166,12 +166,6 @@ public class AgentSpecificTermsImporter {
                 headers.put(cell.getStringCellValue(), Short.valueOf(i));
             }
         }
-
-/*
-        for (Map.Entry e : headers.entrySet()) {
-            System.out.println(String.format("Header: %s, Position: %d", e.getKey(), Integer.parseInt(e.getValue().toString())));
-        }
-*/
     }
 
     // utility method to get contents of cell irrespective of cell type.

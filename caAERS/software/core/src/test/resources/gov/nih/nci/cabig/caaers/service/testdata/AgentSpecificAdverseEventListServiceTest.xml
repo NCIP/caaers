@@ -1,0 +1,48 @@
+
+<dataset>
+
+    <ctc_versions id="3" name="CTCAE v3.0" />
+    <ctc_versions id="4" name="CTCAE v4.0" />
+    <meddra_versions id="10" name="medDRA v10" />
+
+    <agents id="-990" name="Agent-01" description="Agent-01" nsc="760"/>
+    <agents id="-991" name="Agent-02" description="Agent-02" nsc="761"/>
+
+    <!-- START STUDY-TERMS-->
+
+    <CTC_CATEGORIES id="302" name="Auditory/Ear" version_id="3" />
+    <CTC_CATEGORIES id="402" name="Auditory4/Ear4" version_id="4" />
+    
+    <CTC_TERMS id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />
+    <CTC_TERMS id="3010" category_id="302" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043883" other_required="1" />
+    <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" version_id="10"/>
+
+    <EXPECTED_AES id="-7" study_id="-2" term_id="3010" term_type="ctep" />
+    <EXPECTED_AES id="-8" study_id="-2" term_id="3012" term_type="ctep"/>
+    <EXPECTED_AES id="-9" study_id="-2" term_id="-11" term_type="meddra" />
+
+    <!-- END STUDY-TERMS-->
+
+    <STUDIES id="-2" multi_institution_indicator="0" short_title="S -2" long_title="Study Title -2" description="Description" load_status="1" />
+    <STUDIES id="-3" multi_institution_indicator="0" short_title="S -3" long_title="Study Title -3" description="Different description" load_status="1" />
+
+	<study_agents id="-1" study_id="-2" agent_id="-990"/>
+	<study_agents id="-2" study_id="-2" agent_id="-991"/>
+
+    <ind_holders/>
+    <study_agent_inds/>
+    <disease_terminologies />
+
+
+    <CTC_TERMS id="4010" category_id="402" term="Nosea40" ctep_term="Nosea40" ctep_code="100438810" other_required="0" />
+    <CTC_TERMS id="4011" category_id="402" term="Nosea41" ctep_term="Nosea40" ctep_code="100438821" other_required="0" />
+    <CTC_TERMS id="4012" category_id="402" term="Nosea42" ctep_term="Nosea40" ctep_code="100438832" other_required="0" />
+    <CTC_TERMS id="4013" category_id="402" term="Nosea43" ctep_term="Nosea40" ctep_code="100438843" other_required="0" />
+
+    <agent_terms id="-1" agent_id="-990" term_id="4010" term_type="ctep" />
+    <agent_terms id="-2" agent_id="-990" term_id="4011" term_type="ctep" />
+    <agent_terms id="-3" agent_id="-990" term_id="4012" term_type="ctep" />
+    <agent_terms id="-4" agent_id="-990" term_id="4013" term_type="ctep" />
+    <agent_terms id="-5" agent_id="-990" term_id="3012" term_type="ctep" />
+
+</dataset>
