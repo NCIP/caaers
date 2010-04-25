@@ -1,8 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.*;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -24,6 +28,9 @@ import java.util.Map;
 * */
 public class AgentSpecificTermsImporter {
 
+    private static final String KEY_MISSING_TERMS = "missingTerms";
+    private static final String KEY_PROCESSED_AGENTS = "processedAgents";
+    private static final String KEY_PROCESSED_AGENTTERMS = "processedAgentTerms";
 
 	private POIFSFileSystem poifs;
 	private HSSFWorkbook wb;
@@ -37,6 +44,7 @@ public class AgentSpecificTermsImporter {
     private int rowCount = 0;
     private int columnsCount = 0;
     private Map<String, Agent> agents = new HashMap<String, Agent>();
+    private List<String> missingTerms = new ArrayList<String>();
     private Map<String, String> asaelCache = new HashMap<String, String>();
     private int asael;
     
@@ -61,8 +69,13 @@ public class AgentSpecificTermsImporter {
         im.importFile();
     }
 
-    public void importFile() throws Exception {
+    public Map<String, Object> importFile() throws Exception {
+        Map<String, Object> results = new HashMap<String, Object>();
+        
         bootstrap(file);
+        agents.clear();
+        missingTerms.clear();
+        asael = 0;
 
         // Loading ASAE list
         int i = 1;
@@ -80,7 +93,7 @@ public class AgentSpecificTermsImporter {
                 Agent a = agents.get(nsc);
                 if (a == null) {
                     a = agentDao.getByNscNumber(nsc);
-                    System.out.println("Found agent [" + a.getName() + "] for NSC: [" + nsc + "]");
+                    // System.out.println(asael + ". OK. Found agent [" + a.getName() + "] for NSC: [" + nsc + "]");
                     agents.put(nsc, a);
                 }
                 
@@ -90,25 +103,33 @@ public class AgentSpecificTermsImporter {
 
                     List<CtcTerm> list = terminologyRepository.getCtcTerm(ctcae_category, ctcae_version, ae_term);
                     if (list.size() == 0) {
-                        System.out.println("Err. Term not found");
+                        // System.out.println("Err. Term not found: " + ae_term);
+                        missingTerms.add(ae_term);
                     } else {
                         t.setCtcTerm(list.get(0));
-                        persistASAE(t);
-                        asael++;
+                        if (persistASAE(t)) asael++;
                     }
                     
                 } else {
-                    System.out.println("Err. The agent was not found by its NSC: " + nsc);
+                    // System.out.println("Err. The agent was not found by its NSC: " + nsc);
                 }
 
             }
             i++;
         }
 
+        results.put(KEY_MISSING_TERMS, missingTerms);
+        results.put(KEY_PROCESSED_AGENTS, agents.size());
+        results.put(KEY_PROCESSED_AGENTTERMS, asael);
+
+/*
         System.out.println();
         System.out.println(String.format("Loaded %d agents", agents.size()));
         System.out.println(String.format("Built %d ASAE terms", asael));
         System.out.println("OK.");
+*/
+
+        return results;
     }
 
     private boolean isAgentSpecificTermPersisted(AgentSpecificTerm at) {
@@ -120,10 +141,12 @@ public class AgentSpecificTermsImporter {
     /*
     * Persisting ASAE list
     * */
-    private void persistASAE(AgentSpecificTerm t) {
+    private boolean persistASAE(AgentSpecificTerm t) {
         if (!isAgentSpecificTermPersisted(t)) {
             agentSpecificTermDao.save(t);
+            return true;
         }
+        return false;
     }
 
     private void bootstrap(File inputFile) throws Exception {
@@ -202,5 +225,13 @@ public class AgentSpecificTermsImporter {
 
     public void setAsaelService(AgentSpecificAdverseEventListService asaelService) {
         this.asaelService = asaelService;
+    }
+
+    public static File getFile() {
+        return file;
+    }
+
+    public static void setFile(File file) {
+        AgentSpecificTermsImporter.file = file;
     }
 }

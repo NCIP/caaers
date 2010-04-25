@@ -284,9 +284,11 @@
   	<property name="agentRepository" ref="agentRepository"/>
   	<property name="medDRADao" ref="medDRADao"/>
   	<property name="meddraVersionDao" ref="meddraVersionDao" />
+  	<property name="asaelImporter" ref="asaelImporter" />
   	<property name="messageSource" ref="messageSource" />
   </bean> 
-  
+
+  <bean name="asaelImporter" class="gov.nih.nci.cabig.caaers.web.admin.ASAELImporter" autowire="byType"/>
   <!-- Validators -->
 
   <bean id="numInRangeValidator" class="gov.nih.nci.cabig.caaers.validation.validator.NumInRangeValidator" autowire-candidate="false"/>

@@ -38,7 +38,10 @@
 			<c:if test="${command.type eq 'medDRA'}">
 				<admin:meddraImportSummary />
 			</c:if>
-			
+			<c:if test="${command.type eq 'agentSpecificAEList'}">
+				<admin:asaelImportSummary />
+			</c:if>
+
 			</jsp:attribute>
 			<jsp:attribute name="tabControls">
 		    	<div class="content buttons autoclear">

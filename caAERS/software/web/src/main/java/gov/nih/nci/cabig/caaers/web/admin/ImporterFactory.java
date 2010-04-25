@@ -34,7 +34,8 @@ public class ImporterFactory{
 	private static final String ORGANIZATION_IMPORT = "organization";
 	private static final String AGENT_IMPORT = "agent";
 	private static final String MEDDRA_IMPORT = "medDRA";
-	
+	private static final String ASAEL_IMPORT = "agentSpecificAEList";
+
 	private DomainObjectValidator domainObjectValidator;
 	private StudyProcessor studyProcessor;
 	private ParticipantService participantService;
@@ -49,7 +50,9 @@ public class ImporterFactory{
 	private MeddraVersionDao meddraVersionDao;
 	private MedDRADao medDRADao;
 	private MessageSource messageSource;
-	
+
+    private ASAELImporter asaelImporter;
+
 	public Importer createImporterInstance(String type){
 		if(type.equals(STUDY_IMPORT)){
 			StudyImporter studyImporter = new StudyImporter();
@@ -92,7 +95,9 @@ public class ImporterFactory{
 			meddraImporter.setmedDRADao(medDRADao);
 			meddraImporter.setMeddraVersionDao(meddraVersionDao);
 			return meddraImporter;
-		}else return null;
+		} else if (type.equals(ASAEL_IMPORT)) {
+            return asaelImporter;
+        } else return null;
 	}
 	
 	public DomainObjectValidator getDomainObjectValidator(){
@@ -183,4 +188,12 @@ public class ImporterFactory{
 	public void setAgentRepository(AgentRepository agentRepository) {
 		this.agentRepository = agentRepository;
 	}
+
+    public ASAELImporter getAsaelImporter() {
+        return asaelImporter;
+    }
+
+    public void setAsaelImporter(ASAELImporter asaelImporter) {
+        this.asaelImporter = asaelImporter;
+    }
 }

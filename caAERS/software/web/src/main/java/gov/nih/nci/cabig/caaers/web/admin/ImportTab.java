@@ -156,11 +156,10 @@ public class ImportTab extends Tab<ImportCommand>{
         BufferedReader input = null;
         try {
             File xmlFile = File.createTempFile("file", "uploaded");
-            FileCopyUtils.copy(command.getDataFile().getInputStream(),
-                            new FileOutputStream(xmlFile));
+            FileCopyUtils.copy(command.getDataFile().getInputStream(), new FileOutputStream(xmlFile));
             Importer importer = importerFactory.createImporterInstance(type);
+            command.setXmlFile(xmlFile);
         	importer.processEntities(xmlFile, command);
-            
         } catch (EOFException ex) {
             System.out.println("EndOfFile Reached");
         } catch (FileNotFoundException ex) {

@@ -74,7 +74,10 @@
 	<c:if test="${command.type eq 'medDRA'}">
 		<admin:meddraImportReview/>
 	</c:if>
-		
+	<c:if test="${command.type eq 'agentSpecificAEList'}">
+		<admin:agentSpecificAEList/>
+	</c:if>
+
 	<c:if test='${command.schemaValidationResult != null  }'>
 		<div class="red-means-stop">
 			The provided xml is invalid, Fix the errors and try again.

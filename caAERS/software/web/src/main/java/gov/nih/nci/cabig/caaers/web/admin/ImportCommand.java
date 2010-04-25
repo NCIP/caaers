@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportCommand {
 
     private MultipartFile dataFile;
+    private File xmlFile;
     private String schemaValidationResult;
     private String type;
     private MultipartFile socFile;
@@ -501,5 +503,12 @@ public class ImportCommand {
 	public void setLltDataFileName(String lltDataFileName) {
 		this.lltDataFileName = lltDataFileName;
 	}
-	
+
+    public File getXmlFile() {
+        return xmlFile;
+    }
+
+    public void setXmlFile(File xmlFile) {
+        this.xmlFile = xmlFile;
+    }
 }
