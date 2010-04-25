@@ -54,7 +54,7 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
         assertEquals(2, s.getExpectedAECtcTerms().size());
         AgentSpecificTerm t = agentSpecificTermDao.getById(-4);
         service.synchronizeStudyWithAgentTerm(s, t);
-        studyDao.save(s);
+        // studyDao.save(s);
         assertEquals(3, s.getExpectedAECtcTerms().size());
     }
 
@@ -63,7 +63,7 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
         assertEquals(2, s.getExpectedAECtcTerms().size());
         AgentSpecificTerm t = agentSpecificTermDao.getById(-5);
         service.synchronizeStudyWithAgentTerm(s, t);
-        studyDao.save(s);
+        // studyDao.save(s);
         assertEquals(2, s.getExpectedAECtcTerms().size());
     }
 
@@ -73,13 +73,15 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
         assertEquals(2, s.getExpectedAECtcTerms().size());
         assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
         service.synchronizeStudyWithAgent(s, a);
-        studyDao.save(s);
+        // studyDao.save(s);
         assertEquals(6, s.getExpectedAECtcTerms().size());
         assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.REFRESH;
     }
+*/
 }
