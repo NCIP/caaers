@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.semanticbits.security.contentfilter.IdFetcher;
 import com.semanticbits.security.contentfilter.cache.QueryCacheManager;
 
+@Deprecated
 public class FilteredDataProvider extends BaseSecurityFilterer {
 	
 	private Authentication authentication;
