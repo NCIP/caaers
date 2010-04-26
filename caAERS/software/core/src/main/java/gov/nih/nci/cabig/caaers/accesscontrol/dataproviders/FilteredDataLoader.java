@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
-import com.semanticbits.security.contentfilter.cache.QueryCacheManager;
 
 public class FilteredDataLoader {
 	
@@ -19,6 +18,7 @@ public class FilteredDataLoader {
 	 * @param userName
 	 * @param sessionId
 	 */
+	/*
 	public void loadByUserName(String userName , String sessionId){
 		for (IdFetcher idFetcher : idFetchers) {
 			List listOfIds = idFetcher.fetch(userName);
@@ -28,7 +28,7 @@ public class FilteredDataLoader {
 	}
 	public void loadByUserName(String sessionId, String className , List ids){
 		QueryCacheManager.addDataToCache(sessionId, className, ids);
-	}
+	}*/
 	
 	public void updateIndexByUserName(String userName){
 		for (IdFetcher idFetcher : idFetchers) {
