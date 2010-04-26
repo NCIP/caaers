@@ -29,10 +29,9 @@ public class RefreshIndexAspect extends BaseSecurityFilterer{
 			if (filteringNotRequired(authentication)) {
 				return ; 
 			} else {
-				long st = System.currentTimeMillis();
+				
 				filteredDataLoader.updateIndexByUserName(userName);
-				long en = System.currentTimeMillis();
-				System.out.println("time " +(en-st));
+				
 				/*
 				for (IdFetcher idFetcher : idFetchers) {
 					List listOfIds = idFetcher.fetch(userName);
