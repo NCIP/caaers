@@ -1,17 +1,11 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 
 import gov.nih.nci.cabig.caaers.accesscontrol.BaseSecurityFilterer;
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
-
-import com.semanticbits.security.contentfilter.IdFetcher;
 
 /**
  * 
@@ -20,8 +14,8 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  */
 public class RefreshIndexAspect extends BaseSecurityFilterer{
 	
-	private List<IdFetcher> idFetchers = new ArrayList<IdFetcher>();
-	private LinkedHashMap idFetcherIndexDaoMap;
+
+	private FilteredDataLoader filteredDataLoader;
 	
 	/**After Aspect Configured in application Context
 	 * 
@@ -35,12 +29,17 @@ public class RefreshIndexAspect extends BaseSecurityFilterer{
 			if (filteringNotRequired(authentication)) {
 				return ; 
 			} else {
+				long st = System.currentTimeMillis();
+				filteredDataLoader.updateIndexByUserName(userName);
+				long en = System.currentTimeMillis();
+				System.out.println("time " +(en-st));
+				/*
 				for (IdFetcher idFetcher : idFetchers) {
 					List listOfIds = idFetcher.fetch(userName);
 					CaaersDao indexDao = (CaaersDao)idFetcherIndexDaoMap.get(idFetcher);
 					indexDao.clearIndex(userName);
 					indexDao.updateIndex(listOfIds, userName);
-				}				
+				}*/				
 			}
 			/*
 			FilteredDataProvider filteredDataProvider = new FilteredDataProvider(authentication,idFetcher);
@@ -51,11 +50,7 @@ public class RefreshIndexAspect extends BaseSecurityFilterer{
 		}
 	}
 
-	public void setIdFetcherIndexDaoMap(LinkedHashMap idFetcherIndexDaoMap) {
-		this.idFetcherIndexDaoMap = idFetcherIndexDaoMap;
-	}
-
-	public void setIdFetchers(List<IdFetcher> idFetchers) {
-		this.idFetchers = idFetchers;
+	public void setFilteredDataLoader(FilteredDataLoader filteredDataLoader) {
+		this.filteredDataLoader = filteredDataLoader;
 	}
 }
