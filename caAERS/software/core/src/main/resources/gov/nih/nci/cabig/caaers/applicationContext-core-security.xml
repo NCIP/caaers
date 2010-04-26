@@ -161,12 +161,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         </aop:aspect>
 
         <aop:aspect ref="refreshIndexAspect">		
-			<aop:pointcut id="executionOfUpdateOnDomainObjects"
+			<aop:pointcut id="executionOfIndexRefreshAfterUpdate"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
                     	     || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
                     		 || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
                     		 "/>
-            <aop:after pointcut-ref="executionOfUpdateOnDomainObjects" method="updateIndexByUserName"/>			
+            <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>			
 		</aop:aspect>
 
 <!--     
