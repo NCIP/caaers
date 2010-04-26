@@ -122,4 +122,14 @@ public abstract class BaseSecurityFilterer {
 		
 		return grantedAuthorities;
 	}
+	
+	public boolean filteringNotRequired(Authentication authentication) {
+		GrantedAuthority[] grantedAuthorities = getGrantedAuthorities(authentication);
+		if (isSuperUser(grantedAuthorities)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
