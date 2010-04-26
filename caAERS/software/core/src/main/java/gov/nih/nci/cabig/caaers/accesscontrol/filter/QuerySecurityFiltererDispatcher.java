@@ -18,7 +18,7 @@ public class QuerySecurityFiltererDispatcher {
      * @param query
      * @param loginName
      */
-    public void filter(AbstractQuery query, String loginName){
+    public void filter(AbstractQuery query){
         
     }
 
