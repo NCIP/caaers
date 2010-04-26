@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.domain;
+package gov.nih.nci.cabig.caaers.domain.index;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 @Entity
