@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -28,6 +30,7 @@ import java.util.Map;
 * */
 public class AgentSpecificTermsImporter {
 
+    private static final Log logger = LogFactory.getLog(AgentSpecificTermsImporter.class);
     private static final String KEY_MISSING_TERMS = "missingTerms";
     private static final String KEY_PROCESSED_AGENTS = "processedAgents";
     private static final String KEY_PROCESSED_AGENTTERMS = "processedAgentTerms";
@@ -162,6 +165,7 @@ public class AgentSpecificTermsImporter {
         } catch (IOException e) {
             // to handle java.io.IOException: Invalid header signature; read -2300849302551019537, expected -2226271756974174256
             // if somebody knows how to get rid of the exception, please remove the try/catch.
+            logger.error("ERROR: " + e.getMessage());
         }
 
         // create a workbook out of the input stream
