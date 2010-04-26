@@ -1,8 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.index.StudyIndexDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyIndex;
+import gov.nih.nci.cabig.caaers.domain.index.StudyIndex;
 
 public class StudyIndexDaoTest extends DaoNoSecurityTestCase<StudyIndexDao> {
 	StudyDao studyDao ; 
