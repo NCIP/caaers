@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -8,6 +7,14 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.utils.FetcherUtils;
+
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -15,11 +22,7 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.semanticbits.security.contentfilter.IdFetcher;
 
 /**
  * A base class of all IdFetcher implementations, which provides the basic infrastructure level requirements.
@@ -52,8 +55,8 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
                 Map<String, Object> queryParameterMap = query.getParameterMap();
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
-                    if (value instanceof List) {
-                    	hibernateQuery.setParameterList(key, (List) value);
+                    if (value instanceof Collection) {
+                    	hibernateQuery.setParameterList(key, (Collection) value);
                     } else {
                     	hibernateQuery.setParameter(key, value);
                     }
