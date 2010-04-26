@@ -217,6 +217,10 @@ This applicationContext contains the definition of the DAOs
 				
 				<value>gov.nih.nci.cabig.caaers.domain.index.StudyIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.AdverseEventIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ExpeditedAdverseEventReportIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ReportingPeriodIndex</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -398,6 +402,10 @@ This applicationContext contains the definition of the DAOs
 				
 				<value>gov.nih.nci.cabig.caaers.domain.index.StudyIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.AdverseEventIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ExpeditedAdverseEventReportIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ReportingPeriodIndex</value>
             </list>
         </property>
         <!--
@@ -649,6 +657,10 @@ This applicationContext contains the definition of the DAOs
     
     <bean id="participantIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ParticipantIndexDao"/>
     <bean id="studyIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.StudyIndexDao"/>
+    <bean id="adverseEventIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.AdverseEventIndexDao"/>
+    <bean id="expeditedAdverseEventReportIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ExpeditedAdverseEventReportIndexDao"/>
+    <bean id="organizationIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.OrganizationIndexDao"/>
+    <bean id="reportingPeriodIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ReportingPeriodIndexDao"/>
     
     <!-- validator beans starts here-->
     <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>

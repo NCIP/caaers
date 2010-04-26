@@ -514,35 +514,35 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	
 
 	 <bean id="refreshIndexAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.RefreshIndexAspect">
-		  <property name="idFetchers">
-             <list>
-                <ref bean="participantIdFetcher"/>
-                <ref bean="studyIdFetcher"/>
-            </list>
-         </property> 
-         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
+		  <property name="filteredDataLoader" ref="filteredDataLoader"/>
      </bean>      	
 	 <bean id="filteredDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
 		  <property name="idFetchers">
              <list>
                 <ref bean="participantIdFetcher"/>
                 <ref bean="studyIdFetcher"/>
+                <ref bean="adverseEventIdFetcher"/>
+                <ref bean="expeditedAdverseEventReportIdFetcher"/>
+                <ref bean="organizationIdFetcher"/>
+                <ref bean="reportingPeriodIdFetcher"/>                
             </list>
          </property> 
          <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
      </bean> 
-      <!--
-     <util:list id="idFetcherList">
-            <ref bean="participantIdFetcher"/>
-            <ref bean="studyIdFetcher"/>  
-              	
-     </util:list>-->
      <util:map id="idFetcherIndexDaoMap"
               map-class="java.util.LinkedHashMap">
         <entry key-ref="participantIdFetcher"
                value-ref="participantIndexDao"/>
         <entry key-ref="studyIdFetcher"
                value-ref="studyIndexDao"/>                 
+        <entry key-ref="adverseEventIdFetcher"
+               value-ref="adverseEventIndexDao"/>
+        <entry key-ref="expeditedAdverseEventReportIdFetcher"
+               value-ref="expeditedAdverseEventReportIndexDao"/>  
+        <entry key-ref="organizationIdFetcher"
+               value-ref="organizationIndexDao"/>
+        <entry key-ref="reportingPeriodIdFetcher"
+               value-ref="reportingPeriodIndexDao"/>                 
     </util:map>
       
   <bean id="filteredDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean"> 
@@ -564,6 +564,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="fetcherUtils" ref="fetcherUtils" />
     </bean>
 	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher"/>
-    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher">
-    </bean>
+    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher"/>
+    <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersAdverseEventIdFetcherImpl" parent="abstractIdFetcher"/>
+    <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersExpeditedAdverseEventReportIdFetcherImpl" parent="abstractIdFetcher"/>
+    <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl" parent="abstractIdFetcher"/>
+    <bean id="reportingPeriodIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersReportingPeriodIdFetcherImpl" parent="abstractIdFetcher"/>
+
 </beans>
