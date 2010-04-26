@@ -414,22 +414,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
               map-class="java.util.LinkedHashMap">
+        <!--
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"
                value-ref="studySiteSecurityFilterer"/>
-        <!--
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
                value-ref="participantSiteSecurityFilterer"/>  
-        --> 
-        <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
-               value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>                 
         <entry key="gov.nih.nci.cabig.caaers.domain.Study"
                value-ref="studySiteSecurityFilterer"/>
 		<entry key="gov.nih.nci.cabig.caaers.domain.LocalStudy"
-               value-ref="studySiteSecurityFilterer"/>               
-        <!--        
+               value-ref="studySiteSecurityFilterer"/>  
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  
-        -->       
+        -->  
+        
+        <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
+               value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>               
         <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
                value-ref="organizationSecurityFilterer"/>  
         <entry key="gov.nih.nci.cabig.caaers.domain.LocalOrganization"
