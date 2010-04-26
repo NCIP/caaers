@@ -9,8 +9,13 @@ package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
  */
 public class ParticipantQueryFilterByLoginIdAspect extends AbstractFilterByLoginIdAspect {
 
-	@Override
+	/*@Override
 	public  String getInQuery() {
 		return "participant.id IN (:ids)";
+	}*/
+
+	@Override
+	public String getJoinQuery() {
+		return null;
 	}
 }
