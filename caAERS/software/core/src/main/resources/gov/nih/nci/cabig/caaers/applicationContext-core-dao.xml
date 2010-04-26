@@ -215,8 +215,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
 				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
 				
-				<value>gov.nih.nci.cabig.caaers.domain.StudyIndex</value>
-				<value>gov.nih.nci.cabig.caaers.domain.ParticipantIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.StudyIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -396,8 +396,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
 				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
 				
-				<value>gov.nih.nci.cabig.caaers.domain.StudyIndex</value>
-				<value>gov.nih.nci.cabig.caaers.domain.ParticipantIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.StudyIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex</value>
             </list>
         </property>
         <!--
@@ -640,19 +640,15 @@ This applicationContext contains the definition of the DAOs
     <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
     <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
     
+    <bean id="abstractIndexDao" abstract="true" parent="daoTemplate" >
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
+    </bean>
     
-    <bean id="participantIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantIndexDao">
-        <property name="jdbcTemplate">
-            <ref bean="jdbcTemplate"/>
-        </property>
-        <property name="properties" ref="caaersDatasourceFactoryBean"/>
-    </bean>
-    <bean id="studyIndexDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyIndexDao">
-        <property name="jdbcTemplate">
-            <ref bean="jdbcTemplate"/>
-        </property>
-        <property name="properties" ref="caaersDatasourceFactoryBean"/>
-    </bean>
+    <bean id="participantIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ParticipantIndexDao"/>
+    <bean id="studyIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.StudyIndexDao"/>
     
     <!-- validator beans starts here-->
     <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
