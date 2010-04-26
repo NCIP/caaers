@@ -16,6 +16,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -156,7 +157,12 @@ public class AgentSpecificTermsImporter {
     }
 
     private void bootstrap(File inputFile) throws Exception {
-        poifs = new POIFSFileSystem(new FileInputStream(inputFile));
+        try {
+            poifs = new POIFSFileSystem(new FileInputStream(inputFile));
+        } catch (IOException e) {
+            // to handle java.io.IOException: Invalid header signature; read -2300849302551019537, expected -2226271756974174256
+            // if somebody knows how to get rid of the exception, please remove the try/catch.
+        }
 
         // create a workbook out of the input stream
         wb = new HSSFWorkbook(poifs);
