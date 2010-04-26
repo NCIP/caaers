@@ -15,4 +15,6 @@ public interface AgentSpecificAdverseEventListService {
     public List<AgentSpecificTerm> getListByAgent(Integer agentID);
     public void synchronizeStudyWithAgent(Study s, Agent a);
     public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at);
+    public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at, boolean deleted);
+    public void postDeleteAgentSpecificTerm(AgentSpecificTerm at);
 }

@@ -26,4 +26,11 @@
 
     <!-- END AGENT-TERMS-->
 
+    <STUDIES id="-2" multi_institution_indicator="0" short_title="S -2" long_title="Study Title -2" description="Description" load_status="1" />
+	<study_agents id="-1" study_id="-2" agent_id="1001"/>
+
+    <ind_holders/>
+    <study_agent_inds/>
+    <disease_terminologies />
+
 </dataset>

@@ -3,7 +3,10 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import org.dbunit.operation.DatabaseOperation;
@@ -23,6 +26,8 @@ public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
     private AgentDao agentDao;
     private TerminologyRepository tRepository;
     private AgentSpecificAdverseEventListService asaelService;
+    private StudyDao studyDao;
+    private StudyAgentDao studyAgentDao;
 
 	protected void setUp() throws Exception {
         super.setUp();
@@ -31,6 +36,8 @@ public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
         tRepository = (TerminologyRepository)getDeployedApplicationContext().getBean("terminologyRepository");
         agentSpecificTermDao = (AgentSpecificTermDao)getDeployedApplicationContext().getBean("agentSpecificTermDao");
         asaelService = (AgentSpecificAdverseEventListService)getDeployedApplicationContext().getBean("agentSpecificAdverseEventListService");
+        studyDao = (StudyDao)getDeployedApplicationContext().getBean("studyDao");
+        studyAgentDao = (StudyAgentDao)getDeployedApplicationContext().getBean("studyAgentDao");
 	}
 
     public void testImporter() throws Exception {
@@ -40,11 +47,16 @@ public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
         im.setTerminologyRepository(tRepository);
         im.setAgentSpecificTermDao(agentSpecificTermDao);
         im.setAsaelService(asaelService);
+        im.setStudyDao(studyDao);
+        im.setStudyAgentDao(studyAgentDao);
         im.importFile();
         List<AgentSpecificTerm> l = agentSpecificTermDao.getAll();
+        Study s = studyDao.getById(-2);
+        assertEquals(1, s.getExpectedAECtcTerms().size());
         assertEquals(4, l.size());
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.REFRESH;
@@ -56,5 +68,5 @@ public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
         return DatabaseOperation.CLEAN_INSERT;
     }
 
-
+*/
 }

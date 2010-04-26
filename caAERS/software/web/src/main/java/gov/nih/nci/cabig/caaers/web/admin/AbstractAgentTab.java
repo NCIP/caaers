@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
+import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListServiceImpl;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -30,7 +32,8 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     private AgentSpecificTermDao agentSpecificTermDao;
     private CtcDao ctcDao;
     private MeddraVersionDao meddraVersionDao;
-
+    private AgentSpecificAdverseEventListServiceImpl agentSpecificAdverseEventListService;
+    
     public AbstractAgentTab(String lName, String sName, String vName) {
         super(lName, sName, vName);
     }
@@ -63,6 +66,7 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
             if (!t.getDeleted()) getAgentSpecificTermDao().save(t);
             else {
                 getAgentSpecificTermDao().delete(t);
+                agentSpecificAdverseEventListService.postDeleteAgentSpecificTerm(t);
             }
         }
     }
@@ -105,5 +109,13 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
 
     public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
         this.meddraVersionDao = meddraVersionDao;
+    }
+
+    public AgentSpecificAdverseEventListServiceImpl getAgentSpecificAdverseEventListService() {
+        return agentSpecificAdverseEventListService;
+    }
+
+    public void setAgentSpecificAdverseEventListService(AgentSpecificAdverseEventListServiceImpl agentSpecificAdverseEventListService) {
+        this.agentSpecificAdverseEventListService = agentSpecificAdverseEventListService;
     }
 }

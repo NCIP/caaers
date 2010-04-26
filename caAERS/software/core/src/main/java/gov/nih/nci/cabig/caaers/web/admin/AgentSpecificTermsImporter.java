@@ -3,10 +3,9 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -40,6 +39,8 @@ public class AgentSpecificTermsImporter {
     private TerminologyRepository terminologyRepository;
     private AgentSpecificTermDao agentSpecificTermDao;
     private AgentSpecificAdverseEventListService asaelService;
+    private StudyAgentDao studyAgentDao;
+    private StudyDao studyDao;
 
     private int rowCount = 0;
     private int columnsCount = 0;
@@ -144,6 +145,11 @@ public class AgentSpecificTermsImporter {
     private boolean persistASAE(AgentSpecificTerm t) {
         if (!isAgentSpecificTermPersisted(t)) {
             agentSpecificTermDao.save(t);
+            List<StudyAgent> l = getStudyAgentDao().getByAgentID(t.getAgent().getId());
+            for (StudyAgent s : l) {
+                asaelService.synchronizeStudyWithAgentTerm(s.getStudy(), t);
+                studyDao.save(s.getStudy());
+            }
             return true;
         }
         return false;
@@ -227,5 +233,21 @@ public class AgentSpecificTermsImporter {
 
     public static void setFile(File file) {
         AgentSpecificTermsImporter.file = file;
+    }
+
+    public StudyAgentDao getStudyAgentDao() {
+        return studyAgentDao;
+    }
+
+    public void setStudyAgentDao(StudyAgentDao studyAgentDao) {
+        this.studyAgentDao = studyAgentDao;
+    }
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
     }
 }

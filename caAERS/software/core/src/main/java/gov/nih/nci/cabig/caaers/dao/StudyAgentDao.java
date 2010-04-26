@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 
+import java.util.List;
+
 /**
  * This class implements the Data access related operations for the StudyAgent domain object.
  * 
@@ -21,4 +23,9 @@ public class StudyAgentDao extends CaaersDao<StudyAgent> {
     public Class<StudyAgent> domainClass() {
         return StudyAgent.class;
     }
+
+    public List<StudyAgent> getByAgentID(Integer agentID) {
+        return getHibernateTemplate().find("from StudyAgent s where s.agent.id = ?", new Object[] {agentID});
+    }
+
 }

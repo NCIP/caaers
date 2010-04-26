@@ -35,18 +35,27 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
         }
     }
 
+    public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at) {
+        synchronizeStudyWithAgentTerm(s, at, false);
+    }
+    
     /*
     * Get the term associated with the agent and add this to the list of
     * the Expected AE Terms of the Study when Study has this agent
     *
     * */
-    public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at) {
+    public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at, boolean deleted) {
         if (at instanceof AgentSpecificCtcTerm) {
             CtcTerm t = ((AgentSpecificCtcTerm)at).getTerm();
             List<ExpectedAECtcTerm> l = s.getExpectedAECtcTerms();
             for (ExpectedAECtcTerm aeT : l) {
-                if (aeT.getCtcTerm().getTerm().equals(t.getTerm())) return;
+                if (aeT.getCtcTerm().getTerm().equals(t.getTerm())) {
+                    if (deleted) l.remove(aeT);
+                    return;
+                }
             }
+
+            if (deleted) return;
 
             ExpectedAECtcTerm aeT = new ExpectedAECtcTerm();
             aeT.setStudy(s);
@@ -64,6 +73,14 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
             aeT.setLowLevelTerm(t);
             l.add(aeT);
         }
+    }
+
+    /*
+    * Delete the Term from the studies having this agent.
+    * 
+    * */
+    public void postDeleteAgentSpecificTerm(AgentSpecificTerm at) {
+        
     }
 
     public AgentSpecificTermDao getAgentSpecificTermDao() {
