@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -48,6 +49,7 @@ public class AgentsTab extends StudyTab {
     public static int CTEP_IND = -111;
 
     private LinkedHashMap<Object, Object> indTypeMap = new LinkedHashMap<Object, Object>();
+    private AgentSpecificAdverseEventListService agentSpecificAdverseEventListService;
 
     public AgentsTab() {
         super("Agents", "Agents", "study/study_agents");
@@ -79,7 +81,12 @@ public class AgentsTab extends StudyTab {
         			studyAgent.getStudyAgentINDAssociations().clear();
             	}
         	}
-        	
+            // add new
+            // ToDo somehow in the database exists null Agents for StudyAgent rows
+            if (studyAgent != null && studyAgent.getAgent() != null && !studyAgent.isRetired()) {
+                System.out.println("Synchronizing(ADD) for: " + studyAgent.getAgent().getName());
+        	    agentSpecificAdverseEventListService.synchronizeStudyWithAgent(command.getStudy(), studyAgent.getAgent());
+            }
         }
     }
 
@@ -223,7 +230,10 @@ public class AgentsTab extends StudyTab {
         if(index >= size || index < 0){
         	log.debug("Unable to delete study agents, INVALID INDEX :"  + index);
         }else{
-        	command.deleteStudyAgentAtIndex(index);
+        	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
+            // delete
+            System.out.println("Synchronizing(DELETE) for: " + sa.getAgent().getName());
+        	agentSpecificAdverseEventListService.synchronizeStudyWithAgent(command.getStudy(), sa.getAgent(), true);
         }
         
         size = study.getStudyAgents().size(); //new size
@@ -257,5 +267,12 @@ public class AgentsTab extends StudyTab {
         
         return modelAndView;
     }
-    
+
+    public AgentSpecificAdverseEventListService getAgentSpecificAdverseEventListService() {
+        return agentSpecificAdverseEventListService;
+    }
+
+    public void setAgentSpecificAdverseEventListService(AgentSpecificAdverseEventListService agentSpecificAdverseEventListService) {
+        this.agentSpecificAdverseEventListService = agentSpecificAdverseEventListService;
+    }
 }

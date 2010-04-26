@@ -383,14 +383,14 @@ public class StudyCommand {
      * Will delete or mark as retired the study agent object mentioned.
      * @param index
      */
-    public void deleteStudyAgentAtIndex(int index){
+    public StudyAgent deleteStudyAgentAtIndex(int index){
     	StudyAgent studyAgent = getStudy().getStudyAgents().get(index);
     	if(studyAgent.getId() == null) {
     		getStudy().getStudyAgents().remove(index);
     	}else{
     		studyAgent.retire();
     	}
-    	
+    	return studyAgent;
     }
     
     /**

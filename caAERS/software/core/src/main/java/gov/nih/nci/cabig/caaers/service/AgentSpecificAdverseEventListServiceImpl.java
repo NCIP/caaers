@@ -24,15 +24,22 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
     }
 
     /*
+    *
+    * */
+    public void synchronizeStudyWithAgent(Study s, Agent a, boolean deleted) {
+        List<AgentSpecificTerm> l = getListByAgent(a.getId());
+        for (AgentSpecificTerm at : l) {
+            synchronizeStudyWithAgentTerm(s, at, deleted);
+        }
+    }
+
+    /*
     * Get all the terms associated with the agent and add these to the list of
     * the Expected AE Terms of the Study when Study has this agent
     *
     * */
     public void synchronizeStudyWithAgent(Study s, Agent a) {
-        List<AgentSpecificTerm> l = getListByAgent(a.getId());
-        for (AgentSpecificTerm at : l) {
-            synchronizeStudyWithAgentTerm(s, at);
-        }
+        synchronizeStudyWithAgent(s, a, false);
     }
 
     public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at) {
@@ -48,9 +55,17 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
         if (at instanceof AgentSpecificCtcTerm) {
             CtcTerm t = ((AgentSpecificCtcTerm)at).getTerm();
             List<ExpectedAECtcTerm> l = s.getExpectedAECtcTerms();
+            System.out.println("size: " + l.size());
             for (ExpectedAECtcTerm aeT : l) {
                 if (aeT.getCtcTerm().getTerm().equals(t.getTerm())) {
-                    if (deleted) l.remove(aeT);
+
+                    // ToDo check this term is in the list because of some other agent as well
+                    // ToDo and keep it in the list
+                    if (deleted) {
+                        l.remove(aeT);
+                        System.out.println("Deleted " + aeT.getFullName());
+                        System.out.println("size: " + l.size());
+                    }
                     return;
                 }
             }
@@ -65,8 +80,13 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
             LowLevelTerm t = ((AgentSpecificMeddraLowLevelTerm)at).getTerm();
             List<ExpectedAEMeddraLowLevelTerm> l = s.getExpectedAEMeddraLowLevelTerms();
             for (ExpectedAEMeddraLowLevelTerm aeT : l) {
-                if (aeT.getTerm().getFullName().equals(t.getFullName())) return;
+                if (aeT.getTerm().getFullName().equals(t.getFullName())) {
+                    if (deleted) l.remove(aeT);
+                    return;
+                }
             }
+
+            if (deleted) return;
 
             ExpectedAEMeddraLowLevelTerm aeT = new ExpectedAEMeddraLowLevelTerm();
             aeT.setStudy(s);
