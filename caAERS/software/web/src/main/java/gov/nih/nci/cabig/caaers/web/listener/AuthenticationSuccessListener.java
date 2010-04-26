@@ -55,7 +55,8 @@ public class AuthenticationSuccessListener  extends BaseSecurityFilterer impleme
 			}
 			System.out.println("user name " + userName);
 			//need to change - to load data assynchrosly 
-			filteredDataLoader.loadByUserName(userName, sessionId);
+			//filteredDataLoader.loadByUserName(userName, sessionId);
+			filteredDataLoader.updateIndexByUserName(userName);
 			
 			/*
 			
