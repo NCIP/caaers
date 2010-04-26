@@ -1,11 +1,12 @@
-package gov.nih.nci.cabig.caaers.dao;
+package gov.nih.nci.cabig.caaers.dao.index;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-import gov.nih.nci.cabig.caaers.domain.StudyIndex;
+import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.domain.index.StudyIndex;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
