@@ -33,6 +33,8 @@ public class FilteredDataLoader {
 	public void updateIndexByUserName(String userName){
 		for (IdFetcher idFetcher : idFetchers) {
 			List listOfIds = idFetcher.fetch(userName);
+			if (listOfIds == null) return;
+			
 			CaaersDao indexDao = (CaaersDao)idFetcherIndexDaoMap.get(idFetcher);
 			indexDao.clearIndex(userName);
 			indexDao.updateIndex(listOfIds, userName);
