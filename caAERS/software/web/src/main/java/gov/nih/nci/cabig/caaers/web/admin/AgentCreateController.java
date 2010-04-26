@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /*
 * @author Ion C. Olaru
@@ -69,6 +70,7 @@ public class AgentCreateController extends AutomaticSaveAjaxableFormController<A
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         AgentCommand c = new AgentCommand();
+        c.setAgentSpecificTerms(new ArrayList<AgentSpecificTerm>());
         c.setAgent(new Agent());
         return c;
     }

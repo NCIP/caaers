@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 
 
@@ -14,6 +15,8 @@ import java.util.HashMap;
 
 import javax.persistence.Transient;
 
+import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
+import gov.nih.nci.cabig.caaers.webservice.*;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -564,6 +567,60 @@ public class StudyCommand {
         	return studies.get(0);
         }
         return null;
+    }
+
+    /*
+    * @author: Ion C. Olaru
+    * Synchronize Agent Specific Terms with Study's Expecetd AEs
+    * Study gets all the Expected AEs' associated with study's agent
+    * If an agent is CTEP lead ind, then study gets only its terms, otherwise gets all terms of all its lagents.
+    *
+    * */
+    public void synchronizeStudyWithAgentAEList(AgentSpecificAdverseEventListService service, Study s, StudyAgent sa, boolean deleted) {
+
+/*
+        boolean hasLeadCTEPInds = false;
+        boolean isLeadCTEPInds = false;
+
+        // for delete
+        if (deleted) {
+            service.synchronizeStudyWithAgent(s, sa.getAgent(), deleted);
+            return;
+        }
+
+        // for add, find if has leadCTEP INDs 
+        if (sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND()) {
+                isLeadCTEPInds = true;
+                hasLeadCTEPInds = true;
+        } else {
+            for (StudyAgent studyAgent : s.getStudyAgents()) {
+                if (sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND())
+                    hasLeadCTEPInds = true;
+            }
+        }
+
+
+        if (hasLeadCTEPInds) {
+
+            // delete all not needed
+            for (StudyAgent studyAgent : s.getStudyAgents()) {
+                if (!sa.getIndType().equals(INDType.CTEP_IND) || !sa.getPartOfLeadIND())
+                    service.synchronizeStudyWithAgent(s, studyAgent.getAgent(), true);
+            }
+
+            // synchronzie the remaining agents
+            for (StudyAgent studyAgent : s.getStudyAgents()) {
+                if (sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND())
+                    service.synchronizeStudyWithAgent(s, studyAgent.getAgent(), false);
+            }
+
+            // add the new one if it's CTEP Lead
+            if (isLeadCTEPInds)
+                service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
+        } else {
+            service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
+        }
+*/
     }
 
     public StudyRepository getStudyRepository() {

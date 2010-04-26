@@ -17,7 +17,7 @@ public class AgentCommand {
     private Ctc ctcVersion;
     private MeddraVersion meddraVersion;
 
-    private List<AgentSpecificTerm> agentSpecificTerms = new ArrayList<AgentSpecificTerm>();
+    private List<AgentSpecificTerm> agentSpecificTerms;
 
     public void save() {
         
@@ -33,6 +33,10 @@ public class AgentCommand {
 
     public List<AgentSpecificTerm> getAgentSpecificTerms() {
         return agentSpecificTerms;
+    }
+
+    public void setAgentSpecificTerms(List<AgentSpecificTerm> agentSpecificTerms) {
+        this.agentSpecificTerms = agentSpecificTerms;
     }
 
     public Ctc getCtcVersion() {

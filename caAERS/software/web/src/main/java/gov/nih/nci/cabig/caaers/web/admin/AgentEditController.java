@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /*
 * @author Ion C. Olaru
@@ -72,9 +73,10 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         Agent agent = null;
         agent = agentRepository.getAgentByID(Integer.parseInt(request.getParameter("agentID")));
+        System.out.println("Loading Agent: " + agent.getId() + ", " + agent.getName());
         AgentCommand c = new AgentCommand();
         c.setAgent(agent);
-        c.getAgentSpecificTerms().clear();
+        c.setAgentSpecificTerms(new ArrayList<AgentSpecificTerm>());
         c.getAgentSpecificTerms().addAll(service.getListByAgent(agent.getId()));
 
         int categoryID;

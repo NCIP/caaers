@@ -85,7 +85,7 @@ public class AgentsTab extends StudyTab {
             // ToDo somehow in the database exists null Agents for StudyAgent rows
             if (studyAgent != null && studyAgent.getAgent() != null && !studyAgent.isRetired()) {
                 System.out.println("Synchronizing(ADD) for: " + studyAgent.getAgent().getName());
-        	    agentSpecificAdverseEventListService.synchronizeStudyWithAgent(command.getStudy(), studyAgent.getAgent());
+                command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), studyAgent, false);
             }
         }
     }
@@ -233,7 +233,7 @@ public class AgentsTab extends StudyTab {
         	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
             // delete
             System.out.println("Synchronizing(DELETE) for: " + sa.getAgent().getName());
-        	agentSpecificAdverseEventListService.synchronizeStudyWithAgent(command.getStudy(), sa.getAgent(), true);
+            command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), sa, true);
         }
         
         size = study.getStudyAgents().size(); //new size
