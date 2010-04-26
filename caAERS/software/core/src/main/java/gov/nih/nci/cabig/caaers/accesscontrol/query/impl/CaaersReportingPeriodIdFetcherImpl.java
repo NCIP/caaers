@@ -17,14 +17,6 @@ import java.util.*;
  */
 public class CaaersReportingPeriodIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 
-    /**
-     * A user can access all courses from Subjects that they have access to
-     * @param loginId - A username
-     * @return
-     */
-    public List fetch(String loginId) {
-        return null;
-    }
 
 
     /**

@@ -5,4 +5,6 @@ public class HQLQuery extends AbstractQuery {
 		// TODO Auto-generated constructor stub
 		super(hqlQuery);
 	}
+
+    
 }

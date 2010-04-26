@@ -4,10 +4,6 @@ import java.util.List;
 
 public class StudyParticipantAssignmentQuery extends AbstractQuery {
 
-    public StudyParticipantAssignmentQuery(String s) {
-        super(s);
-    }
-
     public StudyParticipantAssignmentQuery() {
         super("SELECT spa FROM StudyParticipantAssignment spa");
     }

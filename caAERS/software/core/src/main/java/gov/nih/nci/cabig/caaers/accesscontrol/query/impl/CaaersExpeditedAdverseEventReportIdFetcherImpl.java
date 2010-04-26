@@ -16,15 +16,7 @@ import java.util.*;
  * @author Srini Akkala
  */
 public class CaaersExpeditedAdverseEventReportIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
-    
-    /**
-     * A user can access all expedited reports from Subjects that they have access to
-     * @param loginId - A username
-     * @return
-     */
-    public List fetch(String loginId) {
-        return null;  
-    }
+
 
 
     /**

@@ -152,11 +152,40 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
         query.getParameterMap().put("loginId", "sponsor");
         query.getParameterMap().put("stDate", d);
         query.getParameterMap().put("enDate", d);
-
+        st = System.currentTimeMillis();
         List<Integer> resultList = (List<Integer>) fetcher.search(query);
         System.out.println("result Count : " + resultList.size());
         System.out.println(new HashSet(resultList));
 
+    }
+
+
+    public void testStudyQuery_1(){
+        StringBuilder hql = new StringBuilder("select s from Study s , StudyIndex si")
+                .append(" where si.loginId = :loginId")
+                .append(" and si.study = s");
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("loginId", "2");
+
+        st = System.currentTimeMillis();        
+        List<Integer> resultList = (List<Integer>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
+    }
+
+
+
+    public void testStudyQuery_2(){
+        StringBuilder hql = new StringBuilder("select s from StudyIndex si join si.study s")
+                .append(" where si.loginId = :loginId")
+                .append(" and si.study = s");
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("loginId", "2");
+
+        st = System.currentTimeMillis();
+        List<Integer> resultList = (List<Integer>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
     }
 
 

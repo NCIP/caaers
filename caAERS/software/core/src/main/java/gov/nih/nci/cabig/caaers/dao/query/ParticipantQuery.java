@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 public class ParticipantQuery extends AbstractQuery {
 
-    private static final String queryString = "SELECT distinct p from Participant p order by p.id ";
+    private static final String queryString = "SELECT distinct p from Participant p ";
 
     private static final String FIRST_NAME = "firstName";
 
@@ -22,7 +22,10 @@ public class ParticipantQuery extends AbstractQuery {
 
     public ParticipantQuery() {
         super(queryString);
+        orderBy("order by p.id");
     }
+
+   
 
     /**
      * SELECT distinct p from Participant p left join fetch p.identifiers

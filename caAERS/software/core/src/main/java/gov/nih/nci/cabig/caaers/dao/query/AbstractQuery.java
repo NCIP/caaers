@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,11 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This class has the common functions used by all Queries in caAERS. 
  * @author Saurabh Agrawal
+ * @author Biju Joseph
  */
-public class AbstractQuery {
+public abstract class AbstractQuery {
 
-    private final String queryString;
+    private  StringBuffer queryString;
 
     private StringBuffer queryBuffer;
 
@@ -31,21 +35,16 @@ public class AbstractQuery {
 
     public final static String OR = "OR";
 
+    private String orderByClause;
+
     public AbstractQuery(final String queryString) {
-        this.queryString = queryString;
+        this.queryString = new StringBuffer(queryString);
         queryParameterMap = new HashMap<String, Object>(0);
     }
 
     public String getQueryString() {
-        String orderByString = "";
-        if (queryString.lastIndexOf("order by") > 0) {
-            orderByString = queryString.substring(queryString.lastIndexOf("order by"),
-                    queryString.length()).trim();
-            queryBuffer = new StringBuffer(queryString.substring(0,
-                    queryString.lastIndexOf("order by")).trim());
-        } else {
-            queryBuffer = new StringBuffer(queryString.trim());
-        }
+        queryBuffer = new StringBuffer(queryString.toString().trim());
+
 
         for (String join : joins) {
             queryBuffer.append(join);
@@ -85,9 +84,9 @@ public class AbstractQuery {
             }
         }
 
-        if (!orderByString.equalsIgnoreCase("")) {
+        if (StringUtils.isNotEmpty(orderByClause)) {
             // finally add order by
-            queryBuffer.append(" " + orderByString);
+            queryBuffer.append(" " + orderByClause);
         }
 
         return queryBuffer.toString();
@@ -99,7 +98,7 @@ public class AbstractQuery {
      * @param key   the key of the parameter
      * @param value the value of the parameter
      */
-    protected void setParameter(final String key, final Object value) {
+    public void setParameter(final String key, final Object value) {
         queryParameterMap.put(key, value);
     }
 
@@ -113,7 +112,7 @@ public class AbstractQuery {
      *
      * @param condition the condition
      */
-    protected void andWhere(final String condition) {
+    public void andWhere(final String condition) {
         andConditions.add(condition);
     }
     
@@ -127,7 +126,7 @@ public class AbstractQuery {
      *
      * @param condition the condition
      */
-    protected void orWhere(final String condition) {
+    public void orWhere(final String condition) {
         orConditions.add(condition);
     }
 
@@ -139,9 +138,9 @@ public class AbstractQuery {
      * Joins an object to the query select * from Study s join s.identifiers as id where
      * s.shortTitle='study'
      *
-     * @param join
+     * @param objectQuery
      */
-    protected void join(String objectQuery) {
+     public void join(String objectQuery) {
         addToJoinsList(" join " + objectQuery);
 
     }
@@ -150,17 +149,17 @@ public class AbstractQuery {
      * Joins an object to the query select * from Study s left join s.identifiers as id where
      * s.shortTitle='study'
      *
-     * @param join
+     * @param objectQuery
      */
-    protected void leftJoin(String objectQuery) {
+    public void leftJoin(String objectQuery) {
         addToJoinsList(" left join " + objectQuery);
     }
 
-    protected void leftJoinFetch(String objectQuery) {
+    public void leftJoinFetch(String objectQuery) {
         addToJoinsList(" left join fetch " + objectQuery);
     }
 
-    private void addToJoinsList(String object) {
+    public void addToJoinsList(String object) {
         if (!joins.contains(object)) joins.add(object);
     }
     
@@ -176,6 +175,24 @@ public class AbstractQuery {
 		andWhere(inClause);
 		setParameter("ids", ids);
     }
+
+    /**
+     * Will append to the query the order by clause. 
+     * @param orderBy
+     */
+    public void orderBy(String orderBy){
+        this.orderByClause = orderBy;  
+    }
+
+    /**
+     * Will modify the base query with the newly provided query.
+     * @param newQuery - An hql
+     */
+    public void  modifyQueryString(String newQuery){
+        queryString.setLength(0);
+        queryString.append(newQuery);
+    }
+
     
     
 }

@@ -36,6 +36,8 @@ public class StudyQuery extends AbstractQuery {
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     }
 
+   
+
     public void joinIdentifier() {
         join("s.identifiers as identifier");
     }

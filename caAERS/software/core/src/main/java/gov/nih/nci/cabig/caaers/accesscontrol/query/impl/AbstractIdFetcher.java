@@ -75,7 +75,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * @param loginId - username
      * @return
      */
-	public List fetch(String loginId) {
+	public final List fetch(String loginId) {
 
         List<Integer> participantIdList = null;
 
