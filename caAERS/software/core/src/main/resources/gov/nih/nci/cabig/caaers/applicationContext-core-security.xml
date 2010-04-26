@@ -159,14 +159,24 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
             <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
         </aop:aspect>
-        
+
+        <aop:aspect ref="refreshIndexAspect">		
+			<aop:pointcut id="executionOfUpdateOnDomainObjects"
+                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
+                    	     || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
+                    		 || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
+                    		 "/>
+            <aop:after pointcut-ref="executionOfUpdateOnDomainObjects" method="updateIndexByUserName"/>			
+		</aop:aspect>
+
+<!--     
         <aop:aspect ref="participantQueryFilterByLoginIdAspect">		
 			<aop:pointcut id="executionOfParticipantQueryFilter"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery))
                     and args(qry)"/>
             <aop:before pointcut-ref="executionOfParticipantQueryFilter" method="applyLoginFilter"/>			
 		</aop:aspect>
-<!--
+
         <aop:aspect ref="studyQueryFilterByLoginIdAspect">		
 			<aop:pointcut id="executionOfStudyQueryFilter"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.findStudies(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery))
@@ -497,26 +507,38 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!--  ASPECTS -->
 
 	<bean id="participantQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.ParticipantQueryFilterByLoginIdAspect">
-    	<property name="idFetcher" ref="participantIdFetcher"/>
     </bean>
 
 	<bean id="studyQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.StudyQueryFilterByLoginIdAspect">
-    	<property name="idFetcher" ref="studyIdFetcher"/>
     </bean>
     	
 	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	
-	
-	 <bean id="filteredDataLoader" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
-         <property name="idFetchers">
-            <list>
+
+	 <bean id="refreshIndexAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.RefreshIndexAspect">
+		  <property name="idFetchers">
+             <list>
                 <ref bean="participantIdFetcher"/>
-                <!--<ref bean="studyIdFetcher"/>-->
+                <ref bean="studyIdFetcher"/>
             </list>
          </property> 
          <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
-     </bean>   
-     
-    <util:map id="idFetcherIndexDaoMap"
+     </bean>      	
+	 <bean id="filteredDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
+		  <property name="idFetchers">
+             <list>
+                <ref bean="participantIdFetcher"/>
+                <ref bean="studyIdFetcher"/>
+            </list>
+         </property> 
+         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
+     </bean> 
+      <!--
+     <util:list id="idFetcherList">
+            <ref bean="participantIdFetcher"/>
+            <ref bean="studyIdFetcher"/>  
+              	
+     </util:list>-->
+     <util:map id="idFetcherIndexDaoMap"
               map-class="java.util.LinkedHashMap">
         <entry key-ref="participantIdFetcher"
                value-ref="participantIndexDao"/>
@@ -524,8 +546,18 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="studyIndexDao"/>                 
     </util:map>
       
-
-    
+  <bean id="filteredDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="filteredDataLoaderTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>auditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>
+	    
     <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
     <bean id="abstractIdFetcher" abstract="true">
         <property name="hibernateTemplate" ref="hibernateTemplate" />
