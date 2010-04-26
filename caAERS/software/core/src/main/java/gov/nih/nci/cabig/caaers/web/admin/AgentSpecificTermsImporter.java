@@ -160,13 +160,7 @@ public class AgentSpecificTermsImporter {
     }
 
     private void bootstrap(File inputFile) throws Exception {
-        try {
-            poifs = new POIFSFileSystem(new FileInputStream(inputFile));
-        } catch (IOException e) {
-            // to handle java.io.IOException: Invalid header signature; read -2300849302551019537, expected -2226271756974174256
-            // if somebody knows how to get rid of the exception, please remove the try/catch.
-            logger.error("ERROR: " + e.getMessage());
-        }
+        poifs = new POIFSFileSystem(new FileInputStream(inputFile));
 
         // create a workbook out of the input stream
         wb = new HSSFWorkbook(poifs);
