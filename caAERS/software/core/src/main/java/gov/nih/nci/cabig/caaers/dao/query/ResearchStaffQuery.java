@@ -6,7 +6,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
  */
 public class ResearchStaffQuery extends AbstractQuery {
 
-    private static String queryString = "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs order by rs.id";
+    private static String queryString = "SELECT distinct rs from ResearchStaff rs ";//left join fetch rs.siteResearchStaffsInternal srs order by rs.id";
 
     private static String FIRST_NAME = "firstName";
 
@@ -27,6 +27,8 @@ public class ResearchStaffQuery extends AbstractQuery {
     public ResearchStaffQuery() {
 
         super(queryString);
+        leftJoinFetch("rs.siteResearchStaffsInternal srs");
+        orderBy("rs.id");
     }
 
     public void filterByOrganizationName(final String name) {

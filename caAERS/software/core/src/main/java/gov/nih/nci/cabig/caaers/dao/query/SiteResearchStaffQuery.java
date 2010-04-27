@@ -5,10 +5,10 @@ package gov.nih.nci.cabig.caaers.dao.query;
  */
 public class SiteResearchStaffQuery extends AbstractQuery {
 
-    private static String queryString = "SELECT distinct srs from SiteResearchStaff srs " +
-            "left join fetch srs.researchStaff rs " +
-            "left join fetch srs.organization org " +
-            "order by srs.id";
+    private static String queryString = "SELECT distinct srs from SiteResearchStaff srs " ;
+       //     "left join fetch srs.researchStaff rs " +
+        //    "left join fetch srs.organization org " +
+         //   "order by srs.id";
 
     private static String FIRST_NAME = "firstName";
     private static String LAST_NAME = "lastName";
@@ -16,6 +16,10 @@ public class SiteResearchStaffQuery extends AbstractQuery {
 
     public SiteResearchStaffQuery() {
         super(queryString);
+        leftJoinFetch("srs.researchStaff rs");
+        leftJoinFetch("srs.organization org");
+        orderBy("srs.id");
+        
     }
 
     public void filterByFirstName(final String firstName) {
