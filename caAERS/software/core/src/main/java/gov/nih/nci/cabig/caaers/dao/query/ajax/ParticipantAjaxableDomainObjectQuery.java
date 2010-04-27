@@ -7,111 +7,33 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * Query is used to return Participant object in autocompleter and other search pages
+ *
  * @author Biju Joseph
  */
 public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
 
-    private static String queryString = 
-    	"Select " +
-	        "participant.id," +
-	        "participant.firstName," +
-	        "participant.lastName, "+
-	        "participant.gender," +
-	        "participant.race," +
-	        "participant.ethnicity, " +
-	        "identifier.value, " +
-	        "identifier.primaryIndicator, " +
-	        "spa.studySubjectIdentifier " +
-	    "from Participant participant "+
-	        "left join participant.identifiers as identifier "+
-	        "left join participant.assignments as spa " +
-        "order by participant.firstName ";
-    	
-
-    
-    
-    /*
-    		
-    		"Select " +
-                    "participant.id" 
-            "from Participant participant "+
-                    "left join participant.assignments as spa " +
-                    "join spa.studySite as ss "+
-                    "join ss.study as study "+
-                    "join study.studyOrganizations as studyOrgs "+
-                    "left join studyOrgs.studyPersonnelsInternal as stper " +
-                    "left join stper.siteResearchStaff as siteResearchStaff " +
-            " where  siteResearchStaff.id = -1000";
-    				
-    		
-    		"Select " +
-                    "participant.id," +
-                    "participant.firstName," +
-                    "participant.lastName, "+
-    		        "participant.gender," +
-                    "participant.race," +
-                    "participant.ethnicity, " +
-    		        "identifier.value, " +
-                    "identifier.primaryIndicator, " +
-    		        "study.shortTitle as st, " +
-                    "study.id as studyId, "+
-    		        "sIdentifier.value, " +
-                    "sIdentifier.primaryIndicator, "+
-    		        "studyOrgs.organization.name, " +
-                    "studyOrgs.id, " +
-                    "studyOrgs.class, " +
-                    "studyOrgs.organization.nciInstituteCode, " +
-                    "siteResearchStaff.researchStaff.id, " +
-    		        "ss.organization.id as assignedSiteId, " +
-                    "ss.organization.name as assignedSite, " +
-                    "ss.organization.nciInstituteCode as assignedSiteCode, " +
-                    "spa.studySubjectIdentifier " +
-            "from Participant participant , ParticipantIndex pi "+
-                    "left join participant.identifiers as identifier "+
-                    "left join participant.assignments as spa " +
-                    "join spa.studySite as ss "+
-                    "join ss.study as study "+
-                    "join study.identifiers as sIdentifier "+
-                    "join study.studyOrganizations as studyOrgs "+
-                    "left join studyOrgs.studyPersonnelsInternal as stper " +
-                    "left join stper.siteResearchStaff as siteResearchStaff " +
-            "order by participant.firstName ";*/
-
     private static final String IDENTIFIER_VALUE = "identifierValue";
-    private static final String STUDY_IDENTIFIER_VALUE = "studyIdentifierValue";
     private static final String STUDY_SUBJECT_IDENTIFIER = "studySubjectIdentifier";
-    private static final String IDENTIFIER_TYPE = "type";
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String STUDY_ID = "studyId";
     
-    private static final String YEAR = "year";
-    private static final String MONTH = "month";
-    private static final String DAY = "day";
-    
-    private static final String RACE = "race";
-
-    private static final String ETHNITICTY = "ethnicity";
-    
-    private static final String SHORT_TITLE = "shortTitle";
 
     public ParticipantAjaxableDomainObjectQuery() {
-        super(queryString);
+        super("select participant.id, participant.firstName, participant.lastName, participant.gender," +
+                "participant.race,participant.ethnicity,identifier.value,identifier.primaryIndicator," +
+                "spa.studySubjectIdentifier from Participant participant");
+        leftJoin("participant.identifiers as identifier");
+        leftJoin("participant.assignments as spa");
+        orderBy("participant.firstName");
     }
     
     public void filterByPrimaryIdentifiers() {
-            andWhere("identifier.primaryIndicator is true and sIdentifier.primaryIndicator is true");
+       andWhere("identifier.primaryIndicator is true and sIdentifier.primaryIndicator is true");
     }
     
-    public void filterByParticipantsINQuery(List ids){
-    		andWhere("participant.id IN (:ids)");
-    		setParameter("ids", ids);
-    }
-    
-    public void filterByAnyAnd(String clause) {
-    	andWhere(clause);
-    }
-    
+
     public void filterParticipantsWithMatchingText(String text) {
 
         String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
@@ -127,34 +49,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         setParameter(STUDY_SUBJECT_IDENTIFIER, searchString);
 
     }
-    /*   
-    public void filterByStudyIdentifierValue(final String value) {
-        if (!StringUtils.isBlank(value)) {
-            String searchString = "%" + value.toLowerCase() + "%";
-            //join("study.identifiers as sIdentifier");
-            andWhere("lower(sIdentifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
-            setParameter(STUDY_IDENTIFIER_VALUE, searchString);
-        }
-    }
- 
-    public void filterByStudyShortTitle(final String value) {
-        if (!StringUtils.isBlank(value)) {
-            String searchString = "%" + value.toLowerCase() + "%";
-            andWhere("lower(study.shortTitle) LIKE :" + SHORT_TITLE);
-            setParameter(SHORT_TITLE, searchString);
-        }
-    }
-
-    public void filterStudiesWithShortTitle(String text) {
-        if (!StringUtils.isBlank(text)) {
-
-            String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-
-            andWhere(String.format("(lower(study.shortTitle) LIKE :%s )"
-                    , SHORT_TITLE));
-            setParameter(SHORT_TITLE, searchString);
-        }
-    }*/
+   
     
     public void filterParticipants(final Map props) throws ParseException {
 		
@@ -169,41 +64,10 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (props.get("participantLastName") != null) {
             this.filterByLastName(props.get("participantLastName").toString());
         }
-        /*
-        if (props.get("participantEthnicity") != null) {
-            this.filteryByEthnicity(props.get("participantEthnicity").toString());
-        }
-        if (props.get("participantGender") != null) {
-            this.filterByHavingRace(props.get("participantGender").toString());
-        }
 
-        if (props.get("participantDateOfBirth") != null) {
-        	DateValue dob = DateValue.stringToDateValue(props.get("participantDateOfBirth").toString());
-            this.filterByDateOfBirth(dob);
-        }*/
 		
 	}
-/*    
-    public void filterByDateOfBirth(DateValue dateOfBirth) {
-        if (dateOfBirth != null && !dateOfBirth.isNull()) {
-        	
-            andWhere(String.format(" participant.dateOfBirth.year = :%s", YEAR));
-            setParameter(YEAR, dateOfBirth.getYear());
-
-            if (dateOfBirth.getMonth() > 0) {
-                andWhere(String.format(" participant.dateOfBirth.month = :%s", MONTH));
-                setParameter(MONTH, dateOfBirth.getMonth());
-
-            }
-            if (dateOfBirth.getDay() > 0) {
-                andWhere(String.format(" participant.dateOfBirth.day = :%s", DAY));
-                setParameter(DAY, dateOfBirth.getDay());
-            }
-
-        }
-
-    }
- */  
+    
     public void filterByFirstName(final String firstName) {
         if (!StringUtils.isBlank(firstName)) {
             String searchString = "%" + firstName.toLowerCase() + "%";
@@ -229,21 +93,6 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         }
     }
 
-/*
-    public void filterByHavingRace(final String race) {
-        if (!StringUtils.isBlank(race)) {
-            andWhere("participant.gender = :" + RACE);
-            setParameter(RACE, race);
-        }
-    }
-
-    public void filteryByEthnicity(final String ethnicity) {
-        if (!StringUtils.isBlank(ethnicity)) {
-            andWhere("participant.ethnicity = :" + ETHNITICTY);
-            setParameter(ETHNITICTY, ethnicity);
-        }
-    }
-*/
     
     public void filterByStudy(Integer studyId) {
         if (studyId != null) {

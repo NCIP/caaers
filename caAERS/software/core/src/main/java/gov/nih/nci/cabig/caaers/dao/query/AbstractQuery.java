@@ -193,6 +193,12 @@ public abstract class AbstractQuery {
         queryString.append(newQuery);
     }
 
-    
+    /**
+     * The query string this query represents will be returned. 
+     * @return
+     */
+    public String getBaseQueryString(){
+        return queryString.toString();
+    }
     
 }

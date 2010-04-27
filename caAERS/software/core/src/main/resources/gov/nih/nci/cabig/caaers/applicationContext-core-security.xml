@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd" >
-
     <bean id="authorizationSwitch"
           class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
           factory-method="getInstance">
@@ -579,21 +579,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
     <!-- Pluggable Query Filterer implementation -->
+
+    <bean id="querySecurityFilterAspect"   class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect" >
+    	<property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>
+    </bean>
+    
     <bean id="querySecurityFilterDispatcher" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
           <property name="filtererMap">
               <map>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
+                  <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
               </map>
           </property>
     </bean>
 
-    <bean id="studyQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.StudyQuerySecurityFilterer" />
-    <bean id="participantQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.ParticipantQuerySecurityFilterer" />
- 
+    <bean id="studyQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+            p:entityAssociation="study" p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx" />
+    <bean id="participantQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+            p:entityAssociation="p" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+    <bean id="participantAjaxableQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+            p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
 
-    <bean id="querySecurityFilterAspect"   class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect" >
-    	<property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>
-    </bean>
 
 </beans>
