@@ -2,10 +2,11 @@ package gov.nih.nci.cabig.caaers.dao.query.ajax;
 
 public class StudySiteAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
 	
-	private static String query = "select site.id, site.organization.name from StudySite site order by site.organization.name";
+	private static String query = "select site.id, site.organization.name from StudySite site";// order by site.organization.name";
 	private static final String STUDY_ID ="STUDY_ID";
 	public StudySiteAjaxableDomainObjectQuery() {
 		super(query);
+		orderBy("site.organization.name");
 	}
 	
 	public void filterByStudy(Integer studyId){
