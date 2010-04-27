@@ -581,6 +581,5 @@
     <bean name="/admin/asaelSearch" id="asaelSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentSearchController" />
     <bean name="/admin/asaelCreate" id="asaelCreateController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentCreateController" />
     <bean name="/admin/asaelEdit" id="asaelEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentEditController" />
-    <bean name="/admin/asaelImport" id="asaelImportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentImportController" />
 
 </beans>
