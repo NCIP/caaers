@@ -594,6 +594,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
+              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
               </map>
           </property>
     </bean>
@@ -606,6 +607,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
     <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
             p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
+    <bean id="organizationQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+            p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx"/>
 
 
 </beans>
