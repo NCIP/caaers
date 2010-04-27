@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade;
+import gov.nih.nci.cabig.caaers.web.study.CreateStudyController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -52,12 +54,17 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
         return agentDao;
     }
 
+/*
     @Override
     protected AgentCommand save(AgentCommand command, Errors errors) {
-        System.out.println("controller save");
-        getDao().save(command.getAgent()); 
-        return command;    
+        System.out.println("Controller save");
+        System.out.println("Saving: ID:"+command.getAgent().getId());
+        System.out.println("Saving: ID:"+command.getAgent().getName());
+        System.out.println("Saving: ID:"+command.getAgent().getNscNumber());
+        getDao().save(command.getAgent());
+        return command;
     }
+*/
 
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
@@ -71,9 +78,13 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
+
+        request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+        request.getSession().removeAttribute(AgentEditController.class.getName() + ".FORM.command");
+
         Agent agent = null;
         agent = agentRepository.getAgentByID(Integer.parseInt(request.getParameter("agentID")));
-        System.out.println("Loading Agent: " + agent.getId() + ", " + agent.getName());
+
         AgentCommand c = new AgentCommand();
         c.setAgent(agent);
         c.setAgentSpecificTerms(new ArrayList<AgentSpecificTerm>());
