@@ -6,23 +6,26 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * This query Will NOT work if you are retrieving study sites by searching on participants also
+ *BJ: NEED TO SIMPLYFY THIS QUERY
  *
  * @author Biju Joseph
  */
 public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
-    private static String queryString = "Select study.id,study.shortTitle," +
-            "identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
-            "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
-            "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode, sirs.researchStaff.id," +
-            "(select scc.organization.nciInstituteCode from StudyCoordinatingCenter scc  where scc.study.id =study.id) as coordinatingCenter, "+
-            "study.externalId " +
-            "from Study study " +
-            "left join study.identifiers as identifier " +
-           // "left join study.studyOrganizations as ss  " +
-            "join study.studyOrganizations as ss left join ss.studyPersonnelsInternal as stper " +
-            "left join stper.siteResearchStaff as sirs " +
-            "order by study.shortTitle ";
+
+//    private static String queryString = "Select study.id,study.shortTitle," +
+//            "identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
+//            "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
+//            "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode, sirs.researchStaff.id," +
+//            "(select scc.organization.nciInstituteCode from StudyCoordinatingCenter scc  where scc.study.id =study.id) as coordinatingCenter, "+
+//            "study.externalId " +
+//            "from Study study " +
+//            "left join study.identifiers as identifier " +
+//           // "left join study.studyOrganizations as ss  " +
+//            "join study.studyOrganizations as ss left join ss.studyPersonnelsInternal as stper " +
+//            "left join stper.siteResearchStaff as sirs " +
+//            "order by study.shortTitle ";
+
+    
 
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
@@ -44,7 +47,24 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     private static final String QC_STATUS = "qcStatus";
 
     public StudySearchableAjaxableDomainObjectQuery() {
-        super(queryString);
+
+        super("select study.id," +
+                "study.shortTitle," +
+                "identifier.value," +
+                "identifier.primaryIndicator," +
+                "study.phaseCode," +
+                "study.status," +
+                "study.externalId," +
+                "sponsor.organization.nciInstituteCode "+
+                "from Study study");
+        
+        join("study.StudyOrganizations as sponsor");
+        leftJoin("study.identifiers as identifier");
+        andWhere("sponsor.class = 'SFS'");
+        orderBy("study.shortTitle");
+
+
+
     }
 
     public void filterStudiesByStudySiteBySiteId(Integer siteId) {

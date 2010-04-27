@@ -65,46 +65,71 @@ public class StudyRepository {
     private SiteResearchStaffDao siteResearchStaffDao;
     
     //nci_institute_code for National Cancer Institute. 
-    private static final String INSTITUTE_CODE = "NCI"; 
-    
+    private static final String INSTITUTE_CODE = "NCI";
+
     /**
-     * 
+     * Will issue a search in the local database only.
      * @param query
+     * @param type
+     * @param text
      * @return
      */
     @Transactional(readOnly = false)
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text){
+        return this.search(query, type, text, false);
+    }
+
+    /**
+     * Will issue a search against the db and COPPA db.
+     * @param query
+     * @param type
+     * @param text
+     * @param searchInCOPPA - true, will invoke search against COPPA
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text, boolean searchInCOPPA){
 
     	try{
+            
         	if(text.indexOf("%") == -1 && StringUtils.isNotEmpty(text)){
             	Study study = new RemoteStudy();
             	Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
-            	
-            	if("st".equals(type) && !"".equals(text)){
-            		study.setShortTitle(text);
-            	}
-            	
-            	if("idtf".equals(type) && !"".equals(text)){
-            		OrganizationAssignedIdentifier orgAssignedIdentifier = new OrganizationAssignedIdentifier();
-                    orgAssignedIdentifier.setType(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
-                    orgAssignedIdentifier.setValue(text.toUpperCase());
-                    study.addIdentifier(orgAssignedIdentifier);
-            	}
-            	
-                //Fetch studies from COPPA matching shortTitle or Identifier
-            	List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
-            	
-            	if(remoteStudies != null & remoteStudies.size() > 0 ){
-            		for(Study remoteStudy : remoteStudies){
-            			remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
-            			verifyAndSaveOrganizations(remoteStudy);
-            			verifyAndSaveInvestigators(remoteStudy);
-            			verifyAndSaveIND((RemoteStudy)remoteStudy);
-            		}
-            		//Save the studies returned from COPPA
-            		saveRemoteStudies(remoteStudies);
-            	}
+
+                //populate the critera in the Query
+                if(StringUtils.isNotEmpty(text)){
+                    
+                    if(StringUtils.equals("st", type)){
+                       study.setShortTitle(text);
+                    }
+                    
+                    if(StringUtils.equals("idtf", type)){
+                        OrganizationAssignedIdentifier orgAssignedIdentifier = new OrganizationAssignedIdentifier();
+                        orgAssignedIdentifier.setType(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
+                        orgAssignedIdentifier.setValue(text.toUpperCase());
+                        study.addIdentifier(orgAssignedIdentifier);
+            	    }
+
+                }
+
+                if(searchInCOPPA){
+                   //Fetch studies from COPPA matching shortTitle or Identifier
+                    List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
+
+                    if(remoteStudies != null & remoteStudies.size() > 0 ){
+                        for(Study remoteStudy : remoteStudies){
+                            remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
+                            verifyAndSaveOrganizations(remoteStudy);
+                            verifyAndSaveInvestigators(remoteStudy);
+                            verifyAndSaveIND((RemoteStudy)remoteStudy);
+                        }
+                        //Save the studies returned from COPPA
+                        saveRemoteStudies(remoteStudies);
+                    }
+                }
+
         	}
+            
     	}catch(Exception e){
     		log.error("Error saving Remote Studies -- " + e.getMessage());
     	}

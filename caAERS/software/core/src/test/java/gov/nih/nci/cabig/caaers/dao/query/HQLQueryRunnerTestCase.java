@@ -189,6 +189,31 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
     }
 
 
+    public void testStudyAjaxableQuery(){
+
+        //select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status,sponsor.organization,study.externalId from Study study join StudyFundingSponsor sponsor left join study.identifiers as identifier
+
+
+         StringBuffer hql = new StringBuffer("select study.id,study.shortTitle,identifier.value,")
+            .append("identifier.primaryIndicator,study.phaseCode,study.status,")
+            .append("study.externalId")
+            .append(" from Study study");
+           hql.append(" join study.studyOrganizations sponsor");
+        
+        hql.append(" left join study.identifiers as identifier ");
+        hql.append(" where sponsor.class in ('SFS') " );
+
+        HQLQuery query = new HQLQuery(hql.toString());
+
+        st = System.currentTimeMillis();
+        List<Object[]> resultList = (List<Object[]>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+
+        for(int i = 0; i < resultList.size(); i++){
+            System.out.println(Arrays.asList(resultList.get(i)));
+        }
+    }
+
 
 
     private List<Integer> orgIds(){
