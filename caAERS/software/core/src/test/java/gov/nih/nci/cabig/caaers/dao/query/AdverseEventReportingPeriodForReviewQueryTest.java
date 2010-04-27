@@ -16,21 +16,21 @@ public class AdverseEventReportingPeriodForReviewQueryTest extends TestCase {
 	
 	public void testFilterByStudy() {
 		query.filterByStudy(5);
-		assertEquals("select rp from AdverseEventReportingPeriod rp  " +
+		assertEquals("select rp from AdverseEventReportingPeriod rp " +
 				"join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  " +
 				"join spa.participant as p WHERE s.id =:studyId order by rp.id" , query.getQueryString());
 	}
 
 	public void testFilterByStudySite() {
 		query.filterByOrganization(5);
-		assertEquals("select rp from AdverseEventReportingPeriod rp  join rp.assignment as spa " +
+		assertEquals("select rp from AdverseEventReportingPeriod rp join rp.assignment as spa " +
 				" join spa.studySite as ss  join ss.organization as org  join ss.study as s  " +
 				"join spa.participant as p WHERE org.id =:organizationId order by rp.id",query.getQueryString());
 	}
 
 	public void testFilterByParticipant() {
 		query.filterByParticipant(7);
-		assertEquals("select rp from AdverseEventReportingPeriod rp  join rp.assignment as spa  " +
+		assertEquals("select rp from AdverseEventReportingPeriod rp join rp.assignment as spa  " +
 				"join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p " +
 				"WHERE p.id =:participantId order by rp.id",query.getQueryString());
 	}
@@ -39,7 +39,7 @@ public class AdverseEventReportingPeriodForReviewQueryTest extends TestCase {
 		query.filterByParticipant(7);
 		query.filterByOrganization(5);
 		query.filterByStudy(5);
-		assertEquals("select rp from AdverseEventReportingPeriod rp  join rp.assignment as spa  " +
+		assertEquals("select rp from AdverseEventReportingPeriod rp join rp.assignment as spa  " +
 				"join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p " +
 				"WHERE p.id =:participantId AND org.id =:organizationId AND s.id =:studyId order by rp.id",query.getQueryString());
 	}
