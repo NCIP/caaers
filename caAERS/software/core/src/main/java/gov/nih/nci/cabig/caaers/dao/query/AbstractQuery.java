@@ -141,7 +141,20 @@ public abstract class AbstractQuery {
      * @param objectQuery
      */
      public void join(String objectQuery) {
-        addToJoinsList(" join " + objectQuery);
+        join(objectQuery, -1);
+
+    }
+
+
+    /**
+     * Joins an object to the query select * from Study s join s.identifiers as id where
+     * s.shortTitle='study'
+     *
+     * @param objectQuery
+     * @param pos the position in join list to insert the join query. 
+     */
+     public void join(String objectQuery, int pos) {
+        addToJoinsList(" join " + objectQuery, pos);
 
     }
 
@@ -160,7 +173,15 @@ public abstract class AbstractQuery {
     }
 
     public void addToJoinsList(String object) {
-        if (!joins.contains(object)) joins.add(object);
+        addToJoinsList(object, -1);
+    }
+
+
+    public void addToJoinsList(String object, int pos) {
+        if (!joins.contains(object)) {
+            if(pos != -1) joins.add(pos, object);
+            else joins.add(object);
+        }
     }
     
     public void setParameterList(String name , List values){
@@ -200,5 +221,6 @@ public abstract class AbstractQuery {
     public String getBaseQueryString(){
         return queryString.toString();
     }
+
     
 }

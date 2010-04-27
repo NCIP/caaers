@@ -14,19 +14,10 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     
 	public void testTest() throws Exception {
 	}
-	private String baseQuery = "Select " +
-					    "participant.id," +
-					    "participant.firstName," +
-					    "participant.lastName, "+
-					    "participant.gender," +
-					    "participant.race," +
-					    "participant.ethnicity, " +
-					    "identifier.value, " +
-					    "identifier.primaryIndicator, " +
-					    "spa.studySubjectIdentifier " +
-					"from Participant participant "+
-					    "left join participant.identifiers as identifier "+
-					    "left join participant.assignments as spa " ;
+	private String baseQuery = "select participant.id, participant.firstName, participant.lastName, " +
+            "participant.gender,participant.race,participant.ethnicity," +
+            "identifier.value,identifier.primaryIndicator,spa.studySubjectIdentifier from Participant participant " +
+            "left join participant.identifiers as identifier left join participant.assignments as spa " ;
 					
     public void testQueryConstructor() throws Exception {
         AbstractAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
