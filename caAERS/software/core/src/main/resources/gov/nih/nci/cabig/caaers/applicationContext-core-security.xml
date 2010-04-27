@@ -590,11 +590,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="querySecurityFilterDispatcher" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
           <property name="filtererMap">
               <map>
+                  <!--
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
+              	  -->
               </map>
           </property>
     </bean>
