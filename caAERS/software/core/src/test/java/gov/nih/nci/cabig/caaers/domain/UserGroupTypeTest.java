@@ -39,6 +39,10 @@ public class UserGroupTypeTest extends TestCase {
 	public void testGetCode(){
 		assertEquals(-8, grpType.getCode().intValue());
 	}
+
+    public void testValueOf(){
+        assertEquals(UserGroupType.caaers_physician, UserGroupType.valueOf("caaers_physician"));
+    }
 	
 	public void testCodes(){
 		int[] codes = UserGroupType.codes();
