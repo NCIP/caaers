@@ -22,7 +22,7 @@ public class ParticipantQuery extends AbstractQuery {
 
     public ParticipantQuery() {
         super(queryString);
-        orderBy("order by p.id");
+        orderBy("p.id");
     }
 
    
