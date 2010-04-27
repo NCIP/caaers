@@ -18,8 +18,11 @@ public class QuerySecurityFiltererDispatcher {
      * @param query
      * @param loginName
      */
-    public void filter(AbstractQuery query){
-        
+    public void filter(AbstractQuery query,String loginId){
+    	QuerySecurityFilterer querySecurityFilterer = getFiltererMap().get(query.getClass().getName());
+    	if (querySecurityFilterer != null) {
+    		querySecurityFilterer.applyFilter(query, loginId);    
+    	}
     }
 
 
