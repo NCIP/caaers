@@ -609,6 +609,4 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
     <bean id="organizationQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
             p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx"/>
-
-
 </beans>
