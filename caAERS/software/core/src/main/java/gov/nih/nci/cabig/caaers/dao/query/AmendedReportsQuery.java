@@ -11,13 +11,16 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
  */
 public class AmendedReportsQuery extends AbstractQuery {
 	
-	private static String queryString = "select r from ReportVersion rv" +
-			" join rv.report as r" +
-			" join r.reportDefinition as rd" +
-			" order by rv.amendedOn desc";
+	private static String queryString = "select r from ReportVersion rv" ;
+			//" join rv.report as r" +
+			//" join r.reportDefinition as rd" +
+			//" order by rv.amendedOn desc";
 	 
 	public AmendedReportsQuery(){
 		super(queryString);
+		join("rv.report as r");
+		join("r.reportDefinition as rd");
+		orderBy("rv.amendedOn desc");
 	}
 	
 	public void filterByOrganization(Integer orgId){
