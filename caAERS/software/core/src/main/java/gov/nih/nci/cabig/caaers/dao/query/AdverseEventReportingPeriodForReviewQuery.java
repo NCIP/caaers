@@ -5,20 +5,28 @@ package gov.nih.nci.cabig.caaers.dao.query;
  *
  */
 public class AdverseEventReportingPeriodForReviewQuery extends AbstractQuery {
-	 private static String queryString = "select rp from AdverseEventReportingPeriod rp " +
+	/* 
+	private static String queryString = "select rp from AdverseEventReportingPeriod rp " +
 	 		" join rp.assignment as spa " +
 	 		" join spa.studySite as ss " +
 	 		" join ss.organization as org " +
 	 		" join ss.study as s " + 
 	 		" join spa.participant as p " +
-	 		"order by rp.id";
+	 		"order by rp.id";*/
 	 
 	 private static final String PARTICIPANT = "participantId";
 	 private static final String STUDY = "studyId";
 	 private static final String ORGANIZATION = "organizationId";
 	 
 	 public AdverseEventReportingPeriodForReviewQuery() {
-		super(queryString);
+		 super("select rp from AdverseEventReportingPeriod rp ");
+		 join("rp.assignment as spa ");
+		 join("spa.studySite as ss ");
+		 join("ss.organization as org ");
+		 join("ss.study as s ");
+		 join("spa.participant as p");
+		 orderBy("rp.id");
+		 //super(queryString);
 	 }
 	 
 	 public void filterByStudy(Integer studyId) {
