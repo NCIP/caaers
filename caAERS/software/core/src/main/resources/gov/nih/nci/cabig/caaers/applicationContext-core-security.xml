@@ -172,6 +172,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <aop:aspect ref="querySecurityFilterAspect">		
 			<aop:pointcut id="QuerySecurityFilterAspectPointCut"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
+                    			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
                     			"/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
 		</aop:aspect>
@@ -432,16 +433,18 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="studySiteSecurityFilterer"/>  
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  
+        <entry key="gov.nih.nci.cabig.caaers.domain.ResearchStaff"
+               value-ref="researchStaffSecurityFilterer"/>                 
+        <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
+               value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/> 
         -->  
         
-        <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
-               value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>               
+              
         <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
                value-ref="organizationSecurityFilterer"/>  
         <entry key="gov.nih.nci.cabig.caaers.domain.LocalOrganization"
                value-ref="organizationSecurityFilterer"/> 
-        <entry key="gov.nih.nci.cabig.caaers.domain.ResearchStaff"
-               value-ref="researchStaffSecurityFilterer"/>                
+              
                
     </util:map>
 
@@ -590,6 +593,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
+                  <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
               </map>
           </property>
     </bean>
@@ -600,6 +604,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             p:entityAssociation="p" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
     <bean id="participantAjaxableQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
             p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+    <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+            p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
 
 
 </beans>
