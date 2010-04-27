@@ -81,13 +81,9 @@ public class AgentsTab extends StudyTab {
         			studyAgent.getStudyAgentINDAssociations().clear();
             	}
         	}
-            // add new
-            // ToDo somehow in the database exists null Agents for StudyAgent rows
-            if (studyAgent != null && studyAgent.getAgent() != null && !studyAgent.isRetired()) {
-                System.out.println("Synchronizing(ADD) for: " + studyAgent.getAgent().getName());
-                command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), studyAgent, false);
-            }
         }
+
+        command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), false);
     }
 
     @Override
@@ -232,7 +228,7 @@ public class AgentsTab extends StudyTab {
         }else{
         	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
             // delete
-            System.out.println("Synchronizing(DELETE) for: " + sa.getAgent().getName());
+            // System.out.println("Synchronizing(DELETE) for: " + sa.getAgent().getName());
             command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), sa, true);
         }
         

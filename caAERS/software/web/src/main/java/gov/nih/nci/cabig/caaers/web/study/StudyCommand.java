@@ -577,50 +577,52 @@ public class StudyCommand {
     *
     * */
     public void synchronizeStudyWithAgentAEList(AgentSpecificAdverseEventListService service, Study s, StudyAgent sa, boolean deleted) {
-
-/*
-        boolean hasLeadCTEPInds = false;
-        boolean isLeadCTEPInds = false;
-
-        // for delete
         if (deleted) {
             service.synchronizeStudyWithAgent(s, sa.getAgent(), deleted);
             return;
         }
+    }
 
-        // for add, find if has leadCTEP INDs 
-        if (sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND()) {
-                isLeadCTEPInds = true;
+    /*
+    * Determined whether a StudyAgent has IND of CTEP and is Lead
+    * */
+    public boolean isCTEPLead(StudyAgent sa) {
+        return (sa.getIndType() != null && sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND()); 
+    }
+
+    public void synchronizeStudyWithAgentAEList(AgentSpecificAdverseEventListService service, Study s, boolean deleted) {
+
+        boolean hasLeadCTEPInds = false;
+
+        for (StudyAgent sa : s.getStudyAgents()) {
+            if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
+            if (isCTEPLead(sa))
                 hasLeadCTEPInds = true;
-        } else {
-            for (StudyAgent studyAgent : s.getStudyAgents()) {
-                if (sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND())
-                    hasLeadCTEPInds = true;
-            }
         }
-
 
         if (hasLeadCTEPInds) {
 
             // delete all not needed
-            for (StudyAgent studyAgent : s.getStudyAgents()) {
-                if (!sa.getIndType().equals(INDType.CTEP_IND) || !sa.getPartOfLeadIND())
-                    service.synchronizeStudyWithAgent(s, studyAgent.getAgent(), true);
+            for (StudyAgent sa : s.getStudyAgents()) {
+                if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
+                if (!isCTEPLead(sa))
+                    service.synchronizeStudyWithAgent(s, sa.getAgent(), true);
             }
 
             // synchronzie the remaining agents
-            for (StudyAgent studyAgent : s.getStudyAgents()) {
-                if (sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND())
-                    service.synchronizeStudyWithAgent(s, studyAgent.getAgent(), false);
+            for (StudyAgent sa : s.getStudyAgents()) {
+                if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
+                if (isCTEPLead(sa))
+                    service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
             }
 
-            // add the new one if it's CTEP Lead
-            if (isLeadCTEPInds)
-                service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
         } else {
-            service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
+            // synchronzie all agents
+            for (StudyAgent sa : s.getStudyAgents()) {
+                if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
+                    service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
+            }
         }
-*/
     }
 
     public StudyRepository getStudyRepository() {
