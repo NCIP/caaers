@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 public class OrganizationFromStudySiteQuery extends AbstractQuery {
 
-    private static String queryString = "SELECT distinct ss.organization from StudySite ss order by ss.organization.name";
+    private static String queryString = "SELECT distinct ss.organization from StudySite ss";//order by ss.organization.name";
 
     private static String ORGANIZATION_NAME = "name";
 
@@ -11,6 +11,7 @@ public class OrganizationFromStudySiteQuery extends AbstractQuery {
     public OrganizationFromStudySiteQuery() {
 
         super(queryString);
+        orderBy("ss.organization.name");
     }
 
     public void filterByOrganizationName(String name) {
