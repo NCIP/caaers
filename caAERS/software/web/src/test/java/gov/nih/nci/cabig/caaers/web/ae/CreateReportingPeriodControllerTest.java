@@ -9,14 +9,18 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -720,5 +724,24 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 
         assertEquals("ae.createReportingPeriod.f1", fieldMap.get("groupOne").getFields().get(0).getAttributes().get(InputField.HELP));
         assertEquals("ae.createReportingPeriod.f2", fieldMap.get("groupOne").getFields().get(1).getAttributes().get(InputField.HELP));
+    }
+    
+    public void testConvertAeFromObservedToSolicited(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.MILD);
+    	AdverseEvent ae2 = Fixtures.createAdverseEvent(2, Grade.LIFE_THREATENING);
+    	LowLevelTerm llt1 = new LowLevelTerm();
+    	llt1.setId(1);
+    	LowLevelTerm llt2 = new LowLevelTerm();
+    	llt2.setId(2);
+    	ae1.setLowLevelTerm(llt1);
+    	ae2.setLowLevelTerm(llt2);
+    	ae1.setSolicited(false);
+    	ae2.setSolicited(false);
+    	reportingPeriod.addAdverseEvent(ae1);
+    	reportingPeriod.addAdverseEvent(ae2);
+    	controller.convertAeFromObservedToSolicited(reportingPeriod, 1, Term.MEDDRA);
+    	assertTrue("Ae not converted to solicited as expected", reportingPeriod.getAdverseEvents().get(0).getSolicited());
+    	
     }
 }

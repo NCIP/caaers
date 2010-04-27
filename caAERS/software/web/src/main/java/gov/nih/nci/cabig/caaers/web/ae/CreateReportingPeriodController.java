@@ -241,15 +241,20 @@ public class CreateReportingPeriodController extends SimpleFormController {
         // Step 1. All the solicited adverse events which are not graded are removed from the reporting period.
         // Step 2. All the solicited aes belonging to the epoch chosen in the form are added to the reporting period as 
         // adverse events only if they are not already present in the reporting period.
+        // Note - The value in existingAeTermsIdMap is whether the AE is observed / solicited. Observed = false
+        // If there is an observed AE present in the reportingPeriod and is not retired it will be saved as solicited ae if there
+        // exists a SolictedAdverseEvent in the new reporting period type.
 
         Map<Integer, Boolean> existingAeTermsIdMap = new HashMap<Integer, Boolean>();
         for (AdverseEvent ae : reportingPeriod.getAdverseEvents())
             if (!ae.getSolicited() || (ae.getSolicited() && ae.getGrade() != null)) {
-                if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
-                    existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), true);
-                } else {
-                    existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), true);
-                }
+            	if(!ae.isRetired()){
+            		if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+            			existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), ae.getSolicited());
+            		} else {
+            			existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), ae.getSolicited());
+            		}
+            	}
             } else
                 ae.retire();
 
@@ -268,7 +273,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
                         aellt.setLowLevelTerm(sae.getLowLevelTerm());
                         adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
                         aellt.setAdverseEvent(adverseEvent);
-                    }
+                        reportingPeriod.addAdverseEvent(adverseEvent);
+                    }else if(!existingAeTermsIdMap.get(sae.getLowLevelTerm().getId()))
+                    	convertAeFromObservedToSolicited(reportingPeriod, sae.getLowLevelTerm().getId(), Term.MEDDRA);
                 } else {
                     if (!existingAeTermsIdMap.containsKey(sae.getCtcterm().getId())) {
                         AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
@@ -279,9 +286,11 @@ public class CreateReportingPeriodController extends SimpleFormController {
                         aeCtcTerm.setAdverseEvent(adverseEvent);
                         if (command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
                             adverseEvent.setExpected(true);
-                    }
+                        reportingPeriod.addAdverseEvent(adverseEvent);
+                    }else if(!existingAeTermsIdMap.get(sae.getCtcterm().getId()))
+                    	convertAeFromObservedToSolicited(reportingPeriod, sae.getCtcterm().getId(), Term.CTC);
                 }
-                reportingPeriod.addAdverseEvent(adverseEvent);
+                
             }
         }
 
@@ -298,6 +307,26 @@ public class CreateReportingPeriodController extends SimpleFormController {
         ModelAndView modelAndView = new ModelAndView("ae/confirmReportingPeriod", map);
 
         return modelAndView;
+    }
+    
+    /**
+     * This method will convert the AE from observed to solicited type by simply setting the solicted flag to true.
+     * Before its done a check is made to see if the AE being converted is retired or not. This is needed because the soft delete
+     * can eventually lead to the possibility of 2 or more adverse events with the same term in the reporting period.
+     * @param reportingPeriod
+     * @param adverseEventId
+     * @param term
+     */
+    protected void convertAeFromObservedToSolicited(AdverseEventReportingPeriod reportingPeriod, Integer termId, Term term){
+    	for(AdverseEvent ae: reportingPeriod.getAdverseEvents()){
+    		if(term == Term.MEDDRA){
+    			if(!ae.isRetired() && ae.getLowLevelTerm().getId().equals(termId))
+    				ae.setSolicited(true);
+    		}else{
+    			if(!ae.isRetired() && ae.getAdverseEventCtcTerm().getCtcTerm().getId().equals(termId))
+    				ae.setSolicited(true);
+    		}
+    	}
     }
 
     /**
