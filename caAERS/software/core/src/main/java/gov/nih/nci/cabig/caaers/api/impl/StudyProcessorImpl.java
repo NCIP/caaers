@@ -209,6 +209,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
 				if(studyImportOutcome.isSavable() && errors.size() == 0){
 					try {
+						studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
 						studyRepository.save(studyImportOutcome.getImportedDomainObject());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -289,6 +290,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					if(anotherStudy == null){
 
 						try {
+							studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
 							studyRepository.save(studyImportOutcome.getImportedDomainObject());
 						} catch (Exception e) {
 							// TODO Auto-generated catch block

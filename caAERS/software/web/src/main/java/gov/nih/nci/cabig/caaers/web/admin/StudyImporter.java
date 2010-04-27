@@ -18,7 +18,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.MessageSource;
 
 /**
  * @author Sameer Sawant
@@ -29,9 +28,6 @@ public class StudyImporter extends Importer{
 	private DomainObjectValidator domainObjectValidator;
 	private StudyProcessorImpl studyProcessorImpl;
 	private StudyRepository studyRepository;
-	
-	public void StudyImporter(){
-	}
 	
 	public void setStudyRepository(StudyRepository studyRepository){
 		this.studyRepository = studyRepository;
@@ -107,6 +103,7 @@ public class StudyImporter extends Importer{
 	
 	public void save(ImportCommand command, HttpServletRequest request){
 		for (DomainObjectImportOutcome<Study> importOutcome : command.getImportableStudies()) {
+			studyRepository.synchronizeStudyPersonnel(importOutcome.getImportedDomainObject());
         	studyRepository.save(importOutcome.getImportedDomainObject());
         }
 	}

@@ -4,18 +4,35 @@ import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.INDHolder;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
+import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +62,7 @@ public class StudyRepository {
     private InvestigatorDao investigatorDao;
     private WorkflowConfigDao workflowConfigDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
+    private SiteResearchStaffDao siteResearchStaffDao;
     
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI"; 
@@ -284,18 +302,14 @@ public class StudyRepository {
     public void synchronizeStudyPersonnel(Study study) {
         //Identify newly added StudyOrganizations to associate ResearchStaff
         //whose associateAllStudies flag is set to true.
-        ResearchStaffQuery query = null;
-        List<ResearchStaff> researchStaffs = null;
+        List<SiteResearchStaff> siteResearchStaffs = null;
         for(StudyOrganization studyOrganization : study.getStudyOrganizations()) {
-            if (studyOrganization.getOrganization() == null) continue;
-            researchStaffs = new ArrayList<ResearchStaff>();
-            query= new ResearchStaffQuery();
-            query.filterByAssociateAllStudies(true);
-            query.filterByOrganization(Integer.toString(studyOrganization.getOrganization().getId()));
-            researchStaffs = researchStaffDao.getLocalResearchStaff(query);
-            for(ResearchStaff researchStaff : researchStaffs){
-            	study.syncStudyPersonnel(researchStaff);
-            }
+        	siteResearchStaffs = siteResearchStaffDao.getOrganizationResearchStaffs(studyOrganization.getOrganization());
+        	for(SiteResearchStaff siteResearchStaff : siteResearchStaffs){
+        		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+        			studyOrganization.syncStudyPersonnel(siteResearchStaff);
+        		}
+        	}
         }
     }
     
@@ -335,19 +349,18 @@ public class StudyRepository {
     
     //Associate the ResearchStaff to all the Studies 
     public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
-    	StudyQuery query = null;
-    	List<Study> studies = null;
+    	List<StudyOrganization> studyOrganizations = null;
+    	StudyOrganizationsQuery studyOrgsQuery = null;
     	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
     		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
-        		query = new StudyQuery();
-        		query.joinStudyOrganization();
-        		query.filterByOrganizationId(siteResearchStaff.getOrganization().getId());
-        		studies = studyDao.find(query);
-        		for(Study study : studies){
-        			study.syncStudyPersonnel(researchStaff);
-        			studyDao.save(study);
-                    studyDao.flush();
-        		}
+    			studyOrgsQuery = new StudyOrganizationsQuery();
+    			studyOrgsQuery.filterByOrganizationId(siteResearchStaff.getOrganization().getId());
+    			studyOrganizations = studyDao.getStudyOrganizations(studyOrgsQuery);
+    			for(StudyOrganization studyOrg : studyOrganizations){
+    				studyOrg.syncStudyPersonnel(siteResearchStaff);
+    				studyDao.save(studyOrg.getStudy());
+    				studyDao.flush();
+    			}
     		}
     	}
     }
@@ -399,5 +412,9 @@ public class StudyRepository {
 	public void setInvestigationalNewDrugDao(
 			InvestigationalNewDrugDao investigationalNewDrugDao) {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
+	}
+
+	public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
+		this.siteResearchStaffDao = siteResearchStaffDao;
 	}
 }

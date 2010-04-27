@@ -287,6 +287,32 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
     }
     
+    /**
+     * This method return all the StudyOrganiations for a given Organization ID.
+     * @param query
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public List<StudyOrganization> getStudyOrganizations(final AbstractQuery query){
+    	String queryString = query.getQueryString();
+    	log.debug("::: " + queryString.toString());
+    	
+    	return (List<StudyOrganization>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+    }
+    
 	/**Gets by the unique Identifier
 	 * @param externalId
 	 * @return

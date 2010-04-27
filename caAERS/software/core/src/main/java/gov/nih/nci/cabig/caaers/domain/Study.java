@@ -1,13 +1,17 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.CollectionUtil;
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.caaers.CollectionUtil;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -1207,7 +1211,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	return false; 
     }
 
-    public AbstractExpectedAE checkExpectedAEUniqueness() {
+    @SuppressWarnings("unchecked")
+	public AbstractExpectedAE checkExpectedAEUniqueness() {
         List expectedAEs = null;
         if (this.getAeTerminology().getMeddraVersion() != null) expectedAEs = this.getExpectedAEMeddraLowLevelTerms();
         else if (this.getAeTerminology().getCtcVersion() != null) expectedAEs = this.getExpectedAECtcTerms();
@@ -1231,35 +1236,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     
-    /**
-     * This method synchronizes StudyPersonnel associated to a StudyOrganization with the given ResearchStaff  
-     * @param researchStaff
-     */
-    public void syncStudyPersonnel(ResearchStaff researchStaff){
-    	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
-    		List<StudyOrganization> studyOrgsList = findActiveStudyOrganizations(siteResearchStaff.getOrganization());
-    		for(StudyOrganization studyOrganization : studyOrgsList){
-    			studyOrganization.syncStudyPersonnel(siteResearchStaff);
-    		}
-    	}
-    }
-    
-    /**
-     * This method returns a list of study organizations contained by the study have the given organization.
-     * @param organization
-     * @return
-     */
-    public List<StudyOrganization> findActiveStudyOrganizations(Organization organization){
-    	List<StudyOrganization> studyOrgsList = new ArrayList<StudyOrganization>();
-    	for(StudyOrganization studyOrganization : getActiveStudyOrganizations()){
-            if (studyOrganization.getOrganization() == null) continue;
-    		if(studyOrganization.getOrganization().equals(organization)){
-    			studyOrgsList.add(studyOrganization);
-    		}
-    	}
-    	return studyOrgsList;
-    }
-
     @Transient
     public List<StudyOrganization> getUniqueStudyOrganizations() {
         Set<Organization> set = new HashSet<Organization>();

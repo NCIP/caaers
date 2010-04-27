@@ -697,6 +697,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
         <property name="studyDao" ref="studyDao"></property>
         <property name="researchStaffDao" ref="researchStaffDao"></property>
+        <property name="siteResearchStaffDao" ref="siteResearchStaffDao"></property>
         <property name="organizationDao" ref="organizationDao"></property>
         <property name="organizationRepository" ref="organizationRepository" />
         <property name="investigatorDao" ref="investigatorDao" />
