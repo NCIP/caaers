@@ -169,6 +169,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>			
 		</aop:aspect>
 
+        <aop:aspect ref="querySecurityFilterAspect">		
+			<aop:pointcut id="QuerySecurityFilterAspectPointCut"
+                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
+                    			"/>
+            <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
+		</aop:aspect>
+		
 <!--     
         <aop:aspect ref="participantQueryFilterByLoginIdAspect">		
 			<aop:pointcut id="executionOfParticipantQueryFilter"
@@ -583,4 +590,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <bean id="studyQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.StudyQuerySecurityFilterer" />
     <bean id="participantQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.ParticipantQuerySecurityFilterer" />
+ 
+
+    <bean id="querySecurityFilterAspect"   class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect" >
+    	<property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>
+    </bean>
+
 </beans>
