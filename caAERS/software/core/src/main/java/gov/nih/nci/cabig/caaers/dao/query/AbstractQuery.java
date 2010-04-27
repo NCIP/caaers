@@ -86,7 +86,7 @@ public abstract class AbstractQuery {
 
         if (StringUtils.isNotEmpty(orderByClause)) {
             // finally add order by
-            queryBuffer.append(" " + orderByClause);
+            queryBuffer.append(" order by " + orderByClause);
         }
 
         return queryBuffer.toString();
