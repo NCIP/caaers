@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 public class InvestigatorQuery extends AbstractQuery {
 
-    private static String queryString = "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si order by i.id";
+    private static String queryString = "SELECT distinct i from Investigator i";// left join fetch i.siteInvestigatorsInternal si order by i.id";
     
     private static String FIRST_NAME = "firstName";
 
@@ -19,6 +19,8 @@ public class InvestigatorQuery extends AbstractQuery {
     public InvestigatorQuery() {
 
         super(queryString);
+        leftJoinFetch("i.siteInvestigatorsInternal si");
+        orderBy("i.id");
     }
     
     public void filterByDifferentInvestigatorId(Integer id){
