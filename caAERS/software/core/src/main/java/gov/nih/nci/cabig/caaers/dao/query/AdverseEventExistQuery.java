@@ -9,12 +9,15 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
  *
  */
 public class AdverseEventExistQuery extends AbstractQuery {
-	private static String queryString = "select ae from AdverseEventReportingPeriod rp " +
-			" left join rp.adverseEvents as ae " +
-			" left outer join ae.lowLevelTerm as llt " +
-			" left outer join ae.adverseEventTerm as term ";
+	private static String queryString = "select ae from AdverseEventReportingPeriod rp " ;
+		//	" left join rp.adverseEvents as ae " +
+		//	" left outer join ae.lowLevelTerm as llt " +
+		//	" left outer join ae.adverseEventTerm as term ";
 	public AdverseEventExistQuery() {
 		super(queryString);
+		leftJoin("rp.adverseEvents as ae ");
+		leftOuterJoin("ae.lowLevelTerm as llt ");
+		leftOuterJoin("ae.adverseEventTerm as term");
 	}
 	
 	

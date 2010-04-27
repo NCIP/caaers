@@ -168,6 +168,10 @@ public abstract class AbstractQuery {
         addToJoinsList(" left join " + objectQuery);
     }
 
+    public void leftOuterJoin(String objectQuery) {
+        addToJoinsList(" left outer join " + objectQuery);
+    }
+    
     public void leftJoinFetch(String objectQuery) {
         addToJoinsList(" left join fetch " + objectQuery);
     }
