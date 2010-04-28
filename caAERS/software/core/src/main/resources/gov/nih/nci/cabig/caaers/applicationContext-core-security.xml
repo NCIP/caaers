@@ -173,6 +173,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<aop:pointcut id="QuerySecurityFilterAspectPointCut"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery)) and args(qry)
+                    			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.find(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getLocalOrganizations(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getBySubnames(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
@@ -598,6 +599,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery"   value-ref="studyQuerySecurityFilterer"/>
+                  <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
