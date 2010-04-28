@@ -35,7 +35,7 @@ public class ReportingPeriodIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into reportingperiod_index (id,login_id,reportingperiod_id) "
-                + "values (seq_reportingperiod_index_id.NEXTVAL,?,?,?,?)";
+                + "values (seq_reportingperiod_index_id.NEXTVAL,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;

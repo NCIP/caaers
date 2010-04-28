@@ -33,7 +33,7 @@ public class ExpeditedAdverseEventReportIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into expedited_ae_index (id,login_id,expedited_ae_id) "
-                + "values (seq_expedited_ae_index_id.NEXTVAL,?,?,?,?)";
+                + "values (seq_expedited_ae_index_id.NEXTVAL,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;

@@ -47,7 +47,7 @@ public class StudyIndexDao extends CaaersDao<StudyIndex> {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into study_index (id,login_id,study_id) "
-                + "values (seq_study_index_id.NEXTVAL,?,?,?,?)";
+                + "values (seq_study_index_id.NEXTVAL,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;

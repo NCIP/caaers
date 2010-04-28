@@ -33,7 +33,7 @@ public class AdverseEventIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into adverseevent_index (id,login_id,adverseevent_id) "
-                + "values (seq_adverseevent_index_id.NEXTVAL,?,?,?,?)";
+                + "values (seq_adverseevent_index_id.NEXTVAL,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;

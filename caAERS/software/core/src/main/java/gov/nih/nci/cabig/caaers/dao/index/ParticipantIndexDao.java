@@ -37,7 +37,7 @@ public class ParticipantIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into participant_index (id,login_id,participant_id) "
-                + "values (seq_participant_index_id.NEXTVAL,?,?,?,?)";
+                + "values (seq_participant_index_id.NEXTVAL,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;

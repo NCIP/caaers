@@ -34,7 +34,7 @@ public class OrganizationIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into organization_index (id,login_id,organization_id) "
-                + "values (seq_organization_index_id.NEXTVAL,?,?,?,?)";
+                + "values (seq_organization_index_id.NEXTVAL,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;
