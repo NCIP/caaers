@@ -221,6 +221,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	
  	@SuppressWarnings("unchecked")
 	public List<Organization> searchOrganization(final OrganizationQuery query){
+ 		System.out.println("SRINI " + query.getQueryString());
  		List organizations =  organizationDao.getLocalOrganizations(query);
  		// to get remote organizations ...
  		Organization searchCriteria = new RemoteOrganization();
@@ -243,7 +244,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	}
  	
  	public List<Organization> restrictBySubnames(final String[] subnames) {
- 		List<Organization> localOrganizations = organizationDao.getBySubnames(subnames);
+ 		String text = subnames[0];
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(text);
+ 		List<Organization> localOrganizations = organizationDao.getBySubnames(query);
  		//get organizations from remote service
  		List<Organization> remoteOrganizations = null;
  		if (coppaModeForAutoCompleters) {
