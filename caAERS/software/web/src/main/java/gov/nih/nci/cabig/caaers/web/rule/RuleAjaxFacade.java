@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -567,8 +568,10 @@ public class RuleAjaxFacade {
      */
     public List<String> matchSponsors(String sponsorName) {
         // REVISIT: Replace this with the SponsorDao.
-
-        List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(sponsorName));
+ 		//String text = subnames[0];
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(sponsorName);
+        List<Organization> orgs = organizationDao.getBySubnames(query);
         List<String> sponsors = new ArrayList<String>();
         for (Organization org : orgs) {
             sponsors.add(org.getName());
@@ -599,7 +602,9 @@ public class RuleAjaxFacade {
      * @return List<Organization>
      */
     public List<Organization> matchOrganization(final String text) {
-        List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(text);
+        List<Organization> orgs = organizationDao.getBySubnames(query);
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
 
@@ -610,7 +615,9 @@ public class RuleAjaxFacade {
      */
     public List<Organization> matchSites(String text) {
         // System.out.println("in match sites...");
-        List<Organization> sites = organizationDao.getBySubnames(extractSubnames(text));
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(text);
+        List<Organization> sites = organizationDao.getBySubnames(query);
 
         // cut down objects for serialization
         return ObjectTools.reduceAll(sites, "id", "name", "nciInstituteCode");
