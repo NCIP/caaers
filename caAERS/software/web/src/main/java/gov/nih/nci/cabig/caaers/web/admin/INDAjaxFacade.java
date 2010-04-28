@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -38,7 +39,10 @@ public class INDAjaxFacade {
     }
 
     public List<Organization> matchOrganization(String text) {
-        List<Organization> orgs = organizationDao.getBySubnames(new String[] { text });
+
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(text);
+        List<Organization> orgs = organizationDao.getBySubnames(query);
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
     /*
