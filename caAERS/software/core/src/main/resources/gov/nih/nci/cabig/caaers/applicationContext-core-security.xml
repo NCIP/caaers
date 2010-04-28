@@ -172,7 +172,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <aop:aspect ref="querySecurityFilterAspect">		
 			<aop:pointcut id="QuerySecurityFilterAspectPointCut"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
+                    			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
+                    			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getLocalOrganizations(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
+                    			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getBySubnames(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
+        
                     			"/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
 		</aop:aspect>
@@ -437,13 +441,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="researchStaffSecurityFilterer"/>                 
         <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
                value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/> 
-        -->  
-        
-              
         <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
                value-ref="organizationSecurityFilterer"/>  
         <entry key="gov.nih.nci.cabig.caaers.domain.LocalOrganization"
                value-ref="organizationSecurityFilterer"/> 
+        -->  
+        
+              
+
               
                
     </util:map>
@@ -590,13 +595,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="querySecurityFilterDispatcher" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
           <property name="filtererMap">
               <map>
-                  <!--
+                  
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
+                  <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
-              	  -->
+              	  
               </map>
           </property>
     </bean>
