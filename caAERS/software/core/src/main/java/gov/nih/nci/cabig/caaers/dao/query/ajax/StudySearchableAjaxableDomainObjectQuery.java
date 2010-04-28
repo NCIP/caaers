@@ -58,7 +58,7 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
                 "sponsor.organization.nciInstituteCode "+
                 "from Study study");
         
-        join("study.StudyOrganizations as sponsor");
+        join("study.studyOrganizations as sponsor");
         leftJoin("study.identifiers as identifier");
         andWhere("sponsor.class = 'SFS'");
         orderBy("study.shortTitle");
