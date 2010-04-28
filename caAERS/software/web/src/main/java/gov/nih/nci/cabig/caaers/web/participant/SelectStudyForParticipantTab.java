@@ -73,9 +73,9 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 
             List<Study> studies = studyRepository.find(query);
             
-            if (command.getLoggedinResearchStaff() != null) {
-                studies = WebUtils.filterStudiesForResearchStaff(studies, command.getLoggedinResearchStaff(), command.getOrganization());
-            }
+        //    if (command.getLoggedinResearchStaff() != null) {
+        //        studies = WebUtils.filterStudiesForResearchStaff(studies, command.getLoggedinResearchStaff(), command.getOrganization());
+        //    }
 
             participantCommand.setStudies(studies);
             participantCommand.setSearchText("");
