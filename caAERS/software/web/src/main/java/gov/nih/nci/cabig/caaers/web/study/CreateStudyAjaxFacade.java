@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
@@ -173,7 +174,9 @@ public class CreateStudyAjaxFacade {
     }
     
     public List<Organization> matchOrganization(final String text) {
-        List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(text);
+        List<Organization> orgs = organizationDao.getBySubnames(query);
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
 
