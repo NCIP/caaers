@@ -11,7 +11,7 @@ public class OrganizationQuery extends AbstractQuery {
     public OrganizationQuery() {
 
         super(queryString);
-        orderBy("o.id");
+        orderBy("o.name");
     }
 
     public void filterByOrganizationName(final String name) {
@@ -23,6 +23,13 @@ public class OrganizationQuery extends AbstractQuery {
     public void filterByNciInstituteCode(final String nciInstituteCode) {
         String searchString = "%" + nciInstituteCode.toLowerCase() + "%";
         andWhere("lower(o.nciInstituteCode) LIKE :" + NCI_CODE);
+        setParameter(NCI_CODE, searchString);
+    }
+    
+    public void filterByOrganizationNameOrNciCode(final String text) {
+        String searchString = "%" + text.toLowerCase() + "%";
+        andWhere("(lower(o.name) LIKE :" + ORGANIZATION_NAME + " or lower(o.nciInstituteCode) LIKE :" + NCI_CODE+")");
+        setParameter(ORGANIZATION_NAME, searchString);
         setParameter(NCI_CODE, searchString);
     }
 
