@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -87,7 +88,9 @@ public class ReportDefinitionAjaxFacade {
     }
 
     public List<Organization> matchOrganization(String text) {
-        return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name", "nciInstituteCode");
+    	OrganizationQuery query = new OrganizationQuery();
+    	query.filterByOrganizationNameOrNciCode(text);
+        return ObjectTools.reduceAll(orgDao.getBySubnames(query), "id", "name", "nciInstituteCode");
     }
     public List<Organization> restrictOrganization(String text) {
         List<Organization> orgs = organizationRepository.restrictBySubnames(new String[] { text });
