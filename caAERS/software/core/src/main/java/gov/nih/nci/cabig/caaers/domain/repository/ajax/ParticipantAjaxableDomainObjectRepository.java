@@ -25,7 +25,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     
 	public List<T> findParticipants(ParticipantAjaxableDomainObjectQuery query) {
 		
-		System.out.println(query.getQueryString());
+		//System.out.println(query.getQueryString());
 		
         List<Object[]> objects = super.find(query);
         Map<Integer,T> existingParticipantsMap = new LinkedHashMap<Integer, T>();
