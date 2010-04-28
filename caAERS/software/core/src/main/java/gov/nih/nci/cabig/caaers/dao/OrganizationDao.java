@@ -128,12 +128,13 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      * @return List of matching organizations.
      */
     @SuppressWarnings("unchecked")
-    public List<Organization> getBySubnames(final String[] subnames) {
-    	// get local organizations and remote objects(stored locally)
-    	List<Organization> organizations = findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    public List<Organization> getBySubnames(final OrganizationQuery query) {
+     	//List<Organization> organizations = findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    	List<Organization> organizations = executeQuery(query);
     	return organizations;
 
     }
+
 
     /**
      * Save or update the organization in the db.
@@ -212,7 +213,11 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      */
     @SuppressWarnings("unchecked")
 	public List<Organization> getLocalOrganizations(final OrganizationQuery query){
+    	List localOrganizations = this.executeQuery(query);
+    	return localOrganizations;
+    	/*
     	String queryString = query.getQueryString();
+    	System.out.println("SRINI DAO" + query.getQueryString());
         log.debug("::: " + queryString);
         List localOrganizations =  (List<Organization>) getHibernateTemplate().execute(new HibernateCallback() {
 
@@ -227,7 +232,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
                 return hiberanteQuery.list();
             }
         });
-        return localOrganizations;
+        return localOrganizations;*/
     }
     
     @SuppressWarnings("unchecked")
@@ -239,6 +244,26 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 			return new ArrayList<Organization>();
 		}
     }
+    
+    
+    @SuppressWarnings("unchecked")
+    public List<Organization> executeQuery(final OrganizationQuery query){
+    	List localOrganizations =  (List<Organization>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException,
+                            SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+                }
+                return hiberanteQuery.list();
+            }
+        });
+        return localOrganizations;    	
+    }
+    
     
     /**
      * This method will return all the NCI Institute codes from organizations.
