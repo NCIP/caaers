@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 public class StudyHavingStudySiteQuery extends AbstractQuery {
 
-    private static String queryString = "select distinct ss.study from StudySite ss";
+    private static String queryString = "select distinct s from Study s";
 
     private static String ORGANIZATION_NAME = "organizationName";
     
@@ -17,6 +17,8 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
     public StudyHavingStudySiteQuery() {
 
         super(queryString);
+        join("s.studyOrganizations ss");
+        andWhere("ss.class = 'SST'");
     }
 
     public void filterByStudySiteName(final String organizationName) {
@@ -31,19 +33,19 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
     }
     public void filterByStudyShortTile(final String shortTitle) {
         String searchString = "%" + shortTitle.toLowerCase() + "%";
-        andWhere("lower(ss.study.shortTitle) LIKE :" + STIUDY_SHORT_TITLE);
+        andWhere("lower(s.shortTitle) LIKE :" + STIUDY_SHORT_TITLE);
         setParameter(STIUDY_SHORT_TITLE, searchString);
     }
 
     public void filterByIdentifierValue(final String Identifiervalue) {
         String searchString = "%" + Identifiervalue.toLowerCase() + "%";
-        andWhere("lower(ss.study.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+        andWhere("lower(s.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
         setParameter(STUDY_IDENTIFIER_VALUE, searchString);
     }
 
     public void filterByIdentifierValueExactMatch(final String Identifiervalue) {
         String searchString = Identifiervalue.toLowerCase();
-        andWhere("lower(ss.study.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+        andWhere("lower(s.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
         setParameter(STUDY_IDENTIFIER_VALUE, searchString);
     }
     
@@ -53,7 +55,7 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
      */
     public void filterByDataEntryStatus(boolean ignoreNonQCedStudy) {
         if (ignoreNonQCedStudy) {
-            andWhere("ss.study.dataEntryStatus = :" + DATA_ENTRY_STATUS);
+            andWhere("s.dataEntryStatus = :" + DATA_ENTRY_STATUS);
             setParameter(DATA_ENTRY_STATUS, true);
         }
     }
