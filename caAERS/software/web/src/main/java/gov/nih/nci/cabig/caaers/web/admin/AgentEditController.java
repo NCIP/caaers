@@ -54,25 +54,8 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
         return agentDao;
     }
 
-/*
-    @Override
-    protected AgentCommand save(AgentCommand command, Errors errors) {
-        System.out.println("Controller save");
-        System.out.println("Saving: ID:"+command.getAgent().getId());
-        System.out.println("Saving: ID:"+command.getAgent().getName());
-        System.out.println("Saving: ID:"+command.getAgent().getNscNumber());
-        getDao().save(command.getAgent());
-        return command;
-    }
-*/
-
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-/*
-        ModelAndView mv = new ModelAndView("admin/viewAgent");
-        mv.addObject("command", command);
-        return mv;
-*/
         return null;
     }
 

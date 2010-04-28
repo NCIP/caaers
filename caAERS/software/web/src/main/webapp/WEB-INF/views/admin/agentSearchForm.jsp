@@ -38,8 +38,12 @@ function buildTable(form) {
             <chrome:box title="Agent Search Form" autopad="false">
              <tags:instructions code="agentSearch" />
                   <div class="row">
-                      <div class="label">Name</div>
+                      <div class="label"><caaers:message code="LBL_agent.name" /></div>
                       <div class="value"><input id="prop0" type="text" name="text"/></div>
+                  </div>
+                  <div class="row">
+                      <div class="label"><caaers:message code="LBL_agent.nscNumber" /></div>
+                      <div class="value"><input id="prop1" type="text" name="nsc"/></div>
                   </div>
 <%--
                   <div class="row">

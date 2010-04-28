@@ -52,22 +52,9 @@ public class AgentCreateController extends AutomaticSaveAjaxableFormController<A
         return agentDao;
     }
 
-/*
-    @Override
-    protected AgentCommand save(AgentCommand command, Errors errors) {
-        System.out.println("Controller save...");
-        getDao().save(command.getAgent());
-        return command;
-    }
-*/
-
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         return null;
-/*
-        getDao().save(((AgentCommand)command).getAgent());
-        return new ModelAndView("admin/viewAgent");
-*/
     }
 
     @Override
