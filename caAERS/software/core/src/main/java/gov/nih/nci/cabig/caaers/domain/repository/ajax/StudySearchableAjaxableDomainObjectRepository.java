@@ -55,7 +55,8 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
 
             } else {
                 //update the primary identifier
-                 if(BooleanUtils.toBoolean((String)o[3])){
+                 //if(BooleanUtils.toBoolean((String)o[3])){
+                 if (o[3] != null && (Boolean) o[3]) {
                     studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
                  }
             }
