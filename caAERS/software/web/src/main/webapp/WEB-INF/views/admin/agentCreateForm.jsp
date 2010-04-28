@@ -17,13 +17,14 @@
         </div>
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.nscNumber" text="" path="agent.nscNumber" /></div>
-            <div class="value"><ui:text path="agent.nscNumber" size="20"/></div>
+            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}" /></div>
         </div>
 
 
         <br>
 
-        <chrome:division collapsable="false" collapsed="false" title="Agent Specific AE List">
+            AgentID: ${command.agent.id}.
+        <chrome:division collapsable="false" collapsed="false" title="Expected Adverse Events">
 
             <c:set var="versionName" value="${not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
             <c:set var="isMeddra" value="${empty command.ctcVersion ? not empty command.meddraVersion ? true : false : false}" />

@@ -5,8 +5,8 @@
 function buildTable(form) {
 	$('indicator').className='';
 //	showCoppaSearchDisclaimer();
-	var text = $('prop0').value;
-	// var type = $('prop1').value;
+	var name = $('name').value;
+	var nsc = $('nsc').value;
 
 /*
 	for(var x=0; x < 2; x++) {
@@ -17,11 +17,11 @@ function buildTable(form) {
 	}
 */
 
-	// $('prop').value = type;
-	$('value').value = text;
+	$('name').value = name;
+    $('nsc').value = nsc;
 
 	var parameterMap = getParameterMap(form);
-	search.getAgentsTable(parameterMap, text, showTable);
+	search.getAgentsTable(parameterMap, name, nsc, showTable);
     $('bigSearch').show();
 }
 </script>
@@ -35,15 +35,15 @@ function buildTable(form) {
 
     <form:form name="searchForm" id="searchForm" method="post">
 
-            <chrome:box title="Agent Search Form" autopad="false">
-             <tags:instructions code="agentSearch" />
+            <chrome:box title="Search Agents" autopad="false">
+             <tags:instructions code="admin.agent.search" />
                   <div class="row">
                       <div class="label"><caaers:message code="LBL_agent.name" /></div>
-                      <div class="value"><input id="prop0" type="text" name="text"/></div>
+                      <div class="value"><input id="name" type="text" name="name"/></div>
                   </div>
                   <div class="row">
                       <div class="label"><caaers:message code="LBL_agent.nscNumber" /></div>
-                      <div class="value"><input id="prop1" type="text" name="nsc"/></div>
+                      <div class="value"><input id="nsc" type="text" name="nsc"/></div>
                   </div>
 <%--
                   <div class="row">
@@ -69,8 +69,8 @@ function buildTable(form) {
            <div id="bigSearch" style="display:none;">
                <form:form id="assembler">
                    <div>
-                       <input type="hidden" name="_prop" id="prop">
-                       <input type="hidden" name="_value" id="value">
+                       <input type="hidden" name="_name" id="_name">
+                       <input type="hidden" name="_nsc" id="_nsc">
                    </div>
                    <chrome:box title="Search Results">
                        <chrome:division id="single-fields">

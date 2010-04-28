@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <tags:dwrJavascriptLink objects="agentFacade"/>
 
-<admin:agent3rdLevelMenu selected="search" />
+<admin:agent3rdLevelMenu selected="create" />
 
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="singleFields">
@@ -18,13 +18,13 @@
         </div>
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.nscNumber" text="" path="agent.nscNumber" /></div>
-            <div class="value"><ui:text path="agent.nscNumber" size="20"/></div>
+            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}"/></div>
         </div>
 
 
         <br>
 
-        <chrome:division collapsable="false" collapsed="false" title="Agent Specific AE List">
+        <chrome:division collapsable="false" collapsed="false" title="Expected Adverse Events">
 
             <c:set var="versionName" value="${not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
             <c:set var="isMeddra" value="${empty command.ctcVersion ? not empty command.meddraVersion ? true : false : false}" />
@@ -44,12 +44,12 @@
             </div>
 
             <div class="row" id="ctcRow" style="display: ${command.terminology.code eq '2' ? 'none' : ''};">
-                <div class="label">Ctc Version</div>
+                <div class="label">CTCAE version</div>
                 <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion"  readonly="${command.ctcVersion.id > 0}"/></div>
             </div>
 
             <div class="row" id="meddraRow" style="">
-                <div class="label">Meddra Version</div>
+                <div class="label">MedDRA version</div>
                 <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" readonly="${command.meddraVersion.id > 0}" /></div>
             </div>
 

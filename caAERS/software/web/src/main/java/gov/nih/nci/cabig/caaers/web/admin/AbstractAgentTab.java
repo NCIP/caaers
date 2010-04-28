@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListServiceImpl;
@@ -32,6 +31,9 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     private AgentSpecificTermDao agentSpecificTermDao;
     private CtcDao ctcDao;
     private MeddraVersionDao meddraVersionDao;
+    private StudyDao studyDao;
+    private StudyAgentDao studyAgentDao;
+    private AgentDao agentDao;
     private AgentSpecificAdverseEventListServiceImpl agentSpecificAdverseEventListService;
     
     public AbstractAgentTab(String lName, String sName, String vName) {
@@ -60,13 +62,55 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     @Override
     public void postProcess(HttpServletRequest request, AgentCommand command, Errors errors) {
         super.postProcess(request, command, errors);
+        System.out.println("postProcess...");
         if (request.getParameter(AbstractAjaxFacade.AJAX_REQUEST) != null) return;
 
+        List<StudyAgent> l = null;
+        if (command.getAgent().getId() != null) {
+             l = getStudyAgentDao().getByAgentID(command.getAgent().getId());
+        }
+        
+        List<AgentSpecificTerm> deleted = new ArrayList<AgentSpecificTerm>();
         for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
-            if (!t.getDeleted()) getAgentSpecificTermDao().save(t);
-            else {
-                getAgentSpecificTermDao().delete(t);
-                agentSpecificAdverseEventListService.postDeleteAgentSpecificTerm(t);
+            if (t.getDeleted()) {
+                    getAgentSpecificTermDao().delete(t);
+                    deleted.add(t);
+            } else {
+                getAgentSpecificTermDao().save(t);
+            }
+        }
+
+        // delete agent terms 
+        for (AgentSpecificTerm t : deleted) {
+            command.getAgentSpecificTerms().remove(t);
+
+            // delete the term from studies
+            if (l != null)
+                for (StudyAgent s : l) {
+                    getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s.getStudy(), t, true);
+                }
+        }
+
+        if (l != null) {
+            System.out.println("0:" + command.getAgent());
+
+
+            for (StudyAgent s : l) {
+                System.out.println(s.getAgent());
+                agentDao.merge(s.getAgent());
+            }
+
+            command.setAgent(agentDao.merge(command.getAgent()));
+            System.out.println("O2:"+command.getAgent());
+
+            for (StudyAgent s : l) {
+                System.out.println("X:"+s.getAgent() + (s.getAgent() == command.getAgent()));
+            }
+
+            // sync the agent terms with the study
+            for (StudyAgent s : l) {
+                getAgentSpecificAdverseEventListService().synchronizeStudyWithAgent(s.getStudy(), command.getAgent());
+                studyDao.save(s.getStudy());
             }
         }
     }
@@ -117,5 +161,29 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
 
     public void setAgentSpecificAdverseEventListService(AgentSpecificAdverseEventListServiceImpl agentSpecificAdverseEventListService) {
         this.agentSpecificAdverseEventListService = agentSpecificAdverseEventListService;
+    }
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
+
+    public StudyAgentDao getStudyAgentDao() {
+        return studyAgentDao;
+    }
+
+    public void setStudyAgentDao(StudyAgentDao studyAgentDao) {
+        this.studyAgentDao = studyAgentDao;
+    }
+
+    public AgentDao getAgentDao() {
+        return agentDao;
+    }
+
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
     }
 }

@@ -5,6 +5,8 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 
+<c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" />
+
 <td>
 <c:if test="${isOtherSpecify}">
                 <c:set var="initValue" value="Begin typing here..."/>
@@ -16,7 +18,7 @@
                 <ui:autocompleter path="agentSpecificTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
-                                    var terminologyVersionId = 10; // get the right value 
+                                    var terminologyVersionId = ${meddraVersionID}; 
                                     createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
                                         autocompleter.setChoices(values)
                                     })

@@ -1108,10 +1108,10 @@ public class SearchStudyAjaxFacade {
         return "";
     }
 
-    public String getAgentsTable(final Map parameterMap, final String text, final HttpServletRequest request) {
+    public String getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
         List<Agent> agents = new ArrayList<Agent>();
         if (text != null) {
-            agents = agentRepository.getAgentsBySubnames(new String[] {text});
+            agents = agentRepository.getAgentsBySubnames(new String[] {text, nsc});
         }
         log.debug("Agents :: " + agents.size());
 

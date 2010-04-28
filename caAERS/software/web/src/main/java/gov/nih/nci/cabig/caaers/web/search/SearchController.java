@@ -122,7 +122,7 @@ public abstract class SearchController extends SimpleFormController {
                     break;
 
                 case SEARCH_AGENT:
-                    viewData = searchFacade.getAgentsTable(null, value, request);
+                    viewData = searchFacade.getAgentsTable(null, prop, value, request);
                     break;
 
                 default:

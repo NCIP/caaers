@@ -69,6 +69,13 @@ public class AgentCreateController extends AutomaticSaveAjaxableFormController<A
     }
 
     @Override
+    protected AgentCommand save(AgentCommand command, Errors errors) {
+        System.out.println("Create Controller Save :" + getPrimaryDomainObject(command).getId());
+        getDao().save(getPrimaryDomainObject(command));
+        return command;
+    }
+
+    @Override
 	public FlowFactory<AgentCommand> getFlowFactory() {
 		return new FlowFactory<AgentCommand>() {
 			public Flow<AgentCommand> createFlow(AgentCommand cmd) {
