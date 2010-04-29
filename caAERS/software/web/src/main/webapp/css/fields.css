@@ -14,8 +14,8 @@ input[type=text], input[type=password], select, textarea {
 
 }
 input[disabled], select[disabled], textarea[disabled] {
-  border-color: #ddc;
-  background-color: #ccc;
+  border-color: #ccc;
+  background-color: #ddd;
 }
 input[type=button], input[type=submit], input[type=reset] {
   color: white;
