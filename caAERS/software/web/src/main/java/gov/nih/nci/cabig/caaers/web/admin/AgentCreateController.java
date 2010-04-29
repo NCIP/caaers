@@ -70,7 +70,7 @@ public class AgentCreateController extends AutomaticSaveAjaxableFormController<A
 
     @Override
     protected AgentCommand save(AgentCommand command, Errors errors) {
-        System.out.println("Create Controller Save :" + getPrimaryDomainObject(command).getId());
+        // System.out.println("Create Controller Save :" + getPrimaryDomainObject(command).getId());
         getDao().save(getPrimaryDomainObject(command));
         return command;
     }
@@ -107,6 +107,7 @@ public class AgentCreateController extends AutomaticSaveAjaxableFormController<A
         super.initBinder(request, binder);
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
         ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
+        ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
     }
 
     @Override

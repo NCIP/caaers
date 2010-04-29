@@ -12,18 +12,20 @@
         <%--<chrome:box title="Agent Edit Form" autopad="false">--%>
 
         <div class="row">
-            <div class="label"><ui:label labelProperty="agent.name" text="" path="agent.name" /></div>
-            <div class="value"><ui:text path="agent.name" size="60"/></div>
+            <div class="label"><ui:label labelProperty="agent.name" text="" path="agent.name"/></div>
+            <div class="value"><ui:text path="agent.name" size="60" cssClass="${empty command.agent.name ? 'required' : 'valueOK'} validate-NOTEMPTY&&MAXLENGTH2000" title="Agent name"/></div>
         </div>
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.nscNumber" text="" path="agent.nscNumber" /></div>
-            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}" /></div>
+            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}"  cssClass="required validate-NOTEMPTY&&MAXLENGTH2000" title="Agent identifier"/></div>
         </div>
 
 
         <br>
 
+<%--
             AgentID: ${command.agent.id}.
+--%>
         <chrome:division collapsable="false" collapsed="false" title="Expected Adverse Events">
 
             <c:set var="versionName" value="${not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
@@ -40,20 +42,26 @@
 
             <div class="row" id="terminologyRow">
                 <div class="label">Terminology</div>
-                <div class="value"><ui:select options="${terminology}" path="terminology" readonly="${command.terminology.code > 0}"/></div>
+                <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${command.terminology.code > 0}"/></div>
             </div>
 
             <div class="row" id="ctcRow" style="display: ${command.terminology.code eq '2' ? 'none' : ''};">
                 <div class="label">Ctc Version</div>
-                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion"  readonly="${command.ctcVersion.id > 0}"/></div>
+                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion"  disabled="${command.ctcVersion.id > 0}"/></div>
             </div>
 
             <div class="row" id="meddraRow" style="">
                 <div class="label">Meddra Version</div>
-                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" readonly="${command.meddraVersion.id > 0}" /></div>
+                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${command.meddraVersion.id > 0}" /></div>
             </div>
 
-            <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
+            <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 and command.meddraVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
+
+            <div id="_BUTTON" style="display:${_visible ? '' : 'none'}">
+                <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
+            </div>
+
+            <div id="_ALL" style="display:${_visible ? '' : 'none'}">
 
             <tags:aeTermQuery title="Choose CTC terms" isMeddra="${isMeddra}"
                               callbackFunctionName="addTerm"
@@ -84,7 +92,8 @@
                  <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                 </table>
             </tags:table>
-
+            </div>
+            
         </chrome:division>
 
         <%--</chrome:box>--%>
@@ -98,7 +107,7 @@
             listOfTermIDs.push(termID);
         }.bind(this));
 
-        agentFacade.addAgentSpecificTerms(${command.agent.id}, '${terminologyType}', listOfTermIDs, function(ajaxOutput) {
+        agentFacade.addAgentSpecificTerms(${command.agent.id > 0 ? command.agent.id : 0}, '${terminologyType}', listOfTermIDs, function(ajaxOutput) {
             $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
         });
     }
@@ -115,6 +124,37 @@
         $('command').submit();
     });
 */
+
+
+    function checkVersion() {
+        var v1 = $('terminology');
+        var vC = $('ctcVersion');
+        var vM = $('meddraVersion');
+
+        if (v1.options[v1.selectedIndex].value == 'CTC') showRow('ctcRow'); else hideRow('ctcRow');
+
+        if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0 && vM.selectedIndex > 0)
+            $('_BUTTON').show();
+        else if (v1.options[v1.selectedIndex].value == 'MEDDRA' && vM.selectedIndex > 0) {
+            $('_BUTTON').show();
+        } else {
+            $('_BUTTON').hide();
+            $('_ALL').hide();
+        }
+    }
+
+    Event.observe($('terminology'), "change", function() {
+        checkVersion();
+    });
+
+    if ($('ctcVersion'))
+        Event.observe($('ctcVersion'), "change", function() {
+            checkVersion();
+        });
+
+    Event.observe($('meddraVersion'), "change", function() {
+        checkVersion();
+    });
 
     function changeTerminology() {
         $('command').submit();

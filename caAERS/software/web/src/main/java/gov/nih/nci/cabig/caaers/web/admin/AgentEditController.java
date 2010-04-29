@@ -61,7 +61,7 @@ public class AgentEditController extends AutomaticSaveAjaxableFormController<Age
 
     @Override
     protected AgentCommand save(AgentCommand command, Errors errors) {
-        System.out.println("Edit Controller Save :" + getPrimaryDomainObject(command).getId());
+        // System.out.println("Edit Controller Save :" + getPrimaryDomainObject(command).getId());
         getDao().save(getPrimaryDomainObject(command));
         return command;
     }

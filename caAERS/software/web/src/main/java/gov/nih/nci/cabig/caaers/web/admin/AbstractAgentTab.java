@@ -62,7 +62,7 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     @Override
     public void postProcess(HttpServletRequest request, AgentCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        System.out.println("postProcess...");
+        // System.out.println("postProcess...");
         if (request.getParameter(AbstractAjaxFacade.AJAX_REQUEST) != null) return;
 
         List<StudyAgent> l = null;
@@ -92,20 +92,22 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
         }
 
         if (l != null) {
-            System.out.println("0:" + command.getAgent());
+            //System.out.println("0:" + command.getAgent());
 
 
             for (StudyAgent s : l) {
-                System.out.println(s.getAgent());
+                // System.out.println(s.getAgent());
                 agentDao.merge(s.getAgent());
             }
 
             command.setAgent(agentDao.merge(command.getAgent()));
-            System.out.println("O2:"+command.getAgent());
+            // System.out.println("O2:"+command.getAgent());
 
+/*
             for (StudyAgent s : l) {
                 System.out.println("X:"+s.getAgent() + (s.getAgent() == command.getAgent()));
             }
+*/
 
             // sync the agent terms with the study
             for (StudyAgent s : l) {

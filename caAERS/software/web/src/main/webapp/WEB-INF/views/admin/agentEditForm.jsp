@@ -40,21 +40,27 @@
 
             <div class="row" id="terminologyRow">
                 <div class="label">Terminology</div>
-                <div class="value"><ui:select options="${terminology}" path="terminology" readonly="${command.terminology.code > 0}"/></div>
+                <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${command.terminology.code > 0}" /></div>
             </div>
 
             <div class="row" id="ctcRow" style="display: ${command.terminology.code eq '2' ? 'none' : ''};">
                 <div class="label">CTCAE version</div>
-                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion"  readonly="${command.ctcVersion.id > 0}"/></div>
+                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion" disabled="${command.ctcVersion.id > 0}"/></div>
             </div>
 
             <div class="row" id="meddraRow" style="">
                 <div class="label">MedDRA version</div>
-                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" readonly="${command.meddraVersion.id > 0}" /></div>
+                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${command.meddraVersion.id > 0}" /></div>
             </div>
 
-            <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
 
+            <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 and command.meddraVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
+
+            <div id="_BUTTON" style="display:${_visible ? '' : 'none'}">
+                <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
+            </div>
+            
+            <div id="_ALL" style="display:${_visible ? '' : 'none'}">
             <tags:aeTermQuery title="Choose CTC terms" isMeddra="${isMeddra}"
                               callbackFunctionName="addTerm"
                               noBackground="true"
@@ -84,7 +90,8 @@
                  <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                 </table>
             </tags:table>
-
+           </div>
+            
         </chrome:division>
 
         <%--</chrome:box>--%>
@@ -110,15 +117,41 @@
         });
     }
 
-/*
+    function checkVersion() {
+        var v1 = $('terminology');
+        var vC = $('ctcVersion');
+        var vM = $('meddraVersion');
+
+        if (v1.options[v1.selectedIndex].value == 'CTC') showRow('ctcRow'); else hideRow('ctcRow');
+
+        if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0 && vM.selectedIndex > 0)
+            $('_BUTTON').show();
+        else if (v1.options[v1.selectedIndex].value == 'MEDDRA' && vM.selectedIndex > 0) {
+            $('_BUTTON').show();
+        } else {
+            $('_BUTTON').hide();
+            $('_ALL').hide(); 
+        }
+        if (v1.options[v1.selectedIndex].value == 'MEDDRA') alert('MEDDRA');
+    }
+
     Event.observe($('terminology'), "change", function() {
-        $('command').submit();
+        checkVersion();
     });
-*/
+
+    Event.observe($('ctcVersion'), "change", function() {
+        checkVersion();
+    });
+
+    Event.observe($('meddraVersion'), "change", function() {
+        checkVersion();
+    });
 
     function changeTerminology() {
         $('command').submit();
     }
+
+
 </script>
 
     </jsp:attribute>
