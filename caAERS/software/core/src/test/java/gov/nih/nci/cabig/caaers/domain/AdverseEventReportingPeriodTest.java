@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		AdverseEvent ae8 = Fixtures.createAdverseEvent(8, Grade.LIFE_THREATENING);
 		ae8.setHospitalization(Hospitalization.YES);
 		
-		AdverseEvent ae9 = Fixtures.createAdverseEvent(7, Grade.NOT_EVALUATED);
+		AdverseEvent ae9 = Fixtures.createAdverseEvent(9, Grade.NOT_EVALUATED);
 		
 		reportingPeriod1.addAdverseEvent(ae1);
 		reportingPeriod1.addAdverseEvent(ae2);
@@ -81,12 +82,7 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		reportingPeriod1.addAdverseEvent(ae9);
 		
 		List<AdverseEvent> aeList = reportingPeriod1.getReportableAdverseEvents();
-		assertEquals(4, aeList.size());
-		assertSame(ae7, aeList.get(0));
-		assertSame(ae6, aeList.get(1));
-		assertSame(ae8, aeList.get(2));
-		
-		assertSame(ae1, aeList.get(3));
+		assertEquals(7, aeList.size());
 	
 	}
 	
@@ -130,62 +126,7 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		reportingPeriod1.addAdverseEvent(ae9);
 		
 		List<AdverseEvent> aeList = reportingPeriod1.getReportableAdverseEvents();
-		assertEquals(4, aeList.size());
-		assertSame(ae7, aeList.get(0));
-		assertSame(ae6, aeList.get(1));
-		assertSame(ae8, aeList.get(2));
-		assertSame(ae1, aeList.get(3));
-	}
-	
-	
-	/**
-	 * This method tests the reportable adverse events.
-	 */
-	public void testAllReportedAndReportableAdverseEvents(){
-		AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.MILD);
-		ae1.setAttributionSummary(Attribution.DEFINITE);
-		ae1.setExpected(true);
-		ae1.setReport(Fixtures.createSavableExpeditedReport());
-		AdverseEvent ae2 = Fixtures.createAdverseEvent(2,null); //not graded
-		ae2.setReport(Fixtures.createSavableExpeditedReport());
-		
-		AdverseEvent ae3 = Fixtures.createAdverseEvent(3, Grade.NORMAL);
-		ae3.setExpected(true);
-		AdverseEvent ae4 = Fixtures.createAdverseEvent(4, Grade.NORMAL);
-		ae4.setExpected(true);
-		ae4.setHospitalization(Hospitalization.YES);
-		ae4.setReport(new ExpeditedAdverseEventReport());
-		
-		AdverseEvent ae5 = Fixtures.createAdverseEvent(5, Grade.NORMAL);
-		ae5.setExpected(true);
-		ae5.setHospitalization(Hospitalization.YES);
-		ae5.setAttributionSummary(Attribution.POSSIBLE);
-		
-		AdverseEvent ae6 = Fixtures.createAdverseEvent(6, Grade.DEATH);
-		AdverseEvent ae7 = Fixtures.createAdverseEvent(7, Grade.LIFE_THREATENING);
-		ae7.setRequiresReporting(true);
-		AdverseEvent ae8 = Fixtures.createAdverseEvent(8, Grade.LIFE_THREATENING);
-		ae8.setHospitalization(Hospitalization.YES);
-		
-		AdverseEvent ae9 = Fixtures.createAdverseEvent(7, Grade.NOT_EVALUATED);
-		
-		reportingPeriod1.addAdverseEvent(ae1);
-		reportingPeriod1.addAdverseEvent(ae2);
-		reportingPeriod1.addAdverseEvent(ae3);
-		reportingPeriod1.addAdverseEvent(ae4);
-		reportingPeriod1.addAdverseEvent(ae5);
-		reportingPeriod1.addAdverseEvent(ae6);
-		reportingPeriod1.addAdverseEvent(ae7);
-		reportingPeriod1.addAdverseEvent(ae8);
-		reportingPeriod1.addAdverseEvent(ae9);
-		
-		List<AdverseEvent> aeList = reportingPeriod1.getAllReportedAndReportableAdverseEvents();
-		assertEquals(6, aeList.size());
-		assertSame(ae7, aeList.get(0));
-		assertSame(ae6, aeList.get(1));
-		assertSame(ae8, aeList.get(2));
-		assertSame(ae1, aeList.get(3));
-		assertSame(ae2, aeList.get(5));
+		assertEquals(7, aeList.size());
 	}
 	
 	/**
@@ -274,9 +215,7 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		reportingPeriod1.addAdverseEvent(ae9);
 		
 		List<AdverseEvent> aeList = reportingPeriod1.getModifiedReportableAdverseEvents();
-		assertEquals(2, aeList.size());
-		assertSame(ae8, aeList.get(0));
-		assertSame(ae1, aeList.get(1));
+		assertEquals(5, aeList.size());
 		
 	}
 	
@@ -396,5 +335,69 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		
 		ae1.setPostSubmissionUpdatedDate(d);
 		assertEquals(d, AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(Arrays.asList(ae1, ae2, ae3)));
+	}
+	
+	public void createNonPopulatedAdverseEvents(){
+		AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.NORMAL);
+		AdverseEvent ae2 = Fixtures.createAdverseEvent(2, Grade.NOT_EVALUATED);
+		AdverseEvent ae3 = Fixtures.createAdverseEvent(3, Grade.NORMAL);
+		AdverseEvent ae4 = Fixtures.createAdverseEvent(4, Grade.NOT_EVALUATED);
+		
+		reportingPeriod1.addAdverseEvent(ae1);
+		reportingPeriod1.addAdverseEvent(ae2);
+		reportingPeriod1.addAdverseEvent(ae3);
+		reportingPeriod1.addAdverseEvent(ae4);
+	}
+	
+	public void testPopulatedAdverseEvents_ForNonPopulatedAdverseEvents(){
+		
+		createNonPopulatedAdverseEvents();
+		// Test for not populated aes.
+		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
+		assertEquals("populatedAdverseEventList should have been empty", 0, populatedAdverseEventList.size());
+	}
+	
+	public void testPopulatedAdverseEvents_ForGrade(){
+		createNonPopulatedAdverseEvents();
+		
+		reportingPeriod1.getAdverseEvents().get(0).setGrade(Grade.DEATH);
+		reportingPeriod1.getAdverseEvents().get(1).setGrade(Grade.LIFE_THREATENING);
+		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
+		assertEquals("populatedAdverseEventList was expected to contain only 2 graded aes", 2, populatedAdverseEventList.size());
+	}
+	
+	public void testPopulatedAdverseEvents_ForHospitalization(){
+		createNonPopulatedAdverseEvents();
+		
+		reportingPeriod1.getAdverseEvents().get(0).setHospitalization(Hospitalization.YES);
+		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
+		assertEquals("populatedAdverseEventList was expected to contain only 1 adverse event", 1, populatedAdverseEventList.size());
+	}
+	
+	public void testPopulatedAdverseEvents_ForExpected(){
+		createNonPopulatedAdverseEvents();
+		
+		reportingPeriod1.getAdverseEvents().get(0).setExpected(true);
+		reportingPeriod1.getAdverseEvents().get(1).setExpected(false);
+		reportingPeriod1.getAdverseEvents().get(2).setExpected(true);
+		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
+		assertEquals("populatedAdverseEventList was expected to contain only 3 adverse events", 3, populatedAdverseEventList.size());
+	}
+	
+	public void testPopulatedAdverseEvents_ForParticipantAtRisk(){
+		createNonPopulatedAdverseEvents();
+		
+		reportingPeriod1.getAdverseEvents().get(0).setParticipantAtRisk(true);
+		reportingPeriod1.getAdverseEvents().get(1).setParticipantAtRisk(false);
+		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
+		assertEquals("populatedAdverseEventList was expected to contain only 2 adverse events", 2, populatedAdverseEventList.size());
+	}
+	
+	public void testPopulatedAdverseEvent_ForAttribution(){
+		createNonPopulatedAdverseEvents();
+		
+		reportingPeriod1.getAdverseEvents().get(0).setAttributionSummary(Attribution.POSSIBLE);
+		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
+		assertEquals("populatedAdverseEventList was expected to contain only 1 ae", 1, populatedAdverseEventList.size());
 	}
 }

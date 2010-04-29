@@ -264,9 +264,10 @@ public class AdverseEventTest extends AbstractTestCase {
     
     public void testInitializeGradedDate_WhenGradedNotEvaluated(){
     	assertNull(adverseEvent.getGradedDate());
+    	
     	adverseEvent.setGrade(Grade.NOT_EVALUATED);
     	adverseEvent.initailzeGradedDate();
-    	assertNull(adverseEvent.getGradedDate());
+    	assertNotNull(adverseEvent.getGradedDate());
     }
     
     public void testGetAssocitatedReportNames(){

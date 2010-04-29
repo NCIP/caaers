@@ -731,7 +731,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	 * {@link Grade#NORMAL}.
 	 */
 	public void initailzeGradedDate(){
-		if(gradedDate == null && grade != null && grade.getCode() > Grade.NORMAL.getCode()){
+		if(gradedDate == null && this.isPopulated()){
 			gradedDate = new Date();
 		}
 	}
@@ -964,6 +964,50 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	@Transient
 	public boolean isModified(){
 		return !StringUtils.equals(signature, getCurrentSignature());
+	}
+	
+	/**
+	 * This method checks whether the attributes of adverse events that can be involved in a rule are populated
+	 * with some value. These attributes are grade, expected, attribution, participantAtRisk, hospitalization
+	 * and outcomes. If the grade is not null or Not-evaluated or normal its considered to be populated. On a similar
+	 * note for hospitalization to be considered as populated it shouldnt be null or NONE.
+	 * @return boolean
+	 */
+	@Transient
+	public boolean isPopulated(){
+		if(this.isRetired())
+			return false;
+		// Check for grade
+		if(this.getGrade() != null && !this.getGrade().equals(Grade.NOT_EVALUATED) && !this.getGrade().equals(Grade.NORMAL)){
+			return true;
+		}
+		
+		// Check for hospitalization (or prolonged hospitalization
+		if(this.getHospitalization() != null && !this.getHospitalization().equals(Hospitalization.NONE)){
+			return true;
+		}
+		
+		// Check for expected
+		if(this.getExpected() != null){
+			return true;
+		}
+		
+		// Check for participant at risk
+		if(this.getParticipantAtRisk() != null){
+			return true;
+		}
+		
+		// Check for attribution
+		if(this.getAttributionSummary() != null){
+			return true;
+		}
+		
+		// Check for outcome identifier
+		if(this.getOutcomes() != null && !this.getOutcomes().isEmpty()){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**

@@ -166,39 +166,23 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     }
     
     /**
-     * This method returns all the adverse events that are graded properly (ie. Not (NOT_EVALUATED, or NORMAL). 
+     * This method returnes all the adverse events whose attributes are populated with some values. The attributes of adverse events 
+     * that are checked for some values are the ones that take part in rules. These attributes are namely - grade, Hospitalization,
+     * expected, participant at risk, attribution, outcome identifier. If the grade is null or normal or not evaluated then its considered
+     * to be not populated. Also if hospitalization has value NONE then its considered to be not populated.
      * @return
      */
     @Transient
-    public List<AdverseEvent> getGradedAdverseEvents(){
-    	List<AdverseEvent> gradedAdverseEvents = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae: getEvaluatedAdverseEvents()){
-    		if(!Grade.NORMAL.equals(ae.getGrade())) gradedAdverseEvents.add(ae);
-    	}
-    	return gradedAdverseEvents;
-    }
-    
-    /**
-     * This method will return all the aes associated with expedited report + the ones 
-     * that are graded and not associated to any other report.
-     */
-    @Transient
-    public List<AdverseEvent>  getAllReportedAndReportableAdverseEvents(){
-    	List<AdverseEvent> events = new ArrayList<AdverseEvent>();
+    public List<AdverseEvent> getPopulatedAdverseEvents(){
+    	//Grade, Hospitalization (or prolonged hospitalization), expected, participant at increased risk, attribution, outcome identifier
+    	List<AdverseEvent> populatedAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getAdverseEvents()){
-            if (ae.getAdverseEventTerm().getTerm() == null) continue;
-    		if(ae.isRetired()) continue;
-    		//this is already associated with expedited report
-    		if(ae.getReport() != null) {
-    			events.add(ae); 
-    		}else if((ae.getGrade() != null) && !(Grade.NORMAL.equals(ae.getGrade())||  Grade.NOT_EVALUATED.equals(ae.getGrade()))		){
-    			//this is a graded AE, not associated to any other expedited report. 
-    			events.add(ae);
-    		}
+    		if(ae.isPopulated())
+    			populatedAdverseEvents.add(ae);
     	}
-    	//sort the list
-    	Collections.sort(events, AdverseEventComprator.DEFAULT_ADVERSE_EVENT_COMPARATOR);
-    	return events;
+    	
+    	Collections.sort(populatedAdverseEvents, AdverseEventComprator.DEFAULT_ADVERSE_EVENT_COMPARATOR);
+    	return populatedAdverseEvents;
     }
     
     /**
@@ -209,7 +193,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getReportableAdverseEvents(){
     	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae: getGradedAdverseEvents()){
+    	for(AdverseEvent ae: getPopulatedAdverseEvents()){
     		if(ae.getAdverseEventTerm().getTerm() != null)
     		    reportableAdverseEvents.add(ae);
     	}
@@ -224,7 +208,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getNonExpeditedAdverseEvents(){
     	List<AdverseEvent> unReportedAes = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae : getAdverseEvents()){
+    	for(AdverseEvent ae : getPopulatedAdverseEvents()){
     		if(ae.getReport() == null && ae.getAdverseEventTerm().getTerm() != null)
     			unReportedAes.add(ae);
     	}
@@ -241,7 +225,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getModifiedReportableAdverseEvents(){
     	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae: getGradedAdverseEvents()){
+    	for(AdverseEvent ae: getPopulatedAdverseEvents()){
     		if( ae.isModified() || BooleanUtils.isNotTrue(ae.getReported())) reportableAdverseEvents.add(ae);
     	}
     	return reportableAdverseEvents;
@@ -255,7 +239,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getModifiedExpeditedAdverseEvents(){
     	List<AdverseEvent> modifiedAdverseEvents = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae: getGradedAdverseEvents()){
+    	for(AdverseEvent ae: getPopulatedAdverseEvents()){
     		if( ae.getReport() != null && ae.isModified()) modifiedAdverseEvents.add(ae);
     	}
     	return modifiedAdverseEvents;
