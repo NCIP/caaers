@@ -91,7 +91,8 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     }
     
     public void testGetOrganizationsHavingStudySites(){
-    	List<Organization> orgs = getDao().getOrganizationsHavingStudySites();
+    	OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
+    	List<Organization> orgs = getDao().getOrganizationsHavingStudySites(query);
     	assertEquals(1, orgs.size());
     }
     
@@ -100,7 +101,7 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
     	List<Organization> orgs = getDao().getBySubnames(query);
-    	//assertEquals(0,orgs.size());
+    	assertEquals(0,orgs.size());
     }
     
     public void testGetApplicableStudySites(){
