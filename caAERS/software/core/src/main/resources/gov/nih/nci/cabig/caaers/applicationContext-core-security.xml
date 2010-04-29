@@ -177,7 +177,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getLocalOrganizations(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getBySubnames(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
-        
+        						|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
                     			"/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
 		</aop:aspect>
@@ -604,6 +604,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
+              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery" value-ref="organizationQuerySecurityFilterer" />
               	  
               </map>
           </property>
