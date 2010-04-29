@@ -5,6 +5,13 @@
 
 <c:set var="terms" value="${command.agentSpecificTerms}" />
 
+<%--
+(${param.isADD eq 'true'})
+${param.firstIndex}-${param.lastIndex}
+size:${fn:length(command.agentSpecificTerms)}
+${command.agentSpecificTerms}
+--%>
+
 <tags:noform>
 
                 <%-- ADD --%>

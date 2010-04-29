@@ -132,7 +132,6 @@
             $('_BUTTON').hide();
             $('_ALL').hide(); 
         }
-        if (v1.options[v1.selectedIndex].value == 'MEDDRA') alert('MEDDRA');
     }
 
     Event.observe($('terminology'), "change", function() {
