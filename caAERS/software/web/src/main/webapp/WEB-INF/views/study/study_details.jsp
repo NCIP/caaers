@@ -223,7 +223,7 @@
 
         <c:if test="${hasFS}">
             <div class="row" id="_fs_readonly">
-                <div class="label"><ui:label path="${ccField.propertyName}" labelProperty="${ccField.attributes.labelProperty}" text="${fsField.displayName}" mandatory="${ccField.attributes.mandatory}" required="${ccField.required}"/></div>
+                <div class="label"><ui:label path="${fsField.propertyName}" labelProperty="${fsField.attributes.labelProperty}" text="abc" mandatory="${fsField.attributes.mandatory}" required="${fsField.required}"/></div>
                 <div class="value">${command.study.primaryFundingSponsor.organization}&nbsp;<tags:button icon="edit" size="small" value="Update" color="blue" onclick="_update('_fs');" type="button"/></div>
             </div>
         </c:if>
