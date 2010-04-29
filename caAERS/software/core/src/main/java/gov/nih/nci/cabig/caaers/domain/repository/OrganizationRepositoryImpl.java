@@ -169,8 +169,8 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
         this.csmApplicationContextName = csmApplicationContextName;
     }
 
-    public List<Organization> getOrganizationsHavingStudySites() {
-        return organizationDao.getOrganizationsHavingStudySites();
+    public List<Organization> getOrganizationsHavingStudySites(OrganizationFromStudySiteQuery query ) {
+        return organizationDao.getOrganizationsHavingStudySites(query);
     }
     
     /**

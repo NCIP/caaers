@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface OrganizationRepository {
     void create(Organization organization);
     void createOrUpdate(Organization organization);
-    List<Organization> getOrganizationsHavingStudySites();
+    List<Organization> getOrganizationsHavingStudySites(final OrganizationFromStudySiteQuery query);
     List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId);
     void convertToRemote(Organization localOrganization, Organization remoteOrganization);
     
