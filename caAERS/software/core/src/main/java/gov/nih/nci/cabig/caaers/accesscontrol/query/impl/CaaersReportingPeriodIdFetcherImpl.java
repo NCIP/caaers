@@ -107,7 +107,8 @@ public class CaaersReportingPeriodIdFetcherImpl extends AbstractIdFetcher implem
 
         //subjects of his site on studies he is also associated-to + subjects in sites of that are coordinated/sponsored by his site.
         StringBuilder hql = new StringBuilder("select distinct rp.id from  StudyOrganization so ,StudyParticipantAssignment a " )
-                .append(" join rp.aeReports r ")
+        		.append(" join a.reportingPeriods rp ")	
+        	//	.append(" join rp.aeReports r ")
                 .append(" join a.studySite ss  " )
                 .append(" join so.studyInvestigatorsInternal sti " )
                 .append(" join sti.siteInvestigator si " )
