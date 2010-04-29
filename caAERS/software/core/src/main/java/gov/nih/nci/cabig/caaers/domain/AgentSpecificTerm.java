@@ -18,7 +18,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "agent_terms")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_agent_term_id")})
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_agent_terms_id")})
 @DiscriminatorColumn(name = "term_type", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AgentSpecificTerm<T extends DomainObject> extends AbstractMutableDomainObject {
