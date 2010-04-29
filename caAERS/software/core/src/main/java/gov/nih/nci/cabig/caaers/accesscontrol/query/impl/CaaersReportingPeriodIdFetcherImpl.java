@@ -51,7 +51,9 @@ public class CaaersReportingPeriodIdFetcherImpl extends AbstractIdFetcher implem
             StringBuilder hql = new StringBuilder("select distinct rp.id from  StudyOrganization so ,StudyParticipantAssignment a ")
                     .append(" join a.reportingPeriods rp ")
                     .append(" join a.studySite ss where ss.study = so.study ")
-                    .append(" and so.organization.id in (:orgIdSet) ");
+                    .append(" and ( ss.organization.id in (:orgIdSet) " )
+                    .append(" or ( so.organization.id in (:orgIdSet) and so.class in ('SFS', 'SCC') )")
+                    .append(")");
 
             HQLQuery query = new HQLQuery(hql.toString());
             query.getParameterMap().put("orgIdSet", orgFilterIdSet);
