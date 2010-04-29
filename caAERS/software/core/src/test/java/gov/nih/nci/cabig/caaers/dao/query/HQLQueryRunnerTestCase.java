@@ -131,7 +131,22 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
         
     }
 
+    public void testReportingPeriodIDFetcher_0(){
+           StringBuilder hql = new StringBuilder("select distinct rp.id from  StudyOrganization so ,StudyParticipantAssignment a ")
+                    .append(" join a.reportingPeriods rp ")
+                    .append(" join a.studySite ss where ss.study = so.study ")
+                    .append(" and ( ss.organization.id in (:orgIdSet) " )
+                    .append(" or ( so.organization.id in (:orgIdSet) and so.class in ('SFS', 'SCC') )")
+                    .append(")");
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("orgIdSet", Arrays.asList(new Integer[]{6}));
+        //query.getParameterMap().put("loginId", "sponsor");
+        st = System.currentTimeMillis();
+        List<Integer> resultList = (List<Integer>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
 
+    }
 
     public void testOrganizationIDFetcher1_0(){
 

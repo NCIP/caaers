@@ -54,7 +54,9 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
             //subjects at his site + subjects at sites that are coordinated/sponsored.
             StringBuilder hql = new StringBuilder("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a ")
                     .append(" join a.studySite ss where ss.study = so.study ")
-                    .append(" and so.organization.id in (:orgIdSet) ");
+                     .append(" and ( ss.organization.id in (:orgIdSet) " )
+                    .append(" or ( so.organization.id in (:orgIdSet) and so.class in ('SFS', 'SCC') )")
+                    .append(")");
             
             HQLQuery query = new HQLQuery(hql.toString());
             query.getParameterMap().put("orgIdSet", orgFilterIdSet);
