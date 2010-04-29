@@ -67,7 +67,7 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
     public List fetch(Investigator inv) {
 
         //subjects of his site on studies he is also associated-to + subjects in sites of that are coordinated/sponsored by his site.
-        StringBuilder hql = new StringBuilder("select distinct so.id from  StudyOrganization so ,StudyInvestigator sti " )
+        StringBuilder hql = new StringBuilder("select distinct so.organization.id from  StudyOrganization so ,StudyInvestigator sti " )
                 .append(" join sti.studyOrganization ss  " )
                 .append(" join sti.siteInvestigator si " )
                 .append(" join si.investigator i ")
