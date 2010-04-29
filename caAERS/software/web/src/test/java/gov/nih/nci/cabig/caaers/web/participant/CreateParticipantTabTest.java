@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -39,7 +40,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         		// TODO Auto-generated method stub
         		
         	}
-        	public List<Organization> getOrganizationsHavingStudySites() {
+        	public List<Organization> getOrganizationsHavingStudySites(OrganizationFromStudySiteQuery query) {
         		return new ArrayList<Organization>();
         	} 
         	public List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId){
