@@ -1,7 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -16,7 +21,12 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,7 +62,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
-        List<Organization> organizations = organizationRepository.getOrganizationsHavingStudySites();
+        OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
+        List<Organization> organizations = organizationRepository.getOrganizationsHavingStudySites(query);
         if (organizations != null) {
             options.putAll(WebUtils.collectOptions(organizations, "id", "fullName"));
         }
