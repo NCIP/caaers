@@ -175,29 +175,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.find(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
-                    			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getLocalOrganizations(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
-                    			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.getBySubnames(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
-        						|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
+                    			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
+	       						|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
                     			"/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
 		</aop:aspect>
-		
-<!--     
-        <aop:aspect ref="participantQueryFilterByLoginIdAspect">		
-			<aop:pointcut id="executionOfParticipantQueryFilter"
-                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery))
-                    and args(qry)"/>
-            <aop:before pointcut-ref="executionOfParticipantQueryFilter" method="applyLoginFilter"/>			
-		</aop:aspect>
-
-        <aop:aspect ref="studyQueryFilterByLoginIdAspect">		
-			<aop:pointcut id="executionOfStudyQueryFilter"
-                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.findStudies(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery))
-                    and args(qry)"/>
-            <aop:before pointcut-ref="executionOfStudyQueryFilter" method="applyLoginFilter"/>			
-		</aop:aspect>
-				
--->
 
     </aop:config>
 
@@ -400,59 +382,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <constructor-arg value="ACCESS"/>
     </bean>
 
-     
-    <bean id="participantSiteSecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.ParticipantSiteSecurityFilterer">
-          <property name="userDao" ref="userDao"/>
-    </bean>    
 
-    <bean id="studySiteSecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSecurityFilterer">
-        <property name="userDao" ref="userDao"/>
-        <property name="studyDao" ref="studyDao"/>
-    </bean>
-    <bean id="expeditedAdverseEventReportSiteSecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.ExpeditedAdverseEventReportSiteSecurityFilterer">
-        <property name="userDao" ref="userDao"/>
-    </bean>
-
-    <bean id="organizationSecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.OrganizationSecurityFilterer">
-        <property name="userDao" ref="userDao"/>
-        <property name="studySiteDao" ref="studySiteDao"/>
-    </bean>
-
-    <bean id="researchStaffSecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.ResearchStaffSecurityFilterer">
-        <property name="userDao" ref="userDao"/>
-    </bean>
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
               map-class="java.util.LinkedHashMap">
-        <!--
-        <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"
-               value-ref="studySiteSecurityFilterer"/>
-        <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
-               value-ref="participantSiteSecurityFilterer"/>  
-        <entry key="gov.nih.nci.cabig.caaers.domain.Study"
-               value-ref="studySiteSecurityFilterer"/>
-		<entry key="gov.nih.nci.cabig.caaers.domain.LocalStudy"
-               value-ref="studySiteSecurityFilterer"/>  
-        <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
-               value-ref="participantSiteSecurityFilterer"/>  
-        <entry key="gov.nih.nci.cabig.caaers.domain.ResearchStaff"
-               value-ref="researchStaffSecurityFilterer"/>                 
-        <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
-               value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/> 
-        <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
-               value-ref="organizationSecurityFilterer"/>  
-        <entry key="gov.nih.nci.cabig.caaers.domain.LocalOrganization"
-               value-ref="organizationSecurityFilterer"/> 
-        -->  
-        
-              
-
-              
-               
-    </util:map>
+     </util:map>
 
     <!--> oraganization security beans end here  -->
 
@@ -518,15 +451,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- Cached Manager -->
 	 <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
 	 
-	 
-	<!--  ASPECTS -->
-
-	<bean id="participantQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.ParticipantQueryFilterByLoginIdAspect">
-    </bean>
-
-	<bean id="studyQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.StudyQueryFilterByLoginIdAspect">
-    </bean>
-    	
 	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	
 
 	 <bean id="refreshIndexAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.RefreshIndexAspect">
