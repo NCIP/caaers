@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import org.apache.commons.lang.StringUtils;
-
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -17,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -192,8 +191,9 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      * @return The list of organizations.
      */
     @SuppressWarnings("unchecked")
-    public List<Organization> getOrganizationsHavingStudySites() {
-        return getHibernateTemplate().find("select distinct ss.organization from StudySite ss order by ss.organization.name");
+    public List<Organization> getOrganizationsHavingStudySites(final OrganizationFromStudySiteQuery query) {
+    	return (List<Organization>) search(query);
+        //return getHibernateTemplate().find("select distinct ss.organization from StudySite ss order by ss.organization.name");
     }
     
     /**
@@ -204,6 +204,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     public List<Organization> getApplicableOrganizationsFromStudySites(final OrganizationFromStudySiteQuery query){
     	return (List<Organization>) search(query);
     }
+
     
     /**
      * This method queries caAERS DB to get all the Organizations which have a matching
@@ -247,7 +248,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     
     
     @SuppressWarnings("unchecked")
-    public List<Organization> executeQuery(final OrganizationQuery query){
+    public List<Organization> executeQuery(final AbstractQuery query){
     	List localOrganizations =  (List<Organization>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException,
