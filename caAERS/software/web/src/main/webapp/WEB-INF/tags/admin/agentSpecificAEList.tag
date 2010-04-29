@@ -8,7 +8,7 @@
 
 	 <table id="test" width="70%" class="tablecontent">
 	 <tr>
-         <td>Yuo are about to import a file with Agent Specific AE List.<br>This may take some time depending on the size of the file.<br><br>Click "Import" to continue.</td>
+         <td><caaers:message code="asael.import.review" /></td>
 	 </tr>
      </table>
     
