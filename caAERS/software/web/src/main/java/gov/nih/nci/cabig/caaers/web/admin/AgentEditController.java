@@ -16,9 +16,7 @@ public class AgentEditController extends AgentController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-
-        request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        request.getSession().removeAttribute(AgentEditController.class.getName() + ".FORM.command");
+        super.formBackingObject(request);
 
         Agent agent = null;
         agent = agentRepository.getAgentByID(Integer.parseInt(request.getParameter("agentID")));

@@ -17,9 +17,8 @@ public class AgentCreateController extends AgentController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        request.getSession().removeAttribute(AgentCreateController.class.getName() + ".FORM.command");
-
+        super.formBackingObject(request);
+                
         AgentCommand c = new AgentCommand();
         c.setAgentSpecificTerms(new ArrayList<AgentSpecificTerm>());
         c.setAgent(new Agent());

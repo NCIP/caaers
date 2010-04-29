@@ -59,6 +59,14 @@ public class AgentController extends AutomaticSaveAjaxableFormController<AgentCo
     }
 
     @Override
+    protected Object formBackingObject(HttpServletRequest request) throws Exception {
+        request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+        request.getSession().removeAttribute(AgentEditController.class.getName() + ".FORM.command");
+        request.getSession().removeAttribute(AgentCreateController.class.getName() + ".FORM.command");
+        return null;
+    }
+
+    @Override
     protected AgentCommand save(AgentCommand command, Errors errors) {
         getDao().save(getPrimaryDomainObject(command));
         return command;
