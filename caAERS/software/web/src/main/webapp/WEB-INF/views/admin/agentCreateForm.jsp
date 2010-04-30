@@ -29,32 +29,42 @@
         </c:set>
         <chrome:division collapsable="false" collapsed="false" title="${divisionTitle}">
 
-            <c:set var="versionName" value="${not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
-            <c:set var="isMeddra" value="${empty command.ctcVersion ? not empty command.meddraVersion ? true : false : false}" />
-            <c:set var="terminologyVersionID" value="${not empty command.ctcVersion ? command.ctcVersion.id : not empty command.meddraVersion ? command.meddraVersion.id  : 0}" />
+            <c:set var="versionName" value="${command.terminology.code eq 1 and not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
+            <c:set var="isMeddra" value="${command.terminology.code eq 2}" />
+            <c:set var="terminologyVersionID" value="${command.terminology.code eq 1 and not empty command.ctcVersion ? command.ctcVersion.id : not empty command.meddraVersion ? command.meddraVersion.id  : 0}" />
             <c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" />
-            <c:set var="terminologyType" value="${not empty command.ctcVersion ? 'ctep' : not empty command.meddraVersion ? 'meddra' : ''}" />
+            <c:set var="terminologyType" value="${command.terminology.code eq 1 and not empty command.ctcVersion ? 'ctep' : not empty command.meddraVersion ? 'meddra' : ''}" />
+
+<%--
+            T: ${command.terminology}
+            VersionName:(${versionName})
+            TerminologyVersion: [${terminologyVersionID}]
+            Meddra: [${meddraVersionID}]
+            Meddra: [${terminologyType}]
+--%>
 
             <div class="row" id="terminologyRow">
                 <div class="label"><caaers:message code="LBL_study.aeTerminology.term" /></div>
-                <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${command.terminology.code > 0}"/></div>
+                <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${false && command.terminology.code > 0}"/></div>
             </div>
 
             <div class="row" id="ctcRow" style="display: ${command.terminology.code ne '1' ? 'none' : ''};">
                 <div class="label"><caaers:message code="LBL_study.aeTerminology.ctcVersion" /></div>
-                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion" disabled="${command.ctcVersion.id > 0}"/></div>
+                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion" disabled="${false && command.ctcVersion.id > 0}"/></div>
             </div>
 
             <div class="row" id="meddraRow" style="display: ${command.terminology.code ne '2' ? 'none' : ''};">
                 <div class="label"><caaers:message code="LBL_study.aeTerminology.meddraVersion" /></div>
-                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${command.meddraVersion.id > 0}" /></div>
+                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${false && command.meddraVersion.id > 0}" /></div>
             </div>
 
             <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
 
+<%--
             <div id="_BUTTON" style="display:${_visible ? '' : 'none'}">
                 <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
             </div>
+--%>
 
             <div id="_ALL" style="display:${_visible ? '' : 'none'}">
 
@@ -72,6 +82,7 @@
             <tags:table bgColor="#cccccc" contentID="asael_#{agent.id}">
                 <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                     <tr bgcolor="#E4E4E4">
+                        <th scope="col" align="left" colspan="2"><b>Terminology</b></th>
                         <th scope="col" align="left" colspan="2"><b>Term</b></th>
                     </tr>
                     <c:forEach items="${command.agentSpecificTerms}" var="agentTerm" varStatus="status">
@@ -136,14 +147,17 @@
             hideRow('meddraRow')
         }
 
-        if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0)
-            $('_BUTTON').show();
-        else if (v1.options[v1.selectedIndex].value == 'MEDDRA' && vM.selectedIndex > 0) {
-            $('_BUTTON').show();
-        } else {
-            $('_BUTTON').hide();
-            $('_ALL').hide();
+        if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0) {
+            changeTerminology();
+            return;
         }
+
+        if (v1.options[v1.selectedIndex].value == 'MEDDRA' && vM.selectedIndex > 0) {
+            changeTerminology();
+            return;
+        }
+
+        $('_ALL').hide();
     }
 
     Event.observe($('terminology'), "change", function() {
@@ -160,7 +174,6 @@
     });
 
     function changeTerminology() {
-        $('command')._action.value = "CHANGE_TERMINOLOGY";
         $('command').submit();
     }
 </script>

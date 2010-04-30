@@ -29,6 +29,7 @@ public class AgentEditController extends AgentController {
         int categoryID;
 
         // need to determine the category of the first element in the previous list
+/*
         if (c.getAgentSpecificTerms().size() > 0) {
             AgentSpecificTerm at = c.getAgentSpecificTerms().get(0);
             if (at instanceof AgentSpecificCtcTerm) {
@@ -44,6 +45,7 @@ public class AgentEditController extends AgentController {
         } else {
             
         }
+*/
 
         return c;
     }

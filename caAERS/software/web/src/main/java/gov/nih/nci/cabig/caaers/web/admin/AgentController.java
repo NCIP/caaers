@@ -29,9 +29,6 @@ public class AgentController extends AutomaticSaveAjaxableFormController<AgentCo
 
     protected static final Log log = LogFactory.getLog(AgentController.class);
 
-    private static final String _actionP = "_action";
-    private static final String _actionChangeV = "CHANGE_TERMINOLOGY";
-
     protected AgentRepository agentRepository;
     protected AgentSpecificAdverseEventListService service;
     protected TerminologyRepository termRepository;
@@ -74,7 +71,6 @@ public class AgentController extends AutomaticSaveAjaxableFormController<AgentCo
 
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final AgentCommand command, final Tab<AgentCommand> tab) {
-        if (request.getParameter(_actionP) != null && request.getParameter(_actionP).equals(_actionChangeV)) return false;
         if (request.getParameter(AbstractAjaxFacade.AJAX_REQUEST) != null) return false;
         return true;
     }

@@ -32,6 +32,7 @@ ${command.agentSpecificTerms}
                 <c:if test="${not param.isADD eq 'true'}">
                         <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                             <tr bgcolor="#E4E4E4">
+                                <th scope="col" align="left" colspan="2"><b>Terminology</b></th>
                                 <th scope="col" align="left" colspan="2"><b>Term</b></th>
                             </tr>
 

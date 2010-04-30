@@ -7,6 +7,7 @@
 
 <c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" />
 
+<td>${!term.medDRA ? term.term.category.ctc.name : term.term.meddraVersion.name}</td>
 <td>
 <c:if test="${isOtherSpecify}">
                 <c:set var="initValue" value="Begin typing here..."/>
