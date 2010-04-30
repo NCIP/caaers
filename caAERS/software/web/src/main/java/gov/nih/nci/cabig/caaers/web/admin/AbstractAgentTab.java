@@ -53,7 +53,10 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, AgentCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
-        refdata.put("terminology", WebUtils.collectOptions(Arrays.asList(Term.values()), null, "displayName"));
+        Map tMap = new LinkedHashMap();
+        tMap.put("", "Please select");
+        tMap.putAll(WebUtils.collectOptions(Arrays.asList(Term.values()), null, "displayName"));
+        refdata.put("terminology", tMap);
         refdata.put("ctcVersion", collectOptions(ctcDao.getAll(), "id", "name"));
         refdata.put("meddraVersion", collectOptions(meddraVersionDao.getAll(), "id", "name"));
         return refdata;

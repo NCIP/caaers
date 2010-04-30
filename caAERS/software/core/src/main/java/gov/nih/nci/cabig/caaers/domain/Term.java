@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Krikor Krumlian
  */
 public enum Term implements CodedEnum<Integer> {
-    CTC(1, "CTC"), MEDDRA(2, "MedDRA");
+    CTC(1, "CTCAE"), MEDDRA(2, "MedDRA");
 
     private int code;
 

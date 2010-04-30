@@ -44,7 +44,7 @@
          			<form:option value="researchStaff">Research staff</form:option>
          			<form:option value="organization">Organization</form:option>
          			<form:option value="agent">Agent</form:option>
-         			<form:option value="agentSpecificAEList">Agent Specific AE List</form:option>
+         			<form:option value="agentSpecificAEList">Agent specific expected AEs</form:option>
          			<form:option value="medDRA">MedDRA</form:option>
         		</form:select>
 			</div>

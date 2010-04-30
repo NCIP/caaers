@@ -19,10 +19,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
 * @author Ion C. Olaru
@@ -49,7 +46,7 @@ public class AgentSpecificTermsImporter {
     private int rowCount = 0;
     private int columnsCount = 0;
     private Map<String, Agent> agents = new HashMap<String, Agent>();
-    private List<String> missingTerms = new ArrayList<String>();
+    private Set<String> missingTerms = new HashSet<String>();
     private Map<String, String> asaelCache = new HashMap<String, String>();
     private int asael;
     

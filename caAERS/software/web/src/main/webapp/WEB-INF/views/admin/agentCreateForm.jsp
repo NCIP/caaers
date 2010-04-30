@@ -5,6 +5,7 @@
 
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="singleFields">
+        <input type="hidden" name="_action" />
 
 <div class="tabpane">
     <div class="content">
@@ -23,10 +24,10 @@
 
         <br>
 
-<%--
-            AgentID: ${command.agent.id}.
---%>
-        <chrome:division collapsable="false" collapsed="false" title="Expected Adverse Events">
+        <c:set var="divisionTitle">
+            <jsp:attribute name="value"><caaers:message code="agents.expected.aes" /></jsp:attribute>
+        </c:set>
+        <chrome:division collapsable="false" collapsed="false" title="${divisionTitle}">
 
             <c:set var="versionName" value="${not empty command.ctcVersion ? command.ctcVersion.name : command.meddraVersion.name}" />
             <c:set var="isMeddra" value="${empty command.ctcVersion ? not empty command.meddraVersion ? true : false : false}" />
@@ -34,28 +35,22 @@
             <c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" />
             <c:set var="terminologyType" value="${not empty command.ctcVersion ? 'ctep' : not empty command.meddraVersion ? 'meddra' : ''}" />
 
-<%--
-            VersionName:(${versionName})
-            TerminologyVersion: [${terminologyVersionID}]
-            Meddra: [${meddraVersionID}]
---%>
-
             <div class="row" id="terminologyRow">
-                <div class="label">Terminology</div>
+                <div class="label"><caaers:message code="LBL_study.aeTerminology.term" /></div>
                 <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${command.terminology.code > 0}"/></div>
             </div>
 
-            <div class="row" id="ctcRow" style="display: ${command.terminology.code eq '2' ? 'none' : ''};">
-                <div class="label">Ctc Version</div>
-                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion"  disabled="${command.ctcVersion.id > 0}"/></div>
+            <div class="row" id="ctcRow" style="display: ${command.terminology.code ne '1' ? 'none' : ''};">
+                <div class="label"><caaers:message code="LBL_study.aeTerminology.ctcVersion" /></div>
+                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion" disabled="${command.ctcVersion.id > 0}"/></div>
             </div>
 
-            <div class="row" id="meddraRow" style="">
-                <div class="label">Meddra Version</div>
+            <div class="row" id="meddraRow" style="display: ${command.terminology.code ne '2' ? 'none' : ''};">
+                <div class="label"><caaers:message code="LBL_study.aeTerminology.meddraVersion" /></div>
                 <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${command.meddraVersion.id > 0}" /></div>
             </div>
 
-            <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 and command.meddraVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
+            <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
 
             <div id="_BUTTON" style="display:${_visible ? '' : 'none'}">
                 <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
@@ -125,15 +120,23 @@
     });
 */
 
-
     function checkVersion() {
         var v1 = $('terminology');
         var vC = $('ctcVersion');
         var vM = $('meddraVersion');
 
-        if (v1.options[v1.selectedIndex].value == 'CTC') showRow('ctcRow'); else hideRow('ctcRow');
+        if (v1.options[v1.selectedIndex].value == 'CTC') {
+            showRow('ctcRow');
+            hideRow('meddraRow');
+        } else if (v1.options[v1.selectedIndex].value == 'MEDDRA') {
+            hideRow('ctcRow');
+            showRow('meddraRow');
+        } else {
+            hideRow('ctcRow')
+            hideRow('meddraRow')
+        }
 
-        if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0 && vM.selectedIndex > 0)
+        if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0)
             $('_BUTTON').show();
         else if (v1.options[v1.selectedIndex].value == 'MEDDRA' && vM.selectedIndex > 0) {
             $('_BUTTON').show();
@@ -157,6 +160,7 @@
     });
 
     function changeTerminology() {
+        $('command')._action.value = "CHANGE_TERMINOLOGY";
         $('command').submit();
     }
 </script>
