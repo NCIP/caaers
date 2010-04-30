@@ -15,7 +15,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <tags:message key="instruction_ae_manualselection_note" />
 </div>
 
-<div id="reports-header-dc-${aeReportId}" class="reportsHeader" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
+<div id="reports-header-dc-${aeReportId}" class="reportsHeader">
 	<div class="reportsHeader-right" style="text-align:right;">
 	 <span id="dc-${aeReportId}-restore" style="display:none;"><a href="#report-dc-${aeReportId}" onclick="restoreRecommended('recommended-reports-dc-${aeReportId}','applicable-reports-dc-${aeReportId}',${aeReportId})" >Restore recommended action</a></span>
 	 <span id="dc-${aeReportId}-override" ><a href="#report-dc-${aeReportId}" onclick="overrideRecommendedActions('recommended-reports-dc-${aeReportId}','applicable-reports-dc-${aeReportId}',${aeReportId})" >Override</a></span>
@@ -36,7 +36,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 </div>   
 
 
-<div id="applicable-reports-dc-${aeReportId}" style="${ not empty recommendedTableRows ? 'display:none;' : ''}" class="applicable-reports">
+<div id="applicable-reports-dc-${aeReportId}" style="display:none;" class="applicable-reports">
 <table width="100%" class="tablecontent">
     <tr>
       <th scope="col" style="text-align:center;" width="3%"><spring:message code="LBL_captureAdverseEvents.tableHeader.select" /></th>
