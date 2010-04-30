@@ -111,6 +111,8 @@ public class AgentSpecificTermsImporter {
                         t.setCtcTerm(list.get(0));
                         if (persistASAE(t)) asael++;
                     }
+
+                    agentSpecificTermDao.evict(t);
                     
                 } else {
                     // System.out.println("Err. The agent was not found by its NSC: " + nsc);
@@ -150,6 +152,7 @@ public class AgentSpecificTermsImporter {
             for (StudyAgent s : l) {
                 asaelService.synchronizeStudyWithAgentTerm(s.getStudy(), t);
                 studyDao.save(s.getStudy());
+                studyAgentDao.evict(s);
             }
             return true;
         }
