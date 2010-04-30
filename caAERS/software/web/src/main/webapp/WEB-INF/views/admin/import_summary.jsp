@@ -14,7 +14,7 @@
 		<tags:tabForm tab="${tab}" flow="${flow}" title="Import summary">
 			<jsp:attribute name="singleFields">
 			<div>
-			<input type="hidden" name="_finish" value="">
+			    <input type="hidden" name="_finish" value="">
 			</div>
 			
 			<c:if test="${command.type eq 'study'}">
@@ -55,6 +55,5 @@
       			</div>
   			</jsp:attribute>
 		</tags:tabForm>
-	</div>
 	</body>
 </html>
