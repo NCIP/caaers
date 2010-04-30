@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web;
 
+import gov.nih.nci.cabig.caaers.utils.CaaersSerializerUtil;
+import gov.nih.nci.cabig.caaers.utils.ObjectToSerialize;
 import gov.nih.nci.cabig.ctms.web.filters.ContextRetainingFilterAdapter;
 
 import java.io.IOException;
@@ -48,7 +50,21 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
         try {
             chain.doFilter(request, response);
             interceptor.postHandle(webRequest, null);
-        } finally {
+        }catch(Exception e){
+            try{
+               ObjectToSerialize os = new ObjectToSerialize();
+                if(request instanceof HttpServletRequest){
+                    os.setHttpRequest((HttpServletRequest)request);
+                    os.setHttpSession(((HttpServletRequest) request).getSession());
+                }
+                os.setException(e);
+                os.setHibernateSession(interceptor.getSessionFactory().getCurrentSession());
+                CaaersSerializerUtil.serialize(os);
+            }catch(Exception ex){
+                log.warn(ex);
+            }
+            
+        }finally {
             interceptor.afterCompletion(webRequest, null);
             log.debug("Session closed");
         }
