@@ -10,13 +10,8 @@
             <jsp:attribute name="value">${results["missingTerms"]}</jsp:attribute>
         </c:set>
 		<caaers:message code="asael.import.success" /><br><br>
-        Agents processed: <b>${results["processedAgents"]}</b><br>
-        Agent Specific Terms processed: <b>${results["processedAgentTerms"]}</b><br>
-        Missing Terms: ${fn:length(terms)}
-<%--
-            <c:forEach items="${terms}" var="term">
-                &nbsp;&nbsp;&nbsp;${term}<br>
-            </c:forEach>
---%>
+        <caaers:message code="asael.import.success.agents" />: <b>${results["processedAgents"]}</b><br>
+        <caaers:message code="asael.import.success.agent.terms" />: <b>${results["processedAgentTerms"]}</b><br>
+        <caaers:message code="asael.import.success.missing.terms" />: ${fn:length(terms)}
 	</p>
 </chrome:division>
