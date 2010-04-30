@@ -18,7 +18,6 @@ public class ASAELImporter extends Importer {
 
     @Override
     public void save(ImportCommand command, HttpServletRequest request) {
-        System.out.println("Save...");
         importer.setFile(command.getXmlFile());
         try {
             Map<String, Object> map =  importer.importFile();

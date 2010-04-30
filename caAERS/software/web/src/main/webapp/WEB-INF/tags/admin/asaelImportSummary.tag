@@ -12,10 +12,10 @@
 		The list of agent specific expected adverse events has been successfully imported.<br><br>
         Agents processed: <b>${results["processedAgents"]}</b><br>
         Agent Specific Terms processed: <b>${results["processedAgentTerms"]}</b><br>
-        Missing Terms:
+        Missing Terms:<br>
         <%--<ol>--%>
             <c:forEach items="${terms}" var="term">
-                ${term}<br>
+                &nbsp;&nbsp;&nbsp;${term}<br>
             </c:forEach>
         <%--</ol>--%>
 	</p>
