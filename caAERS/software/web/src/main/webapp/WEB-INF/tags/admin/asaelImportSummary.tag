@@ -9,14 +9,14 @@
         <c:set var="terms">
             <jsp:attribute name="value">${results["missingTerms"]}</jsp:attribute>
         </c:set>
-		The list of agent specific expected adverse events has been successfully imported.<br><br>
+		<caaers:message code="asael.import.success" /><br><br>
         Agents processed: <b>${results["processedAgents"]}</b><br>
         Agent Specific Terms processed: <b>${results["processedAgentTerms"]}</b><br>
-        Missing Terms:<br>
-        <%--<ol>--%>
+        Missing Terms: ${fn:length(terms)}
+<%--
             <c:forEach items="${terms}" var="term">
                 &nbsp;&nbsp;&nbsp;${term}<br>
             </c:forEach>
-        <%--</ol>--%>
+--%>
 	</p>
 </chrome:division>
