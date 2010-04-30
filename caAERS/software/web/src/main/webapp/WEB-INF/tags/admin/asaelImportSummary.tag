@@ -12,6 +12,8 @@
 		<caaers:message code="asael.import.success" /><br><br>
         <caaers:message code="asael.import.success.agents" />: <b>${results["processedAgents"]}</b><br>
         <caaers:message code="asael.import.success.agent.terms" />: <b>${results["processedAgentTerms"]}</b><br>
-        <caaers:message code="asael.import.success.missing.terms" />: <b>${fn:length(terms)}</b><br>
+        <caaers:message code="asael.import.success.agent.missing" />: <b>${results["missingAgents"]}</b><br>
+        <caaers:message code="asael.import.success.agentTermsDuplicates" />: <b>${results["duplicateAgentTerms"]}</b><br>
+        <caaers:message code="asael.import.success.terms.missing" />: <b>${fn:length(terms)}</b><br>
 	</p>
 </chrome:division>

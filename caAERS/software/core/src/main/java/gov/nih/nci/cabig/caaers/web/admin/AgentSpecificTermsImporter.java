@@ -31,6 +31,8 @@ public class AgentSpecificTermsImporter {
     private static final String KEY_MISSING_TERMS = "missingTerms";
     private static final String KEY_PROCESSED_AGENTS = "processedAgents";
     private static final String KEY_PROCESSED_AGENTTERMS = "processedAgentTerms";
+    private static final String KEY_MISSING_AGENTS = "missingAgents";
+    private static final String KEY_DUPLICATE_AGENT_TERMS = "duplicateAgentTerms";
 
 	private POIFSFileSystem poifs;
 	private HSSFWorkbook wb;
@@ -78,6 +80,8 @@ public class AgentSpecificTermsImporter {
         agents.clear();
         missingTerms.clear();
         asael = 0;
+        int missingAgents = 0;
+        int duplicateAgentTerms = 0;
 
         // Loading ASAE list
         int i = 1;
@@ -109,13 +113,14 @@ public class AgentSpecificTermsImporter {
                         missingTerms.add(ae_term);
                     } else {
                         t.setCtcTerm(list.get(0));
-                        if (persistASAE(t)) asael++;
+                        if (persistASAE(t)) asael++; else duplicateAgentTerms++;
                     }
 
                     agentSpecificTermDao.evict(t);
                     
                 } else {
                     // System.out.println("Err. The agent was not found by its NSC: " + nsc);
+                    missingAgents++;
                 }
 
             }
@@ -125,6 +130,8 @@ public class AgentSpecificTermsImporter {
         results.put(KEY_MISSING_TERMS, missingTerms);
         results.put(KEY_PROCESSED_AGENTS, agents.size());
         results.put(KEY_PROCESSED_AGENTTERMS, asael);
+        results.put(KEY_MISSING_AGENTS, missingAgents);
+        results.put(KEY_DUPLICATE_AGENT_TERMS, duplicateAgentTerms);
 
 /*
         System.out.println();
