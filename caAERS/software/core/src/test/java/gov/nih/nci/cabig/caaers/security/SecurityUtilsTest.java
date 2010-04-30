@@ -27,7 +27,7 @@ public class SecurityUtilsTest extends AbstractTestCase {
 
 	public void testGetUserLoginName(){
 		SecurityTestUtils.switchToSuperuser();
-		assertEquals("SYSTEM_ADMIN", SecurityUtils.getUserLoginName());
+		assertEquals("SYSTEM", SecurityUtils.getUserLoginName());
 	}
 
 	public void testGetUserLoginNameAuthentication() {
