@@ -56,8 +56,8 @@
 		     	<c:if test="${command.study.ciomsSaePDFType}">
 		     		<OPTION value="ciomssae">Export DCP Safety Report PDF</OPTION>
 		     	</c:if>
-		     	<c:if test="${report.aeReport.notificationMessagePossible}">
-		     		<OPTION value="notifyPSC">Notify PSC</OPTION>
+		     	<c:if test="${report.aeReport.notificationMessagePossible and (not empty configuration.map.pscBaseUrl)}">
+		     			<OPTION value="notifyPSC">Notify PSC</OPTION>
 		     	</c:if>
 		     	
 				<c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED'}">
