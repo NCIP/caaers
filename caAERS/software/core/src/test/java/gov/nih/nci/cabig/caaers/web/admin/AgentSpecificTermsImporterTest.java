@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author Ion C. Olaru
  *
  */
-public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
+public class AgentSpecificTermsImporterTest extends CaaersDbNoSecurityTestCase {
 
     private static String fileName = "gov/nih/nci/cabig/caaers/asaelTest.csv";
     private AgentSpecificTermDao agentSpecificTermDao;
