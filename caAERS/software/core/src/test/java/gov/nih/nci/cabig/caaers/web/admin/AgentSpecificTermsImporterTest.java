@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
 
-    private static String fileName = "gov/nih/nci/cabig/caaers/asaelTest.xls";
+    private static String fileName = "gov/nih/nci/cabig/caaers/asaelTest.csv";
     private AgentSpecificTermDao agentSpecificTermDao;
     private AgentDao agentDao;
     private TerminologyRepository tRepository;
