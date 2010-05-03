@@ -155,7 +155,8 @@ public class ImportTab extends Tab<ImportCommand>{
 
         BufferedReader input = null;
         try {
-            File xmlFile = File.createTempFile("file", "uploaded");
+            String ext = command.getDataFile().getOriginalFilename().substring(command.getDataFile().getOriginalFilename().length() - 4, command.getDataFile().getOriginalFilename().length());
+            File xmlFile = File.createTempFile("file", "uploaded" + ext);
             FileCopyUtils.copy(command.getDataFile().getInputStream(), new FileOutputStream(xmlFile));
             Importer importer = importerFactory.createImporterInstance(type);
             command.setXmlFile(xmlFile);

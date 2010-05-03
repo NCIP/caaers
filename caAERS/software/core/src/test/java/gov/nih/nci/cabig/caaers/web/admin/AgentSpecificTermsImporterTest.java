@@ -57,6 +57,13 @@ public class AgentSpecificTermsImporterTest extends CaaersDbTestCase {
     }
 
 /*
+    public void testImporter2() throws Exception {
+        String filePath = "d:\\ASAEL.Paul.xls";
+        AgentSpecificTermsImporter im = new AgentSpecificTermsImporter(new File(filePath));
+        im.importFile();
+    }
+*/
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.REFRESH;

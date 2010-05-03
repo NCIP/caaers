@@ -16,14 +16,12 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /*
 * @author Ion C. Olaru
-* 
+*
 * */
 public class AgentSpecificTermsImporter {
 
@@ -34,10 +32,6 @@ public class AgentSpecificTermsImporter {
     private static final String KEY_MISSING_AGENTS = "missingAgents";
     private static final String KEY_DUPLICATE_AGENT_TERMS = "duplicateAgentTerms";
 
-	private POIFSFileSystem poifs;
-	private HSSFWorkbook wb;
-	private HSSFSheet sh;
-
 	private AgentDao agentDao;
     private TerminologyRepository terminologyRepository;
     private AgentSpecificTermDao agentSpecificTermDao;
@@ -45,13 +39,6 @@ public class AgentSpecificTermsImporter {
     private StudyAgentDao studyAgentDao;
     private StudyDao studyDao;
 
-    private int rowCount = 0;
-    private int columnsCount = 0;
-    private Map<String, Agent> agents = new HashMap<String, Agent>();
-    private Set<String> missingTerms = new HashSet<String>();
-    private Map<String, String> asaelCache = new HashMap<String, String>();
-    private int asael;
-    
     private Map<String, Short> headers = new HashMap() {{
         put("NSC", -1);
         put("CTCAE_VERSION", -1);
@@ -63,7 +50,7 @@ public class AgentSpecificTermsImporter {
 
     public AgentSpecificTermsImporter() {
     }
-    
+
     public AgentSpecificTermsImporter(File f) {
         file = f;
     }
@@ -74,27 +61,132 @@ public class AgentSpecificTermsImporter {
     }
 
     public Map<String, Object> importFile() throws Exception {
+
+        POIFSFileSystem poifs;
+        HSSFWorkbook wb;
+        HSSFSheet sh = null;
+
+        boolean isExcel = file.getName().endsWith(".xls");
+        boolean isCSV = file.getName().endsWith(".csv");
+
         Map<String, Object> results = new HashMap<String, Object>();
+        int rowCount = 0;
+        int columnsCount = 0;
+        Map<String, Agent> agents = new HashMap<String, Agent>();
+        Set<String> missingTerms = new HashSet<String>();
+        Map<String, String> asaelCache = new HashMap<String, String>();
+        int asael;
+
+        // System.out.println("Starting...");
+
+        // get needed headers
+        if (isExcel) {
+            poifs = new POIFSFileSystem(new FileInputStream(file));
+            wb = new HSSFWorkbook(poifs);
+            sh = wb.getSheetAt(0);
+            rowCount = sh.getLastRowNum();
+            columnsCount = sh.getRow(0).getLastCellNum();
+
+            for (byte i = 0; i<columnsCount; i++) {
+                HSSFCell cell = sh.getRow(0).getCell(i);
+                if (headers.containsKey(cell.getStringCellValue())) {
+                    headers.remove(cell.getStringCellValue());
+                    headers.put(cell.getStringCellValue(), Short.valueOf(i));
+                }
+            }
+        }
+
+        InputStream ir = null;
+        Reader r = null;
+        BufferedReader br = null;
         
-        bootstrap(file);
+        if (isCSV) {
+            // readLines
+            rowCount = 0;
+            ir = new FileInputStream(file);
+            r = new InputStreamReader(ir);
+            br = new BufferedReader(r);
+            String s = br.readLine();
+            while(s != null) {
+                if (rowCount == 0) {
+                    String[] _s = s.split("[\\|]{1}");
+                    for (byte j=0; j<_s.length; j++) {
+                        // System.out.println(_s[j]);
+                        if (headers.containsKey(_s[j])) {
+                            headers.remove(_s[j]);
+                            headers.put(_s[j], Short.valueOf(j));
+                        }
+                    }
+                }
+                rowCount++;
+                s = br.readLine();
+            }
+            br.close();
+            r.close();
+            ir.close();
+
+            ir = new FileInputStream(file);
+            r = new InputStreamReader(ir);
+            br = new BufferedReader(r);
+        }
+
+/*
+        System.out.println(rowCount);
+        for (Map.Entry e : headers.entrySet()) {
+            System.out.println(e.getKey() + "=>" + e.getValue());
+        }
+*/
+
         agents.clear();
         missingTerms.clear();
         asael = 0;
         int missingAgents = 0;
         int duplicateAgentTerms = 0;
 
+        //
+        String nsc = "";
+        String ctcae_category = "";
+        int ctcae_version = 0;
+        String ae_term = "";
+
         // Loading ASAE list
+        // if (true) {  return null; }
+
         int i = 1;
         while (i <= rowCount) {
 
-            HSSFRow row = sh.getRow(i);
-            if (row != null) {
-                String nsc = getCellData("", i, row.getCell((short)headers.get("NSC")));
-                String ctcae_category= getCellData("", i, row.getCell((short)headers.get("CTCAE_CATEGORY")));
-                int ctcae_version = Integer.parseInt(getCellData("", i, row.getCell((short)headers.get("CTCAE_VERSION"))));
-                String ae_term = getCellData("", i, row.getCell((short)headers.get("AE_TERM")));
+            nsc = "";
+            
+                if (isExcel) {
+                    HSSFRow row = sh.getRow(i);
+                    if (row != null) {
+                        nsc = getCellData("", i, row.getCell((short)headers.get("NSC")));
+                        ctcae_category= getCellData("", i, row.getCell((short)headers.get("CTCAE_CATEGORY")));
+                        ctcae_version = Integer.parseInt(getCellData("", i, row.getCell((short)headers.get("CTCAE_VERSION"))));
+                        ae_term = getCellData("", i, row.getCell((short)headers.get("AE_TERM")));
+                    }
+                } else {
+                    String s;
+                    s = br.readLine();
+                    if (s != null) {
+                        String[] _s = s.split("[\\|]{1}");
+                        if (i >1 && _s.length > 0) { 
+                            nsc = _s[headers.get("NSC")];
+                            ctcae_category = _s[headers.get("CTCAE_CATEGORY")];
+                            try {
+                                ctcae_version = _s[headers.get("CTCAE_VERSION")].trim() != "" ? Integer.valueOf(_s[headers.get("CTCAE_VERSION")]).intValue() : 0;
+                            } catch (NumberFormatException e) {
+                                System.out.println(s);
+                                return null;
+                            }
+                            ae_term = _s[headers.get("AE_TERM")];
+                        }
+                    }
+                }
 
-                // System.out.println(String.format("NSC:%s,   V:%s,   C:%s,   T:%s", nsc, ctcae_version, ctcae_category, ae_term));
+                if (nsc.trim().equals("")) { i++; continue; } else {
+                    // System.out.println(String.format("%s). NSC:%s,   V:%s,   C:%s,   T:%s", i, nsc, ctcae_version, ctcae_category, ae_term));
+                }
 
                 Agent a = agents.get(nsc);
                 if (a == null) {
@@ -117,28 +209,26 @@ public class AgentSpecificTermsImporter {
                     }
 
                     agentSpecificTermDao.evict(t);
-                    
+
                 } else {
                     // System.out.println("Err. The agent was not found by its NSC: " + nsc);
                     missingAgents++;
                 }
 
-            }
             i++;
         }
 
+        if (isCSV) {
+            br.close();
+            r.close();
+            ir.close();
+        }
+        
         results.put(KEY_MISSING_TERMS, missingTerms);
         results.put(KEY_PROCESSED_AGENTS, agents.size());
         results.put(KEY_PROCESSED_AGENTTERMS, asael);
         results.put(KEY_MISSING_AGENTS, missingAgents);
         results.put(KEY_DUPLICATE_AGENT_TERMS, duplicateAgentTerms);
-
-/*
-        System.out.println();
-        System.out.println(String.format("Loaded %d agents", agents.size()));
-        System.out.println(String.format("Built %d ASAE terms", asael));
-        System.out.println("OK.");
-*/
 
         return results;
     }
@@ -156,33 +246,16 @@ public class AgentSpecificTermsImporter {
         if (!isAgentSpecificTermPersisted(t)) {
             agentSpecificTermDao.save(t);
             List<StudyAgent> l = getStudyAgentDao().getByAgentID(t.getAgent().getId());
+            // System.out.println("Agent is associated to " + l.size() + "studies");
             for (StudyAgent s : l) {
                 asaelService.synchronizeStudyWithAgentTerm(s.getStudy(), t);
+                //System.out.println("Study has " + s.getStudy().getExpectedAECtcTerms().size() + "Expected AEs");
                 studyDao.save(s.getStudy());
                 studyAgentDao.evict(s);
             }
             return true;
         }
         return false;
-    }
-
-    private void bootstrap(File inputFile) throws Exception {
-        poifs = new POIFSFileSystem(new FileInputStream(inputFile));
-
-        // create a workbook out of the input stream
-        wb = new HSSFWorkbook(poifs);
-        sh = wb.getSheetAt(0);
-        rowCount = sh.getLastRowNum();
-        columnsCount = sh.getRow(0).getLastCellNum();
-
-        // get needed headers
-        for (byte i = 0; i<columnsCount; i++) {
-            HSSFCell cell = sh.getRow(0).getCell(i);
-            if (headers.containsKey(cell.getStringCellValue())) {
-                headers.remove(cell.getStringCellValue());
-                headers.put(cell.getStringCellValue(), Short.valueOf(i));
-            }
-        }
     }
 
     // utility method to get contents of cell irrespective of cell type.
@@ -203,15 +276,6 @@ public class AgentSpecificTermsImporter {
             throw new CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: " + sheetname + "\n Row: " + (rowNum + 1) + "\n Cell: " + ((cell.getCellNum()) + 1));
         }
 
-    }
-
-
-    private HSSFSheet getSheet(String sheetName) {
-        HSSFSheet sheet = wb.getSheet(sheetName);
-        if (sheet == null)
-            throw new CaaersSystemException("\n Unable to find sheet named: " + sheetName + "\n Please fix the error and try again.");
-        else
-            return sheet;
     }
 
     public void setAgentDao(AgentDao agentDao) {
