@@ -63,6 +63,7 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
             }catch(Exception ex){
                 log.warn(ex);
             }
+            throw new RuntimeException(e);
             
         }finally {
             interceptor.afterCompletion(webRequest, null);
