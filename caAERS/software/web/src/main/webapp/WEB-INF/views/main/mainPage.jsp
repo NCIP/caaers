@@ -14,8 +14,16 @@
 <style>
 .division .header { margin-bottom:5px; }
 </style>
+<script><!--
+	var displayAdminSection = 0;
+	Event.observe(document, "dom:loaded", function(){
+	   if(displayAdminSection == 0) 
+	   		$('admin-division-id').hide();
+	}); 
+--></script>
 </head>
-<body><chrome:box title="Welcome">
+<body>
+<chrome:box title="Welcome">
 <chrome:division title="Regular Tasks">
     <table id="test" class="autoclear" width="100%">
         <tr class="results" >
@@ -88,13 +96,16 @@
     </table>
 
 </chrome:division>
-<chrome:division title="Setup and Administration Tasks">
+<chrome:division title="Setup and Administration Tasks" id="admin-division-id">
     <table id="test" width="100%" >
         <tr class="results">
             <td align="left"  valign="top" width="30%">
                 <c:forEach begin="4" end="5" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
+                        <script>
+                        	displayAdminSection++;
+                        </script>
 
                         <ul><chrome:division title="${taskGroup.displayName}">
                             <c:forEach items="${taskGroup.taskList}" var="task">
@@ -116,6 +127,9 @@
                 <c:forEach begin="6" end="7" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
+                       	<script>
+                        	displayAdminSection++;
+                        </script>
                         <ul><chrome:division title="${taskGroup.displayName}">
                             <c:forEach items="${taskGroup.taskList}" var="task">
                                 <csmauthz:accesscontrol domainObject="${task}"
@@ -134,6 +148,9 @@
                 <c:forEach begin="8" end="9" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
+                        <script>
+                        	displayAdminSection++;
+                        </script>
                         <ul><chrome:division title="${taskGroup.displayName}">
                             <c:forEach items="${taskGroup.taskList}" var="task">
                                 <c:if test="${test}"></c:if>
