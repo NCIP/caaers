@@ -170,7 +170,7 @@ public class AgentSpecificTermsImporter {
                     s = br.readLine();
                     if (s != null) {
                         String[] _s = s.split("[\\|]{1}");
-                        if (i >1 && _s.length > 0) { 
+                        if (i >1 && _s.length > 1) { 
                             nsc = _s[headers.get("NSC")];
                             ctcae_category = _s[headers.get("CTCAE_CATEGORY")];
                             try {
