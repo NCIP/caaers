@@ -456,8 +456,8 @@ public class CreateRuleCommand implements RuleInputCommand {
                 // because DCP uses CTEP report definitions also . TEMP fix.
                 if(StringUtils.equals(organizationName , "Division of Cancer Prevention")){
                     org = organizationDao.getByName("Cancer Therapy Evaluation Program");
+                    if(org != null) reportDefinitions.addAll(fetchReportDefinitions(org));
                 }
-                if(org != null) reportDefinitions.addAll(fetchReportDefinitions(org));
 
             }
 
