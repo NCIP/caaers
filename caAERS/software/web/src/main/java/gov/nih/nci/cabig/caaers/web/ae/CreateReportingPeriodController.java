@@ -45,6 +45,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  *
  * @author Sameer Sawant
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 
 public class CreateReportingPeriodController extends SimpleFormController {

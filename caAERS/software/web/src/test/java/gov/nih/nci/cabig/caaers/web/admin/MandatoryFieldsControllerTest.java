@@ -9,12 +9,14 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TabSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController;
 import junit.framework.TestCase;
 import org.springframework.validation.BindException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,6 +35,8 @@ public class MandatoryFieldsControllerTest extends WebTestCase {
         super.setUp();
         cfdDao = registerDaoMockFor(CaaersFieldDefinitionDao.class);
         command = new MandatoryFieldsCommand(cfdDao);
+        command.setMandatoryFields(new ArrayList<CaaersFieldDefinition>());
+        command.initializeMandatoryFieldMap();
         tree = new CaaersFieldsTree(null, null);
         controller = new MandatoryFieldsController();
         controller.setCaaersFieldsTree(tree);
@@ -40,9 +44,14 @@ public class MandatoryFieldsControllerTest extends WebTestCase {
     }
 
     public void testReferenceData() throws Exception {
-        command.setMandatoryFields(new ArrayList<CaaersFieldDefinition>());
         Map refData = controller.referenceData(request, command, errors);
         assertEquals(1, refData.size());
         assertEquals(2, ((Map)refData.get("fieldGroups")).size());
+    }
+
+    public void testPopulateFieldMap() {
+        Map<String, InputFieldGroup> map = new HashMap<String, InputFieldGroup>();
+        controller.populateFieldMap(command, map, tree);
+        assertEquals(2, map.size());
     }
 }

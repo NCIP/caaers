@@ -57,4 +57,20 @@ public class CaaersFieldsTreeTest extends CaaersTestCase {
         }
     }
 
+    public void testAdd() {
+        tree.setExpeditedReportTree(null);
+        tree.initialize();
+        TabSectionNode tabSectionNode = new TabSectionNode(TabSection.COURSE_CYCLE_SECTION);
+        tabSectionNode.add(new TabSectionNode(TabSection.COURSE_CYCLE_SECTION));
+        tabSectionNode.add(new TabSectionNode(TabSection.COURSE_CYCLE_SECTION));
+        tree.add(tabSectionNode);
+        TreeNode node = tree.getNodeForSection(TabSection.COURSE_CYCLE_SECTION);
+        assertEquals(2, node.getChildren().size());
+    }
+
+    public void testGetMessage() {
+        String m = tree.getMessage("LBL_one", "DEF");
+        assertEquals("DEF", m);
+    }
+    
 }

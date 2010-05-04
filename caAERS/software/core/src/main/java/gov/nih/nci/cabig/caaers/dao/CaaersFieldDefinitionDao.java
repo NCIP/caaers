@@ -14,8 +14,10 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 /**
  * @author Sameer Sawant
+ * @author Ion C. Olaru
  * This class implements the Data access related operations for the CaaersFieldDefinition domain object.
  */
+@Transactional(readOnly = true)
 public class CaaersFieldDefinitionDao extends CaaersDao<CaaersFieldDefinition>{
 	
 	
@@ -47,7 +49,6 @@ public class CaaersFieldDefinitionDao extends CaaersDao<CaaersFieldDefinition>{
      * @return return the list of caaers field definitions
      */
     public List<CaaersFieldDefinition> getAll() {
-    	HibernateTemplate template = getHibernateTemplate();
         return getHibernateTemplate().find("from CaaersFieldDefinition as cfd order by cfd.tabName, cfd.id");
     }
 }

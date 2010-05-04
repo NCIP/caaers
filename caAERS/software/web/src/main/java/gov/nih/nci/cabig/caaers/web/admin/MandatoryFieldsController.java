@@ -27,6 +27,8 @@ import java.util.*;
 
 /**
  * @author Sameer Sawant
+ * @author Ion C. Olaru
+ * 
  */
 public class MandatoryFieldsController extends SimpleFormController {
 
@@ -79,32 +81,6 @@ public class MandatoryFieldsController extends SimpleFormController {
         populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(TabSection.COURSE_CYCLE_SECTION));
         refDataMap.put("fieldGroups", fieldMap);
         return refDataMap;
-    }
-    
-    /**
-     * Does the following:- Remove orphaned fields from existing mandatory field list. Add newly
-     * added fields to existing mandatory field list.
-     */
-    public void reconcileMandatoryFields(List<CaaersFieldDefinition> mfList, TreeNode node) {
-        // map consisting values from existing mandatory fields
-        HashMap<String, CaaersFieldDefinition> existingFieldMap = new HashMap<String, CaaersFieldDefinition>();
-        for (CaaersFieldDefinition mf : mfList) {
-            existingFieldMap.put(mf.getFieldPath(), mf);
-        }
-        // newly calculated list
-        List<CaaersFieldDefinition> mfListNew = new ArrayList<CaaersFieldDefinition>();
-
-        populateMandatoryFields(mfListNew, node);
-        for (CaaersFieldDefinition mf : mfListNew) {
-            if (existingFieldMap.remove(mf.getFieldPath()) == null) {
-                mfList.add(mf); // add this, this is a new field (may be a new release, not existed
-                // while saving report definition)
-            }
-        }
-        for (CaaersFieldDefinition mf : existingFieldMap.values()) {
-            // these fields got removed (in new release)
-            mfList.remove(mf);
-        }
     }
     
     protected void populateMandatoryFields(List<CaaersFieldDefinition> mfList, TreeNode node) {
