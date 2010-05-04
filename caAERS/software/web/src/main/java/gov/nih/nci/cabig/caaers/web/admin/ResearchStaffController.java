@@ -44,6 +44,8 @@ import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureExcep
  * Design. This uses AbstractTabbedFlowFormController to implement tabbed workflow
  *
  * @author Saurabh
+ * @author Ion C. Olaru
+ * 
  */
 public abstract class ResearchStaffController<C extends ResearchStaffCommand> extends AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
 
