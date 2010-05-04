@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import org.easymock.EasyMock;
-
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -50,6 +48,7 @@ public class StudyImporterTest extends WebTestCase {
 	public void testSave(){
 		setUpImportCommand();
 		studyRepository.save(command.getImportableStudies().get(0).getImportedDomainObject());
+		studyRepository.synchronizeStudyPersonnel(command.getImportableStudies().get(0).getImportedDomainObject());
 		replayMocks();
 		importer.save(command, request);
 		verifyMocks();
