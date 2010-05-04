@@ -119,12 +119,15 @@ public class ObjectToSerializeConverter implements Converter{
 	 * @param context
 	 */
 	private void writeHibernateSession(Session session,HierarchicalStreamWriter writer,MarshallingContext context){
-		SessionImpl sessionImpl = (SessionImpl)session;
-		StatefulPersistenceContext sPersistenceContext = (StatefulPersistenceContext)sessionImpl.getPersistenceContext();
-		if(sPersistenceContext != null){
-			writer.startNode("HibernateSession");
-			context.convertAnother(sPersistenceContext.getEntitiesByKey());
-			writer.endNode();
-		}
+        if(session instanceof SessionImpl){
+           SessionImpl sessionImpl = (SessionImpl)session;
+		   StatefulPersistenceContext sPersistenceContext = (StatefulPersistenceContext)sessionImpl.getPersistenceContext();
+		    if(sPersistenceContext != null){
+			    writer.startNode("HibernateSession");
+			    context.convertAnother(sPersistenceContext.getEntitiesByKey());
+			    writer.endNode();
+		    }
+        }
+
 	}
 }
