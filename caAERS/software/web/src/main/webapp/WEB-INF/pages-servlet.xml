@@ -205,7 +205,7 @@
 	</bean>
 	
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Rules" p:mainController="createRuleController">
+	      p:displayName="Rules" p:mainController="listRuleController">
 	  <property name="pathMapping"><value>/rule/**</value></property>
 	  <property name="tasks">
 	    <list>
