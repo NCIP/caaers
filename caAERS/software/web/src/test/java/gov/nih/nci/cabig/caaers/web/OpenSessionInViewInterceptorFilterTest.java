@@ -1,16 +1,8 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isNull;
-import static org.easymock.EasyMock.reportMatcher;
-
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-
 import org.easymock.IArgumentMatcher;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.PermissionDeniedDataAccessException;
@@ -20,6 +12,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import java.io.IOException;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Rhett Sutphin
@@ -37,6 +35,9 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
     private FilterChain filterChain;
 
     private WebRequestMatcher webRequestMatcher = new WebRequestMatcher();
+    private SessionFactory hibernateSessionFactory;
+    private Session hibernateSession;
+
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -53,6 +54,9 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
         MockFilterConfig filterConfig = new MockFilterConfig(servletContext);
         filterConfig.addInitParameter("interceptorBeanName", BEAN_NAME);
         filter.init(filterConfig);
+
+        hibernateSession = registerMockFor(Session.class);
+        hibernateSessionFactory = registerMockFor(SessionFactory.class);
     }
 
     public void testBasicBehavior() throws Exception {
@@ -66,7 +70,8 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
 
     public void testExceptionInFilterChainBehavior() throws Exception {
         ServletException exception = new ServletException("Uh oh");
-
+        expect(interceptor.getSessionFactory()).andReturn(hibernateSessionFactory);
+        expect(hibernateSessionFactory.getCurrentSession()).andReturn(hibernateSession);
         interceptor.preHandle(webRequest());
         filterChain.doFilter(request, response);
         expectLastCall().andThrow(exception);
@@ -76,8 +81,8 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
         try {
             doFilter();
             fail("Exception not propagated");
-        } catch (ServletException se) {
-            assertEquals(exception, se);
+        } catch (Exception se) {
+            assertEquals(exception, se.getCause());
         }
     }
 
@@ -86,6 +91,9 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
 
         interceptor.preHandle(webRequest());
         filterChain.doFilter(request, response);
+        expect(interceptor.getSessionFactory()).andReturn(hibernateSessionFactory);
+        expect(hibernateSessionFactory.getCurrentSession()).andReturn(hibernateSession);
+
         interceptor.postHandle(webRequest(), (ModelMap) isNull());
         expectLastCall().andThrow(exception);
         interceptor.afterCompletion(webRequest(), (Exception) isNull());
@@ -93,8 +101,8 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
         try {
             doFilter();
             fail("Exception not propagated");
-        } catch (DataAccessException dae) {
-            assertEquals(exception, dae);
+        } catch (Exception dae) {
+            assertEquals(exception, dae.getCause());
         }
     }
 
