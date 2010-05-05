@@ -20,6 +20,7 @@ import org.exolab.castor.xml.Unmarshaller;
 /**
  * 
  * @author Biju Joseph
+ * @author Ion C. Olaru
  *
  */
 public class AdverseEventReportSerializerTest extends AbstractTestCase {
@@ -149,7 +150,6 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         Fixtures.updateMandatoryFields(aeReport.getReports().get(0).getReportDefinition(),aeReport.getReports().get(0));
 
         String xml = serializer.serialize(aeReport, aeReport.getReports().get(0));
-        System.out.println(xml);
         
         assertTrue(xml.indexOf("<applicableField>") >= 0);
         assertTrue(xml.indexOf("</applicableField>") >= 0);
