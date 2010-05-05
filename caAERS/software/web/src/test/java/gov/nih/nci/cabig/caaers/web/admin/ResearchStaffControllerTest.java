@@ -35,7 +35,7 @@ public class ResearchStaffControllerTest extends WebTestCase {
         errors = new BindException(command, "command");
     }
     
-    public void testTheException() throws Exception {
+    public void testTheOptimisticException() throws Exception {
         HibernateOptimisticLockingFailureException exception = new HibernateOptimisticLockingFailureException(new StaleObjectStateException(null, null));
         errors.reject("");
         controller.processFinish(request, response, command, errors);
