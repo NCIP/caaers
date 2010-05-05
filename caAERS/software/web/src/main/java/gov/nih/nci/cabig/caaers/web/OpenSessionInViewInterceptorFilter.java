@@ -13,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.Session;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -50,24 +51,36 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
         try {
             chain.doFilter(request, response);
             interceptor.postHandle(webRequest, null);
-        }catch(Exception e){
-            try{
-               ObjectToSerialize os = new ObjectToSerialize();
+        }catch(IOException e){
+           serailizeContext(request, interceptor.getSessionFactory().getCurrentSession(), e);
+           throw e;
+        }catch(ServletException e){
+           serailizeContext(request, interceptor.getSessionFactory().getCurrentSession(), e);
+           throw e;
+        }catch(RuntimeException e){
+           serailizeContext(request, interceptor.getSessionFactory().getCurrentSession(), e);
+           throw e;
+        }finally {
+            interceptor.afterCompletion(webRequest, null);
+            log.debug("Session closed");
+        }
+    }
+
+    /**
+     * This method will take care of printing the context details. 
+     */
+    public void serailizeContext(ServletRequest request, Session session, Exception e){
+        try{
+                ObjectToSerialize os = new ObjectToSerialize();
                 if(request instanceof HttpServletRequest){
                     os.setHttpRequest((HttpServletRequest)request);
                     os.setHttpSession(((HttpServletRequest) request).getSession());
                 }
                 os.setException(e);
-                os.setHibernateSession(interceptor.getSessionFactory().getCurrentSession());
+                os.setHibernateSession(session);
                 CaaersSerializerUtil.serialize(os);
-            }catch(Exception ex){
-                log.warn(ex);
-            }
-            throw new RuntimeException(e);
-            
-        }finally {
-            interceptor.afterCompletion(webRequest, null);
-            log.debug("Session closed");
+        }catch(Exception ex){
+            log.warn(ex);
         }
     }
 
