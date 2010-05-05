@@ -17,6 +17,8 @@ import java.util.Map;
 
 /**
  * @author Biju Joseph
+ * @author Ion C. Olaru
+ * 
  */
 public class AdverseEventCaptureTab extends AdverseEventTab {
 	

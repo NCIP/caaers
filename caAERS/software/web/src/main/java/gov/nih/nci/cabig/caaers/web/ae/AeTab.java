@@ -39,6 +39,8 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Rhett Sutphin
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
+ * @author Ion C. Olaru
+ * 
  */
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
 
@@ -291,11 +293,22 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
     }
 
+    /*
+    * Created a field for UI time field
+    * @param baseProperty - field base name
+    * @param displayName - default label text
+    * */
     public CompositeField createTimeField(String baseProperty, String displayName){
         return createTimeField(baseProperty, displayName, null);
     }
 
-    public CompositeField createTimeField(String baseProperty, String displayName, String labelProperty){
+    /*
+    * Created a field for UI time field
+    * @param baseProperty - field base name
+    * @param displayName - default label text
+    * @param labelProperty - property to use for the label on UI rendering
+    * */
+    public CompositeField createTimeField(String baseProperty, String displayName, String labelProperty) {
     	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.NUMBER_VALIDATOR);
     	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.NUMBER_VALIDATOR);
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();

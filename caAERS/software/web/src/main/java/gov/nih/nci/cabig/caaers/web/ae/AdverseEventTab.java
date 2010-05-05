@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * 
  * @author Sameer Sawant
+ * @author Ion C. Olaru
  *
  */
 public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputCommand>{

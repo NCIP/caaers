@@ -15,6 +15,8 @@ import org.springframework.validation.Errors;
  * (the property name of the field in the group)
  * 
  * @author Rhett Sutphin
+ * @author Ion C. Olaru
+ * 
  */
 public class CompositeField extends AbstractInputField {
     private InputFieldGroup group;

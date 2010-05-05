@@ -11,6 +11,8 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author Ion C. Olaru
+ * 
  */
 public abstract class AbstractInputField implements InputField {
 
@@ -46,7 +48,17 @@ public abstract class AbstractInputField implements InputField {
         this.displayName = displayName;
         this.propertyName = propertyName;
         if (validators != null && validators.length > 0) this.validators = validators;
-        if (required != null && required) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
+        if (required != null && required) {
+            if (this.validators == null) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
+            else {
+                FieldValidator[] fv = new FieldValidator[this.validators.length + 1];
+                for (byte i=0; i < this.validators.length; i++) {
+                    fv[i] = this.validators[i];
+                }
+                fv[validators.length] = FieldValidator.NOT_NULL_VALIDATOR;
+                this.validators = fv;
+            }
+        }
         if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
     }
 

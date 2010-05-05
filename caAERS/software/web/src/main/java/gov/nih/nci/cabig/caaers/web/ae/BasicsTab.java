@@ -30,6 +30,8 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author Ion C. Olaru
+ *
  */
 public abstract class BasicsTab extends AeTab {
     protected static final String MAIN_FIELD_GROUP = "main";

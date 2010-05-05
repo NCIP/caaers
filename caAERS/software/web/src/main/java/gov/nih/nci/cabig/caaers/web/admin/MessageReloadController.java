@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 public class MessageReloadController implements Controller {
 
