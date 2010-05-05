@@ -26,6 +26,7 @@ import org.springframework.web.context.request.WebRequest;
  * 
  * @see org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 /* TODO: this class is shared with PSC. Refactor into a shared library. */
 public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAdapter {
