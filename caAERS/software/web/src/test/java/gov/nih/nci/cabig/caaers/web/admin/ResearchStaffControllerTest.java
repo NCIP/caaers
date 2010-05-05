@@ -40,5 +40,6 @@ public class ResearchStaffControllerTest extends WebTestCase {
         errors.reject("");
         controller.processFinish(request, response, command, errors);
         expectLastCall().andThrow(exception);
+        System.out.println(request.getAttribute("OPTIMISTIC_LOCKING_ERROR"));
     }
 }
