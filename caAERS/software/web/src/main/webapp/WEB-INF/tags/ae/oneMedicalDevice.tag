@@ -208,16 +208,18 @@
 	}
 
     var dOperator = $('aeReport.medicalDevices[${index}].deviceOperator');
-    Event.observe(dOperator, "change", function() {
-        // alert(${index});
-        if (!$('aeReport.medicalDevices[${index}].otherDeviceOperator-row')) return;
-        
-        if (dOperator.options[dOperator.selectedIndex].value != 'OTHER') {
-            $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').hide();
-            $('aeReport.medicalDevices[${index}].otherDeviceOperator').value = '';
-        } else {
-            $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').show();
-        }
+    if (dOperator) {
+        Event.observe(dOperator, "change", function() {
+            // alert(${index});
+            if (!$('aeReport.medicalDevices[${index}].otherDeviceOperator-row')) return;
 
-    });
+            if (dOperator.options[dOperator.selectedIndex].value != 'OTHER') {
+                $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').hide();
+                $('aeReport.medicalDevices[${index}].otherDeviceOperator').value = '';
+            } else {
+                $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').show();
+            }
+
+        });
+    }
 </script>

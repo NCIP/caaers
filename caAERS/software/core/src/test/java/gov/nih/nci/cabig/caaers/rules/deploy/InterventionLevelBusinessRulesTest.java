@@ -754,7 +754,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
     /**
      * RuleName : SME_BR10_CHK
      * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
-     * 
+     * Error: SME_BR10_ERR 
      */
     public void testDeviceOperatorNoOther() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -768,11 +768,14 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         device.setReprocessorAddress("test");
         device.setReprocessorName("test");
         device.setDeviceReprocessed(ReprocessedDevice.YES);
+
         device.setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
         device.setOtherDeviceOperator("Some Other Device Operator");
+
         aeReport.addMedicalDevice(device);
         ValidationErrors errors = fireRules(aeReport);
         assertEquals(1, errors.getErrorCount());
+        assertCorrectErrorCode(errors, "SME_BR10_ERR");
         assertEquals("aeReport.medicalDevices[0].deviceOperator", errors.getErrorAt(0).getFieldNames()[0]);
         assertEquals("aeReport.medicalDevices[0].otherDeviceOperator", errors.getErrorAt(0).getFieldNames()[1]);
     }
@@ -780,7 +783,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
     /**
      * RuleName : SME_BR11_CHK
      * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
-     *
+     * Error: SME_BR11_ERR
      */
     public void testDeviceOperatorOther() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -793,19 +796,22 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         device.setModelNumber("123");
         device.setReprocessorAddress("test");
         device.setReprocessorName("test");
+
         device.setDeviceReprocessed(ReprocessedDevice.YES);
-        device.setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
-        device.setOtherDeviceOperator("Some Other Device Operator");
+        device.setDeviceOperator(DeviceOperator.OTHER);
+        
         aeReport.addMedicalDevice(device);
         ValidationErrors errors = fireRules(aeReport);
         assertEquals(1, errors.getErrorCount());
+        assertCorrectErrorCode(errors, "SME_BR11_ERR");
         assertEquals("aeReport.medicalDevices[0].deviceOperator", errors.getErrorAt(0).getFieldNames()[0]);
         assertEquals("aeReport.medicalDevices[0].otherDeviceOperator", errors.getErrorAt(0).getFieldNames()[1]);
     }
 
     /**
-     * RuleName : SME_BR11_CHK
+     * RuleName : SME_BR10_CHK
      * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
+     * Error: No Error
      *
      */
     public void testDeviceOperatorOtherOK() throws Exception {
@@ -828,8 +834,8 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
 
     /**
      * RuleName : SME_BR11_CHK
-     * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
-     *
+     * Rule : DEVICE_OPERATOR_DESCRIPTION must be provided if DEVICE_OPERATOR is 'Other'
+     * Error: No Error
      */
     public void testDeviceOperatorOtherOK2() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
