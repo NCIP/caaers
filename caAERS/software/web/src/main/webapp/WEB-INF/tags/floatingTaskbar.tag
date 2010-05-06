@@ -7,6 +7,10 @@
     var TASKS = [
                 <c:forEach items="${sections}" var="section">
 
+            <%--
+                If the parent section has at least one task to be shown (determined from security settings,
+                Them show it.)
+            --%>
                     <c:set var="_showSection" value="false" />
                     <c:forEach var="task" items="${section.tasks}">
                         <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
