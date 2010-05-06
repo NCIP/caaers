@@ -139,9 +139,23 @@
                 	<chrome:box title="Basic Details">
                     <input type="hidden" name="_action" value=""><input type="hidden" name="_selected" value=""><input type="hidden" name="_finish" value="true"/><input type="hidden" name="srsID"/><input type="hidden" name="srsrID"/><tags:instructions code="researchstaffdetails" /><caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/><caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
                     <chrome:division title="${detailsSectionTitle}" id="details">
-                        <c:forEach items="${fieldGroups.researchStaff.fields}" var="field" begin="0" end="3">
-                            <tags:renderRow field="${field}"/>
-                        </c:forEach>
+
+                        <div class="row">
+                            <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
+                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></div>
+                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="true"/></div>
+                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
+                            <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email"/></div>
+                        </div>
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
                             <div class="value"><ui:text path="researchStaff.loginId" readonly="${(readonly || editMode) and not empty command.researchStaff.loginId}" cssClass="required" required="true" title="Login ID"/></div>
