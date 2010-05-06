@@ -18,24 +18,25 @@
           <standard:welcome/>
 		  <a href="${_caaersHelpURL}#${roboHelpLink}" target="_blank" id="help">Help</a>
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
+        
         <ul id="sections" class="tabs">
         <c:forEach items="${sections}" var="section" varStatus="index">
             <c:set var="_showSection" value="false" />
             <c:set var="_useSectionLink" value="false" />
             <c:set var="_sectionLink" value="${section.mainUrl}" />
             <c:forEach var="task" items="${section.tasks}">
-              <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                <c:set var="_showSection" value="true" />
-                  <c:if test="${section.mainController eq task.linkName}">
-                    <c:set var="_useSectionLink" value="true" />
-                  </c:if>
-                <c:set var="_sectionLink" value="${task.url}" />
-              </csmauthz:accesscontrol>
+                <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                    <c:set var="_showSection" value="true"/>
+                    <c:if test="${section.mainController eq task.linkName}">
+                        <c:set var="_useSectionLink" value="true"/>
+                    </c:if>
+                    <c:set var="_sectionLink" value="${task.url}"/>
+                </csmauthz:accesscontrol>
             </c:forEach>
             <c:if test="${_showSection}">
-            <li class="${section == currentSection ? 'selected' : ''}">
-                <a id="firstlevelnav_${section.mainController}" href="<c:url value="${_useSectionLink ? section.mainUrl : _sectionLink}"/>" index="${index.index}">${section.displayName}</a>
-            </li>
+                <li class="${section == currentSection ? 'selected' : ''}">
+                    <a id="firstlevelnav_${section.mainController}" href="<c:url value="${_useSectionLink ? section.mainUrl : _sectionLink}"/>" index="${index.index}">${section.displayName}</a>
+                </li>
             </c:if>
         </c:forEach>
         </ul>

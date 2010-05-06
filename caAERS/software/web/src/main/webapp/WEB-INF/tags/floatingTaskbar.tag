@@ -6,7 +6,15 @@
 
     var TASKS = [
                 <c:forEach items="${sections}" var="section">
-                    <csmauthz:accesscontrol authorizationCheckName="sectionAuthorizationCheck" domainObject="${section}">
+
+                    <c:set var="_showSection" value="false" />
+                    <c:forEach var="task" items="${section.tasks}">
+                        <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                            <c:set var="_showSection" value="true" />
+                        </csmauthz:accesscontrol>
+                    </c:forEach>
+
+                    <c:if test="${_showSection}">
                         <c:set var="noOfTasks" value="${fn:length(section.tasks)}" />
                         ['<c:out value="${section.displayName}" />', ${noOfTasks}, ${section == currentSection ? "true" : "false"},
                                 <c:forEach items="${section.tasks}" var="task" varStatus="index">
@@ -15,7 +23,7 @@
                                     </csmauthz:accesscontrol>
                                 </c:forEach>
                         ],
-                    </csmauthz:accesscontrol>
+                    </c:if>
                 </c:forEach>
             ];
 
