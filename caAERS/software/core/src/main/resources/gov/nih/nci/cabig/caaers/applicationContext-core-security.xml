@@ -177,6 +177,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
 	       						|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
+	       						|| execution(* gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.get*(gov.nih.nci.cabig.caaers.dao.query.ExpeditedAdverseEventReportQuery)) and args(qry)
                     			"/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
 		</aop:aspect>
@@ -531,22 +532,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery" value-ref="organizationQuerySecurityFilterer" />
-              	  
+              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.ExpeditedAdverseEventReportQuery" value-ref="reportQuerySecurityFilterer" />
+
               </map>
           </property>
     </bean>
 
-    <bean id="studyQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-            p:entityAssociation="study" p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx" />
-    <bean id="participantQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-            p:entityAssociation="p" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
-    <bean id="participantAjaxableQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-            p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
-    <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-            p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
-    <bean id="organizationQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-            p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx"
-            p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
-    <bean id="reportQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-            p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport" p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
+    <bean id="studyQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="study" p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx" />
+    <bean id="participantQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="p" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+    <bean id="participantAjaxableQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+    <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
+    <bean id="organizationQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
+    <bean id="reportQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport" p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx" />
 </beans>

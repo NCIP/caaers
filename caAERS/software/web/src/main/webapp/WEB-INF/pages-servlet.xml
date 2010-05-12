@@ -582,4 +582,5 @@
     <bean name="/admin/asaelCreate" id="asaelCreateController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentCreateController" />
     <bean name="/admin/asaelEdit" id="asaelEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentEditController" />
 
+    <bean name="/dashboard" id="dashboardController" class="gov.nih.nci.cabig.caaers.web.DashboardController" autowire="byType" />
 </beans>

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.ExpeditedAdverseEventReportQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
@@ -13,14 +14,13 @@ import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -340,4 +340,17 @@ public class ExpeditedAdverseEventReportDao extends
     		unwantedAttribution.setAdverseEvent(null);
     	}
     }
+
+    public List<ExpeditedAdverseEventReport> getByQuery(ExpeditedAdverseEventReportQuery q) {
+/*
+    	List<Object> params = new ArrayList<Object>();
+    	Calendar cal = Calendar.getInstance();
+    	Date today = cal.getTime();
+    	String hsql = "from ReportVersion s where s.dueOn < ? order by s.id desc";
+    	params.add(today);
+*/
+    	List<ExpeditedAdverseEventReport> list =  getHibernateTemplate().find(q.getQueryString());
+      	return list;
+    }
+
 }

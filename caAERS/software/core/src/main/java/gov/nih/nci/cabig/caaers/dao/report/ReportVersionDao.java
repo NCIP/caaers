@@ -77,12 +77,9 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     	Date pastDate = cal.getTime();
     	String hsql = "from ReportVersion s where s.submittedOn >= ? order by s.id desc";
     	params.add(pastDate);
-    	
-    	
     	List<ReportVersion> fullList =   getHibernateTemplate().find(hsql, params.toArray());
 //    	filter
       	 List<ReportVersion> withTrackingInfo = new ArrayList<ReportVersion>();
-      	 
       	 
       	 for (ReportVersion rv:fullList) {
       		 if (rv.getReportTrackings().size()>0) {
@@ -90,7 +87,16 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
       		 }
       	 }
       	return withTrackingInfo;
-    	
+    }
+
+    public List<ReportVersion> getPastDue() {
+    	List<Object> params = new ArrayList<Object>();
+    	Calendar cal = Calendar.getInstance();
+    	Date today = cal.getTime();
+    	String hsql = "from ReportVersion s where s.dueOn < ? order by s.id desc";
+    	params.add(today);
+    	List<ReportVersion> fullList =  getHibernateTemplate().find(hsql, params.toArray());
+      	return fullList;
     }
 
     public List<ReportVersion> getAllSubmittedReportsByDateRange(Date sDate, Date eDate) {
