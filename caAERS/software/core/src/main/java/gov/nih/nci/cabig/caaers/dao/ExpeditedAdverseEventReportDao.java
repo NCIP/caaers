@@ -372,11 +372,9 @@ public class ExpeditedAdverseEventReportDao extends
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
                     hiberanteQuery.setParameter(key, value);
-
                 }
                 return hiberanteQuery.list();
             }
-
         });
 
     }

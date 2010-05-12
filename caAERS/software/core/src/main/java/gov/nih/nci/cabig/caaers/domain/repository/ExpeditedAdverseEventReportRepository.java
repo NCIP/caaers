@@ -21,19 +21,15 @@ public class ExpeditedAdverseEventReportRepository {
 
     private ExpeditedAdverseEventReportDao aeReportDao;
 
-    public List<ExpeditedAdverseEventReport> getPastDue(String loginId) {
+    public List<ExpeditedAdverseEventReport> getPastDue() {
         ExpeditedAdverseEventReportQuery q = new ExpeditedAdverseEventReportQuery();
         q.joinReports();
         q.joinReportVersions();
 
-        if (loginId != null) q.setParameter("loginId", loginId);
-        // logic to get the Latest ReportVersion
+        // Logic to get the PastDue reports
+        //
 
         return aeReportDao.getByQuery(q);
-    }
-
-    public List<ExpeditedAdverseEventReport> getPastDue() {
-        return getPastDue(null);
     }
 
     public ExpeditedAdverseEventReportDao getAeReportDao() {

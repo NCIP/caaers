@@ -22,11 +22,9 @@ import java.util.List;
  */
 public class DashboardController extends AbstractController {
     ExpeditedAdverseEventReportRepository aeReportRepository;
-    String loginId;
 
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        loginId = SecurityUtils.getUserLoginName();
-        List<ExpeditedAdverseEventReport> l = aeReportRepository.getPastDue(loginId);
+        List<ExpeditedAdverseEventReport> l = aeReportRepository.getPastDue();
         ModelAndView mv = new ModelAndView("dashboard");
         mv.getModelMap().put("pastDueReports", l);
         return mv;
