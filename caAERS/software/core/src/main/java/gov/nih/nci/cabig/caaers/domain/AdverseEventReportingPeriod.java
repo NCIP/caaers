@@ -45,7 +45,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "ae_reporting_periods")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_reporting_periods_id") })
-public class AdverseEventReportingPeriod extends AbstractMutableDomainObject implements WorkflowAware, Serializable{
+public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomainObject implements WorkflowAware, Serializable{
 	
 	private static final long serialVersionUID = -5343583772734352886L;
 
@@ -579,5 +579,18 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	return null;
     }
     
-
+    /**
+     * This method sets the retired indicator attribute of the reporting period. It overrides the superclass method so that we can
+     * take cascading actions. Incase a reporting period (course) is retired (retired_indicator = true), then all the adverse events in the
+     * course should also be retied.
+     */
+    @Override
+    public void setRetiredIndicator(Boolean retiredIndicator){
+    	super.setRetiredIndicator(retiredIndicator);
+    	if(retiredIndicator){
+    		for(AdverseEvent ae: getAdverseEvents()){
+    			ae.setRetiredIndicator(retiredIndicator);
+    		}
+    	}
+    }
 }

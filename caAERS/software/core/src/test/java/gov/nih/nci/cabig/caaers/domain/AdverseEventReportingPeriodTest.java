@@ -400,4 +400,11 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		List<AdverseEvent> populatedAdverseEventList = reportingPeriod1.getPopulatedAdverseEvents();
 		assertEquals("populatedAdverseEventList was expected to contain only 1 ae", 1, populatedAdverseEventList.size());
 	}
+	
+	public void testSetRetiredIndicator_true(){
+		createNonPopulatedAdverseEvents();
+		reportingPeriod1.setRetiredIndicator(true);
+		assertTrue("RetiredIndicator of adverse events are not being set to true", reportingPeriod1.getAdverseEvents().get(0).getRetiredIndicator());
+		assertTrue("RetiredIndicator of adverse events are not being set to true", reportingPeriod1.getAdverseEvents().get(1).getRetiredIndicator());
+	}
 }

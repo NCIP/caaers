@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Saurabh Agrawal
@@ -169,5 +170,19 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
     	rp2.setCycleNumber(4);
     	Integer maxCycle = assignment.getMaxCycleNumber();
     	assertEquals(new Integer(5), maxCycle);
+    }
+    
+    public void testGetReportingPeriods(){
+    	AdverseEventReportingPeriod rp1 = Fixtures.createReportingPeriod();
+    	AdverseEventReportingPeriod rp2 = Fixtures.createReportingPeriod();
+    	AdverseEventReportingPeriod rp3 = Fixtures.createReportingPeriod();
+    	rp1.setRetiredIndicator(false);
+    	rp2.setRetiredIndicator(false);
+    	rp3.setRetiredIndicator(true);
+    	assignment.addReportingPeriod(rp1);
+    	assignment.addReportingPeriod(rp2);
+    	assignment.addReportingPeriod(rp3);
+    	List<AdverseEventReportingPeriod> rpList = assignment.getReportingPeriods();
+    	assertEquals("Retired reporting periods are being returned from assignment", 2, rpList.size());
     }
 }

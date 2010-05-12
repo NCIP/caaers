@@ -170,7 +170,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     @OrderBy(clause = "start_date desc")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
-        return reportingPeriods;
+    	List<AdverseEventReportingPeriod> reportingPeriodsList = new ArrayList<AdverseEventReportingPeriod>();
+    	for(AdverseEventReportingPeriod reportingPeriod: reportingPeriods){
+    		if(!reportingPeriod.isRetired())
+    			reportingPeriodsList.add(reportingPeriod);
+    	}
+        return reportingPeriodsList;
     }
 
     public void setReportingPeriods(List<AdverseEventReportingPeriod> reportingPeriods) {
