@@ -497,12 +497,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property> 
 	</bean>
 	    
-    <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+    
     <bean id="abstractIdFetcher" abstract="true">
         <property name="hibernateTemplate" ref="hibernateTemplate" />
         <property name="csmUserRepository" ref="csmUserRepository" />
         <property name="fetcherUtils" ref="fetcherUtils" />
     </bean>
+    
+    <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
 	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher"/>
     <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher"/>
     <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersAdverseEventIdFetcherImpl" parent="abstractIdFetcher"/>
@@ -545,4 +547,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="organizationQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
             p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx"
             p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
+    <bean id="reportQuerySecurityFilterer"   class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+            p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport" p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
 </beans>
