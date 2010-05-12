@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ExpeditedAdverseEventReportQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -11,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -19,13 +21,17 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -349,8 +355,30 @@ public class ExpeditedAdverseEventReportDao extends
     	String hsql = "from ReportVersion s where s.dueOn < ? order by s.id desc";
     	params.add(today);
 */
-    	List<ExpeditedAdverseEventReport> list =  getHibernateTemplate().find(q.getQueryString());
+    	//List<ExpeditedAdverseEventReport> list =  getHibernateTemplate().find(q.getQueryString());
+    	List<ExpeditedAdverseEventReport> list = find(q);
       	return list;
+    }
+    
+    @SuppressWarnings({"unchecked"})
+    private List<ExpeditedAdverseEventReport> find(final AbstractQuery query) {
+        String queryString = query.getQueryString();
+        log.debug("::: " + queryString.toString());
+        return (List<ExpeditedAdverseEventReport>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+
     }
 
 }
