@@ -92,6 +92,7 @@
          	var deletedCourseIndex = this.rpCtrl.selectedIndex;
          	this.rpCtrl.selectedIndex = 0;
          	this.rpCtrl.remove(deletedCourseIndex);
+         	this.showOrHideEditRPCtrl();
          	$('deleted-message').style.display = '';
          },
 
