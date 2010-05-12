@@ -291,7 +291,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	List<AdverseEventReportingPeriodAjaxableDomainObject> courses = new ArrayList<AdverseEventReportingPeriodAjaxableDomainObject>();
     	AdverseEventReportingPeriodAjaxableDomainObject rpAjaxable;
     	if(assignment.getReportingPeriods() != null){
-    		for(AdverseEventReportingPeriod rp: assignment.getReportingPeriods()){
+    		for(AdverseEventReportingPeriod rp: assignment.getActiveReportingPeriods()){
     			rpAjaxable = new AdverseEventReportingPeriodAjaxableDomainObject();
     			rpAjaxable.setId(rp.getId());
     			rpAjaxable.setName(rp.getName());
