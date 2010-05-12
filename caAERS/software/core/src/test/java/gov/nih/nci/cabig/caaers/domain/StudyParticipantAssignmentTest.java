@@ -172,7 +172,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
     	assertEquals(new Integer(5), maxCycle);
     }
     
-    public void testGetReportingPeriods(){
+    public void testGetActiveReportingPeriods(){
     	AdverseEventReportingPeriod rp1 = Fixtures.createReportingPeriod();
     	AdverseEventReportingPeriod rp2 = Fixtures.createReportingPeriod();
     	AdverseEventReportingPeriod rp3 = Fixtures.createReportingPeriod();
@@ -182,7 +182,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
     	assignment.addReportingPeriod(rp1);
     	assignment.addReportingPeriod(rp2);
     	assignment.addReportingPeriod(rp3);
-    	List<AdverseEventReportingPeriod> rpList = assignment.getReportingPeriods();
+    	List<AdverseEventReportingPeriod> rpList = assignment.getActiveReportingPeriods();
     	assertEquals("Retired reporting periods are being returned from assignment", 2, rpList.size());
     }
 }
