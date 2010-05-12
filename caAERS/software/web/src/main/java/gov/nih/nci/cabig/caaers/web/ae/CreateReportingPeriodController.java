@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.text.NumberFormat;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,6 +54,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private Logger log = Logger.getLogger(CreateReportingPeriodController.class);
 
     private static final String REPORTINGPERIOD_FIELD_GROUP = "ReportingPeriod";
+    private static final String ACTION = "_action";
+    private static final String DELETE_ACTION = "delete";
     private InputFieldGroup reportingPeriodFieldGroup;
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
@@ -237,68 +240,71 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         AdverseEventReportingPeriod reportingPeriod = command.getReportingPeriod();
         reportingPeriod.setAssignment(command.getAssignment());
+        
+        String action = (String)findInRequest(request, ACTION);
+        if(action != null && action.equals(DELETE_ACTION)){
+        	command.setMode(DELETE_ACTION);
+        	reportingPeriod.setRetiredIndicator(true);
+        }else{
+        	// Here is the logic to allow treatment type to be optional:
+        	// Step 1. All the solicited adverse events which are not graded are removed from the reporting period.
+        	// Step 2. All the solicited aes belonging to the epoch chosen in the form are added to the reporting period as 
+        	// adverse events only if they are not already present in the reporting period.
+        	// Note - The value in existingAeTermsIdMap is whether the AE is observed / solicited. Observed = false
+        	// If there is an observed AE present in the reportingPeriod and is not retired it will be saved as solicited ae if there
+        	// exists a SolictedAdverseEvent in the new reporting period type.
+        	Map<Integer, Boolean> existingAeTermsIdMap = new HashMap<Integer, Boolean>();
+        	for (AdverseEvent ae : reportingPeriod.getAdverseEvents())
+        		if (!ae.getSolicited() || (ae.getSolicited() && ae.getGrade() != null)) {
+        			if(!ae.isRetired()){
+        				if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+        					existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), ae.getSolicited());
+        				} else {
+        					existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), ae.getSolicited());
+        				}
+        			}
+        		} else
+        			ae.retire();
+        
+        	adverseEventReportingPeriodDao.save(reportingPeriod);
 
-        // Here is the logic to allow treatment type to be optional:
-        // Step 1. All the solicited adverse events which are not graded are removed from the reporting period.
-        // Step 2. All the solicited aes belonging to the epoch chosen in the form are added to the reporting period as 
-        // adverse events only if they are not already present in the reporting period.
-        // Note - The value in existingAeTermsIdMap is whether the AE is observed / solicited. Observed = false
-        // If there is an observed AE present in the reportingPeriod and is not retired it will be saved as solicited ae if there
-        // exists a SolictedAdverseEvent in the new reporting period type.
+        	//initialize the solicited AEs
+        	if (reportingPeriod.getEpoch() != null) {
+        		for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
+        			AdverseEvent adverseEvent = new AdverseEvent();
+        			adverseEvent.setSolicited(true);
+        			adverseEvent.setRequiresReporting(false);
 
-        Map<Integer, Boolean> existingAeTermsIdMap = new HashMap<Integer, Boolean>();
-        for (AdverseEvent ae : reportingPeriod.getAdverseEvents())
-            if (!ae.getSolicited() || (ae.getSolicited() && ae.getGrade() != null)) {
-            	if(!ae.isRetired()){
-            		if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
-            			existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), ae.getSolicited());
-            		} else {
-            			existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), ae.getSolicited());
-            		}
-            	}
-            } else
-                ae.retire();
-
-        adverseEventReportingPeriodDao.save(reportingPeriod);
-
-        //initialize the solicited AEs
-        if (reportingPeriod.getEpoch() != null) {
-            for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
-                AdverseEvent adverseEvent = new AdverseEvent();
-                adverseEvent.setSolicited(true);
-                adverseEvent.setRequiresReporting(false);
-
-                if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
-                    if (!existingAeTermsIdMap.containsKey(sae.getLowLevelTerm().getId())) {
-                        AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
-                        aellt.setLowLevelTerm(sae.getLowLevelTerm());
-                        adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
-                        aellt.setAdverseEvent(adverseEvent);
-                        reportingPeriod.addAdverseEvent(adverseEvent);
-                    }else if(!existingAeTermsIdMap.get(sae.getLowLevelTerm().getId()))
-                    	convertAeFromObservedToSolicited(reportingPeriod, sae.getLowLevelTerm().getId(), Term.MEDDRA);
-                } else {
-                    if (!existingAeTermsIdMap.containsKey(sae.getCtcterm().getId())) {
-                        AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
-                        aeCtcTerm.setCtcTerm(sae.getCtcterm());
-                        adverseEvent.setAdverseEventTerm(aeCtcTerm);
-                        if (sae.getOtherTerm() != null)
-                            adverseEvent.setLowLevelTerm(sae.getOtherTerm());
-                        aeCtcTerm.setAdverseEvent(adverseEvent);
-                        if (command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
-                            adverseEvent.setExpected(true);
-                        reportingPeriod.addAdverseEvent(adverseEvent);
-                    }else if(!existingAeTermsIdMap.get(sae.getCtcterm().getId()))
-                    	convertAeFromObservedToSolicited(reportingPeriod, sae.getCtcterm().getId(), Term.CTC);
-                }
-                
-            }
+        			if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+        				if (!existingAeTermsIdMap.containsKey(sae.getLowLevelTerm().getId())) {
+        					AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
+        					aellt.setLowLevelTerm(sae.getLowLevelTerm());
+        					adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
+        					aellt.setAdverseEvent(adverseEvent);
+        					reportingPeriod.addAdverseEvent(adverseEvent);
+        				}else if(!existingAeTermsIdMap.get(sae.getLowLevelTerm().getId()))
+        					convertAeFromObservedToSolicited(reportingPeriod, sae.getLowLevelTerm().getId(), Term.MEDDRA);
+        			} else {
+        				if (!existingAeTermsIdMap.containsKey(sae.getCtcterm().getId())) {
+        					AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
+        					aeCtcTerm.setCtcTerm(sae.getCtcterm());
+        					adverseEvent.setAdverseEventTerm(aeCtcTerm);
+        					if (sae.getOtherTerm() != null)
+        						adverseEvent.setLowLevelTerm(sae.getOtherTerm());
+        					aeCtcTerm.setAdverseEvent(adverseEvent);
+        					if (command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
+        						adverseEvent.setExpected(true);
+        					reportingPeriod.addAdverseEvent(adverseEvent);
+        				}else if(!existingAeTermsIdMap.get(sae.getCtcterm().getId()))
+        					convertAeFromObservedToSolicited(reportingPeriod, sae.getCtcterm().getId(), Term.CTC);
+        			}
+        		}
+        	}
         }
-
         adverseEventReportingPeriodDao.save(reportingPeriod);
 
         //call workflow, to enact
-        if (command.isWorkflowEnabled())
+        if (command.isWorkflowEnabled() && reportingPeriod.getWorkflowId() == null)
             adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
 
         Map map = new LinkedHashMap();
@@ -308,6 +314,19 @@ public class CreateReportingPeriodController extends SimpleFormController {
         ModelAndView modelAndView = new ModelAndView("ae/confirmReportingPeriod", map);
 
         return modelAndView;
+    }
+    
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
+
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
     }
     
     /**

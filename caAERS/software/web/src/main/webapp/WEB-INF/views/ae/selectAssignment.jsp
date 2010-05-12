@@ -87,6 +87,13 @@
          	this.showOrHideEditRPCtrl();
          	$('edited-message').style.display = '';
          },
+         
+         refreshRPCrlOptionsOnDelete:function(RPId){
+         	var deletedCourseIndex = this.rpCtrl.selectedIndex;
+         	this.rpCtrl.selectedIndex = 0;
+         	this.rpCtrl.remove(deletedCourseIndex);
+         	$('deleted-message').style.display = '';
+         },
 
         addOptionToSelectBox:function(selBox, optLabel, optValue) {
             //adds the option to specified select box.
@@ -105,6 +112,7 @@
             this.showOrHideEditRPCtrl();
             $('created-message').style.display = 'none';
             $('edited-message').style.display = 'none';
+            $('deleted-message').style.display = 'none';
         },
         
         rpEditCtrlClick:function() {
@@ -273,8 +281,6 @@
 </head>
 <body>
 
-
-
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
     <div class="autoclear" id="criteria-div">
@@ -328,6 +334,7 @@
 	            <tags:button id="edit_button" type="button" value="Edit" color="blue" icon="edit" size="small"/>
 				<div style="display:none" id="created-message"><b><font color="green">Course/Cycle created successfully</font></b></div>
 				<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
+				<div style="display:none" id="deleted-message"><b><font color="green">Course/Cycle deleted successfully</font></b></div>
 				</div>
 	            <div id="course-details" class="value selection" style="display:none">
 					<div class="row">

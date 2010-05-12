@@ -36,6 +36,12 @@
                  $('CRP_editField').show();
              }
          }
+         
+          function deleteCourse(){
+          	var form = document.getElementById('command');
+          	form._action.value = 'delete';
+          	form.submit();
+         }
      </script>
     <%--<tags:javascriptLink name="prototype"/>--%>
 </head>
@@ -44,7 +50,7 @@
 <tags:standardForm title="Course/Cycle Information">
     <jsp:attribute name="instructions" />
     <jsp:attribute name="singleFields">
-
+		<input type="hidden" name="_action" id="_action" value="">
         <caaers:message code="LBL_assignment.startDateOfFirstCourse" var="x" />
         <ui:row path="assignment.startDateOfFirstCourse">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[0]}" /></jsp:attribute>
@@ -108,7 +114,19 @@
     </caaers:renderFilter>
 </center>
     </jsp:attribute>
-    <jsp:attribute name="navButtons"><div align="right"><tags:button color="green" type="submit" id="flow-update" cssClass="tab${tabNumber}" value="Save" icon="save"/></div></jsp:attribute>
+	<jsp:attribute name="navButtons">
+	      	<div class="content buttons autoclear">
+    	      <div class="flow-buttons">
+				  <span class="next">
+				  	<tags:button color="green" type="submit" id="flow-update" cssClass="tab${tabNumber}" value="Save" icon="save"/>
+				  </span>
+				  <span class="next">
+				  	<tags:button color="red" type="button" onclick="javascript:deleteCourse()" cssClass="tab${tabNumber}" value="Delete" icon="delete"/>
+				  </span>
+          </div>
+      </div>
+  </jsp:attribute>
+
 
 </tags:standardForm>
 

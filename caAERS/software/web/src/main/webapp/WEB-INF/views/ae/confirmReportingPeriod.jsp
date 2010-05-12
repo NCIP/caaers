@@ -16,8 +16,10 @@
 <script>
 		if('${command.mode}' == 'create')
 			window.parent.rpCreator.refreshRPCrlOptionsOnCreation(${command.reportingPeriod.id}, '${command.reportingPeriod.name}');
-		else
+		else if('${command.mode}' == 'edit')
 			window.parent.rpCreator.refreshRPCrlOptionsOnEdit(${command.reportingPeriod.id}, '${command.reportingPeriod.name}');
+		else if('${command.mode}' == 'delete')
+			window.parent.rpCreator.refreshRPCrlOptionsOnDelete(${command.reportingPeriod.id});
 		window.parent.Windows.close(window.parent.rpCreator.win.getId());
 </script>
 

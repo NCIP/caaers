@@ -85,4 +85,8 @@ public class ReportingPeriodCommand {
 	public String getMode(){
 		return mode;
 	}
+	
+	public void setMode(String mode){
+		this.mode = mode;
+	}
 }
