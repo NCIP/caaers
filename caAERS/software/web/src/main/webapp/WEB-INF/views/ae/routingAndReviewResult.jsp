@@ -221,6 +221,11 @@ color:#0033FF;
 <tags:standardForm title="Course/Cycle Information">
 <jsp:attribute name="singleFields">
 <div class="eXtremeTable" >
+	<c:if test="${courseRetired == 'true'}">
+		<div>		
+			<tags:instructions code="course_retired_instruction"/>
+		</div>
+	</c:if>
 	<c:if test="${command.searchResultsDTO.resultCount gt 0}">
 		<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
 			<div class="row">

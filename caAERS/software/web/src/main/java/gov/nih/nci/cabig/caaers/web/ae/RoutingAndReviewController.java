@@ -137,6 +137,11 @@ public class RoutingAndReviewController extends SimpleFormController{
     			modelAndView.getModel().put("isLastPage", true);
     		else
     			modelAndView.getModel().put("isLastPage", false);
+    		
+    		// Determine if the user is brought to this page because the course was deleted (retired)
+    		String courseRetired = (String) findInRequest(request, "retiredReportingPeriod");
+    		if(courseRetired != null && courseRetired.equals("true"))
+    			modelAndView.getModel().put("courseRetired", "true");
     	}
     	
 		
