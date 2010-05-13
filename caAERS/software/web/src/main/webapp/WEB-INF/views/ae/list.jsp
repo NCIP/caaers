@@ -330,14 +330,14 @@ color:#0033FF;
         <td width="16%" class="tableHeader">Options</td>
       </tr>
     </thead>
-    <c:if test="${fn:length(command.assignment.reportingPeriods) gt 0}">
-      <c:forEach items="${command.assignment.reportingPeriods}" var="reportingPeriod" varStatus="rpStatus">
+    <c:if test="${fn:length(command.assignment.activeReportingPeriods) gt 0}">
+      <c:forEach items="${command.assignment.activeReportingPeriods}" var="reportingPeriod" varStatus="rpStatus">
         <ae:oneListReportingPeriodRow reportingPeriod="${reportingPeriod}" index="${rpStatus.index}"/>
       </c:forEach>
     </c:if>
   </table>
   <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
-  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">
+  <c:if test="${fn:length(command.assignment.activeReportingPeriods) le 0}">
   	<tags:instructions code="instruction_ae_no_courses"/>
   </c:if>
     

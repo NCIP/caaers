@@ -39,14 +39,15 @@
          
           function deleteCourse(){
           	var form = document.getElementById('command');
-          	form._action.value = 'delete';
-          	form.submit();
+          	if(confirm('Are you sure you want to delete the course?')){
+	          	form._action.value = 'delete';
+    	      	form.submit();
+    	    }
          }
      </script>
     <%--<tags:javascriptLink name="prototype"/>--%>
 </head>
 <body>
-
 <tags:standardForm title="Course/Cycle Information">
     <jsp:attribute name="instructions" />
     <jsp:attribute name="singleFields">
@@ -117,11 +118,11 @@
 	<jsp:attribute name="navButtons">
 	      	<div class="content buttons autoclear">
     	      <div class="flow-buttons">
-				  <span class="next">
-				  	<tags:button color="green" type="submit" id="flow-update" cssClass="tab${tabNumber}" value="Save" icon="save"/>
+    	      	  <span class="prev">
+				  	<tags:button color="red" type="button" onclick="javascript:deleteCourse()" cssClass="tab${tabNumber}" value="Delete" icon="delete"/>
 				  </span>
 				  <span class="next">
-				  	<tags:button color="red" type="button" onclick="javascript:deleteCourse()" cssClass="tab${tabNumber}" value="Delete" icon="delete"/>
+				  	<tags:button color="green" type="submit" id="flow-update" cssClass="tab${tabNumber}" value="Save" icon="save"/>
 				  </span>
           </div>
       </div>

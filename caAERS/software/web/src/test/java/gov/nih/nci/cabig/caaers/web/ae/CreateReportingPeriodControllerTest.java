@@ -162,7 +162,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite);
 		expect(studySite.getStudy()).andReturn(study);
 		expect(assignment.getParticipant()).andReturn(participant);
-		expect(assignment.getReportingPeriods()).andReturn(null);
+		expect(assignment.getActiveReportingPeriods()).andReturn(null);
 		
 		replayMocks();
 		
@@ -236,7 +236,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		expect(studySite.getStudy()).andReturn(study).anyTimes();
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
-		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
+		expect(assignment.getActiveReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
 
         expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
@@ -278,7 +278,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		expect(studySite.getStudy()).andReturn(study).anyTimes();
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
-		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
+		expect(assignment.getActiveReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
 
         expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
@@ -321,7 +321,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		expect(studySite.getStudy()).andReturn(study).anyTimes();
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
-		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
+		expect(assignment.getActiveReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
 
         expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
@@ -364,7 +364,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		expect(studySite.getStudy()).andReturn(study).anyTimes();
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
-		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
+		expect(assignment.getActiveReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
 
         expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(true);

@@ -108,7 +108,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
         //set the last selected treatment assignment in create mode.
         if (command.getReportingPeriod().getId() == null) {
-            List<AdverseEventReportingPeriod> existingReportingPeriods = assignment.getReportingPeriods();
+            List<AdverseEventReportingPeriod> existingReportingPeriods = assignment.getActiveReportingPeriods();
             if (CollectionUtils.isNotEmpty(existingReportingPeriods)) {
                 TreatmentAssignment treatmentAssignment = existingReportingPeriods.get(0).getTreatmentAssignment();
                 command.getReportingPeriod().setTreatmentAssignment(treatmentAssignment);
@@ -194,7 +194,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
         AdverseEventReportingPeriod rPeriod = rpCommand.getReportingPeriod();
-        List<AdverseEventReportingPeriod> rPeriodList = rpCommand.getAssignment().getReportingPeriods();
+        List<AdverseEventReportingPeriod> rPeriodList = rpCommand.getAssignment().getActiveReportingPeriods();
 
         //check the treatment assignment.
         if (isFieldRequired("reportingPeriod.treatmentAssignment")) {
@@ -226,7 +226,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         //validate the date related logic.
         if (!errors.hasErrors())
-            validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getReportingPeriods(), rpCommand.getAssignment().getStartDateOfFirstCourse(), errors);
+            validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getActiveReportingPeriods(), rpCommand.getAssignment().getStartDateOfFirstCourse(), errors);
     }
 
     /**
