@@ -29,5 +29,9 @@ public class AbstractQueryTest extends TestCase {
 		assertEquals("select * from emp OR y = 2 OR z = 3",query.getQueryString());
 	}
 	
-	
+	public void test2(){
+		query.orWhere("y = 3");
+        assertEquals("select * from emp WHERE y = 3", query.getQueryString());
+	}
+
 }
