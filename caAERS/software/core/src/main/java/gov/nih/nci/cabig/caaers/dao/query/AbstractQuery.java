@@ -17,8 +17,6 @@ public abstract class AbstractQuery {
 
     private  StringBuffer queryString;
 
-    private StringBuffer queryBuffer;
-
     private final List<String> andConditions = new LinkedList<String>();
 
     private final List<String> orConditions = new LinkedList<String>();
@@ -43,45 +41,48 @@ public abstract class AbstractQuery {
     }
 
     public String getQueryString() {
-        queryBuffer = new StringBuffer(queryString.toString().trim());
+        
+        StringBuffer queryBuffer = new StringBuffer(queryString.toString().trim());
+        String upperCaseQuery = queryBuffer.toString().toUpperCase();
+
+        int indexOfWhere = upperCaseQuery.indexOf(WHERE);
+        int indexOfFrom = upperCaseQuery.indexOf("FROM");
+
+        //is where condition present?
+        boolean hasWhere = indexOfWhere > 0 || indexOfWhere < indexOfFrom;
 
 
         for (String join : joins) {
             queryBuffer.append(join);
         }
 
-        for (String conditon : andConditions) {
-
-            if (queryBuffer.toString().toUpperCase().lastIndexOf(WHERE) < 0 || queryBuffer.toString().toUpperCase().lastIndexOf(WHERE)
-                    < queryBuffer.toString().toUpperCase().lastIndexOf("FROM")) {
-                queryBuffer.append(" " + WHERE + " " + conditon);
-            } else {
-                queryBuffer.append(" " + AND + " " + conditon);
-            }
+        //add the Where conditions
+        if( !(andConditions.isEmpty() && orConditions.isEmpty())){
+          if(!hasWhere) {
+              queryBuffer.append(" ").append(WHERE).append(" ");
+              hasWhere = true;
+          }
 
         }
 
-        if (!orConditions.isEmpty()) {
-            boolean groupOR = andConditions.size() > 0
-                    || queryBuffer.toString().toUpperCase().indexOf(WHERE) > 0;
+        int n = andConditions.size();
+        for(int i = 0; i< n; i++){
+            if(i > 0) queryBuffer.append(" ").append(AND).append(" ");
+            queryBuffer.append(" ").append(andConditions.get(i)).append(" ");
+        }
 
-            if (groupOR) {
-                queryBuffer.append(" " + AND + " (");
-            }
+        n = orConditions.size();
+        boolean groupOR = !andConditions.isEmpty();
+        if(groupOR){
+            queryBuffer.append(" AND (");
+        }
+        for(int i =0; i < n; i++){
+           if(i > 0) queryBuffer.append(" ").append(OR).append(" ");
+            queryBuffer.append(" ").append(orConditions.get(i)).append(" ");
+        }
 
-            int orIndx = 0;
-            for (String conditon : orConditions) {
-                if (orIndx == 0 && groupOR) {
-                    queryBuffer.append(" " + conditon);
-                } else {
-                    queryBuffer.append(" " + OR + " " + conditon);
-                }
-                orIndx++;
-            }
-
-            if (groupOR) {
-                queryBuffer.append(" )");
-            }
+        if(groupOR){
+            queryBuffer.append(" )");
         }
 
         if (StringUtils.isNotEmpty(orderByClause)) {
