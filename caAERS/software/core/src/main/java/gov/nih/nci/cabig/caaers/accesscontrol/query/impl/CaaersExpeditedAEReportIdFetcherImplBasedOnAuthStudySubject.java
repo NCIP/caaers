@@ -18,11 +18,11 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
 
     public List<Integer> fetch(ResearchStaff rs){
-         return fetchIds();
+         return fetchIds(rs.getLoginId());
     }
 
     public List<Integer> fetch(Investigator inv){
-         return fetchIds();
+         return fetchIds(inv.getLoginId());
     }
  
     /**
@@ -32,17 +32,16 @@ public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends
      * 
      * @return
      */
-    private List<Integer> fetchIds(){
-    	StringBuilder hql = new StringBuilder("select distinct r.id from  StudyOrganization so ,StudyParticipantAssignment a " )
-        .append(" ,StudyIndex si , ParticipantIndex pi ")
-    	.append(" join a.reportingPeriods rp ")
+    private List<Integer> fetchIds(String loginId){
+    	StringBuilder hql = new StringBuilder("select distinct r.id from  ParticipantIndex pi " )
+    	.append( "join pi.participant p ")
+    	.append( "join p.assignment spa ")
+    	.append(" join spa.reportingPeriods rp ")
         .append(" join rp.aeReports r ")
-        .append(" join a.studySite ss  " )
-        .append(" where ss.study = so.study ")
-        .append(" and ss.study = si.study ")
-        .append(" and pi.participant = a.participant");
+        .append(" where pi.loginId = :loginId ");
 		
 		HQLQuery query = new HQLQuery(hql.toString());
+		query.getParameterMap().put("loginId", loginId);
 
     	List<Integer> resultList = (List<Integer>) search(query);
         return resultList;
