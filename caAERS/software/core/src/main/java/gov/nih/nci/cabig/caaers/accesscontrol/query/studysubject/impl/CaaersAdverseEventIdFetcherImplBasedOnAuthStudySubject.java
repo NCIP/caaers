@@ -1,5 +1,7 @@
-package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+package gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl;
+
+import gov.nih.nci.cabig.caaers.accesscontrol.query.impl.AbstractIdFetcher;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -9,13 +11,13 @@ import java.util.List;
 import com.semanticbits.security.contentfilter.IdFetcher;
 
 /**
- * Will return the ID of ExpeditedAdverseEventReport which the logged-in user have access.
+ * Will return the ID of AdverseEvents which the logged-in user have access.
  * This implementation doesnt check for user or access permissions , This implementation relies on authorized 
  * studies and subjects which are loaded prior to this index . 
  * @author Biju Joseph
  * @author Srini Akkala
  */
-public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
+public class CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
 
     public List<Integer> fetch(ResearchStaff rs){
          return fetchIds(rs.getLoginId());
@@ -26,18 +28,18 @@ public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends
     }
  
     /**
-     * The reports that are belonging to subjects the user can access, can be accessed by the user.
+     * The Adverse Events that are belonging to subjects the user can access, can be accessed by the user.
      * studies and subjects cab be accessed by this user are already loaded into StudyIndex and ParticipantIndex
      * So , This query joins with those indexes . 
      * 
      * @return
      */
     private List<Integer> fetchIds(String loginId){
-    	StringBuilder hql = new StringBuilder("select distinct r.id from  ParticipantIndex pi " )
+    	StringBuilder hql = new StringBuilder("select distinct ae.id from  ParticipantIndex pi " )
     	.append(" join pi.participant p ")
     	.append(" join p.assignment spa ")
     	.append(" join spa.reportingPeriods rp ")
-        .append(" join rp.aeReports r ")
+        .append(" join rp.adverseEvents ae ")
         .append(" where pi.loginId = :loginId ");
 		
 		HQLQuery query = new HQLQuery(hql.toString());
