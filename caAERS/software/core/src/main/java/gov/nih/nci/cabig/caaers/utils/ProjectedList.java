@@ -73,7 +73,7 @@ public class ProjectedList<E> implements DecoratedList<E> {
                 if (o == null || klass.equals(o.getClass())) i++;
                 if (i == index) break;
             }
-            list.add(i, element);
+            list.add(orgIndex, element);
         }
     }
 
