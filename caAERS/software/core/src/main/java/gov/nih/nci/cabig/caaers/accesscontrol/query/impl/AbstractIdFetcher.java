@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.utils.FetcherUtils;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -33,7 +32,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     protected final Log log = LogFactory.getLog(AbstractIdFetcher.class);
 
     protected CSMUserRepository csmUserRepository;
-    protected FetcherUtils fetcherUtils;
 
     /**
      * Will fetch the user identified by the loginId. 
@@ -47,6 +45,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
     	String queryString = query.getQueryString();
+        System.out.println("query String : " + queryString);
         log.debug("::: " + queryString.toString());
        return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
 
@@ -137,12 +136,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         this.csmUserRepository = csmUserRepository;
     }
 
-    public FetcherUtils getFetcherUtils() {
-        return fetcherUtils;
-    }
-
-    public void setFetcherUtils(FetcherUtils fetcherUtils) {
-        this.fetcherUtils = fetcherUtils;
-    }
+    
     
 }

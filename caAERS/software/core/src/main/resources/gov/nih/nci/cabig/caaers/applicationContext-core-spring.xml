@@ -59,4 +59,13 @@
 	    	</list>
 	    </property>
   </bean>
+
+  <!-- Overwrite the default Spring Event multicaster -->
+  <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
+    <property name="collectionClass" value="java.util.concurrent.CopyOnWriteArraySet" />
+    <property name="taskExecutor">
+       <bean class="org.springframework.scheduling.timer.TimerTaskExecutor"/>  
+    </property>
+  </bean>
+    
 </beans>
