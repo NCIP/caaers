@@ -34,8 +34,8 @@ public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends
      */
     private List<Integer> fetchIds(String loginId){
     	StringBuilder hql = new StringBuilder("select distinct r.id from  ParticipantIndex pi " )
-    	.append( "join pi.participant p ")
-    	.append( "join p.assignment spa ")
+    	.append(" join pi.participant p ")
+    	.append(" join p.assignment spa ")
     	.append(" join spa.reportingPeriods rp ")
         .append(" join rp.aeReports r ")
         .append(" where pi.loginId = :loginId ");
