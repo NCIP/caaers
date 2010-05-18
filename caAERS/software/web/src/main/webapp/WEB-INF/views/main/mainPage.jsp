@@ -24,8 +24,10 @@
 </head>
 <body>
 
+<%--
 <a href="dashboard">Dashboard</a>
 <br>
+--%>
 
 <chrome:box title="Welcome">
 <chrome:division title="Regular Tasks">
