@@ -49,7 +49,7 @@ public abstract class AbstractQuery {
         int indexOfFrom = upperCaseQuery.indexOf("FROM");
 
         //is where condition present?
-        boolean hasWhere = indexOfWhere > 0 || indexOfWhere < indexOfFrom;
+        boolean hasWhere = indexOfWhere > 0;
 
 
         for (String join : joins) {
@@ -67,22 +67,22 @@ public abstract class AbstractQuery {
 
         int n = andConditions.size();
         for(int i = 0; i< n; i++){
-            if(i > 0) queryBuffer.append(" ").append(AND).append(" ");
-            queryBuffer.append(" ").append(andConditions.get(i)).append(" ");
+            if(i > 0) queryBuffer.append(AND).append(" ");
+            queryBuffer.append(andConditions.get(i)).append(" ");
         }
 
         n = orConditions.size();
         boolean groupOR = !andConditions.isEmpty();
         if(groupOR){
-            queryBuffer.append(" AND (");
+            queryBuffer.append("AND ( ");
         }
         for(int i =0; i < n; i++){
-           if(i > 0) queryBuffer.append(" ").append(OR).append(" ");
-            queryBuffer.append(" ").append(orConditions.get(i)).append(" ");
+           if(i > 0) queryBuffer.append(OR).append(" ");
+            queryBuffer.append(orConditions.get(i)).append(" ");
         }
 
         if(groupOR){
-            queryBuffer.append(" )");
+            queryBuffer.append(")");
         }
 
         if (StringUtils.isNotEmpty(orderByClause)) {
@@ -90,7 +90,7 @@ public abstract class AbstractQuery {
             queryBuffer.append(" order by " + orderByClause);
         }
 
-        return queryBuffer.toString();
+        return queryBuffer.toString().trim();
     }
 
     /**
