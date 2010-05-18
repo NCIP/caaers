@@ -502,12 +502,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="csmUserRepository" ref="csmUserRepository" />
     </bean>
     
-    <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+   <!-- BEGIN PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
 	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher"/>
     <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher"/>
-    <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersAdverseEventIdFetcherImpl" parent="abstractIdFetcher"/>
-    <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersExpeditedAdverseEventReportIdFetcherImpl" parent="abstractIdFetcher"/>
     <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl" parent="abstractIdFetcher"/>
+    <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+    
+    
+    <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersAdverseEventIdFetcherImpl" parent="abstractIdFetcher"/>
+    <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersExpeditedAdverseEventReportIdFetcherImpl" parent="abstractIdFetcher"/>    
     <bean id="reportingPeriodIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersReportingPeriodIdFetcherImpl" parent="abstractIdFetcher"/>
 
 
