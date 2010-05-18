@@ -458,11 +458,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	 <bean id="filteredDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
 		  <property name="idFetchers">
              <list>
-                <ref bean="participantIdFetcher"/>
                 <ref bean="studyIdFetcher"/>
+                <ref bean="participantIdFetcher"/>
+                <ref bean="organizationIdFetcher"/>
                 <ref bean="adverseEventIdFetcher"/>
                 <ref bean="expeditedAdverseEventReportIdFetcher"/>
-                <ref bean="organizationIdFetcher"/>
                 <ref bean="reportingPeriodIdFetcher"/>                
             </list>
          </property> 
