@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.listener;
 import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+
+import org.acegisecurity.Authentication;
 import org.acegisecurity.event.authentication.AuthenticationSuccessEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -23,10 +25,11 @@ public class AuthenticationSuccessListener  implements ApplicationListener {
 	 */
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof AuthenticationSuccessEvent) {
-
+			AuthenticationSuccessEvent authenticationSuccessEvent = (AuthenticationSuccessEvent)event;
+			Authentication authentication = authenticationSuccessEvent.getAuthentication();
             //if super user- ignore indexing. 
-            if(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user)) return;
-            String userName = SecurityUtils.getUserLoginName();
+            if(SecurityUtils.checkAuthorization(authentication,UserGroupType.caaers_super_user)) return;
+            String userName = SecurityUtils.getUserLoginName(authentication);
 			filteredDataLoader.updateIndexByUserName(userName);
 			
 		}		
