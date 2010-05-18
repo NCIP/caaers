@@ -72,17 +72,20 @@ public abstract class AbstractQuery {
         }
 
         n = orConditions.size();
-        boolean groupOR = !andConditions.isEmpty();
-        if(groupOR){
-            queryBuffer.append("AND ( ");
-        }
-        for(int i =0; i < n; i++){
-           if(i > 0) queryBuffer.append(OR).append(" ");
-            queryBuffer.append(orConditions.get(i)).append(" ");
-        }
+        if(n > 0){
+            boolean groupOR = !andConditions.isEmpty();
+            if(groupOR){
+                queryBuffer.append("AND ( ");
+            }
+            for(int i =0; i < n; i++){
+               if(i > 0) queryBuffer.append(OR).append(" ");
+                queryBuffer.append(orConditions.get(i)).append(" ");
+            }
 
-        if(groupOR){
-            queryBuffer.append(")");
+            if(groupOR){
+                queryBuffer.append(")");
+            }
+
         }
 
         if (StringUtils.isNotEmpty(orderByClause)) {
