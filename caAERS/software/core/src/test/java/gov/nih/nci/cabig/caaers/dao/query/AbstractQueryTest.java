@@ -34,6 +34,10 @@ public class AbstractQueryTest extends TestCase {
         assertEquals("select * from emp WHERE y = 3", query.getQueryString());
 	}
 
+	public void testOneAnd(){
+		query.andWhere("dept = 'ABC'");
+        assertEquals("select * from emp WHERE dept = 'ABC'", query.getQueryString());
+	}
 
     public void testWithMultipleAndAndOr(){
         query.join("dept on dept.id = emp.id");
