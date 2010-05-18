@@ -48,7 +48,6 @@ public class ReportVersionRepository {
 
     public List<ReportVersion> getPastDue() {
         ReportVersionQuery q = new ReportVersionQuery();
-        q.andWhere("1 = 1");
         q.andWhere("rv.dueOn < :dueOn");
 
 //        q.filterByReportStatus(ReportStatus.COMPLETED);
