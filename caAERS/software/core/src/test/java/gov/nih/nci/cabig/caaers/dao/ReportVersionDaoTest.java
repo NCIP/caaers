@@ -23,9 +23,4 @@ public class ReportVersionDaoTest extends DaoTestCase<ReportVersionDao> {
     	List l = rsDao.getAllSubmittedReportsInLastGivenNumberOfDays(30);
         assertEquals(0, l.size());
     }
-
-    public void testByDueDate() {
-    	List l = rsDao.getPastDue();
-        assertEquals(4, l.size());
-    }
 }

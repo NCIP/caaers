@@ -904,3 +904,72 @@ a.export-button img {
 	background:#DBE9FF none repeat scroll 0 0;
 	border:1px solid #6E8BB8;
 }
+
+#inside-box {width: 469px; height:auto; float: left; margin: 20px 20px 0 0}
+.inside-box_top {background:url(../images/iphone/box_header.png) top no-repeat; margin: 0;padding: 7px 0 0 20px; font: 19px Arial, Helvetica, sans-serif; color:#fff; text-shadow: 0 -2px #064d8c; width: 449px; height:29px;}
+.inside-box_content {background: url(../images/iphone/box_stretch.png) repeat-y; padding: 0 1px;}
+.inside-box_bottom {background:url(../images/iphone/box_bottom.png) no-repeat; width: 469px; height: 19px;}
+.past-due {height: 24px; background:url(../images/iphone/past-due_bg.png) no-repeat; padding: 7px 0px 0px 19px; font:bold 14px Arial, Helvetica, sans-serif; color:#ea4b4b; text-shadow: 0 -1px white;}
+.reporting-activity {height: 24px; background:url(../images/iphone/reporting-activity_bg.png) no-repeat; padding: 8px 0px 0px 19px; font:bold 14px Arial, Helvetica, sans-serif; color:#09589d; text-shadow: 0 -1px white;}
+.mini_buttons {float: right; padding-right: 10px; margin-top: -1px;}
+.calendar {padding: 10px; }
+
+/*
+
+  -----------------------------------
+
+  Table Style Sheet
+
+  -----------------------------------
+
+*/
+
+#dashboard_table {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 464px;
+    margin: 0 1px 0 2px;
+    border-collapse: collapse;
+    border-bottom: 1px solid #dddddd;
+    padding-top: 0px;
+
+}
+
+#dashboard_table td, #dashboard_table th {
+    font-size: 11px;
+    border-right: 1px solid #dddddd;
+    padding: 5px 7px 4px 16px;
+    color: #3a3a3a;
+}
+
+#dashboard_table a {
+    font-weight: bold;
+    color: #3a3a3a;
+    text-decoration: none;
+}
+
+#dashboard_table a:hover {
+    color: #09589d;
+    text-decoration: none;
+}
+
+#dashboard_table a:active {
+    position: relative;
+    top: 1px;
+    color: #09589d;
+    text-decoration: none;
+}
+
+#dashboard_table th {
+    font-size: 12px;
+    text-align: left;
+    border: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: url(images/table-header_bg.png) center no-repeat;
+    color: #0c62ac;
+}
+
+#dashboard_table tr.alt td {
+    color: #3a3a3a;
+    background-color: #f2f9ff;
+}

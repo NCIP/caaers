@@ -1,11 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,12 +46,22 @@ public class ReportVersionRepository {
         }
     }
 
-    public List<ReportVersion> getAllSubmittedReportsInLastGivenNumberOfDays(int days) {
-        return reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(days);
+    public List<ReportVersion> getPastDue() {
+        ReportVersionQuery q = new ReportVersionQuery();
+        q.andWhere("1 = 1");
+        q.andWhere("rv.dueOn < :dueOn");
+
+//        q.filterByReportStatus(ReportStatus.COMPLETED);
+
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        q.setParameter("dueOn", today);
+        List<ReportVersion> l = reportVersionDao.search(q);
+        return l;
     }
 
-    public List<ReportVersion> getPastDue() {
-        return reportVersionDao.getPastDue();
+    public List<ReportVersion> getAllSubmittedReportsInLastGivenNumberOfDays(int days) {
+        return reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(days);
     }
 
     public void setReportVersionDao(ReportVersionDao reportVersionDao) {

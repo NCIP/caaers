@@ -8,9 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
@@ -67,8 +65,7 @@ public class ReportDao extends GridIdentifiableDao<Report> {
      */
     @Transactional(readOnly = false)
     public boolean deleteById(int id) {
-        int count = getHibernateTemplate().bulkUpdate("delete Report s where s.id=?",
-                        new Object[] { id });
+        int count = getHibernateTemplate().bulkUpdate("delete Report s where s.id=?", new Object[] { id });
         return count >= 1;
     }
 

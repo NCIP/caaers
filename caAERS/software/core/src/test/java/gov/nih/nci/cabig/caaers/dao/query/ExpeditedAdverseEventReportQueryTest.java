@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 public class ExpeditedAdverseEventReportQueryTest extends TestCase{
 
 	public void testQueryConstructor() throws Exception {
-		ExpeditedAdverseEventReportQuery q = new ExpeditedAdverseEventReportQuery();
+		ReportVersionQuery q = new ReportVersionQuery();
         assertEquals("Wrong parsing for constructor", "select er from ExpeditedAdverseEventReport er", q.getQueryString());
     }
 

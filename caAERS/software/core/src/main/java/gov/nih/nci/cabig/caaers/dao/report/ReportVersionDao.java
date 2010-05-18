@@ -1,17 +1,17 @@
 package gov.nih.nci.cabig.caaers.dao.report;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.*;
 
 @Transactional(readOnly = true)
 public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
@@ -54,12 +54,12 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     	 return withTrackingInfo;
     	// return fullList;
     }
+    
     public List<ReportVersion> getAllFailedReportsWithTracking() {
    	 String hsql = "from ReportVersion s where s.reportStatus = 5 order by s.id desc";//where s.reportTrackings is not null order by s.report.id";
    	 List<ReportVersion> fullList =  getHibernateTemplate().find(hsql);
    	 //filter
    	 List<ReportVersion> withTrackingInfo = new ArrayList<ReportVersion>();
-   	 
    	 
    	 for (ReportVersion rv:fullList) {
    		 if (rv.getReportTrackings().size()>0) {
@@ -89,6 +89,7 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
       	return withTrackingInfo;
     }
 
+/*
     public List<ReportVersion> getPastDue() {
     	List<Object> params = new ArrayList<Object>();
     	Calendar cal = Calendar.getInstance();
@@ -99,6 +100,7 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
       	return fullList;
     }
 
+*/
     public List<ReportVersion> getAllSubmittedReportsByDateRange(Date sDate, Date eDate) {
     	List<Object> params = new ArrayList<Object>();
 
@@ -122,10 +124,27 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     
     public List<ReportVersion> getAllInProcessReports() {
     	List<Object> params = new ArrayList<Object>();
-
     	String hsql = "from ReportVersion s where s.reportStatus = 4";
     	return getHibernateTemplate().find(hsql);
     }
   
+    @SuppressWarnings({"unchecked"})
+    @Override
+    public List<ReportVersion> search(final AbstractQuery query) {
+        String queryString = query.getQueryString();
+        System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
+        return (List<ReportVersion>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+                }
+                return hiberanteQuery.list();
+            }
+        });
+
+    }
 
 }

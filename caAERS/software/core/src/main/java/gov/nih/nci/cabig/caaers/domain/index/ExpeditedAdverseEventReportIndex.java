@@ -22,7 +22,8 @@ public class ExpeditedAdverseEventReportIndex extends AbstractMutableDomainObjec
 	public String getLoginId() {
 		return loginId;
 	}
-	public void setLoginId(String loginId) {
+
+    public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
 
@@ -31,8 +32,8 @@ public class ExpeditedAdverseEventReportIndex extends AbstractMutableDomainObjec
 	public ExpeditedAdverseEventReport getExpeditedAdverseEventReport() {
 		return expeditedAdverseEventReport;
 	}
-	public void setExpeditedAdverseEventReport(
-			ExpeditedAdverseEventReport expeditedAdverseEventReport) {
+    
+	public void setExpeditedAdverseEventReport(ExpeditedAdverseEventReport expeditedAdverseEventReport) {
 		this.expeditedAdverseEventReport = expeditedAdverseEventReport;
 	}
 
