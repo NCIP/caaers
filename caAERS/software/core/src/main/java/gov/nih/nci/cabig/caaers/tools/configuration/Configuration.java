@@ -40,6 +40,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> HTTP_SESSION_TIMEOUT_WAIT = PROPERTIES.add(new ConfigurationProperty.Text("httpSessionWarningWait"));
     public static final ConfigurationProperty<Integer> PA_SEARCH_LIMIT = PROPERTIES.add(new ConfigurationProperty.Int("paLimit"));
     public static final ConfigurationProperty<Integer> PO_SEARCH_LIMIT = PROPERTIES.add(new ConfigurationProperty.Int("poLimit"));
+    public static final ConfigurationProperty<Boolean> SYNCHRONOUS_EVENTS = PROPERTIES.add(new ConfigurationProperty.Bool("synchronousSpringEvents"));
     
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
