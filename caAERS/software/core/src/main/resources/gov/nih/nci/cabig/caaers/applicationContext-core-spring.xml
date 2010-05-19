@@ -61,11 +61,15 @@
   </bean>
 
   <!-- Overwrite the default Spring Event multicaster -->
-  <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
-    <property name="collectionClass" value="java.util.concurrent.CopyOnWriteArraySet" />
+  <bean id="eventMulticasterFactoryBean" class="gov.nih.nci.cabig.caaers.tools.spring.EventMulticasterFactoryBean">
+    <property name="simpleApplicationEventMulticaster" ref="applicationEventMulticaster" />
     <property name="taskExecutor">
        <bean class="org.springframework.scheduling.timer.TimerTaskExecutor"/>  
     </property>
+  </bean>
+  
+  <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
+    <property name="collectionClass" value="java.util.concurrent.CopyOnWriteArraySet" />
   </bean>
     
 </beans>
