@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.tools.spring;
 
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
@@ -11,7 +13,10 @@ public class EventMulticasterFactoryBean implements FactoryBean, InitializingBea
 	private TaskExecutor  taskExecutor;
 	
 	public Object getObject() throws Exception {
-		simpleApplicationEventMulticaster.setTaskExecutor(taskExecutor);
+		Boolean synchronous = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYNCHRONOUS_EVENTS);
+		if (!synchronous) {
+			simpleApplicationEventMulticaster.setTaskExecutor(taskExecutor);
+		}
 		return this.simpleApplicationEventMulticaster;
 	}
 
