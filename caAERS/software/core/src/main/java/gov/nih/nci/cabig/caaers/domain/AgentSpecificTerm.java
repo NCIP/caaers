@@ -25,6 +25,7 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     private T term;
     private Agent agent;
     private boolean deleted;
+    private String otherToxicity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
@@ -67,5 +68,13 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getOtherToxicity() {
+        return otherToxicity;
+    }
+
+    public void setOtherToxicity(String otherToxicity) {
+        this.otherToxicity = otherToxicity;
     }
 }

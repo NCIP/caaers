@@ -470,7 +470,7 @@
            <tr><th scope="col">Expected AEs</th></tr>
            <c:forEach items="${terms}" var="term">
                <tr class="results">
-                   <td>${term.fullName} <c:if test="${command.study.aeTerminology.term eq 'CTC' && term.otherMeddraTerm != null}">(${term.otherMeddraTerm.fullName})</c:if></td>
+                   <td>${term.fullName} <c:if test="${command.study.aeTerminology.term eq 'CTC' && term.otherMeddraTerm != null}">(${term.otherMeddraTerm.fullName})</c:if>&nbsp;&nbsp;&nbsp;${term.otherToxicity}</td>
                </tr>
            </c:forEach>
        </table>

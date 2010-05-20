@@ -47,7 +47,7 @@ public class AgentSpecificTermDaoTest extends DaoTestCase<AgentSpecificTermDao> 
         list = getDao().getMeddraTermsByAgentID(1002);
         assertNotNull(list);
         assertEquals(1, list.size());
-
+        assertEquals("T-22", list.get(0).getOtherToxicity());
     }
 
     public void testGetByAgentIdAndTerminologyVersion() {

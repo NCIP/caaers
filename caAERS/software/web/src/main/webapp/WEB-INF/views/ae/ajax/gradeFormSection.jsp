@@ -20,7 +20,7 @@
             <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
                 <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:autocompleter path="${fieldGroups[mainGroup].fields[0].propertyName}" initialDisplayValue="${adverseEvent.lowLevelTerm.meddraTerm}">
+                    <ui:autocompleter path="${fieldGroups[mainGroup].fields[0].propertyName}" initialDisplayValue="${ae.lowLevelTerm.meddraTerm}">
                         <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
                                 var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
@@ -34,6 +34,14 @@
                                 return lowLevelTerm.meddraTerm;
                             }
                         </jsp:attribute>
+                        <jsp:attribute name="optionsJS">
+							{
+								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                                    $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
+                                    updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${ae.detailsForOther}');
+								}
+							}
+						</jsp:attribute>
                     </ui:autocompleter>
                 </jsp:attribute>
             </ui:row>

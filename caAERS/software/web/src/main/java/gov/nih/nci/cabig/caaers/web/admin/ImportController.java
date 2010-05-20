@@ -126,7 +126,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             redirectTo = "redirectToImportTab";
         }
         
-        System.out.println("Redirecting to : " + redirectTo);
+        // System.out.println("Redirecting to : " + redirectTo);
         return new ModelAndView(redirectTo);
     }
 

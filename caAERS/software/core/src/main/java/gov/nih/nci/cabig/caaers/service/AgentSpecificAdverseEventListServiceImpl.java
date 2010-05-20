@@ -58,15 +58,8 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
             // System.out.println("size: " + l.size());
             for (ExpectedAECtcTerm aeT : l) {
                 if (aeT.getCtcTerm().getTerm().equals(t.getTerm())) {
-
-                    // ToDo check this term is in the list because of some other agent as well
-                    // ToDo and keep it in the list
                     if (deleted) {
                         l.remove(aeT);
-/*
-                        System.out.println("Deleted " + aeT.getFullName());
-                        System.out.println("size: " + l.size());
-*/
                     }
                     return;
                 }
@@ -77,6 +70,7 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
             ExpectedAECtcTerm aeT = new ExpectedAECtcTerm();
             aeT.setStudy(s);
             aeT.setCtcTerm(t);
+            aeT.setOtherToxicity(at.getOtherToxicity());
             if (t.isOtherRequired()) {
                 aeT.setOtherMeddraTerm(((AgentSpecificCtcTerm)at).getOtherMeddraTerm());
             }

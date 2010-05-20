@@ -44,6 +44,7 @@ public class AgentSpecificTermsImporter {
         put("CTCAE_VERSION", -1);
         put("CTCAE_CATEGORY", -1);
         put("AE_TERM", -1);
+        put("OTHER_TOXICITY", -1);
     }};
 
     public static File file = new File("/home/dell/Desktop/asael.xls");
@@ -148,6 +149,7 @@ public class AgentSpecificTermsImporter {
         String ctcae_category = "";
         int ctcae_version = 0;
         String ae_term = "";
+        String other_toxicity = "";
 
         // Loading ASAE list
         // if (true) {  return null; }
@@ -164,6 +166,7 @@ public class AgentSpecificTermsImporter {
                         ctcae_category= getCellData("", i, row.getCell((short)headers.get("CTCAE_CATEGORY")));
                         ctcae_version = Integer.parseInt(getCellData("", i, row.getCell((short)headers.get("CTCAE_VERSION"))));
                         ae_term = getCellData("", i, row.getCell((short)headers.get("AE_TERM")));
+                        other_toxicity = getCellData("", i, row.getCell((short)headers.get("OTHER_TOXICITY")));
                     }
                 } else {
                     String s;
@@ -180,6 +183,7 @@ public class AgentSpecificTermsImporter {
                                 return null;
                             }
                             ae_term = _s[headers.get("AE_TERM")];
+                            other_toxicity = _s[headers.get("OTHER_TOXICITY")];
                         }
                     }
                 }
@@ -198,6 +202,7 @@ public class AgentSpecificTermsImporter {
                 if (a != null) {
                     AgentSpecificCtcTerm t = new AgentSpecificCtcTerm();
                     t.setAgent(a);
+                    t.setOtherToxicity(other_toxicity);
 
                     List<CtcTerm> list = terminologyRepository.getCtcTerm(ctcae_category, ctcae_version, ae_term);
                     if (list.size() == 0) {
@@ -258,24 +263,17 @@ public class AgentSpecificTermsImporter {
         return false;
     }
 
-    // utility method to get contents of cell irrespective of cell type.
     private String getCellData(String sheetname, int rowNum, HSSFCell cell) {
-        if (cell == null)
-            throw new CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: " + sheetname + "\n Row: " + (rowNum + 1));
-
+        if (cell == null) return "";
         int cellType = cell.getCellType();
         if (cellType == 0) {
-            if (cell.getNumericCellValue() == 0)
-                throw new CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: " + sheetname + "\n Row: " + (rowNum + 1) + "\n Cell: " + ((cell.getCellNum()) + 1));
+            if (cell.getNumericCellValue() == 0) return "";
             return (Integer.toString((int) cell.getNumericCellValue())).trim();
         } else if (cellType == 1) {
-            if (cell.getStringCellValue().equals(""))
-                throw new CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: " + sheetname + "\n Row: " + (rowNum + 1) + "\n Cell: " + ((cell.getCellNum()) + 1));
             return cell.getStringCellValue().trim();
         } else {
-            throw new CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: " + sheetname + "\n Row: " + (rowNum + 1) + "\n Cell: " + ((cell.getCellNum()) + 1));
+            return "";
         }
-
     }
 
     public void setAgentDao(AgentDao agentDao) {

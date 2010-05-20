@@ -242,6 +242,44 @@
      }
 
      // ----------------------------------------------------------------------------------------------------------------
+
+function refreshGrades(index) {
+     var paramHash = new Hash(); //parameters to post to server
+     paramHash.set('index', index);
+     var page = 1;
+     var target = '_target' + 1;
+     paramHash.set('_page', page);
+     paramHash.set(target, page);
+     paramHash.set('_asynchronous', true);
+     paramHash.set('decorator', 'nullDecorator');
+     paramHash.set('ajax', 'true');
+     paramHash.set('action', 'refreshGrades');
+     paramHash.set('adverseEvents[' + index + '].ctcTerm', $('adverseEvents[' + index + '].ctcTerm').value);
+
+     var url = $('command').action + "?subview"
+
+     new Ajax.Request(url, {
+            parameters : paramHash.toQueryString(),
+            onSuccess: function(transport) {
+                $('GRADES_AND_MEDDRA_' + index).update(transport.responseText);
+            },
+            evalScripts : true
+     });
+
+ }
+
+ function updateExpected(index, ctcTermID, meddraTermID, verbatimText) {
+     var _el = $('adverseEvents[' + index + '].expected');
+
+     // $('_test' + index).innerHTML = index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText;
+     //alert(index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText);
+
+     captureAE.isExpected(ctcTermID, meddraTermID, verbatimText, function(ajaxOutput) {
+         // alert(ajaxOutput.objectContent == true);
+         if (ajaxOutput.objectContent) _el.selectedIndex = 1;
+         else { if (_el.selectedIndex == 1) _el.selectedIndex = 0; } 
+     });
+ }
  
  --></script>
 

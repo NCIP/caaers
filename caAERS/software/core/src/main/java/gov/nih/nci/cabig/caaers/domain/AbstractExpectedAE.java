@@ -30,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 public abstract class AbstractExpectedAE<T extends DomainObject> extends AbstractMutableDomainObject {
     private T term;
     private Study study;
+    private String otherToxicity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id", insertable = false, updatable = false)
@@ -64,4 +65,13 @@ public abstract class AbstractExpectedAE<T extends DomainObject> extends Abstrac
         BeanUtils.copyProperties(this, abstractAdverseEventTerm, new String[]{"id", "gridId", "version", "study"});
         return abstractAdverseEventTerm;
     }
+
+    public String getOtherToxicity() {
+        return otherToxicity;
+    }
+
+    public void setOtherToxicity(String otherToxicity) {
+        this.otherToxicity = otherToxicity;
+    }
+
 }

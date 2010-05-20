@@ -1,9 +1,11 @@
 <%@attribute name="isOtherSpecify" type="java.lang.Boolean" required="true" description="Should be true, when the CTC term is otherspecify" %>
 <%@attribute name="index" type="java.lang.Integer" required="true" %>
 <%@attribute name="term" type="gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm" required="true" %>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" />
 
@@ -15,7 +17,12 @@
                     <c:set var="initValue" value="${term.otherMeddraTerm.meddraTerm}"/>
                 </c:if>
                 <%--<tags:requiredIndicator/>--%>
-                <c:out value="${term.fullName}" /><br>
+                <c:out value="${term.fullName}" />&nbsp;&nbsp;&nbsp;
+                <c:set var="_tox"><jsp:attribute name="value"><caaers:value path="agentSpecificTerms[${index}].otherToxicity" /></jsp:attribute></c:set>
+                <b><caaers:message code="LBL_otherToxicity" /></b>:
+                <ui:text path="agentSpecificTerms[${index}].otherToxicity" readonly="${_tox ne ''}"/>
+
+<%--
                 <ui:autocompleter path="agentSpecificTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
@@ -31,6 +38,7 @@
                         }
                     </jsp:attribute>
                 </ui:autocompleter>
+--%>
 </c:if>
 
 <c:if test="${not isOtherSpecify}">

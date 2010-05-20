@@ -70,7 +70,7 @@ public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
         return getTerm().isOtherRequired();
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "low_level_term_id")
     public LowLevelTerm getOtherMeddraTerm() {
         return otherMeddraTerm;

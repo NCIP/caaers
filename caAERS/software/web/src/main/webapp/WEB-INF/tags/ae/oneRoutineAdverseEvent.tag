@@ -41,6 +41,9 @@
     </jsp:attribute>
 </c:set>    
 
+<input type="hidden" id="_ctcTermValue${index}" value="${adverseEvent.adverseEventTerm.term.id}">
+<%--[<span id="_test${index}">-</span>]--%>
+
 <chrome:division title="${_TITLE}" id="ae-section-${index}" cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}"
 	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${collapsedCheck}">
    <jsp:attribute name="additionalInfo"></jsp:attribute>
@@ -78,6 +81,7 @@
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].ctcTerm').value = selectedChoice.id; 
                                     refreshGrades(${index});
+                                    updateExpected(${index}, selectedChoice.id, '-1', '${adverseEvent.detailsForOther}');
 								}
 							}
 						</jsp:attribute>
@@ -98,6 +102,14 @@
                             return lowLevelTerm.meddraTerm;
                         }
                         </jsp:attribute>
+                        <jsp:attribute name="optionsJS">
+							{
+								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                                    $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
+                                    updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${adverseEvent.detailsForOther}');
+								}
+							}
+						</jsp:attribute>
                     </ui:autocompleter>
                 </c:if>
                 </div>
@@ -108,6 +120,13 @@
         <div id="GRADES_AND_MEDDRA_${index}">
         <%-- Other MedDRA --%>
         <c:if test="${indexCorrection gt 0}">
+
+            <c:if test="${command.study.verbatimFirst}">
+                <c:set var="_verbatimValueFrom" value="'${adverseEvent.detailsForOther}'" />
+            </c:if>
+            <c:if test="${!command.study.verbatimFirst}">
+                <c:set var="_verbatimValueFrom" value="$('adverseEvents[${index}].detailsForOther').value" />
+            </c:if>
 
             <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
                 <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/></jsp:attribute>
@@ -126,6 +145,15 @@
                                 return lowLevelTerm.meddraTerm;
                             }
                         </jsp:attribute>
+                        <jsp:attribute name="optionsJS">
+							{
+								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                                    $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
+                                    updateExpected(${index}, $('_ctcTermValue${index}').value, selectedChoice.id, ${_verbatimValueFrom});
+                            // IOO
+								}
+							}
+						</jsp:attribute>
                     </ui:autocompleter>
                 </jsp:attribute>
             </ui:row>
@@ -187,30 +215,10 @@
 		<%-- Script to register calendar controls --%>
 		<script>
 			AE.registerCalendarPopups('ae-section-${index}');
-
-            function refreshGrades(index) {
-                var paramHash = new Hash(); //parameters to post to server
-                paramHash.set('index', index);
-                var page = ${tab.number};
-                var target = '_target' + ${tab.number};
-                paramHash.set('_page', page);
-                paramHash.set(target, page);
-                paramHash.set('_asynchronous', true);
-                paramHash.set('decorator', 'nullDecorator');
-                paramHash.set('ajax', 'true');
-                paramHash.set('action', 'refreshGrades');
-                paramHash.set('adverseEvents[' + index + '].ctcTerm', $('adverseEvents[' + index + '].ctcTerm').value);
-
-                var url = $('command').action + "?subview"
-
-                new Ajax.Request(url, {
-                       parameters : paramHash.toQueryString(),
-                       onSuccess: function(transport) {
-                           $('GRADES_AND_MEDDRA_' + index).update(transport.responseText);
-                       },
-                       evalScripts : true
+            if ($('adverseEvents[${index}].detailsForOther')) {
+                Event.observe('adverseEvents[${index}].detailsForOther', 'change', function() {
+                    updateExpected(${index}, $('_ctcTermValue${index}').value, $('adverseEvents[${index}].lowLevelTerm') ? $('adverseEvents[${index}].lowLevelTerm').value : 0, $('adverseEvents[${index}].detailsForOther').value);
                 });
-                
             }
 		</script>
 		

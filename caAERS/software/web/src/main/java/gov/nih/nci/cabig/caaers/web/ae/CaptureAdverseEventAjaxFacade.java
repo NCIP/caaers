@@ -1,14 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.AdverseEventReportingPeriodAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
@@ -105,7 +98,8 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
                 ae.setAdverseEventCtcTerm(aeCtc);
                 aeCtc.setAdverseEvent(ae);
                 if (command.getAdverseEventReportingPeriod().getStudy().isExpectedAdverseEventTerm(ctc)) {
-                    ae.setExpected(new Boolean(Boolean.TRUE));
+                    if (!ctc.isOtherRequired())
+                        ae.setExpected(new Boolean(Boolean.TRUE));
                 }
             }
 
@@ -158,6 +152,81 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 
     	ajaxOutput.setHtmlContent(renderAjaxView("observedAdverseEventSection", 0, params));
     	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+        return ajaxOutput;
+    }
+
+
+    public AjaxOutput isExpected(Integer ctcTermID, Integer lowLevelTermID, String verbatim) {
+        AjaxOutput ajaxOutput = new AjaxOutput();
+        ajaxOutput.setObjectContent(Boolean.TRUE);
+        
+        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+        // command.reassociate();
+
+        CtcTerm ctcTerm = null;
+        LowLevelTerm lowLevelTerm = null;
+
+        if (ctcTermID > 0)
+            ctcTerm = ctcTermDao.getById(ctcTermID);
+
+        if (lowLevelTermID > 0)
+             lowLevelTerm = lowLevelTermDao.getById(lowLevelTermID);
+
+        // check the CtcTerms if the passed one is Ctc
+        if (ctcTermID > 0) {
+            for (ExpectedAECtcTerm t : command.getStudy().getExpectedAECtcTerms()) {
+
+                if (!t.getCtcTerm().getId().equals(ctcTermID)) continue;
+
+                if (!t.isOtherRequired()) {
+                    return ajaxOutput;
+                }
+
+                // verbatim text is the same as toxicity of the study term
+                if (t.getOtherToxicity() != null)
+                    if (t.getOtherToxicity().toLowerCase().equals(verbatim.toLowerCase())) {
+                        return ajaxOutput;
+                    }
+
+                // study term name is the same as verbatim text
+                if (t.getOtherMeddraTerm() != null && t.getOtherMeddraTerm().getMeddraTerm().toLowerCase().equals(verbatim.toLowerCase())) {
+                    return ajaxOutput;
+                }
+
+                // passed meddra term is the same as Study meddra term 
+                if (lowLevelTermID > 0 && t.getOtherMeddraTerm() != null) {
+                    if (t.getOtherMeddraTerm().getId().equals(lowLevelTermID)) {
+                        return ajaxOutput;
+                    }
+                }
+
+
+            }
+        } else {
+            for (ExpectedAEMeddraLowLevelTerm t : command.getStudy().getExpectedAEMeddraLowLevelTerms()) {
+                if (t.getId().equals(lowLevelTermID)) {
+                    return ajaxOutput;
+                }
+            }
+        }
+
+/*
+        try {
+
+            System.out.println("ctcTermID: " + ctcTermID);
+            System.out.println("meddraTermID: " + lowLevelTermID);
+            System.out.println("verbatim: " + verbatim);
+            System.out.println("verbatim: " + verbatim);
+            System.out.println(command.getStudy().getId());
+            System.out.println(ctcTerm.getCtepTerm());
+            System.out.println(lowLevelTerm.getMeddraTerm());
+
+        } catch (Exception ex) {
+            System.out.println("ERR: " + ex.getMessage());
+        }
+*/
+
+        ajaxOutput.setObjectContent("");
         return ajaxOutput;
     }
 

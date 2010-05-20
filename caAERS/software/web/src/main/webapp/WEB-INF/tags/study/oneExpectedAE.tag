@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
+<%@ taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <td>
 <c:set var="ctcTerm" value="study.expectedAECtcTerms[${index}]" />
@@ -14,7 +15,8 @@
                 </c:if>
                 <%--<tags:requiredIndicator/>--%>
                 <c:out value="${studyTerm.fullName}" /><br>
-                <ui:autocompleter path="study.expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}">
+
+                <ui:autocompleter path="study.expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}" readonly="false">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
                                     var terminologyVersionId = ${empty command.study.otherMeddra.id ? 0 : command.study.otherMeddra.id};
@@ -30,6 +32,11 @@
                         }
                     </jsp:attribute>
                 </ui:autocompleter>
+
+    <b><caaers:message code="LBL_otherToxicity" /></b>:
+    <c:set var="_tox"><jsp:attribute name="value"><caaers:value path="study.expectedAECtcTerms[${index}].otherToxicity" /></jsp:attribute></c:set>
+    <ui:text path="study.expectedAECtcTerms[${index}].otherToxicity" readonly="${_tox ne ''}"/>
+
 </c:if>
 
 <c:if test="${not isOtherSpecify}">
