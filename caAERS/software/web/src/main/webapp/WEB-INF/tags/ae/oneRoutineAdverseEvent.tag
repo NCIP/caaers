@@ -217,11 +217,14 @@
 			AE.registerCalendarPopups('ae-section-${index}');
             if ($('adverseEvents[${index}].detailsForOther')) {
                 Event.observe('adverseEvents[${index}].detailsForOther', 'change', function() {
-                    updateExpected(${index}, $('_ctcTermValue${index}').value, $('adverseEvents[${index}].lowLevelTerm') ? $('adverseEvents[${index}].lowLevelTerm').value : 0, $('adverseEvents[${index}].detailsForOther').value);
+                    var _llt = 0;
+                    if ($('adverseEvents[${index}].lowLevelTerm').value && $('adverseEvents[${index}].lowLevelTerm').value > 0) _llt = $('adverseEvents[${index}].lowLevelTerm').value;
+                    updateExpected(${index}, $('_ctcTermValue${index}').value, _llt, $('adverseEvents[${index}].detailsForOther').value);
                 });
             }
+            // IOO2
 		</script>
-		
+
     </jsp:body>
 </chrome:division>
 
