@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBContext;
 public class ParticipantXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "subject_template.xml";
-	public static int subjectsPerSite = 40;
+	public static int subjectsPerSite = Integer.parseInt(System.getProperty("ParticipantXMLGenerator.subjectsPerSite", "40"));
 	private ObjectFactory objectFactory;
 
     private int startStudyIndex = 1;
@@ -116,6 +116,25 @@ public class ParticipantXMLGenerator extends XMLGenerator {
                 
             }
         }
+		// also generate one large file with all subjects
+		Participants participants = objectFactory.createParticipants();
+		for (int i = startStudyIndex; i <= endStudyIndex; i++) {
+			for (String siteNCICode : NCICode.ORGANIZATION_LIST) {
+				String studyPrimaryID = studyPrimaryIDPattern + "." + i;
+
+				System.out.println("Generating participants for " + siteNCICode
+						+ ".");
+				for (int k = 1; k <= subjectsPerSite; k++) {
+					ParticipantType pType = changeValues(
+							getTemplateParticipant(), studyPrimaryID,
+							siteNCICode, k);
+					participants.getParticipant().add(pType);
+				}
+
+			}
+		}   
+		String fileName = "sub_all.xml" ;
+        marshal(participants, TestDataFileUtils.getSubjectTestDataFolder(), fileName);		
     }
 
     /**
