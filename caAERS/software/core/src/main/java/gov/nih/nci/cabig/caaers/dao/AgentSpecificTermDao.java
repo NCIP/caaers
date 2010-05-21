@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -88,5 +93,17 @@ public class AgentSpecificTermDao extends GridIdentifiableDao<AgentSpecificTerm>
     @Transactional(readOnly = false)
     public void delete(AgentSpecificTerm o) {
         getHibernateTemplate().delete(o);
+    }
+
+    @Transactional(readOnly = false)
+    public void deleteAll() {
+        final String HQL = "delete from AgentSpecificTerm";
+        getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                Query hQuery = session.createQuery(HQL);
+                hQuery.executeUpdate();
+                return null;
+            }
+        });
     }
 }

@@ -22,10 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -378,4 +375,15 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		this.remoteSession = remoteSession;
 	}
 
+    @Transactional(readOnly = false)
+    public void deleteAllExpectedTerms() {
+        final String HQL = "delete from AbstractExpectedAE";
+        getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                Query hQuery = session.createQuery(HQL);
+                hQuery.executeUpdate();
+                return null;
+            }
+        });
+    }
 }

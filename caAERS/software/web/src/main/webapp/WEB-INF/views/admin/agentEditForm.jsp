@@ -166,6 +166,8 @@
     });
 
     function changeTerminology() {
+        if (!confirm("Changing the versions will lead to a delete of all ASAEL and all Study Expected AEs.\n\nContinue ?")) return;
+        $('command')._action.value = "CHANGE_TERMINOLOGY";
         $('command').submit();
     }
 

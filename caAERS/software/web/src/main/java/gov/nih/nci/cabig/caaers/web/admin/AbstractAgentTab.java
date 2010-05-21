@@ -65,14 +65,21 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
     @Override
     public void postProcess(HttpServletRequest request, AgentCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        // System.out.println("postProcess...");
+
         if (request.getParameter(AbstractAjaxFacade.AJAX_REQUEST) != null) return;
 
         List<StudyAgent> l = null;
         if (command.getAgent().getId() != null) {
              l = getStudyAgentDao().getByAgentID(command.getAgent().getId());
         }
-        
+
+        if (request.getParameter("_action") != null && request.getParameter("_action").equals("CHANGE_TERMINOLOGY")) {
+            // wipe out the ASAEL if the terminology changes.
+            for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
+                t.setDeleted(true);
+            }
+        }
+
         List<AgentSpecificTerm> deleted = new ArrayList<AgentSpecificTerm>();
         for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
             if (t.getDeleted()) {

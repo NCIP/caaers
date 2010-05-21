@@ -80,6 +80,11 @@ public class AgentSpecificTermsImporter {
 
         // System.out.println("Starting...");
 
+        // wipe out the table
+        agentSpecificTermDao.deleteAll();
+        studyDao.deleteAllExpectedTerms();
+        // if (true) return null;
+
         // get needed headers
         if (isExcel) {
             poifs = new POIFSFileSystem(new FileInputStream(file));
