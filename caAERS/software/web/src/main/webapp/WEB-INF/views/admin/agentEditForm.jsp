@@ -106,6 +106,11 @@
     </div>
 </div>
 <script>
+    var v1Index = $('terminology').selectedIndex;
+    var vCIndex = $('ctcVersion').selectedIndex;
+    var vMIndex = $('meddraVersion').selectedIndex;
+    var confirmed = false;
+
     function addTerm(selectedTerms) {
         var listOfTermIDs = new Array();
         $H(selectedTerms).keys().each(function(termID) {
@@ -124,11 +129,7 @@
         });
     }
 
-    function checkVersion() {
-        var v1 = $('terminology');
-        var vC = $('ctcVersion');
-        var vM = $('meddraVersion');
-
+    function adjustRows(v1, vC, vM) {
         if (v1.options[v1.selectedIndex].value == 'CTC') {
             showRow('ctcRow');
             hideRow('meddraRow');
@@ -139,7 +140,27 @@
             hideRow('ctcRow')
             hideRow('meddraRow')
         }
+    }
 
+    function checkVersion() {
+        var v1 = $('terminology');
+        var vC = $('ctcVersion');
+        var vM = $('meddraVersion');
+
+        <c:if test="${fn:length(command.agentSpecificTerms) > 0}">
+                if (!confirmed && !confirm("Changing the versions will lead to a delete of all ASAEL and all Study Expected AEs.\n\nContinue ?")) {
+                    $('terminology').selectedIndex = v1Index;
+                    $('ctcVersion').selectedIndex = vCIndex;
+                    $('meddraVersion').selectedIndex = vMIndex;
+                    adjustRows(v1, vC, vM);
+                    return;
+                } else {
+                    confirmed  = true;
+                }
+        </c:if>
+
+        adjustRows(v1, vC, vM);
+        
         if (v1.options[v1.selectedIndex].value == 'CTC' && vC.selectedIndex > 0) {
             changeTerminology();
             return;
@@ -150,7 +171,7 @@
             return;
         }
 
-        $('_ALL').hide();
+        // $('_ALL').hide();
     }
 
     Event.observe($('terminology'), "change", function() {
@@ -166,7 +187,6 @@
     });
 
     function changeTerminology() {
-        if (!confirm("Changing the versions will lead to a delete of all ASAEL and all Study Expected AEs.\n\nContinue ?")) return;
         $('command')._action.value = "CHANGE_TERMINOLOGY";
         $('command').submit();
     }
