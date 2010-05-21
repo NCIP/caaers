@@ -78,7 +78,7 @@
                     />
 
 
-            <tags:table bgColor="#cccccc" contentID="asael_#{agent.id}">
+            <tags:table bgColor="#cccccc" contentID="asael_">
                 <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                     <tr bgcolor="#E4E4E4">
                         <th scope="col" align="left" colspan="2"><b>Terminology</b></th>
@@ -125,7 +125,7 @@
     function removeTerm(_index) {
         if(!confirm( "Are you sure you want to delete this?" )) return false;
         agentFacade.deleteAgentSpecificTerms(_index, function(ajaxOutput) {
-            $('termsTable').innerHTML = ajaxOutput.htmlContent;
+            $('asael_').innerHTML = ajaxOutput.htmlContent;
         });
     }
 
