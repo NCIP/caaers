@@ -136,19 +136,18 @@
 				            <tags:errors path="level"/>
         				</div>
         			</div>
-        			
+
         			
         			<div class="autoclear" id="criteria-div">		
 						
 						<div title="Select sponsor" id="sponsorName-details" style="display:none">
-							<form:hidden path="sponsorNameInitialValue"/>
-                            <ui:row path="sponsorName">
+                            <ui:row path="sponsor">
                                 <jsp:attribute name="label">
-                                    <ui:label required="true" text="Sponsor" path="sponsorName"/>
+                                    <ui:label required="true" text="Sponsor" path="sponsor"/>
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
-                                    <ui:autocompleter path="sponsorName" enableClearButton="true" required="false" title="Sponsor"
-                                    	initialDisplayValue="${empty command.sponsorNameInitialValue ? 'Begin typing here...' : command.sponsorNameInitialValue}">
+                                    <ui:autocompleter path="sponsor" enableClearButton="true" required="false" title="Sponsor"
+                                    	initialDisplayValue="${empty command.sponsor ? 'Begin typing here...' : command.sponsor.fullName}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text) {
                 							authorRule.matchOrganization(text, function(values) {
@@ -165,9 +164,7 @@
                                     <jsp:attribute name="optionsJS">
                                     	{
                                     		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("sponsorName").value = selectedChoice.name;
-                                    			var nciInstituteCode = selectedChoice.nciInstituteCode == null ? "" : " ( " + selectedChoice.nciInstituteCode + " ) ";
-                                    			$("sponsorNameInitialValue").value = selectedChoice.name + nciInstituteCode;
+                                    			$("sponsor").value = selectedChoice.id;
                                     		}
                                     	}
                                     </jsp:attribute>
@@ -177,14 +174,13 @@
 						</div>
 						
 						<div title="Select institution" id="institutionName-details" style="display:none" class="pane">
-							<form:hidden path="institutionNameInitialValue"/>
-							<ui:row path="institutionName">
+							<ui:row path="institution">
                                 <jsp:attribute name="label">
-                                    <ui:label required="true" text="Institution" path="institutionName"/>
+                                    <ui:label required="true" text="Institution" path="institution"/>
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
-                                    <ui:autocompleter path="institutionName" enableClearButton="true" required="false" title="Institution"
-                                    	initialDisplayValue="${empty command.institutionNameInitialValue ? 'Begin typing here...' : command.institutionNameInitialValue}">
+                                    <ui:autocompleter path="institution" enableClearButton="true" required="false" title="Institution"
+                                    	initialDisplayValue="${empty command.institution ? 'Begin typing here...' : command.institution.fullName}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text) {
         									authorRule.matchSites(text, function(values) {
@@ -201,9 +197,7 @@
                                     <jsp:attribute name="optionsJS">
                                     	{
                                     		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("institutionName").value = selectedChoice.name;
-                                    			var nciInstituteCode = selectedChoice.nciInstituteCode == null ? "" : " ( " + selectedChoice.nciInstituteCode + " ) ";
-                                    			$("institutionNameInitialValue").value = selectedChoice.name + nciInstituteCode;
+                                    			$("institutionName").value = selectedChoice.id;
                                     		}
                                     	}
                                     </jsp:attribute>
@@ -213,24 +207,30 @@
 						</div>
 
 						<div title="Select study" id="categoryIdentifier-details" style="display:none" class="pane">
-							<ui:row path="categoryIdentifier">
+							<ui:row path="study">
                                 <jsp:attribute name="label">
-                                    <ui:label required="true" text="Study" path="categoryIdentifier"/>
+                                    <ui:label required="true" text="Study" path="study"/>
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
-                                    <ui:autocompleter path="categoryIdentifier" enableClearButton="true" required="false" title="Study"
-                                    	initialDisplayValue="${empty command.categoryIdentifier ? 'Begin typing here...' : command.categoryIdentifier}">
+                                    <ui:autocompleter path="study" enableClearButton="true" required="false" title="Study"
+                                    	initialDisplayValue="${empty command.study ? 'Begin typing here...' : command.study.shortTitle}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text){
-						        			var institutionNameInput =  $('institutionName').value;
-											if(institutionNameInput != '') {
-												authorRule.matchStudiesByInstitution(text, $('institutionName').value, function(values) {
+                                           var institutionId = '';
+                                           var sponsorId = '';
+                                           if($('institution')){
+                                              institutionId = $F('institution');
+                                           }
+                                           if($('sponsor')){
+                                              sponsorId = $F('sponsor');
+                                           }
+										   if(institutionId != '') {
+												authorRule.matchStudiesByInstitution(text, institutionId, function(values) {
 													autocompleter.setChoices(values)
 												})
 											}
-											var sponsorNameInput =  $('sponsorName').value;
-											if(sponsorNameInput != '') {
-												authorRule.matchStudies(text, $('sponsorName').value, function(values) {
+											if(sponsorId != '') {
+												authorRule.matchStudies(text,sponsorId, function(values) {
 													autocompleter.setChoices(values)
 												})
 											}
@@ -245,7 +245,7 @@
                                     <jsp:attribute name="optionsJS">
                                     	{
                                     		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("categoryIdentifier").value = selectedChoice.shortTitle;
+                                    			$("study").value = selectedChoice.id;
                                     		}
                                     	}
                                     </jsp:attribute>
@@ -254,7 +254,6 @@
                             </ui:row>
 						</div>
 					</div>
-					
 					
     			<form:hidden id="hiddenRuleSetName" path="ruleSetName"/>
     		</jsp:attribute>

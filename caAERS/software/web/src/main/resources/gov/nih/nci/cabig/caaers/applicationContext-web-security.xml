@@ -107,7 +107,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/notification/list" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/deploy" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/export" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/rule/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/notification/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		
 		<!--========= SEARCH ========-->
@@ -265,7 +264,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		
         <!--========= RULES ========-->
 		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.DisplayRuleSetsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.RuleTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.ReviewTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		

@@ -1,35 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
-import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
-import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
-import gov.nih.nci.cabig.caaers.rules.common.RuleType;
-import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Required;
-
 import com.semanticbits.rules.api.BusinessRulesExecutionService;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.exception.RuleException;
@@ -37,7 +7,32 @@ import com.semanticbits.rules.exception.RuleSetNotFoundException;
 import com.semanticbits.rules.impl.RuleEvaluationResult;
 import com.semanticbits.rules.objectgraph.FactResolver;
 import com.semanticbits.rules.utils.RuleUtil;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
+import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
+import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 
+import java.util.*;
+
+/**
+ * This class is used by EvaluationService, to evaluate adverse events.
+ * @author Sujith Vellat Thayyilthodi
+ * @ahthor Visu Patlola
+ * @author Vinay Kumar
+ * @author Srini Akkala
+ * @author Biju Joseph (Refactored)
+ */
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
     // Replace with spring injection
@@ -62,7 +57,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception {
 
         ExpeditedAdverseEventReport aer = ae.getReport();
-        String message = evaluateSponsorTarget(ae, study, null, RuleType.REPORT_SCHEDULING_RULES.getName(), aer);
+        String message = evaluateSponsorTarget(ae, study, null, aer);
 
         if (!message.equals(CAN_NOT_DETERMINED)) {
             if (message.indexOf("IGNORE") < 0) {
@@ -71,7 +66,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         }
 
         for (StudyOrganization so : study.getStudyOrganizations()) {
-            message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null, RuleType.REPORT_SCHEDULING_RULES.getName(), aer);
+            message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null, aer);
             if (!message.equals(CAN_NOT_DETERMINED)) {
                 if (message.indexOf("IGNORE") < 0) {
                     return SERIOUS_ADVERSE_EVENT;
@@ -103,7 +98,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         	}
         	
         	//evaluate sponsor rules
-            String message = evaluateSponsorTarget(ae, study, null,RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
+            String message = evaluateSponsorTarget(ae, study, null, aeReport);
             reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));
             
             //evaluate institution rules
@@ -111,7 +106,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             for (StudyOrganization so : study.getStudyOrganizations()) {
             	//If the organization is a studySite and its not the site to which the assignment belongs, ignore it.
             	if(so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId())) continue;
-            	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null, RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
+            	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,  aeReport);
             	reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));
             }
         }
@@ -131,7 +126,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         for (AdverseEvent ae : adverseEvents) {
 
             // evaluate sponsor level rules
-            strSections = evaluateSponsorTarget(ae, study, reportDefinition, RuleType.MANDATORY_SECTIONS_RULES.getName(), aeReport);
+            strSections = evaluateSponsorTarget(ae, study, reportDefinition,  aeReport);
             if (!strSections.equals(CAN_NOT_DETERMINED)) {
                 sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections, "\\|\\|");
                 sections.addAll(Arrays.asList(sectionNames));
@@ -140,7 +135,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             // evaluate organization level rules
             for (StudyOrganization so : study.getStudyOrganizations()) {
                 strSections = evaluateInstitutionTarget(ae, study, so.getOrganization(),
-                                reportDefinition, RuleType.MANDATORY_SECTIONS_RULES.getName(),
+                                reportDefinition, 
                                 aeReport);
                 if (!strSections.equals(CAN_NOT_DETERMINED)) {
                     sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections, "\\|\\|");
@@ -193,12 +188,12 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     }
 
     /**
-     * fire the rules at sponsor defined defined study level.. if not rules specified , then fire
+     * fire the rules at sponsor defined defined study level.. if no rules specified , then fire
      * sponsor level rules.
      * 
      */
     private String evaluateSponsorTarget(AdverseEvent ae, Study study,
-                    ReportDefinition reportDefinition, String ruleTypeName,
+                    ReportDefinition reportDefinition, 
                     ExpeditedAdverseEventReport aer) throws Exception {
 
         String sponsor_define_study_level_evaluation = null;
@@ -208,7 +203,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         /**
          * get and fire study level rules
          */
-        sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelRules(ae, study, reportDefinition, ruleTypeName, aer);
+        sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelRules(ae, study, reportDefinition, aer);
 
         // if study level rule exist and null message...
         if (sponsor_define_study_level_evaluation == null) {
@@ -216,7 +211,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // if study level rules not found , then get to sponsor rules..
         } else if (sponsor_define_study_level_evaluation.equals("no_rules_found")) {
-            sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, ruleTypeName, aer);
+            sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, aer);
             final_result = sponsor_level_evaluation;
             // if study level rules exist and returned a message..
         } else {
@@ -233,7 +228,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
     private String evaluateInstitutionTarget(AdverseEvent ae, Study study,
                     Organization organization, ReportDefinition reportDefinition,
-                    String ruleTypeName, ExpeditedAdverseEventReport aer) throws Exception {
+                     ExpeditedAdverseEventReport aer) throws Exception {
         String institution_define_study_level_evaluation = null;
         String institution_level_evaluation = null;
         String final_result = null;
@@ -241,7 +236,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         /**
          * get and fire study level rules
          */
-        institution_define_study_level_evaluation = institutionDefinedStudyLevelRules(ae, study, organization, reportDefinition, ruleTypeName, aer);
+        institution_define_study_level_evaluation = institutionDefinedStudyLevelRules(ae, study, organization, reportDefinition, aer);
 
         // if study level rule exist and null message...
         if (institution_define_study_level_evaluation == null) {
@@ -249,7 +244,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // if study level rules not found , then get to sponsor rules..
         } else if (institution_define_study_level_evaluation.equals("no_rules_found")) {
-            institution_level_evaluation = institutionLevelRules(ae, study, organization, reportDefinition, ruleTypeName, aer);
+            institution_level_evaluation = institutionLevelRules(ae, study, organization, reportDefinition, aer);
             final_result = institution_level_evaluation;
             // if study level rules exist and returned a message..
         } else {
@@ -305,134 +300,137 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return errors;
     }
 
-    // RULE METHODS
 
+    /**
+     * Will evaluate the rules defined at Sponsor level. 
+     * @param ae - AdverseEvent to evaluate
+     * @param study - Study on which the AdverseEvent occured
+     * @param reportDefinition - The Reoprt in context
+     * @param aer - The ExpeditedAdverseEventReport in context
+     * @return  - the evaluation result.
+     * @throws Exception
+     */
     private String sponsorLevelRules(AdverseEvent ae, Study study,
-                    ReportDefinition reportDefinition, String ruleTypeName,
+                    ReportDefinition reportDefinition, 
                     ExpeditedAdverseEventReport aer) throws Exception {
-        String message = null;
-        String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), "",
-                        CategoryConfiguration.SPONSOR_BASE, ruleTypeName);
+        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.SPONSOR_LEVEL,
+                study.getPrimaryFundingSponsorOrganization().getId().toString(), null, null, RuleType.REPORT_SCHEDULING_RULES.getName());
 
-        RuleSet ruleSetForSponsor = caaersRulesEngineService.getRuleSetForSponsor(ruleTypeName, study
-                        .getPrimaryFundingSponsorOrganization().getName());
+
+        RuleSet ruleSetForSponsor = caaersRulesEngineService.getRuleSetByPackageName(bindURI);
 
         if (ruleSetForSponsor == null) {
             return "no_rules_found";
-            // throw new Exception("There are no rules configured for adverse event scheduling for
-            // this sponsor!");
         }
 
-        AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 
         try {
-            evaluationForSponsor = this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer);
+            return  this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer).getMessage();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             throw new Exception(e.getMessage(), e);
         }
 
-        message = evaluationForSponsor.getMessage();
-
-        return message;
 
     }
 
+    /**
+     * Will evaluate the Sponsor defined Study level rules.
+     * @param ae - AdverseEvent to evaluate
+     * @param study - Study on which the AdverseEvent occured
+     * @param reportDefinition - The Reoprt in context
+     * @param aer - The ExpeditedAdverseEventReport in context
+     * @return  - the evaluation result. 
+     * @throws Exception
+     */
     private String sponsorDefinedStudyLevelRules(AdverseEvent ae, Study study,
-                    ReportDefinition reportDefinition, String ruleTypeName,
-                    ExpeditedAdverseEventReport aer) throws Exception {
-        String message = null;
-        String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), study
-                        .getShortTitle(), CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE,
-                        ruleTypeName);
+                    ReportDefinition reportDefinition,ExpeditedAdverseEventReport aer) throws Exception {
 
-        RuleSet ruleSetForSponsorDefinedStudy = caaersRulesEngineService.getRuleSetForSponsorDefinedStudy(ruleTypeName, study.getShortTitle(), study.getPrimaryFundingSponsorOrganization().getName());
+        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.SPONSOR_DEFINED_STUDY_LEVEL,
+                study.getPrimaryFundingSponsorOrganization().getId().toString(), null, study.getId().toString(), RuleType.REPORT_SCHEDULING_RULES.getName());
+
+
+        RuleSet ruleSetForSponsorDefinedStudy = caaersRulesEngineService.getRuleSetByPackageName(bindURI);
+        
         if (ruleSetForSponsorDefinedStudy == null) {
             return "no_rules_found";
-            // throw new Exception("There are no rules configured for adverse event assesment for
-            // this sponsor defined study!");
         }
 
-        AdverseEventEvaluationResult evaluationForSponsorDefinedStudy = new AdverseEventEvaluationResult();
+        //evaluate the rules. 
 
         try {
-            evaluationForSponsorDefinedStudy = this
-                            .getEvaluationObject(ae, study, study
-                                            .getPrimaryFundingSponsorOrganization(),
-                                            reportDefinition, bindURI, aer);
+            return this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(),
+                                            reportDefinition, bindURI, aer).getMessage();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             throw new Exception(e.getMessage(), e);
         }
 
-        message = evaluationForSponsorDefinedStudy.getMessage();
-
-        return message;
-
     }
 
+    /**
+     * Will evalate the institution defined study level rules. 
+     * @param ae - AdverseEvent to evaluate
+     * @param study - Study on which the AdverseEvent occured
+     * @param organization - The site on which AE occured. 
+     * @param reportDefinition - The Reoprt in context
+     * @param aer - The ExpeditedAdverseEventReport in context
+     * @return  - the evaluation result.
+     * @throws Exception
+     */
     private String institutionDefinedStudyLevelRules(AdverseEvent ae, Study study,
                     Organization organization, ReportDefinition reportDefinition,
-                    String ruleTypeName, ExpeditedAdverseEventReport aer) throws Exception {
-        String message = null;
+                     ExpeditedAdverseEventReport aer) throws Exception {
 
-        String studyShortTitle = study.getShortTitle();
-        String organizationName = organization.getName();
 
-        String bindURI = getBindURI(organizationName, studyShortTitle,
-                        CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE, ruleTypeName);
+        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.INSTITUTION_DEFINED_STUDY_LEVEL,
+                null, organization.getId().toString(), study.getId().toString(), RuleType.REPORT_SCHEDULING_RULES.getName());
 
-        RuleSet ruleSetForInstitutionDefinedStudy = caaersRulesEngineService.getRuleSetForInstitutionDefinedStudy(ruleTypeName, studyShortTitle, organizationName);
+        RuleSet ruleSetForInstitutionDefinedStudy = caaersRulesEngineService.getRuleSetByPackageName(bindURI);
         if (ruleSetForInstitutionDefinedStudy == null) {
             return "no_rules_found";
-            // throw new Exception("There are no rules configured for adverse event assesment for
-            // this sponsor defined study!");
         }
 
-        AdverseEventEvaluationResult evaluationForInstitutionDefinedStudy = new AdverseEventEvaluationResult();
 
         try {
-            evaluationForInstitutionDefinedStudy = this.getEvaluationObject(ae, study,
-                            organization, reportDefinition, bindURI, aer);
+            return this.getEvaluationObject(ae, study,
+                            organization, reportDefinition, bindURI, aer).getMessage();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             throw new Exception(e.getMessage(), e);
         }
 
-        message = evaluationForInstitutionDefinedStudy.getMessage();
-
-        return message;
 
     }
 
+    /**
+     * Will evaluate the institution level rules. 
+     * @param ae - AdverseEvent to evaluate
+     * @param study - Study on which the AdverseEvent occured
+     * @param organization - The site on which AE occured.
+     * @param reportDefinition - The Reoprt in context
+     * @param aer - The ExpeditedAdverseEventReport in context
+     * @return  - the evaluation result.
+     * @throws Exception
+     */
     private String institutionLevelRules(AdverseEvent ae, Study study, Organization organization,
-                    ReportDefinition reportDefinition, String ruleTypeName,
+                    ReportDefinition reportDefinition,
                     ExpeditedAdverseEventReport aer) throws Exception {
-        String message = null;
 
-        String organizationName = organization.getName();
-        String bindURI = getBindURI(organizationName, "", CategoryConfiguration.INSTITUTION_BASE, ruleTypeName);
-        RuleSet ruleSetForInstiution = caaersRulesEngineService.getRuleSetForInstitution(ruleTypeName, organizationName);
+        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.INSTITUTIONAL_LEVEL,
+                        null, organization.getId().toString(),null, RuleType.REPORT_SCHEDULING_RULES.getName());
+
+        RuleSet ruleSetForInstiution = caaersRulesEngineService.getRuleSetByPackageName(bindURI);
 
         if (ruleSetForInstiution == null) {
             return "no_rules_found";
-            // throw new Exception("There are no rules configured for adverse event scheduling for
-            // this sponsor!");
         }
 
-        AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
 
         try {
-            evaluationForInstitution = this.getEvaluationObject(ae, study, organization,
-                            reportDefinition, bindURI, aer);
+            return this.getEvaluationObject(ae, study, organization,
+                            reportDefinition, bindURI, aer).getMessage();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             throw new Exception(e.getMessage(), e);
         }
 
-        message = evaluationForInstitution.getMessage();
-
-        return message;
     }
 
     private String getBindURI(String sponsorOrInstitutionName, String studyName,

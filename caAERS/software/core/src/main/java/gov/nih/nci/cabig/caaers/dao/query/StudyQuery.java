@@ -32,7 +32,6 @@ public class StudyQuery extends AbstractQuery {
 
     public StudyQuery() {
         super("select s from Study s");
-        // andWhere("s.loadStatus > 0");
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     }
 
@@ -184,11 +183,15 @@ public class StudyQuery extends AbstractQuery {
         andWhere("lower(pIdentifier.value) LIKE :pIdVal");
         setParameter("pIdVal", "%" + participantIdentifierValue.toLowerCase() + "%");
     }
-    
-    public void filterByFundingSponsorNameExactMatch(String sponsorName){
+
+    /**
+     * filter ther result by sponsor organizationId
+     * @param id
+     */
+    public void filterBySponsorOrganizationId(Integer id){
     	andWhere("ss.class = 'SFS'");
-    	andWhere("ss.organization.name = :sponsorName");
-    	setParameter("sponsorName", sponsorName);
+    	andWhere("ss.organization.id = :sponsorId");
+    	setParameter("sponsorId", id);
     }
     
     public void filterByStudyOrganizationNameExactMatch(String studyOrgName){

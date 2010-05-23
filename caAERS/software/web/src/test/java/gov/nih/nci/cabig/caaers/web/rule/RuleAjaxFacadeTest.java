@@ -37,43 +37,29 @@ import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
 /**
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	private RuleAjaxFacade facade;
-	private RuleAuthoringService ruleAuthoringService;
-	private StudyDao studyDao;
-	private NotificationDao notificationDao;
 	private CaaersRulesEngineService caaersRulesEngineService;
 	private ReportDefinitionDao reportDefinitionDao;
 	private OrganizationDao organizationDao;
-	private CtcDao ctcDao;
-	private RuleDeploymentService ruleDeploymentService;
-	private RepositoryService repositoryService;
-	private RulesEngineService rulesEngineService;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		ruleAuthoringService = registerMockFor(RuleAuthoringServiceImpl.class);
-		studyDao = registerDaoMockFor(StudyDao.class);
-		notificationDao = registerDaoMockFor(NotificationDao.class);
 		caaersRulesEngineService = registerMockFor(CaaersRulesEngineService.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		organizationDao = registerDaoMockFor(OrganizationDao.class);
-		ctcDao = registerDaoMockFor(CtcDao.class);
-		ruleDeploymentService = registerMockFor(RuleDeploymentServiceImpl.class);
-		repositoryService = registerMockFor(RepositoryServiceImpl.class);
-		rulesEngineService = registerMockFor(RulesEngineServiceImpl.class);
 	
 		facade = new RuleAjaxFacade();
-		facade.setRulesEngineService(rulesEngineService);
 		facade.setOrganizationDao(organizationDao);
+        facade.setCaaersRulesEngineService(caaersRulesEngineService);
 	}
 	
 	private CreateRuleCommand setupCreateRuleCommand(){
-		CreateRuleCommand command = new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao,  caaersRulesEngineService,
-                 reportDefinitionDao,  organizationDao, ctcDao,  ruleDeploymentService,  repositoryService);
+		CreateRuleCommand command = new CreateRuleCommand(caaersRulesEngineService, reportDefinitionDao,  organizationDao);
 		command.setRuleSet(new RuleSet());
 		List<Rule> rulesList = new ArrayList<Rule>();
 		rulesList.add(new Rule());
@@ -112,7 +98,7 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	public void testRemoveRule() throws Exception{
 		CreateRuleCommand command = setupCreateRuleCommand();
-		facade.getRulesEngineService().deleteRule("test RuleSet", "Rule 2");
+		facade.getCaaersRulesEngineService().deleteRule("test RuleSet", "Rule 2");
 		replayMocks();
 		facade.removeRule(1);
 		verifyMocks();
@@ -129,7 +115,7 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 		expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
 		
 		replayMocks();
-		facade.addRule("Rule 3", "test Org");
+		facade.addRule();
 		verifyMocks();
 		
 		assertEquals("Error in adding a new rule", 3, command.getRuleSet().getRule().size());

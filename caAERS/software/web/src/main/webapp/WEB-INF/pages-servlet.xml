@@ -205,7 +205,7 @@
 	</bean>
 	
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Rules" p:mainController="listRuleController">
+	      p:displayName="Rules" p:mainController="createRuleController">
 	  <property name="pathMapping"><value>/rule/**</value></property>
 	  <property name="tasks">
 	    <list>
@@ -476,7 +476,7 @@
   
   <bean name="/search/routineReport" id="routineReportController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>                         
-  
+  <!--
   <bean name="/help" id="helpController" autowire="byType"
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
     <property name="viewName"><value>standardNotImplemented</value></property>
@@ -508,17 +508,12 @@
   </bean>
 
   <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
+  -->
 
   <bean name="/rule/export" id="exportRuleController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController">
   </bean>	
 
-  <bean name="/rule/import" id="importRuleController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleController">
-	
-	<property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
-  </bean>	
-  
   <bean name="/rule/create" id="createRuleController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController">
   </bean>
@@ -528,7 +523,7 @@
   </bean>
   <bean name="/rule/util" id="ruleUtilController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController">        
-  </bean> 
+  </bean>
   <bean name="/rule/addRule" id="addRuleController" autowire="byType"
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
     <property name="viewName"><value>rule/author/addRule</value></property>

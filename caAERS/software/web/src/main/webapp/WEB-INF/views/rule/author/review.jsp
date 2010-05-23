@@ -56,27 +56,27 @@
             <div class="row " >
                     <div class="label">Organization Name</div>
                     <div class="value" >
-                    ${command.sponsorName}
-                    ${command.institutionName}
+                    ${command.sponsor.fullName}
+                    ${command.institution.fullName}
                 </div>
             </div>
             <div class="row " >
                     <div class="label">Organization Role</div>
                     <div class="value" >
-                        <c:if test="${not empty command.sponsorName}">
+                        <c:if test="${not empty command.sponsor.fullName}">
                             Sponsor
                         </c:if>
-                        <c:if test="${not empty command.institutionName}">
+                        <c:if test="${not empty command.institution.fullName}">
                             Institution
                         </c:if>
                 </div>
             </div>
 
-            <c:if test="${not empty command.categoryIdentifier}">
+            <c:if test="${not empty command.study}">
                 <div class="row " >
                         <div class="label">Study</div>
                         <div class="value" >
-                                    ${command.categoryIdentifier}
+                                    (${command.study.primaryIdentifierValue}) ${command.study.shortTitle}
                     </div>
                 </div>
             </c:if>

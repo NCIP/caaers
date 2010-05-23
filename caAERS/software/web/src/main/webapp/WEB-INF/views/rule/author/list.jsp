@@ -53,15 +53,7 @@
 			} catch(e) {alert(e)}
 			
 		}
-		function deleteRule(name , divId) {
-			try {
-				authorRule.deleteRuleSet(name, function(values) {
-							alert("Successfully Deleted");
-							document.getElementById(divId).innerHTML = "<font color='green'>Enabled</font>";
-					});
-			} catch(e) {alert(e)}
-			
-		}
+		
 		
 		function unDeployRule(name , divId) {
 			try {
@@ -72,21 +64,9 @@
 			} catch(e) {alert(e)}
 		}
 		
-		function exportRule(name) {
-			try {
-				authorRule.exportRuleSet(name, function(values) {
-							alert("Successfully Exported");
-					});
-			} catch(e) {alert(e)}
-		}
-				
-		function fireRulesNow(mode) {
-			try {
-				authorRule.fireRules("gov.nih.nci.cabig.caaers.rule.study", mode, function(values) {
-							alert("rule fired ");
-					});
-			} catch(e) {alert(e)}
-		}
+		
+
+	
 
 YAHOO.example.Data = {
 
@@ -142,15 +122,6 @@ YAHOO.util.Event.addListener(window, "load", function() {
                             elCell.innerHTML = 'abc';
 
 
-/*
-        <a id="deploy" href="javascript:deployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Enable</a>&nbsp;&nbsp;
-        <a id="deploy" href="javascript:unDeployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Disable</a>&nbsp;&nbsp;
-
-
-        <!-- <a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>-->
-        <a href="<c:url value="/pages/rule/export?ruleSetName=${ruleSet.name}"/>">Export/Download</a>&nbsp;&nbsp;
-        <a href="<c:url value="/pages/rule/util?ruleSetName=${ruleSet.name}"/>"><font color="red">Delete</font></a>&nbsp;&nbsp;
-*/
 
                     };
 

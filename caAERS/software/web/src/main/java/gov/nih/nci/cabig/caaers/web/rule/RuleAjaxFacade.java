@@ -1,170 +1,116 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
+import com.semanticbits.rules.brxml.*;
+import com.semanticbits.rules.ui.DomainObject;
+import com.semanticbits.rules.ui.Field;
+import com.semanticbits.rules.ui.RuleUi;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
-import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
-import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
-
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.apache.axis.utils.StringUtils;
+import org.directwebremoting.WebContextFactory;
+import org.springframework.web.servlet.mvc.AbstractFormController;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.axis.utils.StringUtils;
-import org.directwebremoting.WebContextFactory;
-import org.drools.repository.PackageItem;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.web.servlet.mvc.AbstractFormController;
-
-import com.semanticbits.rules.api.BusinessRulesExecutionService;
-import com.semanticbits.rules.api.RepositoryService;
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.api.RuleDeploymentService;
-import com.semanticbits.rules.api.RulesEngineService;
-import com.semanticbits.rules.brxml.Action;
-import com.semanticbits.rules.brxml.Column;
-import com.semanticbits.rules.brxml.Condition;
-import com.semanticbits.rules.brxml.FieldConstraint;
-import com.semanticbits.rules.brxml.LiteralRestriction;
-import com.semanticbits.rules.brxml.MetaData;
-import com.semanticbits.rules.brxml.Rule;
-import com.semanticbits.rules.brxml.RuleSet;
-import com.semanticbits.rules.ui.DomainObject;
-import com.semanticbits.rules.ui.Field;
-import com.semanticbits.rules.ui.RuleUi;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.*;
 
 /**
  * All the DWR methods specific to rules will be here
  * 
  * @author Sujith Vellat Thayyilthodi
+ * @author Biju Joseph
  */
 public class RuleAjaxFacade {
     private StudyDao studyDao;
 
-    private CtcTermDao ctcTermDao;
-
-    private RuleAuthoringService ruleAuthoringService;
-
-    private BusinessRulesExecutionService businessRulesExecutionService;
-
-    private RulesEngineService rulesEngineService;
-
-    private RuleDeploymentService ruleDeploymentService;
-    
-    private RepositoryService repositoryService;
-
-    private ConfigProperty configurationProperty;
-
-    // private SiteDao siteDao;
-
     private OrganizationDao organizationDao;
-
-    private ReportDefinitionDao reportDefinitionDao;
 
     private TreatmentAssignmentDao treatmentAssignmentDao;
     
     private CaaersRulesEngineService caaersRulesEngineService;
 
-    public ConfigProperty getConfigurationProperty() {
-        return configurationProperty;
-    }
-
-    public void setConfigurationProperty(ConfigProperty configProperty) {
-        this.configurationProperty = configProperty;
-    }
-
-    /*
-     * This method retrieves studies based on the Sponsor Name and Partial Study name
+    /**
+     * Will filter the studies based on Sponsor and partial study short title match.
+     * @param text Study Short titile
+     * @param sponsorId  Organization id of the sponsor organization.
+     * @return
      */
-    public List<Study> matchStudies(String text, String sponsorName) {
-    	if(StringUtils.isEmpty(sponsorName)) return null;
+    public List<Study> matchStudies(String text, String sponsorId) {
+    	if(StringUtils.isEmpty(sponsorId)) return null;
     	
     	StudyQuery studyQuery = new StudyQuery();
     	studyQuery.filterStudiesWithMatchingText(text);
     	studyQuery.joinStudyOrganization();
     	studyQuery.filterByDataEntryStatus(true);
     	studyQuery.filterByNonAdministrativelyComplete();
-    	studyQuery.filterByFundingSponsorNameExactMatch(sponsorName);
-    	
-    	List<Study> studies = studyDao.find(studyQuery);
-    	Map<Study, Boolean> studyMap = new HashMap<Study, Boolean>();
-    	for(Study study: studies){
-    		if(!studyMap.containsKey(study))
-    			studyMap.put(study, true);
-    	}
-    	studies.clear();
-    	studies.addAll(studyMap.keySet());
-    	return ObjectTools.reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
+    	studyQuery.filterBySponsorOrganizationId(Integer.parseInt(sponsorId));
+    	return searchStudies(studyQuery);
     }
 
-    /*
-     * This method retrieves studies based on the Site Name and Partial Study name
-     */
+  
 
-    public List<Study> matchStudiesByInstitution(String text, String institutionName) {
-    	if(StringUtils.isEmpty(institutionName)) return null;
-    	
+    /**
+     * Will find the studies based on study sites.
+     * @param text  - Study name (partial)
+     * @param institutionId  StudySites&apos;s organization ID.
+     * @return
+     */
+    public List<Study> matchStudiesByInstitution(String text, String institutionId) {
+    	if(StringUtils.isEmpty(institutionId)) return null;
+
+        //BJ : Basically we should join study sites, but not an issue in this case as user is going to pick study. 
     	StudyQuery studyQuery = new StudyQuery();
     	studyQuery.filterStudiesWithMatchingText(text);
     	studyQuery.joinStudyOrganization();
     	studyQuery.filterByDataEntryStatus(true);
     	studyQuery.filterByNonAdministrativelyComplete();
-    	studyQuery.filterByStudyOrganizationNameExactMatch(institutionName);
-    	List<Study> studies = studyDao.find(studyQuery);
-    	Map<Study, Boolean> studyMap = new HashMap<Study, Boolean>();
-    	for(Study study: studies){
-    		if(!studyMap.containsKey(study))
-    			studyMap.put(study, true);
-    	}
-    	studies.clear();
-    	studies.addAll(studyMap.keySet());
-    	return ObjectTools.reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
+    	studyQuery.filterByOrganizationId(Integer.parseInt(institutionId));
+        return searchStudies(studyQuery);
     	
     }
 
-    public List<CtcTerm> fetchTerms() throws Exception {
-        List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames("%"), null, null);
-        // cut down objects for serialization
-        for (CtcTerm term : terms) {
-            term.getCategory().setTerms(null);
-            term.getCategory().getCtc().setCategories(null);
-        }
-        return terms;
+    /**
+     * Wil search the studies, then returns a list of reduced studies.
+     * @param studyQuery  - The query
+     * @return  A list of reduced study objects having (id, short title and primaryIdentifier).
+     */
+    public List<Study> searchStudies(StudyQuery studyQuery){
+       List<Study> studies = studyDao.find(studyQuery);
+    	Map<Integer, Study> studyMap = new HashMap<Integer, Study>();
+    	for(Study study: studies){
+    		studyMap.put(study.getId(), study);
+    	}
+    	return ObjectTools.reduceAll(new ArrayList<Study>(studyMap.values()), "id", "shortTitle", "primaryIdentifierValue");
     }
+
+    
+//    BJ:Find no usage of this (so to be removed)
+//    public List<CtcTerm> fetchTerms() throws Exception {
+//        List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames("%"), null, null);
+//        // cut down objects for serialization
+//        for (CtcTerm term : terms) {
+//            term.getCategory().setTerms(null);
+//            term.getCategory().getCtc().setCategories(null);
+//        }
+//        return terms;
+//    }
 
     /**
      * This will access the spring managed object from the session (RuleSet) and will update the
@@ -173,12 +119,11 @@ public class RuleAjaxFacade {
      * Then will forward to a jsp to get the html for that condition and will return that.
      * 
      */
-    public String addRule(String name, String organizationName) {
+    public String addRule() {
         CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
         RuleSet ruleSet = (RuleSet) createRuleCommand.getRuleSet();
         Rule newRule = new Rule();
         MetaData metaData = new MetaData();
-        metaData.setName(name);
         newRule.setMetaData(metaData);
 
         Condition condition = newCondition();
@@ -219,7 +164,7 @@ public class RuleAjaxFacade {
             if (filterCrieteria.equals("")) {
                 assignments = treatmentAssignmentDao.getAll();
             } else {
-                Study study = studyDao.getByShortTitle(filterCrieteria);
+                Study study = studyDao.getById(Integer.parseInt(filterCrieteria));
                 assignments = study.getTreatmentAssignments();
             }
             // cut down objects for serialization
@@ -228,13 +173,7 @@ public class RuleAjaxFacade {
                 ajaxObjects.add(new RuleAjaxObject(treatmentAssignment.getCode(),treatmentAssignment.getCode()));
             }
         }
-        /*
-         * if (fieldName.equals("outcomeIdentifier")) { OutcomeType[] outcomeTypes =
-         * OutcomeType.values(); for (int i=0 ; i<outcomeTypes.length; i++) { OutcomeType
-         * outcomeType = outcomeTypes[i]; ajaxObjects.add(new
-         * RuleAjaxObject(outcomeType.getCode()+"",outcomeType.getDisplayName())); }
-         *  }
-         */
+        
         return ajaxObjects;
     }
 
@@ -300,8 +239,7 @@ public class RuleAjaxFacade {
 
         Rule r = ruleSet.getRule().get(ruleCount);
         String rName = r.getMetaData().getName();
-
-        rulesEngineService.deleteRule(ruleSet.getName(), rName);
+        caaersRulesEngineService.deleteRule(ruleSet.getName(), rName);
         
         ruleSet.getRule().remove(ruleCount);
 
@@ -336,156 +274,24 @@ public class RuleAjaxFacade {
         return Arrays.asList(Grade.values());
     }
 
+    /**
+     * Will undeploy the rule-set identified by the bind URI
+     * @param ruleSetName
+     * @throws RemoteException
+     */
     public void unDeployRuleSet(String ruleSetName) throws RemoteException {
         caaersRulesEngineService.unDeployRuleSet(ruleSetName);
     }
 
+    /**
+     * Will deploy the rule-set identified by the bind URI
+     * @param ruleSetName - The bind URI
+     * @throws RemoteException
+     */
     public void deployRuleSet(String ruleSetName) throws RemoteException {
     	caaersRulesEngineService.deployRuleSet(ruleSetName);
     }
-    
-    public void exportRuleSet(String ruleSetName) throws RemoteException {
-        /*
-         * String tempDir = System.getProperty("java.io.tmpdir"); try { //File ruleSetFile1 =
-         * File.createTempFile(ruleSetName,"export.xml"); try {
-         * getRulesEngineService().exportRule(ruleSetName, tempDir); File file = new
-         * File(tempDir+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml");
-         * FileInputStream fileIn = new FileInputStream(file); OutputStream out =
-         * response.getOutputStream(); out.setContentType("application/octet");
-         * out.setContentLength((int) file.length());
-         * 
-         * byte[] buffer = new byte[2048]; int bytesRead = fileIn.read(buffer); while (bytesRead >=
-         * 0) { if (bytesRead > 0) out.write(buffer, 0, bytesRead); bytesRead = in.read(buffer); }
-         * out.flush(); out.close(); in.close();
-         * 
-         * //Reader input = new BufferedReader( new
-         * FileReader(tempDir+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml"));
-         *  } catch (Exception e) { // TODO Auto-generated catch block e.printStackTrace(); throw
-         * new RemoteException ("Error exporting ruleset ",e); }
-         * 
-         * 
-         * 
-         * //input = new BufferedReader( new FileReader(xmlFile) ); } catch (IOException e) { //
-         * TODO Auto-generated catch block e.printStackTrace(); }
-         *  /* DataSourceSelfDiscoveringPropertiesFactoryBean b = new
-         * DataSourceSelfDiscoveringPropertiesFactoryBean(); Properties props = b.getProperties();
-         * //props.list(System.out);
-         * 
-         * String repoLocation = props.getProperty("rules.repository");
-         * 
-         * String osName = System.getProperty("os.name");
-         * 
-         * if (!osName.toLowerCase().contains("windows")) { repoLocation =
-         * repoLocation.substring(5,repoLocation.length()); } else { repoLocation =
-         * repoLocation.substring(7,repoLocation.length()); }
-         * 
-         * 
-         * String exportLocation = repoLocation + File.separator + "export";
-         * 
-         * File f = new File(exportLocation); try { f.mkdir();
-         * 
-         * getRulesEngineService().exportRule(ruleSetName, exportLocation); } catch (Exception e) { //
-         * TODO Auto-generated catch block e.printStackTrace(); throw new RemoteException ("Error
-         * exporting ruleset ",e); }
-         */
-
-    }
-
-    public void fireRules(String bindUri, String mode) throws RemoteException {
-    	List<Object> list = new ArrayList<Object>();
-        StudySDO study = new StudySDO();
-        study.setShortTitle("AML/MDS 9911");
-        list.add(study);
-        
-        if ("1".equals(mode)) {
-            list.add(getSuccessful());
-        } else if ("2".equals(mode)) {
-            list.add(getNonSuccessful());
-        } else if ("3".equals(mode)) {
-            list.add(getSuccessfulAgain());
-        }
-        
-        
-        
-        businessRulesExecutionService.fireRules(bindUri, list);
-    }
-
-    public void fireAERules() throws RemoteException {
-        String bindUri = "CAAERS_AE_RULES";
-        ExpeditedAdverseEventReport adverseEventReport = null;
-        StudySDO studySDO = null;
-        ArrayList<Object> list = new ArrayList<Object>();
-
-        // XXX: there's no way this code could work -- adverseEventReport is never initialized.
-        AdverseEvent adverseEvent = adverseEventReport.getAdverseEvents().get(0);
-        // TODO: This code is *exactly* the same as in CreateAdverseEventCommand.
-        // Don't do that -- put it in a shared utility library
-        if (adverseEvent != null) { // Little over defensive
-            studySDO = new StudySDO();
-            Study study = adverseEventReport.getAssignment().getStudySite().getStudy();
-            studySDO.setShortTitle(study.getShortTitle());
-            list.add(studySDO);
-            AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-
-            // ATTRIBUTION
-            // adverseEventSDO.setAttribution(adverseEventReport.get); // Where to get this from --
-            // ask Rhett
-
-            // PHASE -- // Where to get this from -- ask Rhett
-            String phase = adverseEventReport.getAssignment().getStudySite().getStudy()
-                            .getPhaseCode();
-            adverseEventSDO.setPhase(phase);
-
-            // EXPECTED
-            boolean expected = adverseEvent.getExpected();
-            adverseEventSDO.setExpected((String.valueOf(expected)));
-
-            // GRADE
-            int grade = adverseEvent.getGrade().getCode();
-            // adverseEventSDO.setGrade(String.valueOf(grade));
-            adverseEventSDO.setGrade(new Integer(grade));
-
-            // CATEGORY
-            CtcCategory category = adverseEvent.getAdverseEventCtcTerm().getCtcTerm().getCategory();
-            adverseEventSDO.setCategory(category.getName());
-
-            // CTC TERM
-            CtcTerm ctcTerm = adverseEvent.getAdverseEventCtcTerm().getCtcTerm();
-            adverseEventSDO.setTerm(ctcTerm.getFullName());
-
-            // YES
-            int hospitalization = adverseEvent.getHospitalization().getCode();
-            Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE
-                            : Boolean.TRUE;
-
-            adverseEventSDO.setHospitalization(isHospitalization.toString());
-        }
-        businessRulesExecutionService.fireRules(bindUri, list);
-    }
-
-    private AdverseEventSDO getSuccessful() {
-        AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-        // adverseEventSDO.setGrade("3");
-        adverseEventSDO.setGrade(new Integer(3));
-        adverseEventSDO.setHospitalization("No");
-        adverseEventSDO.setAttribution("3");
-        return adverseEventSDO;
-    }
-
-    private AdverseEventSDO getSuccessfulAgain() {
-        AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-        // adverseEventSDO.setGrade("1");
-        adverseEventSDO.setGrade(new Integer(1));
-        return adverseEventSDO;
-    }
-
-    private AdverseEventSDO getNonSuccessful() {
-        AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-        // adverseEventSDO.setGrade("0");
-        adverseEventSDO.setGrade(new Integer(0));
-        return adverseEventSDO;
-    }
-
+   
     
 
     private String[] extractSubnames(String text) {
@@ -500,54 +306,6 @@ public class RuleAjaxFacade {
         this.studyDao = studyDao;
     }
 
-    public CtcTermDao getCtcTermDao() {
-        return ctcTermDao;
-    }
-
-    public void setCtcTermDao(CtcTermDao ctcTermDao) {
-        this.ctcTermDao = ctcTermDao;
-    }
-
-    public List<Action> getActions() {
-        List<Action> actions = new ArrayList<Action>();
-        Action action = new Action();
-        action.setActionId("1");
-        action.setName("24-Hour Notification to TRI");
-        actions.add(action);
-
-        action.setActionId("2");
-        action.setName("24 Hour Report Submitted");
-        actions.add(action);
-
-        action.setActionId("3");
-        action.setName("Pending 24-Hour 3 day Notification");
-        actions.add(action);
-
-        action.setActionId("4");
-        action.setName("24 Hour Report Submitted");
-        actions.add(action);
-
-        return actions;
-    }
-
-    public RuleAuthoringService getRuleAuthoringService() {
-        return ruleAuthoringService;
-    }
-
-    public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
-        this.ruleAuthoringService = ruleAuthoringService;
-    }
-
-    public RuleDeploymentService getRuleDeploymentService() {
-        return ruleDeploymentService;
-    }
-
-    public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
-        this.ruleDeploymentService = ruleDeploymentService;
-    }
-
- 
-
     /*
      * !REVISIT This method is added to render valid values for the attributes selected on the
      * AdverseEvent object.
@@ -561,38 +319,6 @@ public class RuleAjaxFacade {
         return getOutputFromJsp("/pages/rule/createOptions");
     }
 
-    /*
-     * This method is used to retrieve the Sponsor Names based on the partial sponserName passed to
-     * it.
-     * 
-     */
-    public List<String> matchSponsors(String sponsorName) {
-        // REVISIT: Replace this with the SponsorDao.
- 		//String text = subnames[0];
-    	OrganizationQuery query = new OrganizationQuery();
-    	query.filterByOrganizationNameOrNciCode(sponsorName);
-        List<Organization> orgs = organizationDao.getBySubnames(query);
-        List<String> sponsors = new ArrayList<String>();
-        for (Organization org : orgs) {
-            sponsors.add(org.getName());
-        }
-
-        /*
-         * List sponsorCodeRefData = (List)
-         * getConfigurationProperty().getMap().get("sponsorCodeRefData");
-         * 
-         * List<String> sponsors = new ArrayList<String>();
-         * 
-         * Iterator sponsorsItr = sponsorCodeRefData.iterator();
-         * 
-         * while (sponsorsItr.hasNext()) { Lov sponsor = (Lov) sponsorsItr.next();
-         * 
-         * if (sponsorName != null &&
-         * sponsor.getDesc().toLowerCase().indexOf(sponsorName.toLowerCase(), 0) != -1) {
-         * sponsors.add(sponsor.getDesc()); } }
-         */
-        return sponsors;
-    }
     
     /**
      * This method will be called to fetch the sponsors.
@@ -600,6 +326,7 @@ public class RuleAjaxFacade {
      * displayed.
      * @param text
      * @return List<Organization>
+     * Note:- Used by selectRuleType.jsp
      */
     public List<Organization> matchOrganization(final String text) {
     	OrganizationQuery query = new OrganizationQuery();
@@ -623,27 +350,29 @@ public class RuleAjaxFacade {
         return ObjectTools.reduceAll(sites, "id", "name", "nciInstituteCode");
     }
 
-    /*
-     * This method returns a list of Field names based on the Domain object. This is only used for
-     * rules UI
-     */
-    public List<Field> getFieldNames(int domainObjectIndex) {
-        ServletContext servletContext = WebContextFactory.get().getServletContext();
-
-        RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi");
-
-        if (ruleUi != null && ruleUi.getCondition() != null && ruleUi.getCondition().size() > 0
-                        && ruleUi.getCondition().get(0).getDomainObject() != null
-                        && ruleUi.getCondition().get(0).getDomainObject().size() > 0) {
-            if (ruleUi.getCondition().get(0).getDomainObject().size() > domainObjectIndex) {
-                List<Field> fields = ruleUi.getCondition().get(0).getDomainObject().get(
-                                domainObjectIndex).getField();
-                return fields;
-            }
-        }
-
-        return null;
-    }
+    
+//  BJ: could not find any references to this method, so commenting it. (later to be removed)
+//    /*
+//     * This method returns a list of Field names based on the Domain object. This is only used for
+//     * rules UI
+//     */
+//    public List<Field> getFieldNames(int domainObjectIndex) {
+//        ServletContext servletContext = WebContextFactory.get().getServletContext();
+//
+//        RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi");
+//
+//        if (ruleUi != null && ruleUi.getCondition() != null && ruleUi.getCondition().size() > 0
+//                        && ruleUi.getCondition().get(0).getDomainObject() != null
+//                        && ruleUi.getCondition().get(0).getDomainObject().size() > 0) {
+//            if (ruleUi.getCondition().get(0).getDomainObject().size() > domainObjectIndex) {
+//                List<Field> fields = ruleUi.getCondition().get(0).getDomainObject().get(
+//                                domainObjectIndex).getField();
+//                return fields;
+//            }
+//        }
+//
+//        return null;
+//    }
 
     /*
      * This method returns a Rule UI domain object based on the index
@@ -682,13 +411,6 @@ public class RuleAjaxFacade {
         return null;
     }
 
-    public ReportDefinitionDao getReportDefinitionDao() {
-        return reportDefinitionDao;
-    }
-
-    public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
-        this.reportDefinitionDao = reportDefinitionDao;
-    }
 
     public OrganizationDao getOrganizationDao() {
         return organizationDao;
@@ -698,34 +420,9 @@ public class RuleAjaxFacade {
         this.organizationDao = organizationDao;
     }
 
-    public RulesEngineService getRulesEngineService() {
-        return rulesEngineService;
-    }
-
-    public void setRulesEngineService(RulesEngineService rulesEngineService) {
-        this.rulesEngineService = rulesEngineService;
-    }
-
     public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
         this.treatmentAssignmentDao = treatmentAssignmentDao;
     }
-
-	public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
-
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
-
-	public BusinessRulesExecutionService getBusinessRulesExecutionService() {
-		return businessRulesExecutionService;
-	}
-
-	public void setBusinessRulesExecutionService(
-			BusinessRulesExecutionService businessRulesExecutionService) {
-		this.businessRulesExecutionService = businessRulesExecutionService;
-	}
 	
 	public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService){
     	this.caaersRulesEngineService = caaersRulesEngineService;

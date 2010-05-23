@@ -80,255 +80,36 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	 * Tests method createRuleForSponsor(...) in RulesEngineServiceImpl
 	 * New RuleSet and New Rule
 	 */
-	public void testCreateRuleForSponsor(){
-		
-        if(ruleSet != null){
-        	try{
-        		String ruleSetName = "SemanticBitsRules";
-        		String sponsorName = "National C I";
-                String subject = "SemanticBits Rules";
-                String state = "Draft";
-                Rule ruleToCreate;
-                ruleToCreate = ruleSet.getRule().get(0);
-            	String uuid = caaersRulesEngineService.createRuleForSponsor(ruleToCreate, ruleSetName, sponsorName, subject, state);
-            	assertNotNull(uuid);
-            	assertNotEquals("", uuid);
-            	
-            	RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.sponsor.national_c_i.semanticbitsrules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.national_c_i.semanticbitsrules", createdRuleset.getName());
-            	assertNotNull(createdRule);
-            	
-        	}catch(Exception e){
-        		fail("No exceptions are expected " +e.getMessage());
-        	}
-        }
+	public void testSaveRuleSetForSponsor(){
+		fail("Not implemented.");
 	}
-	
-	/**
-	 * Tests method createRuleForSponsor(...) in RulesEngineServiceImpl
-	 * Add New Rule to an existing RuleSet
-	 */
-	public void testCreateRuleForSponsorExistingRuleSet(){
-		
-        if(ruleSet != null){
-        	try{
-        		String ruleSetName = "SemanticBitsRules";
-        		String sponsorName = "National C I";
-                String subject = "SemanticBits Rules";
-                String state = "Draft";
-                Rule ruleToCreate;
-                ruleToCreate = ruleSet.getRule().get(0);
-            	String uuid = caaersRulesEngineService.createRuleForSponsor(ruleToCreate, ruleSetName, sponsorName, subject, state);
-            	assertNotNull(uuid);
-            	assertNotEquals("", uuid);
-            	
-            	RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.sponsor.national_c_i.semanticbitsrules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.national_c_i.semanticbitsrules", createdRuleset.getName());
-            	assertNotNull(createdRule);
-            	
-            	Rule ruleToAdd = ruleSet.getRule().get(1);
-            	uuid = caaersRulesEngineService.createRuleForSponsor(ruleToAdd, ruleSetName, sponsorName, subject, state);
-            	
-            	RuleSet existingRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.sponsor.national_c_i.semanticbitsrules", false);
-            	Rule addedRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(existingRuleset);
-            	assertNotNull(addedRule);
-            	assertEquals(2, existingRuleset.getRule().size());
-            	
-        	}catch(Exception e){
-        		fail("No exceptions are expected " +e.getMessage());
-        	}
-        }
-	}
-	
-	/**
-	 * Tests method createRuleForSponsorDefinedStudy(...) in RulesEngineServiceImpl
+
+    /**
+	 * Tests method create rule for institution(...) in RulesEngineServiceImpl
 	 * New RuleSet and New Rule
 	 */
-	public void testCreateRuleForSponsorDefinedStudy(){
-		
-		if(ruleSet != null){
-			try{
-				Rule rule = ruleSet.getRule().get(1);
-				String ruleSetName = "AstanaRules";
-		        String studyShortTitle = "Study For LL";
-		        String sponsorName = "Astana";
-		        String subject = "RuleForSponsorDefinedStudy";
-		        String state = "Draft";
-		        
-		        String uuid = caaersRulesEngineService.createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName, subject, state);
-		        
-		        assertNotNull("uuid returned cannot be null", uuid);
-		        assertNotEquals("", uuid);
-		        
-		        RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.sponsor.study.study_for_ll.astana.astanarules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.study.study_for_ll.astana.astanarules", createdRuleset.getName());
-            	assertEquals(1, createdRuleset.getRule().size());
-            	assertNotNull(createdRule);
-		        
-			}catch(Exception e){
-				fail("No exceptions are expected");
-			}
-		}
+	public void testSaveRuleSetForInstitution(){
+		fail("Not implemented.");
 	}
-	/**
-	 * Tests method createRuleForSponsorDefinedStudy(...) in RulesEngineServiceImpl
-	 * Add New Rule to existing RuleSet
-	 */
-	public void testCreateRuleForSponsorDefinedStudyExistingRuleSet(){
-		
-		if(ruleSet != null){
-			try{
-				Rule rule = ruleSet.getRule().get(0);
-				String ruleSetName = "AstanaRules";
-		        String studyShortTitle = "Study For LL";
-		        String sponsorName = "Astana";
-		        String subject = "RuleForSponsorDefinedStudy";
-		        String state = "Draft";
-		        
-		        String uuid = caaersRulesEngineService.createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName, subject, state);
-		        
-		        assertNotNull("uuid returned cannot be null", uuid);
-		        assertNotEquals("", uuid);
-		        
-		        RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.sponsor.study.study_for_ll.astana.astanarules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.study.study_for_ll.astana.astanarules", createdRuleset.getName());
-            	assertEquals(1, createdRuleset.getRule().size());
-            	assertNotNull(createdRule);
-            	
-            	Rule ruleToAdd = ruleSet.getRule().get(1);
-            	uuid = caaersRulesEngineService.createRuleForSponsorDefinedStudy(ruleToAdd, ruleSetName, studyShortTitle, sponsorName, subject, state);
-            	
-            	RuleSet existingRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.sponsor.study.study_for_ll.astana.astanarules", false);
-            	Rule addedRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(existingRuleset);
-            	assertNotNull(addedRule);
-            	assertEquals(2, existingRuleset.getRule().size());
-		        
-			}catch(Exception e){
-				fail("No exceptions are expected");
-			}
-		}
-	}
+
+
+    /**
+     * Tests method createRuleForSponsorStudy(...) in RulesEngineServiceImpl
+     * New RuleSet and New Rule
+     */
+    public void testSaveRuleSetForSponsorDefinedStudy(){
+        fail("Not implemented.");
+    }
+
+    /**
+     * Tests method create rule for institutionStudy(...) in RulesEngineServiceImpl
+     * New RuleSet and New Rule
+     */
+    public void testSaveRuleSetForInstitutionStudy(){
+        fail("Not implemented.");
+    }
+
 	
-	/**
-	 * Tests method createRuleForInstitution(...) in RulesEngineServiceImpl
-	 * New RuleSet New Rule
-	 */
-	public void testCreateRuleForInstitution(){
-		if(ruleSet != null){
-        	try{
-        		String ruleSetName = "SemanticBitsRules";
-        		String institutionName = "National C I";
-                String subject = "SemanticBits Rules";
-                String state = "Draft";
-                Rule ruleToCreate;
-                ruleToCreate = ruleSet.getRule().get(0);
-            	String uuid = caaersRulesEngineService.createRuleForInstitution(ruleToCreate, ruleSetName, institutionName, subject, state);
-            	assertNotNull(uuid);
-            	assertNotEquals("", uuid);
-            	
-            	RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.institution.national_c_i.semanticbitsrules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.institution.national_c_i.semanticbitsrules", createdRuleset.getName());
-            	assertNotNull(createdRule);
-            	
-        	}catch(Exception e){
-        		fail("No exceptions are expected " +e.getMessage());
-        	}
-        }
-	}
-	
-	/**
-	 * Tests method createRuleForInstitution(...) in RulesEngineServiceImpl
-	 * Add New Rule to an existing RuleSet
-	 */
-	public void testCreateRuleForInstitutionExistingRuleSet(){
-		
-        if(ruleSet != null){
-        	try{
-        		String ruleSetName = "SemanticBitsRules";
-        		String institutionName = "National C I";
-                String subject = "SemanticBits Rules";
-                String state = "Draft";
-                Rule ruleToCreate;
-                ruleToCreate = ruleSet.getRule().get(0);
-            	String uuid = caaersRulesEngineService.createRuleForInstitution(ruleToCreate, ruleSetName, institutionName, subject, state);
-            	assertNotNull(uuid);
-            	assertNotEquals("", uuid);
-            	
-            	RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.institution.national_c_i.semanticbitsrules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.institution.national_c_i.semanticbitsrules", createdRuleset.getName());
-            	assertNotNull(createdRule);
-            	
-            	Rule ruleToAdd = ruleSet.getRule().get(1);
-            	uuid = caaersRulesEngineService.createRuleForInstitution(ruleToAdd, ruleSetName, institutionName, subject, state);
-            	
-            	RuleSet existingRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.institution.national_c_i.semanticbitsrules", false);
-            	Rule addedRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(existingRuleset);
-            	assertNotNull(addedRule);
-            	assertEquals(2, existingRuleset.getRule().size());
-            	
-        	}catch(Exception e){
-        		fail("No exceptions are expected " +e.getMessage());
-        	}
-        }
-	}
-	
-	/**
-	 * Tests method createRuleForInstitutionDefinedStudy(...) in RulesEngineServiceImpl
-	 * New RuleSet and New Rule
-	 */
-	public void testCreateRuleForInstitutionDefinedStudy(){
-		
-		if(ruleSet != null){
-			try{
-				Rule rule = ruleSet.getRule().get(1);
-				String ruleSetName = "AstanaRules";
-		        String studyShortTitle = "Study For LL";
-		        String institutionName = "Astana";
-		        String subject = "RuleForSponsorDefinedStudy";
-		        String state = "Draft";
-		        
-		        String uuid = caaersRulesEngineService.createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle, institutionName, subject, state);
-		        
-		        assertNotNull("uuid returned cannot be null", uuid);
-		        assertNotEquals("", uuid);
-		        
-		        RuleSet createdRuleset = repositoryService.getRuleSet("gov.nih.nci.cabig.caaers.rules.institution.study.study_for_ll.astana.astanarules", false);
-            	Rule createdRule = repositoryService.getRule(uuid);
-            	
-            	assertNotNull(createdRuleset);
-            	assertEquals("gov.nih.nci.cabig.caaers.rules.institution.study.study_for_ll.astana.astanarules", createdRuleset.getName());
-            	assertEquals(1, createdRuleset.getRule().size());
-            	assertNotNull(createdRule);
-		        
-			}catch(Exception e){
-				fail("No exceptions are expected");
-			}
-		}
-	}
 	
 	/**
 	 * Tests constructPackageName method
@@ -365,82 +146,32 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 		
 	}
 	
-//	/**
-//	 * Tests method createRuleForInstitutionDefinedStudy(...) in RulesEngineServiceImpl
-//	 */
-//	public void testCreateRuleForInstitutionDefinedStudy(){
-//		
-//	}
-//	
-//	/**
-//	 * Tests method CreateRuleSetForInstitution(...) in RulesEngineServiceImpl
-//	 */
-//	public void testCreateRuleSetForInstitution(){
-//		
-//	}
-//	
-//	public void testCreateRuleSetForInstitutionDefinedStudy(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForInstitution(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForSponsor(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForSponsorDefinedStudy(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForInstitutionDefinedStudy(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForInstitutionCachedTrue(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForSponsorCachedTrue(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForSponsorDefinedStudyCachedTrue(){
-//		
-//	}
-//	
-//	public void testGetRuleSetForInstitutionDefinedStudyCachedTrue(){
-//		
-//	}
-//	
-//	public void testGetAllRuleSetsForSponsorDefinedStudy(){
-//		
-//	}
-//	
-//	public void testGetAllRuleSetsForInstitutionDefinedStudy(){
-//		
-//	}
-//	
-//	public void testGetRulesByCategory(){
-//		
-//	}
-//	
-//	public void testSaveRulesForInstitution(){
-//		
-//	}
-//	
-//	public void testSaveRulesForSponsor(){
-//		
-//	}
-//	
-//	public void testSaveRulesForSponsorDefinedStudy(){
-//		
-//	}
-//	
-//	public void testSaveRulesForInstitutionDefinedStudy(){
-//		
-//	}
+    public void testCreateRuleSet(){
+        fail("to do");
+    }
+
+    public void testCreateOrUpdateRuleSet(){
+        fail("to do");
+    }
+
+    public void testImportRules(){
+        fail("to do");
+    }
+
+    public void testUndeployRuleset(){
+        fail("to do ");
+    }
+
+    public void testDeployRuleset(){
+        fail("to do");
+    }
+
+    public void testSaveRuleset(){
+        fail("to do");
+    }
+
+    public void testGetAllRulesets(){
+        fail("to do");
+    }
 	
 }

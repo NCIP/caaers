@@ -1,9 +1,19 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import com.semanticbits.rules.api.RepositoryService;
+import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.api.RuleDeploymentService;
+import com.semanticbits.rules.api.RulesEngineService;
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.Condition;
+import com.semanticbits.rules.impl.RuleAuthoringServiceImpl;
+import com.semanticbits.rules.utils.BRXMLHelper;
+import com.semanticbits.rules.utils.RuleUtil;
+import com.semanticbits.rules.utils.XMLUtil;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -12,17 +22,9 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.rmi.RemoteException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,14 +32,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.drools.repository.PackageItem;
 
-import com.semanticbits.rules.api.RepositoryService;
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.api.RuleDeploymentService;
-import com.semanticbits.rules.api.RulesEngineService;
-import com.semanticbits.rules.impl.RuleAuthoringServiceImpl;
-import com.semanticbits.rules.utils.BRXMLHelper;
-import com.semanticbits.rules.utils.RuleUtil;
-import com.semanticbits.rules.utils.XMLUtil;
+import java.io.File;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -51,15 +51,17 @@ public class CaaersRulesEngineService {
     private static final Log log = LogFactory.getLog(CaaersRulesEngineService.class);
 
 	
-	public static final String SPONSOR_LEVEL = "Sponsor";
-    public static final String INSTITUTIONAL_LEVEL = "Institution";
-    public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
-    public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
+	public static final String SPONSOR_LEVEL = RuleLevel.Sponsor.getName();
+    public static final String INSTITUTIONAL_LEVEL = RuleLevel.Institution.getName();
+    public static final String SPONSOR_DEFINED_STUDY_LEVEL = RuleLevel.SponsorDefinedStudy.getName();
+    public static final String INSTITUTION_DEFINED_STUDY_LEVEL = RuleLevel.InstitutionDefinedStudy.getName();
+    
 	private RulesEngineService ruleEngineService;
 	private RuleAuthoringService ruleAuthoringService;
     private RepositoryService repositoryService;
     private ReportDefinitionDao reportDefinitionDao;
     private OrganizationDao organizationDao;
+    private StudyDao studyDao;
     private ConfigPropertyDao configPropertyDao;
     private RuleDeploymentService ruleDeploymentService;
 
@@ -68,817 +70,243 @@ public class CaaersRulesEngineService {
 
     public CaaersRulesEngineService() {
         ruleAuthoringService = new RuleAuthoringServiceImpl();
-        //this.repositoryService = (RepositoryServiceImpl) RuleServiceContext.getInstance().repositoryService;
-    }
-
-    public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName,
-                    String subject, String state) throws Exception {
-        // TODO Auto-generated method stub
-
-        RuleSet ruleSet = this.getRuleSetForInstitution(ruleSetName, institutionName);
-
-        if (ruleSet == null) {
-            this.createRuleSetForInstitution(ruleSetName, institutionName, subject, state);
-        }
-
-        String uuid = null;
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE
-                        .getPackagePrefix(), institutionName, ruleSetName);
-        Category category = CaaersRuleUtil.getInstitutionSpecificCategory(ruleAuthoringService,
-                        institutionName, ruleSetName);
-
-        if (rule.getMetaData() == null) {
-            rule.setMetaData(new MetaData());
-        }
-
-        rule.getMetaData().setPackageName(packageName);
-        rule.getMetaData().getCategory().clear();
-        rule.getMetaData().getCategory().add(category);
-
-        uuid = ruleAuthoringService.createRule(rule);
-
-        return uuid;
-    }
-
-    public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName,
-                    String subject, String state) throws Exception {
-        // TODO Auto-generated method stub
-
-        RuleSet ruleSet = this.getRuleSetForSponsor(ruleSetName, sponsorName);
-
-        if (ruleSet == null) {
-            this.createRuleSetForSponsor(ruleSetName, sponsorName, subject, state);
-        }
-
-        String uuid = null;
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE
-                        .getPackagePrefix(), sponsorName, ruleSetName);
-        Category category = CaaersRuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName,
-                        ruleSetName);
-
-        System.out.println("Path of category For Sponsor Rules:" + category.getPath());
-        System.out
-                        .println("Name of category For Sponsor Rules:"
-                                        + category.getMetaData().getName());
-
-        System.out.println("PackageName:" + packageName);
-        if (rule.getMetaData() == null) {
-            rule.setMetaData(new MetaData());
-        }
-
-        rule.getMetaData().setPackageName(packageName);
-        rule.getMetaData().getCategory().clear();
-        rule.getMetaData().getCategory().add(category);
-
-        uuid = ruleAuthoringService.createRule(rule);
-
-        return uuid;
-    }
-
-    public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName,
-                    String studyShortTitle, String sponsorName, String subject, String state)
-                    throws Exception {
-        // TODO Auto-generated method stub
-
-        RuleSet ruleSet = this.getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle,
-                        sponsorName);
-
-        if (ruleSet == null) {
-            this.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName,
-                            subject, state);
-        }
-
-        String uuid = null;
-        String packageName = CaaersRuleUtil.getStudySponsorSpecificPackageName(
-                        CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(),
-                        studyShortTitle, sponsorName, ruleSetName);
-        Category category = CaaersRuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService,
-                        sponsorName, studyShortTitle, ruleSetName);
-
-        if (rule.getMetaData() == null) {
-            rule.setMetaData(new MetaData());
-        }
-
-        rule.getMetaData().setPackageName(packageName);
-        rule.getMetaData().getCategory().clear();
-        rule.getMetaData().getCategory().add(category);
-
-        uuid = ruleAuthoringService.createRule(rule);
-
-        return uuid;
-
-    }
-
-    public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName,
-                    String studyShortTitle, String institutionName, String subject, String state)
-                    throws Exception {
-        // TODO Auto-generated method stub
-
-        RuleSet ruleSet = this.getRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle,
-                        institutionName);
-
-        if (ruleSet == null) {
-            this.createRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle,
-                            institutionName, subject, state);
-        }
-
-        String uuid = null;
-        String packageName = CaaersRuleUtil.getStudySponsorSpecificPackageName(
-                        CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(),
-                        studyShortTitle, institutionName, ruleSetName);
-        Category category = CaaersRuleUtil.getStudyInstitutionSpecificCategory(ruleAuthoringService,
-                        institutionName, studyShortTitle, ruleSetName);
-
-        if (rule.getMetaData() == null) {
-            rule.setMetaData(new MetaData());
-        }
-
-        rule.getMetaData().setPackageName(packageName);
-        rule.getMetaData().getCategory().clear();
-        rule.getMetaData().getCategory().add(category);
-
-        uuid = ruleAuthoringService.createRule(rule);
-
-        return uuid;
-
-    }
-
-    public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName, String subject, String state) throws Exception {
-        // TODO Auto-generated method stub
-
-        Category cat = CaaersRuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
-
-        RuleSet ruleSet = new RuleSet();
-        // This name should be unique
-        // String packageName =
-        // "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
-
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
-        // System.out.println(packageName);
-        ruleSet.setName(packageName);
-        ruleSet.setStatus("Draft");
-        ruleSet.setDescription(ruleSetName);
-        ruleSet.setSubject(subject);
-        ruleSet.setCoverage(state);
-
-        // ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
-        if (ruleSet.getImport().size() == 0) {
-            ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-        }
-        // List<String> _imports = new ArrayList<String>();
-        // _imports.add("gov.nih.nci.cabig.caaers.rules.domain.*");
-        // _imports.add("gov.nih.nci.cabig.caaers.domain.*");
-        // ruleSet.setImport(_imports);
-
-        ruleAuthoringService.createRuleSet(ruleSet);
-
-        return ruleSet;
-
     }
 
     /**
-     * 
+     * Will create and register the ruleset with authoring service.
+     * @param packageName   - The package name of ruleset
+     * @param ruleSetName   - The rule name.
+     * @param subject       - Subject to be set in the rule metadata
+     * @param coverage         - The coverage of the rule.
+     * @return              - A ruleset
      */
+    public RuleSet createRuleset(String packageName, String ruleSetName, String subject, String coverage){
+        //create
+       if(log.isDebugEnabled()) log.debug("Ruleset dosent exist, so going to create it");
 
-    public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName, String subject,
-                    String state) throws Exception {
+       RuleSet ruleSet = new RuleSet();
+       ruleSet.setName(packageName);
+       ruleSet.setStatus("Draft");
+       ruleSet.setDescription(ruleSetName);
+       ruleSet.setSubject(subject);
+       ruleSet.setCoverage(coverage);
 
-        //retrieve or create category (or path) for rules
-        Category cat = CaaersRuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName,ruleSetName);
+       if (ruleSet.getImport().size() == 0) {
+           ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+       }
 
-        RuleSet ruleSet = new RuleSet();
-
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
-        log.info("PackageName:" + packageName);
-        ruleSet.setName(packageName);
-        ruleSet.setStatus("Draft");
-        ruleSet.setDescription(ruleSetName);
-        ruleSet.setSubject(subject);
-        ruleSet.setCoverage(state);
-
-        if (ruleSet.getImport().size() == 0) {
-            ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-        }
-
-        ruleAuthoringService.createRuleSet(ruleSet);
-
-        return ruleSet;
+       ruleAuthoringService.createRuleSet(ruleSet);
+       return ruleSet;
     }
 
-    public RuleSet createRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle,
-                    String sponsorName, String subject, String state) throws Exception {
-       //retrieve or create category (or path) for rules
-        Category cat = CaaersRuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, sponsorName,studyShortTitle, ruleSetName);
-        RuleSet ruleSet = new RuleSet();
 
-        String packageName = CaaersRuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(),
-                        studyShortTitle, sponsorName, ruleSetName);
-        log.info("PackageName :" + packageName);
-        ruleSet.setName(packageName);
-        ruleSet.setStatus("Draft");
-        ruleSet.setDescription(ruleSetName);
-        ruleSet.setSubject(subject);
-        ruleSet.setCoverage(state);
-
-        if (ruleSet.getImport().size() == 0) {
-            ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-        }
-
-        ruleAuthoringService.createRuleSet(ruleSet);
-
-        return ruleSet;
-    }
-
-    public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName,
-                    String studyShortTitle, String institutionName, String subject, String state)
-                    throws Exception {
-       //retrieve or create category (or path) for rules
-        Category cat = CaaersRuleUtil.getStudyInstitutionSpecificCategory(ruleAuthoringService,institutionName, studyShortTitle, ruleSetName);
-        RuleSet ruleSet = new RuleSet();
-        String packageName = CaaersRuleUtil.getStudyInstitutionSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(),
-                        studyShortTitle, institutionName, ruleSetName);
-        log.info("PackageName:" + packageName);
-        ruleSet.setName(packageName);
-        ruleSet.setStatus("Draft");
-        ruleSet.setDescription(ruleSetName);
-        ruleSet.setSubject(subject);
-        ruleSet.setCoverage(state);
-
-        if (ruleSet.getImport().size() == 0) {
-            ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-        }
-
-        ruleAuthoringService.createRuleSet(ruleSet);
-
-        return ruleSet;
-    }
-
-    public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName,
-                    boolean cached) throws Exception {
-        // TODO Auto-generated method stub
-        RuleSet ruleSet = null;
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE
-                        .getPackagePrefix(), institutionName, ruleSetName);
-
-        ruleSet = ruleAuthoringService.getRuleSet(packageName, cached);
-        cleanRuleSet(ruleSet);
-        makeRuleSetReadable(ruleSet);
-        return ruleSet;
-    }
 
     /**
-     * I really have to investigate into this We may have to have handle to repositoyr service and
-     * do something from there
-     * 
+     * This method will create a rule set  in the system.
+     * Will take care of creating the category and ruleset if they do not exist
+     * @param ruleSet          - The rule to create
+     * @param packageName   - The package name
+     * @param path          - The path to register the rule in authoring system.
+     * @param ruleSetName   - The name of ruleset
+     * @param subject       - The subject for the ruleset
+     * @param state         - The coverage of the ruleset
+     * @return              - The ID of the rule.
      * @throws Exception
      */
+    public void createOrUpdateRuleSet(RuleSet ruleSet, String packageName, String path, String ruleSetName, String subject, String state) throws Exception{
 
-    public List<RuleSet> getAllRuleSetsForInstitution(String institutionName) throws Exception {
-        List<RuleSet> ruleSets = new ArrayList<RuleSet>();
-        String institutionSpecificCategoryPath = CaaersRuleUtil
-                        .getInstitutionSpecificPath(institutionName);
-        /**
-         * First check if there is a entry for this sponsor in the repository If there is no entry
-         * then return empty list implying that there are no rules for this sponsor
-         */
-        boolean exist = RuleUtil.categoryExist(ruleAuthoringService,
-                        institutionSpecificCategoryPath);
-        if (!exist) {
-            return ruleSets;
-        }
+        //find the category
+        Category category = CaaersRuleUtil.createCategory(ruleAuthoringService , path);
 
-        /**
-         * Now for this catgeory we can go ahead and pull all children
-         */
-        List<String> ruleSetNames = this.repositoryService
-                        .getAllImmediateChildren(institutionSpecificCategoryPath);
-        if (ruleSetNames.size() < 1) {
-            return ruleSets;
-        }
+        //find the ruleset, if it dosent exist create.
+        RuleSet existingRuleSet = getRuleSetByPackageName(packageName, true);
 
-        for (String ruleSetName : ruleSetNames) {
+        //if there is no ruleset create it.
+        if(existingRuleSet == null) createRuleset(packageName, ruleSetName, subject, state);
 
-            RuleSet ruleSet = this.getRuleSetForInstitution(ruleSetName, institutionName);
-            ruleSets.add(ruleSet);
-        }
-
-        return ruleSets;
-    }
-
-    public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName, boolean cached)
-                    throws Exception {
-        RuleSet ruleSet = null;
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
-        ruleSet = ruleAuthoringService.getRuleSet(packageName, cached);
-        cleanRuleSet(ruleSet);
-        makeRuleSetReadable(ruleSet);
-        return ruleSet;
-    }
-
-    /**
-     * I really have to investigate into this We may have to have handle to repositoyr service and
-     * do something from there
-     * 
-     * @throws Exception
-     */
-
-    public List<RuleSet> getAllRuleSetsForSponsor(String sponsorName) throws Exception {
-        List<RuleSet> ruleSets = new ArrayList<RuleSet>();
-        String sponsorSpecificCategoryPath = CaaersRuleUtil.getSponsorSpecificPath(sponsorName);
-        /**
-         * First check if there is a entry for this sponsor in the repository If there is no entry
-         * then return empty list implying that there are no rules for this sponsor
-         */
-        boolean exist = RuleUtil.categoryExist(ruleAuthoringService, sponsorSpecificCategoryPath);
-        if (!exist) {
-            return ruleSets;
-        }
-
-        /**
-         * Now for this catgeory we can go ahead and pull all children
-         */
-        List<String> ruleSetNames = this.repositoryService
-                        .getAllImmediateChildren(sponsorSpecificCategoryPath);
-        if (ruleSetNames.size() < 1) {
-            return ruleSets;
-        }
-
-        for (String ruleSetName : ruleSetNames) {
-
-            RuleSet ruleSet = this.getRuleSetForSponsor(ruleSetName, sponsorName);
-            System.out.println(ruleSet.getName());
-            ruleSets.add(ruleSet);
-        }
-
-        return ruleSets;
-    }
-
-    public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle,
-                    String sponsorName, boolean cached) throws Exception {
-        // TODO Auto-generated method stub
-        RuleSet ruleSet = null;
-        String packageName = CaaersRuleUtil.getStudySponsorSpecificPackageName(
-                        CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(),
-                        studyShortTitle, sponsorName, ruleSetName);
-
-        ruleSet = ruleAuthoringService.getRuleSet(packageName, cached);
-        cleanRuleSet(ruleSet);
-        makeRuleSetReadable(ruleSet);
-        return ruleSet;
-
-    }
-
-    public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle,
-                    String institutionName, boolean cached) throws Exception {
-        // TODO Auto-generated method stub
-        RuleSet ruleSet = null;
-        String packageName = CaaersRuleUtil.getStudyInstitutionSpecificPackageName(
-                        CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(),
-                        studyShortTitle, institutionName, ruleSetName);
-
-        ruleSet = ruleAuthoringService.getRuleSet(packageName, cached);
-        cleanRuleSet(ruleSet);
-        makeRuleSetReadable(ruleSet);
-        return ruleSet;
-
-    }
-
-    /**
-     * I really have to investigate into this We may have to have handle to repositoyr service and
-     * do something from there
-     */
-
-    public List<RuleSet> getAllRuleSetsForSponsorDefinedStudy(String studyShortTitle,
-                    String sponsorName) throws Exception {
-        List<RuleSet> ruleSets = new ArrayList<RuleSet>();
-        String studySponsorSpecificCategoryPath = CaaersRuleUtil.getStudySponsorSpecificPath(
-                        studyShortTitle, sponsorName);
-        /**
-         * First check if there is a entry for this sponsor in the repository If there is no entry
-         * then return empty list implying that there are no rules for this sponsor
-         */
-        boolean exist = RuleUtil.categoryExist(ruleAuthoringService,
-                        studySponsorSpecificCategoryPath);
-        if (!exist) {
-            return ruleSets;
-        }
-
-        /**
-         * Now for this catgeory we can go ahead and pull all children
-         */
-        List<String> ruleSetNames = this.repositoryService
-                        .getAllImmediateChildren(studySponsorSpecificCategoryPath);
-        if (ruleSetNames.size() < 1) {
-            return ruleSets;
-        }
-
-        for (String ruleSetName : ruleSetNames) {
-
-            RuleSet ruleSet = this.getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle,
-                            sponsorName);
-            ruleSets.add(ruleSet);
-        }
-
-        return ruleSets;
-    }
-
-    public List<RuleSet> getAllRuleSetsForInstitutionDefinedStudy(String studyShortTitle,
-                    String institutionName) throws Exception {
-        List<RuleSet> ruleSets = new ArrayList<RuleSet>();
-        String studyInstitutionSpecificCategoryPath = CaaersRuleUtil.getStudyInstitutionSpecificPath(
-                        studyShortTitle, institutionName);
-        /**
-         * First check if there is a entry for this sponsor in the repository If there is no entry
-         * then return empty list implying that there are no rules for this sponsor
-         */
-        boolean exist = RuleUtil.categoryExist(ruleAuthoringService,
-                        studyInstitutionSpecificCategoryPath);
-        if (!exist) {
-            return ruleSets;
-        }
-
-        /**
-         * Now for this catgeory we can go ahead and pull all children
-         */
-        List<String> ruleSetNames = this.repositoryService
-                        .getAllImmediateChildren(studyInstitutionSpecificCategoryPath);
-        if (ruleSetNames.size() < 1) {
-            return ruleSets;
-        }
-
-        for (String ruleSetName : ruleSetNames) {
-
-            RuleSet ruleSet = this.getRuleSetForInstitutionDefinedStudy(ruleSetName,
-                            studyShortTitle, institutionName);
-            ruleSets.add(ruleSet);
-        }
-
-        return ruleSets;
-    }
-
-    /**
-     * Retrieves the ruleset configured for Input fields
-     * @return
-     */
-    public RuleSet getFieldRuleSet(String rulesetName){
-        return getFieldRuleSet(rulesetName,true);
-    }
-
-    /**
-     * Retrieves the ruleset configured for input fields
-     * @param fromCache - if true will be reteieved from cache.
-     * @return
-     */
-    public RuleSet getFieldRuleSet(String rulesetName, boolean fromCache){
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.CAAERS_BASE.getPackagePrefix(), null, rulesetName);
-        RuleSet ruleSet = ruleAuthoringService.getRuleSet(packageName, fromCache);
-        cleanRuleSet(ruleSet);
-        makeRuleSetReadable(ruleSet);
-        return ruleSet;
-    }
-
-    public List<Rule> getRulesByCategory(String categoryPath) throws Exception {
-        // TODO Auto-generated method stub
-        List<Rule> rules = null;
-
-        rules = ruleAuthoringService.getRulesByCategory(categoryPath);
-
-        return rules;
-    }
-
-    public void saveRulesForInstitution(RuleSet ruleSet, String institutionName) throws Exception {
-        // TODO Auto-generated method stub
-        String ruleSetName = ruleSet.getDescription();
-        String subject = ruleSet.getSubject();
-        String state = ruleSet.getCoverage();
-
-        if (ruleSetName == null) {
-            throw new Exception("Rule name should be set to some  valid value");
-        }
-        RuleSet rs = this.getRuleSetForInstitution(ruleSetName, institutionName);
-        if (rs == null) {
-            // create the rule set
-            RuleSet ruleSetTemp = this.createRuleSetForInstitution(ruleSetName, institutionName,
-                            subject, state);
-        }
-        List<Rule> rules = ruleSet.getRule();
-        for (Rule rule : rules) {
-            if (rule.getId() == null) {
-                this.createRuleForInstitution(rule, ruleSetName, institutionName, subject, state);
-            } else {
-            	ruleEngineService.updateRule(rule);
-            }
-        }
-
-    }
-    public void saveFieldRules(RuleSet ruleSet) throws Exception {
-        //retrieve or create category (or path) for rules
-        Category cat = CaaersRuleUtil.getFieldRuleSpecificCategory(ruleAuthoringService,ruleSet.getDescription());
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.CAAERS_BASE.getPackagePrefix(), null, ruleSet.getDescription());
-        log.info("PackageName:" + packageName);
-
-        RuleSet rs = getFieldRuleSet(ruleSet.getDescription());
-        if(rs == null){
-            //create ruleset
-            RuleSet newRuleSet = new RuleSet();
-            newRuleSet.setName(packageName);
-            newRuleSet.setStatus("Draft");
-            newRuleSet.setDescription(ruleSet.getDescription());
-            newRuleSet.setSubject(ruleSet.getSubject());
-            newRuleSet.setCoverage(ruleSet.getCoverage());
-
-            if (newRuleSet.getImport().size() == 0) {
-                newRuleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-            }
-
-            ruleAuthoringService.createRuleSet(newRuleSet);
-
-        }
-        
         for(Rule rule : ruleSet.getRule()){
+
+
             if(rule.getId() == null){
-                //create rule
+             //create
+                //add the category in the rule.
                 if(rule.getMetaData() == null) rule.setMetaData(new MetaData());
                 rule.getMetaData().getCategory().clear();
-                rule.getMetaData().getCategory().add(cat);
+                rule.getMetaData().getCategory().add(category);
                 rule.getMetaData().setPackageName(packageName);
-                ruleAuthoringService.createRule(rule);
+
+                String uuid = ruleAuthoringService.createRule(rule);
+                log.info("UUID of rule :" + uuid);
             }else{
+              //update
                 ruleEngineService.updateRule(rule);
             }
         }
-    }
-
-    public void saveRulesForSponsor(RuleSet ruleSet, String sponsorName) throws Exception {
-
-        String ruleSetName = ruleSet.getDescription();
-        String subject = ruleSet.getSubject();
-        String state = ruleSet.getCoverage();
-
-        if (ruleSetName == null) {
-            throw new Exception("Rule name should be set to some  valid value");
-        }
-        RuleSet rs = this.getRuleSetForSponsor(ruleSetName, sponsorName);
-
-        if (rs == null) {
-            // create the rule set
-            RuleSet ruleSetTemp = this.createRuleSetForSponsor(ruleSetName, sponsorName, subject,
-                            state);
-        }
-        List<Rule> rules = ruleSet.getRule();
-        for (Rule rule : rules) {
-            if (rule.getId() == null) {
-                this.createRuleForSponsor(rule, ruleSetName, sponsorName, subject, state);
-            } else {
-            	ruleEngineService.updateRule(rule);
-            }
-        }
 
     }
 
-    public void saveRulesForSponsorDefinedStudy(RuleSet ruleSet, String studyShortTitle,
-                    String sponsorName) throws Exception {
-        // TODO Auto-generated method stub
-        String ruleSetName = ruleSet.getDescription();
-        String subject = ruleSet.getSubject();
-        String state = ruleSet.getCoverage();
-
-        if (ruleSetName == null) {
-            throw new Exception("Rule name should be set to some  valid value");
-        }
-        RuleSet rs = this.getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle,
-                        sponsorName);
-        if (rs == null) {
-            // create the rule set
-            RuleSet ruleSetTemp = this.createRuleSetForSponsorDefinedStudy(ruleSetName,
-                            studyShortTitle, sponsorName, subject, state);
-        }
-        List<Rule> rules = ruleSet.getRule();
-        for (Rule rule : rules) {
-            if (rule.getId() == null) {
-                this.createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle,
-                                sponsorName, subject, state);
-            } else {
-            	ruleEngineService.updateRule(rule);
-            }
-        }
-
+    /**
+     * Will delete the rule from the ruleset. 
+     * @param ruleSetName
+     * @param ruleName
+     */
+    public void deleteRule(String ruleSetName, String ruleName) throws Exception{
+        ruleEngineService.deleteRule(ruleSetName, ruleName);
     }
 
-    public void saveRulesForInstitutionDefinedStudy(RuleSet ruleSet, String studyShortTitle,
-                    String institutionName) throws Exception {
-        // TODO Auto-generated method stub
-        String ruleSetName = ruleSet.getDescription();
-        String subject = ruleSet.getSubject();
-        String state = ruleSet.getCoverage();
-
-        // System.out.println("package name before savinf : " +
-        // ruleSet.getMetaData().getPackageName());
-        if (ruleSetName == null) {
-            throw new Exception("Rule name should be set to some  valid value");
-        }
-        RuleSet rs = this.getRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle,
-                        institutionName);
-        if (rs == null) {
-            // create the rule set
-            RuleSet ruleSetTemp = this.createRuleSetForInstitutionDefinedStudy(ruleSetName,
-                            studyShortTitle, institutionName, subject, state);
-        }
-        List<Rule> rules = ruleSet.getRule();
-        for (Rule rule : rules) {
-            if (rule.getId() == null) {
-                this.createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle,
-                                institutionName, subject, state);
-            } else {
-            	ruleEngineService.updateRule(rule);
-            }
-        }
-
-    }
-    
+    /**
+     * This method will import the rules XML.
+     * CAAERS-2325 - requires the use of NCI-code and Sponsor-ID of study to identify the study and organization. 
+     *
+     * @param fileName - The file to import.
+     * @return - A list of ReportDefinition  names
+     * @throws Exception
+     */
     public List<String> importRules(String fileName) throws Exception {
-        // TODO Auto-generated method stub
-        BufferedReader br = null;
-        File f = new File(fileName);
-        if (!f.exists() || f.isDirectory()) {
-            throw new Exception("This is not a valid file name or this is a directory");
-        }
-        StringBuilder sb = new StringBuilder();
-        FileReader fr = new FileReader(f);
-        br = new BufferedReader(fr);
-        String line;
-        while ((line = br.readLine()) != null) {
-            // System.out.println(line);
-            sb.append(line);
-        }
-        String xml = sb.toString();
-        RuleSet ruleSet = (RuleSet) XMLUtil.unmarshal(xml);
 
-        System.out.println("Rule set name:" + ruleSet.getName());
-        System.out.println("Rule set id:" + ruleSet.getId());
-        System.out.println("Rule set desc:" + ruleSet.getDescription());
+        File f = new File(fileName);
+        if(!f.isFile() || !f.exists()){
+             throw new Exception("This is not a valid file name or this is a directory");
+        }
+
+        String xml = FileUtils.readFileToString(f);
+
+        RuleSet ruleSet = (RuleSet) XMLUtil.unmarshal(xml);
+        List<Rule> rules = ruleSet.getRule();
+        
+        if (rules.size() == 0) {
+            throw new Exception("There is nothing to import !");
+        }
+
+        log.info("Importing ruleSet :" + ruleSet.getName() );
+        
+        //--------- Modify the package names ----------------------
+        String subject = ruleSet.getSubject();
+        String[] subjectParts = StringUtils.split(subject, "||");
+        Organization org = null;
+        Study study = null;
+
+        //if level is present, we should modify package name.
+        String level = subjectParts[1];
+        if(StringUtils.isNotEmpty(level)){
+            //need to modify package.
+            String sponsorNCICode = subjectParts[2].trim();
+            String institutionNCICode = subjectParts[3].trim();
+            String studyIdentifierValue = subjectParts[4].trim();
+
+            String nciCode = null;
+            if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(SPONSOR_LEVEL)){
+               nciCode = sponsorNCICode;
+            }
+            if(level.equals(INSTITUTION_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTIONAL_LEVEL)){
+               nciCode = institutionNCICode;
+            }
+            
+            org = organizationDao.getByNCIcode(nciCode);
+
+            if(org == null) throw new CaaersSystemException("RUL_011", "Missing sponsor/institution : "
+                    + nciCode );
+            
+            if(StringUtils.isNotEmpty(studyIdentifierValue)){
+              OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
+                id.setValue(studyIdentifierValue);
+                id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+                study = studyDao.getByIdentifier(id);
+
+            }
+            if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTION_DEFINED_STUDY_LEVEL)){
+                if(study == null){
+                    throw new CaaersSystemException("RUL_021", "Could not find the Study identified by sponsor identifier : "
+                            + studyIdentifierValue);
+                }
+            }
+            
+            //generate new package name.
+            String newPackageName = constructPackageName(level, String.valueOf(org.getId()),
+                    String.valueOf(org.getId()), String.valueOf(study.getId()), ruleSet.getDescription());
+            ruleSet.setName(newPackageName);
+
+            
+        }
+        
+        
+        if(log.isInfoEnabled()){
+            log.info("Rule set name:" + ruleSet.getName());
+            log.info("Rule set id:" + ruleSet.getId());
+            log.info("Rule set desc:" + ruleSet.getDescription());
+        }
 
         // delete rule set if exists
         try {
         	ruleEngineService.deleteRuleSet(ruleSet.getName());
         } catch (Exception e) {
             // not able to delete which is fine...
-            // e.printStackTrace();
+            log.debug("May not be an issue", e);
         }
 
-        List<Rule> rules = ruleSet.getRule();
-        if (rules.size() == 0) {
-            throw new Exception("There is nothing to import !");
+        //throw away the ID associated to each rule, so that it wiil issue a create rule.
+        for(Rule rule : rules){
+            rule.setId(null);
         }
-        Rule r = rules.get(0);
-        Category cat = r.getMetaData().getCategory().get(0);
-        System.out.println("Category Path:" + cat.getPath());
 
-        RuleSet rs_ = ruleEngineService.getRuleSet(ruleSet.getName());
+        //Find the report definitions required to be created. 
+        Set<String> reportDefinitionNames = new HashSet<String>();
         List<String> reportDefinitionsCreated = new ArrayList<String>();
-        if (rs_ == null) {
 
-            reportDefinitionsCreated = importRuleSet(ruleSet);
-            ruleEngineService.deployRuleSet(ruleSet);
-        }
-
-        return reportDefinitionsCreated;
-    }
-    
-    private List<String> importRuleSet(RuleSet ruleSet) throws Exception {
-
-        List<Rule> rules = ruleSet.getRule();
-
-        Rule r = rules.get(0);
-        Category cat = r.getMetaData().getCategory().get(0);
-        //System.out.println("Category Path:" + cat.getPath());
-        String catPath = cat.getPath();
-        int i = 0;
-        String ruleSetName = ruleSet.getDescription();
-        Iterator<Rule> it = rules.iterator();
-        String subject = ruleSet.getSubject();
-        String state = ruleSet.getCoverage();
-        String desc = ruleSet.getDescription();
-        List<String> reportDefinitions = new ArrayList<String>();
-
-        if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName())) {
+        boolean isAssociatedToDCP = org.getNciInstituteCode().equals("DCP");
+        boolean isSAERule =  ruleSet.getDescription().equals(RuleType.REPORT_SCHEDULING_RULES.getName());
+        if ( isSAERule && !isAssociatedToDCP ) {
 
             for (Rule rule : rules) {
                 for (String action : rule.getAction()) {
-                    if (!reportDefinitions.contains(action)) {
-                        reportDefinitions.add(action);
-                    }
+                    reportDefinitionNames.add(action);
                 }
             }
-        }
 
-        if ((catPath.indexOf(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName()) == -1)
-                        && (catPath.indexOf(CategoryConfiguration.SPONSOR_BASE.getName()) != -1)) {
-            // this is sponsor level rules
-            i = catPath.lastIndexOf("/");
-            String sponsorName = catPath.substring(i + 1, catPath.length());
 
-            // this.saveRulesForSponsor(ruleSet, sponsorName);
-
-            while (it.hasNext()) {
-                Rule rule = it.next();
-                rule.setId("");
-                createRuleForSponsor(rule, ruleSetName, sponsorName, subject, state);
-
-            }
-
-        }
-
-        if (catPath.indexOf(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName()) != -1) {
-            // this is sponsor defined study level rules
-            i = catPath.lastIndexOf("/");
-            String sponsorName = catPath.substring(i + 1, catPath.length());
-            String stringMinusSponsorName = catPath.substring(0, i);
-            i = stringMinusSponsorName.lastIndexOf("/");
-            String studyShortTitle = stringMinusSponsorName.substring(i + 1, stringMinusSponsorName
-                            .length());
-
-            while (it.hasNext()) {
-                Rule rule = it.next();
-                rule.setId("");
-                createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName,
-                                subject, state);
-            }
-        }
-        if ((catPath.indexOf(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName()) == -1)
-                        && (catPath.indexOf(CategoryConfiguration.INSTITUTION_BASE.getName()) != -1)) {
-            // this is INSTITUTION defined level rules
-            i = catPath.lastIndexOf("/");
-            String institutionName = catPath.substring(i + 1, catPath.length());
-
-            while (it.hasNext()) {
-                Rule rule = it.next();
-                rule.setId("");
-                createRuleForInstitution(rule, ruleSetName, institutionName, subject, state);
-            }
-        }
-        if (catPath.indexOf(CategoryConfiguration.INSTITUTION_BASE.getName()) != -1) {
-            // this is sponsor defined study level rules
-            i = catPath.lastIndexOf("/");
-            String institutionName = catPath.substring(i + 1, catPath.length());
-            String stringMinusInstitutionName = catPath.substring(0, i);
-            i = stringMinusInstitutionName.lastIndexOf("/");
-            String studyShortTitle = stringMinusInstitutionName.substring(i + 1,
-                            stringMinusInstitutionName.length());
-
-            while (it.hasNext()) {
-                Rule rule = it.next();
-                rule.setId("");
-                createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle,
-                                institutionName, subject, state);
-            }
-        }
-
-        String orgName = subject.split("\\|\\|")[1];
-        // System.out.println(orgName);
-        Organization org = organizationDao.getByName(orgName);
-        System.out.println(org.getId() + "," + org.getName());
-        List<String> reportDefinitionsCreated = new ArrayList<String>();
-        
-        /**
-         * dont create report definitions if the rule set is DCP 
-         * DCP uses CTEP report definitions, this is a temp fix
-         */
-        if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName()) && !orgName.equals("Division of Cancer Prevention")) {
-        	
-        	//find the "Expedited" - ConfigProperty 
-        	ConfigProperty expeditedConfigProperty = configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_GROUP, "RT_AdEERS");
+            //find the "Expedited" - ConfigProperty
+            ConfigProperty expeditedConfigProperty = configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_GROUP, "RT_AdEERS");
             // check report definitions for this org
-            for (String rd : reportDefinitions) {
-                ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
-                if (reportDefinition == null && !rd.equals("IGNORE")) {
-                    //System.out.println("need to create .." + rd);
-                    ReportDefinition newRd = new ReportDefinition();
-                    newRd.setName(rd);
-                    newRd.setLabel(rd);
-                    newRd.setOrganization(org);
-                    newRd.setAmendable(true);
-                    newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
-                    newRd.setDuration(2);
-                    newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
-                    newRd.setGroup(expeditedConfigProperty);
-                    newRd.setPhysicianSignOff(false);
-                    reportDefinitionDao.save(newRd);
-                    reportDefinitionsCreated.add(rd);
-                }
+            for (String rd : reportDefinitionNames) {
+                    ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
+                    if (reportDefinition == null && !rd.equals("IGNORE")) {
+                        //if(log.isInfoEnabled()) log.info("need to create .." + rd);
+                        ReportDefinition newRd = new ReportDefinition();
+                        newRd.setName(rd);
+                        newRd.setLabel(rd);
+                        newRd.setOrganization(org);
+                        newRd.setAmendable(true);
+                        newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
+                        newRd.setDuration(2);
+                        newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
+                        newRd.setGroup(expeditedConfigProperty);
+                        newRd.setPhysicianSignOff(false);
+                        reportDefinitionDao.save(newRd);
+                        reportDefinitionsCreated.add(rd);
+                    }
 
             }
         }
+
+        //find the path to deploy from category
+        Category cat = ruleSet.getRule().get(0).getMetaData().getCategory().get(0);
+        String catPath = cat.getPath();
+
+        //create the rule set
+        createOrUpdateRuleSet(ruleSet, ruleSet.getName(), catPath,ruleSet.getDescription(), ruleSet.getSubject(), ruleSet.getCoverage());
+
+        //deploy the ruleset
+        ruleEngineService.deployRuleSet(ruleSet);
+
+
         return reportDefinitionsCreated;
-
-        // check report definitions in db , make a list of report definitions not found .
-
     }
+
 
     /**
      * This method is used to unDeploy a ruleSet
      * 
-     * @param  ruleSetName
+     * @param  ruleSetName - The bind URI
      * @exception RemoteException
      */
     public void unDeployRuleSet(String ruleSetName) throws RemoteException {
@@ -899,7 +327,7 @@ public class CaaersRulesEngineService {
     /**
      * This method is used to deploy a ruleSet
      * 
-     * @param  ruleSetName
+     * @param  ruleSetName - The bind URI
      * @exception RemoteException
      */
     public void deployRuleSet(String ruleSetName) throws RemoteException {
@@ -926,35 +354,63 @@ public class CaaersRulesEngineService {
     }
 
     /**
-     * This method will save the ruleset. 
-     * @param ruleSet
-     * @param level
-     * @param sponsorName
-     * @param institutionName
-     * @param studyShortTitle
-     * @param ruleSetName
+     * This method will save a rule set.
+     *
+     * Note: The subject of the ruleset will be framed using the login
+     *  RuleSetName || level || Sponsor-NCI-Code || Institution-NCI-Code || Study Primary ID
+     *
+     * @param ruleSet - The ruleset to save
+     * @param level    - The level
+     * @param ruleSetName  - The ruleset name eg: SAE Reporting Rules
+     * @param sponsor
+     * @param institution
+     * @param study
      * @throws Exception
      */
-    public void saveRuleSet(RuleSet ruleSet, String level, String sponsorName, String institutionName, String studyShortTitle, String ruleSetName ) throws Exception{
+    public void saveRuleSet(RuleSet ruleSet,String level,String ruleSetName,Organization  sponsor,
+                            Organization institution,Study study) throws Exception{
     	try {
-    			
+
+                String sponsorId = (sponsor != null)? sponsor.getId().toString() : null;
+                String studyId = (study != null) ? study.getId().toString() : null;
+                String institutionId = (institution != null) ? institution.getId().toString() : null;
+
+                String sponsorName = (sponsor != null) ? sponsor.getName() : null;
+                String institutionName = (institution != null) ? institution.getName() : null;
+                String studyShortTitle = (study != null) ?  study.getShortTitle() : null;
+                String pathToDeploy = generatePath(level, ruleSetName, sponsor, institution, study);
+                String packageName = constructPackageName(level, sponsorId,institutionId, studyId, ruleSetName);
+
+
+                //set additional attributes in ruleset
+                ruleSet.setDescription(ruleSetName);
+                ruleSet.setCoverage("Not Enabled");
+                StringBuilder subject = new StringBuilder(ruleSetName).append("||");
+                subject.append(StringUtils.isEmpty(level)? " " : level);
+                subject.append("||");
+                subject.append(sponsor != null? sponsor.getNciInstituteCode() : " ");
+                subject.append("||");
+                subject.append(institution != null ? institution.getNciInstituteCode() : " ");
+                subject.append("||");
+                subject.append(study != null ? study.getPrimaryIdentifierValue() : " ");
+               
+                ruleSet.setSubject(subject.toString());
+
                 List<Rule> rules = ruleSet.getRule();
+
                 // delete columns which are marked as delete .
                 for (Rule rule : rules) {
                     boolean termSelected = false;
 
-                    List<Column> cols = new ArrayList<Column>();
+                    List<Column> colsToDelete = new ArrayList<Column>();
                     for (Column col : rule.getCondition().getColumn()) {
                         if (col.isMarkedDelete()) {
-                            cols.add(col);
+                            colsToDelete.add(col);
                         }
-                        /*
-                         * if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
-                         * termSelected = true; }
-                         */
+                        
                     }
 
-                    for (Column col : cols) {
+                    for (Column col : colsToDelete) {
                         rule.getCondition().getColumn().remove(col);
                     }
 
@@ -1007,56 +463,68 @@ public class CaaersRulesEngineService {
 
                     }
                     rule.getCondition().getColumn().add(createCriteriaForFactResolver());
-                }
-                ruleSet.setCoverage("Not Enabled");
-                String subject = "";
-                System.out.println("------- LEVEL ----- " + level);
-                if (SPONSOR_DEFINED_STUDY_LEVEL.equals(level)) {
-                    subject = "Sponsor defined rules for a study||" + sponsorName + "||"
-                                    + studyShortTitle;
-                } else if (SPONSOR_LEVEL.equals(level)) {
-                    subject = "Sponsor rules||" + sponsorName;
-                } else if (INSTITUTIONAL_LEVEL.equals(level)) {
-                    subject = "Institution rules||" + institutionName;
-                } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(level)) {
 
-                    subject = "Institution defined rules for a study||" + institutionName + "||"
-                                    + studyShortTitle;
-                }
-
-                ruleSet.setDescription(ruleSetName);
-                ruleSet.setSubject(subject);
-
-                // Set the Package name and categoryIdentifier for all rules before saving them.
-                for (Rule rule : rules) {
-                    rule.getMetaData().setPackageName(constructPackageName(level, sponsorName, institutionName, studyShortTitle, ruleSetName));
+                    if(rule.getMetaData() == null) rule.setMetaData(new MetaData());
+                    rule.getMetaData().setPackageName(packageName);
                     rule.getMetaData().setDescription("Setting Description since its mandatory by JBoss Repository config");
-
                     populateCategoryBasedColumns(rule, level, sponsorName, institutionName, studyShortTitle);
-                }
-
-                if(StringUtils.equals(ruleSetName, RuleType.FIELD_LEVEL_RULES.getName())){
-
-                    saveFieldRules(ruleSet);
-
-                }else{
-                   if (SPONSOR_LEVEL.equalsIgnoreCase(level)) {
-                       saveRulesForSponsor(ruleSet, sponsorName);
-                   } else if (INSTITUTIONAL_LEVEL.equalsIgnoreCase(level)) {
-                       saveRulesForInstitution(ruleSet, institutionName);
-                   } else if (SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
-                       saveRulesForSponsorDefinedStudy(ruleSet, studyShortTitle, sponsorName);
-                   } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
-                       saveRulesForInstitutionDefinedStudy(ruleSet, studyShortTitle, institutionName);
-                   }
 
                 }
+            
+
+                if(log.isDebugEnabled())log.debug("Generated Path : " + pathToDeploy );
+
+                createOrUpdateRuleSet(ruleSet, packageName, pathToDeploy, ruleSetName, subject.toString(), ruleSet.getCoverage());
 
 
     	}catch (Exception e){
     		e.printStackTrace();
             throw new Exception("Error saving a  ruleset", e);
     	}
+    }
+
+    /**
+     * Will generate the path to which the rule should be deployed. 
+     * @param level - The level of the rule.
+     * @param ruleSetName - The name of the rule.
+     * @param sponsor  - The sponsor organization
+     * @param institution  - The institution organization.
+     * @param study  - The study. 
+     * @return
+     */
+    public String generatePath(String level,String ruleSetName, Organization sponsor, Organization institution, Study study){
+
+        StringBuilder path = new StringBuilder("/").append(CategoryConfiguration.CAAERS_BASE.getName()).append("/");
+
+        if(StringUtils.equals(level, SPONSOR_LEVEL)){
+            path.append(CategoryConfiguration.SPONSOR_BASE.getName())
+                    .append("/")
+                    .append(modifyOrganizationName(sponsor.getId().toString()))
+                    .append("/");
+        }
+        if(StringUtils.equals(level, INSTITUTIONAL_LEVEL)){
+             path.append(CategoryConfiguration.INSTITUTION_BASE.getName())
+                     .append("/")
+                     .append(modifyOrganizationName(institution.getId().toString()))
+                     .append("/");
+        }
+        if(StringUtils.equals(level, SPONSOR_DEFINED_STUDY_LEVEL)){
+            path.append(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())
+                     .append("/")
+                     .append(modifyOrganizationName(sponsor.getId().toString()))
+                     .append("/").append(modifyStudyName(study.getId().toString()))
+                     .append("/");
+        }
+        if(StringUtils.equals(level, INSTITUTION_DEFINED_STUDY_LEVEL)){
+            path.append(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName())
+                     .append("/")
+                     .append(modifyOrganizationName(institution.getId().toString()))
+                     .append("/").append(modifyStudyName(study.getId().toString()))
+                     .append("/");
+        }
+        path.append(RuleUtil.getStringWithoutSpaces(ruleSetName));
+        return path.toString();
+
     }
     
     private Column createCriteriaForFactResolver() {
@@ -1183,31 +651,121 @@ public class CaaersRulesEngineService {
     }
     
     /*
-     * This method cpnstructs the package name based on the Command object
+     * This method constructs the package name based on the Command object
      */
     public String constructPackageName(String level, String sponsorName, String institutionName, String studyShortTitle, String ruleSetName) {
 
-        String packageName = null;
-
-        if (SPONSOR_LEVEL.equalsIgnoreCase(level)) {
-            packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
-        } else if (INSTITUTIONAL_LEVEL.equalsIgnoreCase(level)) {
-            packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
-        } else if (SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
-            packageName = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix() + "."
-                            + RuleUtil.getStringWithoutSpaces(sponsorName) + "."
-                            + RuleUtil.getStringWithoutSpaces(studyShortTitle) + "."
-                            + RuleUtil.getStringWithoutSpaces(ruleSetName);
-        } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
-            packageName = CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE + "." 
-                            + RuleUtil.getStringWithoutSpaces(institutionName) + "."
-                            + RuleUtil.getStringWithoutSpaces(studyShortTitle) + "."
-                            + RuleUtil.getStringWithoutSpaces(ruleSetName);
+        StringBuilder sb = new StringBuilder();
+        
+        if(StringUtils.equals(level, SPONSOR_LEVEL)){
+            sb.append(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix())
+                    .append(".").append(modifyOrganizationName(sponsorName));
+        }else if(StringUtils.equals(level, SPONSOR_DEFINED_STUDY_LEVEL)){
+            sb.append(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix())
+                    .append(".").append(modifyOrganizationName(sponsorName))
+                    .append(".").append(modifyStudyName(studyShortTitle));
+        }else if(StringUtils.equals(level, INSTITUTIONAL_LEVEL)){
+            sb.append(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix())
+                     .append(".").append(modifyOrganizationName(institutionName));
+        }else if(StringUtils.equals(level, INSTITUTION_DEFINED_STUDY_LEVEL)){
+            sb.append(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix())
+                    .append(".").append(modifyOrganizationName(institutionName))
+                    .append(".").append(modifyStudyName(studyShortTitle));
+        }else if (RuleType.FIELD_LEVEL_RULES.getName().equals(level)){
+            sb.append(CategoryConfiguration.CAAERS_BASE.getPackagePrefix());
         }
 
-        return packageName;
+        sb.append(".").append(RuleUtil.getStringWithoutSpaces(ruleSetName));
+
+        if(log.isDebugEnabled()){
+            log.debug("level : " + level);
+            log.debug(" sponsorName : " + sponsorName);
+            log.debug("institutionName:" + institutionName);
+            log.debug("studyShortTitle:" + studyShortTitle);
+            log.debug("ruleSetName : " + ruleSetName);
+            log.debug("Package name : " + sb.toString());
+        }
+
+        return sb.toString();
+
 
     }
+
+    /**
+     * This method will prefix "ORG_" to the organization name.
+     * @param orgName
+     * @return
+     */
+    private String modifyOrganizationName(String orgName){
+        return "ORG_" + orgName;
+    }
+
+    /**
+     * This method will prefix "STU_" to the study name. 
+     * @param studyName
+     * @return
+     */
+    private String modifyStudyName(String studyName){
+       return "STU_" + studyName; 
+    }
+
+    /**
+     * Will parse and return the level, given a package name. 
+     * @param packageName
+     * @return
+     */
+    public String parseRuleLevel(String packageName){
+
+      String prefix = StringUtils.substringBefore(packageName , ".ORG_");
+        
+      if(StringUtils.equals(prefix, CategoryConfiguration.SPONSOR_BASE.getPackagePrefix())){
+         return SPONSOR_LEVEL;
+      }
+
+      if(StringUtils.equals(prefix, CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix())){
+         return SPONSOR_DEFINED_STUDY_LEVEL;
+      }
+
+      if(StringUtils.equals(prefix, CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix())){
+         return INSTITUTIONAL_LEVEL;
+      }
+        
+      if(StringUtils.equals(prefix, CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix())){
+         return INSTITUTION_DEFINED_STUDY_LEVEL;
+      }
+        
+      return null;
+    }
+
+    /**
+     * Will return the organization Id (Sponsor/Institution) id
+     * @param packageName
+     * @return
+     */
+    public String parseOrganizationId(String packageName){
+
+     String s = StringUtils.substringAfter(packageName, ".ORG_");
+     String orgId = StringUtils.substringBefore(s, ".");
+     return orgId;
+
+    }
+
+
+    /**
+     * Will return the study Id 
+     * @param packageName
+     * @return
+     */
+    public String parseStudyId(String packageName){
+
+     String s = StringUtils.substringAfter(packageName, ".STU_");
+     String studyId = StringUtils.substringBefore(s, ".");
+     return studyId;
+        
+    }
+
+
+
 
     /**
      * Will clean the ruleset retrieved from authoring service, by removing elements like
@@ -1311,13 +869,13 @@ public class CaaersRulesEngineService {
     * @return - List of String containin the field involved in this ruleSet
     *  
     */
-    public List<String> getRuleableFields(RuleSet rs, String objectIdentifier) {
+    private List<String> getRuleableFields(RuleSet rs, String objectIdentifier) {
 
         List<String> fields = new ArrayList<String>();
         if (rs == null) return fields;
 
         log.debug(String.format("Get the ruleable fields from RuleSet: %s", rs.getName()));
-        // System.out.println(String.format("Get the ruleable fields from RuleSet: %s", rs.getName()));
+        // if(log.isInfoEnabled()) log.info(String.format("Get the ruleable fields from RuleSet: %s", rs.getName()));
 
         for (Rule r : rs.getRule()) {
             Condition condition = r.getCondition();
@@ -1333,37 +891,20 @@ public class CaaersRulesEngineService {
     }
 
     /*
-     *
-     * @author Ion C. Olaru
-     * Get the fields involved in the list of ruleSets of this AEReport
+     * Lists attributes of AdverseEvent used in SAE rules.
+     * 
      * @param r - the aeReport to be evaluated
      * @return - List of String containin the field involved in the ruleSets
      *
      */
-    public List<String> getRuleableFieldsForAE(ExpeditedAdverseEventReport r) throws Exception {
+    public List<String> getFieldsUsedInSAERules(ExpeditedAdverseEventReport r) throws Exception {
 
         List<String> fields = new ArrayList<String>();
         Study s = r.getStudy();
 
-        for (RuleSet rs : getRuleSets(r)) {
+        for (RuleSet rs : getRuleSetsByExpeditedReport(r)) {
             fields.addAll(getRuleableFields(rs, "adverseEvent"));
         }
-        
-/*
-        // evaluate Study organization level rules
-        // System.out.println(s.getActiveStudySites());
-        for (StudyOrganization ss : s.getStudyOrganizations()) {
-            RuleSet rs = getRuleSe tForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), ss.getOrganization().getName());
-            fields.addAll(getRuleableFields(rs, "adverseEvent"));
-        }
-        
-        // System.out.println("ss:" +fields);
-        // evaluate sponsor if organization has no rules
-        if (fields.size() == 0) {
-            RuleSet rs = getRuleSetForSponsor(RuleType.REPORT_SCHEDULING_RULES.getName(), s.getPrimaryFundingSponsor().getOrganization().getName());
-            fields.addAll(getRuleableFields(rs, "adverseEvent"));
-        }
-*/
 
         return fields;
     }
@@ -1380,34 +921,37 @@ public class CaaersRulesEngineService {
      * @return - List of RuleSets
      *
      */
-    public List<RuleSet> getRuleSets(ExpeditedAdverseEventReport r) throws Exception {
+    private List<RuleSet> getRuleSetsByExpeditedReport(ExpeditedAdverseEventReport aeReport) throws Exception {
         List<RuleSet> rs = new ArrayList<RuleSet>();
 
         RuleSet r1;
-        String ruleName = RuleType.REPORT_SCHEDULING_RULES.getName();  
 
         // lookup the Sponsor Study level Rules
-        r1 = getRuleSetForSponsorDefinedStudy(ruleName, r.getStudy().getShortTitle(), r.getStudy().getPrimaryFundingSponsor().getOrganization().getName());
+        String packageName = constructPackageName(SPONSOR_DEFINED_STUDY_LEVEL, aeReport.getStudy().getPrimaryFundingSponsorOrganization().getId().toString(),
+                null, aeReport.getStudy().getId().toString(), RuleType.REPORT_SCHEDULING_RULES.getName());
+        r1 = getRuleSetByPackageName(packageName);
 
-        // if there is not Sponsor Study level RuleSet, check Sponsor level Rules
+        // if there is no Sponsor Study level RuleSet, check Sponsor level Rules
         if (r1 == null) {
-            r1 = getRuleSetForSponsor(ruleName, r.getStudy().getPrimaryFundingSponsor().getOrganization().getName());
+            packageName = constructPackageName(SPONSOR_LEVEL, aeReport.getStudy().getPrimaryFundingSponsorOrganization().getId().toString(),
+                null, null, RuleType.REPORT_SCHEDULING_RULES.getName());
+            r1 = getRuleSetByPackageName(packageName);
         }
         if (r1 != null) rs.add(r1);
 
 
-        StudySite assignmentStudySite = r.getReportingPeriod().getAssignment().getStudySite();
-        for (StudyOrganization so : r.getStudy().getStudyOrganizations()) {
+        //find institution based or institution based study rule sets.
 
-            // IGNORE the StudySite
-            // IF the organization is a studySite AND its not the site to which the assignment belongs
-            if (so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId())) continue;
+        StudySite assignmentStudySite = aeReport.getReportingPeriod().getAssignment().getStudySite();
+        packageName = constructPackageName(INSTITUTION_DEFINED_STUDY_LEVEL, null,
+                assignmentStudySite.getOrganization().getId().toString(), aeReport.getStudy().getId().toString(), RuleType.REPORT_SCHEDULING_RULES.getName());
+        r1 = getRuleSetByPackageName(packageName);
 
-            r1 = getRuleSetForInstitutionDefinedStudy(ruleName, r.getStudy().getShortTitle(), so.getOrganization().getName());
-            // if there is not Institution Study RuleSet, check Institution level Rules
-            if (r1 == null) {
-                r1 = getRuleSetForInstitution(ruleName, so.getOrganization().getName());
-            }
+        // if there is no Institution Study level RuleSet, check Institution level Rules
+        if(r1 == null){
+            packageName = constructPackageName(INSTITUTIONAL_LEVEL, null,
+                assignmentStudySite.getOrganization().getId().toString(), null, RuleType.REPORT_SCHEDULING_RULES.getName());
+            r1 = getRuleSetByPackageName(packageName);
         }
         if (r1 != null) rs.add(r1);
         
@@ -1422,24 +966,114 @@ public class CaaersRulesEngineService {
         this.organizationDao = organizationDao;
     }
 
-    public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception {
-        return getRuleSetForSponsor(ruleSetName, sponsorName, true);
+
+
+    /**
+     * This method will retrive the ruleset identified by package name.
+     * @param packageName
+     * @return
+     */
+    public RuleSet getRuleSetByPackageName(String packageName){
+        return getRuleSetByPackageName(packageName, false) ;
     }
 
-    public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName)
-                    throws Exception {
-        return getRuleSetForInstitution(ruleSetName, institutionName, true);
+
+    /**
+     * This method will retrive the ruleset identified by package name.
+     * @param packageName
+     * @param cached - If true will return from cache
+     * @return
+     */
+    public RuleSet getRuleSetByPackageName(String packageName, boolean cached){
+        RuleSet ruleSet = ruleAuthoringService.getRuleSet(packageName, cached);
+        cleanRuleSet(ruleSet);
+        makeRuleSetReadable(ruleSet);
+        return ruleSet;
     }
 
-    public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
-        return getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName, true);
+    /**
+     * Retrieves the ruleset configured for Input fields
+     * @return
+     */
+    public RuleSet getFieldRuleSet(String rulesetName){
+        return getFieldRuleSet(rulesetName,true);
     }
 
-    public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle,
-                    String institutionName) throws Exception {
-        return getRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName,
-                        true);
+    /**
+     * Retrieves the ruleset configured for input fields
+     * @param fromCache - if true will be retrieved from cache.
+     * @return
+     */
+    public RuleSet getFieldRuleSet(String rulesetName, boolean fromCache){
+        String packageName = RuleUtil.getPackageName(CategoryConfiguration.CAAERS_BASE.getPackagePrefix(), null, rulesetName);
+        return getRuleSetByPackageName(packageName, fromCache);
     }
+
+    /**
+     * Will retrieve a ruleset from the repository based on the unique ID of the ruleset.
+     * @param ruleSetId
+     * @return
+     */
+    public RuleSet getRuleSetById(String ruleSetId){
+
+      //the only way is to get all the rulesets, then return the matching one.
+      List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
+      RuleSet rs = null;
+      for(RuleSet ruleSet : ruleSets){
+          if(ruleSet.getId().equals(ruleSetId)){
+            rs = ruleSet;
+            break;
+          }
+      }
+
+      //set the meta-data in the rule set.
+      if(rs != null){
+          String packageName = rs.getName();
+          rs.setLevel(parseRuleLevel(packageName));
+          rs.setOrganization(parseOrganizationId(packageName));
+          rs.setStudy(parseStudyId(packageName));
+
+      }
+
+      return rs;
+
+    }
+
+    /**
+     * Will retrieve all the rule sets.
+     * Note: The default ruleset created by rules engine is removed from the list, as it is not requrired for the caAERS.  
+     * @return
+     */
+    public List<RuleSet> getAllRuleSets(){
+       List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
+       List<RuleSet> allRuleSets = new ArrayList<RuleSet>();
+
+       for(RuleSet ruleSet : ruleSets){
+
+           if (ruleSet.getDescription().equals("The default rule package")) continue;
+
+           allRuleSets.add(ruleSet);
+
+           //populate the other attributes like Organization, level, Study etc. 
+           String[] subjectParts = StringUtils.split(ruleSet.getSubject(), "||");
+           if(subjectParts.length < 4) continue;
+
+           String levelCode = subjectParts[1].trim();
+           String orgNCICode = subjectParts[2].trim();
+           String studyPrimaryIDValue = subjectParts[4].trim();
+           ruleSet.setOrganization(orgNCICode);
+           ruleSet.setStudy(studyPrimaryIDValue);
+
+           for(RuleLevel rl : RuleLevel.values()){
+              if(StringUtils.equals(rl.getName(), levelCode)){
+                   ruleSet.setLevel(rl.getDescription());
+              }
+           }
+           
+       }
+       return allRuleSets;
+    }
+    
 
 	public RepositoryService getRepositoryService() {
 		return repositoryService;
@@ -1486,5 +1120,13 @@ public class CaaersRulesEngineService {
 
     public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
         this.ruleDeploymentService = ruleDeploymentService;
+    }
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
     }
 }

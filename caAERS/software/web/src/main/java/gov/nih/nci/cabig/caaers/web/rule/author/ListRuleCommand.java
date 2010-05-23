@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.utils.CollectionFilterer;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
@@ -31,13 +32,14 @@ public class ListRuleCommand implements RuleInputCommand {
     private MultipartFile ruleSetFile1;
     // Done with attributes related to import rule
 
-    public ListRuleCommand(RuleAuthoringService ruleAuthoringService) throws RemoteException {
-        populateRuleSets(ruleAuthoringService);
+    public ListRuleCommand(CaaersRulesEngineService caaersRulesEngineService) throws RemoteException {
+        populateRuleSets(caaersRulesEngineService);
     }
     
-    public void populateRuleSets(RuleAuthoringService ruleAuthoringService){
+    public void populateRuleSets(CaaersRulesEngineService caaersRulesEngineService){
     	setRuleSets(null);
-    	ruleSets = ruleAuthoringService.getAllRuleSets();
+    	ruleSets = caaersRulesEngineService.getAllRuleSets();
+        
         Filterer filterer = new CollectionFilterer(ruleSets); 
         Iterator collectionIter = filterer.iterator();
         while (collectionIter.hasNext()) {

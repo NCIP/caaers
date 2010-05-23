@@ -10,6 +10,20 @@
     Object message = request.getAttribute("javax.servlet.error.message");
 %>
 
+<%!
+    /** Prints the exception */
+   public void printExceptionStackTrace(PrintWriter pw, Throwable e){
+       if(e != null){
+            e.printStackTrace(pw);
+            pw.println("****************************************************");
+            if(e instanceof javax.servlet.ServletException)
+                printExceptionStackTrace(pw, ((javax.servlet.ServletException)e).getRootCause() ) ;
+            else
+                printExceptionStackTrace(pw, e.getCause());
+       }
+   }
+%>
+
 <%@page import="java.io.PrintStream" %>
 <%@page import="java.io.PrintWriter" %>
  <page:applyDecorator name="standard">
@@ -155,7 +169,8 @@
                             <b>Value</b>
                         </td>
                     </tr>
-                    <%                String name  = "";
+                    <%
+                String name  = "";
                     String value = "";
                     java.util.Enumeration headers = request.getHeaderNames();
                     while(headers.hasMoreElements())
@@ -172,12 +187,14 @@
                             <%=String.valueOf(value)%>
                         </td>
                     </tr>
-                    <%                } %>
+                    <%
+                } %>
                 </table>
                 <br/>
                 <b>Attribute List:</b>
                 <table class="errortd" width="100%" cellspacing="1">
-                    <%                java.util.Enumeration attributes = request.getAttributeNames();
+                    <%
+                java.util.Enumeration attributes = request.getAttributeNames();
                     while(attributes.hasMoreElements())
                     {
                     name  = (String) attributes.nextElement();
@@ -199,16 +216,16 @@
                             <%=String.valueOf(value)%>
                         </td>
                     </tr>
-                    <%                } %>
+                    <%
+                } %>
                     <tr>
                         <td colspan="2">
                             <b>StackTrace :</b>
                             <br/>
                             <pre>
                                              <%
-                                             	if(exception != null){
-                                                 	exception.printStackTrace(new PrintWriter(out));
-                                             	}
+                                                 printExceptionStackTrace(new PrintWriter(out), exception);
+                                             	
                                              %>
                                   </pre>
                         </td>

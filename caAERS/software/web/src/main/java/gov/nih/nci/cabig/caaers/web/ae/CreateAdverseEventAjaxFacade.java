@@ -443,9 +443,9 @@ public class CreateAdverseEventAjaxFacade {
         return categories;
     }
 
-    public List<CtcCategory> getCategoriesWithStudyShortTitle(String studyShortTitle) {
+    public List<CtcCategory> getCtcCategoryByStudy(int studyId) {
 
-        Study s = studyDao.getByShortTitle(studyShortTitle);
+        Study s = studyDao.getById(studyId);
         Ctc ctc = s.getAeTerminology().getCtcVersion();
 
 

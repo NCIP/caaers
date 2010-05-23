@@ -41,7 +41,7 @@ public class ListRuleController extends SimpleFormController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new ListRuleCommand(ruleAuthoringService);
+        return new ListRuleCommand(caaersRulesEngineService);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ListRuleController extends SimpleFormController {
 
         }
         // Populate the rulesSets again.
-        command.populateRuleSets(ruleAuthoringService);
+        command.populateRuleSets(caaersRulesEngineService);
         ModelAndView modelAndView = new ModelAndView(getSuccessView(), errors.getModel());
 
         return modelAndView;
@@ -99,20 +99,12 @@ public class ListRuleController extends SimpleFormController {
         // boolean valid = false;
         boolean isEmpty = command.getRuleSetFile1().isEmpty();
         if (isEmpty) {
-            command.setMessage("Please choose either a stuy or a participant file");
+            command.setMessage("Please choose either a ruleset file");
         }
 
         return !isEmpty;
     }
 
-    public RuleAuthoringService getRuleAuthoringService() {
-        return ruleAuthoringService;
-    }
-
-    public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
-        this.ruleAuthoringService = ruleAuthoringService;
-    }
-    
     public CaaersRulesEngineService getCaaersRulesEngineService() {
 		return caaersRulesEngineService;
 	}

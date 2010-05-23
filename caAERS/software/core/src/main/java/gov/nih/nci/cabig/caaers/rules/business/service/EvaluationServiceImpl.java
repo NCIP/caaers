@@ -111,18 +111,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 //    	
     	return result;
     }
-    //TODO : BJ, to be removed
-    public List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study) {
-    	EvaluationResultDTO evaluationResult = new EvaluationResultDTO();
-    	findRequiredReportDefinitions(expeditedData, aeList, study, evaluationResult);
-    	List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
-    	if(expeditedData == null){
-    		reportDefinitions.addAll(evaluationResult.getAeReportIndexMap().get(new Integer(0)));
-    	}else{
-    		reportDefinitions.addAll(evaluationResult.getAeReportIndexMap().get(expeditedData.getId()));
-    	}
-    	return reportDefinitions;
-    }
     
     
     /**

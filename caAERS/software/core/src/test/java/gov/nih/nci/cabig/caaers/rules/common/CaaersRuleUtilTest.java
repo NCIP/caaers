@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
 import com.semanticbits.rules.brxml.Category;
+import com.semanticbits.rules.utils.RuleUtil;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import junit.framework.Test;
@@ -27,12 +28,19 @@ public class CaaersRuleUtilTest extends CaaersTestCase {
     }
 
 
-    public void testGetFieldRuleSpecificCategory() throws Exception {
-        Category c = CaaersRuleUtil.getFieldRuleSpecificCategory(caaersRulesEngineService.getRuleAuthoringService(), RuleType.FIELD_LEVEL_RULES.getName());
-        assertNotNull(c);
-        assertEquals("CAAERS_BASE" , c.getPath());
-        Category c2 = caaersRulesEngineService.getRepositoryService().getCategory("/CAAERS_BASE/field_rules");
-        assertEquals(c.getPath(), c2.getPath());
+    public void testCreateCategory() throws Exception {
+        CaaersRuleUtil.createCategory(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C/D");
+        assertTrue(RuleUtil.categoryExist(caaersRulesEngineService.getRuleAuthoringService(), "/A"));
+        assertTrue(RuleUtil.categoryExist(caaersRulesEngineService.getRuleAuthoringService(), "/A/B"));
+        assertTrue(RuleUtil.categoryExist(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C"));
+    }
+
+
+    public void testCreateCategoryMultipleTimes() throws Exception {
+       Category c1 =  CaaersRuleUtil.createCategory(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C/D/E");
+       Category c2 =  CaaersRuleUtil.createCategory(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C/D/E");
+
+       assertEquals(c1.getPath(), c2.getPath());
     }
 
 

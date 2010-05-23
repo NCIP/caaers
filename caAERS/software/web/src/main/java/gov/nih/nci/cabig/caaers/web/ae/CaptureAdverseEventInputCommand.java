@@ -174,34 +174,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 
 
-    
-    public void clearSession(){
-    	assignmentDao.clearSession();
-    }
-    
-    public void evictUnwantedObjects(){
-    	assignmentDao.evict(getAssignment());
-    }
-    
-    
-/*
-    public void cleanEmptyAdverseEvents(){
-    	List<AdverseEvent> adverseEvents = adverseEventReportingPeriod.getAdverseEvents();
-    	List<AdverseEvent> unwantedAdverseEvents = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae : adverseEvents){
-    		if(ae.getAdverseEventTerm() == null  || ae.getAdverseEventTerm().getTerm() == null) unwantedAdverseEvents.add(ae);
-    	}
-    	
-    	
-    	if(unwantedAdverseEvents.isEmpty()) return;
-    	
-    	for(AdverseEvent ae : unwantedAdverseEvents){
-    		adverseEvents.remove(ae);
-    	}
-    	save();
-    }
-    
-*/
     /**
      * This method will take care of initializing the lazy associations
      * This method will take care of
@@ -256,179 +228,23 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     }
     
    
-    
-    /**
-     * This method will find all avaliable report definitions for all the StudyOrganizations. 
-     */
-    public List<ReportDefinition> findAllReportDefintionNames(){
-//    	// evalutate available report definitions per session.
-//    	if(this.allReportDefinitions.isEmpty()){
-//    		this.allReportDefinitions.addAll(evaluationService.applicableReportDefinitions(this.assignment));
-//    		//upate the index map
-//    		for(ReportDefinition repDef : allReportDefinitions){
-//    			reportDefinitionIndexMap.put(repDef.getId(), repDef);
-//    		}
-//    	}
-//    	return this.allReportDefinitions;
-    	return null;
-    }
-    
-    public List<ReportDefinition> findRequiredReportDefinitions(){
-//    	//if already available return that, as we will take care of clearing it when we quit this tab.
-//    	if(requiredReportDefinitionsMap.isEmpty() && !adverseEventReportingPeriod.isBaselineReportingType()){
-//    		this.requiredReportDefinitionsMap = evaluationService.findRequiredReportDefinitions(this.adverseEventReportingPeriod);
-//    	}
-//    	return new ArrayList<ReportDefinition>(requiredReportDefinitionsMap.keySet());
-    	return null;
-    }
-    
-    /**
-     * Will figureout the report definitions required for modified adverse events.
-     * @return
-     */
-    public List<ReportDefinition> findRequiredReportDefinitionsForModifiedAdverseEvents(){
-    	List<AdverseEvent> modifiedAdverseEvents = adverseEventReportingPeriod.getModifiedExpeditedAdverseEvents();
-    	if(modifiedAdverseEvents == null || modifiedAdverseEvents.isEmpty()) return new ArrayList<ReportDefinition>();
-    	
-    	return evaluationService.findRequiredReportDefinitions(null, modifiedAdverseEvents, adverseEventReportingPeriod.getStudy());
-    }
-    /**
-     * This method will find the report definitions required for non expedited adverse events.
-     * @return
-     */
-    public List<ReportDefinition> findRequiredReportDefinitionsForNonExpeditedAdverseEvents(){
-    	
-    	List<AdverseEvent> nonExpeditedAdverseEvents = adverseEventReportingPeriod.getNonExpeditedAdverseEvents();
-    	if(nonExpeditedAdverseEvents == null || nonExpeditedAdverseEvents.isEmpty()) return new ArrayList<ReportDefinition>();
-    	
-    	return evaluationService.findRequiredReportDefinitions(null, nonExpeditedAdverseEvents, adverseEventReportingPeriod.getStudy());
-    }
 
-
-    /**
-     * This method will return the ReportDefinition which are selected by user
-     * page.
-     */
-    public List<ReportDefinition> getSelectedReportDefinitions() {
-        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-//        
-//        for (Map.Entry<Integer, Boolean> entry : reportDefinitionMap.entrySet()) {
-//            if (entry.getValue() != null && entry.getValue()){
-//            	ReportDefinition reportDef = reportDefinitionIndexMap.get(entry.getKey());
-//            	if(reportDef != null) reportDefs.add(reportDef);
-//            }
-//        }
-        return reportDefs;
-   }
-    
-   /**
-    * Will clear first the report definitions, then
-    *  add all report definitions, with value false, and updates the the value to true for selected ones.  
-    */
-   public void refreshReportDefinitionMap(){
-//	   reportDefinitionMap.clear();
-//	   for(ReportDefinition rpDef : allReportDefinitions){
-//		   reportDefinitionMap.put(rpDef.getId(), false);
-//	   }
-//	   
-//	   //rules engine said reports should be selected
-//	   for(ReportDefinition rpDef : requiredReportDefinitionsMap.keySet()){
-//		   reportDefinitionMap.put(rpDef.getId(), true);
-//	   }
-   }
-   
-   /**
-    * Will populate the map, containg the ID and ReportDefinition, that are associated to 
-    * active ExpeditedReports of this reporting period. 
-    */
-   public void refreshInstantiatedReportDefinitionMap(){
-//	   instantiatedReportDefinitionMap.clear();
-//	   for(ExpeditedAdverseEventReport aeReport : getAdverseEventReportingPeriod().getActiveAeReports()){
-//		   for(Report report : aeReport.getReports()){
-//			   if(!report.isHavingStatus(ReportStatus.WITHDRAWN , ReportStatus.AMENDED, ReportStatus.REPLACED)){
-//				   instantiatedReportDefinitionMap.put(report.getReportDefinition().getId(), report.getReportDefinition());
-//			   }
-//			   
-//		   }
-//	   }
-   }
-    
-    /**
-     * This method will return the adverse events that are selected (checked)
-     * @return
-     */
-    public List<AdverseEvent> findSelectedAdverseEvents(){
-    	List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
-//    	for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
-//    		Boolean value = selectedAesMap.get(ae.getId());
-//    		if(value != null && value){
-//    			adverseEvents.add(ae);
-//    		}
-//    	}
-    	return adverseEvents;
-    }
-    
-    public void refreshReportStatusMap(){
-//    	reportStatusMap.clear();
-//        Date earliestGradedDate = adverseEventReportingPeriod.getEarliestAdverseEventGradedDate();
-//        if(earliestGradedDate == null) earliestGradedDate = new Date();
-//        
-//    	//initialize every thing with empty
-//    	for(ReportDefinition rpDef : allReportDefinitions){
-//    		reportStatusMap.put(rpDef.getId(), rpDef.getExpectedDisplayDueDate(earliestGradedDate));
-//    	}
-    }
-    
-	public void refreshReportDefinitionRequiredIndicatorMap(){
-//		this.requiredReportDefinitionIndicatorMap.clear();
-//		for(ReportDefinition rpDef : allReportDefinitions){
-//			requiredReportDefinitionIndicatorMap.put(rpDef.getId(), false);
-//		}
-//		for(ReportDefinition rpDef : this.requiredReportDefinitionsMap.keySet()){
-//			requiredReportDefinitionIndicatorMap.put(rpDef.getId(), true);
-//		}
-	}
-	
-	
-	/**
-	 * All AEs associated with <b>selectedReportDefinitions</b> must be selected.
-	 * 
-	 * This method populates the SelectedAesMap member of the command object. The adverse events that were serious on triggering of the rules are set to true in this
-	 * Map. All the adverse events in the reporting period are keys in this map.
-	 */
-	public void refreshSelectedAesMap(){
-//		selectedAesMap.clear();
-//		//initialize all selected aes to false
-//		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
-//			Integer id = ae.getId();
-//			selectedAesMap.put(id, Boolean.FALSE);
-//		}
-//		for(AdverseEvent ae: adverseEventReportingPeriod.getModifiedReportableAdverseEvents()){
-//			ae.setRequiresReporting(false);
-//		}
-//		
-//		//reportingRequired boolean is set in the case when requiredReportDefinitionsMap is not empty (ie there are reports
-//		//suggested by caAERS. In this case all the aes in the selectedAesMap will be set to true, so that all of them are checked
-//		//on the review report page.
-//		Boolean reportingRequired = false;
-//		//reset the ones that are available below with true
-//		for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
-//			reportingRequired = true;
-//			for(AdverseEvent ae : entry.getValue()){
-//				ae.setRequiresReporting(Boolean.TRUE);
-//			}
-//		}
-//		
-//		//Set all the aes in the reportingRequired map to true incase reportingRequired == true
-//		if(reportingRequired){
-//			for(AdverseEvent ae: adverseEventReportingPeriod.getReportableAdverseEvents()){
-//				selectedAesMap.put(ae.getId(), true);
-//			}
-//		}
-	}
-    
-	
-	
+//
+//    /**
+//     * This method will return the ReportDefinition which are selected by user
+//     * page.
+//     */
+//    public List<ReportDefinition> getSelectedReportDefinitions() {
+//        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+////
+////        for (Map.Entry<Integer, Boolean> entry : reportDefinitionMap.entrySet()) {
+////            if (entry.getValue() != null && entry.getValue()){
+////            	ReportDefinition reportDef = reportDefinitionIndexMap.get(entry.getKey());
+////            	if(reportDef != null) reportDefs.add(reportDef);
+////            }
+////        }
+//        return reportDefs;
+//   }
 
 	/**
 	 * This method will initialize the outcomes and outcomeOtherDetails, in the command. 
@@ -554,16 +370,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		return adverseEventReportingPeriod.getAdverseEvents();
 	}
 
-    //    /**
-//     * Returns all the {@link ReportDefinition} available to this AE
-//     */
-//    public List<ReportDefinition> getAllReportDefinitions() {
-//        return allReportDefinitions;
-//    }
-//
-//    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
-//        this.allReportDefinitions = allReportDefinitions;
-//    }
     
     public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
@@ -677,32 +483,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
     }
-//    
-//    public Map<ReportDefinition, List<AdverseEvent>> getRequiredReportDefinitionsMap() {
-//		return requiredReportDefinitionsMap;
-//	}
-//    public void setRequiredReportDefinitionsMap(Map<ReportDefinition, List<AdverseEvent>> map){
-//    	this.requiredReportDefinitionsMap = map;
-//    }
-//    
-//    public Map<Integer, String> getReportStatusMap() {
-//		return reportStatusMap;
-//	}
-//    public void setReportStatusMap(Map<Integer, String> map) {
-//		reportStatusMap = map;
-//	}
-//    public Map<Integer, Boolean> getRequiredReportDefinitionIndicatorMap() {
-//		return requiredReportDefinitionIndicatorMap;
-//	}
-//    public void setRequiredReportDefinitionIndicatorMap(Map<Integer, Boolean> map) {
-//		requiredReportDefinitionIndicatorMap = map;
-//	}
-//    public Map<Integer, Boolean> getReportDefinitionMap() {
-//		return reportDefinitionMap;
-//	}
-//    public void setReportDefinitionMap(Map<Integer, Boolean> reportDefinitionMap) {
-//		this.reportDefinitionMap = reportDefinitionMap;
-//	}
+
 
 	public Integer getPrimaryAdverseEventId() {
 		return primaryAdverseEventId;
@@ -719,27 +500,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	public void setReviewResult(ReviewAndReportResult reviewResult) {
 		this.reviewResult = reviewResult;
 	}
-	
-//	/**
-//	 * Returns the {@link AdverseEvent}s selected in the page. With primary being the first one.
-//	 * @return
-//	 */
-//    public List<AdverseEvent> getSelectedAesList() {
-//		List<AdverseEvent> selectedAesList = new ArrayList<AdverseEvent>();
-//    	for(AdverseEvent ae: adverseEvents){
-//    		if(ae.getReport() != null) continue;
-//    		if(BooleanUtils.isTrue(getSelectedAesMap().get(ae.getId()))){
-//    			if(primaryAdverseEventId != null && ae.getId().equals(primaryAdverseEventId)){
-//    				selectedAesList.add(0, ae);
-//    			}else{
-//    				selectedAesList.add(ae);
-//    			}
-//    		}
-//    	}
-//    	
-//    	return selectedAesList;
-//	}
-    
+
     public boolean getWorkflowEnabled() {
 		return workflowEnabled;
 	}
@@ -798,13 +559,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	return reportDefinitionDao.merge(reportDefinition);
     }
     
-//    public Map<Integer, ReportDefinition> getInstantiatedReportDefinitionMap() {
-//		return instantiatedReportDefinitionMap;
-//	}
-//    public void setInstantiatedReportDefinitionMap(
-//			Map<Integer, ReportDefinition> instantiatedReportDefinitionMap) {
-//		this.instantiatedReportDefinitionMap = instantiatedReportDefinitionMap;
-//	}
+
 	
     public HashMap<String, Boolean> getErrorsForFields() {
         return errorsForFields;

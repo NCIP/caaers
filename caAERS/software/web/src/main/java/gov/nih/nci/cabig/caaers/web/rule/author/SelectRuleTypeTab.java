@@ -1,36 +1,23 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
-import gov.nih.nci.cabig.caaers.rules.common.RuleType;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
-import gov.nih.nci.cabig.caaers.web.ae.ReportingPeriodCommand;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 /**
  * Represents the first tab while authoring Rules.
  * 
  * @author Sujith Vellat Thayyilthodi
+ * @author Biju Joseph
  */
 public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
     private static final Log logger = LogFactory.getLog(SelectRuleTypeTab.class);
@@ -84,45 +71,43 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
 
     }
 
+    /**
+     * Validates the input for the pressens of following :
+     *  - RuleSet name
+     *  - Rule Level
+     *  - Sponsor or Institution
+     *  - Study (if a study based rule)
+     * @param cmd - The command object
+     * @param commandBean  - A command wrapper
+     * @param fieldGroups  - The fields
+     * @param errors     - The errors object.
+     */
     @Override
     public void validate(RuleInputCommand cmd, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         CreateRuleCommand command = (CreateRuleCommand) cmd;
         String level = command.getLevel();
         String ruleSetName = command.getRuleSetName();
-        
+
         if(StringUtils.isEmpty(ruleSetName)){
            errors.rejectValue("ruleSetName", "RUL_010");
-        }else if(!StringUtils.equals(ruleSetName, RuleType.FIELD_LEVEL_RULES.getName())){
-
-            if(level == null || level.equals("")){
-                errors.rejectValue("level", "RUL_014");
-            }else{
-                if (level.equals(RuleLevel.Sponsor.getName())) {
-                    if (command.getSponsorName().trim().equals("")) {
-                        errors.rejectValue("sponsorName", "RUL_011");
-                    }
-                } else if (level.equals(RuleLevel.SponsorDefinedStudy.getName())) {
-                    if (command.getSponsorName().trim().equals("")) {
-                        errors.rejectValue("sponsorName", "RUL_011");
-                    }
-                    if (command.getCategoryIdentifier().trim().equals("")) {
-                        errors.rejectValue("categoryIdentifier", "RUL_012");
-                    }
-                } else if (level.equals(RuleLevel.Institution.getName())) {
-                    if (command.getInstitutionName().trim().equals("")) {
-                        errors.rejectValue("institutionName", "RUL_013");
-                    }
-                } else if (level.equals(RuleLevel.InstitutionDefinedStudy.getName())) {
-                    if (command.getInstitutionName().trim().equals("")) {
-                        errors.rejectValue("institutionName", "RUL_013");
-                    }
-                    if (command.getCategoryIdentifier().trim().equals("")) {
-                        errors.rejectValue("categoryIdentifier", "RUL_012");
-                    }
-               }
-            }
-
+           return;
         }
+
+        if(StringUtils.isEmpty(level)){
+           errors.rejectValue("level", "RUL_014");
+           return;
+        }
+
+        if(command.isSponsorBased() && command.getSponsor() == null){
+           errors.rejectValue("sponsor", "RUL_011");
+        }
+        if(command.isInstitutionBased() && command.getInstitution() == null){
+           errors.rejectValue("institution", "RUL_013"); 
+        }
+        if(command.isStudyBased() && command.getStudy() == null){
+           errors.rejectValue("study", "RUL_012");
+        }
+
     }
     
 

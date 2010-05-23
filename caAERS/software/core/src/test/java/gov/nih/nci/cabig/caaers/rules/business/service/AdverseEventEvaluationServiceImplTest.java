@@ -1,13 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -52,6 +46,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		caaersRulesEngineService = registerMockFor(CaaersRulesEngineService.class);
 		aeReport = registerMockFor(ExpeditedAdverseEventReport.class);
 		study = registerMockFor(Study.class);
+        EasyMock.expect(study.getId()).andReturn(1).anyTimes();
 		reports = new ArrayList<Report>();
 		Report r1 = Fixtures.createReport("r1");
 		Report r2 = Fixtures.createReport("r2");
@@ -78,10 +73,10 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
 		EasyMock.expect(study.getStudyOrganizations()).andReturn(new ArrayList<StudyOrganization>()).anyTimes();
 		EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
-		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test","test")).anyTimes();
+		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test",1)).anyTimes();
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
-		EasyMock.expect(caaersRulesEngineService.getRuleSetForSponsorDefinedStudy("Mandatory Sections Rules", "test", "test")).andReturn(new RuleSet()).anyTimes();
-		
+        EasyMock.expect(caaersRulesEngineService.constructPackageName("SponsorDefinedStudy", "1", null, "1", "SAE Reporting Rules")).andReturn("abcd").anyTimes();
+		EasyMock.expect(caaersRulesEngineService.getRuleSetByPackageName("abcd")).andReturn(new RuleSet()).anyTimes();
 		//frame the evalutaion result
 		RuleEvaluationResult result1 = new RuleEvaluationResult();
 		result1.setMessage("ADVERSE_EVENT_SECTION");
@@ -102,9 +97,8 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
 		EasyMock.expect(study.getStudyOrganizations()).andReturn(new ArrayList<StudyOrganization>()).anyTimes();
 		EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
-		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test","test")).anyTimes();
+		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test",1)).anyTimes();
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
-		EasyMock.expect(caaersRulesEngineService.getRuleSetForSponsorDefinedStudy("Mandatory Sections Rules", "test", "test")).andReturn(new RuleSet()).anyTimes();
 		
 		//frame the evalutaion result
 		RuleEvaluationResult result1 = new RuleEvaluationResult();
@@ -126,9 +120,8 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
 		EasyMock.expect(study.getStudyOrganizations()).andReturn(new ArrayList<StudyOrganization>()).anyTimes();
 		EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
-		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test","test")).anyTimes();
+		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test",1)).anyTimes();
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
-		EasyMock.expect(caaersRulesEngineService.getRuleSetForSponsorDefinedStudy("Mandatory Sections Rules", "test", "test")).andReturn(new RuleSet()).anyTimes();
 		
 		//frame the evalutaion result
 		RuleEvaluationResult result1 = new RuleEvaluationResult();

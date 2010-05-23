@@ -50,7 +50,6 @@
     </bean>
 
     <bean id="ruleAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade">
-    	<property name="repositoryService" ref="jcrService" />
     </bean>
     
     <bean id="meddraAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MeddraAjaxFacade">

@@ -22,13 +22,9 @@ public class SelectRuleTypeTabTest extends AbstractTestCase {
     
     RuleAuthoringService ruleAuthoringService;
     StudyDao studyDao;
-    NotificationDao notificationDao;
     CaaersRulesEngineService caaersRulesEngineService;
     ReportDefinitionDao reportDefinitionDao;
     OrganizationDao organizationDao;
-    CtcDao ctcDao;
-    RuleDeploymentService ruleDeploymentService;
-    RepositoryService repositoryService;
     Errors errors;
     BeanWrapper commandWrapper;
     CreateRuleCommand command;
@@ -39,16 +35,11 @@ public class SelectRuleTypeTabTest extends AbstractTestCase {
         super.setUp();
         ruleAuthoringService = registerMockFor(RuleAuthoringService.class);
         studyDao = registerDaoMockFor(StudyDao.class);
-        notificationDao = registerDaoMockFor(NotificationDao.class);
         caaersRulesEngineService = registerMockFor(CaaersRulesEngineService.class);
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
         organizationDao = registerDaoMockFor(OrganizationDao.class);
-        ctcDao = registerDaoMockFor(CtcDao.class);
-        ruleDeploymentService = registerMockFor(RuleDeploymentService.class);
-        repositoryService = registerMockFor(RepositoryService.class);
 
-        command = new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, reportDefinitionDao, organizationDao,
-                ctcDao, ruleDeploymentService, repositoryService);
+        command = new CreateRuleCommand(caaersRulesEngineService, reportDefinitionDao, organizationDao);
         commandWrapper = new BeanWrapperImpl(command);
         tab = new SelectRuleTypeTab();
         errors = new BindException(command, "command");

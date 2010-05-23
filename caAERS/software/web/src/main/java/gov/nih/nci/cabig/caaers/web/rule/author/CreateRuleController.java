@@ -1,13 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import com.semanticbits.rules.utils.RuleUtil;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.HttpSessionRequiredException;
@@ -37,22 +41,11 @@ import com.semanticbits.rules.brxml.RuleSet;
  * 
  * @author Sujith Vellat Thayyilthodi
  * @author Ion C. Olaru
+ * @author Biju Joseph
  */
 public class CreateRuleController extends AbstractRuleInputController<CreateRuleCommand> {
 
-	public static final String SPONSOR_LEVEL = "Sponsor";
-
-    public static final String INSTITUTIONAL_LEVEL = "Institution";
-
-    public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
-
-    public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
-    
-    private RuleAuthoringService ruleAuthoringService;
-
     private StudyDao studyDao;
-
-    private NotificationDao notificationDao;
 
     private ReportDefinitionDao reportDefinitionDao;
 
@@ -60,24 +53,19 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     private CaaersRulesEngineService caaersRulesEngineService;
 
-    private CtcDao ctcDao;
-    
-    private RuleDeploymentService ruleDeploymentService;
-    
-    private RepositoryService repositoryService;
-
-    public NotificationDao getNotificationDao() {
-        return notificationDao;
-    }
-
-    public void setNotificationDao(NotificationDao notificationDao) {
-        this.notificationDao = notificationDao;
-    }
 
     public CreateRuleController() {
         super();
         setBindOnNewForm(false);
         addTabs();
+    }
+
+    @Override
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(request, binder);
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        ControllerTools.registerDomainObjectEditor(binder, organizationDao);
+        ControllerTools.registerDomainObjectEditor(binder, studyDao);
     }
 
     @Override
@@ -104,14 +92,19 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         if(WebUtils.getTargetPage(request) > 0){
         	summary.put("Rule level", (createRuleCommand.getLevel() == null || createRuleCommand.getLevel().equals("")) ? "" : createRuleCommand.getLevelDescription());
         	summary.put("Rule set name", (createRuleCommand.getRuleSetName() == null || createRuleCommand.getRuleSetName().equals("")) ? "" : createRuleCommand.getRuleSetName());
-        	if(createRuleCommand.getLevel() != null){
-        		if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL))
-        			summary.put("Sponsor", (createRuleCommand.getOrganizationName() == null ? "" : createRuleCommand.getOrganizationName()));
-        		if(createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTIONAL_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
-        			summary.put("Institution", (createRuleCommand.getInstitutionName() == null ? "" : createRuleCommand.getInstitutionName()));
-        		if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
-        			summary.put("Study", createRuleCommand.getCategoryIdentifier() == null ? "" : createRuleCommand.getCategoryIdentifier());
-        	}
+            
+            if(createRuleCommand.isSponsorBased()){
+                summary.put("Sponsor", createRuleCommand.getSponsor() != null ? createRuleCommand.getSponsor().getFullName() : "");
+            }
+
+            if(createRuleCommand.isInstitutionBased()){
+                summary.put("Institution", createRuleCommand.getInstitution() != null ? createRuleCommand.getInstitution().getFullName() : "");
+            }
+
+            if(createRuleCommand.isStudyBased() && createRuleCommand.getStudy() != null){
+               summary.put("Study", "(" + createRuleCommand.getStudy().getPrimaryIdentifierValue() + ") " + createRuleCommand.getStudy().getShortTitle() );
+            }
+
         }
     	referenceData.put("ruleFlowSummary", summary);
     	
@@ -178,58 +171,48 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 		
     }
 
+    /**
+     * Retrieves the RuleSet based on the "ruleSetId" request parameter.
+     * @param request
+     * @return
+     */
     @Override
     protected Object formBackingObject(HttpServletRequest request) {
-    	CreateRuleCommand command = new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, 
-    			reportDefinitionDao, organizationDao, ctcDao, ruleDeploymentService, repositoryService);
+    	CreateRuleCommand command = new CreateRuleCommand(caaersRulesEngineService,reportDefinitionDao, organizationDao);
     	
     	String sourcePage = (String) findInRequest(request, "from");
-    	if(sourcePage != null && sourcePage.equals("list")){
-    		String ruleSetId = (String) findInRequest(request, "ruleSetId");
-    		List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
-    		
-    		RuleSet rs = null;
-    		for(RuleSet ruleSet: ruleSets){
-    			if(ruleSet.getId().equals(ruleSetId))
-    				rs = ruleSet;
-    		}
-    		if(rs != null){
+        if(StringUtils.equals(sourcePage, "list")){
+            String ruleSetId = (String) findInRequest(request, "ruleSetId");
+            RuleSet rs = caaersRulesEngineService.getRuleSetById(ruleSetId);
+            if(rs != null){
+
+                //populate the Study/Sponsor/Institution
+                command.setLevel(caaersRulesEngineService.parseRuleLevel(rs.getName()));
                 command.setRuleSetName(rs.getDescription());
-                command.setCategoryIdentifier("");
-                if(StringUtils.equals(command.getRuleSetName(), RuleType.FIELD_LEVEL_RULES.getName())){
+                String orgId = caaersRulesEngineService.parseOrganizationId(rs.getName());
+                String stuId = caaersRulesEngineService.parseStudyId(rs.getName());
 
-                }else{
-
-                    Organization org = organizationDao.getByName(rs.getOrganization());
-                    if(rs.getSubject().startsWith("Sponsor defined rules for a study")){
-                        command.setLevel(SPONSOR_DEFINED_STUDY_LEVEL);
-                        command.setCategoryIdentifier(rs.getStudy());
-                        command.setSponsorName(rs.getOrganization());
-                        if(org != null)
-                            command.setSponsorNameInitialValue(command.getSponsorName() + " ( " + org.getNciInstituteCode() + " ) ");
-                    }
-                    else if(rs.getSubject().startsWith("Sponsor rules")){
-                        command.setLevel(SPONSOR_LEVEL);
-                        command.setSponsorName(rs.getOrganization());
-                        if(org != null)
-                            command.setSponsorNameInitialValue(command.getSponsorName() + " ( " + org.getNciInstituteCode() + " ) ");
-                    }
-                    else if(rs.getSubject().startsWith("Institution rules")){
-                        command.setLevel(INSTITUTIONAL_LEVEL);
-                        command.setInstitutionName(rs.getOrganization());
-                        if(org != null)
-                            command.setInstitutionNameInitialValue(command.getInstitutionName() + " ( " + org.getNciInstituteCode() + " ) ");
-                    }
-                    else if(rs.getSubject().startsWith("Institution defined rules for a study")){
-                        command.setLevel(INSTITUTION_DEFINED_STUDY_LEVEL);
-                        command.setCategoryIdentifier(rs.getStudy());
-                        command.setInstitutionName(rs.getOrganization());
-                        if(org != null)
-                            command.setInstitutionNameInitialValue(command.getInstitutionName() + " ( " + org.getNciInstituteCode() + " ) ");
-                    }
+                if(StringUtils.isNotEmpty(orgId)){
+                   Organization org = organizationDao.getById(Integer.parseInt(orgId));
+                   if(command.isSponsorBased()){
+                       command.setSponsorNameInitialValue(org.getFullName());
+                       command.setSponsor(org);
+                   }
+                   if(command.isInstitutionBased()){
+                       command.setInstitutionNameInitialValue(org.getFullName());
+                       command.setInstitution(org);
+                   }
                 }
-    		}
-    	}
+
+                if(StringUtils.isNotEmpty(stuId)){
+                    Study study = studyDao.getById(Integer.parseInt(stuId));
+                    command.setStudy(study);
+                }
+                
+            }
+
+
+        }
     	
     	return command;
     }
@@ -247,7 +230,6 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     protected void addTabs() {
         getFlow().addTab(new SelectRuleTypeTab());
-        //getFlow().addTab(new DisplayRuleSetsTab());
         getFlow().addTab(new RuleTab());
         getFlow().addTab(new ReviewTab());
     }
@@ -279,14 +261,6 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         return super.suppressValidation(httpServletRequest);
     }
 
-    public RuleAuthoringService getRuleAuthoringService() {
-        return ruleAuthoringService;
-    }
-
-    public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
-        this.ruleAuthoringService = ruleAuthoringService;
-    }
-
     public StudyDao getStudyDao() {
         return studyDao;
     }
@@ -295,16 +269,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         this.studyDao = studyDao;
     }
 
-    public CaaersRulesEngineService getCaaersRulesEngineService() {
-        return caaersRulesEngineService;
-    }
-
     public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService) {
         this.caaersRulesEngineService = caaersRulesEngineService;
-    }
-
-    public ReportDefinitionDao getReportDefinitionDao() {
-        return reportDefinitionDao;
     }
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
@@ -319,23 +285,5 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         this.organizationDao = organizationDao;
     }
 
-    public void setCtcDao(CtcDao ctcDao) {
-        this.ctcDao = ctcDao;
-    }
-    
-    public RuleDeploymentService getRuleDeploymentService() {
-        return ruleDeploymentService;
-    }
-
-    public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
-        this.ruleDeploymentService = ruleDeploymentService;
-    }
-    
-    public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
-
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
+   
 }

@@ -44,7 +44,7 @@ public class StudyQueryIntegrationTest extends CaaersDbNoSecurityTestCase {
 	    
 	    public void testFindStudies_WithFilterOnSponsor(){
 	    	query.joinStudyOrganization();
-	    	query.filterByFundingSponsorNameExactMatch("National Cancer Institute");
+	    	query.filterBySponsorOrganizationId(-1001);
 	    	List<Study> studies = studyDao.find(query);
 	    	assertEquals(3, studies.size());
 	    }
@@ -59,7 +59,7 @@ public class StudyQueryIntegrationTest extends CaaersDbNoSecurityTestCase {
 	    public void testFindStudies_WithFilterOnSponsorAndDataEntry(){
 	    	query.joinStudyOrganization();
 	    	query.filterByDataEntryStatus(true);
-	    	query.filterByFundingSponsorNameExactMatch("National Cancer Institute");
+	    	query.filterBySponsorOrganizationId(-1001);
 	    	List<Study> studies = studyDao.find(query);
 	    	assertEquals(2, studies.size());
 	    }

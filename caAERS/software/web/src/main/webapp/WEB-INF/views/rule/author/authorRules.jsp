@@ -73,20 +73,9 @@ div#createNew h3, div.section h3 {
  		
 		function addRule() {
 				
-				var organization = '';
-				
-				//alert ('${command.level}');
-				if ('${command.level}' == 'Sponsor' || '${command.level}' == 'SponsorDefinedStudy') {
-					organization = '${command.sponsorName}';
-				} else {				
-					organization = '${command.institutionName}';
-				}
-				
-				//alert (organization);
-				
 				try {
 					
-					authorRule.addRule(name, organization, function (html) {
+					authorRule.addRule(function (html) {
 						sections.push('rule-' + (sections.length + 1));
 						var columnHolder = getElementHolderDiv();
 						columnHolder.innerHTML = html;
@@ -750,7 +739,7 @@ div#createNew h3, div.section h3 {
 					
 					fieldDropDown.value='category';
 					
-				       createAE.getCategoriesWithStudyShortTitle('${command.categoryIdentifier}', function(categories) {
+				       createAE.getCtcCategoryByStudy(${not empty command.study ? command.study.id : 0}, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -796,7 +785,7 @@ div#createNew h3, div.section h3 {
 			{
 
 				                
-				          createAE.getCategoriesWithStudyShortTitle('${command.categoryIdentifier}', function(categories) {
+				          createAE.getCtcCategoryByStudy(${not empty command.study ? command.study.id : 0}, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -877,11 +866,11 @@ div#createNew h3, div.section h3 {
 					var criteria1 = "" ;
 					
 					if (selectedField.value == 'reportDefinitionName') { 
-						criteria1 = '${command.organizationName}';
+						criteria1 = '${command.organization.id}';
 					}
 					
 					if (selectedField.value == 'treatmentAssignmentCode') { 
-						criteria1 = '${command.categoryIdentifier}';
+						criteria1 = '${command.study.id}';
 					}
 										
 					authorRule.getAjaxObjects(selectedField.value , criteria1 , function(values) {
@@ -1551,11 +1540,11 @@ div#createNew h3, div.section h3 {
 					var criteria1 = "" ;
 					
 					if (criteria == 'reportDefinitionName') { 
-						criteria1 = '${command.organizationName}';
+						criteria1 = '${command.organization.id}';
 					}
 					
 					if (criteria == 'treatmentAssignmentCode') { 
-						criteria1 = '${command.categoryIdentifier}';
+						criteria1 = '${command.study.id}';
 					}
 					
 

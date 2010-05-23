@@ -26,14 +26,6 @@ import org.apache.commons.collections.CollectionUtils;
  */
 public interface EvaluationService {
 
-    /**
-     * Will return the ReportDefinition that are marked required at rules engine.
-     * 
-     * @param expeditedData -
-     *                The expedited adverse event report
-     * @return - A list of {@link ReportDefinition} objects.
-     */
-    List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,Study study);
     
     /**
      * 

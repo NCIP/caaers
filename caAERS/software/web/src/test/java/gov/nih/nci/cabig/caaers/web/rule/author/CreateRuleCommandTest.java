@@ -26,23 +26,16 @@ import java.util.List;
 public class CreateRuleCommandTest extends AbstractTestCase {
 
     CreateRuleCommand command;
-    RuleAuthoringService ruleAuthoringService;
-    StudyDao studyDao;
-    NotificationDao notificationDao;
     CaaersRulesEngineService caaersRulesEngineService;
     ReportDefinitionDao reportDefinitionDao;
     OrganizationDao organizationDao;
-    CtcDao ctcDao;
-    RuleDeploymentService ruleDeploymentService;
-    RepositoryService repositoryService;
 
     public  void setUp(){
 
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 
-        command = new CreateRuleCommand(ruleAuthoringService,
-                studyDao, notificationDao, caaersRulesEngineService, 
-                reportDefinitionDao, organizationDao, ctcDao, ruleDeploymentService, repositoryService);
+        command = new CreateRuleCommand(caaersRulesEngineService,
+                reportDefinitionDao, organizationDao);
     }
 
     //checks the mandatory options
@@ -112,6 +105,27 @@ public class CreateRuleCommandTest extends AbstractTestCase {
 
     }
 
+    public void testRetriveRuleSet(){
+        fail("todo bj");
+    }
+
+    public void testGetOrganization(){
+        fail("to do bj");
+    }
+
+
+    public void testIsSponsorbased(){
+       fail("todo");
+
+    }
+
+    public void testIsInstitutionBased(){
+       fail("todo");
+    }
+
+    public void testIsStudyBased(){
+        fail("todo");
+    }
 
     public static ReportDefinitionQuery matcher(IArgumentMatcher matcher){
         EasyMock.reportMatcher(matcher);

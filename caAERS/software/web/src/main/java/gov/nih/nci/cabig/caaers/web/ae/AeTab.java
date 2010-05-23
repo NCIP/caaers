@@ -102,7 +102,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         try {
             List<String> ruleableFields = command.getRuleableFields();
             if (ruleableFields == null) {
-                ruleableFields = caaersRulesEngineService.getRuleableFieldsForAE(command.getAeReport());
+                ruleableFields = caaersRulesEngineService.getFieldsUsedInSAERules(command.getAeReport());
                 command.setRuleableFields(ruleableFields);
             }
             

@@ -39,6 +39,7 @@ import com.semanticbits.rules.utils.RuleUtil;
  * tab.
  * 
  * @author Sujith Vellat Thayyilthodi
+ * @author Biju Joseph
  */
 public class RuleTab extends DefaultTab {
     private static final Log logger = LogFactory.getLog(RuleTab.class);
@@ -49,24 +50,6 @@ public class RuleTab extends DefaultTab {
 
     public RuleTab() {
         super("Rules", "Rules", "rule/author/authorRules");
-    }
-
-    private List<ReportDefinition> getReportDefinitions(Organization org) {
-        // System.out.println("getting report definitions ....");
-        // get report defnitions
-    	
-        List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
-
-        // cut down objects for serialization
-        List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(
-                        reportDefinitions.size());
-        for (ReportDefinition reportDefinition : reportDefinitions) {
-            // reportDefinition.setPlannedNotifications(null);
-            // reportDefinition.setTimeScaleUnitType(null);
-            reducedReportDefinitions.add(reportDefinition);
-        }
-
-        return reducedReportDefinitions;
     }
     
     @Override
@@ -129,18 +112,6 @@ public class RuleTab extends DefaultTab {
     public Map<String, Object> referenceData(RuleInputCommand command) {
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
         Map referenceData =  super.referenceData(command);
-        
-        String studyShortTitle = createRuleCommand.getCategoryIdentifier();
-
-        if (!"".equals(studyShortTitle)) {
-            Study study = createRuleCommand.getStudyDao().getByShortTitle(studyShortTitle);
-            if (study != null) {
-                createRuleCommand.setTerminology(study.getAeTerminology().getTerm()
-                                .getDisplayName());
-            }
-        } else {
-            createRuleCommand.setTerminology("");
-        }
 
         createRuleCommand.setRuleUi(createRuleCommand.getTerminology());
 
@@ -164,19 +135,6 @@ public class RuleTab extends DefaultTab {
         }
         	
         return referenceData;
-    }
-    
-    /**
-     * Returns the value associated with the <code>attributeName</code>, if present in
-     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
-     */
-    protected Object findInRequest(final ServletRequest request, final String attributName) {
-
-        Object attr = request.getParameter(attributName);
-        if (attr == null) {
-            attr = request.getAttribute(attributName);
-        }
-        return attr;
     }
     
 }
