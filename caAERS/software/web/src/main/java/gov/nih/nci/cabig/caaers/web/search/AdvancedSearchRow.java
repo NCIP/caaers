@@ -5,7 +5,6 @@ import java.util.List;
 
 public class AdvancedSearchRow{
 	List<AdvancedSearchColumn> columnList;
-	List<AdvancedSearchRow> rowList;
 	/**
 	 * @return the columnList
 	 */
@@ -20,18 +19,4 @@ public class AdvancedSearchRow{
 	public void setColumnList(List<AdvancedSearchColumn> columnList) {
 		this.columnList = columnList;
 	}
-	/**
-	 * @return the rowList
-	 */
-	public List<AdvancedSearchRow> getRowList() {
-		return rowList;
-	}
-	/**
-	 * @param rowList the rowList to set
-	 */
-	public void setRowList(List<AdvancedSearchRow> rowList) {
-		this.rowList = rowList;
-	}
-	
-	
 }

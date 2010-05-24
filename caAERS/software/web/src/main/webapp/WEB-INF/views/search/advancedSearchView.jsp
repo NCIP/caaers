@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<tags:dwrJavascriptLink objects="advSearch"/>
-		<script>
+		<script><!--
 		var catSel = null;
 		
 		var CategorySelector = Class.create();
@@ -41,7 +41,8 @@
             }
             ul = document.getElementById(ulID);
             
-            elementName = 'searchTargetObject.dependentObject[' + dependentObjectIndex + '].viewColumn[' + attributeIndex + '].selected';
+            var elementName = 'searchTargetObject.dependentObject[' + dependentObjectIndex + '].viewColumn[' + attributeIndex + '].selected';
+            //var termIDvar = termID;
             checkbox = document.createElement("input");
             checkbox.type = 'checkbox';
             //checkbox.name = termText;
@@ -54,7 +55,7 @@
             //checkbox.onclick = function() { clickCheckBox(elementName, termID)};
             //checkbox.addEventListener("onclick", function() { clickCheckBox(elementName, termID)}, false);
             
-            checkbox.id = "chkID" + termID;
+            //checkbox.id = "chkID" + termID;
             checkbox.setAttribute("id", "chk" + termID);
             //hiddenVar = document.createElement("input");
             //hiddenVar.type = 'hidden';
@@ -63,6 +64,11 @@
             //hiddenVar.value = 'true';
             
             var hiddenVarStr = '<input value="true" type="hidden" name="' + elementName + '" id="' + elementName + '" />';
+            hiddenElement = document.createElement("input");
+            hiddenElement.type = 'hidden';
+            hiddenElement.name = elementName;
+            hiddenElement.id = elementName;
+            hiddenElement.value="true";
             
             a = document.createElement("a");
             a.appendChild(document.createTextNode(termText));
@@ -71,18 +77,26 @@
             a.setAttribute("id", "addedTerm" + termID);
 
             li = document.createElement("li");
-            li.innerHTML = hiddenVarStr;
+            //li.innerHTML = hiddenVarStr;
+            li.appendChild(hiddenElement);
             li.appendChild(checkbox);
             checkbox.checked = true;
             li.appendChild(a);
             ul.appendChild(li)
+            
+            Event.observe("chk" + termID, "click", function() {
+	    	clickCheckBox(elementName , 'chk' + termID);
+	    })
 
-			if(Prototype.Browser.IE){
-				// TODO.
-			}else{
-				checkbox.setAttribute("onclick", "clickCheckBox('" + elementName + "', '" + termID + "')");
-			}
-
+			//if(Prototype.Browser.IE){
+			//	Event.observe("chk" + termID, "click", function() {
+			//		clickCheckBox(elementName , 'chk' + termID);
+			//	})
+			//}else{
+				//checkbox.setAttribute("onclick", "clickCheckBox('" + elementName + "', '" + termID + "')");
+			//	})
+			//}
+			
             catSel.termList[termID] = true;
             //$("liTerm" + termID).addClassName("ae-disabled");
             $("addedTerm" + termID).addClassName("ae-added-terms");
@@ -154,10 +168,10 @@
  		});
  		
  		function clickCheckBox(attributeId, termID) {
-			$(attributeId).value = $('chk'+termID).checked; 
-		}
+ 			$(attributeId).value = $(termID).checked;
+ 		}
  		
-		</script>
+		--></script>
 <style>
     ul.ae-category {
         cursor:pointer;

@@ -34,24 +34,7 @@ public class AdvancedSearchResultsTab<T extends AdvancedSearchCommand> extends W
     public Map<String, Object> referenceData(HttpServletRequest request, T command) {
 		Map refdata = new HashMap<String, Object>();
 		String action = (String) findInRequest(request, "_action");
-		if(action != null && action.equals("nestedView")){
-			// Find all the dependent objects in the tab and put it in the list nestedDependentObjects.
-			List<DependentObject> nestedDependentObjects = new ArrayList<DependentObject>();
-			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-				if(dObject.isInView() && !dObject.getClassName().equals(command.getSearchTargetObject().getClassName()))
-					nestedDependentObjects.add(dObject);
-			}
-			refdata.put("nestedDependentObjects", nestedDependentObjects);
-		}
 		
-		Boolean renderNestedViewButton = false;
-		Integer dependentObjectsInView = 0;
-		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
-			if(dObject.isInView())
-				dependentObjectsInView++;
-		if(dependentObjectsInView > 1)
-			renderNestedViewButton = true;
-		refdata.put("renderNestedViewButton", renderNestedViewButton);
 		return refdata;
 	}
 	

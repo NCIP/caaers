@@ -48,9 +48,9 @@ public class AdvancedSearchViewTabTest extends WebTestCase{
 		errors = new BindException(command, "command");
 	}
 	
-	public void testProcessMultipleObjectsListForNestedView() throws Exception{
+	public void testProcessMultipleObjectsList() throws Exception{
 		List<Object[]> objectList = createTestObjectList();
-		tab.processMultipleObjectsListForNestedView(objectList, command);
+		tab.processMultipleObjectsList(objectList, command);
 		assertNotNull("rowList cannot be null", command.getAdvancedSearchRowList());
 	}
 	

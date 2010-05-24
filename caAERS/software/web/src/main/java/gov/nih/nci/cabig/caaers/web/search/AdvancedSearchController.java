@@ -9,11 +9,9 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -21,17 +19,12 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.SearchDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab;
-import gov.nih.nci.cabig.caaers.web.ae.AdverseEventConfirmTab;
-import gov.nih.nci.cabig.caaers.web.ae.BeginTab;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
@@ -80,7 +73,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
         String action = (String) findInRequest(request, "_action");
         if(fromSearchListPage) 
         	return true;
-        else if(action != null && (action.equals("flatView") || action.equals("nestedView")))
+        else if(action != null && (action.equals("flatView")))
         	return true;
         else
         	return super.isFormSubmission(request);
@@ -128,7 +121,6 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 			SaveSearch savedSearch = null;
 			try {
 				unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createUnmarshaller();
-				//advancedSearchUi = (AdvancedSearchUi) unmarshaller.unmarshal(inputStream);
 				StringReader reader = new StringReader(searchList.get(0).getCriteriaXml()); 
 				savedSearch = (SaveSearch) unmarshaller.unmarshal(reader);
 				for(SearchTargetObject targetObject: advancedSearchUi.getSearchTargetObject()){
@@ -159,28 +151,6 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			// Setup the view attributes
-			//Reset the value of selected to false for all the dependentObjects and their attributes- 
-			/*for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-				dObject.setInView(false);
-				for(ViewColumn viewColumn: dObject.getViewColumn())
-					viewColumn.setSelected(false);
-			}
-			//Select the targetObject in the view.
-			command.getSearchTargetObject().getDependentObject().get(0).setInView(true);
-			for(ViewColumn viewColumn: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
-				viewColumn.setSelected(true);
-			
-			//Select all the dependentObjects involved in the criteria
-			for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
-				if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted()){
-					DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), p.getObjectName());
-					dObject.setInView(true);
-					for(ViewColumn viewColumn: dObject.getViewColumn())
-						viewColumn.setSelected(true);
-				}
-			}*/
 		}
 		return command;
 	}
@@ -197,7 +167,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 				Flow<AdvancedSearchCommand> flow = new Flow<AdvancedSearchCommand>("Advanced Search || Enter criteria");
 				flow.addTab(new AdvancedSearchCriteriaTab<AdvancedSearchCommand>());
 				flow.addTab(new AdvancedSearchViewTab<AdvancedSearchCommand>());
-				flow.addTab(new AdvancedSearchResultsTab("Search results", "Search results", "search/advancedSearchResults"));
+				flow.addTab(new AdvancedSearchResultsTab<AdvancedSearchCommand>("Search results", "Search results", "search/advancedSearchResults"));
 				return flow;
 			}
 		};
@@ -215,8 +185,6 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
         Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
         if (isAjax != null) return true;
         
-        //Object isFromManageReport = findInRequest(request, "fromManageReport");
-        //if(isFromManageReport != null) return true;
         //check current page and next page
         int currPage = getCurrentPage(request);
     	int targetPage = getTargetPage(request, currPage);
@@ -243,14 +211,11 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
      */
     @Override
     protected String getViewName(HttpServletRequest request, Object command, int page) {
-    	String action = (String) findInRequest(request, "_action");
         String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
         if (subviewName != null) {
             // for side-effects:
             super.getViewName(request, command, page);
             return "search/ajax/" + subviewName;
-        }else if(action != null && action.equals("nestedView")){
-        	return "search/advancedSearchNestedResults";
         }else {
             return super.getViewName(request, command, page);
         }
