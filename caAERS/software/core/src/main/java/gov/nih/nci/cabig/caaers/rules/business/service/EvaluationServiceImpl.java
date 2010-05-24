@@ -118,6 +118,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * Then process that information, to get the adverse event result {@link EvaluationResultDTO}
      * 
      * Overview on extra processing
+     *   0. Ignore all the 'soft deleted' reports suggested by rules engine. 
      *   1. If child report or a report of the same group is active , parent report suggested by rules is ignored. 
      *   2. All manually selected active reports are suggested by caAERS
      *   3. If there is a manual selection, ignore the others suggested by rules
@@ -127,6 +128,11 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param expeditedData - The {@link ExpeditedAdverseEventReport}
      */
     public void findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
+
+        //to hold the report defnitions while cleaning up. 
+        Map<String , ReportDefinition> loadedReportDefinitionsMap = new HashMap<String, ReportDefinition>();
+
+        Map<AdverseEvent, List<String>> adverseEventEvaluationResultMap;
         Map<AdverseEvent, List<String>> map;
         List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
         boolean alertNeeded = false;
@@ -134,8 +140,28 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         try {
         	//evaluate the SAE reporting rules
-            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
+            adverseEventEvaluationResultMap = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
+            map = new HashMap<AdverseEvent, List<String>>();
             
+            //clean up - by eliminating the deleted report definitions.
+            for(Map.Entry<AdverseEvent, List<String>> entry : adverseEventEvaluationResultMap.entrySet()){
+                List<String> rdNames = entry.getValue();
+                List<String> validReportDefNames = new ArrayList<String>();
+                map.put(entry.getKey(), validReportDefNames);
+                for(String reportDefName : rdNames){
+                    ReportDefinition rd = loadedReportDefinitionsMap.get(reportDefName);
+                    if(rd == null) {
+                        rd = reportDefinitionDao.getByName(reportDefName);
+                        loadedReportDefinitionsMap.put(reportDefName, rd);
+                    }
+
+                    if(rd.getEnabled()){
+                        validReportDefNames.add(reportDefName);
+                    }
+                    
+                }
+            }
+
             //save this for reference.
             evaluationResult.addRulesEngineResult(aeReportId, map);
             
@@ -174,7 +200,8 @@ public class EvaluationServiceImpl implements EvaluationService {
             
             //load all report definitions
             for(String reportDefName : reportDefinitionNames){
-            	ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
+            	ReportDefinition rd = loadedReportDefinitionsMap.get(reportDefName);
+                if(rd == null) rd = reportDefinitionDao.getByName(reportDefName);
             	if(rd != null){
             		defList.add(rd);
             	}
