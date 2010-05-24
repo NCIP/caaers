@@ -132,7 +132,7 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     @Override
     public List<ReportVersion> search(final AbstractQuery query) {
         String queryString = query.getQueryString();
-        System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
+        // System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
         return (List<ReportVersion>) getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());

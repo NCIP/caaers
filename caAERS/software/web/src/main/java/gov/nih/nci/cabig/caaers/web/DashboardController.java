@@ -17,9 +17,11 @@ public class DashboardController extends AbstractController {
     ReportVersionRepository reportVersionRepository;
 
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<ReportVersion> l = reportVersionRepository.getPastDue();
+        List<ReportVersion> l1 = reportVersionRepository.getPastDue();
+        List<ReportVersion> l2 = reportVersionRepository.getReportActivity();
         ModelAndView mv = new ModelAndView("dashboard");
-        mv.getModelMap().put("pastDueReports", l);
+        mv.getModelMap().put("pastDueReports", l1);
+        mv.getModelMap().put("reportActivity", l2);
         return mv;
     }
 

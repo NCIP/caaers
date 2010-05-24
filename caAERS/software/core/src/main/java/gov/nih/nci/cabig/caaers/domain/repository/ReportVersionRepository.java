@@ -59,6 +59,20 @@ public class ReportVersionRepository {
         return l;
     }
 
+    public List<ReportVersion> getReportActivity() {
+        ReportVersionQuery q = new ReportVersionQuery();
+        q.orWhere("rv.reportStatus = :status1");
+        q.orWhere("rv.reportStatus = :status2");
+        q.orWhere("rv.reportStatus = :status3");
+        q.orWhere("rv.reportStatus = :status4");
+        q.setParameter("status1", ReportStatus.INPROCESS);
+        q.setParameter("status2", ReportStatus.PENDING);
+        q.setParameter("status3", ReportStatus.WITHDRAWN);
+        q.setParameter("status4", ReportStatus.AMENDED);
+        List<ReportVersion> l = reportVersionDao.search(q);
+        return l;
+    }
+
     public List<ReportVersion> getAllSubmittedReportsInLastGivenNumberOfDays(int days) {
         return reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(days);
     }

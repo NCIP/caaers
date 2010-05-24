@@ -18,7 +18,8 @@
 
 <tags:js name="routing_and_review"/>
 
-
+<tags:js name='jquery/scroll/jquery.scrollTo-min' />
+<tags:js name='jquery/scroll/jquery.serialScroll-min' />
 
 <!--[if IE]>
 <jwr:style src="/csslib/ie.zcss" />
