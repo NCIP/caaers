@@ -181,54 +181,9 @@ public class CaaersRulesEngineService {
         log.info("Importing ruleSet :" + ruleSet.getName() );
         
         //--------- Modify the package names ----------------------
-        String subject = ruleSet.getSubject();
-        String[] subjectParts = StringUtils.split(subject, "||");
-        Organization org = null;
-        Study study = null;
-
-        //if level is present, we should modify package name.
-        String level = subjectParts[1];
-        if(StringUtils.isNotEmpty(level)){
-            //need to modify package.
-            String sponsorNCICode = subjectParts[2].trim();
-            String institutionNCICode = subjectParts[3].trim();
-            String studyIdentifierValue = subjectParts[4].trim();
-
-            String nciCode = null;
-            if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(SPONSOR_LEVEL)){
-               nciCode = sponsorNCICode;
-            }
-            if(level.equals(INSTITUTION_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTIONAL_LEVEL)){
-               nciCode = institutionNCICode;
-            }
-            
-            org = organizationDao.getByNCIcode(nciCode);
-
-            if(org == null) throw new CaaersSystemException("RUL_011", "Missing sponsor/institution : "
-                    + nciCode );
-            
-            if(StringUtils.isNotEmpty(studyIdentifierValue)){
-              OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
-                id.setValue(studyIdentifierValue);
-                id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-                study = studyDao.getByIdentifier(id);
-
-            }
-            if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTION_DEFINED_STUDY_LEVEL)){
-                if(study == null){
-                    throw new CaaersSystemException("RUL_021", "Could not find the Study identified by sponsor identifier : "
-                            + studyIdentifierValue);
-                }
-            }
-            
-            //generate new package name.
-            String newPackageName = constructPackageName(level, String.valueOf(org.getId()),
-                    String.valueOf(org.getId()), String.valueOf(study.getId()), ruleSet.getDescription());
-            ruleSet.setName(newPackageName);
-
-            
-        }
-        
+        reconcileRuleSet(ruleSet);
+        String strOrgId = parseOrganizationId(ruleSet.getName());
+        Organization org = organizationDao.getById(Integer.parseInt(strOrgId));
         
         if(log.isInfoEnabled()){
             log.info("Rule set name:" + ruleSet.getName());
@@ -272,6 +227,7 @@ public class CaaersRulesEngineService {
                     if (reportDefinition == null && !rd.equals("IGNORE")) {
                         //if(log.isInfoEnabled()) log.info("need to create .." + rd);
                         ReportDefinition newRd = new ReportDefinition();
+                        newRd.setEnabled(true);
                         newRd.setName(rd);
                         newRd.setLabel(rd);
                         newRd.setOrganization(org);
@@ -300,6 +256,144 @@ public class CaaersRulesEngineService {
 
 
         return reportDefinitionsCreated;
+    }
+
+
+    /**
+     * This method will take care of reconciling the ruleset,by making sure that
+     * 1. The ruleSet, has the correct package name
+     * 2. The path-to-deploy is correct.
+     *
+     * Note: Backward compatiable with the old ruleset naming convention used. 
+      * @param ruleSet
+     */
+    public void reconcileRuleSet(RuleSet ruleSet){
+
+        if(StringUtils.isEmpty(ruleSet.getSubject())) return;
+
+        String[] subjectParts = StringUtils.split(ruleSet.getSubject(), "||");
+
+
+
+        if(subjectParts.length > 4){
+             //length = 5 - new pattern
+
+            String level = subjectParts[1];
+            if(StringUtils.isNotEmpty(level)){
+                //need to modify package.
+                String sponsorNCICode = subjectParts[2].trim();
+                String institutionNCICode = subjectParts[3].trim();
+                String studyIdentifierValue = subjectParts[4].trim();
+
+                String nciCode = null;
+                if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(SPONSOR_LEVEL)){
+                   nciCode = sponsorNCICode;
+                }
+                if(level.equals(INSTITUTION_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTIONAL_LEVEL)){
+                   nciCode = institutionNCICode;
+                }
+
+                Organization org = organizationDao.getByNCIcode(nciCode);
+                Study study = null;
+                
+                if(org == null) throw new CaaersSystemException("RUL_011", "Missing sponsor/institution : "
+                        + nciCode );
+
+                if(StringUtils.isNotEmpty(studyIdentifierValue)){
+                  OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
+                    id.setValue(studyIdentifierValue);
+                    id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+                    study = studyDao.getByIdentifier(id);
+
+                }
+                if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTION_DEFINED_STUDY_LEVEL)){
+                    if(study == null){
+                        throw new CaaersSystemException("RUL_021", "Could not find the Study identified by sponsor identifier : "
+                                + studyIdentifierValue);
+                    }
+                }
+
+                //generate new package name.
+                String newPackageName = constructPackageName(level, String.valueOf(org.getId()),
+                        String.valueOf(org.getId()), String.valueOf(study.getId()), ruleSet.getDescription());
+                ruleSet.setName(newPackageName);
+
+
+        }
+
+            
+
+        }else{
+            //length < 5 - old pattern.
+            String level = null;
+            String orgName = null;
+            String studyShortTitle = null;
+            String path = CategoryConfiguration.CAAERS_BASE.getPath();
+
+            Organization org = null;
+            Study study = null;
+            String strOrgId = null;
+            String strStudyId = null;
+
+            //need to change package name & Path.
+            if(StringUtils.equals(subjectParts[0],CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getDescription())){
+                level = SPONSOR_DEFINED_STUDY_LEVEL;
+                orgName =  subjectParts[1].trim();
+                studyShortTitle = subjectParts[2].trim();
+            }else if(StringUtils.equals(subjectParts[0], CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getDescription())){
+                level = INSTITUTION_DEFINED_STUDY_LEVEL;
+                orgName =  subjectParts[1].trim();
+                studyShortTitle = subjectParts[2].trim();
+            }else if(StringUtils.equals(subjectParts[0], CategoryConfiguration.SPONSOR_BASE.getDescription())){
+                level = SPONSOR_LEVEL;
+                orgName =  subjectParts[1].trim();
+            }else if(StringUtils.equals(subjectParts[0], CategoryConfiguration.INSTITUTION_BASE.getDescription())){
+                level = INSTITUTIONAL_LEVEL;
+                orgName =  subjectParts[1].trim();
+            }
+
+            //validate orgname
+            if(orgName == null) throw new CaaersSystemException("RUL_011", "Missing sponsor/institution" );
+
+            org = organizationDao.getByName(orgName);
+
+            if(org == null) throw new CaaersSystemException("RUL_011", "Missing sponsor/institution : "
+                        + orgName );
+            strOrgId = org.getId().toString();
+
+            if(StringUtils.equals(level, SPONSOR_DEFINED_STUDY_LEVEL) || StringUtils.equals(level, INSTITUTION_DEFINED_STUDY_LEVEL)){
+                if(StringUtils.isEmpty(studyShortTitle))throw new CaaersSystemException("RUL_021", "Could not find the Study");
+                study = studyDao.getByShortTitle(studyShortTitle);
+                if(study == null) throw new CaaersSystemException("RUL_021", "Could not find the Study by short title : "
+                                + studyShortTitle);
+                strStudyId = study.getId().toString();
+            }
+
+            //generate new package name.
+            String newPackageName = constructPackageName(level, strOrgId,strOrgId, strStudyId, ruleSet.getDescription());
+            ruleSet.setName(newPackageName);
+
+            //update the subject
+            StringBuilder subject = new StringBuilder(ruleSet.getDescription()).append("||");
+                subject.append(StringUtils.isEmpty(level)? " " : level);
+                subject.append("||");
+                subject.append(org.getNciInstituteCode() );
+                subject.append("||");
+                subject.append(org.getNciInstituteCode());
+                subject.append("||");
+                subject.append(study != null ? study.getPrimaryIdentifierValue() : " ");
+
+                ruleSet.setSubject(subject.toString());
+
+            //update the path.
+            path = generatePath(level, null, org, org, study);
+            for(Rule rule : ruleSet.getRule()){
+                rule.getMetaData().getCategory().get(0).setPath(path);
+                rule.getMetaData().getCategory().get(0).getMetaData().setName(RuleUtil.getStringWithoutSpaces(ruleSet.getDescription()));
+            }
+        }
+
+
     }
 
 
@@ -494,35 +588,38 @@ public class CaaersRulesEngineService {
      */
     public String generatePath(String level,String ruleSetName, Organization sponsor, Organization institution, Study study){
 
-        StringBuilder path = new StringBuilder("/").append(CategoryConfiguration.CAAERS_BASE.getName()).append("/");
+        StringBuilder path = new StringBuilder("/").append(CategoryConfiguration.CAAERS_BASE.getName());
 
         if(StringUtils.equals(level, SPONSOR_LEVEL)){
-            path.append(CategoryConfiguration.SPONSOR_BASE.getName())
-                    .append("/")
-                    .append(modifyOrganizationName(sponsor.getId().toString()))
-                    .append("/");
+            path.append("/")
+                .append(CategoryConfiguration.SPONSOR_BASE.getName())
+                .append("/")
+                .append(modifyOrganizationName(sponsor.getId().toString()));
+
         }
         if(StringUtils.equals(level, INSTITUTIONAL_LEVEL)){
-             path.append(CategoryConfiguration.INSTITUTION_BASE.getName())
-                     .append("/")
-                     .append(modifyOrganizationName(institution.getId().toString()))
-                     .append("/");
+             path.append("/")
+                 .append(CategoryConfiguration.INSTITUTION_BASE.getName())
+                 .append("/")
+                 .append(modifyOrganizationName(institution.getId().toString())) ;
         }
         if(StringUtils.equals(level, SPONSOR_DEFINED_STUDY_LEVEL)){
-            path.append(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())
-                     .append("/")
-                     .append(modifyOrganizationName(sponsor.getId().toString()))
-                     .append("/").append(modifyStudyName(study.getId().toString()))
-                     .append("/");
+            path.append("/")
+                .append(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())
+                .append("/")
+                .append(modifyOrganizationName(sponsor.getId().toString()))
+                .append("/").append(modifyStudyName(study.getId().toString()));
         }
         if(StringUtils.equals(level, INSTITUTION_DEFINED_STUDY_LEVEL)){
-            path.append(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName())
-                     .append("/")
-                     .append(modifyOrganizationName(institution.getId().toString()))
-                     .append("/").append(modifyStudyName(study.getId().toString()))
-                     .append("/");
+            path.append("/")
+                .append(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName())
+                .append("/")
+                .append(modifyOrganizationName(institution.getId().toString()))
+                .append("/").append(modifyStudyName(study.getId().toString()));
         }
-        path.append(RuleUtil.getStringWithoutSpaces(ruleSetName));
+        if(StringUtils.isNotEmpty(ruleSetName)){
+            path.append("/").append(RuleUtil.getStringWithoutSpaces(ruleSetName));
+        }
         return path.toString();
 
     }

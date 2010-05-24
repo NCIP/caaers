@@ -6,6 +6,8 @@ import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.utils.RuleUtil;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -146,8 +148,24 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
         fail("todo implement it");
     }
 
-    public void testGeneratePath(){
-        fail("to do");
+    public void testGeneratePath() throws Exception{
+        String path = service.generatePath("junk", null, null, null, null);
+        assertEquals("/CAAERS_BASE", path);
+
+        Organization org = Fixtures.createOrganization("abcd",1);
+        assertEquals("/CAAERS_BASE/SPONSOR/ORG_1/sae_reporting_rules",
+                service.generatePath(CaaersRulesEngineService.SPONSOR_LEVEL, RuleType.REPORT_SCHEDULING_RULES.getName(), org, null, null));
+        assertEquals("/CAAERS_BASE/SPONSOR/ORG_1",
+                        service.generatePath(CaaersRulesEngineService.SPONSOR_LEVEL, null, org, null, null));
+        assertEquals("/CAAERS_BASE/INSTITUTION/ORG_1/sae_reporting_rules",
+                service.generatePath(CaaersRulesEngineService.INSTITUTIONAL_LEVEL, RuleType.REPORT_SCHEDULING_RULES.getName(), org, org, null));
+
+        Study s = Fixtures.createStudy("test");
+        s.setId(1);
+        assertEquals("/CAAERS_BASE/INSTITUTION_DEFINED_STUDY/ORG_1/STU_1/sae_reporting_rules",
+                service.generatePath(CaaersRulesEngineService.INSTITUTION_DEFINED_STUDY_LEVEL, RuleType.REPORT_SCHEDULING_RULES.getName(), org, org, s));
+       assertEquals("/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_1/STU_1/sae_reporting_rules",
+                service.generatePath(CaaersRulesEngineService.SPONSOR_DEFINED_STUDY_LEVEL, RuleType.REPORT_SCHEDULING_RULES.getName(), org, org, s));
     }
 
     public void testPopulateCategoryBasedColumns(){
