@@ -49,7 +49,11 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
     <c:set var="_prevGroupName" value="xx" />
  	<c:forEach var="row" items="${applicableTableRows}">
     <c:set var="_elID" value="rd_${aeReportId}_${row.reportDefinition.id}" />
-    <tr id="${_elID}-row" class="optional ${ _prevGroupName eq row.group ? '' : 'newGroup' }" >
+    <c:set var="_rdInactive" value="${not row.reportDefinition.enabled}" />
+    <c:set var="_rdChild" value="${not empty row.reportDefinition.parent}" />
+    <c:set var="_notStringent" value="${not row.stringent}" />
+         
+    <tr id="${_elID}-row" class="optional ${ _prevGroupName eq row.group ? '' : 'newGroup' }" style="${_rdChild or _rdInactive or _notStringent ? 'display:none;' : '' }">
 	  	   <td style="text-align:center;">
 	  	   <input id="${_elID}" 
 	  	   		type="checkbox" name="rd_${aeReportId}_checked" 

@@ -7,6 +7,10 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
+/**
+ * This is a ValueObject used for UI rendering easynes.
+ * @author Biju Joseph
+ */
 public class ReportTableRow {
 	
 	private ExpeditedAdverseEventReport aeReport;
@@ -14,7 +18,7 @@ public class ReportTableRow {
 	private ReportDefinition reportDefinition;
 	
 	private String status; //current
-	private String grpStatus; //status when another report of same group is slected
+	private String grpStatus; //status when another report of same group is selected
 	private String otherStatus; //status when a report from different group is selected
 	
 	private String due;
@@ -28,6 +32,8 @@ public class ReportTableRow {
 	private boolean preSelected;
 	
 	private Date baseDate;
+
+    private boolean stringent;
 	
 	
 	public ExpeditedAdverseEventReport getAeReport() {
@@ -122,12 +128,20 @@ public class ReportTableRow {
 	public String getGroup(){
 		return "grp-" + reportDefinition.getOrganization().getId() + "-"+reportDefinition.getGroup().getId();
 	}
+
+    public boolean isStringent(){
+        return stringent;
+    }
+    public void setStringent(boolean stringent){
+        this.stringent = stringent;
+    }
 	
 	public static ReportTableRow createReportTableRow(ReportDefinition rd, Date baseDate, ActionType action){
 		ReportTableRow row = new ReportTableRow();
 		row.setReportDefinition(rd);
 		row.setAction(action);
 		row.setBaseDate(baseDate);
+        row.setStringent(true);
 		row.setDue(baseDate != null ?  rd.getExpectedDisplayDueDate(baseDate) :  rd.getExpectedDisplayDueDate());
 		return row;
 	}

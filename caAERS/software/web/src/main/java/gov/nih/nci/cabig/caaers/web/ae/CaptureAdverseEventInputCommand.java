@@ -773,7 +773,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     
     /**
-     * This method will create the value objects, that are to be displayed on UI for override options. 
+     * This method will create the value objects, that are to be displayed on UI for override options.
+     * Note:- Will update the stringent flag, for those reports which fall after the recomended report. 
      */
     public void refreshApplicableReportTable(){
 
@@ -809,6 +810,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		Date baseDate =  gradedDate;
     		
     		List<Report> reportsToAmendList = new ArrayList<Report>();
+            List<ReportDefinitionWrapper> createAndEditWrappers = new ArrayList<ReportDefinitionWrapper>(); //needed to filter less stringent reports. 
     		
     		//create a map, consisting of report definitions
     		for(ReportDefinition rd : allReportDefs){
@@ -849,6 +851,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setGrpAction(null);
         			row.setOtherAction(null);
     			}
+
+                createAndEditWrappers.addAll(createWrappers);
     		}
     		
     		Set<ReportDefinitionWrapper> editWrappers = evaluationResult.getEditMap().get(aeReportId);
@@ -869,6 +873,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setGrpDue("");
         			row.setOtherDue("");
     			}
+                
+                createAndEditWrappers.addAll(editWrappers);
     		}
     		
     		Set<ReportDefinitionWrapper> withdrawWrappers = evaluationResult.getWithdrawalMap().get(aeReportId);
@@ -907,13 +913,29 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     			}
 
     		}
-    		
-    	
+
+            Date now = DateUtils.today();
+            for(ReportDefinitionWrapper wrapper: createAndEditWrappers){
+                ReportDefinition rd = wrapper.getDef();
+                String grp = "grp-" + rd.getOrganization().getId() + "-"+rd.getGroup().getId();
+                Date expectedDue = rd.getExpectedDueDate(now);
+    			for(Map.Entry<Integer, ReportTableRow> rowEntry : rowMap.entrySet()){
+                   if(rd.getId().equals(rowEntry.getKey())) continue; //ignore if it is the same report.
+                   if(!StringUtils.equals(grp, rowEntry.getValue().getGroup())) continue; //ignore different group
+                   Date actualDue = rowEntry.getValue().getReportDefinition().getExpectedDueDate(now);
+                   if(DateUtils.compateDateAndTime(expectedDue, actualDue) < 0){
+                     rowEntry.getValue().setStringent(false);
+                   }
+
+                   
+                }
+            }
+
     		
     		applicableReportTableMap.put(aeReportId, new ArrayList<ReportTableRow>(rowMap.values()));
     	}
     }
-    
+
     /**
      * Will return a map, containing the report definition Id as key and the base date (to calculate due date)
      * as value. 
