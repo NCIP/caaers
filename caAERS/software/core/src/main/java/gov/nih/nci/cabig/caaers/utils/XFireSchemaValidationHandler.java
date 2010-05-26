@@ -46,16 +46,17 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
         StaxBuilder builder = new StaxBuilder();
         Document doc = builder.build(streamReader);
         
-        
-        
-        
-        
         Element payload = getPayLoad(doc.getRootElement());
         
-        if(schema != null){
+        if (payload == null ) {
+        	throw new Exception ("Invalid Payload XML");
+        }
+        
+        if(schema != null && payload != null){
             // dump the message for testing purposes
             XMLOutputter outputter = 
                 new XMLOutputter(Format.getPrettyFormat());
+
             outputter.output(payload, System.out);
             
             // create validation handler from the pre-complied schema
