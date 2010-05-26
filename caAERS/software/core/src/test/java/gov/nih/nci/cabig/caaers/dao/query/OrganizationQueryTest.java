@@ -16,7 +16,7 @@ public class OrganizationQueryTest extends TestCase {
         OrganizationQuery organizationQuery = new OrganizationQuery();
         organizationQuery.filterByOrganizationName("a");
         assertEquals(
-                        "SELECT distinct o from Organization o WHERE lower(o.name) LIKE :name order by o.name",
+                        "SELECT distinct o from Organization o WHERE lower(o.name) LIKE :name  order by o.name",
                         organizationQuery.getQueryString());
         assertEquals("wrong number of parameters", organizationQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", organizationQuery.getParameterMap().containsKey(
@@ -37,7 +37,7 @@ public class OrganizationQueryTest extends TestCase {
         OrganizationQuery organizationQuery = new OrganizationQuery();
         organizationQuery.filterByNciInstituteCode("a");
         assertEquals(
-                        "SELECT distinct o from Organization o WHERE lower(o.nciInstituteCode) LIKE :nciInstituteCode order by o.name",
+                        "SELECT distinct o from Organization o WHERE lower(o.nciInstituteCode) LIKE :nciInstituteCode  order by o.name",
                         organizationQuery.getQueryString());
         assertEquals("wrong number of parameters", organizationQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", organizationQuery.getParameterMap().containsKey(
