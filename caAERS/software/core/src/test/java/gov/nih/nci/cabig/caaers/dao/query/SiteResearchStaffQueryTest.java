@@ -15,7 +15,7 @@ public class SiteResearchStaffQueryTest extends TestCase {
     	assertEquals("wrong number of parameters", researchStaffQuery.getParameterMap().size(), 1);
     	assertTrue("missing paramenter name", researchStaffQuery.getParameterMap().containsKey("firstName"));
         assertEquals("wrong parameter value", "%this_is_a_first_name%", researchStaffQuery.getParameterMap().get("firstName"));
-        assertEquals("Incorrect query created","SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.firstName) LIKE :firstName order by rs.id",researchStaffQuery.getQueryString());
+        assertEquals("Incorrect query created","SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.firstName) LIKE :firstName  order by rs.id",researchStaffQuery.getQueryString());
     }
 
 }
