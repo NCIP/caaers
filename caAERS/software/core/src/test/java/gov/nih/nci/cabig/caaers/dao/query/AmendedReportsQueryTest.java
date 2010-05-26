@@ -19,28 +19,28 @@ public class AmendedReportsQueryTest extends TestCase {
 		query.filterByOrganization(5);
 		assertEquals("select r from ReportVersion rv join rv.report as r join " +
 				"r.reportDefinition as rd WHERE rd.organization.id =:orgId " +
-				"order by rv.amendedOn desc", query.getQueryString());
+				" order by rv.amendedOn desc", query.getQueryString());
 	}
 
 	public void testFilterByReportType() {
 		query.filterByGroup(5);
 		assertEquals("select r from ReportVersion rv join rv.report as r join " +
 				"r.reportDefinition as rd WHERE rd.group.id =:groupId " +
-				"order by rv.amendedOn desc", query.getQueryString());
+				" order by rv.amendedOn desc", query.getQueryString());
 	}
 
 	public void testFilterByExpeditedAdverseEventReport() {
 		query.filterByExpeditedAdverseEventReport(5);
 		assertEquals("select r from ReportVersion rv join rv.report as r join " +
 				"r.reportDefinition as rd WHERE r.aeReport.id =:aeReportId " +
-				"order by rv.amendedOn desc", query.getQueryString());
+				" order by rv.amendedOn desc", query.getQueryString());
 	}
 
 	public void testFilterByReportStatus() {
 		query.filterByReportStatus(ReportStatus.AMENDED);
 		assertEquals("select r from ReportVersion rv join rv.report as r " +
 				"join r.reportDefinition as rd WHERE rv.reportStatus =:status " +
-				"order by rv.amendedOn desc" ,query.getQueryString());
+				" order by rv.amendedOn desc" ,query.getQueryString());
 	}
 
 	public void testGetQueryString() {
@@ -52,7 +52,7 @@ public class AmendedReportsQueryTest extends TestCase {
 				"join r.reportDefinition as rd " +
 				"WHERE r.aeReport.id =:aeReportId AND rd.organization.id =:orgId AND " +
 				"rv.reportStatus =:status AND rd.group.id =:groupId " +
-				"order by rv.amendedOn desc", query.getQueryString());
+				" order by rv.amendedOn desc", query.getQueryString());
 	}
 
 }
