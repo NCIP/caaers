@@ -11,7 +11,7 @@ public class ExpeditedAdverseEventReportQueryTest extends TestCase{
 
 	public void testQueryConstructor() throws Exception {
 		ReportVersionQuery q = new ReportVersionQuery();
-        assertEquals("Wrong parsing for constructor", "select er from ExpeditedAdverseEventReport er", q.getQueryString());
+        assertEquals("Wrong parsing for constructor", "select rv from ExpeditedAdverseEventReport aer join aer.reports as report join report.reportVersions as rv", q.getQueryString());
     }
 
 }
