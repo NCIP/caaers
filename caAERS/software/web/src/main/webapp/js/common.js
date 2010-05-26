@@ -356,6 +356,8 @@ Object.extend(ListEditor.prototype, {
         }
 
         var indexToDelete = div.getAttribute("item-index");
+//        alert(indexToDelete);
+//        return;
 		if (this.options.deleteIndexCallback){
 			indexToDelete = this.options.deleteIndexCallback.call();
 		}
@@ -383,12 +385,15 @@ Object.extend(ListEditor.prototype, {
             if (ajaxOutput.changes.length == 0) return;
 
             var divs = $$('div.' + this.divisionClass)
-            if (!divs[indexToDelete]) return;
+            var adjustedIndex = this.options.addOnTop ? divs.length - 1 - indexToDelete : indexToDelete; 
+            if (!divs[adjustedIndex]) return;
 
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.conceal(); })
 
             var container = divs[0].parentNode
-            var toDelete = divs[indexToDelete];
+            var toDelete = divs[adjustedIndex];
+//            alert("div to Delete + " + toDelete.id);
+
             container.removeChild(toDelete)
             this.updateFirstAndLast()
             this.applyIndexChanges(ajaxOutput.changes)
@@ -479,49 +484,52 @@ Object.extend(ListEditor.prototype, {
         	if(elt.nodeName == '#comment') return; //Fix for IE7, on comment node hasAttribute call is failing.
             if (!(elt.name || elt.id || elt.hasAttribute("for"))) return;
             changes.each(function(change) {
-            	
-                var matchedAndChanged = false
-                var root = this.collectionProperty + "[" + change.original + "]";
-                var newRoot = this.collectionProperty + "[" + change.current + "]";
-                var rootRE = "^" + root.replace("[", "\\[").replace("]", "\\]")
-				
-				var secId =  this.divisionClass + "-" + change.original
-				var secContentId =  "contentOf-" + this.divisionClass + "-" + change.original;
-				var secNewId =  this.divisionClass + "-" + change.current;
-				var secContentNewId =  "contentOf-" + this.divisionClass + "-" + change.current;
-				
-                if (elt.name && elt.name.match(rootRE)) {
-                    var oldName = elt.name
-                    elt.name = elt.name.replace(root, newRoot)
-                    matchedAndChanged = true
-                    // restore radio value, if necessary
-                    if (radioValues[oldName] && elt.value == radioValues[oldName]) {
-                        elt.checked = true
+
+                if (change.current != null) {
+                    var matchedAndChanged = false
+                    var root = this.collectionProperty + "[" + change.original + "]";
+                    var newRoot = this.collectionProperty + "[" + change.current + "]";
+                    var rootRE = "^" + root.replace("[", "\\[").replace("]", "\\]")
+
+                    var secId = this.divisionClass + "-" + change.original
+                    var secContentId = "contentOf-" + this.divisionClass + "-" + change.original;
+                    var secNewId = this.divisionClass + "-" + change.current;
+                    var secContentNewId = "contentOf-" + this.divisionClass + "-" + change.current;
+
+                    if (elt.name && elt.name.match(rootRE)) {
+                        var oldName = elt.name
+                        elt.name = elt.name.replace(root, newRoot)
+                        matchedAndChanged = true
+                        // restore radio value, if necessary
+                        if (radioValues[oldName] && elt.value == radioValues[oldName]) {
+                            elt.checked = true
+                        }
+                    }
+
+                    if (elt.id) {
+                        if (elt.id.match(rootRE)) {
+                            elt.id = elt.id.replace(root, newRoot)
+                            matchedAndChanged = true
+                        } else if (elt.id == secId) {
+                            elt.id = secNewId;
+                            matchedAndChanged = true
+                        } else if (elt.id == secContentId) {
+                            elt.id = secContentNewId;
+                            matchedAndChanged = true
+                        }
+                    }
+
+                    if (elt.hasAttribute("for") && elt.getAttribute("for") && elt.getAttribute("for").match(rootRE)) {
+                        elt.setAttribute("for", elt.getAttribute("for").replace(root, newRoot));
+                        matchedAndChanged = true
+                    }
+                    if (matchedAndChanged) {
+                        // only change each elt once
+                        throw $break;
                     }
                 }
-				
-				if(elt.id){
-					if(elt.id.match(rootRE)){
-						elt.id = elt.id.replace(root, newRoot)
-                   		matchedAndChanged = true
-					}else if(elt.id == secId){
-						elt.id = secNewId;
-                    	matchedAndChanged = true
-					}else if(elt.id == secContentId){
-						elt.id = secContentNewId;
-                    	matchedAndChanged = true
-					}
-				}
-
-                if (elt.hasAttribute("for") && elt.getAttribute("for") && elt.getAttribute("for").match(rootRE)) {
-                    elt.setAttribute("for", elt.getAttribute("for").replace(root, newRoot));
-                    matchedAndChanged = true
-                }
-                if (matchedAndChanged) {
-                    // only change each elt once
-                    throw $break;
-                }
             }.bind(this))
+
         }.bind(this))
         if(this.options.changeHeaderNames){
         	$$("div." + this.divisionClass).each(function(div, index) {
@@ -536,17 +544,21 @@ Object.extend(ListEditor.prototype, {
     },
 
     updateFirstAndLast: function() {
+
+        var reverse = this.options.addOnTop;
+
         var divs = $$('div.' + this.divisionClass);
         divs.each(function(div, index) {
             div.removeClassName("first-item")
             div.removeClassName("last-item")
             if (index == 0) {
-                div.addClassName("first-item")
+                if (reverse) div.addClassName("last-item"); else div.addClassName("first-item"); 
             }
             if (index == divs.length - 1) {
-                div.addClassName("last-item")
+                if (reverse) div.addClassName("first-item"); else div.addClassName("last-item");
             }
-            div.setAttribute("item-index", index)
+
+            if (reverse) div.setAttribute("item-index", divs.length - 1 - index); else div.setAttribute("item-index", index) 
         });
     }
 })

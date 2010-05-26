@@ -162,10 +162,10 @@
                 addParameters: [aeReportId],
                 addFirstAfter: "add-lab-button",
                 addCallback: function(index) {
-                    new EnterLab(index,null);
+                    new EnterLab(index, null);
                 },
                 deletable: true,
-                reorderable: true,
+                reorderable: false,
                 addOnTop:true
             }, 'aeReport.labs')
             <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
@@ -193,8 +193,10 @@
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
      <tags:listEditorAddButton divisionClass="lab" label="Add a lab" buttonCssClass="ae-list-editor-button"/>
+        <c:set var="size" value="${fn:length(command.aeReport.labs)}" />
         <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
-            <ae:oneLab index="${status.index}" lab="${lab}"/>
+            <ae:oneLab index="${size - status.index - 1}" lab="${command.aeReport.labs[size - status.index - 1]}"/>
+            <%--<ae:oneLab index="${status.index}" lab="${lab}"/>--%>
         </c:forEach>
        
 		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
