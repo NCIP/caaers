@@ -359,17 +359,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
     
     public boolean isAssociatedToWorkflow(){
-    	//return getWorkflowEnabled() && getAeReport().getWorkflowId() != null;
-    	if(getWorkflowEnabled()){
-    		Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
-    		for(ReportDefinition rd: selectedReportDefinitions)
-    			if(! selectedReportDefinitionsMap.containsKey(rd.getId()))
-    				selectedReportDefinitionsMap.put(rd.getId(), Boolean.TRUE);
-    		for(Report r: aeReport.getActiveReports())
-    			if(selectedReportDefinitionsMap.containsKey(r.getReportDefinition().getId()) && r.getWorkflowId() != null)
-    				return true;
-    	}else
-    		return false;
+    	for(Report report: aeReport.getActiveReports()){
+    		if(report.getReportDefinition().getWorkflowEnabled() && report.getWorkflowId() != null)
+    			return true;
+    	}
     	return false;
     }
     

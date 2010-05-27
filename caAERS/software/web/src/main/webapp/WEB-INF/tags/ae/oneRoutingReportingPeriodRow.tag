@@ -23,6 +23,7 @@
 		<%-- ${reportingPeriod.evaluationPeriodName} --%>
 	</td>
 	<td width="22%">${reportingPeriod.evaluationPeriodTypeName}</td>
+	<c:if test="${reportingPeriod.workflowId != null}">
 	<td width="25%" id="reportingPeriod-${reportingPeriod.id}-status">${reportingPeriod.reviewStatus.displayName}</td>
 	<td>
 		<a href="#" onClick="displayPopup('reportingPeriod', ${reportingPeriod.id})">
@@ -37,6 +38,12 @@
 		</select>
 		<img id="reportingPeriod-${reportingPeriod.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 	</td>
+	</c:if>
+	<c:if test="${reportingPeriod.workflowId == null}">
+		<td width="25%" id="reportingPeriod-${reportingPeriod.id}-status">N/A</td>
+		<td>N/A</td>
+		<td width="25%">N/A</td>
+	</c:if>
 </tr>
 <tr id="rptable${reportingPeriod.id}" style="display:none;" class="${currClass}">
 	<td></td>

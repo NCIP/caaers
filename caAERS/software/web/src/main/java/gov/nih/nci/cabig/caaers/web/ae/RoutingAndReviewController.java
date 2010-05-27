@@ -117,7 +117,7 @@ public class RoutingAndReviewController extends SimpleFormController{
 		String userId = SecurityUtils.getUserLoginName();
 		ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
     	if(!errors.hasErrors()){
-    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getOrganization(), cmd.getReviewStatus(), cmd.getReportStatus(), userId);
+    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getOrganization(), cmd.getReviewStatus(), cmd.getReportStatus(), userId, configuration.get(Configuration.ENABLE_WORKFLOW));
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.isSearchCriteriaParticipantCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
         	processPaginationSubmission(request, cmd, modelAndView);
