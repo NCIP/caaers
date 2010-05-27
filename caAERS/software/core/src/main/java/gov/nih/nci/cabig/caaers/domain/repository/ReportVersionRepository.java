@@ -49,6 +49,8 @@ public class ReportVersionRepository {
     public List<ReportVersion> getPastDue() {
         ReportVersionQuery q = new ReportVersionQuery();
         q.andWhere("rv.dueOn < :dueOn");
+        q.andWhere("rv.submittedOn is null");
+        q.orderBy("rv.dueOn");
 
 //        q.filterByReportStatus(ReportStatus.COMPLETED);
 
@@ -61,14 +63,24 @@ public class ReportVersionRepository {
 
     public List<ReportVersion> getReportActivity() {
         ReportVersionQuery q = new ReportVersionQuery();
+        q.orderBy("coalesce(rv.submittedOn, rv.dueOn)");
+        
+/*
+        q.andWhere("rv.dueOn >= :dueOn");
         q.orWhere("rv.reportStatus = :status1");
         q.orWhere("rv.reportStatus = :status2");
         q.orWhere("rv.reportStatus = :status3");
         q.orWhere("rv.reportStatus = :status4");
+        q.orWhere("rv.reportStatus = :status5");
         q.setParameter("status1", ReportStatus.INPROCESS);
         q.setParameter("status2", ReportStatus.PENDING);
         q.setParameter("status3", ReportStatus.WITHDRAWN);
         q.setParameter("status4", ReportStatus.AMENDED);
+        q.setParameter("status5", ReportStatus.COMPLETED);
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        q.setParameter("dueOn", today);
+*/
         List<ReportVersion> l = reportVersionDao.search(q);
         return l;
     }

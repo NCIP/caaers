@@ -31,6 +31,9 @@
 
 <chrome:box title="Welcome">
 <chrome:division title="Regular Tasks">
+
+    <div><a href='dashboard' style="font-size:7pt; font-weight:bold; font-family:tahoma; text-decoration:underline; color: red;">DASHBOARD</a></div>
+
     <table id="test" class="autoclear" width="100%">
         <tr class="results" >
             
