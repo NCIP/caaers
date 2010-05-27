@@ -324,7 +324,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 	
 	
-	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId){
+	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, 
+			Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId, Boolean courseWorkflowEnabled){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
 		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
 		
@@ -345,8 +346,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 		List<AdverseEventReportingPeriodDTO> reportingPeriodDTOs = new ArrayList<AdverseEventReportingPeriodDTO>();
 		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
-			if(reportingPeriod.getWorkflowId() != null && isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus) && isReportingPeriodHavingReportsWithSpecifiedStatus(reportingPeriod, reportStatus)){
-				AdverseEventReportingPeriodDTO reportingPeriodDTO = routingAndReviewFactory.createAdverseEventEvalutionPeriodDTO(reportingPeriod, userId);
+			if(isReportingPeriodHavingWorkflowOrReportsWithWorkflow(reportingPeriod, courseWorkflowEnabled) && 
+					isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus) && isReportingPeriodHavingReportsWithSpecifiedStatus(reportingPeriod, reportStatus)){
+			//if(reportingPeriod.getWorkflowId() != null &&
+			//		isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus) && isReportingPeriodHavingReportsWithSpecifiedStatus(reportingPeriod, reportStatus)){
+				AdverseEventReportingPeriodDTO reportingPeriodDTO = routingAndReviewFactory.createAdverseEventEvalutionPeriodDTO(reportingPeriod, userId, courseWorkflowEnabled);
 				
 				//check the Reports
 				if(reportingPeriod.getAeReports() != null){
@@ -425,6 +429,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			}
 		}
 		return false; //nor reporting period or report(s) has the status mentioned
+	}
+	
+	protected boolean isReportingPeriodHavingWorkflowOrReportsWithWorkflow(AdverseEventReportingPeriod rp, Boolean courseWorkflowEnabled){
+		if(courseWorkflowEnabled && rp.getWorkflowId() != null)
+			return true;
+		for(ExpeditedAdverseEventReport aeReport: rp.getActiveAeReports()){
+			for(Report r: aeReport.getReports())
+				if(r.getReportDefinition().getWorkflowEnabled() && r.getWorkflowId() != null)
+					return true;
+		}
+		return false;
 	}
 	
 	/**

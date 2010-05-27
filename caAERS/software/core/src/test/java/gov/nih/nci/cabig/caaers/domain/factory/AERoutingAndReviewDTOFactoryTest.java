@@ -37,7 +37,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 	
 	public void testCreateAdverseEventEvalutionPeriodDTO_4Null() {
 		String userId = "tester";
-		assertNull(factory.createAdverseEventEvalutionPeriodDTO(null, userId));
+		assertNull(factory.createAdverseEventEvalutionPeriodDTO(null, userId, true));
 	}
 
 	public void testCreateAdverseEventEvalutionPeriodDTO() {
@@ -67,7 +67,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		EasyMock.expect(repository.nextTransitionNames(workflowId, userId)).andReturn(actions).anyTimes();
 		replayMocks();
 		
-		AdverseEventReportingPeriodDTO dto = factory.createAdverseEventEvalutionPeriodDTO(rp, userId);
+		AdverseEventReportingPeriodDTO dto = factory.createAdverseEventEvalutionPeriodDTO(rp, userId, true);
 		
 		verifyMocks();
 		
@@ -101,7 +101,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		EasyMock.expect(repository.nextTransitionNames(workflowId, userId)).andReturn(actions).anyTimes();
 		replayMocks();
 
-		AdverseEventReportingPeriodDTO dto = factory.createAdverseEventEvalutionPeriodDTO(rp, userId);
+		AdverseEventReportingPeriodDTO dto = factory.createAdverseEventEvalutionPeriodDTO(rp, userId, true);
 
 		verifyMocks();
 

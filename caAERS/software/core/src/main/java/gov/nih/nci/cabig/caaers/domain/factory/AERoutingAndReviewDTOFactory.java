@@ -25,32 +25,36 @@ public class AERoutingAndReviewDTOFactory {
 	private static Logger log = Logger.getLogger(AERoutingAndReviewDTOFactory.class);
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
-	public AdverseEventReportingPeriodDTO createAdverseEventEvalutionPeriodDTO(AdverseEventReportingPeriod rp, String userId){
+	public AdverseEventReportingPeriodDTO createAdverseEventEvalutionPeriodDTO(AdverseEventReportingPeriod rp, String userId, Boolean courseWorkflowEnabled){
 		if(rp == null) return null;
-		if(rp.getWorkflowId() == null) {
-			log.warn("The workflowID for AdverseEventReportingPeriod#" + rp.getId() + " is null");
-			return null;
-		}
-		
 		AdverseEventReportingPeriodDTO dto = new AdverseEventReportingPeriodDTO();
-		dto.setWorkflowId(rp.getWorkflowId());
 		dto.setAdverseEventReportingPeriod(rp);
 		dto.setParticipant(rp.getParticipant());
 		dto.setStudy(rp.getStudy());
 		dto.setId(rp.getId());
 		dto.setEvaluationPeriodName(rp.getName());
-        if(rp.getEpoch() != null) dto.setEvaluationPeriodTypeName(rp.getEpoch().getName());
+		if(rp.getEpoch() != null) dto.setEvaluationPeriodTypeName(rp.getEpoch().getName());
 		dto.setNoOfAe(rp.getNumberOfAEs());
 		dto.setNoOfReport(rp.getNumberOfReports());
-		dto.setReviewStatus(rp.getReviewStatus());
-		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
-		dto.setReviewComments(createReviewComments(rp.getReviewComments()));
-		
 		//set the dcp sponsored study flag
 		dto.setDcpSponsoredStudy(rp.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP"));
 		
-		return dto;
+		if(rp.getWorkflowId() == null) {
+			// This means that the workflow is not enabled for courses.
+			// So even if the course existed in a workflow, status and actions should not be shown in this case.
+			dto.setWorkflowId(null);
+			dto.setReviewStatus(null);
+			dto.setPossibleActions(null);
+			dto.setReviewComments(null);
+			return dto;
+		}else{
+			dto.setWorkflowId(rp.getWorkflowId());
+			dto.setReviewStatus(rp.getReviewStatus());
+			dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
+			dto.setReviewComments(createReviewComments(rp.getReviewComments()));
+		}
 		
+		return dto;
 	}
 	
 	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport, String userId){

@@ -29,7 +29,8 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param reviewStatus
 	 * @return
 	 */
-	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId);
+	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, 
+			Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId, Boolean courseWorkflowEnabled);
 	
 	/**
 	 * Will list the review comments associated to a report

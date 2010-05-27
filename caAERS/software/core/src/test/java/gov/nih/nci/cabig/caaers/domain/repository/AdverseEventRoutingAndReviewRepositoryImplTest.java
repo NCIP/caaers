@@ -227,7 +227,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		reportDto.setPossibleActions(possibleActions);
 		EasyMock.expect(rpDao.findAdverseEventReportingPeriods((AdverseEventReportingPeriodForReviewQuery) EasyMock.anyObject())).andReturn(reportingPeriods);
 	
-		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp, userId)).andReturn(rpDto);
+		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp, userId, true)).andReturn(rpDto);
 		EasyMock.expect(factory.createAdverseEventReportDTO(aeReport, userId)).andReturn(rDto);
 		replayMocks();
 		
@@ -237,7 +237,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		ReviewStatus reviewStatus = null;
 		ReportStatus reportStatus = null;
 		
-		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, org, reviewStatus, reportStatus, userId);
+		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, org, reviewStatus, reportStatus, userId, true);
 		
 		verifyMocks();
 		
