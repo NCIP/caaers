@@ -43,6 +43,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * The Webflow for ExpeditedAdverseEventReport creation and updation is maintained by this controller. 
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
@@ -52,12 +53,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	//validator needs to be called in onBindAndValidate()
 	protected WebControllerValidator webControllerValidator;
 	private static final String ACTION_PARAMETER = "action";
-	private static final String AE_LIST_PARAMETER = "adverseEventList";
-    private static final String AE_REPORT_ID_PARAMETER = "aeReportId";
-    private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
-    private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
-    private static final String REPORT_ID_PARAMETER = "reportId";
-    private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
+	
     
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private ResearchStaffDao researchStaffDao;
@@ -73,8 +69,16 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         return new ExpeditedFlowFactory("Edit expedited report");
     }
 
-    
-    
+
+    /**
+     * The current task that we are on has to be set in the context for hilighting. 
+     * @param request - The HttpServletRequest
+     * @param oCommand - The ExpeditedAdverseEventInputCommand object
+     * @param errors   - The Spring Errors object
+     * @param page     - The current page number in the flow
+     * @return         - A Map consisting of additional information that should be added to the context
+     * @throws Exception
+     */
     @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
@@ -82,12 +86,20 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         return refdata;
     }
 
+    
+    /**
+     * Will generate the command object that we have to work on. 
+     * @param request  - HttpServletRequest  object
+     * @return   - An EditExpeditedAdverseEventCommand instance. 
+     * @throws Exception
+     */
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
     	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, 
-    				assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
+    				assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository,
+                adverseEventRoutingAndReviewRepository, evaluationService);
     	command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
     	
     	
@@ -291,7 +303,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     }
 
     /**
-     * Handles switching of reporting context. 
+     * Overriden to handle switching of reporting context.
+     * Note:- Will update the mandatory sections and fields 
      * 
      */
     @Override
@@ -321,7 +334,15 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 		editCommand.updateFieldMandatoryness();
     }
 
-
+    /**
+     * Will be invoked when the web flow ends, will take the user to List AdvervesEvents page. 
+     * @param request - HttpServletRequest - the request object
+     * @param response - HttpServletResponse  - the response object
+     * @param oCommand - The command object. 
+     * @param errors   - The Spring errors object
+     * @return         - A ModelAndView pointing to List Adverse Events page. 
+     * @throws Exception
+     */
     @Override
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
@@ -332,6 +353,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToAeList", model);
     }
+
     /**
      * Will call the validate method on web controller.
      */
@@ -340,9 +362,12 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 		super.onBindAndValidate(request, command, errors, page);
 		webControllerValidator.validate(request, command, errors);
 	}
-    
+
     /**
-     * Supress validation, when we are on attribution page and is trying to go back.  
+     * Supress the validation while navigating back in the flow. `
+     * @param request                                           \
+     * @param command
+     * @return
      */
     @Override
     protected boolean suppressValidation(HttpServletRequest request,Object command) {
