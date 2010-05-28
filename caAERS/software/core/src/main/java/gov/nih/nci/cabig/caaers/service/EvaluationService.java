@@ -23,28 +23,32 @@ import org.apache.commons.collections.CollectionUtils;
  * This service interface is used to implement various caaers business rules.
  * 
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public interface EvaluationService {
 
-    
+
     /**
-     * 
-     * @param expeditedData
-     * @param reportDefinitions
-     * @return All the mandatory sections for a given expedited report.
+     * Will find the mandatory sections associated with the ExpeditedAdverseEventReport for the specific ReportDefinition
+     * @param expeditedData - ExpeditedAdverseEventReport in context
+     * @param reportDefinitions - The ReportDefinition whose mandatory fields to be evaluated
+     * @return
      */
     Map<Integer, Collection<ExpeditedReportSection>> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions);
 
     /**
      * This method will find all the report definitions applicable to the Study
+     * @param study - The study in context
+     * @param assignment - The StudyParticipantAssignment in context
+     * @return
      */
     ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study, StudyParticipantAssignment assignment);
 
     /**
      * Runs through the Business rules set at "FundingSponsor" level, for the section.
      * 
-     * @param aeReport
-     * @param sections
+     * @param aeReport - The ExpeditedAdverseEventReport  in context
+     * @param sections  - The ExpeditedReportSection to included in the validation
      * @return - {@link ValidationErrors}, that contains the errors.
      */
     ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);

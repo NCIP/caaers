@@ -20,38 +20,61 @@ import java.util.Map;
  *         rules
  */
 public interface AdverseEventEvaluationService {
+    /**
+     * Assess a particular adverse event, by evaluating the rules defined.
+     * @param ae - The AdverseEvent  to evaluate
+     * @param study - The Study in context
+     * @return
+     * @throws Exception
+     */
     String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception;
 
-    // public String identifyAdverseEventType()
 
+    /**
+     * Evaluate the Rules defined in the context of the report and for the specified adverse events. 
+     *
+     * @param aeReport  - The ExpeditedAdverseEventReport  in context
+     * @param aeList    - The list of AdverseEvent  to evaluate
+     * @param study     - The Study in context
+     * @return
+     * @throws Exception
+     */
     Map<AdverseEvent, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList,
     		Study study) throws Exception;
 
+    /**
+     * The mandatory sections associated with the report. 
+     * @param expeditedData  - The ExpeditedAdverseEventReport in context
+     * @param reportDefinitions  - The ReportDefinitions whose mandatory sections to be considered. 
+     * @return
+     * @throws Exception
+     */
     Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions)
                     throws Exception;
 
     /**
-     * Will return the mandatory sections available for a specific report
-     * 
-     * @param report
+     * The mandatory sections associated with the report.
+     * @param aeReport  - The ExpeditedAdverseEventReport in context
+     * @param reportDefinition  - The ReportDefinitions whose mandatory sections to be considered. 
      * @return
      * @throws Exception
      */
     Collection<ExpeditedReportSection> mandatorySectionsForReport(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition) throws Exception;
 
     /**
-     * This method will execute the business rules set for SAE flow, at funding sponsor level.
-     * 
-     * @param aeReport
-     * @param section
+     * Validates the business rules associated with the Report. 
+     * @param aeReport - The ExpeditedAdverseEventReport  in context
+     * @param sections - The ExpeditedReportSection to evaluate
      * @return
-     * @throws Exception
      */
     ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);
 
     /**
-     * Evaluate the mandatoryness of a specific report, the {@link gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField} will be populated in the Report.
+     * Evaluate the field level rules, and identify the mandatory fields associated with the report. 
+     * @param aeReport  - The ExpeditedAdverseEventReport in context
+     * @param report    - The Report in context
+     * @param mandatoryFieldDefinition  - The mandatory sections to consider.
+     * @return
      */
-    //why all arguments? due to hibernate lazy loading, we can't really predict all the associations can be obtained at runtime.
     String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition);
 }

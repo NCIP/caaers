@@ -185,12 +185,9 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
     }
 
     public void testPopulateCategoryBasedColumns() throws Exception{
-
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-       fail("to do");
+        Rule r1 = Fixtures.createRule(Fixtures.createCondition("abc", "def"));
+        service.populateCategoryBasedColumns(r1, CaaersRulesEngineService.SPONSOR_LEVEL, "sp", "in", "ti");
+        
     }
 
     

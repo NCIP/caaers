@@ -83,7 +83,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test",1)).anyTimes();
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
         EasyMock.expect(caaersRulesEngineService.constructPackageName("SponsorDefinedStudy", "1", null, "1", "SAE Reporting Rules")).andReturn("abcd").anyTimes();
-		EasyMock.expect(caaersRulesEngineService.getRuleSetByPackageName("abcd")).andReturn(new RuleSet()).anyTimes();
+		EasyMock.expect(caaersRulesEngineService.getRuleSetByPackageName("abcd", true)).andReturn(new RuleSet()).anyTimes();
 		//frame the evalutaion result
 		RuleEvaluationResult result1 = new RuleEvaluationResult();
 		result1.setMessage("ADVERSE_EVENT_SECTION");

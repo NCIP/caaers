@@ -456,9 +456,9 @@ public class CaaersRulesEngineService {
      * @param ruleSet - The ruleset to save
      * @param level    - The level
      * @param ruleSetName  - The ruleset name eg: SAE Reporting Rules
-     * @param sponsor
-     * @param institution
-     * @param study
+     * @param sponsor     - The sponsor of the study
+     * @param institution - The site, where the subject belongs
+     * @param study       - The study on which adverse event occured
      * @throws Exception
      */
     public void saveRuleSet(RuleSet ruleSet,String level,String ruleSetName,Organization  sponsor,
@@ -632,8 +632,16 @@ public class CaaersRulesEngineService {
         return column;
 
     }
-    
-    private void populateCategoryBasedColumns(Rule rule, String level, String sponsorName, String institutionName, String studyShortTitle) {
+
+    /**
+     * Populates the category based columns in the rule. 
+     * @param rule
+     * @param level
+     * @param sponsorName
+     * @param institutionName
+     * @param studyShortTitle
+     */
+    public void populateCategoryBasedColumns(Rule rule, String level, String sponsorName, String institutionName, String studyShortTitle) {
         if (SPONSOR_DEFINED_STUDY_LEVEL.equals(level)) {
             rule.getCondition().getColumn().add(createCriteriaForSponsor(sponsorName));
             rule.getCondition().getColumn().add(
