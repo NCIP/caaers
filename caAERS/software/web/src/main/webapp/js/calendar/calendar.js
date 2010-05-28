@@ -689,8 +689,10 @@ Calendar.cellClick = function(el, ev) {
 			return;
 		    case 0:
 			// TODAY will bring us here
-			if ((typeof cal.getDateStatus == "function") &&
-			    cal.getDateStatus(date, date.getFullYear(), date.getMonth(), date.getDate())) {
+            // Ion C. Olaru
+            // the bug is if today's date has a CSS attached to it, then go to Today did not work.
+            // adding "=== true" fixes this.
+			if ((typeof cal.getDateStatus == "function") && cal.getDateStatus(date, date.getFullYear(), date.getMonth(), date.getDate()) === true) {
 				return false;
 			}
 			break;

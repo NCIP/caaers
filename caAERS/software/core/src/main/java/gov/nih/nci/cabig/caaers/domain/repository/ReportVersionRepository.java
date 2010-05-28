@@ -9,10 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /*
@@ -48,15 +45,16 @@ public class ReportVersionRepository {
 
     public List<ReportVersion> getPastDue() {
         ReportVersionQuery q = new ReportVersionQuery();
-        q.andWhere("rv.dueOn < :dueOn");
+        q.andWhere("rv.dueOn < :tomorrow");
         q.andWhere("rv.submittedOn is null");
         q.orderBy("rv.dueOn");
 
 //        q.filterByReportStatus(ReportStatus.COMPLETED);
 
-        Calendar cal = Calendar.getInstance();
-        Date today = cal.getTime();
-        q.setParameter("dueOn", today);
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        Date d = cal.getTime();
+        q.setParameter("tomorrow", d);
         List<ReportVersion> l = reportVersionDao.search(q);
         return l;
     }

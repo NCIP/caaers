@@ -55,7 +55,7 @@
 
                         <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                         <tr class="${ALT}" id="CD_${_ID}">
-                            <td><b>${index.count})&nbsp;&nbsp;</b> <a href="#">${rv.report.name}</a></td>
+                            <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a href="<c:url value="/pages/ae/edit?rvID=${rv.id}&aeReport=${rv.report.aeReport.id}&report=${rv.report.id}" />">${rv.report.reportDefinition.label}</a></td>
                             <td align="right" width="40px"><i>Due on:</i></td>
                             <td align="left" width="70px"><span style="color:#ea4b4b"><tags:formatDate value="${rv.dueOn}" /></span></td>
                         </tr>
@@ -66,9 +66,9 @@
                 </div>
 
                 <center>
-                <br>
-                    <div style="margin: 2px 0px 2px 0px; width:225px;" id="calendar-container"></div>
-
+                    <div style="height:180px; border:0px green solid; margin:10px;"><div style="margin: 2px 0px 2px 0px; width:225px;" id="calendar-container"></div></div>
+                </center>
+                            
                     <script type="text/javascript">
 
                         function dateChanged(calendar) {
@@ -79,28 +79,7 @@
                                 var y = calendar.date.getFullYear();
                                 var m = calendar.date.getMonth() + 1;     // integer, 1..12
                                 var d = calendar.date.getDate();      // integer, 1..31
-
-                                if (m < 10) m = '0' + m;
-                                if (d < 10) d = '0' + d;
-                                var _el1 = 'AB_' +  m + '_' + d + '_' + y;
-                                var _el2 = 'CD_' +  m + '_' + d + '_' + y;
-
-                                if ($(_el2)) {
-                                    jQuery('#dueReports').scrollTo(jQuery('#' + _el2));
-                                } else {
-                                    var cdClosestRed = findClosestTo(-1, y, m - 1, d);
-                                    cdClosestRed = "CD_" + cdClosestRed.replace(/\//gi, "_");
-                                    jQuery('#dueReports').scrollTo(jQuery('#' + cdClosestRed));
-                                }
-
-                                if ($(_el1)) {
-                                    jQuery('#reportActivity').scrollTo(jQuery('#' + _el1))
-                                } else {
-                                    var abClosestGreen = findClosestTo(0, y, m - 1, d);
-                                    abClosestGreen = "AB_" + abClosestGreen.replace(/\//gi, "_");
-                                    jQuery('#reportActivity').scrollTo(jQuery('#' + abClosestGreen))
-                                };
-
+                                scrollByDate(y, m, d);
                             }
                         };
 
@@ -111,12 +90,48 @@
                         // 2  - Due on (future)
                         var ACTIVITYDATES = {
                             <c:forEach items="${reportActivity}" var="rv" varStatus="index">
-                            <c:if test="${rv.submittedOn ne null}">"<tags:formatDate value="${rv.submittedOn}" />":1,</c:if>
-                            <c:if test="${rv.submittedOn eq null && rv.dueOn ne null && rv.dueOn le now}">"<tags:formatDate value="${rv.dueOn}" />":-1,</c:if>
+                            <c:if test="${rv.submittedOn ne null}">'<tags:formatDate value="${rv.submittedOn}" />':1,</c:if>
+                            <c:if test="${rv.submittedOn eq null && rv.dueOn ne null}">
+                                <c:set var="_t"><jsp:attribute name="value"><tags:formatDateForComp value="${now}" /></jsp:attribute></c:set>    
+                                <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rv.dueOn}" /></jsp:attribute></c:set>    
+                                <c:if test="${_due le _t}">"<tags:formatDate value="${rv.dueOn}" />":-1,</c:if>
+                                <c:if test="${_due gt _t}">"<tags:formatDate value="${rv.dueOn}" />":2,</c:if>
+                            </c:if>
+<%--
+                            "<tags:formatDate value="${rv.dueOn}" />":-1,</c:if>
                             <c:if test="${rv.submittedOn eq null && rv.dueOn ne null && rv.dueOn gt now}">"<tags:formatDate value="${rv.dueOn}" />":2,</c:if>
+--%>
                             </c:forEach>"0000/00/00":false}
-                        var AA = {"05/01/2010":1, "05/05/2010":1, "05/10/2010":1,  "05/30/2010":1, "09/27/2008":-1}
+                        // var AA = {"05/01/2010":1, "05/05/2010":1, "05/10/2010":1,  "05/30/2010":1, "09/27/2008":-1}
 
+                        function scrollByDate(y, m, d) {
+                            if (m < 10) m = '0' + m;
+                            if (d < 10) d = '0' + d;
+                            // $('CC').innerHTML = y + '-' + m + '-' + d;
+                            
+                            var _el1 = 'AB_' +  m + '_' + d + '_' + y;
+                            var _el2 = 'CD_' +  m + '_' + d + '_' + y;
+                            // alert(_el1 + '/' + _el2);
+                            if ($(_el2)) {
+                                jQuery('#dueReports').scrollTo(jQuery('#' + _el2));
+                            } else {
+                                var cdClosestRed = findClosestTo(-1, y, m - 1, d);
+                                cdClosestRed = "CD_" + cdClosestRed.replace(/\//gi, "_");
+                                jQuery('#dueReports').scrollTo(jQuery('#' + cdClosestRed));
+                                // $('CC').innerHTML = cdClosestRed;
+                            }
+
+                            if ($(_el1)) {
+                                jQuery('#reportActivity').scrollTo(jQuery('#' + _el1))
+                            } else {
+                                var abClosestGreen = findClosestTo(0, y, m - 1, d);
+                                abClosestGreen = "AB_" + abClosestGreen.replace(/\//gi, "_");
+                                jQuery('#reportActivity').scrollTo(jQuery('#' + abClosestGreen))
+                            };
+                        }
+                        /*
+                        * 
+                        * */
                         function days_between(date1, date2) {
                             // The number of milliseconds in one day
                             var ONE_DAY = 1000 * 60 * 60 * 24
@@ -160,11 +175,10 @@
                         }
 
                         function ourDateStatusFunc(date, year, month, day) {
-                            month = month + 1;
-                            if (month < 10) month = '0' + month;
-                            if (day < 10) day = '0' + day;
-                            if (ACTIVITYDATES[month + '/' + day + '/' + year] == 1) return "reportActivity";
-                            if (ACTIVITYDATES[month + '/' + day + '/' + year] == -1) return "pastDue";
+                            var _m = month + 1; var _d = day; var _y = year;
+                            if (_m < 10) _m = '0' + _m; if (_d < 10) _d = '0' + _d;
+                            if (ACTIVITYDATES[_m + '/' + _d + '/' + _y] == 1) return "reportActivity";
+                            if (ACTIVITYDATES[_m + '/' + _d + '/' + _y] == -1) return "pastDue";
                             return false;
                             // other dates are enabled
                             // return true if you want to disable other dates
@@ -179,12 +193,10 @@
                                 weekNumbers : true,
                                 showOthers  : false
                             });
+                            scrollByDate(<fmt:formatDate value="${now}" pattern="yyyy"/>, <fmt:formatDate value="${now}" pattern="MM"/>, <fmt:formatDate value="${now}" pattern="dd"/>);
                         });
                     </script>
 
-                <br><br>
-                </center>
-                
                 <div class="subheader">
                     <table width='100%' cellpadding="0" cellspacing="0"><tr>
                     <td><h3 class='blue'>REPORT ACTIVITY ( ${fn:length(reportActivity)} )</h3>
@@ -214,12 +226,14 @@
                             </c:if>
 
                             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                                <td><b>${index.count})&nbsp;&nbsp;</b> <a href="#">${rv.report.name}</a></td>
+                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a href="<c:url value="/pages/ae/edit?rvID=${rv.id}&aeReport=${rv.report.aeReport.id}&report=${rv.report.id}" />">${rv.report.reportDefinition.label}</a></td>
                                 <c:if test="${rv.submittedOn eq null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">
-                                        <c:if test="${rv.dueOn le now}"><span style="color:#ea4b4b"><tags:formatDate value="${rv.dueOn}" /></span></c:if>
-                                        <c:if test="${rv.dueOn eq null ||rv.dueOn gt now}"><span style="color:000"><tags:formatDate value="${rv.dueOn}" /></span></c:if>
+                                        <c:set var="_t"><jsp:attribute name="value"><tags:formatDateForComp value="${now}" /></jsp:attribute></c:set>
+                                        <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rv.dueOn}" /></jsp:attribute></c:set>
+                                        <c:if test="${_due le _t}"><span style="color:#ea4b4b"><tags:formatDate value="${rv.dueOn}" /></span></c:if>
+                                        <c:if test="${rv.dueOn eq null || _due gt _t}"><span style="color:000"><tags:formatDate value="${rv.dueOn}" /></span></c:if>
                                     </td>
                                 </c:if>
                                 <c:if test="${rv.submittedOn ne null}">
@@ -265,7 +279,6 @@
 
 
 <script>
-
 /*
 Event.observe($('upOne'), 'mouseover', function() { $('upOne').src = $('upOne').src.replace('_off', '_on');});
 Event.observe($('upOne'), 'mouseout', function() { $('upOne').src = $('upOne').src.replace('_on', '_off');});
@@ -409,3 +422,4 @@ jQuery(function( $ ){
 
 
 </style>
+<span id="CC" />
