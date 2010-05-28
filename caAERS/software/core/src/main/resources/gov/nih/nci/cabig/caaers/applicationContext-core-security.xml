@@ -531,7 +531,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery" value-ref="organizationQuerySecurityFilterer" />
-              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery" value-ref="reportVersionQuerySecurityFilterer" />
+              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery" value-ref="reportVersionQuerySecurityFilterer" />
               </map>
           </property>
     </bean>

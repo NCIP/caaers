@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;

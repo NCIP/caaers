@@ -195,6 +195,26 @@
                             });
                             scrollByDate(<fmt:formatDate value="${now}" pattern="yyyy"/>, <fmt:formatDate value="${now}" pattern="MM"/>, <fmt:formatDate value="${now}" pattern="dd"/>);
                         });
+
+                        function showToolTip(text, title) {
+                            Tip(text,
+                                    WIDTH, 300, 
+                                    TITLE, title,
+                                    SHADOW, false,
+                                    FADEIN, 300,
+                                    FADEOUT, 300,
+                                    STICKY, 1,
+                                    CLOSEBTN, false,
+                                    CLICKCLOSE, false,
+                                    OPACITY, 80,
+                                    FONTCOLOR, "#fff",
+                                    BORDERCOLOR, "#444",
+                                    BGCOLOR, "#444",
+                                    PADDING, 15,
+                                    FONTSIZE, "11px"
+                            );
+                        }
+                        
                     </script>
 
                 <div class="subheader">
@@ -225,8 +245,15 @@
                                 <c:set var="_DATE" value="${_dateString}" />
                             </c:if>
 
+<%--
+                            <span id="_Description${rv.id}" style="display:none;">
+                                <b style="color:yellow;">Report Name: </b>${rv.report.name}<br>
+                                <b style="color:yellow;">Study: </b>${rv.report.aeReport.reportingPeriod.assignment.studySite.study.shortTitle}<br>
+                                <b style="color:yellow;">Participant: </b>${rv.report.aeReport.reportingPeriod.assignment.participant.fullName} (${rv.report.aeReport.reportingPeriod.assignment.participant.primaryIdentifier})<br>
+                            </span>
+--%>
                             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a href="<c:url value="/pages/ae/edit?rvID=${rv.id}&aeReport=${rv.report.aeReport.id}&report=${rv.report.id}" />">${rv.report.reportDefinition.label}</a></td>
+                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rv.id}&aeReport=${rv.report.aeReport.id}&report=${rv.report.id}" />">${rv.report.reportDefinition.label}</a></td>
                                 <c:if test="${rv.submittedOn eq null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">

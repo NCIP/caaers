@@ -1,10 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +42,7 @@ public class ReportVersionRepository {
     }
 
     public List<ReportVersion> getPastDue() {
-        ReportVersionQuery q = new ReportVersionQuery();
+        ReportVersionDTOQuery q = new ReportVersionDTOQuery();
         q.andWhere("rv.dueOn < :tomorrow");
         q.andWhere("rv.submittedOn is null");
         q.orderBy("rv.dueOn");
@@ -60,7 +58,7 @@ public class ReportVersionRepository {
     }
 
     public List<ReportVersion> getReportActivity() {
-        ReportVersionQuery q = new ReportVersionQuery();
+        ReportVersionDTOQuery q = new ReportVersionDTOQuery();
         q.orderBy("coalesce(rv.submittedOn, rv.dueOn)");
         
 /*

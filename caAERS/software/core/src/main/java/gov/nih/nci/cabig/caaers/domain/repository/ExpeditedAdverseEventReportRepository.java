@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-
-import java.util.List;
 
 
 /*

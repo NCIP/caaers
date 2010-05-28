@@ -2,8 +2,8 @@ package gov.nih.nci.cabig.caaers.dao.report;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ReportVersionQuery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -134,6 +134,24 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
         String queryString = query.getQueryString();
         // System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
         return (List<ReportVersion>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+                }
+                return hiberanteQuery.list();
+            }
+        });
+
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public List<ReportVersionDTO> searchDTO(final AbstractQuery query) {
+        String queryString = query.getQueryString();
+        // System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
+        return (List<ReportVersionDTO>) getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
