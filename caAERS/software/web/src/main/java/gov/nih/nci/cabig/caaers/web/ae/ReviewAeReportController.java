@@ -65,7 +65,10 @@ public class ReviewAeReportController extends SimpleFormController{
 		else
 			command.setReportId(null);
 		command.setAeReport(aeReport);
-		command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+		for(Report r: aeReport.getReports()){
+			if(r.getId().equals(Integer.parseInt(reportId)))
+				command.setWorkflowEnabled(r.getReportDefinition().getWorkflowEnabled());
+		}
 		return command;
 	}
 	

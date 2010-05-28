@@ -112,7 +112,6 @@ public class ViewReportTab extends AeTab {
 				UserGroupType.caaers_participant_cd,UserGroupType.caaers_central_office_sae_cd);
     	
     	// We update reportSubmittability based on workflow if the workflow is enabled at the System level first
-    	if(command.getWorkflowEnabled()){
     		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
     		boolean isSAECoordinatorAtCC = false;
 			//now check if the sae coordinator is associated to the coordinaoting center
@@ -144,13 +143,6 @@ public class ViewReportTab extends AeTab {
     		   			renderSubmitLink.put(report.getId(), canSubmit && canLoggedInUserSubmit);
     			}
     		}
-    	}else{
-    		// Update reportSubmittablity based on whether the logged in person can submit
-    		for(Integer id: renderSubmitLink.keySet()){
-    			boolean canSubmit = renderSubmitLink.get(id);
-    			renderSubmitLink.put(id, canSubmit && canLoggedInUserSubmit);
-    		}
-    	}
     	return renderSubmitLink;
     }
 

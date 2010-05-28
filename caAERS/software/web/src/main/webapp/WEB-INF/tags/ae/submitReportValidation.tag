@@ -137,7 +137,7 @@
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> (Custom) ${report.reportDefinition.label}</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
 						</c:if>
-						<c:if test="${command.workflowEnabled == true}">
+						<c:if test="${report.reportDefinition.workflowEnabled == true}">
 							<span id="sliderWFAction-${report.id }" style="width:100%; font-size:0;"></span>
 						</c:if>
 	                    <c:if test="${reportMessages[report.id].submittable}">
