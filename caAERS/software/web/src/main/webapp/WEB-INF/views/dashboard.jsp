@@ -4,7 +4,7 @@
 
 <%--<ol>
 <c:forEach items="${pastDueReports}" var="rv">
-    <li>${rv.report.name} - Due Date: <tags:formatDate value="${rv.dueOn}" /> [${rv.reportStatus}]
+    <li>${rvDTO.rv.report.name} - Due Date: <tags:formatDate value="${rvDTO.rv.dueOn}" /> [${rvDTO.rv.reportStatus}]
 &lt;%&ndash;
         <ol>
     <c:forEach items="${aeReport.reports}" var="report">
@@ -44,8 +44,8 @@
 
                 <c:set var="_DATE" value="" />
                 <table border="0" cellpadding="0" cellspacing="0" id="dashboard_table" width="99%">
-                    <c:forEach items="${pastDueReports}" var="rv" varStatus="index">
-                        <c:set var="_dateString"><jsp:attribute name="value"><tags:formatDate value="${rv.dueOn}" /></jsp:attribute></c:set>
+                    <c:forEach items="${pastDueReports}" var="rvDTO" varStatus="index">
+                        <c:set var="_dateString"><jsp:attribute name="value"><tags:formatDate value="${rvDTO.rv.dueOn}" /></jsp:attribute></c:set>
                         <c:set var="_ID" value="tr_PD_${index.index}" />
 
                         <c:if test="${_DATE ne _dateString}">
@@ -55,9 +55,9 @@
 
                         <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                         <tr class="${ALT}" id="CD_${_ID}">
-                            <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a href="<c:url value="/pages/ae/edit?rvID=${rv.id}&aeReport=${rv.report.aeReport.id}&report=${rv.report.id}" />">${rv.report.reportDefinition.label}</a></td>
+                            <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.rv.id}&report=${rvDTO.rv.id}" />">${rvDTO.reportName}</a></td>
                             <td align="right" width="40px"><i>Due on:</i></td>
-                            <td align="left" width="70px"><span style="color:#ea4b4b"><tags:formatDate value="${rv.dueOn}" /></span></td>
+                            <td align="left" width="70px"><span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -89,17 +89,17 @@
                         // 1  - Submitted
                         // 2  - Due on (future)
                         var ACTIVITYDATES = {
-                            <c:forEach items="${reportActivity}" var="rv" varStatus="index">
-                            <c:if test="${rv.submittedOn ne null}">'<tags:formatDate value="${rv.submittedOn}" />':1,</c:if>
-                            <c:if test="${rv.submittedOn eq null && rv.dueOn ne null}">
+                            <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
+                            <c:if test="${rvDTO.rv.submittedOn ne null}">'<tags:formatDate value="${rvDTO.rv.submittedOn}" />':1,</c:if>
+                            <c:if test="${rvDTO.rv.submittedOn eq null && rvDTO.rv.dueOn ne null}">
                                 <c:set var="_t"><jsp:attribute name="value"><tags:formatDateForComp value="${now}" /></jsp:attribute></c:set>    
-                                <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rv.dueOn}" /></jsp:attribute></c:set>    
-                                <c:if test="${_due le _t}">"<tags:formatDate value="${rv.dueOn}" />":-1,</c:if>
-                                <c:if test="${_due gt _t}">"<tags:formatDate value="${rv.dueOn}" />":2,</c:if>
+                                <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rvDTO.rv.dueOn}" /></jsp:attribute></c:set>    
+                                <c:if test="${_due le _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
+                                <c:if test="${_due gt _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":2,</c:if>
                             </c:if>
 <%--
-                            "<tags:formatDate value="${rv.dueOn}" />":-1,</c:if>
-                            <c:if test="${rv.submittedOn eq null && rv.dueOn ne null && rv.dueOn gt now}">"<tags:formatDate value="${rv.dueOn}" />":2,</c:if>
+                            "<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
+                            <c:if test="${rvDTO.rv.submittedOn eq null && rvDTO.rv.dueOn ne null && rvDTO.rv.dueOn gt now}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":2,</c:if>
 --%>
                             </c:forEach>"0000/00/00":false}
                         // var AA = {"05/01/2010":1, "05/05/2010":1, "05/10/2010":1,  "05/30/2010":1, "09/27/2008":-1}
@@ -228,7 +228,7 @@
 
                     <c:set var="_DATE" value="" />
                     <table border="0" cellpadding="0" cellspacing="0" id="dashboard_table" width="99%">
-                        <c:forEach items="${reportActivity}" var="rv" varStatus="index">
+                        <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
                             <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                             <%--<c:if test="${index.first}"> first</c:if><c:if test="${index.last}"> last</c:if>--%>
 
@@ -237,7 +237,7 @@
                                 id the date is the same as previews row them display the ID based on index
                                 otherwise ID is based on date's value, for scrolling by ID
                             --%>
-                            <c:set var="_dateString"><jsp:attribute name="value"><c:if test="${rv.submittedOn ne null}"><tags:formatDate value="${rv.submittedOn}" /></c:if><c:if test="${rv.submittedOn eq null}"><tags:formatDate value="${rv.dueOn}" /></c:if></jsp:attribute></c:set>
+                            <c:set var="_dateString"><jsp:attribute name="value"><c:if test="${rvDTO.rv.submittedOn ne null}"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></c:if><c:if test="${rvDTO.rv.submittedOn eq null}"><tags:formatDate value="${rvDTO.rv.dueOn}" /></c:if></jsp:attribute></c:set>
                             <c:set var="_ID" value="tr_RA_${index.index}" />
 
                             <c:if test="${_DATE ne _dateString}">
@@ -245,27 +245,32 @@
                                 <c:set var="_DATE" value="${_dateString}" />
                             </c:if>
 
+                            <span id="_Description${rvDTO.rv.id}" style="display:none;">
+                                <b style="color:yellow;">Report Name: </b>${rvDTO.reportName}<br>
+                                <b style="color:yellow;">Study: </b>${rvDTO.studyShortTitle}<br>
+                                <b style="color:yellow;">Participant: </b>${rvDTO.subjectFirstName}&nbsp;${rvDTO.subjectLastName}<br>
+                            </span>
 <%--
-                            <span id="_Description${rv.id}" style="display:none;">
-                                <b style="color:yellow;">Report Name: </b>${rv.report.name}<br>
-                                <b style="color:yellow;">Study: </b>${rv.report.aeReport.reportingPeriod.assignment.studySite.study.shortTitle}<br>
-                                <b style="color:yellow;">Participant: </b>${rv.report.aeReport.reportingPeriod.assignment.participant.fullName} (${rv.report.aeReport.reportingPeriod.assignment.participant.primaryIdentifier})<br>
+                            <span id="_Description${rvDTO.rv.id}" style="display:none;">
+                                <b style="color:yellow;">Report Name: </b>${rvDTO.rv.report.name}<br>
+                                <b style="color:yellow;">Study: </b>${rvDTO.rv.report.aeReport.reportingPeriod.assignment.studySite.study.shortTitle}<br>
+                                <b style="color:yellow;">Participant: </b>${rvDTO.rv.report.aeReport.reportingPeriod.assignment.participant.fullName} (${rvDTO.rv.report.aeReport.reportingPeriod.assignment.participant.primaryIdentifier})<br>
                             </span>
 --%>
                             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rv.id}&aeReport=${rv.report.aeReport.id}&report=${rv.report.id}" />">${rv.report.reportDefinition.label}</a></td>
-                                <c:if test="${rv.submittedOn eq null}">
+                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.rv.id}&report=${rvDTO.rv.id}" />">${rvDTO.reportName}</a></td>
+                                <c:if test="${rvDTO.rv.submittedOn eq null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">
                                         <c:set var="_t"><jsp:attribute name="value"><tags:formatDateForComp value="${now}" /></jsp:attribute></c:set>
-                                        <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rv.dueOn}" /></jsp:attribute></c:set>
-                                        <c:if test="${_due le _t}"><span style="color:#ea4b4b"><tags:formatDate value="${rv.dueOn}" /></span></c:if>
-                                        <c:if test="${rv.dueOn eq null || _due gt _t}"><span style="color:000"><tags:formatDate value="${rv.dueOn}" /></span></c:if>
+                                        <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rvDTO.rv.dueOn}" /></jsp:attribute></c:set>
+                                        <c:if test="${_due le _t}"><span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></c:if>
+                                        <c:if test="${rvDTO.rv.dueOn eq null || _due gt _t}"><span style="color:000"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></c:if>
                                     </td>
                                 </c:if>
-                                <c:if test="${rv.submittedOn ne null}">
+                                <c:if test="${rvDTO.rv.submittedOn ne null}">
                                     <td align="right" width="100px"><i>Submited on:</i></td>
-                                    <td align="left" width="70px"><span style="color:green;"><tags:formatDate value="${rv.submittedOn}" /></span></td>
+                                    <td align="left" width="70px"><span style="color:green;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
                                 </c:if>
                             </tr>
                         </c:forEach>
