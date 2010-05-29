@@ -248,7 +248,7 @@
                             <span id="_Description${rvDTO.rv.id}" style="display:none;">
                                 <b style="color:yellow;">Report Name: </b>${rvDTO.reportName}<br>
                                 <b style="color:yellow;">Study: </b>${rvDTO.studyShortTitle}<br>
-                                <b style="color:yellow;">Participant: </b>${rvDTO.subjectFirstName}&nbsp;${rvDTO.subjectLastName}<br>
+                                <b style="color:yellow;">Participant: </b>${rvDTO.subjectFirstName}&nbsp;${rvDTO.subjectLastName}&nbsp(${rvDTO.subjectPrimaryIdentifier})<br>
                             </span>
 <%--
                             <span id="_Description${rvDTO.rv.id}" style="display:none;">
