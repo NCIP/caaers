@@ -188,7 +188,7 @@ public class AgentSpecificTermsImporter {
                                 return null;
                             }
                             ae_term = _s[headers.get("AE_TERM")];
-                            other_toxicity = _s[headers.get("OTHER_TOXICITY")];
+                            if (_s.length -1 >= headers.get("OTHER_TOXICITY")) other_toxicity = _s[headers.get("OTHER_TOXICITY")]; else other_toxicity = "";
                         }
                     }
                 }
