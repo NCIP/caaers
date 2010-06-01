@@ -45,6 +45,14 @@
                 <c:set var="_DATE" value="" />
                 <table border="0" cellpadding="0" cellspacing="0" id="dashboard_table" width="99%">
                     <c:forEach items="${pastDueReports}" var="rvDTO" varStatus="index">
+                        <span id="_DescriptionDUE${rvDTO.rv.id}" style="display:none;">
+                            <b style="color:yellow;">Report Name: </b>${rvDTO.reportName}<br>
+                            <b style="color:yellow;">Study: </b>${rvDTO.studyShortTitle}<br>
+                            <b style="color:yellow;">Participant: </b>${rvDTO.subjectFirstName}&nbsp;${rvDTO.subjectLastName}&nbsp(${rvDTO.subjectPrimaryIdentifier})<br>
+                            <b style="color:yellow;">Study Site: </b>${rvDTO.studySiteName}&nbsp;(${rvDTO.studySiteCode})<br>
+                            <b style="color:yellow;">Course: </b> Cycle #: ${rvDTO.periodCycle}&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
+                        </span>
+
                         <c:set var="_dateString"><jsp:attribute name="value"><tags:formatDate value="${rvDTO.rv.dueOn}" /></jsp:attribute></c:set>
                         <c:set var="_ID" value="tr_PD_${index.index}" />
 
@@ -55,7 +63,7 @@
 
                         <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                         <tr class="${ALT}" id="CD_${_ID}">
-                            <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.rv.id}&report=${rvDTO.rv.id}" />">${rvDTO.reportName}</a></td>
+                            <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_DescriptionDUE${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />">${rvDTO.reportName}</a></td>
                             <td align="right" width="40px"><i>Due on:</i></td>
                             <td align="left" width="70px"><span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></td>
                         </tr>
@@ -249,16 +257,11 @@
                                 <b style="color:yellow;">Report Name: </b>${rvDTO.reportName}<br>
                                 <b style="color:yellow;">Study: </b>${rvDTO.studyShortTitle}<br>
                                 <b style="color:yellow;">Participant: </b>${rvDTO.subjectFirstName}&nbsp;${rvDTO.subjectLastName}&nbsp(${rvDTO.subjectPrimaryIdentifier})<br>
+                                <b style="color:yellow;">Study Site: </b>${rvDTO.studySiteName}&nbsp;(${rvDTO.studySiteCode})<br>
+                                <b style="color:yellow;">Course: </b> Cycle #: ${rvDTO.periodCycle}&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
                             </span>
-<%--
-                            <span id="_Description${rvDTO.rv.id}" style="display:none;">
-                                <b style="color:yellow;">Report Name: </b>${rvDTO.rv.report.name}<br>
-                                <b style="color:yellow;">Study: </b>${rvDTO.rv.report.aeReport.reportingPeriod.assignment.studySite.study.shortTitle}<br>
-                                <b style="color:yellow;">Participant: </b>${rvDTO.rv.report.aeReport.reportingPeriod.assignment.participant.fullName} (${rvDTO.rv.report.aeReport.reportingPeriod.assignment.participant.primaryIdentifier})<br>
-                            </span>
---%>
                             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.rv.id}&report=${rvDTO.rv.id}" />">${rvDTO.reportName}</a></td>
+                                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />">${rvDTO.reportName}</a></td>
                                 <c:if test="${rvDTO.rv.submittedOn eq null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">

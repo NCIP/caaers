@@ -30,12 +30,19 @@ public class ReportVersionDaoTest extends DaoTestCase<ReportVersionDao> {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
     	List<ReportVersionDTO> l = rsDao.searchDTO(q);
         interruptSession();
-        System.out.println(l.size());
-        System.out.println(l.get(0).getRv().getId());
-        System.out.println("ReportName=" + l.get(0).getReportName());
-        System.out.println("FirstName=" + l.get(0).getSubjectFirstName());
-        System.out.println("LastName=" + l.get(0).getSubjectLastName());
-        System.out.println("Primary ID =" + l.get(0).getSubjectPrimaryIdentifier());
-        System.out.println("Study Short Title=" + l.get(0).getStudyShortTitle());
+
+        assertEquals(4, l.size());
+        assertEquals(-88, l.get(0).getRv().getId().intValue());
+        assertEquals("Label for RCT-222", l.get(0).getReportName());
+        assertEquals("Vasile", l.get(0).getSubjectFirstName());
+        assertEquals("Boamba", l.get(0).getSubjectLastName());
+        assertEquals("Id-02", l.get(0).getSubjectPrimaryIdentifier());
+        assertEquals("Study Short Title", l.get(0).getStudyShortTitle());
+        assertEquals(-1, l.get(0).getAeReportID().intValue());
+        assertEquals(-223, l.get(0).getReportID().intValue());
+        assertEquals(33, l.get(0).getPeriodCycle().intValue());
+        assertEquals("2006-09-30 00:00:00.0", l.get(0).getPeriodStartDate().toString());
+        assertEquals("NCI CODE 0190", l.get(0).getStudySiteCode());
+        assertEquals("New Site", l.get(0).getStudySiteName());
     }
 }

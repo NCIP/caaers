@@ -8,6 +8,7 @@
         id="-1001"
         name="New Site"
         grid_id="gridSite"
+        nci_institute_code = "NCI CODE 0190"
     />
 	
 	<config_properties id="-1"
@@ -166,7 +167,7 @@
         load_status="1"
         />
     <epochs id="-1" name="abcd"  order_no="1"/>
-	<ae_reporting_periods id="-14" assignment_id="-14" start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" />   
+	<ae_reporting_periods id="-14" assignment_id="-14" start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" cycle_number="33"/>   
 	
     <AE_REPORTS
         id="-1"
