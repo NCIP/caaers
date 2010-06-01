@@ -92,8 +92,8 @@
                             <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
                             <c:if test="${rvDTO.rv.submittedOn ne null}">'<tags:formatDate value="${rvDTO.rv.submittedOn}" />':1,</c:if>
                             <c:if test="${rvDTO.rv.submittedOn eq null && rvDTO.rv.dueOn ne null}">
-                                <c:set var="_t"><jsp:attribute name="value"><tags:formatDateForComp value="${now}" /></jsp:attribute></c:set>    
-                                <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rvDTO.rv.dueOn}" /></jsp:attribute></c:set>    
+                                <c:set var="_t"><jsp:attribute name="value"><fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
+                                <c:set var="_due"><jsp:attribute name="value"><fmt:formatDate value="${rvDTO.rv.dueOn}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>    
                                 <c:if test="${_due le _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
                                 <c:if test="${_due gt _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":2,</c:if>
                             </c:if>
@@ -262,8 +262,8 @@
                                 <c:if test="${rvDTO.rv.submittedOn eq null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">
-                                        <c:set var="_t"><jsp:attribute name="value"><tags:formatDateForComp value="${now}" /></jsp:attribute></c:set>
-                                        <c:set var="_due"><jsp:attribute name="value"><tags:formatDateForComp value="${rvDTO.rv.dueOn}" /></jsp:attribute></c:set>
+                                        <c:set var="_t"><jsp:attribute name="value"><fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
+                                        <c:set var="_due"><jsp:attribute name="value"><fmt:formatDate value="${rvDTO.rv.dueOn}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
                                         <c:if test="${_due le _t}"><span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></c:if>
                                         <c:if test="${rvDTO.rv.dueOn eq null || _due gt _t}"><span style="color:000"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></c:if>
                                     </td>
