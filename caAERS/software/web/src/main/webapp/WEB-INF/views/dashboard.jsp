@@ -224,7 +224,7 @@
                             // return true if you want to disable other dates
                         };
 
-                        Event.observe(window, 'load', function(){
+                        function initCalendar() {
                             Calendar.setup({
                                 firstDay     :1,
                                 flat         : "calendar-container", // ID of the parent element
@@ -233,6 +233,10 @@
                                 weekNumbers : true,
                                 showOthers  : false
                             });
+                        }
+
+                        Event.observe(window, 'load', function() {
+                            initCalendar();
                             scrollByDate(<fmt:formatDate value="${now}" pattern="yyyy"/>, <fmt:formatDate value="${now}" pattern="MM"/>, <fmt:formatDate value="${now}" pattern="dd"/>);
                         });
 
