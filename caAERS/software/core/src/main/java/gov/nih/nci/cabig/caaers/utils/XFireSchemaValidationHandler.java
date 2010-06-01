@@ -69,7 +69,6 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
             // if the validation fails.
             so.output(payload);
             
-            System.out.println("\nValidation passed");
             // rewind the stream reader for subsequent processing 
             message.setXMLStreamReader( new JDOMStreamReader( doc) );
         }

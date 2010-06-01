@@ -60,9 +60,10 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 }
 
 class Validator implements ErrorHandler {
+    protected final Log log = LogFactory.getLog(getClass());
     public void warning(SAXParseException exception) throws SAXException {
         // Bring things to a crashing halt
-        System.out.println("**Parsing Warning**" + "  Line:    " + exception.getLineNumber() + ""
+        log.warn("**Parsing Warning**" + "  Line:    " + exception.getLineNumber() + ""
                         + "  URI:     " + exception.getSystemId() + "" + "  Message: "
                         + exception.getMessage());
         throw new SAXException("Warning encountered");
@@ -70,7 +71,7 @@ class Validator implements ErrorHandler {
 
     public void error(SAXParseException exception) throws SAXException {
         // Bring things to a crashing halt
-        System.out.println("**Parsing Error**" + "  Line:    " + exception.getLineNumber() + ""
+        log.warn("**Parsing Error**" + "  Line:    " + exception.getLineNumber() + ""
                         + "  URI:     " + exception.getSystemId() + "" + "  Message: "
                         + exception.getMessage());
         throw new SAXException("Error encountered");
@@ -78,7 +79,7 @@ class Validator implements ErrorHandler {
 
     public void fatalError(SAXParseException exception) throws SAXException {
         // Bring things to a crashing halt
-        System.out.println("**Parsing Fatal Error**" + "  Line:    " + exception.getLineNumber()
+        log.warn("**Parsing Fatal Error**" + "  Line:    " + exception.getLineNumber()
                         + "" + "  URI:     " + exception.getSystemId() + "" + "  Message: "
                         + exception.getMessage());
         throw new SAXException("Fatal Error encountered");

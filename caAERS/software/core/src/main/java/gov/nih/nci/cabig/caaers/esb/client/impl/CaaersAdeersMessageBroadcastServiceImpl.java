@@ -7,6 +7,8 @@ import java.util.Vector;
 
 import javax.jms.Destination;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
-	
+	protected final Log log = LogFactory.getLog(getClass());
 	// Monish Dombla CAAERS-145
 	public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -26,9 +28,9 @@ public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
     public void broadcast(String message) throws BroadcastException {
         // TODO Auto-generated method stub
         if (!isProvider()) {
-            System.out.println("no send queue provided ");
+            log.warn("no send queue provided ");
         } else {
-            System.out.println("calling sendJms method...");
+            log.info("calling sendJms method...");
             sendJms(message);
         }
     }
@@ -36,7 +38,7 @@ public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
     public Vector getBroadcastStatus() {
         // TODO Auto-generated method stub
         if (!isConsumer()) {
-            System.out.println("no recieve queue provided ");
+            log.info("no recieve queue provided ");
         }
         return messages;
     }

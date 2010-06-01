@@ -45,7 +45,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
     	String queryString = query.getQueryString();
-        System.out.println("query String : " + queryString);
         log.debug("::: " + queryString.toString());
        return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
 

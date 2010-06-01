@@ -184,7 +184,7 @@ public class AgentSpecificTermsImporter {
                             try {
                                 ctcae_version = _s[headers.get("CTCAE_VERSION")].trim() != "" ? Integer.valueOf(_s[headers.get("CTCAE_VERSION")]).intValue() : 0;
                             } catch (NumberFormatException e) {
-                                System.out.println(s);
+//                                System.out.println(s);
                                 return null;
                             }
                             ae_term = _s[headers.get("AE_TERM")];

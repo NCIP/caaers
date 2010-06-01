@@ -70,7 +70,6 @@ public class AdverseEventQueryServiceImpl implements AdverseEventQueryService {
 		StringBuilder aeList = new StringBuilder();
 		aeList.append("<AdverseEvents>");
 		for (AdverseEvent ae:adverseEvents) {
-			System.out.println(ae.getId());
 			aeList.append(aes.serialize(ae));
 		}
 		aeList.append("</AdverseEvents>");

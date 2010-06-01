@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventCtcTermType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.bind.JAXBContext;
 import java.io.File;
@@ -20,7 +22,7 @@ import java.util.List;
  * @author: Biju Joseph
  */
 public class AdverseEventXMLGenerator extends XMLGenerator {
-
+    protected final Log log = LogFactory.getLog(AdverseEventXMLGenerator.class);
     private int studyStart =1;
     private int studyEnd = 10;
 
@@ -249,7 +251,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 					String subjectPrimaryId = siteNCICode  + "_SI" + j;
 
 					for (String courseTemplate : COURSE_FILE_TEMPLATES) {
-						System.out.println("Generating ... ["
+						log.debug("Generating ... ["
 								+ subjectPrimaryId + " : " + courseTemplate
 								+ "]....");
 						generateAdverseEventFile(studyPrimaryId,
@@ -266,8 +268,6 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 		try {
 			AdverseEventXMLGenerator generator = new AdverseEventXMLGenerator();
 			generator.generate();
-
-			System.out.println("Done..........");
 
 		} catch (Exception e) {
 			e.printStackTrace();

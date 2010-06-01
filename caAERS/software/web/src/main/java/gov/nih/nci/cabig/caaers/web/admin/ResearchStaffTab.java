@@ -282,7 +282,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     public String getMethodName(HttpServletRequest request) {
     	String currentItem = request.getParameter("currentItem");
     	String task = request.getParameter("task");
-        System.out.println(methodNameMap.get(task + currentItem));
+        log.debug(methodNameMap.get(task + currentItem));
     	return methodNameMap.get(task + currentItem);
     }
 

@@ -15,6 +15,8 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
@@ -23,6 +25,7 @@ import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.apps.PageSequenceResults;
 
 public class XsltTransformer {
+    protected final Log log = LogFactory.getLog(getClass());
 
     /**
      * 
@@ -119,15 +122,15 @@ public class XsltTransformer {
             java.util.List pageSequences = foResults.getPageSequences();
             for (java.util.Iterator it = pageSequences.iterator(); it.hasNext();) {
                 PageSequenceResults pageSequenceResults = (PageSequenceResults) it.next();
-                System.out
-                                .println("PageSequence "
+
+                if(log.isInfoEnabled()) log.info("PageSequence "
                                                 + (String.valueOf(pageSequenceResults.getID())
                                                                 .length() > 0 ? pageSequenceResults
                                                                 .getID() : "<no id>")
                                                 + " generated "
                                                 + pageSequenceResults.getPageCount() + " pages.");
             }
-            System.out.println("Generated " + foResults.getPageCount() + " pages in total.");
+            if(log.isInfoEnabled()) log.info("Generated " + foResults.getPageCount() + " pages in total.");
 
         } catch (Exception e) {
             throw new Exception(e);
