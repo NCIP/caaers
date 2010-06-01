@@ -22,10 +22,42 @@
 <table width="100%">
     <tr>
         <td valign="top">
-                <chrome:boxIPhone title="Quick Links" style="width:400px">
+                <chrome:boxIPhone title="Task Notifications" style="width:400px;">
                 </chrome:boxIPhone>
-                    
-                <chrome:boxIPhone title="Task Notifications" style="width:400px">
+
+                <chrome:boxIPhone title="Quick Links" style="width:400px;">
+                    <div style="padding-left:2px; padding-right:2px;">
+                    <table width="100%" cellpadding="10" cellspacing="0" border="0">
+                        <tr class="quickLinkBGon">
+                            <td style="border-bottom: 1px #cccccc solid; border-right: 1px #cccccc solid;" width="50%">
+                                <div class="quickLinkRow">
+                                    <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/enter-participant.png"/>" align="middle" class="quickLink"></div>
+                                    <div class="quickLinkLabel"><a href="<c:url value='/pages/participant/create' />" class="quickLink">Enter Subject</a></div>
+                                </div>
+                            </td>
+                            <td style="border-bottom: 1px #cccccc solid;" width="50%">
+                                <div class="quickLinkRow">
+                                    <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/search-participants.png"/>" align="middle" class="quickLink"></div>
+                                    <div class="quickLinkLabel"><a href="<c:url value='/pages/participant/search' />" class="quickLink">Search Subjects</a></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="quickLinkBGon">
+                            <td style="border-bottom: 1px #cccccc solid; border-right: 1px #cccccc solid;">
+                                <div class="quickLinkRow">
+                                    <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/enter-ae.png"/>" align="middle" class="quickLink"></div>
+                                    <div class="quickLinkLabel"><a href="<c:url value='/pages/ae/captureRoutine' />" class="quickLink">Report Adverse Events</a></div>
+                                </div>
+                            </td>
+                            <td style="border-bottom: 1px #cccccc solid;">
+                                <div class="quickLinkRow">
+                                    <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/create-expedited.png"/>" align="middle" class="quickLink"></div>
+                                    <div class="quickLinkLabel"><a href="<c:url value='/pages/ae/routingAndReview' />" class="quickLink">Rounting and Review</a></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
                 </chrome:boxIPhone>
 
         <td valign="top">
@@ -289,13 +321,13 @@
 </table>
 
 <style type="text/css">
-  .reportActivity { background-color: green; color: #f00; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-  .pastDue { background-color: red; color: red; border:0px solid #000; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
+  .reportActivity { background-color: #99cc00; color: #f00; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
+  .pastDue { background-color: #ff6666; color: #ff6666; border:0px solid #000; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
 
-  .calendar tbody .rowhilite td.pastDue { background: red; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-  .calendar tbody .rowhilite td.pastDue.hilite { background: red; border:1px #BBB solid; padding: 1px 3px 1px 1px;}
-  .calendar tbody .rowhilite td.reportActivity { background: green; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-  .calendar tbody .rowhilite td.reportActivity.hilite { background: green; border:1px #BBB solid; padding: 1px 3px 1px 1px;}
+  .calendar tbody .rowhilite td.pastDue { background: #ff6666; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
+  .calendar tbody .rowhilite td.pastDue.hilite { background: #ff6666; border:1px #BBB solid; padding: 1px 3px 1px 1px;}
+  .calendar tbody .rowhilite td.reportActivity { background: #99cc00; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
+  .calendar tbody .rowhilite td.reportActivity.hilite { background: #99cc00; border:1px #BBB solid; padding: 1px 3px 1px 1px;}
   .calendar tbody .reportActivity {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
   .calendar tbody .pastDue {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
 </style>
@@ -455,6 +487,39 @@ jQuery(function( $ ){
         background-color: #f2f9ff;
     }
 
+    a.quickLink, a.quickLink:visited {
+        color : #518EC2;
+        font-weight: bold;
+        font-size: 14px;
+        text-decoration: none;
+    }
 
+    img.quickLink {
+/*
+        padding-right: 20px;
+        padding-left: 20px;
+*/
+    }
+
+    div.quickLinkRow {
+        display: block;
+        clear: both;
+    }
+
+    div.quickLinkRow div.quickLinkPicture {
+        float: left;
+        width : 40px;
+        text-align: right;
+    }
+
+    div.quickLinkRow div.quickLinkLabel {
+        margin-left: 50px;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    tr.quickLinkBGon {
+        background-image: url("../images/iphone2/quickLinkBGon.png")
+    }
 </style>
 <span id="CC" />
