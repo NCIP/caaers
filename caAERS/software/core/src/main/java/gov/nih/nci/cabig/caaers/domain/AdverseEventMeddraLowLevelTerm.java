@@ -19,16 +19,6 @@ import javax.persistence.Transient;
 @DiscriminatorValue("meddra")
 public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<LowLevelTerm> {
 
-    private String meddraCode;
-
-    public String getMeddraCode() {
-        return meddraCode;
-    }
-
-    public void setMeddraCode(String meddraCode) {
-        this.meddraCode = meddraCode;
-    }
-    
     @Transient
     public String getFullName() {
     	if(getTerm() == null) return "";

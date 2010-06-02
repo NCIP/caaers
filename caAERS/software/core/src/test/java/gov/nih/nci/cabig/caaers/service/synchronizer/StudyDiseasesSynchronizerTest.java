@@ -107,14 +107,12 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		
 		meddraStudyDisease1 = new MeddraStudyDisease();
 		meddraStudyDisease1.setId(1);
-		meddraStudyDisease1.setMeddraCode("meddraCode1");
 		lowLevelTerm1 = new LowLevelTerm();
 		lowLevelTerm1.setMeddraCode("meddraCode1");
 		meddraStudyDisease1.setTerm(lowLevelTerm1);
 		
 		meddraStudyDisease2 = new MeddraStudyDisease();
 		meddraStudyDisease2.setId(2);
-		meddraStudyDisease2.setMeddraCode("meddraCode2");
 		lowLevelTerm2 = new LowLevelTerm();
 		lowLevelTerm2.setMeddraCode("meddraCode2");
 		meddraStudyDisease2.setTerm(lowLevelTerm2);
@@ -124,20 +122,17 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		
 		
 		meddraStudyDisease1a = new MeddraStudyDisease();
-		meddraStudyDisease1a.setMeddraCode("meddraCode1");
 		lowLevelTerm1a = new LowLevelTerm();
 		lowLevelTerm1a.setMeddraCode("meddraCode1");
 		meddraStudyDisease1a.setTerm(lowLevelTerm1a);
 		
 		meddraStudyDisease2a = new MeddraStudyDisease();
-		meddraStudyDisease2a.setMeddraCode("meddraCode2");
 		lowLevelTerm2a = new LowLevelTerm();
 		lowLevelTerm2a.setMeddraCode("meddraCode2");
 		meddraStudyDisease2a.setTerm(lowLevelTerm2a);
 		
 		
 		meddraStudyDisease3a = new MeddraStudyDisease();
-		meddraStudyDisease3a.setMeddraCode("meddraCode3a");
 		lowLevelTerm3a = new LowLevelTerm();
 		lowLevelTerm3a.setMeddraCode("meddraCode3a");
 		meddraStudyDisease3a.setTerm(lowLevelTerm3a);

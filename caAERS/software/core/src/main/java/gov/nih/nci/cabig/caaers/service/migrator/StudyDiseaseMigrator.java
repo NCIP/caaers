@@ -63,16 +63,15 @@ public class StudyDiseaseMigrator implements Migrator<gov.nih.nci.cabig.caaers.d
                 for (MeddraStudyDisease meddraStudyDisease : source.getMeddraStudyDiseases()) {
                     MeddraStudyDisease destinationMeddraStudyDisease = new MeddraStudyDisease();
                     LowLevelTerm lowLevelTerm = null;
-                    if (meddraStudyDisease.getMeddraCode() != null) {
-                    	List<LowLevelTerm> termsList = lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getMeddraCode());
+                    if (meddraStudyDisease.getTerm().getMeddraCode() != null) {
+                    	List<LowLevelTerm> termsList = lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getTerm().getMeddraCode());
                     	lowLevelTerm = (termsList.size() > 0) ? termsList.get(0) : null;
                     }
 
                     outcome.ifNullObject(lowLevelTerm, DomainObjectImportOutcome.Severity.ERROR, "The selected MedDRA code " +
-                            meddraStudyDisease.getMeddraCode() + " is not Valid ");
+                            meddraStudyDisease.getTerm().getMeddraCode() + " is not Valid ");
 
                     destinationMeddraStudyDisease.setTerm(lowLevelTerm == null ? null : lowLevelTerm);
-                    destinationMeddraStudyDisease.setMeddraCode(meddraStudyDisease.getMeddraCode());
                     destination.addMeddraStudyDisease(destinationMeddraStudyDisease);
                 }
             } else {

@@ -19,15 +19,6 @@ import javax.persistence.Transient;
 public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
 
 	private static final long serialVersionUID = -2191830866356536610L;
-	private String meddraCode;
-
-    public String getMeddraCode() {
-        return meddraCode;
-    }
-
-    public void setMeddraCode(String meddraCode) {
-        this.meddraCode = meddraCode;
-    }
 
     @ManyToOne
     @JoinColumn(name = "term_id")
@@ -66,7 +57,7 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
     
     @Override
     public String toString() {
-    	return meddraCode + " : "+ this.getTermName();
+    	return this.getTermName();
     }
-    
+
 }

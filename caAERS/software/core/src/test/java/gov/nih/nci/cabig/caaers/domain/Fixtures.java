@@ -483,7 +483,6 @@ public class Fixtures {
     
     public static MeddraStudyDisease createMeddraStudyDisease(Study s, LowLevelTerm lowLevelTerm){
     	MeddraStudyDisease meddraStudyDisease = new MeddraStudyDisease();
-		meddraStudyDisease.setMeddraCode("medra");
 		meddraStudyDisease.setTerm(lowLevelTerm);
 		meddraStudyDisease.setStudy(s);
 		return meddraStudyDisease;

@@ -12,16 +12,6 @@ import javax.persistence.*;
 @DiscriminatorValue("meddra")
 public class AgentSpecificMeddraLowLevelTerm extends AgentSpecificTerm<LowLevelTerm> {
 
-    private String meddraCode;
-
-    public String getMeddraCode() {
-        return meddraCode;
-    }
-
-    public void setMeddraCode(String meddraCode) {
-        this.meddraCode = meddraCode;
-    }
-
     @Transient
     public String getFullName() {
     	if(getTerm() == null) return "";
