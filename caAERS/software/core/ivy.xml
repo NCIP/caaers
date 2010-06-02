@@ -103,6 +103,7 @@
         		<exclude conf="*" name="asm-attrs" />
         	</dependency>
  			<dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.1.ga" />
+            <dependency org="javax.persistence" name="persistence-api" rev="1.0" force="true" />
 
 			<!--  XML supporting JARS -->
         	<dependency org="castor" name="castor" rev="0.9.9"  />
