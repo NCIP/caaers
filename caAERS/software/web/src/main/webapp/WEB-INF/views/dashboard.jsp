@@ -49,28 +49,28 @@
                 <chrome:boxIPhone title="Quick Links" style="width:400px;">
                     <div style="padding-left:2px; padding-right:2px;">
                     <table width="100%" cellpadding="10" cellspacing="0" border="0">
-                        <tr class="quickLinkBGon">
-                            <td style="border-bottom: 1px #cccccc solid; border-right: 1px #cccccc solid;" width="50%">
+                        <tr>
+                            <td id="a1" class="quickLinkBGon" style="border-bottom: 1px #cccccc solid; border-right: 1px #cccccc solid;" width="50%">
                                 <div class="quickLinkRow">
                                     <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/enter-participant.png"/>" align="middle" class="quickLink"></div>
                                     <div class="quickLinkLabel"><a href="<c:url value='/pages/participant/create' />" class="quickLink">Enter Subject</a></div>
                                 </div>
                             </td>
-                            <td style="border-bottom: 1px #cccccc solid;" width="50%">
+                            <td id="a2" class="quickLinkBGon" style="border-bottom: 1px #cccccc solid;" width="50%">
                                 <div class="quickLinkRow">
                                     <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/search-participants.png"/>" align="middle" class="quickLink"></div>
                                     <div class="quickLinkLabel"><a href="<c:url value='/pages/participant/search' />" class="quickLink">Search Subjects</a></div>
                                 </div>
                             </td>
                         </tr>
-                        <tr class="quickLinkBGon">
-                            <td style="border-bottom: 1px #cccccc solid; border-right: 1px #cccccc solid;">
+                        <tr>
+                            <td id="a3" class="quickLinkBGon" class="quickLinkBGoff" style="border-bottom: 1px #cccccc solid; border-right: 1px #cccccc solid;">
                                 <div class="quickLinkRow">
                                     <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/enter-ae.png"/>" align="middle" class="quickLink"></div>
                                     <div class="quickLinkLabel"><a href="<c:url value='/pages/ae/captureRoutine' />" class="quickLink">Report Adverse Events</a></div>
                                 </div>
                             </td>
-                            <td style="border-bottom: 1px #cccccc solid;">
+                            <td id="a4" class="quickLinkBGon" style="border-bottom: 1px #cccccc solid;">
                                 <div class="quickLinkRow">
                                     <div class="quickLinkPicture"><img src="<c:url value="/images/iphone2/create-expedited.png"/>" align="middle" class="quickLink"></div>
                                     <div class="quickLinkLabel"><a href="<c:url value='/pages/ae/routingAndReview' />" class="quickLink">Rounting and Review</a></div>
@@ -279,6 +279,16 @@
                         Event.observe(window, 'load', function() {
                             initCalendar();
                             scrollByDate(<fmt:formatDate value="${now}" pattern="yyyy"/>, <fmt:formatDate value="${now}" pattern="MM"/>, <fmt:formatDate value="${now}" pattern="dd"/>);
+
+                            jQuery("td.quickLinkBGon").mouseover(function() {
+                                jQuery(this).removeClass('quickLinkBGon');
+                                jQuery(this).addClass('quickLinkBGoff');
+                            });
+
+                            jQuery("td.quickLinkBGon").mouseout(function() {
+                                jQuery(this).removeClass('quickLinkBGoff');
+                                jQuery(this).addClass('quickLinkBGon');
+                            });
                         });
 
                         function showToolTip(text, title) {
@@ -566,8 +576,12 @@ jQuery(function( $ ){
         vertical-align: middle;
     }
 
-    tr.quickLinkBGon {
+    td.quickLinkBGon {
         background-image: url("../images/iphone2/quickLinkBGon.png")
+    }
+
+    td.quickLinkBGoff {
+        background-image: url("../images/iphone2/quickLinkBGoff.png")
     }
 
     tr.taskTitleRow th {
