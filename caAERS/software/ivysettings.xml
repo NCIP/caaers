@@ -1,6 +1,11 @@
 <ivysettings>
 	<settings defaultResolver="caaers-resolver" validate="false" />
-	<cache basedir="${user.home}/.ivy2/caAERS"/>
+    <caches default="caAERSCache">
+        <cache name="caAERSCache" basedir="${user.home}/.ivy2/caAERS"/>
+    </caches>
+
+
+
 	<resolvers>
 		<chain name="caaers-resolver" returnFirst="true" dual="true">
 		<!--  Local Ivy repository -->
@@ -16,12 +21,18 @@
               <artifact pattern="${user.home}/.ivy2/caAERS/cache/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
         </filesystem>
         
-        
+
 		<!--  Semanticbits shared repository [using http] -->
-		
+
 		<url name="semanticbits-repo-http">
 			<ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
+		</url>
+
+
+		<url name="semanticbits-caaers-repo-http">
+			<ivy pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/ivy-[revision].xml" />
+  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/jars/[artifact]-[revision].[ext]" />
 		</url>
 	
 	 <!--  Northwestern RHLCCC Bioinformatics  -->
@@ -75,5 +86,7 @@
         </chain>
 		
 	</resolvers>
+   
+
 </ivysettings>
 
