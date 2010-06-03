@@ -498,7 +498,7 @@ jQuery(function( $ ){
     .dashboard_table {
         font-family: Arial, Helvetica, sans-serif;
         margin: 0 1px 0 2px;
-        border-collapse: collapse;
+        /*border-collapse: collapse;*/
         border-bottom: 0px solid #dddddd;
         border-top: 0px solid #dddddd;
         padding-top: 1px;
