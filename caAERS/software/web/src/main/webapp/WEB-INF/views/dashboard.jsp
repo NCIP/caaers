@@ -23,6 +23,7 @@
     <tr>
         <td valign="top">
                 <chrome:boxIPhone title="Task Notifications" style="width:400px;">
+                    <div id="tasksNotifications" class="scrollerTask">
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
                         <tr class="taskTitleRow">
                             <th>Subject
@@ -32,10 +33,10 @@
                         <c:forEach items="${taskNotifications}" var="task" varStatus="index">
                             <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                             <tr class="${ALT} taskTitleRow" id="prevROW_${index.index}">
-                                <td nowrap>${task.subjectFullName}</td>
-                                <td>${task.studyShortTitle}</td>
-                                <td><tags:formatDate value="${task.date}" /></td>
-                                <td><img id="IMG_${index.index}" src='<c:url value="/images/iphone2/plus.gif" />' onclick="flipMessage(${index.index})" style="cursor:pointer;"></td>
+                                <td nowrap valign="top">${task.subjectFullName}</td>
+                                <td valign="top">${task.studyShortTitle}</td>
+                                <td valign="top"><tags:formatDate value="${task.date}" /></td>
+                                <td valign="top"><img id="IMG_${index.index}" src='<c:url value="/images/iphone2/plus.gif" />' onclick="flipMessage(${index.index})" style="cursor:pointer;"></td>
                             </tr>
                             <tr class="${ALT} taskTitleRow" style="display:none;" id="MESSAGE_${index.index}">
                                 <td valign="top"><b>Message:</b></td>
@@ -44,6 +45,7 @@
                             <%--<tr class="${ALT} taskTitleRow"><td colspan="4">&nbsp;</td></tr>--%>
                         </c:forEach>
                     </table>
+                    </div>
                 </chrome:boxIPhone>
 
                 <chrome:boxIPhone title="Quick Links" style="width:400px;">
@@ -395,6 +397,7 @@
 
     tr.last { border-bottom : 1px black solid; }
     .scroller { height: 70px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
+    .scrollerTask { height: 228px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scroller h4 { color: #933; display: inline; }
     .scroller div { height: 22px; padding: 8px; margin-top: -1px; }
     .scroller div.first { margin-top: 0; }
@@ -431,6 +434,15 @@ jQuery(function( $ ){
 	$('#reportActivity').serialScroll({
         next: 'img.nextTwo',
         prev: 'img.prevTwo',
+		items:'tr',
+		duration:500,
+        cycle:false,
+		force:true,
+		axis:'y',
+		easing:'linear',
+		step:2
+	});
+	$('#tasksNotifications').serialScroll({
 		items:'tr',
 		duration:500,
         cycle:false,
