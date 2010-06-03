@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
@@ -26,7 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * 
@@ -99,7 +102,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		StudyParticipantAssignment assignment = report.getAeReport().getAssignment();
 		StudySite studySite = assignment.getStudySite();
 		WorkflowConfig wfConfig = studySite.getReportWorkflowConfig();
-		
+
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
 		variables.put(WorkflowService.VAR_WF_TYPE, Report.class.getName());
@@ -473,7 +476,52 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		if(entityRS == null) return false; //not participating in workflow
 		return entityRS.equals(rs);
 	}
-	
+
+    public List<TaskNotificationDTO> getTaskNotificationByUserLogin(String userLogin) {
+        List<TaskInstance> l = workflowService.fetchTaskInstances(userLogin);
+        List<TaskNotificationDTO> dtos = new ArrayList<TaskNotificationDTO>();
+
+        for (TaskInstance task : l) {
+            TaskNotificationDTO dto = new TaskNotificationDTO();
+
+            ContextInstance ci = task.getProcessInstance().getContextInstance();
+            String studyID = ci.getVariable(WorkflowService.VAR_STUDY_ID) != null ? ci.getVariable(WorkflowService.VAR_STUDY_ID).toString() : null;
+            String reportingPeriodID  = ci.getVariable(WorkflowService.VAR_REPORTING_PERIOD_ID) != null ? ci.getVariable(WorkflowService.VAR_REPORTING_PERIOD_ID).toString() : null;
+            String aeReportID = ci.getVariable(WorkflowService.VAR_EXPEDITED_REPORT_ID) != null ? ci.getVariable(WorkflowService.VAR_EXPEDITED_REPORT_ID).toString() : null;
+
+            AdverseEventReportingPeriod reportingPeriod = null;
+            ExpeditedAdverseEventReport aeReport;
+            Study s;
+            Participant p;
+            
+            if (reportingPeriodID != null) {
+                reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(reportingPeriodID));
+            } else {
+                if (aeReportID != null) {
+                    aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportID));
+                    reportingPeriod = aeReport.getReportingPeriod();
+                }
+            }
+
+            if (reportingPeriod != null) {
+                s = reportingPeriod.getStudy();
+                p = reportingPeriod.getParticipant();
+
+                dto.setStudyShortTitle(s.getShortTitle());
+                dto.setSubjectFullName(p.getFullName());
+                dto.setMessage(task.getDescription() != null ? task.getDescription() : task.getName());
+                dto.setDate(task.getCreate());
+
+                dtos.add(dto);
+            }
+
+        }
+        return dtos;
+    }
+
+    // ToDo: get task, get process, get variables, get StudyID, SubjectID, hibernate get objects send to dashboard controller
+    // 
+
 	public void setRoutingAndReviewFactory(
 			AERoutingAndReviewDTOFactory routingAndReviewFactory) {
 		this.routingAndReviewFactory = routingAndReviewFactory;

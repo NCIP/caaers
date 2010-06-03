@@ -23,6 +23,27 @@
     <tr>
         <td valign="top">
                 <chrome:boxIPhone title="Task Notifications" style="width:400px;">
+                    <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
+                        <tr class="taskTitleRow">
+                            <th>Subject
+                            <th width="100%">Study
+                            <th nowrap>Date Created
+                            <th width="60px">Message
+                        <c:forEach items="${taskNotifications}" var="task" varStatus="index">
+                            <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
+                            <tr class="${ALT} taskTitleRow" id="prevROW_${index.index}">
+                                <td nowrap>${task.subjectFullName}</td>
+                                <td>${task.studyShortTitle}</td>
+                                <td><tags:formatDate value="${task.date}" /></td>
+                                <td><img id="IMG_${index.index}" src='<c:url value="/images/iphone2/plus.gif" />' onclick="flipMessage(${index.index})" style="cursor:pointer;"></td>
+                            </tr>
+                            <tr class="${ALT} taskTitleRow" style="display:none;" id="MESSAGE_${index.index}">
+                                <td valign="top"><b>Message:</b></td>
+                                <td colspan="3" valign="top">${fn:replace(task.message, "(http(s)?://(.)*?)[\\s]", "LINK")}</td>
+                            </tr>
+                            <%--<tr class="${ALT} taskTitleRow"><td colspan="4">&nbsp;</td></tr>--%>
+                        </c:forEach>
+                    </table>
                 </chrome:boxIPhone>
 
                 <chrome:boxIPhone title="Quick Links" style="width:400px;">
@@ -75,7 +96,7 @@
                 <div id="dueReports" class="scroller">
 
                 <c:set var="_DATE" value="" />
-                <table border="0" cellpadding="0" cellspacing="0" id="dashboard_table" width="99%">
+                <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
                     <c:forEach items="${pastDueReports}" var="rvDTO" varStatus="index">
                         <span id="_DescriptionDUE${rvDTO.rv.id}" style="display:none;">
                             <b style="color:yellow;">Report Name: </b>${rvDTO.reportName}<br>
@@ -111,6 +132,23 @@
                             
                     <script type="text/javascript">
 
+                        function flipMessage(id) {
+                            var msgID = "#MESSAGE_" + id;
+                            var picID = "#IMG_" + id;
+                            var prID = "#prevROW_" + id;
+
+                            if (jQuery(msgID).is(':hidden')) {
+                                jQuery(msgID).show();
+                                jQuery(picID).attr("src", jQuery(picID).attr("src").replace('plus', 'minus'));
+                                jQuery(prID).removeClass('taskTitleRow');
+                            }
+                            else {
+                                jQuery(msgID).hide();
+                                jQuery(picID).attr("src", jQuery(picID).attr("src").replace('minus', 'plus'));
+                                jQuery(prID).addClass('taskTitleRow');
+                            }
+                        }
+
                         function dateChanged(calendar) {
                             // Beware that this function is called even if the end-user only
                             // changed the month/year.  In order to determine if a date was
@@ -132,10 +170,13 @@
                             <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
                             <c:if test="${rvDTO.rv.submittedOn ne null}">'<tags:formatDate value="${rvDTO.rv.submittedOn}" />':1,</c:if>
                             <c:if test="${rvDTO.rv.submittedOn eq null && rvDTO.rv.dueOn ne null}">
+<%--
                                 <c:set var="_t"><jsp:attribute name="value"><fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
                                 <c:set var="_due"><jsp:attribute name="value"><fmt:formatDate value="${rvDTO.rv.dueOn}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>    
                                 <c:if test="${_due le _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
                                 <c:if test="${_due gt _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":2,</c:if>
+--%>
+                                "<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,
                             </c:if>
 <%--
                             "<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
@@ -250,7 +291,7 @@
                                     STICKY, 1,
                                     CLOSEBTN, false,
                                     CLICKCLOSE, false,
-                                    OPACITY, 80,
+                                    OPACITY, 90,
                                     FONTCOLOR, "#fff",
                                     BORDERCOLOR, "#444",
                                     BGCOLOR, "#444",
@@ -271,7 +312,7 @@
                 <div id="reportActivity" class="scroller">
 
                     <c:set var="_DATE" value="" />
-                    <table border="0" cellpadding="0" cellspacing="0" id="dashboard_table" width="99%">
+                    <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
                         <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
                             <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                             <%--<c:if test="${index.first}"> first</c:if><c:if test="${index.last}"> last</c:if>--%>
@@ -301,10 +342,13 @@
                                 <c:if test="${rvDTO.rv.submittedOn eq null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">
+<%--
                                         <c:set var="_t"><jsp:attribute name="value"><fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
                                         <c:set var="_due"><jsp:attribute name="value"><fmt:formatDate value="${rvDTO.rv.dueOn}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
                                         <c:if test="${_due le _t}"><span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></c:if>
                                         <c:if test="${rvDTO.rv.dueOn eq null || _due gt _t}"><span style="color:000"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></c:if>
+--%>
+                                        <span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span>
                                     </td>
                                 </c:if>
                                 <c:if test="${rvDTO.rv.submittedOn ne null}">
@@ -441,7 +485,7 @@ jQuery(function( $ ){
         padding-left: 20px;
     }
 
-    #dashboard_table {
+    .dashboard_table {
         font-family: Arial, Helvetica, sans-serif;
         margin: 0 1px 0 2px;
         border-collapse: collapse;
@@ -451,32 +495,32 @@ jQuery(function( $ ){
 
     }
 
-    #dashboard_table td, #dashboard_table th {
+    .dashboard_table td, .dashboard_table th {
         font-size: 11px;
         /*border-right: 1px solid #dddddd;*/
         padding: 5px 7px 4px 4px;
         color: #3a3a3a;
     }
 
-    #dashboard_table a {
+    .dashboard_table a {
         font-weight: bold;
         color: #3a3a3a;
         text-decoration: none;
     }
 
-    #dashboard_table a:hover {
+    .dashboard_table a:hover {
         color: #09589d;
         text-decoration: none;
     }
 
-    #dashboard_table a:active {
+    .dashboard_table a:active {
         position: relative;
         top: 1px;
         color: #09589d;
         text-decoration: none;
     }
 
-    #dashboard_table th {
+    .dashboard_table th {
         font-size: 12px;
         text-align: left;
         border: 0;
@@ -486,7 +530,7 @@ jQuery(function( $ ){
         color: #0c62ac;
     }
 
-    #dashboard_table tr.alt td {
+    .dashboard_table tr.alt td {
         color: #3a3a3a;
         background-color: #f2f9ff;
     }
@@ -524,6 +568,20 @@ jQuery(function( $ ){
 
     tr.quickLinkBGon {
         background-image: url("../images/iphone2/quickLinkBGon.png")
+    }
+
+    tr.taskTitleRow th {
+        color : #518EC2;
+        font-weight: bold;
+    }
+
+    tr.taskTitleRow td, tr.taskTitleRow th {
+        border-bottom: 1px #ccc solid;
+    }
+
+    a.linkHere, a.linkHere:hover {
+        color : blue;
+        text-decoration: underline;
     }
 </style>
 <span id="CC" />
