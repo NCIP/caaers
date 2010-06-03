@@ -16,7 +16,7 @@
 
     <bean id="localPoolDataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource"
         p:driverClassName="s[datasource.driver]"
-        p:maxActive="5" p:maxIdle="2"
+        p:maxActive="15" p:maxIdle="2"
         p:maxWait="180000"
         p:removeAbandoned="true"
         p:removeAbandonedTimeout="300"
@@ -28,6 +28,31 @@
         p:url="s[datasource.url]"
         p:username="s[datasource.username]"
         p:password="s[datasource.password]" />
+        
+  <!--       
+       <bean id="csmDataSource" class="gov.nih.nci.cabig.caaers.tools.spring.DeferredLoadingFactoryBean">
+        <property name="beanNames">
+            <list>
+                <value>csmLocalPoolDataSource</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="csmLocalPoolDataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource"
+        p:driverClassName="s[csm.datasource.driver]"
+        p:maxActive="5" p:maxIdle="2"
+        p:maxWait="180000"
+        p:removeAbandoned="true"
+        p:removeAbandonedTimeout="300"
+        p:logAbandoned="true"
+        p:testWhileIdle="true"
+        p:testOnReturn="true"
+        p:timeBetweenEvictionRunsMillis="300000"
+        p:minEvictableIdleTimeMillis="600000"
+        p:url="s[csm.datasource.url]"
+        p:username="s[csm.datasource.username]"
+        p:password="s[csm.datasource.password]" />     
+  -->       
 
     <bean id="beringMigrator" class="edu.northwestern.bioinformatics.bering.servlet.DeployedMigrator">
         <property name="dataSource" ref="dataSource" />

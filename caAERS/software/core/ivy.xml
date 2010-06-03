@@ -65,7 +65,7 @@
 			<exclude conf="dist,distGrid" module="xom" />
 			<exclude conf="runtime,dist,distGrid" module="xmlParserAPIs" rev="2.0.2"/>
 			<exclude conf="dist,distGrid" module="subject" />
-			<exclude conf="runtime,dist,distGrid" module="c3p0"/>
+			<!--  <exclude conf="runtime,dist,distGrid" module="c3p0"/>  -->
 
 			<!-- caAERS module dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration"
@@ -188,7 +188,23 @@
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 
 			<!-- CSM & Security related -->
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" force="true"/>
+			
+			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" force="true">
+				<exclude org="gov.nih.nci.security" module="csmapi" rev="3.2.1-ctms00" conf="*"/>
+				<exclude org="gov.nih.nci.security" module="clm" rev="3.2.1-ctms00" conf="*"/>
+			</dependency>
+			
+			<dependency org="gov.nih.nci.security" name="csm" rev="4.2" transitive="true" force="true">
+				<artifact name="csmapi" type="jar" conf="*"/>
+				<exclude org="org.hibernate" conf="*"/>
+			</dependency>
+			<dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta" transitive="true" force="true">
+				<artifact name="clm" type="jar" conf="*"/>
+				<exclude org="org.springframework" conf="*"/>
+				<exclude org="commons-dbcp" module="commons-dbcp" rev="1.2.1" conf="*"/>
+				<exclude org="org.hibernate" conf="*"/>
+			</dependency>
+			
 			<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" force="true"/>
 
 			<!-- CTMS commons dependencies -->

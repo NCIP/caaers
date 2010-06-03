@@ -6,8 +6,6 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -42,12 +40,9 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private String authenticationMode;
     private UserDao userDao;
     
-    //private ResearchStaffDao researchStaffDao;
-    //private InvestigatorDao investigatorDao;
-    
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
         MailException mailException = null;
@@ -68,15 +63,17 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         } catch (MailException e) {
             mailException = e;
         }
+        /*
         List<Organization> associatedOrgList = new ArrayList<Organization>();
         for (SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()) {
             associatedOrgList.add(siteRs.getOrganization());
         }
-        createCSMUserGroups(csmUser, researchStaff, associatedOrgList);
+        */
+        createCSMUserGroups(csmUser, researchStaff, null);
         if (mailException != null) throw mailException;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForInvestigator(Investigator investigator, String changeURL) {
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
     	MailException mailException = null;
@@ -97,11 +94,13 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 		} catch (MailException e) {
 			mailException = e;
 		}
+		/*
     	List<Organization> associatedOrgList = new ArrayList<Organization>();
     	for(SiteInvestigator siteInv : investigator.getSiteInvestigatorsInternal()){
     		associatedOrgList.add(siteInv.getOrganization());
     	}
-        createCSMUserGroups(csmUser, investigator, associatedOrgList);
+    	*/
+        createCSMUserGroups(csmUser, investigator, null);
         if(mailException != null) throw mailException;
     }
     
@@ -109,13 +108,15 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         try {
             List<String> groupIds = new ArrayList<String>();
             for (UserGroupType group : user.getUserGroupTypes()) {
-                groupIds.add(group.getCode().toString());
+            	String groupId = getGroupIdByName(group.getCsmName());
+                groupIds.add(groupId);
             }
+            /*
             for(Organization org :  allowedOrgs){
             	String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(org.getNciInstituteCode()));
                 groupIds.add(organizationGroupId);
             }
-            
+            */
             if (csmUser.getUserId() == null) {
                 throw new CaaersSystemException("ID has not been assigned to CSM user.");
             }
@@ -228,16 +229,12 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 		}
 		return false;
     }
-    // jf
-  
 
     public gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName) {
         return userProvisioningManager.getUser(userName);
     }
     
-   
-
-    private void saveCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) {
+    public void saveCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) {
         try {
             userProvisioningManager.modifyUser(csmUser);
         } catch (CSTransactionException e) {
@@ -259,7 +256,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 				if(groups != null){
 					for(java.util.Iterator it = groups.iterator(); it.hasNext(); ){
 						Group group = (Group) it.next();
-						UserGroupType userGroupType = UserGroupType.getByCode(group.getGroupId().intValue());
+						UserGroupType userGroupType = UserGroupType.valueOf(group.getGroupName());  //     .getByCode(group.getGroupId().intValue());
 						if(userGroupType != null) userGroups.add(userGroupType);
 					}
 				}
@@ -286,8 +283,6 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
                 + "random_string").replaceAll("\\W", "Q"));
         return user.getToken();
     }
-
-    
 
     public void userChangePassword(User user, String password, int maxHistorySize) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(user.getLoginId());

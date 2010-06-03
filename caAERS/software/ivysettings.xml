@@ -62,8 +62,7 @@
 			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT" />
             <ibiblio name="download-java-net" m2compatible="true" root="http://download.java.net/maven/2" changingPattern=".*SNAPSHOT" />
             <ibiblio name="maven-repo2"  m2compatible="true" root="http://repo2.maven.org/maven2"	changingPattern=".*SNAPSHOT" />
-
-
+			<ibiblio name="nci-ivy-repo" root="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/" pattern="[organization]/[module]/[revision]/[artifact]-[revision].[ext]" />
 
             <!--  Semanticbits shared caGRID repository [using http] -->
             <url name="semanticbits-grid-repo-http">

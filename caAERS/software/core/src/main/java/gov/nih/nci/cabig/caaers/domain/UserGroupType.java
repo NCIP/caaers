@@ -21,8 +21,31 @@ public enum UserGroupType implements CodedEnum<Integer> {
     caaers_site_cd(-14, "caaers_site_cd"), 
     caaers_physician(-8, "caaers_physician"),
     caaers_central_office_sae_cd(-7943, "caaers_central_office_sae_cd"),
-    caaers_data_cd(-7942, "caaers_data_cd");
-
+    caaers_data_cd(-7942, "caaers_data_cd"),
+    system_administrator(-101, "system_administrator"),
+    business_administrator(-102, "business_administrator"),
+    person_and_organization_information_manager(-103, "person_and_organization_information_manager"),
+    data_importer(-104, "data_importer"),
+    user_administrator(-105, "user_administrator"),
+    study_qa_manager(-106, "study_qa_manager"),
+    study_creator(-107, "study_creator"),
+    supplemental_study_information_manager(-108, "supplemental_study_information_manager"),
+    study_team_administrator(-109, "study_team_administrator"),
+    study_site_participation_administrator(-110, "study_site_participation_administrator"),
+    ae_rule_and_report_manager(-111, "ae_rule_and_report_manager"),
+    study_calendar_template_builder(-112, "study_calendar_template_builder"),
+    registration_qa_manager(-113, "registration_qa_manager"),
+    subject_manager(-114, "subject_manager"),
+    study_subject_calendar_manager(-115, "study_subject_calendar_manager"),
+    registrar(-116, "registrar"),
+    ae_reporter(-117, "ae_reporter"),
+    expedited_report_reviewer(-118, "expedited_report_reviewer"),
+    adverse_event_study_data_reviewer(-119, "adverse_event_study_data_reviewer"),
+    lab_impact_calendar_notifier(-120, "lab_impact_calendar_notifier"),
+    lab_data_user(-121, "lab_data_user"),
+    data_reader(-122, "data_reader"),
+    data_analyst(-123, "data_analyst");
+    
     private String csmName;
 
     private int code;

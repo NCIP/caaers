@@ -89,6 +89,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/importMeddra" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/createIND" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/createOrganization" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchOrganization" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/searchIND" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/passwordPolicyConfigure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/mandatoryFields" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
@@ -129,7 +130,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean id="taskAuthorizationCheck"
-		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 		
@@ -145,6 +146,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="taskPrivilegeAndObjectIdGenerator" />
 		<property name="privilegeGenerator"
 			ref="taskPrivilegeAndObjectIdGenerator" />
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>	
 	</bean>
 
     <bean id="taskGroupAuthorizationCheck"
@@ -172,7 +174,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean id="sectionAuthorizationCheck"
-		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 		
@@ -191,6 +193,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="sectionPrivilegeAndObjectIdGenerator" />
 		<property name="privilegeGenerator"
 			ref="sectionPrivilegeAndObjectIdGenerator" />
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>	
 	</bean>
 	
     <bean  id="roleCheck" class="gov.nih.nci.cabig.caaers.web.security.RoleCheck">
@@ -288,7 +291,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>	
 
 	<bean id="tabAuthorizationCheck"
-		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 		
@@ -304,16 +307,18 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="tabPrivilegeAndObjectIdGenerator" />
 		<property name="privilegeGenerator"
 			ref="tabPrivilegeAndObjectIdGenerator" />
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>		
 	</bean>
 		
     <bean id="siteAuthorizationCheck"
-          class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+          class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
         <property name="authorizationSwitch" ref="authorizationSwitch"/>
         <property name="csmAuthorizationCheck" ref="csmGroupAuthorizationCheck"></property>
         <property name="objectIdGenerator"
                   ref="sitePrivilegeAndObjectIdGenerator"/>
         <property name="privilegeGenerator"
                   ref="sitePrivilegeAndObjectIdGenerator"/>
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>                  
     </bean>
 
 

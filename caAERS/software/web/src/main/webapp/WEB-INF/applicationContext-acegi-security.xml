@@ -86,7 +86,7 @@
 	<bean id="filterPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationPrivilegeAndObjectIdGenerator">
 		<property name="objectPrivilegeMap" ref="filterObjectPrivilegeMap"/>
 	</bean>
-	<bean id="filterAuthorizationCheck" autowire="byType" class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+	<bean id="filterAuthorizationCheck" autowire="byType" class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		<property name="csmAuthorizationCheck">
 			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
@@ -95,6 +95,7 @@
 		</property>
 		<property name="objectIdGenerator" ref="filterPrivilegeAndObjectIdGenerator"/>
 		<property name="privilegeGenerator" ref="filterPrivilegeAndObjectIdGenerator"/>
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>
 	</bean>
 	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
 		<property name="authenticationManager" ref="authenticationManager"/>

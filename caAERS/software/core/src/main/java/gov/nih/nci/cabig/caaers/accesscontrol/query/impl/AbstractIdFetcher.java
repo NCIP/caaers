@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -39,7 +40,14 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * @return   - A user
      */
     public User findUser(String loginId){
-        return csmUserRepository.getUserByName(loginId);
+    	User user = null;
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
+    	try{
+    		user = csmUserRepository.getUserByName(loginId);
+    	}catch(CaaersNoSuchUserException e){
+    		return null;
+    	}
+        return user;
     }
 
     @SuppressWarnings("unchecked")
@@ -73,21 +81,23 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * @param loginId - username
      * @return
      */
-	public final List fetch(String loginId) {
+	public  List fetch(String loginId) {
 
         List<Integer> participantIdList = null;
 
         User user = findUser(loginId);
 
-        if(user instanceof ResearchStaff){
-            participantIdList =  fetch((ResearchStaff)user);
-        }else{
-            participantIdList =  fetch((Investigator) user);
-        }
+        if(user != null){
+            if(user instanceof ResearchStaff){
+                participantIdList =  fetch((ResearchStaff)user);
+            }else{
+                participantIdList =  fetch((Investigator) user);
+            }
 
-       if(log.isDebugEnabled()){
-         log.debug(getClass().getName() + " found, IDs accessible for [ " + loginId + " ] are : " + String.valueOf(participantIdList));
-       }
+           if(log.isDebugEnabled()){
+             log.debug(getClass().getName() + " found, IDs accessible for [ " + loginId + " ] are : " + String.valueOf(participantIdList));
+           }
+        }
 
        return participantIdList;
 	}
@@ -97,16 +107,18 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * @param inv - An investigator
      * @return List of IDs of entities
      */
-    public abstract List<Integer> fetch(Investigator inv);
+    public  List<Integer> fetch(Investigator inv){
+    	return null;
+    }
 
     /**
      * Will fetch Ids of entities accessible to research staff
      * @param rs - An research staff
      * @return List of IDs of entities
      */
-    public abstract List<Integer> fetch(ResearchStaff rs);
-
-   
+    public List<Integer> fetch(ResearchStaff rs){
+    	return null;
+    }
 
 
     /**

@@ -1,0 +1,23 @@
+<dataset>
+	<role_privilege
+		id="-1"
+		version="0"
+		role_name="system_administrator"
+		object_id="gov.nih.nci.cabig.caaers.Admin"
+		privilege="ACCESS"/>
+	
+	<role_privilege
+		id="-2"
+		version="0"
+		role_name="study_team_administrator"
+		object_id="gov.nih.nci.cabig.caaers.Task"
+		privilege="ACCESS"/>
+		
+	<role_privilege
+		id="-3"
+		version="0"
+		role_name="system_administrator"
+		object_id="gov.nih.nci.cabig.caaers.Task"
+		privilege="ACCESS"/>	
+	
+</dataset>

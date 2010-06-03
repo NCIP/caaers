@@ -59,12 +59,8 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	        }
 	    	
 	    	//note - to support allowLogin of investigators added via COPPA, we shoudld set the default groups if they do not exist
-	    	if(!investigator.getUserGroupTypes().contains(UserGroupType.caaers_physician)){
-	    		investigator.addUserGroupType(UserGroupType.caaers_physician);
-	    	}
-	    	
-	    	if(!investigator.getUserGroupTypes().contains(UserGroupType.caaers_user)){
-	    		investigator.addUserGroupType(UserGroupType.caaers_user);
+	    	if(!investigator.getUserGroupTypes().contains(UserGroupType.system_administrator)){
+	    		investigator.addUserGroupType(UserGroupType.system_administrator);
 	    	}
 	    	
 	    	if(investigator.getId() == null &&  StringUtilities.isBlank(investigator.getLoginId())) {

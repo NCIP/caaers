@@ -5,28 +5,87 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd" >
+						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd" >
+ 
     <bean id="authorizationSwitch"
           class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
           factory-method="getInstance">
         <property name="on" value="true"/>
     </bean>
 
-
     <bean id="csmApplicationContextName" class="java.lang.String">
         <constructor-arg value="caaers"/>
     </bean>
 
+	<util:map id="connectionProperties" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
+		<entry key="hibernate.connection.url" value="s[datasource.url]"></entry>
+		<entry key="hibernate.connection.driver_class" value="org.postgresql.Driver"></entry>
+		<entry key="hibernate.dialect" value="gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect"></entry>
+		<entry key="hibernate.connection.username" value="s[datasource.username]"></entry>
+		<entry key="hibernate.connection.password" value="s[datasource.password]"></entry>
+		<entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
+		<entry key="hibernate.c3p0.min_size" value="2"></entry>
+		<entry key="hibernate.c3p0.max_size" value="15"></entry>
+		<entry key="hibernate.c3p0.timeout" value="300"></entry>
+		<entry key="hibernate.c3p0.max_statements" value="50"></entry>
+		<entry key="hibernate.c3p0.idle_test_period" value="3000"></entry>
+	</util:map>
 
+<!--
+	<bean id="csmSessionFactory " class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="csmDataSource"/>
+		<property name="mappingResources">
+	        <list>
+	            <value>gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml</value>
+	            <value>gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml</value>
+	            <value>gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml</value>
+	            <value>gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/User.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/FilterClause.hbm.xml</value>
+	            <value>gov/nih/nci/security/authorization/domainobjects/InstanceLevelMappingElement.hbm.xml</value>
+	        </list>
+	    </property>
+		<property name="hibernateProperties">
+			<bean
+		        class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
+				<property name="properties">
+		    		<props>
+		                <prop key="hibernate.connection.release_mode">
+		                    auto
+		                </prop>
+		            </props>
+		        </property>
+		    </bean>
+		</property>
+	</bean>
+	 
+	<bean id="fasterAuthorizationDaoImpl" class="gov.nih.nci.cabig.caaers.dao.security.FasterAuthorizationDaoImpl">
+		<constructor-arg index="0" ref="csmSessionFactory"/>
+		<constructor-arg index="1" ref="csmApplicationContextName"/>
+	</bean>
+-->
+	<bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
+		<constructor-arg index="0" ref="csmApplicationContextName"/>
+		<constructor-arg index="1" ref="connectionProperties"/>
+        <!-- <property name="authorizationDAO" ref="fasterAuthorizationDaoImpl"/>  -->
+    </bean>
+ <!--    
     <bean id="csmAuthorizationDao"
           class="gov.nih.nci.security.dao.DIAuthorizationDao"
           init-method="init">
         <property name="sessionFactory">
             <bean
                     class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-                <property name="dataSource" ref="dataSource"/>
+                <property name="dataSource" ref="csmDataSource"/>
                 <property name="mappingResources">
                     <list>
                         <value>
@@ -70,23 +129,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 <property name="hibernateProperties">
                     <bean
                             class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
-                        <!--
-                              <property name="dialectName">
-
-                                  <value>s[hibernate.dialect]</value>
-
-                              </property>
-                                   -->
+                       
                         <property name="properties">
                             <props>
-                                <!--
-                                            <prop key="hibernate.show_sql">
-                                            true
-                                            </prop>
-                                            <prop key="hibernate.format_sql">
-                                            true
-                                            </prop>
-                                        -->
+                     
                                 <prop
                                         key="hibernate.connection.release_mode">
                                     after_transaction
@@ -101,12 +147,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="applicationContextName"
                   ref="csmApplicationContextName"/>
     </bean>
-
-    <bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
-        <property name="authorizationDAO" ref="csmAuthorizationDao"/>
-    </bean>
-    
-
+ -->
     <bean id="csmObjectIdGenerator"
           class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator">
         <property name="idMethodName" value="getId"/>
@@ -405,9 +446,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="password" value="ignoreme" />
 		<property name="authorities">
 			<list>
-				<value>ROLE_caaers_super_user</value>
-				<value>ROLE_caaers_admin</value>
-				<value>ROLE_caaers_grid_user</value>
+				<value>ROLE_system_administrator</value>
 			</list>
 		</property>
 	</bean>

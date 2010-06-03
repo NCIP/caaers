@@ -80,7 +80,9 @@
    <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
      
 	<bean id="domInHandler" class="org.codehaus.xfire.util.dom.DOMInHandler" />
-	<bean id="validateUserTokenHandler" autowire="byType"  class="gov.nih.nci.cabig.caaers.utils.ValidateUserTokenHandler" />
+	<bean id="validateUserTokenHandler" autowire="byType"  class="gov.nih.nci.cabig.caaers.utils.ValidateUserTokenHandler">
+		<property name="csmUserRepository" ref="csmUserRepository"/>
+	</bean>
     <bean id="xFireSchemaValidationHandler" class="gov.nih.nci.cabig.caaers.utils.XFireSchemaValidationHandler"/>
     <bean id="auditInfoHandler" class="gov.nih.nci.cabig.caaers.utils.AuditInfoHandler"/>
 

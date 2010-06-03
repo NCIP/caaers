@@ -6,7 +6,9 @@ package gov.nih.nci.cabig.caaers.web.security;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.ApplicationContext;
+import gov.nih.nci.security.authorization.domainobjects.FilterClause;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.InstanceLevelMappingElement;
 import gov.nih.nci.security.authorization.domainobjects.Privilege;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
@@ -14,10 +16,12 @@ import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.authorization.jaas.AccessPermission;
 import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.security.exceptions.CSDataAccessException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 
+import java.net.URL;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
@@ -935,5 +939,147 @@ public class MockUserProvisioningManagerAdapter implements UserProvisioningManag
         // TODO Auto-generated method stub
 
     }
+
+	public void addGroupRoleToProtectionGroup(String protectionGroupId,
+			String groupId, String[] rolesId) throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addGroupsToUser(String userId, String[] groupIds)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addOwners(String protectionElementId, String[] userIds)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addPrivilegesToRole(String roleId, String[] privilegeIds)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addProtectionElements(String protectionGroupId,
+			String[] protectionElementIds) throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addToProtectionGroups(String protectionElementId,
+			String[] protectionGroupIds) throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addUserRoleToProtectionGroup(String userId, String[] rolesId,
+			String protectionGroupId) throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addUsersToGroup(String groupId, String[] userIds)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean checkPermission(String userName, String objectId,
+			String attributeName, String attributeValue, String privilegeName)
+			throws CSException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean checkPermissionForGroup(String groupName, String objectId,
+			String attributeName, String attributeValue, String privilegeName)
+			throws CSException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void createFilterClause(FilterClause filterClause)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void createInstanceLevelMappingElement(
+			InstanceLevelMappingElement instanceLevelMappingElement)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List getAttributeMap(String userName, String className,
+			String privilegeName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List getAttributeMapForGroup(String groupName, String className,
+			String privilegeName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public FilterClause getFilterClauseById(String filterClauseId)
+			throws CSObjectNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public InstanceLevelMappingElement getInstanceLevelMappingElementById(
+			String instanceLevelMappingElementId)
+			throws CSObjectNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void initialize(String applicationContextName, URL url) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void maintainInstanceTables(String instanceLevelMappingElementId)
+			throws CSObjectNotFoundException, CSDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void modifyFilterClause(FilterClause filterClause)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void modifyInstanceLevelMappingElement(
+			InstanceLevelMappingElement instanceLevelMappingElement)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void refreshInstanceTables(boolean instanceLevelSecurityForUser)
+			throws CSObjectNotFoundException, CSDataAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeFilterClause(String filterClauseId)
+			throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeInstanceLevelMappingElement(
+			String instanceLevelMappingElementId) throws CSTransactionException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

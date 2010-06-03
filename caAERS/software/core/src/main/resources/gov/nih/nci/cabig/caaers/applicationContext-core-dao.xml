@@ -221,6 +221,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.index.ExpeditedAdverseEventReportIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.ReportingPeriodIndex</value>
+				
+				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -406,6 +408,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.index.ExpeditedAdverseEventReportIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.ReportingPeriodIndex</value>
+				
+				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
             </list>
         </property>
         <!--
@@ -491,7 +495,6 @@ This applicationContext contains the definition of the DAOs
 
 	<bean id="auditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor" />
 		
-
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
 
     <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
@@ -662,6 +665,8 @@ This applicationContext contains the definition of the DAOs
     <bean id="organizationIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.OrganizationIndexDao"/>
     <bean id="reportingPeriodIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ReportingPeriodIndexDao"/>
     
+    <bean id="rolePrivilegeDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao"/>
+    
     <!-- validator beans starts here-->
     <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
 
@@ -716,7 +721,7 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository"
           parent="daoTemplate">
     </bean>
-
+    
     <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
           lazy-init="true" autowire="byType">
         <property name="authenticationMode" ref="authenticationMode"/>
@@ -726,8 +731,7 @@ This applicationContext contains the definition of the DAOs
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
         <property name="userDao" ref="userDao" />
     </bean>
-
-
+    
     <bean id="reportVersionRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository">
         <property name="reportVersionDao" ref="reportVersionDao"/>
     </bean>
