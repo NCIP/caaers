@@ -397,7 +397,7 @@
 
     tr.last { border-bottom : 1px black solid; }
     .scroller { height: 70px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
-    .scrollerTask { height: 228px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
+    .scrollerTask { height: 227px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scroller h4 { color: #933; display: inline; }
     .scroller div { height: 22px; padding: 8px; margin-top: -1px; }
     .scroller div.first { margin-top: 0; }
