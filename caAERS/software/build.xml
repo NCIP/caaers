@@ -125,7 +125,6 @@
 	====================================================================== -->
 	<target name="clean-cache" depends="load-ivy" description="Cleans the ivy cache">
 		<ivy:cleancache settingsRef="caaers.ivy.instance" />
-        <ivy:cleancache />
 	</target>
 	<!-- ==================================================================
 		target : clean-caaers-cache
