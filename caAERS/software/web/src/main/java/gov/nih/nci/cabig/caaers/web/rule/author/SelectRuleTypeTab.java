@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -91,6 +92,10 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
         if(StringUtils.isEmpty(ruleSetName)){
            errors.rejectValue("ruleSetName", "RUL_010");
            return;
+        }
+        //for field level rules ignore further validations. 
+        if(StringUtils.equals(ruleSetName,  RuleType.FIELD_LEVEL_RULES.getName())) {
+            return;
         }
 
         if(StringUtils.isEmpty(level)){
