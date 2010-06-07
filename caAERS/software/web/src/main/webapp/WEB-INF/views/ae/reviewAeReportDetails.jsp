@@ -99,6 +99,15 @@
 		.fg-menu a:link, .fg-menu a:visited, .fg-menu a:hover, .fg-menu a:active {
 			font-size:10pt;
 		}
+		
+		<!--[if IE]>
+
+		.fg-button {    
+    		position: static !important;    
+		}		
+
+		<![endif]-->
+		
 	</style>
 </head>
 <body>
