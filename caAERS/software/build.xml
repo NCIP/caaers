@@ -12,7 +12,7 @@
 	====================================================================== -->
   	<target name="buildlist" depends="load-ivy" unless="buildlist.done" description="Will find the correct order of build dependency"> 
   		<echo message="Using Non ccts-buildList"/>
-  		<ivy:buildlist reference="build-path">
+  		<ivy:buildlist reference="build-path" settingsRef="caaers.ivy.instance">
     		
     		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
@@ -22,7 +22,7 @@
     		</fileset>
 
     		<fileset file="${basedir}/web/ivy-build.xml" />
-    		
+
     	</ivy:buildlist>
   		
   		
@@ -35,7 +35,7 @@
 	====================================================================== -->
   	<target name="ccts-buildlist" depends="load-ivy" if="CCTS-BUILD" unless="buildlist.done" description="Will find the correct order of build dependency"> 
   		<echo message="Using ccts-buildList"/>	
-  		<ivy:buildlist reference="build-path">
+  		<ivy:buildlist reference="build-path" settingsRef="caaers.ivy.instance">
     		
     		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
@@ -124,7 +124,7 @@
 		target : clean-cache
 	====================================================================== -->
 	<target name="clean-cache" depends="load-ivy" description="Cleans the ivy cache">
-		<ivy:cleancache/>
+		<ivy:cleancache settingsRef="caaers.ivy.instance" />
 	</target>
 	<!-- ==================================================================
 		target : clean-caaers-cache
