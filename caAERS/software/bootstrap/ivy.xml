@@ -36,6 +36,7 @@
 			<exclude conf="runtime,dist,distGrid" module="logkit"  />
 			<exclude conf="dist,distGrid" name="jsp-api" />
         	<exclude conf="dist,distGrid" module="servlet-api"  />
+            <exclude conf="*" module="xml-apis" />
 
             <!-- Semanticbits Ant related tasks -->
 			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0" conf="build->default(*)"/>
