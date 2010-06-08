@@ -581,4 +581,11 @@
     <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
     <bean id="organizationQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
     <bean id="reportVersionQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport" p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx" />
+
+
+
+    <!-- The security facade bean -->
+    <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl"  />
+
+    
 </beans>
