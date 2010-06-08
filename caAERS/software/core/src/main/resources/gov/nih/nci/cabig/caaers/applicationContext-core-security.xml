@@ -548,9 +548,9 @@
     <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
     
     
-    <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
-    <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>    
-    <bean id="reportingPeriodIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
+    <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
+    <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>    
+    <bean id="reportingPeriodIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
 
 
     <!-- Pluggable Query Filterer implementation -->
