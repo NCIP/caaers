@@ -188,6 +188,7 @@
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 
 			<!-- CSM & Security related -->
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.0.0.RELEASE" />
 			
 			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" force="true">
 				<exclude org="gov.nih.nci.security" module="csmapi" rev="3.2.1-ctms00" conf="*"/>
