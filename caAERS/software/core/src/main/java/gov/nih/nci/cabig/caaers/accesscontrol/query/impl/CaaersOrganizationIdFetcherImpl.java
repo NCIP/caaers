@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
-
 import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
@@ -23,12 +21,10 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  *
  */
 public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implements IdFetcher{
-
+	
 	@Override
 	public List fetch(String loginId) {
-		 StringBuilder hql = new StringBuilder("select o.id from Organization o");
-		 HQLQuery query = new HQLQuery(hql.toString());
-		 List<Integer> resultList = (List<Integer>) search(query);
-		 return resultList;
+		List<Integer> resultList = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
+		return resultList;
 	}
 }
