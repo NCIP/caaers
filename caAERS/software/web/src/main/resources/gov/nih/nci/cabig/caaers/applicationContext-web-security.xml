@@ -355,6 +355,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     
 	<bean id="authenticationSuccessListener" class="gov.nih.nci.cabig.caaers.web.listener.AuthenticationSuccessListener">
 		<property name="filteredDataLoader" ref="filteredDataLoader"/>
+		<property name="caaersDataMigratorDelegate" ref="caaersDataMigratorDelegate"/>
 	</bean>
 	
 </beans>
