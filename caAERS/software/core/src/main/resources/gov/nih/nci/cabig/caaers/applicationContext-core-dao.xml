@@ -803,5 +803,20 @@ This applicationContext contains the definition of the DAOs
     <!-- Factory beans end here-->
 
     <bean id="terminologyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepositoryImpl" autowire="byType"/>
-
+    
+	<bean id="caaersDataMigrator" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigrator">
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
+    </bean>
+    
+	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
+		<property name="migrators">
+			<list>
+				<ref bean="caaersDataMigrator"/>
+			</list>
+		</property>
+    </bean>
+    
 </beans>
