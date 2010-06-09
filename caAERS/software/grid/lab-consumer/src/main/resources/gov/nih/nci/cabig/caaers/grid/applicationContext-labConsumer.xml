@@ -121,5 +121,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<property name="userCache" ref="userCache" />
 	</bean>
+
+	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
+		<property name="migrators">
+			<list/>
+		</property>
+    </bean>
+
 	 
 </beans>
