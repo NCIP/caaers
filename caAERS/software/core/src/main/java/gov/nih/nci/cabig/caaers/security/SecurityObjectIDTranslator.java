@@ -23,4 +23,8 @@ public class SecurityObjectIDTranslator {
         return csmName;
     }
 
+    public String fromCaAERSObjectToCSM(Object o) {
+        return fromCaAERSToCSM(o.getClass().getName());
+    }
+
 }

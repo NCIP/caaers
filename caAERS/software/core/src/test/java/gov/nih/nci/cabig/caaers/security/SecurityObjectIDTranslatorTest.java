@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.domain.*;
 import junit.framework.TestCase;
 
 /**
@@ -10,7 +11,22 @@ import junit.framework.TestCase;
 public class SecurityObjectIDTranslatorTest extends TestCase {
 
     SecurityObjectIDTranslator t = new SecurityObjectIDTranslator();
-    
+
+    Study localStudy;
+    Study remoteStudy;
+    Organization localOrganization;
+    Organization remoteOrganization;
+    Participant p; 
+
+    @Override
+    protected void setUp() throws Exception {
+        localStudy = new LocalStudy();
+        remoteStudy = new RemoteStudy();
+        localOrganization = new LocalOrganization();
+        remoteOrganization = new RemoteOrganization();
+        p = new Participant();
+    }
+
     public void testFromCaAERSToCSM() {
         assertEquals("HealthcareSite", t.fromCaAERSToCSM("gov.nih.nci.cabig.caaers.domain.Organization"));
         assertEquals("HealthcareSite", t.fromCaAERSToCSM("gov.nih.nci.cabig.caaers.domain.LocalOrganization"));
@@ -25,6 +41,14 @@ public class SecurityObjectIDTranslatorTest extends TestCase {
         assertEquals("gov.nih.nci.cabig.caaers.domain.Organization", t.fromCSMToCaAERS("HealthcareSite"));
         assertEquals("gov.nih.nci.cabig.caaers.domain.Study", t.fromCSMToCaAERS("Study"));
         assertEquals("proton", t.fromCSMToCaAERS("proton"));
+    }
+
+    public void testFromCaAERSObjectToCSM() {
+        assertEquals("HealthcareSite", t.fromCaAERSObjectToCSM(localOrganization));
+        assertEquals("HealthcareSite", t.fromCaAERSObjectToCSM(remoteOrganization));
+        assertEquals("Study", t.fromCaAERSObjectToCSM(localStudy));
+        assertEquals("Study", t.fromCaAERSObjectToCSM(remoteStudy));
+        assertEquals("gov.nih.nci.cabig.caaers.domain.Participant", t.fromCaAERSObjectToCSM(p));
     }
 
 }
