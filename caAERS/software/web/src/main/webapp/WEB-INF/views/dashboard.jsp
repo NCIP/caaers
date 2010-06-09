@@ -611,3 +611,7 @@ jQuery(function( $ ){
     }
 </style>
 <span id="CC" />
+
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.AdverseEvent:UPDATE">
+    ABC
+</csmauthz:accesscontrol>

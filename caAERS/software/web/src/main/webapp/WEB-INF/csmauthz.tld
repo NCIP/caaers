@@ -28,7 +28,7 @@
 		</attribute>
 		<attribute>
 			<name>domainObject</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<description>
                 The actual domain object instance for which permissions
@@ -37,12 +37,24 @@
 		</attribute>
 		<attribute>
 			<name>authorizationCheckName</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<description>
                 The actual domain object instance for which permissions
 				are being evaluated.
 			</description>
+		</attribute>
+		<attribute>
+			<name>objectPrivilege</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The String containing the domain object and its needed privilege</description>
+		</attribute>
+		<attribute>
+			<name>securityFacade</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The security facade to be used for checking privileges on the provided protection group(domain object)</description>
 		</attribute>
 	</tag>
 
