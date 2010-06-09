@@ -7,9 +7,9 @@ import junit.framework.TestCase;
  * Date: Jun 9, 2010
  * Time: 4:44:57 PM
  */
-public class SecurityObjectTranslatorTest extends TestCase {
+public class SecurityObjectIDTranslatorTest extends TestCase {
 
-    SecurityObjectTranslator t = new SecurityObjectTranslator();
+    SecurityObjectIDTranslator t = new SecurityObjectIDTranslator();
     
     public void testFromCaAERSToCSM() {
         assertEquals("HealthcareSite", t.fromCaAERSToCSM("gov.nih.nci.cabig.caaers.domain.Organization"));

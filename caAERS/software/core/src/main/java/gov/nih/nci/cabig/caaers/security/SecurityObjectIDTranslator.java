@@ -5,7 +5,7 @@ package gov.nih.nci.cabig.caaers.security;
  * Date: Jun 9, 2010
  * Time: 4:44:57 PM
  */
-public class SecurityObjectTranslator {
+public class SecurityObjectIDTranslator {
 
     public String fromCaAERSToCSM(String caAERSName) {
         if (caAERSName.equals("gov.nih.nci.cabig.caaers.domain.Organization")) return "HealthcareSite";
