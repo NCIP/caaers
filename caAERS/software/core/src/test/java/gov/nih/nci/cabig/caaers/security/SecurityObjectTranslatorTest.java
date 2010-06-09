@@ -18,7 +18,7 @@ public class SecurityObjectTranslatorTest extends TestCase {
         assertEquals("Study", t.fromCaAERSToCSM("gov.nih.nci.cabig.caaers.domain.Study"));
         assertEquals("Study", t.fromCaAERSToCSM("gov.nih.nci.cabig.caaers.domain.LocalStudy"));
         assertEquals("Study", t.fromCaAERSToCSM("gov.nih.nci.cabig.caaers.domain.RemoteStudy"));
-        assertEquals("ion", t.fromCaAERSToCSM("ion"));
+        assertEquals("anion", t.fromCaAERSToCSM("anion"));
     }
 
     public void testFromCSMToCaAERS() {
