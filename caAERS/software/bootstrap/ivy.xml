@@ -59,7 +59,8 @@
 			<!-- CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+            
 			<!-- Testing dependencies -->
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />

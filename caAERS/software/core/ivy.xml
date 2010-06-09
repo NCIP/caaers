@@ -188,8 +188,8 @@
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 
 			<!-- CSM & Security related -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.0.0.RELEASE" />
-			
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.0.1.RELEASE" />
+
 			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" force="true">
 				<exclude org="gov.nih.nci.security" module="csmapi" rev="3.2.1-ctms00" conf="*"/>
 				<exclude org="gov.nih.nci.security" module="clm" rev="3.2.1-ctms00" conf="*"/>
@@ -209,10 +209,10 @@
 			<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" force="true"/>
 
 			<!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false" force="true"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false" force="true"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" force="true"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" conf="build->default(*)" force="true"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" conf="build->default(*)" />
 
 			<!-- Rules Jar -->
 			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.3.0"  conf="build->default;dist->dist;distGrid->distGrid" />
