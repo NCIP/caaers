@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -33,6 +34,8 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     protected final Log log = LogFactory.getLog(AbstractIdFetcher.class);
 
     protected CSMUserRepository csmUserRepository;
+    
+    protected CaaersSecurityFacade caaersSecurityFacade;
 
     /**
      * Will fetch the user identified by the loginId. 
@@ -146,6 +149,14 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
         this.csmUserRepository = csmUserRepository;
     }
+
+	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
+		this.caaersSecurityFacade = caaersSecurityFacade;
+	}
+
+	public CaaersSecurityFacade getCaaersSecurityFacade() {
+		return caaersSecurityFacade;
+	}
 
     
     
