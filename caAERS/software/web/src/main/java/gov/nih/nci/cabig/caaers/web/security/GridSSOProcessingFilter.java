@@ -3,8 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
-import gov.nih.nci.security.acegi.grid.Utils;
-import gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationToken;
+import gov.nih.nci.cabig.ctms.acegi.grid.Utils;
+import gov.nih.nci.cabig.ctms.acegi.grid.authentication.GlobusCredentialAuthenticationToken;
 
 import java.io.IOException;
 

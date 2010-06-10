@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-import gov.nih.nci.security.acegi.csm.authentication.CSMAuthenticationProvider;
+import gov.nih.nci.cabig.ctms.acegi.csm.authentication.CSMAuthenticationProvider;
 
 import java.util.Date;
 
@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Ram Seethiraju
  */
-public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
+public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	
 	private static final Log logger = LogFactory.getLog(CaaersCSMAuthenticationProvider.class);	
 	private UserDao userDao;

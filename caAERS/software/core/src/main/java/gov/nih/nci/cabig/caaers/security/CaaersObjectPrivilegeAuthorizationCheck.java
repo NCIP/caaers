@@ -1,15 +1,16 @@
+
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
-import gov.nih.nci.security.acegi.csm.authorization.AbstractObjectPrivilegeCSMAuthorizationCheck;
-import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.AbstractObjectPrivilegeCSMAuthorizationCheck;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
+import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -17,14 +18,14 @@ import org.apache.log4j.Logger;
  * @author Monish Dombla
  *
  */
-public class CaaersObjectPrivilegeAuthorizationCheck  extends AbstractObjectPrivilegeCSMAuthorizationCheck{
+public class CaaersObjectPrivilegeAuthorizationCheck  extends AbstractObjectPrivilegeCSMAuthorizationCheck {
 	
 	private CSMAuthorizationCheck csmAuthorizationCheck;
 	private RolePrivilegeDao rolePrivilegeDao;
 	private Logger logger = Logger.getLogger(CaaersObjectPrivilegeAuthorizationCheck.class);
 	
 	/* (non-Javadoc)
-	 * @see gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck#checkAuthorizationForObjectId(org.acegisecurity.Authentication, java.lang.String, java.lang.String)
+	 * @see gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck#checkAuthorizationForObjectId(org.acegisecurity.Authentication, java.lang.String, java.lang.String)
 	 */
 	public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege, String objectId) {
 		

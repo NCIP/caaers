@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.web.task.TaskGroup;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
-import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
-import gov.nih.nci.security.acegi.csm.authorization.AbstractCSMAuthorizationCheck;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.AbstractCSMAuthorizationCheck;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
@@ -20,7 +20,7 @@ public class RoleCheck extends AbstractCSMAuthorizationCheck {
     /*
      * (non-Javadoc)
      * 
-     * @see gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck#checkAuthorizationForObjectId(org.acegisecurity.Authentication,
+     * @see gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck#checkAuthorizationForObjectId(org.acegisecurity.Authentication,
      *      java.lang.String, java.lang.String)
      */
     public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege,

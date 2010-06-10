@@ -3,21 +3,21 @@ package gov.nih.nci.cabig.caaers.web.tags.csm;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.web.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.web.utils.el.EL;
-import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.drools.util.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import org.springframework.web.util.ExpressionEvaluationUtils;
 /**
- * This is coded in the same lines of {@link gov.nih.nci.security.acegi.csm.web.CSMAccessControlTag}
+ * This is coded in the same lines of {@link gov.nih.nci.cabig.ctms.acegi.csm.web.CSMAccessControlTag}
  * 
  * @author Biju Joseph
  * @author Ion C. Olaru

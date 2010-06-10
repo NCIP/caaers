@@ -190,6 +190,9 @@
 			<!-- CSM & Security related -->
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.0.1.RELEASE" transitive="false" />
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-csm" rev="${ctms.version}" force="true" />
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" force="true">
+                <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-acegi-csm" />
+            </dependency>
 
            <!--
 
@@ -321,6 +324,7 @@
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default"/>
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-unit" rev="${ctms.version}" conf="test->default(*)" transitive="false"/>            
 			<!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-all" rev="0.8" conf="test->default"/>-->
 			<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
 

@@ -4,7 +4,7 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;

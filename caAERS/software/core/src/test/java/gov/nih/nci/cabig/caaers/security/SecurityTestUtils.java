@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.AuthorizationSwitch;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;

@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMUserDetailsService;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
@@ -19,7 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 
-public class CaaersCSMUserDetailsService extends CSMUserDetailsService{
+public class CaaersCSMUserDetailsService extends CSMUserDetailsService {
 	
 	private static final Log logger = LogFactory.getLog(CaaersCSMUserDetailsService.class);
 	

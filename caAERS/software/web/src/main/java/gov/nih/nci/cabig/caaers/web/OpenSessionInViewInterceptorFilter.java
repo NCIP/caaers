@@ -13,6 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -31,6 +33,7 @@ import org.springframework.web.context.request.WebRequest;
 /* TODO: this class is shared with PSC. Refactor into a shared library. */
 public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAdapter {
     private String interceptorBeanName;
+    protected final Log log = LogFactory.getLog(getClass());
 
     public void init(FilterConfig filterConfig) throws ServletException {
         super.init(filterConfig);
@@ -43,6 +46,7 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpReq = ((HttpServletRequest) request);
+
         if (log.isDebugEnabled()) {
             log.debug("Opening session for request " + httpReq.getMethod() + ' ' + httpReq.getRequestURI());
         }

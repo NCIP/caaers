@@ -3,8 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
-import gov.nih.nci.security.acegi.csm.authorization.CSMPrivilegeGenerator;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMPrivilegeGenerator;
 
 /**
  * @author <a href="mailto:saurabh.agrawal@semanticbits.com">Saurabh Agrawal</a>

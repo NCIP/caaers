@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import gov.nih.nci.security.acegi.csm.authorization.AbstractPrivilegeAndObjectIdGenerator;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.AbstractPrivilegeAndObjectIdGenerator;
 
 public class TabPrivilageAndObjectIdGenerator extends AbstractPrivilegeAndObjectIdGenerator {
 

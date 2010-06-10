@@ -3,10 +3,9 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.ctms.acegi.grid.authorization.*;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GrouperI;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupSearch;
-import gov.nih.nci.security.acegi.grid.authorization.GridGrouperClientFactory;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.dao.SearchCriteria;
 
@@ -42,7 +41,7 @@ public class GridGroupSearchTest extends TestCase {
         };
         GridGrouperClientFactory fact = new GridGrouperClientFactory() {
             public GrouperI newGridGrouperClient(String url) {
-                return new MockGridGrouperClient();
+               return null;
             }
 
         };

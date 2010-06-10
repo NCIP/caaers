@@ -1,3 +1,4 @@
+
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CollectionUtil;
