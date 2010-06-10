@@ -87,7 +87,7 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
-				System.out.println(" test " + caaersEquivalentName);
+
 				if (caaersEquivalentName.equals(STUDY_PE)) {
 					// get his Orgs 
 					List<Integer> userOrgs = getAccessibleOrganizationIds(loginId);					
@@ -135,7 +135,7 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
-				System.out.println(" test " + caaersEquivalentName);
+
 				if (caaersEquivalentName.equals(ORGANIZATION_PE)) {
 					hql = "select o.id from Organization o ";
 					HQLQuery query = new HQLQuery(hql.toString());
