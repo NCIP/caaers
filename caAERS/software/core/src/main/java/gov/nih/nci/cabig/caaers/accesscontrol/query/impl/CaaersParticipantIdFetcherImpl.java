@@ -26,13 +26,12 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 	
 	public List fetch(String loginId){
 		
-		String csmDBId = findUser(loginId).getId()+"";		
 		StringBuilder hql = new StringBuilder("select distinct spa.participant.id from  StudyParticipantAssignment spa , StudyIndex si" )
         .append(" where si.study = spa.studySite.study ")
         .append(" and si.loginId = :loginId ");
 		
         HQLQuery query = new HQLQuery(hql.toString());
-        query.setParameter("loginId", csmDBId);
+        query.setParameter("loginId", loginId);
         List<Integer> resultList = (List<Integer>) search(query);
        
 		return resultList;
