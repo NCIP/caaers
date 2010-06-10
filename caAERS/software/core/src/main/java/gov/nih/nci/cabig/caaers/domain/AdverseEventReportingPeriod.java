@@ -27,7 +27,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;

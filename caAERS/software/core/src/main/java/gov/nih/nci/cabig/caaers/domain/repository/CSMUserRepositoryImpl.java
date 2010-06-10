@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;

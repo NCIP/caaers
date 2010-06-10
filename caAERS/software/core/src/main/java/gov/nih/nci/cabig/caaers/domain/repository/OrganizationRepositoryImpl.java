@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
+import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;

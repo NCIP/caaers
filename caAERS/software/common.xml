@@ -708,7 +708,7 @@
 	            description="Passes the source files in core through the ajc">
          <echo message="main.classpath" />
          <echo message="${main.classpath}" />
-	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5" verbose="true" >
+	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5"  >
 	            <aspectpath refid="aspect.path" />
 	        	<classpath>
 	                <path refid="main.classpath"/>

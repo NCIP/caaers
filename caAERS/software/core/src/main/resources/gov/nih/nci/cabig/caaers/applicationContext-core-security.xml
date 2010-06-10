@@ -405,21 +405,7 @@
         <property name="pathSeperator" value="."/>
     </bean>
 
-    <bean id="siteSecurityCollectionFilter" class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
-        <property name="processConfigAttribute" value="CSM_AUTHN_CHECK"/>
-        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap" ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
-        <property name="authorizationSwitch" ref="authorizationSwitch"/>
-    </bean>
-
-    <bean id="siteSecurityBasicAuthCheck"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationBasicAuthorizationCheckProvider">
-        <property name="processConfigAttribute"
-                  value="CSM_AUTHN_CHECK"/>
-        <property name="accessPrivilege" ref="ACCESS_PRIVILEGE"/>
-        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-                  ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
-        <property name="authorizationSwitch" ref="authorizationSwitch"/>
-    </bean>
+    
     <bean id="ACCESS_PRIVILEGE" class="java.lang.String">
         <constructor-arg value="ACCESS"/>
     </bean>
