@@ -571,7 +571,10 @@
 
 
     <!-- The security facade bean -->
-    <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl"  />
+    <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl"  >
+    	<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
+    	<property name="hibernateTemplate" ref="hibernateTemplate" />
+    </bean>
 
     
 </beans>
