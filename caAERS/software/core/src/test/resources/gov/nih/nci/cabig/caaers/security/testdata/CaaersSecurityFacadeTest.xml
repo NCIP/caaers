@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<organizations
+		id="1"
+		nci_institute_code="NCI"
+	/>
+	<organizations
+		id="2"
+		nci_institute_code="NCIBD"
+	/>
+	<organizations
+		id="3"
+		nci_institute_code="IL034"
+	/>
+	<csm_protection_group
+		protection_group_id="-400"
+		protection_group_name="HealthcareSite.IL034"
+		application_id="-1"
+		large_element_count_flag="1"
+	/>	
+
+	<csm_protection_group
+		protection_group_id="-401"
+		protection_group_name="HealthcareSite.NCI"
+		application_id="-1"
+		large_element_count_flag="1"
+	/>
+
+	<csm_protection_group
+		protection_group_id="-402"
+		protection_group_name="Study.N7028"
+		application_id="-1"
+		large_element_count_flag="1"
+	/>
+
+	<csm_protection_group
+		protection_group_id="-403"
+		protection_group_name="Study.6307"
+		application_id="-1"
+		large_element_count_flag="1"
+	/>
+				
+	<csm_user_group_role_pg
+        user_group_role_pg_id="-1"
+        user_id="1"
+        group_id="-4"
+        role_id="7"
+        protection_group_id="-400"        
+        />
+
+	<csm_user_group_role_pg
+        user_group_role_pg_id="-2"
+        user_id="1"
+        group_id="-4"
+        role_id="7"
+        protection_group_id="-401"        
+        />
+
+	<csm_user_group_role_pg
+        user_group_role_pg_id="-3"
+        user_id="1"
+        group_id="-4"
+        role_id="7"
+        protection_group_id="-402"        
+        />
+	<csm_user_group_role_pg
+        user_group_role_pg_id="-4"
+        user_id="1"
+        group_id="-4"
+        role_id="7"
+        protection_group_id="-403"        
+        />
+                        
+</dataset>
