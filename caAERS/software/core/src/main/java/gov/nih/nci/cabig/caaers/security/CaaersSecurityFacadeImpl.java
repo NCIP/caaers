@@ -1,16 +1,37 @@
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.User;
-import org.acegisecurity.Authentication;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.security.provisioning.AuthorizationManagerImpl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.acegisecurity.Authentication;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * The Facade Layer to CSM. 
  * @author: Biju Joseph
  */
-public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade{
-
+public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements CaaersSecurityFacade  {
+	
+	private AuthorizationManagerImpl csmUserProvisioningManager;
+	
+	private String ORGANIZATION_PE="HealthcareSite";
+	private String STUDY_PE="Study";
+	
     /**
      * Will check the authorization status.
      *
@@ -58,16 +79,122 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade{
      * @return
      */
     public List<Integer> getAccessibleStudyIds(String loginId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    	List<Integer> resultList = new ArrayList<Integer>();
+    	try {
+			Set<ProtectionGroupRoleContext> contexts = csmUserProvisioningManager.getProtectionGroupRoleContextForUser(loginId);
+			List identifiers = new ArrayList();
+			String hql = "";
+			for (ProtectionGroupRoleContext context : contexts) {
+				ProtectionGroup pe = context.getProtectionGroup();
+				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
+				System.out.println(" test " + caaersEquivalentName);
+				if (caaersEquivalentName.equals(STUDY_PE)) {
+					// get his Orgs 
+					List<Integer> userOrgs = getAccessibleOrganizationIds(loginId);					
+					hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
+					HQLQuery query = new HQLQuery(hql.toString());
+					query.setParameterList("userOrgs", userOrgs);
+					resultList = (List<Integer>) search(query);
+					return resultList;
+				} else {
+					//parse name ..
+					String[] tokens = caaersEquivalentName.split("\\.");
+					if (tokens.length == 2) {
+						if (tokens[0].equals(STUDY_PE)) {
+							identifiers.add(tokens[1]);
+						}
+					}
+				}
+			}
+			// get caAERS IDs from Organizations table , primary key ..
+			hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
+			HQLQuery query = new HQLQuery(hql.toString());
+	        query.setParameterList("identifiers", identifiers);
+	        resultList = (List<Integer>) search(query);
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return resultList ;  
     }
-
+    
     /**
      * Will the caAERS database IDs of Organization that one can access.
      *
      * @param loginId - The loginId
      * @return
      */
-    public List<Integer> getAccessibleOrganizationIds(String loginId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    @SuppressWarnings("unchecked")
+	public List<Integer> getAccessibleOrganizationIds(String loginId) {
+    	List<Integer> resultList = new ArrayList<Integer>();
+    	try {
+			Set<ProtectionGroupRoleContext> contexts = csmUserProvisioningManager.getProtectionGroupRoleContextForUser(loginId);
+			List identifiers = new ArrayList();
+			String hql = "";
+			for (ProtectionGroupRoleContext context : contexts) {
+				ProtectionGroup pe = context.getProtectionGroup();
+				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
+				System.out.println(" test " + caaersEquivalentName);
+				if (caaersEquivalentName.equals(ORGANIZATION_PE)) {
+					hql = "select o.id from Organization o ";
+					HQLQuery query = new HQLQuery(hql.toString());
+					resultList = (List<Integer>) search(query);
+					return resultList;
+				} else {
+					//parse name ..
+					String[] tokens = caaersEquivalentName.split("\\.");
+					if (tokens.length == 2) {
+						if (tokens[0].equals(ORGANIZATION_PE)) {
+							identifiers.add(tokens[1]);
+						}
+					}
+				}
+			}
+			// get caAERS IDs from Organizations table , primary key ..
+			hql = " select o.id from Organization o where o.nciInstituteCode in (:identifiers)";
+			HQLQuery query = new HQLQuery(hql.toString());
+	        query.setParameterList("identifiers", identifiers);
+	        resultList = (List<Integer>) search(query);
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return resultList ;  //To change body of implemented methods use File | Settings | File Templates.
     }
+    
+    @SuppressWarnings("unchecked")
+	private List<?> search(final AbstractQuery query){
+    	String queryString = query.getQueryString();
+
+       return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    if (value instanceof Collection) {
+                    	hibernateQuery.setParameterList(key, (Collection) value);
+                    } else {
+                    	hibernateQuery.setParameter(key, value);
+                    }
+
+                }
+                return hibernateQuery.list();
+            }
+
+        });
+    }
+
+	public AuthorizationManagerImpl getCsmUserProvisioningManager() {
+		return csmUserProvisioningManager;
+	}
+
+	public void setCsmUserProvisioningManager(
+			AuthorizationManagerImpl csmUserProvisioningManager) {
+		this.csmUserProvisioningManager = csmUserProvisioningManager;
+	}
+
 }
