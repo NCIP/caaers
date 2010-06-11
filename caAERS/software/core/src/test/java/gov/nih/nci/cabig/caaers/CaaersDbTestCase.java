@@ -263,7 +263,17 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         public String getSessionId() {
             return null;
         }
+        public String getDescription(boolean b){
+            return null;
+        }
 
+        public boolean checkNotModified(long l){
+            return true;
+        }
+
+        public String[] getAttributeNames(int scope){
+            return null;
+        }
         public Object getSessionMutex() {
             return null;
         }
