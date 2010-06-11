@@ -135,11 +135,11 @@
 	<bean id="gridUserDetailsService" class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.GridUserDetailsService" lazy-init="true">
 		<property name="gridGroupSearch" ref="gridGroupSearch"/>
 	</bean>
-	<bean id="globusCredentialAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationProvider" lazy-init="true">
+	<bean id="globusCredentialAuthenticationProvider" class="gov.nih.nci.cabig.ctms.acegi.grid.authentication.GlobusCredentialAuthenticationProvider" lazy-init="true">
 		<property name="userDetailsService" ref="gridUserDetailsService"/>
 		<property name="validator" ref="gridProxyValidator"/>
 	</bean>
-	<bean id="gridAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GridAuthenticationProvider" lazy-init="true">
+	<bean id="gridAuthenticationProvider" class="gov.nih.nci.cabig.ctms.acegi.grid.authentication.GridAuthenticationProvider" lazy-init="true">
 		<property name="userDetailsService" ref="gridUserDetailsService"/>
 		<property name="authenticationClient" ref="gridAuthenticationClient"/>
 		<property name="validator" ref="gridProxyValidator"/>

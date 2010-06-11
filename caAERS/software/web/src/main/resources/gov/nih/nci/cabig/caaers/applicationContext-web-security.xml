@@ -322,7 +322,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
 
 
-    <bean id="gridAuthenticationClient" class="gov.nih.nci.security.acegi.grid.authentication.GridBasicAuthenticationClientImpl">
+    <bean id="gridAuthenticationClient" class="gov.nih.nci.cabig.ctms.acegi.grid.authentication.GridBasicAuthenticationClientImpl">
     	<property name="idpUrl" value="https://localhost:58443/wsrf/services/cagrid/AuthenticationService"/>
 		<property name="ifsUrl" value="https://localhost:28443/wsrf/services/cagrid/Dorian"/>
 		<property name="proxyLifetimeHours" value="12"/>
@@ -331,7 +331,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegationPathLength" value="0"/>
     </bean>
     
-    <bean id="gridProxyValidator" class="gov.nih.nci.security.acegi.grid.authentication.GridProxyValidatorImpl"/>
+    <bean id="gridProxyValidator" class="gov.nih.nci.cabig.ctms.acegi.grid.authentication.GridProxyValidatorImpl"/>
     
     <bean id="gridGroupSearch" class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupSearch">
     	<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
