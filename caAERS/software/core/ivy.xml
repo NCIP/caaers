@@ -65,6 +65,7 @@
 			<exclude conf="dist,distGrid" module="xom" />
 			<exclude conf="runtime,dist,distGrid" module="xmlParserAPIs" rev="2.0.2"/>
 			<exclude conf="dist,distGrid" module="subject" />
+			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
 			<!--  <exclude conf="runtime,dist,distGrid" module="c3p0"/>  -->
 
 			<!-- caAERS module dependencies -->
@@ -188,7 +189,7 @@
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 
 			<!-- CSM & Security related -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.0.1.RELEASE" transitive="false" />
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.1.1.RELEASE" transitive="false" />
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-csm" rev="${ctms.version}" force="true" />
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" force="true">
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-acegi-csm" />

@@ -44,6 +44,7 @@
 			<exclude conf="distGrid" org="cryptix" name="cryptix-asn1" />
 			<exclude conf="distGrid" org="*" name="gss"/>
 			<exclude conf="distGrid" org="*" name="puretls" />
+			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
 
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
