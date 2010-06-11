@@ -35,13 +35,67 @@ public class CaaersDataMigrator {
     																"caaers_ae_cd",
     																"caaers_site_cd",
     																"caaers_physician");
-    
+    //private static int CAAERS_DATA_MIGRATOR_OPERATION_CODE = 1;
+    //private static int STATUS_CODE_IN_PROGRESS = 0;
+    //private static int STATUS_CODE_COMPLETE = 1;
     
     /**
-     * 
+     * Migrates users,groups,siteresearchstaffrole,studypersonnel
      */
     public void migrateData(){
-    	
+    	 if(preMigrate()){
+    		log.debug("Migration required performing migration");
+    		 
+			//Migrate SuperUsers
+			migrateSuperUsers();
+			//Migrate Normal users
+			migrateUsers();
+			deleteUnusedRecords();
+			//Migrate SiteResearchStaffRoles
+			migrateSiteResearchStaffRole();
+			//Migrate SP role codes
+			migrateStudyPersonnelRole();
+			deleteUnusedStudyPersonnel();
+			//Create PE & PG for all organizations
+			migratePEPGForOrganizations();
+			//Create PE & PG for all Studies
+			migratePEPGForStudes();
+			//Associate PE & PG
+			associatePEPG();
+			
+    		postMigrate();
+    	 }else{
+    		 log.debug("Migration not required");
+    	 }
+    	 
+    }
+    
+    /**
+     * This method checks to see if migration is required or not. If required makes an entry in caaers_bootstrap_log & return true.
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	protected boolean preMigrate(){
+    	String selectSql = "select status_code from caaers_bootstrap_log where id = -1 and operation_code IN (0,1)";
+    	List bootstrapLogs = jdbcTemplate.queryForList(selectSql);
+    	if(bootstrapLogs != null && bootstrapLogs.size() > 0){
+    		//Migration already done.
+    		return false;
+    	}else{
+    		log.debug("Inserting into caaers_bootstrap_log");
+    		String insertSql = getInsertBootstrapLogSql();
+    		jdbcTemplate.execute(insertSql);
+    		return true;
+    	}
+    }
+    
+    /**
+     * This method updates status_code of caaers_bootstrap_log after migration. 
+     */
+    protected void postMigrate(){
+    	log.debug("Updating caaers_bootstrap_log");
+    	String updateSql = "update caaers_bootstrap_log set status_code = 1";
+		jdbcTemplate.execute(updateSql);
     }
 	
     /**
@@ -376,6 +430,90 @@ public class CaaersDataMigrator {
             }
         };
         jdbcTemplate.batchUpdate(sql, setter);
+    }
+    
+    
+    /**
+     * 
+     * @return
+     */
+    protected String getInsertBootstrapLogSql(){
+    	String postgresInsertSql = "INSERT INTO caaers_bootstrap_log (id,rundate,operation_code,status_code) values (-1,CURRENT_DATE,1,0)";
+    		
+		String oracleInsertSql = "INSERT INTO caaers_bootstrap_log (id,rundate,operation_code,status_code) values (-1,SYSDATE,1,0)";
+		
+		if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+			return oracleInsertSql;
+		}else{
+			return postgresInsertSql;
+		}
+    }
+    
+    /**
+     * This method will provision Protetion Elements & Protection Groups for all Studies in caAERS.
+     */
+    protected void migratePEPGForOrganizations(){
+    	String peSql = "INSERT INTO csm_protection_element (protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
+    						"select nextval('csm_protectio_protection_e_seq'),'HealthcareSite.'||nci_institute_code, name, 'HealthcareSite.'||nci_institute_code,-1 from organizations";
+    	
+    	String pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
+							"select nextval('csm_protectio_protection_g_seq'),'HealthcareSite.'||nci_institute_code, name, -1,0 from organizations";
+    	
+    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+    		peSql = "INSERT INTO csm_protection_element (protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
+						"select csm_protectio_protection_e_seq.nextval,'HealthcareSite.'||nci_institute_code, name, 'HealthcareSite.'||nci_institute_code,-1 from organizations";
+    		
+    		pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
+						"select csm_protectio_protection_g_seq.nextval,'HealthcareSite.'||nci_institute_code, name, -1,0 from organizations";
+    	}
+    	
+    	jdbcTemplate.execute(peSql);
+    	jdbcTemplate.execute(pgSql);
+    }
+    
+    /**
+     * This method will provision Protection Elements & Protection Groups for all Organizations in caAERS.
+     */
+    protected void migratePEPGForStudes(){
+    	
+    	String peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
+    					"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 " +
+    						"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+
+    	String pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
+							"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,-1,0 " +
+								"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+
+    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+    		peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
+						"select csm_protectio_protection_g_seq.nextval,'Study.'||value,'Study.'||value,'Study.'||value,-1 " +
+							"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+    		
+    		pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
+						"select csm_protectio_protection_g_seq.nextval,'Study.'||value,'Study.'||value,-1,0 " +
+							"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+    	}
+    	
+    	jdbcTemplate.execute(peSql);
+    	jdbcTemplate.execute(pgSql);
+    	
+    }
+    
+    
+    /**
+     * This method will associate all PE's & PG's on a one on one basis.
+     */
+    protected void associatePEPG(){
+    	String sql = "INSERT INTO csm_pg_pe (pg_pe_id,protection_group_id,protection_element_id) " +
+    					"select nextval('csm_pg_pe_id_seq'),pg.protection_group_id,pe.protection_element_id from csm_protection_element pe, csm_protection_group pg " +
+    					"where pe.protection_element_name = pg.protection_group_name";
+    	
+    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+    		sql = "INSERT INTO csm_pg_pe (pg_pe_id,protection_group_id,protection_element_id) " +
+					"select csm_pg_pe_id_seq.nextval,pg.protection_group_id,pe.protection_element_id from csm_protection_element pe, csm_protection_group pg " +
+						"where pe.protection_element_name = pg.protection_group_name";
+    	}
+    	jdbcTemplate.execute(sql);
     }
     
     /**
