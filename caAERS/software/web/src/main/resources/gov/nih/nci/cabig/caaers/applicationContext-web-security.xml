@@ -136,7 +136,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		
 		<property name="csmAuthorizationCheck">
 			<bean
-                class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+                class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager" />
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
             </bean>
@@ -182,7 +182,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
  -->
-			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
@@ -296,7 +296,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 		
 		<property name="csmAuthorizationCheck">
-			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
@@ -333,7 +333,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     
     <bean id="gridProxyValidator" class="gov.nih.nci.security.acegi.grid.authentication.GridProxyValidatorImpl"/>
     
-    <bean id="gridGroupSearch" class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupSearch">
+    <bean id="gridGroupSearch" class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupSearch">
     	<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     	<property name="csmApplicationContextName" ref="csmApplicationContextName"/>
     	<!-- Timeout per GridGrouperInstance -->
@@ -341,7 +341,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     	<property name="gridGrouperClientFactory" ref="gridGrouperClientFactory"/>
     </bean>
     
-    <bean id="gridGrouperClientFactory" class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGrouperClientFactory"/>	
+    <bean id="gridGrouperClientFactory" class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.DefaultGridGrouperClientFactory"/>	
 
   	
 <!--   The bean managing the rendering decision-->

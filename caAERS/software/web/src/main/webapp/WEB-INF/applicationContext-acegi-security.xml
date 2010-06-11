@@ -88,7 +88,7 @@
 	</bean>
 	<bean id="filterAuthorizationCheck" autowire="byType" class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		<property name="csmAuthorizationCheck">
-			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
 				<property name="authorizationSwitch" ref="authorizationSwitch"/>
 			</bean>
@@ -132,7 +132,7 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="gridUserDetailsService" class="gov.nih.nci.security.acegi.grid.authorization.GridUserDetailsService" lazy-init="true">
+	<bean id="gridUserDetailsService" class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.GridUserDetailsService" lazy-init="true">
 		<property name="gridGroupSearch" ref="gridGroupSearch"/>
 	</bean>
 	<bean id="globusCredentialAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationProvider" lazy-init="true">

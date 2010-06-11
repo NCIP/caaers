@@ -27,7 +27,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	</bean>
 	<bean id="gridUserDetailsService"
-		class="gov.nih.nci.security.acegi.grid.authorization.GridUserDetailsService">
+		class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.GridUserDetailsService">
 		<property name="gridGroupSearch" ref="gridGroupSearch" />
 	</bean>
 
@@ -46,7 +46,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		class="gov.nih.nci.security.acegi.grid.authentication.GridProxyValidatorImpl" />
 
 	<bean id="gridGroupSearch"
-		class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupSearch">
+		class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupSearch">
 		<property name="userProvisioningManager"
 			ref="csmUserProvisioningManager" />
 		<property name="csmApplicationContextName"
@@ -57,7 +57,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean id="gridGrouperClientFactory"
-		class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGrouperClientFactory" />
+		class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.DefaultGridGrouperClientFactory" />
 
 
 	<bean id="gridAuthenticationClient"
