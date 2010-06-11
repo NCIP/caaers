@@ -2,7 +2,39 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
       insert("ctc_versions", [ id: 4, name: "CTCAE v4.0" ], primaryKey: false)
 
-      m0()
+      M0()
+      M1()
+      M2()
+      M3()
+      M4()
+      M5()
+      M6()
+      M7()
+      M8()
+      M9()
+      M10()
+      M11()
+      M12()
+      M13()
+      M14()
+      M15()
+      M16()
+      M17()
+      M18()
+      M19()
+      M20()
+      M21()
+      M22()
+      M23()
+      M24()
+      M25()
+      M26()
+      M27()
+      M28()
+      M29()
+      M30()
+      M31()
+
       if (databaseMatches('oracle')) {
     	  execute("UPDATE ctc_terms SET other_required = 1 WHERE term LIKE '%- Other%' AND category_id > 400 AND category_id < 500");
       }else{
@@ -12,7 +44,7 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
     }
 
   // categories 401-106
-    void m0() {
+    void M0() {
       insert('ctc_categories', [version_id: 4, id: 401, name: 'Blood and lymphatic system disorders'], primaryKey: false)
       insert('ctc_terms', [category_id: 401, id: 4101, term: "Anemia", ctep_term: "Anemia", ctep_code: 10002272, term_definition: "A disorder characterized by an reduction in the amount of hemoglobin in 100 ml of blood. Signs and symptoms of anemia may include pallor of the skin and mucous membranes, shortness of breath, palpitations of the heart, soft systolic murmurs, lethargy, and fatigability."], primaryKey: false)
       insert('ctc_grades', [id: 43001, term_id: 4101, grade_code: "1", grade_text: "Hemoglobin (Hgb) <LLN - 10.0 g/dL; <LLN - 6.2 mmol/L; <LLN - 100 g/L"], primaryKey: false)
@@ -137,6 +169,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 402, id: 4125, term: "Mitral valve disease", ctep_term: "Mitral valve disease", ctep_code: 10061532, term_definition: "A disorder characterized by a defect in mitral valve function or structure."], primaryKey: false)
       insert('ctc_grades', [id: 43095, term_id: 4125, grade_code: "1", grade_text: "Asymptomatic valvular thickening with or without mild valvular regurgitation or stenosis by imaging"], primaryKey: false)
       insert('ctc_grades', [id: 43096, term_id: 4125, grade_code: "2", grade_text: "Asymptomatic; moderate regurgitation or stenosis by imaging"], primaryKey: false)
+    }
+
+    void M1() {
       insert('ctc_grades', [id: 43097, term_id: 4125, grade_code: "3", grade_text: "Symptomatic; severe regurgitation or stenosis by imaging; symptoms controlled with medical intervention"], primaryKey: false)
       insert('ctc_grades', [id: 43098, term_id: 4125, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated (e.g., valve replacement, valvuloplasty)"], primaryKey: false)
       insert('ctc_grades', [id: 43099, term_id: 4125, grade_code: "5", grade_text: "Death"], primaryKey: false)
@@ -261,6 +296,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 403, id: 4148, term: "Congenital, familial and genetic disorders - Other, specify", ctep_term: "Congenital, familial and genetic disorders - Other, specify", ctep_code: 10010331, term_definition: ""], primaryKey: false)
       insert('ctc_grades', [id: 43194, term_id: 4148, grade_code: "1", grade_text: "Asymptomatic or mild symptoms; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43195, term_id: 4148, grade_code: "2", grade_text: "Moderate; minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL"], primaryKey: false)
+    }
+
+    void M2() {
       insert('ctc_grades', [id: 43196, term_id: 4148, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling;  limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 43197, term_id: 4148, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43198, term_id: 4148, grade_code: "5", grade_text: "Death"], primaryKey: false)
@@ -385,6 +423,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43285, term_id: 4174, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only"], primaryKey: false)
       insert('ctc_grades', [id: 43286, term_id: 4174, grade_code: "2", grade_text: "Symptomatic; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 43287, term_id: 4174, grade_code: "3", grade_text: "Limiting self care ADL; disabling"], primaryKey: false)
+    }
+
+    void M3() {
       insert('ctc_terms', [category_id: 406, id: 4175, term: "Eye pain", ctep_term: "Eye pain", ctep_code: 10015958, term_definition: "A disorder characterized by a sensation of marked discomfort in the eye."], primaryKey: false)
       insert('ctc_grades', [id: 43288, term_id: 4175, grade_code: "1", grade_text: "Mild pain"], primaryKey: false)
       insert('ctc_grades', [id: 43289, term_id: 4175, grade_code: "2", grade_text: "Moderate pain; limiting instrumental ADL"], primaryKey: false)
@@ -509,6 +550,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43381, term_id: 4201, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43382, term_id: 4201, grade_code: "2", grade_text: "Symptomatic; altered GI function"], primaryKey: false)
       insert('ctc_grades', [id: 43383, term_id: 4201, grade_code: "3", grade_text: "Symptomatic and severely altered GI function; non-emergent operative intervention indicated; TPN or hospitalization indicated"], primaryKey: false)
+    }
+
+    void M4() {
       insert('ctc_grades', [id: 43384, term_id: 4201, grade_code: "4", grade_text: "Life-threatening consequences; urgent operative intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43385, term_id: 4201, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 407, id: 4202, term: "Anal ulcer", ctep_term: "Anal ulcer", ctep_code: 10002180, term_definition: "A disorder characterized by a circumscribed, inflammatory and necrotic erosive lesion on the mucosal surface of the anal canal."], primaryKey: false)
@@ -633,6 +677,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43483, term_id: 4223, grade_code: "4", grade_text: "Life-threatening consequences; urgent operative intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43484, term_id: 4223, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 407, id: 4224, term: "Dyspepsia", ctep_term: "Dyspepsia", ctep_code: 10013946, term_definition: "A disorder characterized by an uncomfortable, often painful feeling in the stomach, resulting from impaired digestion. Symptoms include burning stomach, bloating, heartburn, nausea and vomiting."], primaryKey: false)
+    }
+
+    void M5() {
       insert('ctc_grades', [id: 43485, term_id: 4224, grade_code: "1", grade_text: "Mild symptoms; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43486, term_id: 4224, grade_code: "2", grade_text: "Moderate symptoms; medical intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43487, term_id: 4224, grade_code: "3", grade_text: "Severe symptoms; surgical intervention indicated"], primaryKey: false)
@@ -757,6 +804,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 407, id: 4247, term: "Gastroesophageal reflux disease", ctep_term: "Gastroesophageal reflux disease", ctep_code: 10066874, term_definition: "A disorder characterized by reflux of the gastric and/or duodenal contents into the distal esophagus. It is chronic in nature and usually caused by incompetence of the lower esophageal sphincter, and may result in injury to the esophageal mucosal. Symptoms include heartburn and acid indigestion."], primaryKey: false)
       insert('ctc_grades', [id: 43584, term_id: 4247, grade_code: "1", grade_text: "Mild symptoms; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43585, term_id: 4247, grade_code: "2", grade_text: "Moderate symptoms; medical intervention indicated"], primaryKey: false)
+    }
+
+    void M6() {
       insert('ctc_grades', [id: 43586, term_id: 4247, grade_code: "3", grade_text: "Severe symptoms; surgical intervention indicated"], primaryKey: false)
       insert('ctc_terms', [category_id: 407, id: 4248, term: "Gastrointestinal fistula", ctep_term: "Gastrointestinal fistula", ctep_code: 10017877, term_definition: "A disorder characterized by an abnormal communication between any part of the gastrointestinal system and another organ or anatomic site."], primaryKey: false)
       insert('ctc_grades', [id: 43587, term_id: 4248, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
@@ -881,6 +931,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43684, term_id: 4270, grade_code: "3", grade_text: "Inability to aliment adequately; TPN indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43685, term_id: 4270, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43686, term_id: 4270, grade_code: "5", grade_text: "Death"], primaryKey: false)
+    }
+
+    void M7() {
       insert('ctc_terms', [category_id: 407, id: 4271, term: "Mucositis oral", ctep_term: "Mucositis oral", ctep_code: 10028130, term_definition: "A disorder characterized by inflammation of the oral mucosal."], primaryKey: false)
       insert('ctc_grades', [id: 43687, term_id: 4271, grade_code: "1", grade_text: "Asymptomatic or mild symptoms; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43688, term_id: 4271, grade_code: "2", grade_text: "Moderate pain; not interfering with oral intake; modified diet indicated"], primaryKey: false)
@@ -1005,6 +1058,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43784, term_id: 4294, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43785, term_id: 4294, grade_code: "2", grade_text: "Symptomatic; altered GI function (e.g. altered dietary habits, vomiting, diarrhea)"], primaryKey: false)
       insert('ctc_grades', [id: 43786, term_id: 4294, grade_code: "3", grade_text: "Severely altered GI function; TPN indicated; elective operative or endoscopic intervention indicated; disabling"], primaryKey: false)
+    }
+
+    void M8() {
       insert('ctc_grades', [id: 43787, term_id: 4294, grade_code: "4", grade_text: "Life-threatening consequences; urgent operative intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43788, term_id: 4294, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 407, id: 4295, term: "Retroperitoneal hemorrhage", ctep_term: "Retroperitoneal hemorrhage", ctep_code: 10038981, term_definition: "A disorder characterized by bleeding from the retroperitoneal area."], primaryKey: false)
@@ -1129,6 +1185,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43880, term_id: 4320, grade_code: "1", grade_text: "Mild flu-like symptoms present"], primaryKey: false)
       insert('ctc_grades', [id: 43881, term_id: 4320, grade_code: "2", grade_text: "Moderate symptoms; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 43882, term_id: 4320, grade_code: "3", grade_text: "Severe symptoms; limiting self care ADL"], primaryKey: false)
+    }
+
+    void M9() {
       insert('ctc_terms', [category_id: 408, id: 4321, term: "Gait disturbance", ctep_term: "Gait disturbance", ctep_code: 10017577, term_definition: "A disorder characterized by walking difficulties."], primaryKey: false)
       insert('ctc_grades', [id: 43883, term_id: 4321, grade_code: "1", grade_text: "Mild change in gait (e.g., wide-based, limping or hobbling)"], primaryKey: false)
       insert('ctc_grades', [id: 43884, term_id: 4321, grade_code: "2", grade_text: "Moderate change in gait (e.g., wide-based, limping or hobbling); assistive device indicated; limiting instrumental ADL"], primaryKey: false)
@@ -1253,6 +1312,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 409, id: 4348, term: "Portal hypertension", ctep_term: "Portal hypertension", ctep_code: 10036200, term_definition: "A disorder characterized by an increase in blood pressure in the portal venous system."], primaryKey: false)
       insert('ctc_grades', [id: 43976, term_id: 4348, grade_code: "2", grade_text: "Decreased portal vein flow"], primaryKey: false)
       insert('ctc_grades', [id: 43977, term_id: 4348, grade_code: "3", grade_text: "Reversal/retrograde portal vein flow; associated with varices and/or ascites"], primaryKey: false)
+    }
+
+    void M10() {
       insert('ctc_grades', [id: 43978, term_id: 4348, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43979, term_id: 4348, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 409, id: 4349, term: "Portal vein thrombosis", ctep_term: "Portal vein thrombosis", ctep_code: 10036206, term_definition: "A disorder characterized by the formation of a thrombus (blood clot) in the portal vein."], primaryKey: false)
@@ -1377,6 +1439,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 411, id: 4372, term: "Cranial nerve infection", ctep_term: "Cranial nerve infection", ctep_code: 10065765, term_definition: "A disorder characterized by an infectious process involving a cranial nerve."], primaryKey: false)
       insert('ctc_grades', [id: 44072, term_id: 4372, grade_code: "3", grade_text: "IV antibiotic, antifungal, or antiviral intervention indicated; radiologic or operative intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44073, term_id: 4372, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
+    }
+
+    void M11() {
       insert('ctc_grades', [id: 44074, term_id: 4372, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 411, id: 4373, term: "Device related infection", ctep_term: "Device related infection", ctep_code: 10064687, term_definition: "A disorder characterized by an infectious process involving the use of a medical device."], primaryKey: false)
       insert('ctc_grades', [id: 44075, term_id: 4373, grade_code: "3", grade_text: "IV antibiotic, antifungal, or antiviral intervention indicated; radiologic or operative intervention indicated"], primaryKey: false)
@@ -1501,6 +1566,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 411, id: 4399, term: "Ovarian infection", ctep_term: "Ovarian infection", ctep_code: 10055005, term_definition: "A disorder characterized by an infectious process involving the ovary."], primaryKey: false)
       insert('ctc_grades', [id: 44169, term_id: 4399, grade_code: "2", grade_text: "Localized; local intervention indicated (e.g., topical antibiotic, antifungal, or antiviral)"], primaryKey: false)
       insert('ctc_grades', [id: 44170, term_id: 4399, grade_code: "3", grade_text: "IV antibiotic, antifungal, or antiviral intervention indicated; radiologic or operative intervention indicated"], primaryKey: false)
+    }
+
+    void M12() {
       insert('ctc_grades', [id: 44171, term_id: 4399, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44172, term_id: 4399, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 411, id: 4400, term: "Pancreas infection", ctep_term: "Pancreas infection", ctep_code: 10051741, term_definition: "A disorder characterized by an infectious process involving the pancreas."], primaryKey: false)
@@ -1625,6 +1693,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44266, term_id: 4425, grade_code: "3", grade_text: "IV antibiotic, antifungal, or antiviral intervention indicated; radiologic, endoscopic, or operative intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44267, term_id: 4425, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44268, term_id: 4425, grade_code: "5", grade_text: "Death"], primaryKey: false)
+    }
+
+    void M13() {
       insert('ctc_terms', [category_id: 411, id: 4426, term: "Urethral infection", ctep_term: "Urethral infection", ctep_code: 10052298, term_definition: "A disorder characterized by an infectious process involving the urethra."], primaryKey: false)
       insert('ctc_grades', [id: 44269, term_id: 4426, grade_code: "2", grade_text: "Localized; local intervention indicated (e.g., topical antibiotic, antifungal, or antiviral)"], primaryKey: false)
       insert('ctc_grades', [id: 44270, term_id: 4426, grade_code: "3", grade_text: "IV antibiotic, antifungal, or antiviral intervention indicated; radiologic, endoscopic, or operative intervention indicated"], primaryKey: false)
@@ -1749,6 +1820,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44366, term_id: 4448, grade_code: "3", grade_text: "Severe symptoms; hospitalization or elective operative intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44367, term_id: 4448, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44368, term_id: 4448, grade_code: "5", grade_text: "Death"], primaryKey: false)
+    }
+
+    void M14() {
       insert('ctc_terms', [category_id: 412, id: 4449, term: "Hip fracture", ctep_term: "Hip fracture", ctep_code: 10020100, term_definition: "A finding of traumatic injury to the hip in which the continuity of either the femoral head, femoral neck, intertrochanteric or subtrochanteric regions is broken."], primaryKey: false)
       insert('ctc_grades', [id: 44369, term_id: 4449, grade_code: "2", grade_text: "Hairline fracture; mild pain; limiting instrumental ADL; non-surgical intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44370, term_id: 4449, grade_code: "3", grade_text: "Severe pain; hospitalization or intervention indicated for pain control (e.g., traction); operative intervention indicated"], primaryKey: false)
@@ -1873,6 +1947,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44467, term_id: 4471, grade_code: "3", grade_text: "Complete resection or reconstruction of injured organ/structure indicated; disabling"], primaryKey: false)
       insert('ctc_grades', [id: 44468, term_id: 4471, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44469, term_id: 4471, grade_code: "5", grade_text: "Death"], primaryKey: false)
+    }
+
+    void M15() {
       insert('ctc_terms', [category_id: 412, id: 4472, term: "Intraoperative skin injury", ctep_term: "Intraoperative skin injury", ctep_code: 10065846, term_definition: "A finding of damage to the skin during a surgical procedure."], primaryKey: false)
       insert('ctc_grades', [id: 44470, term_id: 4472, grade_code: "1", grade_text: "Primary repair of injured organ/structure indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44471, term_id: 4472, grade_code: "2", grade_text: "Partial resection of injured organ/structure indicated"], primaryKey: false)
@@ -1997,6 +2074,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44569, term_id: 4493, grade_code: "2", grade_text: "Symptomatic (e.g., noisy airway breathing), no respiratory distress; medical intervention indicated (e.g., steroids); limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 44570, term_id: 4493, grade_code: "3", grade_text: "Stridor; radiologic or endoscopic intervention indicated (e.g., stent, laser); limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 44571, term_id: 4493, grade_code: "4", grade_text: "Life-threatening airway compromise; urgent intervention indicated (e.g., tracheotomy or intubation)"], primaryKey: false)
+    }
+
+    void M16() {
       insert('ctc_grades', [id: 44572, term_id: 4493, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 412, id: 4494, term: "Tracheostomy site bleeding", ctep_term: "Tracheostomy site bleeding", ctep_code: 10065749, term_definition: "A finding of blood leakage from the tracheostomy site."], primaryKey: false)
       insert('ctc_grades', [id: 44573, term_id: 4494, grade_code: "1", grade_text: "Minimal bleeding identified on clinical exam; intervention not indicated"], primaryKey: false)
@@ -2121,6 +2201,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44670, term_id: 4515, grade_code: "2", grade_text: "Symptomatic; medical intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44671, term_id: 4515, grade_code: "3", grade_text: "Hospitalization indicated"], primaryKey: false)
       insert('ctc_terms', [category_id: 413, id: 4516, term: "Blood bilirubin increased", ctep_term: "Blood bilirubin increased", ctep_code: 10005364, term_definition: "A finding based on laboratory test results that indicate an abnormally high level of bilirubin in the blood. Excess bilirubin is associated with jaundice."], primaryKey: false)
+    }
+
+    void M17() {
       insert('ctc_grades', [id: 44672, term_id: 4516, grade_code: "1", grade_text: ">ULN - 1.5 x ULN"], primaryKey: false)
       insert('ctc_grades', [id: 44673, term_id: 4516, grade_code: "2", grade_text: ">1.5 - 3.0 x ULN"], primaryKey: false)
       insert('ctc_grades', [id: 44674, term_id: 4516, grade_code: "3", grade_text: ">3.0 - 10.0 x ULN"], primaryKey: false)
@@ -2245,6 +2328,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 413, id: 4545, term: "Weight gain", ctep_term: "Weight gain", ctep_code: 10047896, term_definition: "A finding characterized by an increase in overall body weight; for pediatrics, greater than the baseline growth curve."], primaryKey: false)
       insert('ctc_grades', [id: 44765, term_id: 4545, grade_code: "1", grade_text: "5 - <10% from baseline"], primaryKey: false)
       insert('ctc_grades', [id: 44766, term_id: 4545, grade_code: "2", grade_text: "10 - <20% from baseline"], primaryKey: false)
+    }
+
+    void M18() {
       insert('ctc_grades', [id: 44767, term_id: 4545, grade_code: "3", grade_text: ">=20% from baseline"], primaryKey: false)
       insert('ctc_terms', [category_id: 413, id: 4546, term: "Weight loss", ctep_term: "Weight loss", ctep_code: 10047900, term_definition: "A finding characterized by a decrease in overall body weight; for pediatrics, less than the baseline growth curve."], primaryKey: false)
       insert('ctc_grades', [id: 44768, term_id: 4546, grade_code: "1", grade_text: "5 to <10% from baseline; intervention not indicated"], primaryKey: false)
@@ -2369,6 +2455,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 414, id: 4567, term: "Hyponatremia", ctep_term: "Hyponatremia", ctep_code: 10021038, term_definition: "A disorder characterized by laboratory test results that indicate a low concentration of sodium in the blood."], primaryKey: false)
       insert('ctc_grades', [id: 44865, term_id: 4567, grade_code: "1", grade_text: "<LLN - 130 mmol/L"], primaryKey: false)
       insert('ctc_grades', [id: 44866, term_id: 4567, grade_code: "3", grade_text: "<130 - 120 mmol/L"], primaryKey: false)
+    }
+
+    void M19() {
       insert('ctc_grades', [id: 44867, term_id: 4567, grade_code: "4", grade_text: "<120 mmol/L; life-threatening consequences"], primaryKey: false)
       insert('ctc_grades', [id: 44868, term_id: 4567, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 414, id: 4568, term: "Hypophosphatemia", ctep_term: "Hypophosphatemia", ctep_code: 10021059, term_definition: "A disorder characterized by laboratory test results that indicate a low concentration of phosphates in the  blood."], primaryKey: false)
@@ -2493,6 +2582,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44959, term_id: 4594, grade_code: "2", grade_text: "Symptomatic; evident on physical exam; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 44960, term_id: 4594, grade_code: "3", grade_text: "Limiting self care ADL; disabling"], primaryKey: false)
       insert('ctc_terms', [category_id: 415, id: 4595, term: "Muscle weakness right-sided", ctep_term: "Muscle weakness right-sided", ctep_code: 10065794, term_definition: "A disorder characterized by a reduction in the strength of the muscles on the right side of the body."], primaryKey: false)
+    }
+
+    void M20() {
       insert('ctc_grades', [id: 44961, term_id: 4595, grade_code: "1", grade_text: "Symptomatic; perceived by patient but not evident on physical exam"], primaryKey: false)
       insert('ctc_grades', [id: 44962, term_id: 4595, grade_code: "2", grade_text: "Symptomatic; evident on physical exam; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 44963, term_id: 4595, grade_code: "3", grade_text: "Limiting self care ADL; disabling"], primaryKey: false)
@@ -2617,6 +2709,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45052, term_id: 4622, grade_code: "1", grade_text: "Mild restlessness or increased motor activity"], primaryKey: false)
       insert('ctc_grades', [id: 45053, term_id: 4622, grade_code: "2", grade_text: "Moderate restlessness or increased motor activity; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45054, term_id: 4622, grade_code: "3", grade_text: "Severe restlessness or increased motor activity; limiting self care ADL"], primaryKey: false)
+    }
+
+    void M21() {
       insert('ctc_terms', [category_id: 417, id: 4623, term: "Amnesia", ctep_term: "Amnesia", ctep_code: 10001949, term_definition: "A disorder characterized by systematic and extensive loss of memory."], primaryKey: false)
       insert('ctc_grades', [id: 45055, term_id: 4623, grade_code: "1", grade_text: "Mild; transient memory loss"], primaryKey: false)
       insert('ctc_grades', [id: 45056, term_id: 4623, grade_code: "2", grade_text: "Moderate; short term memory loss; limiting instrumental ADL"], primaryKey: false)
@@ -2741,6 +2836,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45148, term_id: 4650, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45149, term_id: 4650, grade_code: "2", grade_text: "Moderate symptoms; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45150, term_id: 4650, grade_code: "3", grade_text: "Severe symptoms; limiting self care ADL"], primaryKey: false)
+    }
+
+    void M22() {
       insert('ctc_terms', [category_id: 417, id: 4651, term: "Lethargy", ctep_term: "Lethargy", ctep_code: 10024264, term_definition: "A disorder characterized by a decrease in consciousness characterized by mental and physical inertness."], primaryKey: false)
       insert('ctc_grades', [id: 45151, term_id: 4651, grade_code: "1", grade_text: "Mild symptoms; reduced alertness and awareness"], primaryKey: false)
       insert('ctc_grades', [id: 45152, term_id: 4651, grade_code: "2", grade_text: "Moderate symptoms; limiting instrumental ADL"], primaryKey: false)
@@ -2865,6 +2963,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45246, term_id: 4676, grade_code: "2", grade_text: "Moderate neurologic deficit with or without imaging confirmation"], primaryKey: false)
       insert('ctc_terms', [category_id: 417, id: 4677, term: "Tremor", ctep_term: "Tremor", ctep_code: 10044565, term_definition: "A disorder characterized by the uncontrolled shaking movement of the whole body or individual parts."], primaryKey: false)
       insert('ctc_grades', [id: 45247, term_id: 4677, grade_code: "1", grade_text: "Mild symptoms"], primaryKey: false)
+    }
+
+    void M23() {
       insert('ctc_grades', [id: 45248, term_id: 4677, grade_code: "2", grade_text: "Moderate symptoms; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45249, term_id: 4677, grade_code: "3", grade_text: "Severe symptoms; limiting self care ADL"], primaryKey: false)
       insert('ctc_terms', [category_id: 417, id: 4678, term: "Trigeminal nerve disorder", ctep_term: "Trigeminal nerve disorder", ctep_code: 10060890, term_definition: "A disorder characterized by involvement of the trigeminal nerve (fifth cranial nerve)."], primaryKey: false)
@@ -2989,6 +3090,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45340, term_id: 4702, grade_code: "2", grade_text: "Moderate psychotic symptoms (e.g., disorganized speech; impaired reality testing)"], primaryKey: false)
       insert('ctc_grades', [id: 45341, term_id: 4702, grade_code: "3", grade_text: "Severe psychotic symptoms (e.g., paranoid; extreme disorganization); hospitalization not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45342, term_id: 4702, grade_code: "4", grade_text: "Life-threatening consequences,  threats of harm to self or others; hospitalization indicated"], primaryKey: false)
+    }
+
+    void M24() {
       insert('ctc_grades', [id: 45343, term_id: 4702, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 419, id: 4703, term: "Restlessness", ctep_term: "Restlessness", ctep_code: 10038743, term_definition: "A disorder characterized by an inability to rest, relax or be still."], primaryKey: false)
       insert('ctc_grades', [id: 45344, term_id: 4703, grade_code: "1", grade_text: "Mild symptoms; intervention not indicated"], primaryKey: false)
@@ -3113,6 +3217,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45435, term_id: 4728, grade_code: "2", grade_text: "Moderate asymmetry; moderate atrophy"], primaryKey: false)
       insert('ctc_grades', [id: 45436, term_id: 4728, grade_code: "3", grade_text: "Asymmetry >1/3 of breast volume; severe atrophy"], primaryKey: false)
       insert('ctc_terms', [category_id: 421, id: 4729, term: "Breast pain", ctep_term: "Breast pain", ctep_code: 10006298, term_definition: "A disorder characterized by marked discomfort sensation in the breast region."], primaryKey: false)
+    }
+
+    void M25() {
       insert('ctc_grades', [id: 45437, term_id: 4729, grade_code: "1", grade_text: "Mild pain"], primaryKey: false)
       insert('ctc_grades', [id: 45438, term_id: 4729, grade_code: "2", grade_text: "Moderate pain; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45439, term_id: 4729, grade_code: "3", grade_text: "Severe pain; limiting self care ADL"], primaryKey: false)
@@ -3237,6 +3344,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 421, id: 4757, term: "Scrotal pain", ctep_term: "Scrotal pain", ctep_code: 10039757, term_definition: "A disorder characterized by marked discomfort sensation in the scrotal area."], primaryKey: false)
       insert('ctc_grades', [id: 45531, term_id: 4757, grade_code: "1", grade_text: "Mild pain"], primaryKey: false)
       insert('ctc_grades', [id: 45532, term_id: 4757, grade_code: "2", grade_text: "Moderate pain; limiting instrumental ADL"], primaryKey: false)
+    }
+
+    void M26() {
       insert('ctc_grades', [id: 45533, term_id: 4757, grade_code: "3", grade_text: "Severe pain; limiting self care ADL"], primaryKey: false)
       insert('ctc_terms', [category_id: 421, id: 4758, term: "Spermatic cord hemorrhage", ctep_term: "Spermatic cord hemorrhage", ctep_code: 10065762, term_definition: "A disorder characterized by bleeding from the spermatic cord."], primaryKey: false)
       insert('ctc_grades', [id: 45534, term_id: 4758, grade_code: "1", grade_text: "Minimal bleeding identified on imaging study; intervention not indicated"], primaryKey: false)
@@ -3361,6 +3471,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45627, term_id: 4782, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45628, term_id: 4782, grade_code: "2", grade_text: "Symptomatic (e.g., dyspnea, cough); medical intervention indicated (e.g., chest physiotherapy, suctioning); bronchoscopic suctioning"], primaryKey: false)
       insert('ctc_grades', [id: 45629, term_id: 4782, grade_code: "3", grade_text: "Oxygen indicated; hospitalization or elective operative intervention indicated (e.g., stent, laser)"], primaryKey: false)
+    }
+
+    void M27() {
       insert('ctc_grades', [id: 45630, term_id: 4782, grade_code: "4", grade_text: "Life-threatening respiratory or hemodynamic compromise; intubation or urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45631, term_id: 4782, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 422, id: 4783, term: "Bronchial fistula", ctep_term: "Bronchial fistula", ctep_code: 10006437, term_definition: "A disorder characterized by an abnormal communication between the bronchus and another organ or anatomic site."], primaryKey: false)
@@ -3485,6 +3598,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45729, term_id: 4804, grade_code: "3", grade_text: "Recurrent episodes; noninvasive intervention indicated (e.g., breathing technique, pressure point massage)"], primaryKey: false)
       insert('ctc_grades', [id: 45730, term_id: 4804, grade_code: "4", grade_text: "Persistent or severe episodes associated with syncope; urgent intervention indicated (e.g., fiberoptic laryngoscopy, intubation, botox injection)"], primaryKey: false)
       insert('ctc_grades', [id: 45731, term_id: 4804, grade_code: "5", grade_text: "Death"], primaryKey: false)
+    }
+
+    void M28() {
       insert('ctc_terms', [category_id: 422, id: 4805, term: "Mediastinal hemorrhage", ctep_term: "Mediastinal hemorrhage", ctep_code: 10056356, term_definition: "A disorder characterized by bleeding from the mediastinum."], primaryKey: false)
       insert('ctc_grades', [id: 45732, term_id: 4805, grade_code: "1", grade_text: "Radiologic evidence only; minimal symptoms; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45733, term_id: 4805, grade_code: "2", grade_text: "Moderate symptoms; medical intervention indicated"], primaryKey: false)
@@ -3609,6 +3725,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45830, term_id: 4827, grade_code: "5", grade_text: "Death"], primaryKey: false)
       insert('ctc_terms', [category_id: 422, id: 4828, term: "Sneezing", ctep_term: "Sneezing", ctep_code: 10041232, term_definition: "A disorder characterized by the involuntary expulsion of air from the nose."], primaryKey: false)
       insert('ctc_grades', [id: 45831, term_id: 4828, grade_code: "1", grade_text: "Mild symptoms; intervention not indicated"], primaryKey: false)
+    }
+
+    void M29() {
       insert('ctc_grades', [id: 45832, term_id: 4828, grade_code: "2", grade_text: "Moderate symptoms; medical intervention indicated"], primaryKey: false)
       insert('ctc_terms', [category_id: 422, id: 4829, term: "Sore throat", ctep_term: "Sore throat", ctep_code: 10041367, term_definition: "A disorder characterized by of marked discomfort in the throat"], primaryKey: false)
       insert('ctc_grades', [id: 45833, term_id: 4829, grade_code: "1", grade_text: "Mild pain"], primaryKey: false)
@@ -3733,6 +3852,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45924, term_id: 4856, grade_code: "2", grade_text: "Intense or widespread; intermittent; skin changes from scratching (e.g., edema, papulation, excoriations, lichenification, oozing/crusts); oral intervention indicated; limiting instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45925, term_id: 4856, grade_code: "3", grade_text: "Intense or widespread; constant; limiting self care ADL or sleep; oral corticosteroid or immunosuppressive therapy indicated"], primaryKey: false)
       insert('ctc_terms', [category_id: 423, id: 4857, term: "Purpura", ctep_term: "Purpura", ctep_code: 10037549, term_definition: "A disorder characterized by hemorrhagic areas of the skin and mucous membrane. Newer lesions appear reddish in color. Older lesions are usually a darker purple color and eventually become a brownish-yellow color."], primaryKey: false)
+    }
+
+    void M30() {
       insert('ctc_grades', [id: 45926, term_id: 4857, grade_code: "1", grade_text: "Combined area of lesions covering <10% BSA"], primaryKey: false)
       insert('ctc_grades', [id: 45927, term_id: 4857, grade_code: "2", grade_text: "Combined area of lesions covering 10 - 30% BSA; bleeding with trauma"], primaryKey: false)
       insert('ctc_grades', [id: 45928, term_id: 4857, grade_code: "3", grade_text: "Combined area of lesions covering >30% BSA; spontaneous bleeding"], primaryKey: false)
@@ -3857,6 +3979,9 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_terms', [category_id: 426, id: 4882, term: "Lymphocele", ctep_term: "Lymphocele", ctep_code: 10048642, term_definition: "A disorder characterized by a cystic lesion containing lymph."], primaryKey: false)
       insert('ctc_grades', [id: 46017, term_id: 4882, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 46018, term_id: 4882, grade_code: "2", grade_text: "Symptomatic; medical intervention indicated"], primaryKey: false)
+    }
+
+    void M31() {
       insert('ctc_grades', [id: 46019, term_id: 4882, grade_code: "3", grade_text: "Severe symptoms; radiologic, endoscopic or elective operative intervention indicated"], primaryKey: false)
       insert('ctc_terms', [category_id: 426, id: 4883, term: "Peripheral ischemia", ctep_term: "Peripheral ischemia", ctep_code: 10034578, term_definition: "A disorder characterized by impaired circulation to an extremity."], primaryKey: false)
       insert('ctc_grades', [id: 46020, term_id: 4883, grade_code: "2", grade_text: "Brief (<24 hrs) episode of ischemia managed non-surgically and without permanent deficit"], primaryKey: false)
