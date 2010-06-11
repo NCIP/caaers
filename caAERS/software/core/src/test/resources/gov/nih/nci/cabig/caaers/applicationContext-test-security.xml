@@ -21,7 +21,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 	<!-- 
 	<bean id="testCsmGroupAuthorizationCheck"
-		class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+		class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMGroupAuthorizationCheck">
 		<property name="csmUserProvisioningManager"	ref="csmUserProvisioningManager" />
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 	</bean>

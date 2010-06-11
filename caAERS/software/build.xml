@@ -16,11 +16,12 @@
     		
     		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
+    		<!-- 
     		<fileset file="${basedir}/excelstudyloader/ivy-build.xml">
     	    	<include name="include"/>
     	    	<exclude name="exclude"/>
     		</fileset>
-
+			 -->
     		<fileset file="${basedir}/web/ivy-build.xml" />
 
     	</ivy:buildlist>
@@ -39,11 +40,12 @@
     		
     		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
+    		 <!--  
     		<fileset file="${basedir}/excelstudyloader/ivy-build.xml">
     	    	<include name="include"/>
     	    	<exclude name="exclude"/>
     		</fileset>
-
+			-->
     		<fileset file="${basedir}/web/ivy-build.xml" />
     		
 			<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />

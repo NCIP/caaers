@@ -10,7 +10,7 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd" >
  
     <bean id="authorizationSwitch"
-          class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
+          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.AuthorizationSwitch"
           factory-method="getInstance">
         <property name="on" value="true"/>
     </bean>
@@ -149,14 +149,14 @@
     </bean>
  -->
     <bean id="csmObjectIdGenerator"
-          class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator">
+          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.BasicCSMObjectIdGenerator">
         <property name="idMethodName" value="getId"/>
         <property name="classNameFirst" value="true"/>
         <property name="separator" value=":"/>
     </bean>
 
     <bean id="csmExtentIdGenerator"
-          class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator"/>
+          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.BasicCSMObjectIdGenerator"/>
 
     <aop:aspectj-autoproxy/>
     <aop:spring-configured/>
@@ -310,13 +310,13 @@
     </util:map>
 
     <bean id="joinPointPrivilegeAndObjectIdGenerator"
-          class="gov.nih.nci.security.acegi.csm.authorization.JoinPointPrivilegeAndObjectIdGenerator">
+          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.JoinPointPrivilegeAndObjectIdGenerator">
         <property name="objectPrivilegeMap"
                   ref="joinPointObjectPrivilegeMap"/>
     </bean>
 
     <bean id="daoAuthorizationCheck" autowire="byType"
-          class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
         <property name="csmAuthorizationCheck">
             <bean
                     class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
@@ -419,7 +419,7 @@
 
 
     <bean id="csmGroupAuthorizationCheck"
-          class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMGroupAuthorizationCheck">
         <property name="csmUserProvisioningManager"
                   ref="csmUserProvisioningManager"/>
         <property name="authorizationSwitch" ref="authorizationSwitch"/>

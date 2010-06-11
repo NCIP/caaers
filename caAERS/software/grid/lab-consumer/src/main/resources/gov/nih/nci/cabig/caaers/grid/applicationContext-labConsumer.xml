@@ -113,7 +113,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<property name="userDetailsService">
 			<bean
-				class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
+				class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMUserDetailsService">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 			</bean>
