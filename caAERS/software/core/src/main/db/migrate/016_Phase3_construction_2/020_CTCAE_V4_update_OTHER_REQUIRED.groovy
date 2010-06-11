@@ -3,14 +3,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert("ctc_versions", [ id: 4, name: "CTCAE v4.0" ], primaryKey: false)
 
       m0()
-      m1()
-      m1_1()
-      m2()
-      m3()
-      m4()
-      m5()
-      m6()
-      m7()
       if (databaseMatches('oracle')) {
     	  execute("UPDATE ctc_terms SET other_required = 1 WHERE term LIKE '%- Other%' AND category_id > 400 AND category_id < 500");
       }else{
@@ -478,10 +470,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43351, term_id: 4193, grade_code: "2", grade_text: "Moderate; minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL"], primaryKey: false)
       insert('ctc_grades', [id: 43352, term_id: 4193, grade_code: "3", grade_text: "Severe or medically significant but not immediately sight-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling;  limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 43353, term_id: 4193, grade_code: "4", grade_text: "Sight-threatening consequences; urgent intervention indicated; blindness (20/200 or worse) in the affected eye"], primaryKey: false)
-    }
-
-  // categories 407-408
-    void m1() {
       insert('ctc_categories', [version_id: 4, id: 407, name: 'Gastrointestinal disorders'], primaryKey: false)
       insert('ctc_terms', [category_id: 407, id: 4194, term: "Abdominal distension", ctep_term: "Abdominal distension", ctep_code: 10000060, term_definition: "A disorder characterized by swelling of the abdomen."], primaryKey: false)
       insert('ctc_grades', [id: 43354, term_id: 4194, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
@@ -798,9 +786,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43606, term_id: 4253, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43607, term_id: 4253, grade_code: "2", grade_text: "Symptomatic; banding or medical intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43608, term_id: 4253, grade_code: "3", grade_text: "Severe symptoms; radiologic, endoscopic or elective operative intervention indicated"], primaryKey: false)
-    }
-
-    void m1_1() {
       insert('ctc_terms', [category_id: 407, id: 4254, term: "Ileal fistula", ctep_term: "Ileal fistula", ctep_code: 10065728, term_definition: "A disorder characterized by an abnormal communication between the ileum and another organ or anatomic site."], primaryKey: false)
       insert('ctc_grades', [id: 43609, term_id: 4254, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43610, term_id: 4254, grade_code: "2", grade_text: "Symptomatic; altered GI function"], primaryKey: false)
@@ -1205,10 +1190,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 43927, term_id: 4334, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling;  limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 43928, term_id: 4334, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 43929, term_id: 4334, grade_code: "5", grade_text: "Death"], primaryKey: false)
-    }
-
-  // categories 409-411
-    void m2() {
       insert('ctc_categories', [version_id: 4, id: 409, name: 'Hepatobiliary disorders'], primaryKey: false)
       insert('ctc_terms', [category_id: 409, id: 4335, term: "Bile duct stenosis", ctep_term: "Bile duct stenosis", ctep_code: 10051341, term_definition: "A disorder characterized by a narrowing of the lumen of the bile duct."], primaryKey: false)
       insert('ctc_grades', [id: 43930, term_id: 4335, grade_code: "1", grade_text: "Asymptomatic; clinical or diagnostic observations only; intervention not indicated"], primaryKey: false)
@@ -1681,11 +1662,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44296, term_id: 4432, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling; limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 44297, term_id: 4432, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44298, term_id: 4432, grade_code: "5", grade_text: "Death"], primaryKey: false)
-    }
-
-  // categories 412
-    void m3() {
-
       insert('ctc_categories', [version_id: 4, id: 412, name: 'Injury, poisoning and procedural complications'], primaryKey: false)
       insert('ctc_terms', [category_id: 412, id: 4433, term: "Ankle fracture", ctep_term: "Ankle fracture", ctep_code: 10002544, term_definition: "A finding of damage to the ankle joint characterized by a break in the continuity of the ankle bone. Symptoms include marked discomfort, swelling and difficulty moving the affected leg and foot."], primaryKey: false)
       insert('ctc_grades', [id: 44299, term_id: 4433, grade_code: "1", grade_text: "Mild; non-surgical intervention indicated"], primaryKey: false)
@@ -2120,10 +2096,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 44651, term_id: 4510, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling; limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 44652, term_id: 4510, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 44653, term_id: 4510, grade_code: "5", grade_text: "Death"], primaryKey: false)
-    }
-
-  // categories 413-415
-    void m4() {
       insert('ctc_categories', [version_id: 4, id: 413, name: 'Investigations'], primaryKey: false)
       insert('ctc_terms', [category_id: 413, id: 4511, term: "Activated partial thromboplastin time prolonged", ctep_term: "Activated partial thromboplastin time prolonged", ctep_code: 10000636, term_definition: "An abnormal laboratory test result in which the partial thromboplastin time is found to be greater than the control value. As a possible indicator of coagulopathy, a prolonged partial thromboplastin time (PTT) may occur in a variety of diseases and disorders, both primary and related to treatment."], primaryKey: false)
       insert('ctc_grades', [id: 44654, term_id: 4511, grade_code: "1", grade_text: ">1 - 1.5 x ULN"], primaryKey: false)
@@ -2606,12 +2578,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45025, term_id: 4613, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling;  limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45026, term_id: 4613, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45027, term_id: 4613, grade_code: "5", grade_text: "Death"], primaryKey: false)
-
-    }
-
-  // categories 416-420
-    void m5() {
-
       insert('ctc_categories', [version_id: 4, id: 416, name: 'Neoplasms benign, malignant and unspecified (incl cysts and polyps)'], primaryKey: false)
       insert('ctc_terms', [category_id: 416, id: 4614, term: "Leukemia secondary to oncology chemotherapy", ctep_term: "Leukemia secondary to oncology chemotherapy", ctep_code: 10048293, term_definition: "A disorder characterized by leukemia arising as a result of the mutagenic effect of chemotherapy agents."], primaryKey: false)
       insert('ctc_grades', [id: 45028, term_id: 4614, grade_code: "4", grade_text: "Present"], primaryKey: false)
@@ -3139,10 +3105,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45430, term_id: 4726, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling;  limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45431, term_id: 4726, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45432, term_id: 4726, grade_code: "5", grade_text: "Death"], primaryKey: false)
-
-    }
-
-    void m6() {
       insert('ctc_categories', [version_id: 4, id: 421, name: 'Reproductive system and breast disorders'], primaryKey: false)
       insert('ctc_terms', [category_id: 421, id: 4727, term: "Azoospermia", ctep_term: "Azoospermia", ctep_code: 10003883, term_definition: "A disorder characterized by laboratory test results that indicate complete absence of spermatozoa in the semen."], primaryKey: false)
       insert('ctc_grades', [id: 45433, term_id: 4727, grade_code: "3", grade_text: "Absence of sperm in ejaculate"], primaryKey: false)
@@ -3690,10 +3652,6 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       insert('ctc_grades', [id: 45864, term_id: 4836, grade_code: "3", grade_text: "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of existing hospitalization indicated; disabling; limiting self care ADL"], primaryKey: false)
       insert('ctc_grades', [id: 45865, term_id: 4836, grade_code: "4", grade_text: "Life-threatening consequences; urgent intervention indicated"], primaryKey: false)
       insert('ctc_grades', [id: 45866, term_id: 4836, grade_code: "5", grade_text: "Death"], primaryKey: false)
-
-    }
-
-    void m7() {
       insert('ctc_categories', [version_id: 4, id: 423, name: 'Skin and subcutaneous tissue disorders'], primaryKey: false)
       insert('ctc_terms', [category_id: 423, id: 4837, term: "Alopecia", ctep_term: "Alopecia", ctep_code: 10001760, term_definition: "A disorder characterized by a decrease in density of hair compared to normal for a given individual at a given age and body location."], primaryKey: false)
       insert('ctc_grades', [id: 45867, term_id: 4837, grade_code: "1", grade_text: "Hair loss of up to 50% of normal for that individual that is not obvious from a distance but only on close inspection; a different hair style may be required to cover the hair loss but it does not require a wig or hair piece to camouflage"], primaryKey: false)
