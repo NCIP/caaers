@@ -384,7 +384,7 @@
             	<!-- we are restricting all the results in search , why do we need to check once again for a given instance , will clarify with SAURAV when he gets back -  Srini
                 <ref local="siteSecurityBasicAuthCheck"/>
                 -->
-                <ref local="siteSecurityCollectionFilter"/>
+                <!-- <ref local="siteSecurityCollectionFilter"/>  -->
             </list>
         </property>
     </bean>
