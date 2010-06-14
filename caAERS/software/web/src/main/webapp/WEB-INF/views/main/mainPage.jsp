@@ -39,26 +39,20 @@
             
                 <c:forEach begin="0" end="1" items="${taskgroups}" var="taskGroup">
                 	<td align="left" valign="top" width="30%">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}"
-                                            authorizationCheckName="taskGroupAuthorizationCheck">
+                            <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
+                                <ul><chrome:division title="${taskGroup.displayName}">
+                                    <c:forEach items="${taskGroup.taskList}" var="task">
+                                        <c:if test="${test}"></c:if>
+                                        <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                                            <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
+                                        </csmauthz:accesscontrol>
 
-                        <ul><chrome:division title="${taskGroup.displayName}">
-                            <c:forEach items="${taskGroup.taskList}" var="task">
-                                <c:if test="${test}"></c:if>
-                                <csmauthz:accesscontrol domainObject="${task}"
-                                                        authorizationCheckName="taskAuthorizationCheck">
-                                    <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                </csmauthz:accesscontrol>
-
-                            </c:forEach>
-                        </chrome:division>
-                        </ul>
-
-                    </csmauthz:accesscontrol>
+                                    </c:forEach>
+                                </chrome:division>
+                                </ul>
+                            </csmauthz:accesscontrol>
 					</td>
                 </c:forEach>
-
-            
 
    <%--           <td align="left" valign="top" width="30%">
               <c:forEach begin="2" end="2" items="${taskgroups}" var="taskGroup">
@@ -82,9 +76,7 @@
             </td>--%>
             <td align="left" valign="top" width="30%">
                 <c:forEach begin="3" end="3" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}"
-                                            authorizationCheckName="taskGroupAuthorizationCheck">
-
+                    <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
                         <ul><chrome:division title="${taskGroup.displayName}">
                             <c:forEach items="${taskGroup.taskList}" var="task">
                                 <c:if test="${test}"></c:if>
@@ -141,8 +133,7 @@
                         </script>
                         <ul><chrome:division title="${taskGroup.displayName}">
                             <c:forEach items="${taskGroup.taskList}" var="task">
-                                <csmauthz:accesscontrol domainObject="${task}"
-                                                        authorizationCheckName="taskAuthorizationCheck">
+                                <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
                                     <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
                                 </csmauthz:accesscontrol>
 
@@ -155,8 +146,7 @@
             </td>
             <td align="left" valign="top" width="30%">
                 <c:forEach begin="8" end="9" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}"
-                                            authorizationCheckName="taskGroupAuthorizationCheck">
+                    <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
                         <script>
                         	displayAdminSection++;
                         </script>

@@ -11,8 +11,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<util:map id="taskObjectPrivilegeMap">
         <!--========== TASK PAGE ===========-->
-        <entry key="/pages/task"
-               value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
+        <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
 
 
         <!--========== PARTICIPANT ===========-->
@@ -123,34 +122,26 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</util:map>
 	
 
-	<bean id="taskPrivilegeAndObjectIdGenerator"
-		class="gov.nih.nci.cabig.caaers.web.security.TaskPrivilegeAndObjectIdGenerator">
-		<property name="objectPrivilegeMap"
-			ref="taskObjectPrivilegeMap" />
+	<bean id="taskPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.TaskPrivilegeAndObjectIdGenerator">
+		<property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
 	</bean>
 
-	<bean id="taskAuthorizationCheck"
-		class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
-		
+	<bean id="taskAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
-		
-		<property name="csmAuthorizationCheck">
-			<bean
-                class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+
+		<property name="csmAuthorizatsionCheck">
+            <bean class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager" />
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
             </bean>
-
 		</property>
-		<property name="objectIdGenerator"
-			ref="taskPrivilegeAndObjectIdGenerator" />
-		<property name="privilegeGenerator"
-			ref="taskPrivilegeAndObjectIdGenerator" />
+
+		<property name="objectIdGenerator" ref="taskPrivilegeAndObjectIdGenerator" />
+		<property name="privilegeGenerator" ref="taskPrivilegeAndObjectIdGenerator" />
 		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>	
 	</bean>
 
-    <bean id="taskGroupAuthorizationCheck"
-          class="gov.nih.nci.cabig.caaers.web.security.TaskGroupAuthorizationCheck">
+    <bean id="taskGroupAuthorizationCheck" class="gov.nih.nci.cabig.caaers.web.security.TaskGroupAuthorizationCheck">
         <property name="taskAuthorizationCheck" ref="taskAuthorizationCheck"/>
     </bean>
 
@@ -357,5 +348,23 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="filteredDataLoader" ref="filteredDataLoader"/>
 		<property name="caaersDataMigratorDelegate" ref="caaersDataMigratorDelegate"/>
 	</bean>
-	
+
+    <bean id="tasksAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.WebTabsAuthorizationCheck">
+        <property name="caaersSecurityFacade" value="caaersSecurityFacade" />
+        <property name="webTabResolver" ref="tasksWebTabResolver" />
+    </bean>
+
+    <bean id="sectionsAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.WebTabsAuthorizationCheck">
+        <property name="caaersSecurityFacade" value="caaersSecurityFacade" />
+        <property name="webTabResolver" ref="sectionsWebTabResolver" />
+    </bean>
+
+    <bean id="tasksWebTabResolver" class="gov.nih.nci.cabig.caaers.web.security.TasksWebTabResolver">
+        <property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
+    </bean>
+    
+    <bean id="sectionsWebTabResolver" class="gov.nih.nci.cabig.caaers.web.security.SectionsWebTabResolver">
+        <property name="objectPrivilegeMap" ref="sectionObjectPrivilegeMap" />
+    </bean>
+
 </beans>

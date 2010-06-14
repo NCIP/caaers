@@ -37,13 +37,20 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
     private CaaersSecurityFacade caaersSecurityFacade;
 	private String defaultSecurityFacadeBeanID = "caaersSecurityFacade";
 
-    private final static String delimiter = "([&|\\||(|)\\s])+"; // "&|() " 
+    // objectPrivilege != null
+    // 
+
+    // private final static String delimiter = "([&|\\||(|)\\s])+"; // "&|() " 
 
 	@Override
 	protected int doStartTagInternal() throws Exception {
 
         if(StringUtils.isEmpty(authorizationCheckName) && StringUtils.isEmpty(objectPrivilege)) {
             throw new JspException("Either 'authorizationCheckName' or 'objectPrivilege' are required");
+        }
+
+        if(!StringUtils.isEmpty(authorizationCheckName) && domainObject == null) {
+            throw new JspException("'authorizationCheckName' requires 'domainObject'");
         }
 
         if (!StringUtils.isEmpty(securityFacade)) {
@@ -92,7 +99,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 		//evaluate the domain object
 		Object resolvedDomainObject = null;
 		if (domainObject instanceof String) {
-			resolvedDomainObject = ExpressionEvaluationUtils.evaluate("domainObject", (String) domainObject, Object.class,pageContext);
+			resolvedDomainObject = ExpressionEvaluationUtils.evaluate("domainObject", (String) domainObject, Object.class, pageContext);
 		} else {
 			resolvedDomainObject = domainObject;
 		}
@@ -114,16 +121,20 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 			logger.debug("Authorization succeeded, evaluating body");
 			return Tag.EVAL_BODY_INCLUDE;
 		}
-		
+
+        // 
+
 		logger.debug("No permission, so skipping tag body");
 		return Tag.SKIP_BODY;
 	}
 	
-	protected boolean checkAuthorization(String authCheckBeanName, Object resolvedDomainObject, String[] requiredPrivileges) throws Exception{
+	protected boolean checkAuthorization(String authCheckBeanName, Object resolvedDomainObject, String[] requiredPrivileges) throws Exception {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		ApplicationContext context = getRequestContext().getWebApplicationContext();
 		CSMAuthorizationCheck authzCheck = (!StringUtils.isEmpty(authCheckBeanName)) ? (CSMAuthorizationCheck)context.getBean(authCheckBeanName) : null;
-        
+
+        if (requiredPrivileges == null) requiredPrivileges = new String[] { "READ" };
+
 		if (authzCheck != null) {
             for(String privilege : requiredPrivileges){
                 if (authzCheck.checkAuthorization(auth, privilege, resolvedDomainObject)) return true;
@@ -135,7 +146,6 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
         }
 		
 		return false;
-
 	}
 	
 	public AuthorizationDecisionCache getAuthorizationDecisionCache() {

@@ -22,8 +22,7 @@ public class TaskGroupAuthorizationCheck implements CSMAuthorizationCheck {
         if (object != null && object instanceof TaskGroup) {
             List<Task> taskList = ((TaskGroup) object).getTaskList();
             for (Task task : taskList) {
-                authorized = taskAuthorizationCheck.checkAuthorization(authentication, privilege,
-                                task);
+                authorized = taskAuthorizationCheck.checkAuthorization(authentication, privilege, task);
                 if (authorized) break;
             }
         }
