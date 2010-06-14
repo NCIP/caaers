@@ -28,7 +28,6 @@
     		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
   		</publications>
 
-        <!-- dependencies for the bootstrap module -->
         <dependencies>
 
 			<!-- exclusions based on class loading -->
@@ -58,11 +57,18 @@
         	<dependency org="ant" name="ant" rev="1.6.5" conf="build->master(*)"/>
 
 			<!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"   transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"   transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"   transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"   transitive="false"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"   transitive="false"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"   transitive="false"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
             <!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)" />-->
-			<!-- Testing dependencies -->
+            <dependency  org="org.slf4j" name="slf4j-simple" rev="1.5.11" force="true" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)" />
+            <dependency org="org.slf4j" name="slf4j-api" rev="1.5.11" force="true" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)" />
+
+            
+            <!-- Testing dependencies -->
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>

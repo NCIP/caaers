@@ -185,15 +185,29 @@
         	<dependency org="javax.mail" name="mail" rev="1.4" />
         	<dependency org="javax.activation" name="activation" rev="1.1"   />
 
-        	<!-- compile only dependencies -->
-			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
+
+
+
 
 			<!-- CSM & Security related -->
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.1.1.RELEASE" transitive="false" />
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-csm" rev="${ctms.version}" force="true" />
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" force="true">
-                <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-acegi-csm" />
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-csm" rev="${ctms.version}" force="true" transitive="false" />
+
+            <dependency org="gov.nih.nci.security" name="csm" rev="4.2">
+                <artifact name="csmapi" type="jar" conf="*"/>
+                <exclude org="org.hibernate" />
             </dependency>
+            
+            <dependency org="gov.nih.nci.security" name="clm" rev="4.2.beta" transitive="true" force="true">
+				<artifact name="clm" type="jar" conf="*"/>
+				<exclude org="org.springframework" conf="*"/>
+				<exclude org="commons-dbcp" module="commons-dbcp" rev="1.2.1" conf="*"/>
+				<exclude org="org.hibernate" conf="*"/>
+         
+			</dependency>
+
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" force="true" transitive="false" />
+            
 
            <!--
 
@@ -276,11 +290,33 @@
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-client" rev="3.1" />
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="3.1" />
 
-			<!-- caGrid Dependencies -->
-			<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2"/>
+
+            <!-- caGrid Dependencies -->
+            <dependency org="caGrid" name="authentication-service" rev="1.2" conf="*->client"/>
+            <dependency org="caGrid" name="authz" rev="1.2"/>
+            <dependency org="caGrid" name="core" rev="1.2"/>
+            <dependency org="caGrid" name="dorian" rev="1.2" conf="*->client"/>
+            <dependency org="caGrid" name="gridca" rev="1.2"/>
+            <dependency org="caGrid" name="gridgrouper" rev="1.2" conf="*->client"/>
+            <dependency org="caGrid" name="service-security-provider" rev="1.2" conf="*->client"/>
+
+            <dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2"/>
 			<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-common" rev="1.2"/>
 			<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2"/>
 			<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11"/>
+
+            <!-- Globus -->
+            <dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
+
+            <dependency org="globus" name="axis" rev="1.2RC2"/>
+            <dependency org="globus" name="jcog" rev="4.0.3" force="true"/>
+            <dependency org="globus" name="ws-addressing" rev="1.0"/>
+            <dependency org="globus" name="ws-core-client" rev="4.0.3"/>
+
+            <!--<dependency org="internet2" name="grouper" rev="1.1" conf="*->minimal"/>-->
+            <!--<dependency org="internet2" name="subject" rev="0.2.1"/>-->
+
+
 
 			<!-- C3PR esb client -->
         	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9_RC1" >
@@ -320,7 +356,7 @@
 			<dependency org="dbunit" name="dbunit" rev="2.1" conf="build->default;test->default"/>
 
 			<!-- Test only dependencies -->
-			<dependency org="c3p0" name="c3p0" rev="0.8.5.2" conf="test->default(*)"/>
+			<dependency org="c3p0" name="c3p0" rev="0.8.5.2" />
 			<dependency org="org.springframework" name="spring-mock" rev="2.0.6" force="true" conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default" />
