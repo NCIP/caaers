@@ -436,6 +436,9 @@ This applicationContext contains the definition of the DAOs
     <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
         <property name="sessionFactory" ref="auditSessionFactory"></property>
     </bean>
+    <bean id="auditHistoryDao" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao">
+        <property name="sessionFactory" ref="auditSessionFactory"></property>
+    </bean>
 
     <!-- auditing beans definition end here -->
 
