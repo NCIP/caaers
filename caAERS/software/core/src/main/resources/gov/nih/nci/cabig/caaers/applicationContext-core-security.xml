@@ -360,11 +360,11 @@
                     		<property name="username" value="SYSTEM"/>
 							<property name="password" value="ignoreme" />
                     	</bean>
-                        <bean class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+                        <bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.AuthorizationSwitchVoter">
                             <property name="authorizationSwitch" ref="authorizationSwitch"/>
                             <property name="requiresAuthentication" value="false"/>
                         </bean>
-                        <bean class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
+                        <bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.CSMAuthorizationCheckVoter">
                             <property name="processConfigAttribute"
                                       value="CSM_AUTHN_CHECK"/>
                             <property name="authorizationCheck"
@@ -374,20 +374,20 @@
                 </property>
             </bean>
         </property>
-        <property name="afterInvocationManager">
+        <!--<property name="afterInvocationManager">
             <ref bean="afterInvocationManager"/>
-        </property>
+        </property>-->
     </bean>
-    <bean id="afterInvocationManager" class="org.acegisecurity.afterinvocation.AfterInvocationProviderManager">
+    <!--<bean id="afterInvocationManager" class="org.acegisecurity.afterinvocation.AfterInvocationProviderManager">
         <property name="providers">
             <list>
-            	<!-- we are restricting all the results in search , why do we need to check once again for a given instance , will clarify with SAURAV when he gets back -  Srini
+            	&lt;!&ndash; we are restricting all the results in search , why do we need to check once again for a given instance , will clarify with SAURAV when he gets back -  Srini
                 <ref local="siteSecurityBasicAuthCheck"/>
-                -->
-                <!-- <ref local="siteSecurityCollectionFilter"/>  -->
+                &ndash;&gt;
+                &lt;!&ndash; <ref local="siteSecurityCollectionFilter"/>  &ndash;&gt;
             </list>
         </property>
-    </bean>
+    </bean>-->
 
 
     <bean id="studyParticipantAssignmentAspect"

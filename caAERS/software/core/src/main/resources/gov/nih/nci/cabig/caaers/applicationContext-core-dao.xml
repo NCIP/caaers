@@ -48,7 +48,7 @@ This applicationContext contains the definition of the DAOs
       </property>
      </bean>
     
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName" depends-on="auditInterceptor">
         <property name="mappingLocations">
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
@@ -451,6 +451,7 @@ This applicationContext contains the definition of the DAOs
     -->
     <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.LocalGridIdentifierCreator"/>
 
+
     <bean id="hibernateProperties" class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
         <property name="dialectName">
             <value>s[hibernate.dialect]</value>
@@ -459,7 +460,7 @@ This applicationContext contains the definition of the DAOs
             <props>
                 <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
                 <prop key="hibernate.jdbc.batch_size">30</prop>
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.generate_statistics">false</prop>
             </props>
         </property>
