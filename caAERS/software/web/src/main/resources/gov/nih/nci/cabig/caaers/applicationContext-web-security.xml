@@ -350,12 +350,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
     <bean id="tasksAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.WebTabsAuthorizationCheck">
-        <property name="caaersSecurityFacade" value="caaersSecurityFacade" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
         <property name="webTabResolver" ref="tasksWebTabResolver" />
     </bean>
 
     <bean id="sectionsAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.WebTabsAuthorizationCheck">
-        <property name="caaersSecurityFacade" value="caaersSecurityFacade" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
         <property name="webTabResolver" ref="sectionsWebTabResolver" />
     </bean>
 
