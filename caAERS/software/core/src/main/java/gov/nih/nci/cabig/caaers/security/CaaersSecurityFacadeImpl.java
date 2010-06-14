@@ -5,12 +5,14 @@ import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.provisioning.AuthorizationManagerImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +73,16 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
     public List<String> getAccessibleProtectionElements(String loginId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+    private String getRoleName(ProtectionGroupRoleContext context) {
+    	Set roles = context.getRoles();
+		Iterator itr = roles.iterator();
 
+		while (itr.hasNext()) {
+			Role role = (Role)itr.next();
+			return  role.getName();
+		}
+		return null;
+    }
     /**
      * Will the caAERS database IDs of Study that one can access.
      *
@@ -86,16 +97,19 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 			String hql = "";
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
+				String roleName = getRoleName(context);
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
-
-				if (caaersEquivalentName.equals(STUDY_PE)) {
-					// get his Orgs 
-					List<Integer> userOrgs = getAccessibleOrganizationIds(loginId);					
+				
+				// if STUDY_PE , that means user have access to all studies (all means not all , he has access to studies 
+				// on organizations which he belongs to as this role on that organization ) 
+				
+				if (roleName != null && caaersEquivalentName.equals(STUDY_PE)) {
+					// get acessible organization with above role.  
+					List<Integer> userOrgs = getAccessibleOrganizationIdsFilterByRole(loginId, roleName);
 					hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
 					HQLQuery query = new HQLQuery(hql.toString());
 					query.setParameterList("userOrgs", userOrgs);
 					resultList = (List<Integer>) search(query);
-					return resultList;
 				} else {
 					//parse name ..
 					String[] tokens = caaersEquivalentName.split("\\.");
@@ -103,14 +117,17 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 						if (tokens[0].equals(STUDY_PE)) {
 							identifiers.add(tokens[1]);
 						}
-					}
+					}					
 				}
+
 			}
-			// get caAERS IDs from Organizations table , primary key ..
-			hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
-			HQLQuery query = new HQLQuery(hql.toString());
-	        query.setParameterList("identifiers", identifiers);
-	        resultList = (List<Integer>) search(query);
+			if (identifiers.size() > 0) {
+				// get caAERS IDs from Studies table , primary key ..
+				hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
+				HQLQuery query = new HQLQuery(hql.toString());
+				query.setParameterList("identifiers", identifiers);
+				resultList.addAll((List<Integer>) search(query));
+			}
 		} catch (CSObjectNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -118,7 +135,8 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 		
 		return resultList ;  
     }
-    
+
+
     /**
      * Will the caAERS database IDs of Organization that one can access.
      *
@@ -137,10 +155,7 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
 
 				if (caaersEquivalentName.equals(ORGANIZATION_PE)) {
-					hql = "select o.id from Organization o ";
-					HQLQuery query = new HQLQuery(hql.toString());
-					resultList = (List<Integer>) search(query);
-					return resultList;
+					return getAllOrganizationIdsFromDB();
 				} else {
 					//parse name ..
 					String[] tokens = caaersEquivalentName.split("\\.");
@@ -152,16 +167,70 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 				}
 			}
 			// get caAERS IDs from Organizations table , primary key ..
-			hql = " select o.id from Organization o where o.nciInstituteCode in (:identifiers)";
-			HQLQuery query = new HQLQuery(hql.toString());
-	        query.setParameterList("identifiers", identifiers);
-	        resultList = (List<Integer>) search(query);
+			if (identifiers.size() > 0) {
+				return getOrganizationIdsByIdentifiersFromDB(identifiers);
+			}
 		} catch (CSObjectNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return resultList ;  //To change body of implemented methods use File | Settings | File Templates.
+		return resultList ;  
+    }
+    
+    /**
+     * 
+     * @param loginId
+     * @param roleNameToCheck
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	private List<Integer> getAccessibleOrganizationIdsFilterByRole(String loginId, String roleNameToCheck) {
+    	try {
+			Set<ProtectionGroupRoleContext> contexts = csmUserProvisioningManager.getProtectionGroupRoleContextForUser(loginId);
+			List identifiers = new ArrayList();
+			for (ProtectionGroupRoleContext context : contexts) {
+				ProtectionGroup pe = context.getProtectionGroup();
+				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
+				String roleName = getRoleName(context);
+				// check user has access to all orgs AS this role .
+				if (roleName != null && roleName.equals(roleNameToCheck) && caaersEquivalentName.equals(ORGANIZATION_PE)) {
+					return getAllOrganizationIdsFromDB();
+				} else {
+					//parse name ..
+					String[] tokens = caaersEquivalentName.split("\\.");
+					if (tokens.length == 2) {
+						// check if user has access to this org AS this role . 
+						if (tokens[0].equals(ORGANIZATION_PE) && roleName.equals(roleNameToCheck)) {
+							identifiers.add(tokens[1]);
+						}
+					}
+				}
+			}
+			if (identifiers.size() > 0) {
+				return getOrganizationIdsByIdentifiersFromDB(identifiers);
+			}
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return new ArrayList<Integer>();
+    }
+    
+    private List<Integer> getAllOrganizationIdsFromDB() {
+    	List<Integer> resultList = new ArrayList<Integer>();
+		String hql = "select o.id from Organization o ";
+		HQLQuery query = new HQLQuery(hql.toString());
+		resultList = (List<Integer>) search(query);
+		return resultList;
+    }
+    private List<Integer> getOrganizationIdsByIdentifiersFromDB(List identifiers) {
+    	List<Integer> resultList = new ArrayList<Integer>();
+		String hql = " select o.id from Organization o where o.nciInstituteCode in (:identifiers)";
+		HQLQuery query = new HQLQuery(hql.toString());
+        query.setParameterList("identifiers", identifiers);
+        resultList = (List<Integer>) search(query);
+		return resultList;
     }
     
     @SuppressWarnings("unchecked")
