@@ -190,7 +190,7 @@
 
 
 			<!-- CSM & Security related -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.1.1.RELEASE" transitive="false" />
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="0.1.2.RELEASE" transitive="false" />
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-csm" rev="${ctms.version}" force="true" transitive="false" />
 
             <dependency org="gov.nih.nci.security" name="csm" rev="4.2">
