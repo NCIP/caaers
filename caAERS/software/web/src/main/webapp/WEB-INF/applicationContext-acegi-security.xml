@@ -104,10 +104,10 @@
 				<property name="allowIfAllAbstainDecisions" value="false"/>
 				<property name="decisionVoters">
 					<list>
-						<bean class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+						<bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.AuthorizationSwitchVoter">
 							<property name="authorizationSwitch" ref="authorizationSwitch"/>
 						</bean>
-						<bean class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
+						<bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.CSMAuthorizationCheckVoter">
 							<property name="processConfigAttribute" value="CSM_FILTER_CHECK"/>
 							<property name="authorizationCheck" ref="filterAuthorizationCheck"/>
 						</bean>
