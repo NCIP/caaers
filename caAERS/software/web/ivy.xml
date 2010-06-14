@@ -77,7 +77,7 @@
             <dependency org="commons-el" name="commons-el" rev="1.0" />
 
             <!-- JSTL   dependency -->
-            <dependency org="jstl" name="jstl" rev="1.2" />
+            <dependency org="jstl" name="jstl" rev="1.1.2" />
             
 			<!-- Testing dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
