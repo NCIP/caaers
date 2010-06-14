@@ -129,7 +129,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="taskAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.CaaersObjectPrivilegeAuthorizationCheck">
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 
-		<property name="csmAuthorizatsionCheck">
+		<property name="csmAuthorizationCheck">
             <bean class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager" />
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
