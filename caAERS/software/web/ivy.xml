@@ -45,6 +45,7 @@
 			<exclude conf="distGrid" org="*" name="gss"/>
 			<exclude conf="distGrid" org="*" name="puretls" />
 			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
+            <exclude conf="dist,distGrid,runtime" org="org.apache.commons" module="com.springsource.org.apache.commons.attributes" />
 
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
