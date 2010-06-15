@@ -1,4 +1,6 @@
 <dataset>
+
+
      <ORGANIZATIONS
             id="-1000"
             version="1"
@@ -13,6 +15,79 @@
             description_text="DCP"
             nci_institute_code="DCP"
             /> 
+     <ORGANIZATIONS
+            id="-1002"
+            version="1"
+            name="MAYO"
+            description_text="MAYO"
+            nci_institute_code="MAYO"
+            /> 
+     <ORGANIZATIONS
+            id="-1003"
+            version="1"
+            name="DUKE"
+            description_text="DUKE"
+            nci_institute_code="DUKE"
+            /> 
+     <ORGANIZATIONS
+            id="-1004"
+            version="1"
+            name="WAKE"
+            description_text="WAKE"
+            nci_institute_code="WAKE"
+            />                                     
+            
+     <organization_index
+     	id="-1"
+     	login_id = "test-user"
+     	organization_id = "-1000"
+     />     
+
+     <organization_index
+     	id="-2"
+     	login_id = "test-user2"
+     	organization_id = "-1001"
+     /> 
+     
+     <studies
+		id = "-222"
+		short_title = "N7028 Study"
+		load_status = "1"
+	/>
+	<studies
+		id = "-223"
+		short_title = "6307 Study"
+		load_status = "1"
+	/>
+	
+	<study_organizations
+		id = "1"
+		site_id = "-1000"
+		study_id = "-222"
+		type = "SST"
+	/>
+
+	<study_organizations
+		id = "1001"
+		site_id = "-1001"
+		study_id = "-223"
+		type = "SCC"
+	/>
+
+	<study_organizations
+		id = "1002"
+		site_id = "-1002"
+		study_id = "-223"
+		type = "SST"
+	/>
+
+	<study_organizations
+		id = "1003"
+		site_id = "-1003"
+		study_id = "-223"
+		type = "SST"
+	/>
+		                 
     <RESEARCH_STAFFS
         id="-1000"
         version="1"
@@ -54,22 +129,22 @@
         
     <SITE_RESEARCH_STAFFS
     	id="-9003"
-    	site_id="-1000"
+    	site_id="-1002"
     	researchstaff_id="-1002"/>        
         
     <RESEARCH_STAFFS
         id="-1003"
         version="1"
-        first_name="JF"
-        last_name="Kennedy"
-        email_address="abc4@def.com"
+        first_name="Kaka"
+        last_name="Brazil"
+        email_address="abc3@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"/>
         
     <SITE_RESEARCH_STAFFS
     	id="-9004"
-    	site_id="-1000"
-    	researchstaff_id="-1003"/>        
+    	site_id="-1003"
+    	researchstaff_id="-1003"/>      
         
         
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
