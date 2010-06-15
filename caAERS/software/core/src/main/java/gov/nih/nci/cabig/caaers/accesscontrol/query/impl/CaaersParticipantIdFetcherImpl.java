@@ -26,8 +26,9 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
 	
 	public List fetch(String loginId){
 		
-		StringBuilder hql = new StringBuilder("select distinct spa.participant.id from  StudyParticipantAssignment spa , StudyIndex si" )
+		StringBuilder hql = new StringBuilder("select distinct spa.participant.id from  StudyParticipantAssignment spa , StudyIndex si , OrganizationIndex oi " )
         .append(" where si.study = spa.studySite.study ")
+        .append(" and oi.organization = spa.studySite.organization ")
         .append(" and si.loginId = :loginId ");
 		
         HQLQuery query = new HQLQuery(hql.toString());

@@ -10,17 +10,16 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 	
 	public List fetch(String loginId){
-		
-		StringBuilder hql = new StringBuilder("select distinct sinv.investigator.id from  SiteInvestigator sinv , OrganizationIndex oi" )
-        .append(" where oi.organization = sinv.organization ")
-        .append(" and oi.loginId = :loginId ");
+		// get all organizations user has access to .. 
+		List<Integer> organizationIds = getAccesibleOrganizationsIncludingStudySites(loginId);
+		StringBuilder hql = new StringBuilder("select distinct sinv.investigator.id from  SiteInvestigator sinv" );
+        hql.append(" where sinv.organization.id in (:organizationIds) ");
 		
         HQLQuery query = new HQLQuery(hql.toString());
-        query.setParameter("loginId", loginId);
-        List<Integer> resultList = (List<Integer>) search(query);
+        query.setParameterList("organizationIds", organizationIds);
+        List resultList = (List<Integer>) search(query);
        
 		return resultList;
-		
 	}
  
 }

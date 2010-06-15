@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
@@ -10,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -124,23 +126,28 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     }
 
 
-    /**
-     * Find organization Id from SiteResearchStaff.
-     * @param siteResearchStaffList - List of SiteResearchStaff
-     * @return
-     */
-    protected Set<Integer> findOrganizationIdFromSiteResearchStaff(List<SiteResearchStaff> siteResearchStaffList){
-       HashSet<Integer> set = new HashSet<Integer>();
-       if(siteResearchStaffList != null){
-            for(SiteResearchStaff srs : siteResearchStaffList){
-               set.add(srs.getOrganization().getId());
-            }
-       }
-
-        return set;
+    protected List<Integer> getAccesibleOrganizationsIncludingStudySites(String loginId){
+    	StringBuilder hql = new StringBuilder("select distinct oi.organization.id from  OrganizationIndex oi");
+		hql.append(" where oi.loginId = :loginId ");
+		HQLQuery query = new HQLQuery(hql.toString());
+        query.setParameter("loginId", loginId);
+        List<Integer> organizationIds = (List<Integer>) search(query);
+        // check for these organizations , if these are SCC or SFS on any Study . 
+        List<Integer> studySiteIds = new ArrayList<Integer>();
+        if (organizationIds.size()>0) {
+            StringBuilder sql = new StringBuilder("select distinct so.organization.id from StudyOrganization so where so.study.id in ");
+            sql.append(" (select distinct so.study.id from StudyOrganization so");
+            sql.append(" where so.type = 'SFS' or so.type = 'SCC' ");
+            sql.append(" and so.organization.id in (:organizationIds) )");
+        	query = new HQLQuery(sql.toString());
+        	query.setParameterList("organizationIds", organizationIds);
+        	studySiteIds = (List<Integer>) search(query);
+        }
+        if (studySiteIds.size() > 0) {
+        	organizationIds.addAll(studySiteIds);
+        }
+        return organizationIds;
     }
-
-
 
     public CSMUserRepository getCsmUserRepository() {
         return csmUserRepository;
