@@ -43,7 +43,7 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
      * @return
      */
     public boolean checkAuthorization(Authentication auth, String objectId, String privilege) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return true;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**

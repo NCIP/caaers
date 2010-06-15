@@ -25,7 +25,7 @@
             <c:set var="_useSectionLink" value="false" />
             <c:set var="_sectionLink" value="${section.mainUrl}" />
             <c:forEach var="task" items="${section.tasks}">
-                <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="sectionsAuthorizationCheck">
+                <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="tasksAuthorizationCheck">
                     <c:set var="_showSection" value="true"/>
                     <c:if test="${section.mainController eq task.linkName}">
                         <c:set var="_useSectionLink" value="true"/>
