@@ -49,9 +49,11 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
             throw new JspException("Either 'authorizationCheckName' or 'objectPrivilege' are required");
         }
 
+/*
         if(!StringUtils.isEmpty(authorizationCheckName) && domainObject == null) {
             throw new JspException("'authorizationCheckName' requires 'domainObject'");
         }
+*/
 
         if (!StringUtils.isEmpty(securityFacade)) {
             caaersSecurityFacade = (CaaersSecurityFacade)getRequestContext().getWebApplicationContext().getBean(securityFacade);
