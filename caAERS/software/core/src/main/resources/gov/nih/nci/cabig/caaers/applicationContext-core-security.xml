@@ -537,6 +537,8 @@
     <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
     <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>    
     <bean id="reportingPeriodIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
+    <bean id="researchStaffIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersResearchStaffIdFetcherImpl" parent="abstractIdFetcher"/>
+    <bean id="investigatorIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersInvestigatorIdFetcherImpl" parent="abstractIdFetcher"/>
 
 
     <!-- Pluggable Query Filterer implementation -->
