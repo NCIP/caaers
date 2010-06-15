@@ -477,20 +477,20 @@ public class CaaersDataMigrator {
     protected void migratePEPGForStudes(){
     	
     	String peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-							"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+							"select nextval('csm_protectio_protection_e_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
 								"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
 
     	String pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-    						"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+    						"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,-1,0 from " +
     							"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
     	
     	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
     		peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-							"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+							"select csm_protectio_protection_e_seq.nextval,'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
 								"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
     		
     		pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-    						"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+    						"select csm_protectio_protection_g_seq.nextval,'Study.'||value,'Study.'||value,-1,0 from " +
     							"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
     	}
     	
