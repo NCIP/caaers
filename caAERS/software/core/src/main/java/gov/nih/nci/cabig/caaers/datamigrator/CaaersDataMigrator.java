@@ -282,47 +282,102 @@ public class CaaersDataMigrator {
     /**
      * This method will migrate all the existing site research staff roles to new roles.
      */
-    public void migrateSiteResearchStaffRole(){
-    	String insertSql = getSiteResearchStaffRoleSql();
-    	jdbcTemplate.execute(insertSql);
+    @SuppressWarnings("unchecked")
+	public void migrateSiteResearchStaffRole(){
+
+    	for(String groupName : EXISTING_GROUPS){
+    		List<Map> siteResearchStaffRoles = getSiteResearchStaffRoles(groupName);
+    		for(Map map : siteResearchStaffRoles){
+
+    			if(StringUtils.equals("caaers_study_cd", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("study_creator",
+    															 	"supplemental_study_information_manager",
+    															 	"study_team_administrator",
+    															 	"study_site_participation_administrator"));
+    			}else if(StringUtils.equals("caaers_participant_cd", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("subject_manager",
+    															 	"registrar"));
+    			}else if(StringUtils.equals("caaers_central_office_sae_cd", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("ae_expedited_report_reviewer"));
+    			}else if(StringUtils.equals("caaers_data_cd", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("ae_study_data_reviewer"));
+    			}else if(StringUtils.equals("caaers_ae_cd", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("ae_reporter"));
+    			}else if(StringUtils.equals("caaers_physician", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("ae_reporter"));
+    			}else if(StringUtils.equals("caaers_site_cd", groupName)){
+    				insertIntoSiteResearchStaffRoles(map, Arrays.asList("business_administrator",
+    																"system_administrator",
+    																"person_and_organization_information_manager",
+    																"data_importer",
+    																"user_administrator",
+    																"ae_rule_and_report_manager",
+    																"data_analyst"));
+    			}
+    		}
+    		
+    	}
     	String deleteSql = "delete from site_rs_staff_roles where role_code like 'caaers%'";
     	jdbcTemplate.execute(deleteSql);
     }
     
     /**
-     * This method will return the right sql based in the database being used.
+     * This method returns all the siteResearchStaffRoles for a given roleCode.
+     * @param roleCode
      * @return
      */
-    protected String getSiteResearchStaffRoleSql(){
-    	String postgresInsertSql = 
-    			"insert into site_rs_staff_roles (id,role_code,site_research_staffs_id,start_date) " +
-    			"select nextval('site_rs_staff_roles_id_seq'), cg.group_name, srs.id, '2009-01-01' " +
-    			"from " +
-    			"csm_user cu,csm_user_group cug,csm_group cg,research_staffs rs,site_research_staffs srs " +
-    			"where " +
-    			"cu.user_id = cug.user_id and " +
-    			"cug.group_id = cg.group_id and " +
-    			"rs.login_id = cu.login_name and " +
-    			"rs.email_address = cu.email_id and " +
-    			"rs.id = srs.researchstaff_id ";
-    	
-    	String oracleInsertSql = 
-	    		"insert into site_rs_staff_roles (id,role_code,site_research_staffs_id,start_date) " +
-	    		"select seq_site_rs_staff_roles_id.nextval, cg.group_name, srs.id, to_date('2009-01-01', 'yyyy/mm/dd') " +
-	    		"from " +
-	    		"csm_user cu,csm_user_group cug,csm_group cg,research_staffs rs,site_research_staffs srs " +
-	    		"where " +
-	    		"cu.user_id = cug.user_id and " +
-	    		"cug.group_id = cg.group_id and " +
-	    		"rs.login_id = cu.login_name and " +
-	    		"rs.email_address = cu.email_id and " +
-	    		"rs.id = srs.researchstaff_id ";
-    	
-    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-    		return oracleInsertSql;
-    	}else{
-    		return postgresInsertSql;
-    	}
+    @SuppressWarnings("unchecked")
+	protected List<Map> getSiteResearchStaffRoles(String roleCode){
+    	String siteResearchStaffRoleSql = "select site_research_staffs_id from site_rs_staff_roles " +
+											"where " +
+											"role_code = '"+roleCode+"'";
+
+		List<Map> siteResearchStaffRoles = jdbcTemplate.queryForList(siteResearchStaffRoleSql);
+		return siteResearchStaffRoles;
+    }
+    
+    
+    /**
+     * Return the right sql based on database used.
+     * @return
+     */
+    protected String getInsertSiteResearchStaffRoleSql(){
+    	String postgresInsertSql = "INSERT INTO site_rs_staff_roles(id, role_code, site_research_staffs_id, start_date) " +
+    									"VALUES ((select nextval('site_rs_staff_roles_id_seq')), ?, ?, '2009-01-01')";
+
+    	String oracleInsertSql = "INSERT INTO site_rs_staff_roles(id, role_code, site_research_staffs_id, start_date) " +
+    									"VALUES (seq_site_rs_staff_roles_id.nextval, ?, ?, to_date('2009-01-01', 'yyyy/mm/dd'))"; 
+    		
+		if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+			return oracleInsertSql;
+		}else{
+			return postgresInsertSql;
+		}
+    }
+    
+    /**
+     * This method inserts appropriate records into site_rs_staff_roles table based on existing role_code.
+     * @param map
+     * @param groups
+     */
+    @SuppressWarnings("unchecked")
+	protected void insertIntoSiteResearchStaffRoles(final Map map, final List groups){
+    	String sql = getInsertSiteResearchStaffRoleSql();
+    	BatchPreparedStatementSetter setter = null;
+        setter = new BatchPreparedStatementSetter() {
+
+            public int getBatchSize() {
+                return groups.size();
+            }
+
+            public void setValues(PreparedStatement ps, int index) throws SQLException {
+    			int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
+            	
+    			ps.setString(1, groups.get(index).toString());
+    			ps.setInt(2, siteResearchStaffId);
+            }
+        };
+        jdbcTemplate.batchUpdate(sql, setter);
     }
     
     /**
