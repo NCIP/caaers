@@ -328,7 +328,7 @@ public class CaaersDataMigrator {
      */
     @SuppressWarnings("unchecked")
 	protected List<Map> getSiteResearchStaffRoles(String roleCode){
-    	String siteResearchStaffRoleSql = "select site_research_staffs_id from site_rs_staff_roles " +
+    	String siteResearchStaffRoleSql = "select start_date,end_date,site_research_staffs_id from site_rs_staff_roles " +
 											"where " +
 											"role_code = '"+roleCode+"'";
 
@@ -342,11 +342,11 @@ public class CaaersDataMigrator {
      * @return
      */
     protected String getInsertSiteResearchStaffRoleSql(){
-    	String postgresInsertSql = "INSERT INTO site_rs_staff_roles(id, role_code, site_research_staffs_id, start_date) " +
-    									"VALUES ((select nextval('site_rs_staff_roles_id_seq')), ?, ?, '2009-01-01')";
+    	String postgresInsertSql = "INSERT INTO site_rs_staff_roles(id, role_code, site_research_staffs_id, start_date,end_date) " +
+    									"VALUES ((select nextval('site_rs_staff_roles_id_seq')), ?, ?, ?, ?)";
 
-    	String oracleInsertSql = "INSERT INTO site_rs_staff_roles(id, role_code, site_research_staffs_id, start_date) " +
-    									"VALUES (seq_site_rs_staff_roles_id.nextval, ?, ?, to_date('2009-01-01', 'yyyy/mm/dd'))"; 
+    	String oracleInsertSql = "INSERT INTO site_rs_staff_roles(id, role_code, site_research_staffs_id, start_date, end_date) " +
+    									"VALUES (seq_site_rs_staff_roles_id.nextval, ?, ?, ?, ?)"; 
     		
 		if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
 			return oracleInsertSql;
@@ -371,10 +371,15 @@ public class CaaersDataMigrator {
             }
 
             public void setValues(PreparedStatement ps, int index) throws SQLException {
-    			int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
-            	
-    			ps.setString(1, groups.get(index).toString());
+    			
+            	int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
+            	java.sql.Timestamp startDate = (java.sql.Timestamp)map.get("start_date");
+            	java.sql.Timestamp endDate = (java.sql.Timestamp)map.get("end_date");
+    			
+            	ps.setString(1, groups.get(index).toString());
     			ps.setInt(2, siteResearchStaffId);
+    			ps.setTimestamp(3, startDate);
+    			ps.setTimestamp(4, endDate);
             }
         };
         jdbcTemplate.batchUpdate(sql, setter);
@@ -441,14 +446,12 @@ public class CaaersDataMigrator {
      */
     protected String getInsertStudyPersonnelSql(){
     	String postgresInsertSql = "INSERT INTO study_personnel (id, study_sites_id, " +
-    															"role_code, retired_indicator, start_date, " +
-    															"site_research_staffs_id) " +
-    															"VALUES ((select nextval('study_personnel_id_seq')),?, ?, ?, '2009-01-01', ?)";
+    															"role_code, retired_indicator, start_date, end_date, site_research_staffs_id) " +
+    															"VALUES ((select nextval('study_personnel_id_seq')),?, ?, ?, ?, ?, ?)";
 
     	String oracleInsertSql = "INSERT INTO study_personnel (id, study_sites_id, " +
-																"role_code, retired_indicator, start_date, " +
-																"site_research_staffs_id) " +
-																"VALUES (seq_study_personnel_id_seq.nextval,?, ?, ?, to_date('2009-01-01', 'yyyy/mm/dd'), ?)";
+																"role_code, retired_indicator, start_date, end_date, site_research_staffs_id) " +
+																"VALUES (seq_study_personnel_id_seq.nextval,?, ?, ?, ?, ?, ?)";
 
 		if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
 			return oracleInsertSql;
@@ -477,11 +480,15 @@ public class CaaersDataMigrator {
     			int studySiteId = ((Integer)map.get("study_sites_id")).intValue();
     			Boolean retiredIndicator = (Boolean)map.get("retired_indicator");
     			int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
-            	
+            	java.sql.Timestamp startDate = (java.sql.Timestamp)map.get("start_date");
+            	java.sql.Timestamp endDate = (java.sql.Timestamp)map.get("end_date");
+
     			ps.setInt(1, studySiteId);
     			ps.setString(2, groups.get(index).toString());
     			ps.setBoolean(3, retiredIndicator);
-    			ps.setInt(4, siteResearchStaffId);
+    			ps.setTimestamp(4, startDate);
+    			ps.setTimestamp(5, endDate);
+    			ps.setInt(6, siteResearchStaffId);
             }
         };
         jdbcTemplate.batchUpdate(sql, setter);
