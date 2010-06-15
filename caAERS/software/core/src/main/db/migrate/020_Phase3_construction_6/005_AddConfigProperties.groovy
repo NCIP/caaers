@@ -106,15 +106,15 @@ class AddConfigProperties extends edu.northwestern.bioinformatics.bering.Migrati
 										description: ' ',	
 										config_type:'2']);
 		
-		insert("config_properties", [ code:'expedited_report_reviewer',	
+		insert("config_properties", [ code:'ae_expedited_report_reviewer',	
 										version: '0', 
-										name :	 'Expedited Report Reviewer',	
+										name :	 'AE Expedited Report Reviewer',	
 										description: ' ',	
 										config_type:'2']);
 		
-		insert("config_properties", [ code:'adverse_event_study_data_reviewer',	
+		insert("config_properties", [ code:'ae_study_data_reviewer',	
 										version: '0', 
-										name :	 'Adverse Event Study Data reviewer',	
+										name :	 'AE Study Data reviewer',	
 										description: ' ',	
 										config_type:'2']);
 		

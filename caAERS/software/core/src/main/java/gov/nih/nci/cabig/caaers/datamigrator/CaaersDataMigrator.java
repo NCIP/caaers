@@ -128,8 +128,8 @@ public class CaaersDataMigrator {
 														 	"study_subject_calendar_manager",
 														 	"registrar",
 														 	"ae_reporter",
-														 	"expedited_report_reviewer",
-														 	"adverse_event_study_data_reviewer",
+														 	"ae_expedited_report_reviewer",
+														 	"ae_study_data_reviewer",
 														 	"lab_impact_calendar_notifier",
 														 	"lab_data_user",
 														 	"data_reader",
@@ -147,8 +147,8 @@ public class CaaersDataMigrator {
      * This method will migrate all users who belong to 
      * caaers_study_cd -- (study_creator","supplemental_study_information_manager","study_team_administrator","study_site_participation_administrator")
      * caaers_participant_cd -- ("subject_manager","registrar")
-     * caaers_central_office_sae_cd -- ("expedited_report_reviewer")
-     * caaers_data_cd -- ("adverse_event_study_data_reviewer")
+     * caaers_central_office_sae_cd -- ("ae_expedited_report_reviewer")
+     * caaers_data_cd -- ("ae_study_data_reviewer")
      * caaers_ae_cd -- ("ae_reporter")
      * caaers_site_cd -- ("business_administrator","system_administrator","person_and_organization_information_manager","data_importer","user_administrator",
      * 						"ae_rule_and_report_manager","data_analyst")
@@ -176,10 +176,10 @@ public class CaaersDataMigrator {
     															 	"registrar"));
     				log.debug("Moved users from caaers_participant_cd");
     			}else if(StringUtils.equals("caaers_central_office_sae_cd", groupName)){
-    				insertIntoCsmUserGroup(userId, Arrays.asList("expedited_report_reviewer"));
+    				insertIntoCsmUserGroup(userId, Arrays.asList("ae_expedited_report_reviewer"));
     				log.debug("Moved "+loginName+" from caaers_central_office_sae_cd");
     			}else if(StringUtils.equals("caaers_data_cd", groupName)){
-    				insertIntoCsmUserGroup(userId, Arrays.asList("adverse_event_study_data_reviewer"));
+    				insertIntoCsmUserGroup(userId, Arrays.asList("ae_study_data_reviewer"));
     				log.debug("Moved "+loginName+" from caaers_data_cd");
     			}else if(StringUtils.equals("caaers_ae_cd", groupName)){
     				insertIntoCsmUserGroup(userId, Arrays.asList("ae_reporter"));
@@ -344,9 +344,9 @@ public class CaaersDataMigrator {
     				insertIntoStudyPersonnel(map, Arrays.asList("subject_manager",
     															 	"registrar"));
     			}else if(StringUtils.equals("caaers_central_office_sae_cd", groupName)){
-    				insertIntoStudyPersonnel(map, Arrays.asList("expedited_report_reviewer"));
+    				insertIntoStudyPersonnel(map, Arrays.asList("ae_expedited_report_reviewer"));
     			}else if(StringUtils.equals("caaers_data_cd", groupName)){
-    				insertIntoStudyPersonnel(map, Arrays.asList("adverse_event_study_data_reviewer"));
+    				insertIntoStudyPersonnel(map, Arrays.asList("ae_study_data_reviewer"));
     			}else if(StringUtils.equals("caaers_ae_cd", groupName)){
     				insertIntoStudyPersonnel(map, Arrays.asList("ae_reporter"));
     			}else if(StringUtils.equals("caaers_physician", groupName)){
@@ -477,26 +477,25 @@ public class CaaersDataMigrator {
     protected void migratePEPGForStudes(){
     	
     	String peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-    					"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 " +
-    						"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+							"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+								"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
 
     	String pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-							"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,-1,0 " +
-								"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
-
+    						"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+    							"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
+    	
     	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
     		peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-						"select csm_protectio_protection_g_seq.nextval,'Study.'||value,'Study.'||value,'Study.'||value,-1 " +
-							"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+							"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+								"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
     		
     		pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-						"select csm_protectio_protection_g_seq.nextval,'Study.'||value,'Study.'||value,-1,0 " +
-							"from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL";
+    						"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
+    							"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
     	}
     	
     	jdbcTemplate.execute(peSql);
     	jdbcTemplate.execute(pgSql);
-    	
     }
     
     
