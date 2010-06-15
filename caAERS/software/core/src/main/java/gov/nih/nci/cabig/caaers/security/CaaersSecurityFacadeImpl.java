@@ -73,16 +73,7 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
     public List<String> getAccessibleProtectionElements(String loginId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-    private String getRoleName(ProtectionGroupRoleContext context) {
-    	Set roles = context.getRoles();
-		Iterator itr = roles.iterator();
 
-		while (itr.hasNext()) {
-			Role role = (Role)itr.next();
-			return  role.getName();
-		}
-		return null;
-    }
     /**
      * Will the caAERS database IDs of Study that one can access.
      *
@@ -106,10 +97,12 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 				if (roleName != null && caaersEquivalentName.equals(STUDY_PE)) {
 					// get acessible organization with above role.  
 					List<Integer> userOrgs = getAccessibleOrganizationIdsFilterByRole(loginId, roleName);
-					hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
-					HQLQuery query = new HQLQuery(hql.toString());
-					query.setParameterList("userOrgs", userOrgs);
-					resultList = (List<Integer>) search(query);
+					if (userOrgs.size() > 0) {
+						hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
+						HQLQuery query = new HQLQuery(hql.toString());
+						query.setParameterList("userOrgs", userOrgs);
+						resultList = (List<Integer>) search(query);
+					}
 				} else {
 					//parse name ..
 					String[] tokens = caaersEquivalentName.split("\\.");
@@ -177,7 +170,7 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 		
 		return resultList ;  
     }
-    
+
     /**
      * 
      * @param loginId
@@ -216,17 +209,28 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 		}
     	return new ArrayList<Integer>();
     }
+    private String getRoleName(ProtectionGroupRoleContext context) {
+    	Set roles = context.getRoles();
+		Iterator itr = roles.iterator();
+
+		while (itr.hasNext()) {
+			Role role = (Role)itr.next();
+			return  role.getName();
+		}
+		return null;
+    }
     
     private List<Integer> getAllOrganizationIdsFromDB() {
     	List<Integer> resultList = new ArrayList<Integer>();
-		String hql = "select o.id from Organization o ";
+		String hql = "select distinct o.id from Organization o ";
 		HQLQuery query = new HQLQuery(hql.toString());
 		resultList = (List<Integer>) search(query);
 		return resultList;
     }
+    
     private List<Integer> getOrganizationIdsByIdentifiersFromDB(List identifiers) {
     	List<Integer> resultList = new ArrayList<Integer>();
-		String hql = " select o.id from Organization o where o.nciInstituteCode in (:identifiers)";
+		String hql = " select distinct o.id from Organization o where o.nciInstituteCode in (:identifiers)";
 		HQLQuery query = new HQLQuery(hql.toString());
         query.setParameterList("identifiers", identifiers);
         resultList = (List<Integer>) search(query);
