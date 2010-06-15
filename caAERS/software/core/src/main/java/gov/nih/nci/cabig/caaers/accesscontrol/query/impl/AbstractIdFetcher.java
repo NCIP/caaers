@@ -137,7 +137,8 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         if (organizationIds.size()>0) {
             StringBuilder sql = new StringBuilder("select distinct so.organization.id from StudyOrganization so where so.study.id in ");
             sql.append(" (select distinct so.study.id from StudyOrganization so");
-            sql.append(" where so.type = 'SFS' or so.type = 'SCC' ");
+            sql.append(" where so.class = 'SFS'");
+            sql.append(" or so.class = 'SCC'");
             sql.append(" and so.organization.id in (:organizationIds) )");
         	query = new HQLQuery(sql.toString());
         	query.setParameterList("organizationIds", organizationIds);
