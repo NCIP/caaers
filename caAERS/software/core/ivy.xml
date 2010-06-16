@@ -37,6 +37,7 @@
 
 			<!-- exclusion based on class loading -->
             <exclude org="net.sf.hibernate" />
+            <exclude org="cglib" module="cglib" />
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
 			<exclude conf="dist,distGrid" module="jsp-api" />
 			<exclude conf="runtime,dist,distGrid" name="spring-aop"  />
@@ -107,10 +108,10 @@
                 <exclude org="asm" />
             </dependency>
             <dependency org="javax.persistence" name="persistence-api" rev="1.0" force="true" />
- 			<dependency org="asm" name="asm" rev="3.1" force="true" />
-        	<dependency org="asm" name="asm-commons" rev="3.1" force="true"/>
-            <dependency org="cglib" name="cglib" rev="2.2" force="true"/>
-            <dependency org="cglib" name="cglib-nodep" rev="2.2" force="true"/>
+ 			<dependency org="asm" name="asm" rev="2.2" force="true" />
+        	<dependency org="asm" name="asm-commons" rev="2.2" force="true"/>
+        	<dependency org="asm" name="asm-attrs" rev="2.2" force="true"/>
+            <dependency org="cglib" name="cglib-nodep" rev="2.1_3" force="true"/>
 
 
 			<!--  XML supporting JARS -->
