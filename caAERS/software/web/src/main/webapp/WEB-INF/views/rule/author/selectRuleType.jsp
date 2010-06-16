@@ -197,7 +197,7 @@
                                     <jsp:attribute name="optionsJS">
                                     	{
                                     		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("institutionName").value = selectedChoice.id;
+                                    			$("institution").value = selectedChoice.id;
                                     		}
                                     	}
                                     </jsp:attribute>
