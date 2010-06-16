@@ -50,7 +50,7 @@ public class DetailsTab extends StudyTab {
         if (command.getStudy().getAeTerminology() != null && command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == null) {
             command.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             // diseaseTerminology.diseaseCodeTerm
-        };
+        }
         return refdata;
     }
 
