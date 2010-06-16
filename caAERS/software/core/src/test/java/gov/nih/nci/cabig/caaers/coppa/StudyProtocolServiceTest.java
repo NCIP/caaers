@@ -20,7 +20,7 @@ import edu.duke.cabig.c3pr.esb.Metadata;
 import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import edu.duke.cabig.c3pr.esb.impl.CaXchangeMessageBroadcasterImpl;
-import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
 public class StudyProtocolServiceTest extends TestCase {

@@ -14,7 +14,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.validator.Length;
 
 /**
  * This class represents the TreatmentAssignment domain object associated with the Adverse event
@@ -61,7 +60,6 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         this.code = code;
     }
 
-    @Length(max = 99)
     public Integer getDoseLevelOrder() {
         return doseLevelOrder;
     }

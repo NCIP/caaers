@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.tools.editors;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;

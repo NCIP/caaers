@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
 
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author Biju Joseph
  */
-public class AdverseEventHistoryAjaxFacadeTest extends AbstractTestCase {
+public class AdverseEventHistoryAjaxFacadeTest extends DwrFacadeTestCase {
 
     private AdverseEventHistoryAjaxFacade adverseEventHistoryAjaxFacade;
     private AdverseEvent adverseEvent;
@@ -28,6 +29,8 @@ public class AdverseEventHistoryAjaxFacadeTest extends AbstractTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        getDeployedApplicationContext().getBean("adverseEventHistoryAjaxFacade");
+
 
 //        adverseEvent = new AdverseEvent();
 //        adverseEvent.setComments("comments1");

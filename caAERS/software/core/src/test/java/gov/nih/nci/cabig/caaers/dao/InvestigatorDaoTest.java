@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
-import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
@@ -115,7 +115,15 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
     }
     
     public void testFindBySubnameWithValidSubname(){
-    	List<Investigator> list = getDao().findBySubname(new String[]{"kar"}, Arrays.asList(new Object[]{"firstName","lastName"}), Collections.EMPTY_LIST);
+
+        List<String> s1 = new ArrayList<String>();
+        s1.add("firstName");
+        s1.add("lastName");
+
+        List<String> s2 = new ArrayList<String>();
+
+    	List<Investigator> list = getDao().findBySubname(new String[]{"kar"},
+                s1,s2);
     	assertNotNull(list);
     	assertEquals(1,list.size());
     }

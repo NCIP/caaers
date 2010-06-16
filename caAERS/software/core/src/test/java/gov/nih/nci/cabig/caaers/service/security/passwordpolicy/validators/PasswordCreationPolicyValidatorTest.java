@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
 import static org.easymock.EasyMock.expect;
-import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;

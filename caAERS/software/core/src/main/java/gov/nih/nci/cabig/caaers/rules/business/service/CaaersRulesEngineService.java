@@ -183,7 +183,9 @@ public class CaaersRulesEngineService {
         //--------- Modify the package names ----------------------
         reconcileRuleSet(ruleSet);
         String strOrgId = parseOrganizationId(ruleSet.getName());
-        Organization org = organizationDao.getById(Integer.parseInt(strOrgId));
+        Organization org = null;
+        
+        if(StringUtils.isNotBlank(strOrgId)) organizationDao.getById(Integer.parseInt(strOrgId));
         
         if(log.isInfoEnabled()){
             log.info("Rule set name:" + ruleSet.getName());
@@ -208,7 +210,7 @@ public class CaaersRulesEngineService {
         Set<String> reportDefinitionNames = new HashSet<String>();
         List<String> reportDefinitionsCreated = new ArrayList<String>();
 
-        boolean isAssociatedToDCP = org.getNciInstituteCode().equals("DCP");
+        boolean isAssociatedToDCP = org == null ? false : org.getNciInstituteCode().equals("DCP");
         boolean isSAERule =  ruleSet.getDescription().equals(RuleType.REPORT_SCHEDULING_RULES.getName());
         if ( isSAERule && !isAssociatedToDCP ) {
 
@@ -269,7 +271,7 @@ public class CaaersRulesEngineService {
      */
     public void reconcileRuleSet(RuleSet ruleSet){
 
-        if(StringUtils.isEmpty(ruleSet.getSubject())) return;
+        if(StringUtils.isBlank(ruleSet.getSubject())) return;
 
         String[] subjectParts = StringUtils.split(ruleSet.getSubject(), "||");
 
@@ -279,7 +281,7 @@ public class CaaersRulesEngineService {
              //length = 5 - new pattern
 
             String level = subjectParts[1];
-            if(StringUtils.isNotEmpty(level)){
+            if(StringUtils.isNotBlank(level)){
                 //need to modify package.
                 String sponsorNCICode = subjectParts[2].trim();
                 String institutionNCICode = subjectParts[3].trim();

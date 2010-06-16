@@ -5,7 +5,7 @@ import java.util.Stack;
 
 import org.apache.commons.lang.StringUtils;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 
 /**
  * @author Rhett Sutphin

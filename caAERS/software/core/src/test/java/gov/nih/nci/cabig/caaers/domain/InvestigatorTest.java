@@ -35,4 +35,9 @@ public class InvestigatorTest extends TestCase {
 		assertFalse(inv.equals(inv2));
 	}
 
+
+    public void testGetActiveSiteInvestigators(){
+        fail("to implement");
+    }
+
 }

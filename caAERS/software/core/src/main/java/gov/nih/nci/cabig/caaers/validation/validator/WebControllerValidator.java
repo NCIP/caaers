@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.validation.validator;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.validation.BindException;
-import org.springframework.web.servlet.mvc.BaseCommandController;
 
 /**
  * validator interface that should be used by controllers for validating the objects.
@@ -19,7 +18,7 @@ public interface WebControllerValidator {
 
     /**
      * Validate the domain object after. This method should be called in
-     * {@link BaseCommandController#onBind} method to validate the form submission. If there are any
+     * to validate the form submission. If there are any
      * validation issues found, this method will update the errors object.
      * 
      * @param request

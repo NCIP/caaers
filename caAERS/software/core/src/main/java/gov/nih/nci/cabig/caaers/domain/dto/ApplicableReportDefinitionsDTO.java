@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.business.service.ReportDefinitionComparator;

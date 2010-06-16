@@ -1,3 +1,5 @@
+
+
 package gov.nih.nci.cabig.caaers.domain;
 
 import com.semanticbits.rules.brxml.*;
@@ -442,6 +444,14 @@ public class Fixtures {
     	siteResearchStaff.setResearchStaff(rStaff);
     	siteResearchStaff.setOrganization(org);
     	return siteResearchStaff;
+    }
+
+    public static SiteResearchStaffRole createSiteResearchStaffRole(String roleCode, Date start, Date end){
+       SiteResearchStaffRole role =  new SiteResearchStaffRole();
+       role.setRoleCode(roleCode);
+       role.setStartDate(start);
+       role.setEndDate(end);
+       return role;
     }
     
     public static StudyInvestigator createStudyInvestigator(String name, Organization org){

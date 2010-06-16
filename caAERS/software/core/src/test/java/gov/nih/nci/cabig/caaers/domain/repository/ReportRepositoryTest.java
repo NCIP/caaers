@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;

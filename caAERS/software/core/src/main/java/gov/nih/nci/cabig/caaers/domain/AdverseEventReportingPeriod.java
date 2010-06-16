@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
