@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
@@ -96,7 +98,19 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
      * @return
      */
     public List<String> getAccessibleProtectionElements(String loginId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+		List<String> pes = new ArrayList<String>();
+    	try {
+			Set<ProtectionElementPrivilegeContext> contexts = csmUserProvisioningManager.getProtectionElementPrivilegeContextForUser(loginId);
+			for (ProtectionElementPrivilegeContext context : contexts) {
+				ProtectionElement pe = context.getProtectionElement();
+				pes.add(pe.getProtectionElementName());
+			}
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return pes;  
     }
 
     /**
