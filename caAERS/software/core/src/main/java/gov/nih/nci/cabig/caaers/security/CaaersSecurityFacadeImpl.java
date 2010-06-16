@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
+import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -30,6 +32,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements CaaersSecurityFacade  {
 	
 	private AuthorizationManagerImpl csmUserProvisioningManager;
+	private RolePrivilegeDao rolePrivilegeDao;
 	
 	private String ORGANIZATION_PE="HealthcareSite";
 	private String STUDY_PE="Study";
@@ -42,8 +45,30 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
      * @param privilege - The privilege (CREATE,UPDATE)
      * @return
      */
-    public boolean checkAuthorization(Authentication auth, String objectId, String privilege) {
-        return true;  //To change body of implemented methods use File | Settings | File Templates.
+
+    public boolean checkAuthorization(Authentication authentication, String objectId, String privilege) {
+		//Fetch all the roles of the logged in user.
+		//Granted Authorities is populated when user is authenticated. 
+
+		try{
+			GrantedAuthority[] authorities = authentication.getAuthorities();
+			List<String> privilegedRoles;
+			if(authorities  != null){
+				//Fetch all the roles which have the given privilege on the given objectId
+				privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);				
+				if(privilegedRoles != null){
+					for(int i=0;i < authorities.length;i++){
+						if(privilegedRoles.contains(authorities[i].getAuthority())){
+							return true;
+						}
+					}					
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+
     }
 
     /**
@@ -268,6 +293,14 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 	public void setCsmUserProvisioningManager(
 			AuthorizationManagerImpl csmUserProvisioningManager) {
 		this.csmUserProvisioningManager = csmUserProvisioningManager;
+	}
+	
+	public RolePrivilegeDao getRolePrivilegeDao() {
+		return rolePrivilegeDao;
+	}
+
+	public void setRolePrivilegeDao(RolePrivilegeDao rolePrivilegeDao) {
+		this.rolePrivilegeDao = rolePrivilegeDao;
 	}
 
 }
