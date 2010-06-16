@@ -130,6 +130,14 @@ public class SecurityUtils {
 
 	    return false;
 	}
-	
-	
+
+
+    /**
+     * Get the context related authentication object
+     *
+     * */
+    public static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
 }

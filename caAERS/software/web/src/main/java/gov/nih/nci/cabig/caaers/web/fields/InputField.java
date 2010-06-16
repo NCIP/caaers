@@ -67,6 +67,15 @@ public interface InputField {
 
     boolean isRequired();
 
+    boolean isReadonly();
+
+    String getDisplayTextProperty();
+
+    String getSecurityObjectId();
+    void setSecurityObjectId(String s);
+
+    boolean isValidateable();
+
     void validate(BeanWrapper commandBean, Errors errors);
 
     /**

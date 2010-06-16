@@ -26,7 +26,7 @@ import org.springframework.validation.Errors;
 public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     private boolean autoPopulateHelpKey;
     protected MessageSource messageSource;
-
+    protected FieldDecorator[] fieldDecorators;
 
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -56,6 +56,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     public Map<String,Object> referenceData(C command) {
         Map<String, Object> refdata = super.referenceData(command);
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
+        decorateFieldGroups(groupMap);
         if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the help keys
         refdata.put("fieldGroups", groupMap);
         return refdata;
@@ -66,14 +67,37 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
         return this.referenceData(command);
     }
 
+    /**
+     * @author Ion C. Olaru
+     * This will decorate every field in the FieldGroups using decorators passed to the Tab.
+     *
+     * */
+    public void decorateFieldGroups(Map<String, InputFieldGroup> map) {
+        for (InputFieldGroup fieldGroup : map.values()) {
+            for (InputField field : fieldGroup.getFields()) {
+                for (FieldDecorator fd : fieldDecorators) {
+                    fd.decorate(field);
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * Validate the FieldGroups
+     * decoration should happen prior to actual validation,
+     * since validation may be skipped if the field is readonly decorated
+     *  
+     * */
     @Override
     public final void validate(C command, Errors errors) {
         super.validate(command, errors);
         BeanWrapper commandBean = new BeanWrapperImpl(command);
         Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
+        decorateFieldGroups(fieldGroups);
         for (InputFieldGroup fieldGroup : fieldGroups.values()) {
             for (InputField field : fieldGroup.getFields()) {
-                field.validate(commandBean, errors);
+                if (field.isValidateable()) field.validate(commandBean, errors);
             }
         }
         validate(command, commandBean, fieldGroups, errors);
@@ -82,8 +106,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     /**
      * Template method for subclasses to provide additional non-field self-validation.
      */
-    protected void validate(C command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(C command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
     }
 
     /**
@@ -129,5 +152,9 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     
     protected String getMessage(String code, String defaultMsg, Object...objects){
     	return messageSource.getMessage(code, objects, defaultMsg, Locale.getDefault());
+    }
+
+    public void addFieldDecorators(FieldDecorator ... fd) {
+        this.fieldDecorators = fd;
     }
 }

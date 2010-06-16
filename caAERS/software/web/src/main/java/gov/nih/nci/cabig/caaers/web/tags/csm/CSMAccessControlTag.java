@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.web.utils.el.EL;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
@@ -131,7 +132,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 	}
 	
 	protected boolean checkAuthorization(String authCheckBeanName, Object resolvedDomainObject, String[] requiredPrivileges) throws Exception {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = SecurityUtils.getAuthentication();
 		ApplicationContext context = getRequestContext().getWebApplicationContext();
 		CSMAuthorizationCheck authzCheck = (!StringUtils.isEmpty(authCheckBeanName)) ? (CSMAuthorizationCheck)context.getBean(authCheckBeanName) : null;
 

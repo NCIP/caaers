@@ -30,6 +30,8 @@ class PersonnelTab extends StudyTab {
 
     public PersonnelTab() {
         super("Personnel", "Personnel", "study/study_personnel");
+        // set Decorators
+        
     }
 
     @Override

@@ -14,13 +14,14 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public abstract class QualifiedPropertyNameInputField implements InputField {
+
     private InputField src;
-
     private Map<String, Object> attributes;
-
     private boolean mandatory;
-
     private FieldValidator[] validators;
+    private boolean readonly;
+    private String displayTextProperty;
+    private String securityObjectId;
 
     public QualifiedPropertyNameInputField(InputField src) {
         this.src = src;
@@ -126,4 +127,31 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         return validatorClassName.toString();
     }
 
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
+
+    public String getDisplayTextProperty() {
+        return displayTextProperty;
+    }
+
+    public void setDisplayTextProperty(String displayTextProperty) {
+        this.displayTextProperty = displayTextProperty;
+    }
+
+    public String getSecurityObjectId() {
+        return securityObjectId;
+    }
+
+    public void setSecurityObjectId(String securityObjectId) {
+        this.securityObjectId = securityObjectId;
+    }
+
+    public boolean isValidateable() {
+        return !isReadonly();  
+    }
 }

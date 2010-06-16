@@ -22,6 +22,9 @@ public abstract class AbstractInputField implements InputField {
     private boolean mandatory;
     private Map<String, Object> attributes;
     private FieldValidator[] validators;
+    private boolean readonly;
+    private String displayTextProperty;
+    private String securityObjectId;
 
     protected AbstractInputField() {
         this.attributes = new LinkedHashMap<String, Object>();
@@ -174,6 +177,29 @@ public abstract class AbstractInputField implements InputField {
         return validatorClassNameBuffer.toString();
     }
 
+    public String getSecurityObjectId() {
+        return securityObjectId;
+    }
+
+    public void setSecurityObjectId(String securityObjectId) {
+        this.securityObjectId = securityObjectId;
+    }
+
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
+
+    public String getDisplayTextProperty() {
+        return displayTextProperty;
+    }
+
+    public void setDisplayTextProperty(String displayTextProperty) {
+        this.displayTextProperty = displayTextProperty;
+    }
 
     // ////OBJECT METHODS
 
@@ -182,5 +208,9 @@ public abstract class AbstractInputField implements InputField {
         return new StringBuilder(getClass().getSimpleName()).append("[propertyName=").append(
                 getPropertyName()).append("; category=").append(getCategoryName()).append(
                 ']').toString();
+    }
+
+    public boolean isValidateable() {
+        return !isReadonly();
     }
 }
