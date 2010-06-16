@@ -367,8 +367,4 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="objectPrivilegeMap" ref="sectionObjectPrivilegeMap" />
     </bean>
 
-    <bean id="readonlyFieldDecorator" class="gov.nih.nci.cabig.caaers.web.fields.ReadonlyFieldDecorator">
-        <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
-    </bean>
-
 </beans>

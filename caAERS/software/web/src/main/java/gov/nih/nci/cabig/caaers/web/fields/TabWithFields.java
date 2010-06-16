@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.InPlaceEditableTab;
 
 import java.util.Locale;
@@ -27,6 +28,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     private boolean autoPopulateHelpKey;
     protected MessageSource messageSource;
     protected FieldDecorator[] fieldDecorators;
+    protected CaaersSecurityFacade caaersSecurityFacade;
 
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -38,7 +40,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
      * 
      * @param command
      * @see RepeatingFieldGroupFactory
-     */
+     */                                                                         
     public abstract Map<String, InputFieldGroup> createFieldGroups(C command);
     
     /**
@@ -73,6 +75,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
      *
      * */
     public void decorateFieldGroups(Map<String, InputFieldGroup> map) {
+        if (fieldDecorators == null || fieldDecorators.length == 0) return;
         for (InputFieldGroup fieldGroup : map.values()) {
             for (InputField field : fieldGroup.getFields()) {
                 for (FieldDecorator fd : fieldDecorators) {
@@ -156,5 +159,13 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
 
     public void addFieldDecorators(FieldDecorator ... fd) {
         this.fieldDecorators = fd;
+    }
+
+    public CaaersSecurityFacade getCaaersSecurityFacade() {
+        return caaersSecurityFacade;
+    }
+
+    public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
+        this.caaersSecurityFacade = caaersSecurityFacade;
     }
 }
