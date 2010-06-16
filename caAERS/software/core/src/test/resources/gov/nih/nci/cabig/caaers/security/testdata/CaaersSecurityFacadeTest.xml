@@ -87,8 +87,29 @@
 		application_id="-1"
 		large_element_count_flag="1"
 	/>
-	
-	
+	<csm_group
+		group_id="-4"
+		group_name="g1"
+		application_id="-1"
+	/>
+	<csm_user
+		user_id="-8"
+		login_name="ln"
+		first_name="fn"
+		last_name="ln"
+	/>	
+	<csm_user
+		user_id="-7"
+		login_name="ln1"
+		first_name="fn"
+		last_name="ln"
+	/>	
+	<csm_user
+		user_id="1"
+		login_name="ln2"
+		first_name="fn"
+		last_name="ln"
+	/>
 	<!-- user with all orgs -->
 	<csm_user_group_role_pg
         user_group_role_pg_id="-5"
@@ -171,5 +192,10 @@
         group_id="-4"
         role_id="7"
         protection_group_id="-401"        
-        />                     
+        /> 
+          
+    <investigational_new_drugs />    
+    <ind_holders />		
+	<investigators/>
+    <site_investigators/>               
 </dataset>
