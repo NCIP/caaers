@@ -55,14 +55,11 @@ public class CaaersCSMUserDetailsService extends CSMUserDetailsService {
 	    if(groups == null || groups.size() == 0) {
 	        authorities = new GrantedAuthority[0];
 	    } else {
-	        String prefix = getRolePrefix();
-	        if(prefix == null)
-	            prefix = "";
 	        authorities = new GrantedAuthority[groups.size()];
 	        int idx = 0;
 	        for(Iterator i = groups.iterator(); i.hasNext();) {
 	            Group group = (Group)i.next();
-	            authorities[idx] = new GrantedAuthorityImpl((new StringBuilder()).append(prefix).append(group.getGroupName()).toString());
+	            authorities[idx] = new GrantedAuthorityImpl(group.getGroupName());
 	            idx++;
 	        }
 	
