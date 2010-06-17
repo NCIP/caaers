@@ -60,8 +60,6 @@ public class CaaersSecurityFacadeImpl extends HibernateDaoSupport implements Caa
 		//Fetch all the roles of the logged in user.
 		//Granted Authorities is populated when user is authenticated. 
 
-        if (true) return true;
-
 		try{
 			GrantedAuthority[] authorities = authentication.getAuthorities();
 			List<String> privilegedRoles;
