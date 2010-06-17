@@ -28,7 +28,6 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     private boolean autoPopulateHelpKey;
     protected MessageSource messageSource;
     protected FieldDecorator[] fieldDecorators;
-    protected CaaersSecurityFacade caaersSecurityFacade;
 
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -157,15 +156,14 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     	return messageSource.getMessage(code, objects, defaultMsg, Locale.getDefault());
     }
 
+    /**
+     * 
+     * Define the decorators list taht has to be applied to Tab's fields.
+     * This method will be called from the constructor of the Tab
+     *  
+     * */
     public void addFieldDecorators(FieldDecorator ... fd) {
         this.fieldDecorators = fd;
     }
 
-    public CaaersSecurityFacade getCaaersSecurityFacade() {
-        return caaersSecurityFacade;
-    }
-
-    public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
-        this.caaersSecurityFacade = caaersSecurityFacade;
-    }
 }

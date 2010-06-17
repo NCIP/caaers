@@ -59,18 +59,8 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
-        Flow<C> flow = new Flow<C>("Enter Subject");
-
-        layoutTabs(flow);
-        setFlow(flow);
         setAllowDirtyBack(true);
         setAllowDirtyForward(false);
-
-    }
-
-    @Required
-    public void setParticipantRepository(final ParticipantRepository participantRepository) {
-        this.participantRepository = participantRepository;
     }
 
     @Override
@@ -163,8 +153,6 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     /**
      * Template method to let the subclass decide the order of tab
      */
-    protected abstract void layoutTabs(Flow<C> flow);
-
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {

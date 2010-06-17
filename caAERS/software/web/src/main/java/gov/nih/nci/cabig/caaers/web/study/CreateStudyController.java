@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import javax.servlet.ServletException;
@@ -19,30 +20,27 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CreateStudyController extends StudyController<StudyCommand> {
 
-    /**
-     * Layout Tabs
-     * @param flow - flow the Flow object
-     */
-
-	
     @Override
-    protected void layoutTabs(final Flow<StudyCommand> flow) {
-    	/**
-    	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
-    	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
-    	 */
-        flow.addTab(new DetailsTab());
-        flow.addTab(new StudyTherapiesTab());
-        flow.addTab(new AgentsTab());
-        flow.addTab(new TreatmentAssignmentTab());
-        flow.addTab(new DiseaseTab());
-        flow.addTab(new SolicitedAdverseEventTab());
-        flow.addTab(new ExpectedAEsTab());
-        flow.addTab(new SitesTab());
-        flow.addTab(new InvestigatorsTab());
-        flow.addTab(new PersonnelTab());
-        flow.addTab(new IdentifiersTab());
-        flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
+    public FlowFactory<StudyCommand> getFlowFactory() {
+        return new FlowFactory<StudyCommand>() {
+            public Flow<StudyCommand> createFlow(StudyCommand cmd) {
+                Flow<StudyCommand> flow = new Flow<StudyCommand>("Create Study");
+                flow.addTab(new DetailsTab());
+                flow.addTab(new StudyTherapiesTab());
+                flow.addTab(new AgentsTab());
+                flow.addTab(new TreatmentAssignmentTab());
+                flow.addTab(new DiseaseTab());
+                flow.addTab(new SolicitedAdverseEventTab());
+                flow.addTab(new ExpectedAEsTab());
+                flow.addTab(new SitesTab());
+                flow.addTab(new InvestigatorsTab());
+                flow.addTab(new PersonnelTab());
+                flow.addTab(new IdentifiersTab());
+                flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
+                getTabConfigurer().injectDependencies(flow);
+                return flow;
+            }
+        };
 
     }
 

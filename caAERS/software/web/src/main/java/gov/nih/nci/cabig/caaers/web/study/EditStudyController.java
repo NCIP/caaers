@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Map;
@@ -81,24 +82,26 @@ public class EditStudyController extends StudyController<StudyCommand> {
     }
 
     @Override
-    protected void layoutTabs(final Flow<StudyCommand> flow) {
-    	/**
-    	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
-    	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
-    	 */
-        flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
-        flow.addTab(new DetailsTab());
-        flow.addTab(new StudyTherapiesTab());
-        flow.addTab(new AgentsTab());
-        flow.addTab(new TreatmentAssignmentTab());
-        flow.addTab(new DiseaseTab());
-        flow.addTab(new SolicitedAdverseEventTab());
-        flow.addTab(new ExpectedAEsTab());
-        flow.addTab(new SitesTab());
-        flow.addTab(new InvestigatorsTab());
-        flow.addTab(new PersonnelTab());
-        flow.addTab(new IdentifiersTab());
-      
+    public FlowFactory<StudyCommand> getFlowFactory() {
+        return new FlowFactory<StudyCommand>() {
+            public Flow<StudyCommand> createFlow(StudyCommand cmd) {
+                Flow<StudyCommand> flow = new Flow<StudyCommand>("Edit Study");
+                flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
+                flow.addTab(new DetailsTab());
+                flow.addTab(new StudyTherapiesTab());
+                flow.addTab(new AgentsTab());
+                flow.addTab(new TreatmentAssignmentTab());
+                flow.addTab(new DiseaseTab());
+                flow.addTab(new SolicitedAdverseEventTab());
+                flow.addTab(new ExpectedAEsTab());
+                flow.addTab(new SitesTab());
+                flow.addTab(new InvestigatorsTab());
+                flow.addTab(new PersonnelTab());
+                flow.addTab(new IdentifiersTab());
+                return flow;
+            }
+        };
+
     }
 
     @Override

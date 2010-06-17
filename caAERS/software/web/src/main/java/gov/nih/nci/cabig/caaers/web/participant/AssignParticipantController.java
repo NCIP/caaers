@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.ae.AbstractAdverseEventInputController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Map;
@@ -50,14 +51,22 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         return referenceData;
     }
 
+    @Override
+    public FlowFactory<AssignParticipantStudyCommand> getFlowFactory() {
+        return new FlowFactory<AssignParticipantStudyCommand>() {
+            public Flow<AssignParticipantStudyCommand> createFlow(AssignParticipantStudyCommand cmd) {
+                Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
+                flow.addTab(new AssignParticipantTab());
+                flow.addTab(new AssignStudyTab());
+                flow.addTab(new SubjectMedHistoryTab());
+                flow.addTab(new ReviewAssignmentTab());
+                return flow;
+            }
+        };
+    }
+
     public AssignParticipantController() {
         setCommandClass(AssignParticipantStudyCommand.class);
-        Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
-        flow.addTab(new AssignParticipantTab());
-        flow.addTab(new AssignStudyTab());
-        flow.addTab(new SubjectMedHistoryTab());
-        flow.addTab(new ReviewAssignmentTab());
-        setFlow(flow);
     }
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {

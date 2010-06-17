@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 
 import java.util.Map;
 
@@ -17,7 +16,7 @@ public class ReviewAssignmentTab extends TabWithFields<AssignParticipantStudyCom
 	
     public ReviewAssignmentTab() {
         super("Review", "Review", "par/reg_review_submit");
-//        super("Review and Submit", "Review and Submit", "par/par_confirmation");
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(Participant.class), new ReadonlyFieldDecorator());
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {

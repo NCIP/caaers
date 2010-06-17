@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.study.StudyCommand;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
@@ -71,18 +73,18 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
     }
 
     @Override
-    protected void layoutTabs(final Flow<T> flow) {
-    	
-    	/**
-    	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
-    	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
-    	 */
-    	
-        flow.addTab(new EditParticipantReviewParticipantTab());
-        flow.addTab(new EditParticipantTab());
-        flow.addTab(new SubjectMedHistoryTab());
+    public FlowFactory<T> getFlowFactory() {
+        return new FlowFactory<T>() {
+            public Flow<T> createFlow(T cmd) {
+                Flow<T> flow = new Flow<T>("Edit Subject");
+                flow.addTab(new EditParticipantReviewParticipantTab());
+                flow.addTab(new EditParticipantTab());
+                flow.addTab(new SubjectMedHistoryTab());
+                return flow;
+            }
+        };
     }
-
+    
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;

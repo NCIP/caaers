@@ -296,15 +296,13 @@
 
   <!--  PARTICIPANT   -->
   
-  	<bean name="participantEditTask" id="participantEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
-  	  autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
+  	<bean name="participantEditTask" id="participantEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
 
     <bean name="/participant/create" id="createParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
         <property name="webControllerValidator" ref="webControllerValidator"/>
     </bean>
 
-  <bean name="/participant/edit" id="editParticipantController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" p:task-ref="participantEditTask">
+  <bean name="/participant/edit" id="editParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" p:task-ref="participantEditTask">
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
 

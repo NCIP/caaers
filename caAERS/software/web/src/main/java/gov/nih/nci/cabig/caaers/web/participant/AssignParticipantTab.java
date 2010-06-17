@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +25,7 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
 
     public AssignParticipantTab() {
         super("Search for subject", "Search Subject", "par/reg_participant_search");
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(Participant.class), new ReadonlyFieldDecorator());
     }
 
     @Override

@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
@@ -62,9 +63,6 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     public StudyController() {
         setCommandClass(StudyCommand.class);
-        Flow<C> flow = new Flow<C>("Enter Study");
-        layoutTabs(flow);
-        setFlow(flow);
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
     }
@@ -79,11 +77,6 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     protected StudyDao getDao() {
         return studyDao;
     }
-
-    /**
-     * Template method to let the subclass decide the order of tab
-     */
-    protected abstract void layoutTabs(Flow<C> flow);
 
     @Override
     protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
