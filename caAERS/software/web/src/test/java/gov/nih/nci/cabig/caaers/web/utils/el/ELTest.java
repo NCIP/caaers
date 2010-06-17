@@ -30,5 +30,7 @@ public class ELTest extends TestCase {
         assertEquals("true", el.evaluate("${true && (false || true)}"));
         assertEquals("true", el.evaluate("${true && (false || (true && true && (true || false)))}"));
         assertEquals("false", el.evaluate("${true && (false || (true && true && (false || false)))}"));
+        assertEquals("true", el.evaluate("${true || false}"));
+        assertEquals("true", el.evaluate("${true}"));
     }
 }

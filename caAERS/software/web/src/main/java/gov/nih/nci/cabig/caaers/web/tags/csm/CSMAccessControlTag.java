@@ -87,7 +87,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 
             // Evaluate the Boolean expression
             EL el = new EL();
-            String s = el.evaluate("${" + objectPrivilege + "}");
+            String s = el.evaluate("${" + objectPrivilege + " || false}");
             Boolean isAuth = Boolean.parseBoolean(s);
             if (isAuth) return Tag.EVAL_BODY_INCLUDE; else return Tag.SKIP_BODY;
         }
