@@ -23,6 +23,7 @@ import org.apache.commons.el.BinaryOperatorExpression;
 import org.apache.commons.el.ExpressionString;
 import org.apache.commons.el.parser.ELParser;
 import org.apache.commons.el.parser.ParseException;
+import org.apache.commons.el.BooleanLiteral;
 
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.Expression;
@@ -51,6 +52,10 @@ public class EL {
                 return result == null ? null : result.toString();
             } else if (result instanceof BinaryOperatorExpression) {
                 BinaryOperatorExpression expr = (BinaryOperatorExpression)result;
+                result = expr.evaluate(this.resolver, this.mapper, null);
+                return result.toString();
+            } else if (result instanceof BooleanLiteral) {
+                BooleanLiteral expr = (BooleanLiteral)result;
                 result = expr.evaluate(this.resolver, this.mapper, null);
                 return result.toString();
             } else {
