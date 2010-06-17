@@ -29,7 +29,11 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 	
 	public static final String AUTH_DECISION_CACHE_KEY = "AUTH_DECISION_CACHE_KEY";
 	protected static final Log logger = LogFactory.getLog(CSMAccessControlTag.class);
-	private Object domainObject;
+
+    private String var;
+    private String scope;
+
+    private Object domainObject;
 	private String hasPrivileges = "";
 	private String objectPrivilege = "";
 	private String authorizationCheckName = "";
@@ -89,6 +93,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
             EL el = new EL();
             String s = el.evaluate("${" + objectPrivilege + "}");
             Boolean isAuth = Boolean.parseBoolean(s);
+            setAttribute(isAuth);
             if (isAuth) return Tag.EVAL_BODY_INCLUDE; else return Tag.SKIP_BODY;
         }
 
@@ -109,6 +114,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 
 		if (resolvedDomainObject == null) {
 			logger.debug("domainObject resolved to null, so including tag body");
+            setAttribute(true);
 			return Tag.EVAL_BODY_INCLUDE;
 		}
 		
@@ -120,7 +126,8 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 			authorizationCache.addDecision(resolvedDomainObject, evaledPrivilegesString, authFlag);
 		}
 		
-		if(authFlag){
+        setAttribute(authFlag);
+		if(authFlag) {
 			logger.debug("Authorization succeeded, evaluating body");
 			return Tag.EVAL_BODY_INCLUDE;
 		}
@@ -130,7 +137,15 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 		logger.debug("No permission, so skipping tag body");
 		return Tag.SKIP_BODY;
 	}
-	
+
+    private void setAttribute(boolean varValue) {
+        if (scope == null || StringUtils.isEmpty(scope)) scope = "page";
+        if (scope.equals("request")) pageContext.getRequest().setAttribute(getVar(), varValue);
+        else if (scope.equals("session")) pageContext.getSession().setAttribute(getVar(), varValue);
+        else if (scope.equals("application")) pageContext.getServletContext().setAttribute(getVar(), varValue);
+        else pageContext.setAttribute(getVar(), varValue);
+    }
+
 	protected boolean checkAuthorization(String authCheckBeanName, Object resolvedDomainObject, String[] requiredPrivileges) throws Exception {
 		Authentication auth = SecurityUtils.getAuthentication();
 		ApplicationContext context = getRequestContext().getWebApplicationContext();
@@ -201,5 +216,21 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 
     public void setSecurityFacade(String securityFacade) {
         this.securityFacade = securityFacade;
+    }
+
+    public String getVar() {
+        return this.var;
+    }
+
+    public void setVar(String var) {
+        this.var = var;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 }

@@ -56,6 +56,18 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>The security facade to be used for checking privileges on the provided protection group(domain object)</description>
 		</attribute>
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>This will hold the result of the evaluation in the given scope attributes.</description>
+		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>Scope to save the 'var'</description>
+		</attribute>
 	</tag>
 
 	
