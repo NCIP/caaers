@@ -70,14 +70,11 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     @Override
     protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
-
         CreateRuleCommand command = (CreateRuleCommand) oCommand;
-        if(command.getMode().equals(CreateRuleCommand.CREATE_MODE))
-        	command.deployRuleSet();
+        if(command.getMode().equals(CreateRuleCommand.CREATE_MODE)) command.deployRuleSet();
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("ruleSet", command.getRuleSet());
         return new ModelAndView("redirectToTriggerList", model);
-
     }
     
     @SuppressWarnings("unchecked")

@@ -510,9 +510,7 @@
   <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
   -->
 
-  <bean name="/rule/export" id="exportRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController">
-  </bean>	
-
+  <bean name="/rule/export" id="exportRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController"></bean>
   <bean name="/rule/create" id="createRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController"></bean>
   <bean name="/rule/list" id="listRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController"></bean>
   <bean name="/rule/util" id="ruleUtilController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController"></bean>
