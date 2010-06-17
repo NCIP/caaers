@@ -139,6 +139,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 	}
 
     private void setAttribute(boolean varValue) {
+        if (var == null) return;
         if (scope == null || StringUtils.isEmpty(scope)) scope = "page";
         if (scope.equals("request")) pageContext.getRequest().setAttribute(getVar(), varValue);
         else if (scope.equals("session")) pageContext.getSession().setAttribute(getVar(), varValue);
