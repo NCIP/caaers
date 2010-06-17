@@ -1,14 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -32,6 +25,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
 
     public ReviewTab() {
         this("Review", "Review", "rule/notification/reviewTab");
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(ReportDefinition.class), new ReadonlyFieldDecorator());
     }
 
     /*

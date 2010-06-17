@@ -1,15 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +36,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
     public NotificationsTab() {
         this("Specify Notification Details", "Notifications", "rule/notification/notificationsTab");
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(ReportDefinition.class), new ReadonlyFieldDecorator());
     }
 
     @Override

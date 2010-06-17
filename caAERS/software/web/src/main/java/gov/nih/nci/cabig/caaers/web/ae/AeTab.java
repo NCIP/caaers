@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
@@ -12,16 +13,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.
         WebUtils;
@@ -57,6 +49,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEvent.class), new ReadonlyFieldDecorator());
     }
 
     @Override

@@ -12,13 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
@@ -64,6 +58,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	
 	public AdverseEventTab(String longTitle, String shortTitle, String viewName){
 		super(longTitle, shortTitle, viewName);
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEvent.class), new ReadonlyFieldDecorator());
 	}
 	
 	@Override

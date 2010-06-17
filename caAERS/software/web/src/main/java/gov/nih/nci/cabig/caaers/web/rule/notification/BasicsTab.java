@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
@@ -26,6 +27,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
     public BasicsTab() {
         this("Report Definition", "Details", "rule/notification/basicsTab");
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(ReportDefinition.class), new ReadonlyFieldDecorator());
     }
     
     @Override

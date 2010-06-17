@@ -1,13 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +25,7 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
 
     public ReportDeliveryDefinitionTab() {
         super("Report Delivery Details", "Delivery Details", "rule/notification/reportDeliveryTab");
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(ReportDefinition.class), new ReadonlyFieldDecorator());
     }
 
     @Override
