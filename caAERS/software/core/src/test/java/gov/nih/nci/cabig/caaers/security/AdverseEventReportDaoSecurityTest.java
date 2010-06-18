@@ -40,7 +40,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        SecurityTestUtils.switchUser("user_1", "that_does_not_exist");
         ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
         reportingPeriodDao = (AdverseEventReportingPeriodDao) getApplicationContext().getBean("adverseEventReportingPeriodDao");
         adverseEventReportDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean(
@@ -49,16 +49,16 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
 
     @Override
     protected void tearDown() throws Exception {
-        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        SecurityTestUtils.switchUser("user_1", "that_does_not_exist");
         super.tearDown();
     }
 
     public void testAdverseEventSave() {
-        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
 
         ExpeditedAdverseEventReport newReport = createReport();
 
-        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        SecurityTestUtils.switchUser("user_1", "that_does_not_exist");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         logger.debug("################## auth = " + auth.getName() + " #####################");
@@ -74,7 +74,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
                             rootCause instanceof AccessDeniedException);
         }
 
-        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
         adverseEventReportDao.save(newReport);
         Integer id = newReport.getId();
         assertNotNull("Report not saved", id);
@@ -85,7 +85,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
     }
 
     public void testAdverseEventUpdate() {
-        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
 
         Integer id;
         {
@@ -99,7 +99,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
 
         interruptSession();
 
-        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        SecurityTestUtils.switchUser("user_1", "that_does_not_exist");
 
         ExpeditedAdverseEventReport report = adverseEventReportDao.getById(id);
         assertNotNull("report " + id + " is null", report);
@@ -123,7 +123,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
             assertTrue("Expecting AccessDeniedException, got: " + rootCause,
                             rootCause instanceof AccessDeniedException);
         }
-        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
 
         // Since there was an exception in a transactional DAO method, we have to get a new
         // hibernate session

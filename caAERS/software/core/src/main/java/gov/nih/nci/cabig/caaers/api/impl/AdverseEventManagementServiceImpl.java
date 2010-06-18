@@ -86,7 +86,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	
 	private CaaersServiceResponse saveAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage,String operation) {
 		//boolean authorizationOnByDefault = enableAuthorization(false);
-		//switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+		//switchUser("SYSTEM_ADMIN", "caaers_super_user");
 	//	WebRequest stubWebRequest = preProcess();
 		
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();

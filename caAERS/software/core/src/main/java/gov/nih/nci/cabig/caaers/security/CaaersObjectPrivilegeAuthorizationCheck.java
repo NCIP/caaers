@@ -36,15 +36,18 @@ public class CaaersObjectPrivilegeAuthorizationCheck  extends AbstractObjectPriv
 			GrantedAuthority[] authorities = authentication.getAuthorities();
 			List<String> userRoles;
 			List<String> privilegedRoles;
-			if(authorities  != null){
+			if (authorities != null) {
 				userRoles = new ArrayList<String>();
-				for(int i=0;i < authorities.length;i++){
-					String[] authoritySplit = authorities[i].getAuthority().split("ROLE_");
-					if(authoritySplit.length == 2){
-						userRoles.add(authoritySplit[1]);
-					}
-				}
-				//Fetch all the roles which have the given privilege on the given objectId
+                for (int i = 0; i < authorities.length; i++) {
+/*
+                    String[] authoritySplit = authorities[i].getAuthority().split("ROLE_");
+                    if (authoritySplit.length == 2) {
+                        userRoles.add(authoritySplit[1]);
+                    }
+*/
+                    userRoles.add(authorities[i].getAuthority());
+                }
+                //Fetch all the roles which have the given privilege on the given objectId
 				privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);
 				if(userRoles != null && privilegedRoles != null){
 					for(String userRole : userRoles){

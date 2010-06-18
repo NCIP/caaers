@@ -48,7 +48,7 @@ public class SecurityUtilsTest extends AbstractTestCase {
 	public void testGetGrantedAuthorities() {
 		SecurityTestUtils.switchToSuperuser();
 		assertEquals(1, SecurityUtils.getGrantedAuthorities().length);
-		assertEquals("ROLE_caaers_super_user", SecurityUtils.getGrantedAuthorities()[0].getAuthority());
+		assertEquals("caaers_super_user", SecurityUtils.getGrantedAuthorities()[0].getAuthority());
 	}
 
 	public void testGetGrantedAuthoritiesAuthentication() {
