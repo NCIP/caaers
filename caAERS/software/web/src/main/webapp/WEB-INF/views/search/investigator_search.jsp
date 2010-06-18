@@ -44,8 +44,12 @@
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <li id="thirdlevelnav" class="tab0"><div><a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a></div></li>
-            <li id="thirdlevelnav" class="tab1 selected"><div><a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a></div></li>
+        	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE">
+            	<li id="thirdlevelnav" class="tab0"><div><a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a></div></li>
+            </csmauthz:accesscontrol>
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:READ">
+            	<li id="thirdlevelnav" class="tab1 selected"><div><a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a></div></li>
+            </csmauthz:accesscontrol>
         </ul>
         <tags:pageHelp propertyKey="searchInvestigator"/>
     </div>

@@ -260,15 +260,24 @@ function toggelUserName(checkBoxChecked) {
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
             <li id="thirdlevelnav" class="tab0 selected">
-                <div>
-                    <a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a>
-                </div>
-            </li>
+	            <csmauthz:accesscontrol var="createUpdateAllowed" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE">
+                	<div>
+	                    <a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a>
+                	</div>
+                </csmauthz:accesscontrol>
+                <c:if test="${!(createUpdateAllowed==true)}">
+                	<div>
+	                    <a href="#"><caaers:message code="investigator.menu.viewInvestigator"/></a>
+                	</div>                
+                </c:if>
+            </li>            
             <li id="thirdlevelnav" class="tab1">
+            	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:READ">
                 <div>
                     <a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a>
                 </div>
-            </li>
+                </csmauthz:accesscontrol>
+            </li>            
         </ul>
     </div>
 
