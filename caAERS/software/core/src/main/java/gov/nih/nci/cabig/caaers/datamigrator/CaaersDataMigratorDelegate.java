@@ -17,8 +17,10 @@ public class CaaersDataMigratorDelegate {
 	 * @throws Exception
 	 */
 	public void doMigrate() throws Exception{
-	
-		if(authenticationMode.equals("webSSO")) return;
+					
+		if ("webSSO".equalsIgnoreCase(authenticationMode)) {
+			return;
+		}
 		
 		for(CaaersDataMigrator migrator : migrators){
 			migrator.migrateData();
