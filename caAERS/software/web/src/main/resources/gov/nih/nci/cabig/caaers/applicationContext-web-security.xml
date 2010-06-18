@@ -78,9 +78,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/reload" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/viewInvestigator" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
+        <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
+        <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
+        <entry key="/pages/admin/viewInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
         <entry key="/pages/admin/createResearchStaff" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/searchResearchStaff" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/viewResearchStaff" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
