@@ -71,11 +71,13 @@
             <tags:jsErrorsMessage/>
             <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
         </chrome:division><jsp:invoke fragment="repeatingFields"/>
-        <c:if test="${not empty tabControls}">
-            <jsp:invoke fragment="tabControls" />
-        </c:if>
-        <c:if test="${empty tabControls}">
-            <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
+         <c:if test="${not hideTabControls}">
+            <c:if test="${not empty tabControls}">
+                <jsp:invoke fragment="tabControls" />
+            </c:if>
+            <c:if test="${empty tabControls}">
+                <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
+            </c:if>
         </c:if>
     </form:form>
 </c:if><!-- END tags\tabForm.tag -->
