@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import static org.easymock.EasyMock.expect;
-
-import org.hibernate.jdbc.Expectation;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 /**
  * This is the repository class for managing investigators
  * @author Biju Joseph
@@ -17,14 +15,14 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 	InvestigatorRepositoryImpl repositoryImpl;
 	InvestigatorDao investigatorDao;
-	CSMUserRepository csmUserRepository;
+	CaaersSecurityFacadeImpl caaersSecurityFacadeImpl;
 	protected void setUp() throws Exception {
 		super.setUp();
 		repositoryImpl = new InvestigatorRepositoryImpl();
 		investigatorDao = registerDaoMockFor(InvestigatorDao.class);
 		repositoryImpl.setInvestigatorDao(investigatorDao);
-		csmUserRepository = registerMockFor(CSMUserRepository.class);
-		repositoryImpl.setCsmUserRepository(csmUserRepository);
+		caaersSecurityFacadeImpl = registerMockFor(CaaersSecurityFacadeImpl.class);
+		repositoryImpl.setCaaersSecurityFacade(caaersSecurityFacadeImpl);
 		repositoryImpl.setAuthenticationMode("local");
 	}
 
@@ -35,7 +33,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 		
 		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
 		
-		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, changeUrl);
+		caaersSecurityFacadeImpl.createOrUpdateCSMUser(inv, changeUrl);
 		
 		replayMocks();
 		repositoryImpl.save(inv, changeUrl);

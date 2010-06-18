@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
@@ -9,17 +8,12 @@ import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -44,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ResearchStaffRepository {
 
-    private CSMUserRepository csmUserRepository;
+    private CaaersSecurityFacadeImpl caaersSecurityFacade;
     private ResearchStaffDao researchStaffDao;
     private SiteResearchStaffDao siteResearchStaffDao;
     private ResearchStaffConverterDao researchStaffConverterDao;
@@ -93,7 +87,7 @@ public class ResearchStaffRepository {
     	
 		//create user groups  - Note : RemoteResearchStaff fetched from PO will not have a loginId/Username.  
 		if(StringUtils.isNotEmpty(researchStaff.getLoginId())){
-			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+			caaersSecurityFacade.createOrUpdateCSMUser(researchStaff, changeURL);
 		}
 		
         
@@ -138,9 +132,8 @@ public class ResearchStaffRepository {
      * @param researchStaff
      * @return
      */
-    @SuppressWarnings("unchecked")
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
-        researchStaff.setUserGroupTypes(csmUserRepository.getUserGroups(researchStaff.getLoginId()));
+        researchStaff.setUserGroupTypes(caaersSecurityFacade.getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
         return researchStaff;
     }
     
@@ -427,11 +420,6 @@ public class ResearchStaffRepository {
     }
 
     @Required
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
-    }
-
-    @Required
     public String getAuthenticationMode() {
         return authenticationMode;
     }
@@ -473,5 +461,10 @@ public class ResearchStaffRepository {
     
     public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
 		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
+	}
+
+	public void setCaaersSecurityFacade(
+			CaaersSecurityFacadeImpl caaersSecurityFacade) {
+		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 }

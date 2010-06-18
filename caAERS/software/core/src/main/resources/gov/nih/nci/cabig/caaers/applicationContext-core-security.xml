@@ -22,7 +22,7 @@
 	<util:map id="connectionProperties" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
 		<entry key="hibernate.connection.url" value="s[datasource.url]"></entry>
 		<entry key="hibernate.connection.driver_class" value="org.postgresql.Driver"></entry>
-		<entry key="hibernate.dialect" value="gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect"></entry>
+		<entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"></entry>
 		<entry key="hibernate.connection.username" value="s[datasource.username]"></entry>
 		<entry key="hibernate.connection.password" value="s[datasource.password]"></entry>
 		<entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
@@ -570,14 +570,16 @@
     <bean id="organizationQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
     <bean id="reportVersionQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport" p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx" />
 
-
-
+	<!-- Common API for provisioning into csm -->
+	<bean id="provisioningSessionFactory" class="gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory">
+ 		<property name="authorizationManager" ref="csmUserProvisioningManager"/>
+	</bean>
+ 
     <!-- The security facade bean -->
     <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl"  >
-    	<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
-    	<property name="hibernateTemplate" ref="hibernateTemplate" />
+    	<property name="csmUserRepository" ref="csmUserRepository"/>
     	<property name="rolePrivilegeDao" ref="rolePrivilegeDao" />
+    	<property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>
-
     
 </beans>

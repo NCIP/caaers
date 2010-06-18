@@ -24,7 +24,8 @@ public interface CaaersSecurityFacade {
      * Will create or update a csm user.
      * @param csmUser - A user defined in CSM.
      */
-    void createOrUpdateCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser );
+    void createOrUpdateCSMUser(User user, String changeURL );
+
 
     /**
      * Will check the authorization status.

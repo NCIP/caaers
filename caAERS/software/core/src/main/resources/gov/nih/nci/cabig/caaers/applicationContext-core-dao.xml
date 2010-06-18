@@ -731,9 +731,7 @@ This applicationContext contains the definition of the DAOs
           lazy-init="true" autowire="byType">
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="mailSender" ref="mailer"/>
-        <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
         <property name="userDao" ref="userDao" />
     </bean>
     
@@ -748,7 +746,7 @@ This applicationContext contains the definition of the DAOs
         <property name="siteResearchStaffDao" ref="siteResearchStaffDao"/>
         <property name="organizationDao" ref="organizationDao"/>
         <property name="organizationRepository" ref="organizationRepository"/>
-        <property name="csmUserRepository" ref="csmUserRepository"/>
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="researchStaffConverterDao" ref="researchStaffConverterDao"/>
         <property name="studyRepository" ref="studyRepository"/>
@@ -756,7 +754,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
 	<bean id="investigatorRepository" class="gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl">
 		<property name="authenticationMode" ref="authenticationMode"/>
-		<property name="csmUserRepository" ref="csmUserRepository"/>
+		<property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
 		<property name="investigatorDao" ref="investigatorDao" />
 		<property name="investigatorConverterDao" ref="investigatorConverterDao" />
 		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
@@ -809,12 +807,24 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="terminologyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepositoryImpl" autowire="byType"/>
     
-	<bean id="caaersDataMigrator" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigrator">
-        <property name="jdbcTemplate">
+    <bean id="caaersDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigrator">
+		<property name="jdbcTemplate">
             <ref bean="jdbcTemplate"/>
         </property>
         <property name="properties" ref="caaersDatasourceFactoryBean"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
+    
+ 	<bean id="caaersDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="caaersDataMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>   
     
 	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
 		<property name="migrators">
@@ -822,6 +832,7 @@ This applicationContext contains the definition of the DAOs
 				<ref bean="caaersDataMigrator"/>
 			</list>
 		</property>
+		<property name="authenticationMode" ref="authenticationMode"/>
     </bean>
     
 </beans>

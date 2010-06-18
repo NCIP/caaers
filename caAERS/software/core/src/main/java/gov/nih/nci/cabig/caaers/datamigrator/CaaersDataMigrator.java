@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.datamigrator;
 
+import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -25,6 +29,8 @@ public class CaaersDataMigrator {
 
 	protected final Log log = LogFactory.getLog(getClass());
     private JdbcTemplate jdbcTemplate;
+    private UserDao userDao;
+    private CaaersSecurityFacade caaersSecurityFacade;
     private Properties properties;
     private static final String DB_NAME  = "databaseName";
     private static final String ORACLE_DB = "oracle";
@@ -35,39 +41,35 @@ public class CaaersDataMigrator {
     																"caaers_ae_cd",
     																"caaers_site_cd",
     																"caaers_physician");
-    //private static int CAAERS_DATA_MIGRATOR_OPERATION_CODE = 1;
-    //private static int STATUS_CODE_IN_PROGRESS = 0;
-    //private static int STATUS_CODE_COMPLETE = 1;
     
     /**
      * Migrates users,groups,siteresearchstaffrole,studypersonnel
      */
     public void migrateData(){
-    	 if(preMigrate()){
-    		log.debug("Migration required performing migration");
-    		 
-			//Migrate SuperUsers
-			migrateSuperUsers();
-			//Migrate Normal users
-			migrateUsers();
-			deleteUnusedRecords();
-			//Migrate SiteResearchStaffRoles
-			migrateSiteResearchStaffRole();
-			//Migrate SP role codes
-			migrateStudyPersonnelRole();
-			deleteUnusedStudyPersonnel();
-			//Create PE & PG for all organizations
-			migratePEPGForOrganizations();
-			//Create PE & PG for all Studies
-			migratePEPGForStudes();
-			//Associate PE & PG
-			associatePEPG();
-			
-    		postMigrate();
-    	 }else{
-    		 log.debug("Migration not required");
-    	 }
-    	 
+    	
+    	try{
+       	 if(preMigrate()){
+     		log.debug("Migration required performing migration ......");
+ 			//Migrate SuperUsers
+ 			migrateSuperUsers();
+ 			//Migrate Normal users
+ 			migrateUsers();
+ 			deleteUnusedRecords();
+ 			//Migrate SiteResearchStaffRoles
+ 			migrateSiteResearchStaffRole();
+ 			//Migrate SP role codes
+ 			migrateStudyPersonnelRole();
+ 			deleteUnusedStudyPersonnel();
+ 			//Provision Instances for existing users.  
+ 			provisionExistingUsers();
+ 			log.debug("Migration complete");
+     		postMigrate();
+     	 }else{
+     		 log.debug("Migration not required");
+     	 }
+    	}catch(Exception ex){
+    		log.error("Exception while executing CaaersDataMigrator.migrateData()", ex);
+    	}
     }
     
     /**
@@ -103,7 +105,7 @@ public class CaaersDataMigrator {
      * caaers_super_user group. (SYSTEM_ADMIN) SYSTEM & cctsdemo1@nci.nih.gov users are migrated through groovy.
      */
     @SuppressWarnings("unchecked")
-	public void migrateSuperUsers(){
+	protected void migrateSuperUsers(){
     	
     	List<Map> csmUsers = getCsmUsers("caaers_super_user");
     	for (Map map : csmUsers) {
@@ -155,7 +157,7 @@ public class CaaersDataMigrator {
      * caaers_physician -- ("ae_reporter") 
      */
     @SuppressWarnings("unchecked")
-	public void migrateUsers(){
+	protected void migrateUsers(){
 		
     	for(String groupName : EXISTING_GROUPS){
     		
@@ -223,6 +225,17 @@ public class CaaersDataMigrator {
     }
     
     /**
+     * This methos will return all the users in CSM_USER table.
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	protected List<Map> getAllCsmUsers(){
+    	String usersSql = "select login_name,user_id from csm_user ";
+    	List<Map> csmUsers = jdbcTemplate.queryForList(usersSql);
+    	return csmUsers;
+    }
+    
+    /**
      * This method returns the proper sql string for the DB being used.
      * @return
      */
@@ -283,7 +296,7 @@ public class CaaersDataMigrator {
      * This method will migrate all the existing site research staff roles to new roles.
      */
     @SuppressWarnings("unchecked")
-	public void migrateSiteResearchStaffRole(){
+	protected void migrateSiteResearchStaffRole(){
 
     	for(String groupName : EXISTING_GROUPS){
     		List<Map> siteResearchStaffRoles = getSiteResearchStaffRoles(groupName);
@@ -496,7 +509,7 @@ public class CaaersDataMigrator {
     
     
     /**
-     * 
+     * This method will return a valid insert query based on db.
      * @return
      */
     protected String getInsertBootstrapLogSql(){
@@ -512,70 +525,22 @@ public class CaaersDataMigrator {
     }
     
     /**
-     * This method will provision Protetion Elements & Protection Groups for all Studies in caAERS.
+     * This method will provision Organizations and Studies into CSM for a given user.
      */
-    protected void migratePEPGForOrganizations(){
-    	String peSql = "INSERT INTO csm_protection_element (protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-    						"select nextval('csm_protectio_protection_e_seq'),'HealthcareSite.'||nci_institute_code, name, 'HealthcareSite.'||nci_institute_code,-1 from organizations";
-    	
-    	String pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-							"select nextval('csm_protectio_protection_g_seq'),'HealthcareSite.'||nci_institute_code, name, -1,0 from organizations";
-    	
-    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-    		peSql = "INSERT INTO csm_protection_element (protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-						"select csm_protectio_protection_e_seq.nextval,'HealthcareSite.'||nci_institute_code, name, 'HealthcareSite.'||nci_institute_code,-1 from organizations";
-    		
-    		pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-						"select csm_protectio_protection_g_seq.nextval,'HealthcareSite.'||nci_institute_code, name, -1,0 from organizations";
+    @SuppressWarnings("unchecked")
+	protected void provisionExistingUsers(){
+    	List<Map> csmUsers = getAllCsmUsers();
+    	User user = null;
+    	for (Map map : csmUsers) {
+			String loginName = map.get("login_name").toString();
+			user = userDao.getByLoginId(loginName);
+			if(user != null){
+				caaersSecurityFacade.provisionUser(user);
+				userDao.flush();
+			}
     	}
-    	
-    	jdbcTemplate.execute(peSql);
-    	jdbcTemplate.execute(pgSql);
     }
     
-    /**
-     * This method will provision Protection Elements & Protection Groups for all Organizations in caAERS.
-     */
-    protected void migratePEPGForStudes(){
-    	
-    	String peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-							"select nextval('csm_protectio_protection_e_seq'),'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
-								"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
-
-    	String pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-    						"select nextval('csm_protectio_protection_g_seq'),'Study.'||value,'Study.'||value,-1,0 from " +
-    							"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
-    	
-    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-    		peSql = "INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id) " +
-							"select csm_protectio_protection_e_seq.nextval,'Study.'||value,'Study.'||value,'Study.'||value,-1 from " +
-								"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
-    		
-    		pgSql = "INSERT INTO csm_protection_group(protection_group_id,protection_group_name,protection_group_description,application_id,large_element_count_flag) " +
-    						"select csm_protectio_protection_g_seq.nextval,'Study.'||value,'Study.'||value,-1,0 from " +
-    							"(select distinct value from identifiers where type = 'Coordinating Center Identifier' and stu_id IS NOT NULL) as temp " ;
-    	}
-    	
-    	jdbcTemplate.execute(peSql);
-    	jdbcTemplate.execute(pgSql);
-    }
-    
-    
-    /**
-     * This method will associate all PE's & PG's on a one on one basis.
-     */
-    protected void associatePEPG(){
-    	String sql = "INSERT INTO csm_pg_pe (pg_pe_id,protection_group_id,protection_element_id) " +
-    					"select nextval('csm_pg_pe_id_seq'),pg.protection_group_id,pe.protection_element_id from csm_protection_element pe, csm_protection_group pg " +
-    					"where pe.protection_element_name = pg.protection_group_name";
-    	
-    	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-    		sql = "INSERT INTO csm_pg_pe (pg_pe_id,protection_group_id,protection_element_id) " +
-					"select csm_pg_pe_id_seq.nextval,pg.protection_group_id,pe.protection_element_id from csm_protection_element pe, csm_protection_group pg " +
-						"where pe.protection_element_name = pg.protection_group_name";
-    	}
-    	jdbcTemplate.execute(sql);
-    }
     
     /**
      * Deletes all the Study Personnel records with old roleCode.
@@ -585,6 +550,7 @@ public class CaaersDataMigrator {
     	jdbcTemplate.execute(sql);
     }
     
+    @Required
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
 	}
@@ -601,5 +567,15 @@ public class CaaersDataMigrator {
 	@Required
 	public void setProperties(Properties properties) {
 		this.properties = properties;
+	}
+	
+	@Required
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	@Required
+	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
+		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 }

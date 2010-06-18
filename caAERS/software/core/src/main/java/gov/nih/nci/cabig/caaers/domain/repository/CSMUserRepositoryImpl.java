@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
@@ -34,9 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     private UserProvisioningManager userProvisioningManager;
-    private CSMObjectIdGenerator siteObjectIdGenerator;
     private MailSender mailSender;
-    private SimpleMailMessage accountCreatedTemplateMessage;
     private String authenticationMode;
     private UserDao userDao;
     
@@ -351,21 +348,16 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
         this.userProvisioningManager = userProvisioningManager;
     }
+    
+	public UserProvisioningManager getUserProvisioningManager() {
+		return userProvisioningManager;
+	}
 
     @Required
     public void setMailSender(final MailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    @Required
-    public void setAccountCreatedTemplateMessage(final SimpleMailMessage accountCreatedTemplateMessage) {
-        this.accountCreatedTemplateMessage = accountCreatedTemplateMessage;
-    }
-
-    @Required
-    public void setSiteObjectIdGenerator(final CSMObjectIdGenerator siteObjectIdGenerator) {
-        this.siteObjectIdGenerator = siteObjectIdGenerator;
-    }
     @Required
     public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;

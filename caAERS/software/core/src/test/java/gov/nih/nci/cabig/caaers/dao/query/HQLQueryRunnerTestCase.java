@@ -2,9 +2,15 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author: Biju Joseph
@@ -229,7 +235,69 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
         }
     }
 
-
+    
+    public void testIdentifiersFetchForInv(){
+    	
+    	Date d = new Date();
+    	
+    	StringBuilder hql = new StringBuilder("select distinct ids.value from StudyInvestigator sti "); 
+					  hql.append("join sti.studyOrganization so ");
+					  hql.append("join so.study s ");
+					  hql.append("join s.identifiers ids ");
+					  hql.append("join sti.siteInvestigator si ");
+					  hql.append("join si.investigator i ");
+					  hql.append("where i.loginId = :loginId and  ");
+					  hql.append("sti.startDate<=:stDate and  ");
+					  hql.append("( sti.endDate is null or sti.endDate >= :enDate ) and ");
+					  hql.append("sti.retiredIndicator <> true and ");
+					  hql.append("ids.type = 'Coordinating Center Identifier'");
+    	
+    	HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("loginId", "p.pater@web.de");
+        query.getParameterMap().put("stDate", d);
+        query.getParameterMap().put("enDate", d);
+        st = System.currentTimeMillis();
+        List<String> resultList = (List<String>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
+    	
+    }
+    
+    public void testIdentifiersFetchForRs(){
+    	
+    	Date d = new Date();
+    	
+        StringBuilder hql = new StringBuilder("select distinct ids.value from StudyPersonnel sp ")
+        .append("join sp.studyOrganization so ")
+        .append("join so.study s ")
+        .append("join s.identifiers ids ")
+        .append("join sp.siteResearchStaff srs ")
+        .append("join srs.researchStaff rs ")
+        .append("where rs.loginId = :loginId ")
+        .append("and sp.startDate<= :stDate ")
+        .append("and (sp.endDate is null or sp.endDate >= :enDate ) " )
+        .append("and sp.retiredIndicator <> true and ")
+        .append("ids.type = 'Coordinating Center Identifier'");
+    	
+    	HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("loginId", "sponsor");
+        query.getParameterMap().put("stDate", d);
+        query.getParameterMap().put("enDate", d);
+        st = System.currentTimeMillis();
+        List<String> resultList = (List<String>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
+    	
+    }
+    
+    
+    public void testProvisionRs(){
+    	CaaersSecurityFacadeImpl securityFacade = (CaaersSecurityFacadeImpl)getDeployedApplicationContext().getBean("caaersSecurityFacade");
+    	ResearchStaffDao researchStaffDao = (ResearchStaffDao)getDeployedApplicationContext().getBean("researchStaffDao");
+    	ResearchStaff rs = researchStaffDao.getByLoginId("whosbaum@yahoo.com");
+    	securityFacade.provisionUser(rs);
+    }
+    
 
     private List<Integer> orgIds(){
        return orgIds(1, 5000);

@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -36,7 +37,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private InvestigatorDao investigatorDao;
 	private SiteInvestigatorDao siteInvestigatorDao;
 	private InvestigatorConverterDao investigatorConverterDao;
-	private CSMUserRepository csmUserRepository;
+	private CaaersSecurityFacadeImpl caaersSecurityFacade;
 	private String authenticationMode;
 	private OrganizationDao organizationDao;
 	private OrganizationRepository organizationRepository;
@@ -73,7 +74,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	    
 		//create the csm entries
 		if(investigator.getAllowedToLogin()){
-			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+			caaersSecurityFacade.createOrUpdateCSMUser(investigator, changeURL);
 		}
 		
 		return investigator;
@@ -273,12 +274,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     public void setAuthenticationMode(String authenticationMode) {
 		this.authenticationMode = authenticationMode;
 	}
-    public CSMUserRepository getCsmUserRepository() {
-		return csmUserRepository;
-	}
-    public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
-		this.csmUserRepository = csmUserRepository;
-	}
 
 	public void setInvestigatorConverterDao(
 			InvestigatorConverterDao investigatorConverterDao) {
@@ -296,5 +291,10 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+
+	public void setCaaersSecurityFacade(
+			CaaersSecurityFacadeImpl caaersSecurityFacade) {
+		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 }

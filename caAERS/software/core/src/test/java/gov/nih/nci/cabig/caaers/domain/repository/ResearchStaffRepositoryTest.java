@@ -9,29 +9,26 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.hssf.record.formula.functions.Month;
-
-import com.ibm.icu.util.Calendar;
-
 public class ResearchStaffRepositoryTest extends AbstractTestCase {
 	
 	ResearchStaffRepository repository;
-	CSMUserRepository csmUserRepository;
+	CaaersSecurityFacadeImpl caaersSecurityFacadeImpl;
 	ResearchStaffDao researchStaffDao;
 	StudyRepository studyRepository;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		repository = new ResearchStaffRepository();
-		csmUserRepository = registerMockFor(CSMUserRepository.class);
+		caaersSecurityFacadeImpl = registerMockFor(CaaersSecurityFacadeImpl.class);
 		studyRepository = registerMockFor(StudyRepository.class);
-		repository.setCsmUserRepository(csmUserRepository);
+		repository.setCaaersSecurityFacade(caaersSecurityFacadeImpl);
 		researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
 		repository.setResearchStaffDao(researchStaffDao);
 		repository.setAuthenticationMode("local");
@@ -55,7 +52,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		staff.setLoginId("Joel@def.com");
 		String changeUrl = "/pages/url";
 		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
-		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
+		caaersSecurityFacadeImpl.createOrUpdateCSMUser(staff, changeUrl);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
@@ -81,7 +78,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
 		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
-		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
+		caaersSecurityFacadeImpl.createOrUpdateCSMUser(staff, changeUrl);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
