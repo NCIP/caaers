@@ -78,7 +78,7 @@ public enum UserGroupType implements CodedEnum<Integer> {
     }
     
     public String getSecurityRoleName() {
-    	return "ROLE_"+csmName;
+    	return csmName;
     }
 
     public static final String[] strValues() {
