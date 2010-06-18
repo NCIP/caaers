@@ -10,12 +10,15 @@ import java.util.List;
 public class CaaersDataMigratorDelegate {
 
 	private List<CaaersDataMigrator> migrators;
+	private String authenticationMode;
 	
 	/**
 	 * 
 	 * @throws Exception
 	 */
 	public void doMigrate() throws Exception{
+	
+		if(authenticationMode.equals("webSSO")) return;
 		
 		for(CaaersDataMigrator migrator : migrators){
 			migrator.migrateData();
@@ -28,5 +31,9 @@ public class CaaersDataMigratorDelegate {
 
 	public void setMigrators(List<CaaersDataMigrator> migrators) {
 		this.migrators = migrators;
+	}
+
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
 	}
 }
