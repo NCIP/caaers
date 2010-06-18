@@ -10,7 +10,7 @@ import java.util.List;
 public class CaaersDataMigratorDelegate {
 
 	private List<CaaersDataMigrator> migrators;
-	private String authenticationMode;
+	private String authenticationMode="local";
 	
 	/**
 	 * 
