@@ -24,6 +24,7 @@
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <%@attribute name="hideBox" type="java.lang.Boolean" %>
 <%@attribute name="additionalTitle" required="false" fragment="false" %>
+<%@attribute name="hideTabControls" type="java.lang.Boolean" description="If true will hide the tab flow controls" %>
 <c:if test="${empty willSave}">
     <c:set var="willSave" value="${true}"/>
 </c:if>
@@ -44,12 +45,15 @@
                 <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
             </chrome:division><jsp:invoke fragment="repeatingFields"/>
         </chrome:box>
-        <c:if test="${not empty tabControls}">
+        <c:if test="${not hideTabControls}">
+           <c:if test="${not empty tabControls}">
                 <jsp:invoke fragment="tabControls" />
-            </c:if>
-        <c:if test="${empty tabControls}">
+           </c:if>
+           <c:if test="${empty tabControls}">
             <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
+           </c:if>
         </c:if>
+
     </form:form>
 </c:if>
 <c:if test="${hideBox}">
