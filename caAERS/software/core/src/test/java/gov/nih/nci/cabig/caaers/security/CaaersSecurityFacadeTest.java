@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersDaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	
 	public void testCheckAuthorization() {
 		String userName = "test-user";
-		String[] roles = {"supplemental_study_information_manager" , "study_creator"} ;
+		String[] roles = {UserGroupType.supplemental_study_information_manager.getSecurityRoleName() , UserGroupType.study_creator.getSecurityRoleName()} ;
 		String objectId = "gov.nih.nci.cabig.caaers.domain.Participant";
 		String privilege = "CREATE";
 		
@@ -50,7 +51,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		boolean checkAuth = caaersSecurityFacade.checkAuthorization(auth, objectId, privilege);
 		assertEquals(true,checkAuth);
 		
-		String[] roles2 = {"subject_manager"} ;
+		String[] roles2 = {UserGroupType.subject_manager.getSecurityRoleName()} ;
 		objectId = "gov.nih.nci.cabig.caaers.Admin";
 		privilege = "ACCESS";
 		auth =buildAuthentication(userName, roles2);
@@ -60,8 +61,25 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		privilege = "CREATE";
 		checkAuth = caaersSecurityFacade.checkAuthorization(auth, objectId, privilege);
 		assertEquals(false,checkAuth);
+		
+
 	}
 	
+    public void testCheckAuthorization2() throws Exception{
+        SecurityTestUtils.switchUser("tester",
+                UserGroupType.business_administrator.getSecurityRoleName(),
+                UserGroupType.registrar.getSecurityRoleName());
+        
+        boolean b = caaersSecurityFacade.checkAuthorization(SecurityUtils.getAuthentication(),  "gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition", "READ");
+        assertTrue(b);
+
+        SecurityTestUtils.switchUser("tester",
+                UserGroupType.system_administrator.getSecurityRoleName(),
+                UserGroupType.registrar.getSecurityRoleName());
+        b = caaersSecurityFacade.checkAuthorization(SecurityUtils.getAuthentication(),  "gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition", "READ");
+        assertFalse(b);
+    }
+    
 	private Authentication buildAuthentication(String userName, String... roles) {
         GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
         for (int i = 0; i < roles.length; i++) {
