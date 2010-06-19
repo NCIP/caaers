@@ -252,7 +252,7 @@
             				<div class="row">
             					<div class="label"><input id="select-meddra-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (MedDRA)</div>
             					<div class="value">
-            						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
+            						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
             						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete"/>
                     				<tags:indicator id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-indicator"/>
                     				<div id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-choices" class="autocomplete"></div>

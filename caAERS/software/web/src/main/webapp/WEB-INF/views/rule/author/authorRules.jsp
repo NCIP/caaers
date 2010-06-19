@@ -1278,8 +1278,8 @@ div#createNew h3, div.section h3 {
                       </form:select>
                       <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"/>
                       <!-- set domain-object display-uri to column -->
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
                       </span> 
                       <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
@@ -1300,11 +1300,11 @@ div#createNew h3, div.section h3 {
                         </c:forEach>
                       </form:select>
                       <tags:errors path="ruleSet.rule[${ruleCount }].condition.column[${columnCount }].fieldConstraint[0].fieldName"/>
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
-                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
                       
                       <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
@@ -1637,7 +1637,7 @@ div#createNew h3, div.section h3 {
 																	itemLabel="displayUri" itemValue="value" />
                                           </form:select>
                                           <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
-                                          <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
+                                          <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
                                         </c:when>
                                         <c:otherwise>
                                           <form:select 
@@ -1650,7 +1650,7 @@ div#createNew h3, div.section h3 {
 																	itemLabel="displayUri" itemValue="value" />
                                           </form:select>
                                           <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
-                                          <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
+                                          <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
                                         </c:otherwise>
                                       </c:choose>
                                     </c:if>

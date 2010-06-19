@@ -15,7 +15,7 @@
         <input size="50" id="${field.textfieldId}"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
         <div id="${field.choicesId}" class="autocomplete"></div>
-        <form:hidden path="${field.propertyName}"/>
+        <form:hidden path="${field.propertyName}" id="${field.propertyName}"/>
     </c:when>
     <c:otherwise>
         UNIMPLEMENTED FIELD TYPE ${field.type} for ${field.propertyName}

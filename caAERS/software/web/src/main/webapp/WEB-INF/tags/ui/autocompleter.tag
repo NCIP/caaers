@@ -41,7 +41,7 @@
   <c:if test="${enableClearButton and not disabled}"><a id="${path}-clear" onclick="javascript:$('${path}-input').clear();$('${path}').clear();" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a></c:if>
   <tags:indicator id="${path}-indicator"/>
   <div id="${path}-choices" class="autocomplete" style="display: none"></div>
-  <form:hidden path="${path}"/>
+  <form:hidden path="${path}" id="${path}"/>
 </jsp:attribute>
     
 <jsp:attribute name="embededJS">

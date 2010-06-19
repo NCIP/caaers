@@ -114,7 +114,7 @@
         </div>
     </c:when>
     <c:when test="${field.categoryName == 'hidden'}">
-        <form:hidden path="${field.propertyName}" />
+        <form:hidden path="${field.propertyName}" id="${field.propertyName}" />
     </c:when>
 
     <c:otherwise>

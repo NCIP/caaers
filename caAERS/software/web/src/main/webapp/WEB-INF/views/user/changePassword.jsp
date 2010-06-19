@@ -112,7 +112,7 @@
 	 		<ui:label path="passwordNew" text="New Password"  required="true" />
 	 	</jsp:attribute>
 	 	<jsp:attribute name="value">
-	 		<form:password path="passwordNew" cssClass="validate-NOTEMPTY" title="New Password" />
+	 		<form:password id="passwordNew" path="passwordNew" cssClass="validate-NOTEMPTY" title="New Password" />
 	 	</jsp:attribute>
 	 </ui:row>
 	 <ui:row path="passwordConfirm">
@@ -120,7 +120,7 @@
 	 		<ui:label path="passwordConfirm" text="Confirm Password"  required="true" />
 	 	</jsp:attribute>
 	 	<jsp:attribute name="value">
-	 		<form:password path="passwordConfirm" cssClass="validate-NOTEMPTY" title="Confirm Password" />
+	 		<form:password id="passwordConfirm" path="passwordConfirm" cssClass="validate-NOTEMPTY" title="Confirm Password" />
 	 	</jsp:attribute>
 	 </ui:row>
 
