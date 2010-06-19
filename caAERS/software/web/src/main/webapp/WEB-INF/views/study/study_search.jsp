@@ -81,7 +81,7 @@ function onKey(e) {
                 	<form:select path="searchCriteria[${status.index}].searchType">
 						<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
 					</form:select>
-					<form:input path="searchCriteria[${status.index}].searchText" size="25" onkeydown="onKey(event);"/>
+					<form:input path="searchCriteria[${status.index}].searchText" id="searchCriteria[${status.index}].searchText" size="25" onkeydown="onKey(event);"/>
 					<div id="error"></div>
 				</div>
 			</div>

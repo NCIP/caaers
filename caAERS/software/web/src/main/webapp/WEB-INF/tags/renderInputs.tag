@@ -25,7 +25,7 @@
     <c:when test="${field.categoryName == 'text'}">
         <c:if test="${readonly}"><caaers:value path="${field.propertyName}" /></c:if>
         <c:if test="${!readonly}">
-            <form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${cssValue} ${field.validatorClassName}"/>
+            <form:input path="${field.propertyName}" id="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${cssValue} ${field.validatorClassName}"/>
         </c:if>
     </c:when>
 

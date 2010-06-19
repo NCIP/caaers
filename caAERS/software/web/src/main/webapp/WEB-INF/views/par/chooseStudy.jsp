@@ -64,7 +64,7 @@
                 <td><form:select path="studyType">
                     <form:options items="${studySearchType}" itemLabel="desc" itemValue="code"/>
                 </form:select></td>
-                <td><form:input path="studyText" size="25"/></td>
+                <td><form:input id="studyText" path="studyText" size="25"/></td>
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
 
 

@@ -5,7 +5,7 @@
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <%@attribute name="path" description="The path of the error(s), if empty will use *" %>
 
-<form:errors path="${empty path ? '*' : path}">
+<form:errors path="${empty path ? '*' : path}" id="${path}">
 
 <%
     // remove duplicate messages from the header

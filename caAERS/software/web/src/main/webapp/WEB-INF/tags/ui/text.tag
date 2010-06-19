@@ -31,7 +31,7 @@
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" 
 	readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
         <jsp:attribute name="field">
-        <form:input path="${path}" disabled="${disabled}" size="${size}" title="${title}" 
+        <form:input path="${path}" id="${path}" disabled="${disabled}" size="${size}" title="${title}" 
         	cssClass=" ${cssValue} ${validationCss} ${cssClass}" maxlength="${empty maxlength ? '2000' : maxlength}"/>
             <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
                 <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />

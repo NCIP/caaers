@@ -4,7 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.rule.InputField"%>
 <c:choose>
-    <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}"/></c:when>
+    <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" id="${field.propertyName}"/></c:when>
     <%-- TODO: a calendar popup of some description --%>
     <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}"/></c:when>
     <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}"/></c:when>

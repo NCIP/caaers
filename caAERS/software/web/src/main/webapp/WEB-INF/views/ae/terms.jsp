@@ -262,7 +262,7 @@
             				<div class="row">
             					<div class="label"><input id="select-other-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (verbatim)</div>
             					<div class="value">            						
-            						<form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" />
+            						<form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" id="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" />
             					</div>
             					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
             				</div>	

@@ -47,7 +47,7 @@
         <td valign="top" align="center" <c:if test="${hideDay}">style="display:none;"</c:if>>/</td>
 
         <td valign="top">
-            <form:input title="Year" path="${path}.yearString" cssClass="${yearCSSValue} split-date ${required and yearRequired ? cssClass:'validate-NUMERIC'}" maxlength="4" size="4"/>
+            <form:input title="Year" path="${path}.yearString" id="${path}.yearString" cssClass="${yearCSSValue} split-date ${required and yearRequired ? cssClass:'validate-NUMERIC'}" maxlength="4" size="4"/>
             <label for="${path}.yearString"><c:if test="${fn:contains(yearCSSValue, 'mandatory')}"><tags:requiredIndicator/></c:if>YYYY</label>
         </td>
         <td valign="top">&nbsp;<a href="#" id="${path}-calbutton"><img src="<chrome:imageUrl name="b-calendar.gif"/>" alt="Calendar" width="17" height="16" border="0" align="absmiddle"/></a></td>

@@ -36,7 +36,7 @@
 						<td align="left" class="labels">Search String:</td>
 					</tr>
 					<tr>
-						<td><form:input path="studyText" size="25" cssClass="validate-NOTEMPTY"/></td>
+						<td><form:input path="studyText" id="studyText" size="25" cssClass="validate-NOTEMPTY"/></td>
 					</tr>
 					<tr>
 						<td>
@@ -73,7 +73,7 @@
 						<td align="left" class="labels">Search String:</td>
 					</tr>
 					<tr>
-						<td><form:input path="participantText" size="25" cssClass="validate-NOTEMPTY" /></td>
+						<td><form:input id="participantText" path="participantText" size="25" cssClass="validate-NOTEMPTY" /></td>
 					</tr>
 					<tr>
 						<td>

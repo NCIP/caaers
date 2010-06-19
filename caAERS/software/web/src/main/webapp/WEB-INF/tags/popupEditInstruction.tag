@@ -10,7 +10,7 @@
 			<table>
 			<tr>
 			<td colspan="1">
-			<form:textarea path="${propertyName}" rows="8" cols="50" />
+			<form:textarea path="${propertyName}" rows="8" cols="50" id="${propertyName}"/>
 			</td>
 			</tr>
 			<tr class="bottom" >

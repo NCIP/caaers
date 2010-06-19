@@ -11,17 +11,8 @@
 
         <form:input path="${participantCommand.firstName}" id="participantCommand.firstName"></form:input>
 
-                <form:input path="${participantCommand.lastName}"></form:input>
+                <form:input path="${participantCommand.lastName}" id="participantCommand.lastName"></form:input>
 
-
-    <!--<div>-->
-             <!--Edit Please:<br>-->
-    <!--<p id="areaEditable" dojoType="dijit.form.InlineEditBox"-->
-      <!--renderAsHtml="true" autoSave="false">-->
-      <!--<textarea dojoType="dijit.form.Textarea">-->
-        <!--vinod-->
-      <!--</textarea>-->
-    <!--</p>   -->
     <div>
 
 

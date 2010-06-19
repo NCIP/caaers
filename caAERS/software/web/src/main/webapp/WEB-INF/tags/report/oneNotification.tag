@@ -67,7 +67,7 @@ id="nf-${index}" cssClass="nf-section" >
 </div>
 <div class="row">
  <div class="label"><tags:requiredIndicator/><label for="subject">Subject Line</label></div>
- <div class="value"><form:input path="emailNotifications[${index}].subjectLine" size="100" cssStyle="width:96%;" onfocus="lastElement = this;" /></div>
+ <div class="value"><form:input path="emailNotifications[${index}].subjectLine" id="emailNotifications[${index}].subjectLine" size="100" cssStyle="width:96%;" onfocus="lastElement = this;" /></div>
 </div>
 <div class="row">
  <div class="label"><tags:requiredIndicator/><label for="message">Message</label></div>

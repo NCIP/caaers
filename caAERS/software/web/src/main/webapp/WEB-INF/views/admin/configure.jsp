@@ -66,7 +66,7 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${entry.value.property.controlType == 'text'}">
-                                    <div><form:input path="${beanPath}"/></div>
+                                    <div><form:input path="${beanPath}" id="${beanPath}"/></div>
                                 </c:when>
                                 <c:otherwise>
                                     <div>Unimplemented control type ${entry.value.controlType} for ${beanPath}</div>

@@ -17,7 +17,7 @@
     <c:if test="${not empty fieldValue && (field.attributes.mandatory || field.required)}"><c:set var="cssValue" value="valueOK" /></c:if>
 </c:if>
 
-<form:input path="${path}" size="${size}" cssClass="date ${cssValue} ${cssClass}" title="${title}"/>
+<form:input path="${path}" size="${size}" cssClass="date ${cssValue} ${cssClass}" title="${title}" id="${path}"/>
 <a id="${path}-calbutton" style="cursor:pointer;">
     <img src="<chrome:imageUrl name="b-calendar.gif"/>" alt="Calendar" width="17" height="16" border="0" align="absmiddle"/>
 </a>

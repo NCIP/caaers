@@ -95,7 +95,7 @@ function ajaxStudySearch(searchText, searchType) {
                             <tags:requiredIndicator />&nbsp;
                             <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
                         </td>
-                        <td><form:input path="searchText" size="25" onkeydown="onKey(event);" /></td>
+                        <td><form:input path="searchText" id="searchText" size="25" onkeydown="onKey(event);" /></td>
                         <td><tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="ajaxStudySearch($('searchText').value, $('searchType').value);"/>&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
                     </tr>
                     </table>

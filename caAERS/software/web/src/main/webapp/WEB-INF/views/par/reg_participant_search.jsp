@@ -64,7 +64,7 @@
                     <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code"/>
                 </form:select>
             </td>
-            <td><form:input path="searchText" size="30" onkeydown="onKey(event);"/></td>
+            <td><form:input path="searchText" id="searchText" size="30" onkeydown="onKey(event);"/></td>
             <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
             <td width="100%">
                 <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler');"/>

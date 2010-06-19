@@ -64,7 +64,7 @@
                 <td><form:select path="participantType">
                     <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code"/>
                 </form:select></td>
-                <td><form:input path="participantText" size="25"/></td>
+                <td><form:input path="participantText" id="participantText" size="25"/></td>
 
 
                 <td>
