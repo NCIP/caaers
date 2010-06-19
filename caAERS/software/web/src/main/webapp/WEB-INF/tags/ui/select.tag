@@ -32,7 +32,7 @@
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
 <jsp:attribute name="field">
-    <form:select path="${path}" items="${options}" disabled="${disabled}" title="${title}" size="${empty size ? '1' : size}" cssClass="${cssValue} ${validationCss} ${cssClass}"/>
+    <form:select path="${path}" id="${path}" items="${options}" disabled="${disabled}" title="${title}" size="${empty size ? '1' : size}" cssClass="${cssValue} ${validationCss} ${cssClass}"/>
     <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
         <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
     </c:if>

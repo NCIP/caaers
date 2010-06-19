@@ -5,7 +5,7 @@
 
 
 <form:form>
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
+					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value" id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
 						<option value=""/>Please Select-- </option>
 						<form:option value="Unrelated"/>
 						<form:option value="Unlikely Related"/>

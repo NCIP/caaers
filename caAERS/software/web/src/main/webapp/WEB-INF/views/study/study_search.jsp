@@ -78,7 +78,7 @@ function onKey(e) {
             <div class="row" name="inputs" style="float:left;">
             	<div class="label"> Search By: </div>
                 <div class="value">
-                	<form:select path="searchCriteria[${status.index}].searchType">
+                	<form:select path="searchCriteria[${status.index}].searchType" id="searchCriteria[${status.index}].searchType">
 						<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
 					</form:select>
 					<form:input path="searchCriteria[${status.index}].searchText" id="searchCriteria[${status.index}].searchText" size="25" onkeydown="onKey(event);"/>

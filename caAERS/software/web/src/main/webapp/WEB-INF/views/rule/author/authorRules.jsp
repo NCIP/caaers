@@ -1271,6 +1271,7 @@ div#createNew h3, div.section h3 {
                      <span>
                       <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
+						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
 						onchange="handleDomainObjectonChange(this, ${ruleCount})">
                         <form:option value="">Please select domain object</form:option>
                         <form:options items="${ruleUi.condition[0].domainObject}"
@@ -1283,6 +1284,7 @@ div#createNew h3, div.section h3 {
                       </span> 
                       <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
+						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
 						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
                         <form:option value="">Please select field</form:option>
                         <c:forEach items="${ruleUi.condition[0].domainObject}"
@@ -1308,6 +1310,7 @@ div#createNew h3, div.section h3 {
                       
                       <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
+						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
 						onchange="handleOperatorOnchange(this, ${ruleCount})">
                         <form:option value="">Please select operator</form:option>
                         <c:forEach items="${ruleUi.condition[0].domainObject}"
@@ -1605,6 +1608,7 @@ div#createNew h3, div.section h3 {
 																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
                               <form:select 
 										path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
+										id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 										multiple="false">
                                 <form:option value="">Please select value</form:option>
                               </form:select>
@@ -1630,6 +1634,7 @@ div#createNew h3, div.section h3 {
 															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
                                           <form:select 
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
+																id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="multiple" size="3"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
                                             <form:options
@@ -1642,6 +1647,7 @@ div#createNew h3, div.section h3 {
                                         <c:otherwise>
                                           <form:select 
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
+																id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="false"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, false)">
                                             <form:option value="">Please select value</form:option>
@@ -1678,7 +1684,7 @@ div#createNew h3, div.section h3 {
                     <label for="action" class="label" style="font-weight:bold;">Actions</label>
                   </div>
                   <div id="action-template" class="lineitem">
-                    <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
+                    <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
                       <c:choose>
                         <c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
                           <c:forEach var="reportSectionName" items="${command.reportSectionNames}">

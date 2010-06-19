@@ -252,7 +252,7 @@
             				<div class="row">
             					<div class="label"><input id="select-meddra-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (MedDRA)</div>
             					<div class="value">
-            						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
+            						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
             						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete"/>
                     				<tags:indicator id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-indicator"/>
                     				<div id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-choices" class="autocomplete"></div>
@@ -275,7 +275,7 @@
    								<span class="sae"><c:out value="${ae.grade}" /></span>
 							</c:when>
 						    <c:otherwise>
-						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade" id="aeRoutineReport.adverseEvents[${status.index}].grade">
             					<form:option value=" " label="Please select" />
             					<c:if test="${fn:length(ae.ctcTerm.contextualGrades) == 0}" >
             						<form:options items="${grade}" itemValue="name" itemLabel="code"/>
@@ -293,7 +293,7 @@
    								<span class="sae"><c:out value="${ae.attributionSummary}" /></span>
 							</c:when>
 						    <c:otherwise>
-						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary">
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary" id="aeRoutineReport.adverseEvents[${status.index}].attributionSummary">
             					<form:option value=" " label="Please select" />
             					<form:options items="${attribution}" itemValue="name" itemLabel="displayName"/>
             					</form:select>
@@ -308,7 +308,7 @@
    								<span class="sae"><c:out value="${ae.hospitalization}" /></span>
 							</c:when>
 						    <c:otherwise>
-						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization">
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization" id="aeRoutineReport.adverseEvents[${status.index}].hospitalization">
             					<form:option value=" " label="Please select" />
             					<form:options items="${hospitalization}" itemValue="name" itemLabel="displayName"/>
             					</form:select>
@@ -323,7 +323,7 @@
    								<span class="sae"><c:out value="${ae.expected == true ? 'Yes' : 'No' }" /></span>
 							</c:when>
 						    <c:otherwise>
-						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].expected" >
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].expected" id="aeRoutineReport.adverseEvents[${status.index}].expected" >
             						<form:option value="" label="Please select" />
             						<form:option value="true" label="Yes" />
             						<form:option value="false" label="No" />
