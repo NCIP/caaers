@@ -61,8 +61,8 @@
                             <c:choose>
                                 <c:when test="${entry.value.property.controlType == 'boolean'}">
                                     <div>
-                                        <label><form:radiobutton path="${beanPath}" value="true"/> Yes</label>
-                                        <label><form:radiobutton path="${beanPath}" value="false"/> No</label>
+                                        <label><form:radiobutton path="${beanPath}" id="${beanPath}" value="true"/> Yes</label>
+                                        <label><form:radiobutton path="${beanPath}" id="${beanPath}" value="false"/> No</label>
                                     </div>
                                 </c:when>
                                 <c:when test="${entry.value.property.controlType == 'text'}">

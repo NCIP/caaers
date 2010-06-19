@@ -23,8 +23,7 @@
 			<tr valign="top">
 				<td width="99%"><strong>1. Search Study by:</strong> 
 				<form:select path="studyType" cssClass="validate-NOTEMPTY">
-					<form:options items="${studySearchType}" itemLabel="desc"
-						itemValue="code" />
+					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
 				</form:select> 
 				<br>
 				<br>

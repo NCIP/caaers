@@ -19,9 +19,9 @@
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}" readonlyDisplayFormat="none">
 <jsp:attribute name="field">
-<form:radiobutton path="${path}" 
+<form:radiobutton path="${path}"
 	disabled="${disabled}" 
 	cssClass="${validationCss} ${cssClass}" 
-	value="${value}" title="${title}" onclick="${onclick}" id="${id}"/>
+	value="${value}" title="${title}" onclick="${onclick}" id="${not empty id ? id : path}"/>
 </jsp:attribute>
 </ui:fieldWrapper>
