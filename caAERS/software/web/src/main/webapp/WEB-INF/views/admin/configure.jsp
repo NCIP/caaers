@@ -55,7 +55,7 @@
         </div>
             <c:forEach items="${command.conf}" var="entry" varStatus="status">
                     <div class="row">
-                        <div class="label"><form:label path="conf[${entry.key}].value">${entry.value.property.name}</form:label></div>
+                        <div class="label"><form:label path="conf[${entry.key}].value" id="conf[${entry.key}].value">${entry.value.property.name}</form:label></div>
                         <div class="value">
                             <c:set var="beanPath">conf[${entry.key}].value</c:set>
                             <c:choose>

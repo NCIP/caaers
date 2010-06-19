@@ -7,6 +7,6 @@
         <label for="${field.textfieldId}">${field.displayName}</label>
     </c:when>
     <c:otherwise>
-        <form:label path="${field.propertyName}">${field.displayName}</form:label>
+        <form:label path="${field.propertyName}" id="${field.propertyName}">${field.displayName}</form:label>
     </c:otherwise>
 </c:choose>
