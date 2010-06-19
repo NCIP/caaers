@@ -48,7 +48,7 @@
     </c:when>
 
     <c:when test="${field.categoryName == 'textarea'}">
-        <form:textarea path="${field.propertyName}"
+        <form:textarea path="${field.propertyName}" id="${field.propertyName}"
                        disabled="${disabled}"
                        cols="${not empty field.attributes.cols ? field.attributes.cols : ''}"
                        rows="${not empty field.attributes.rows ? field.attributes.rows : ''}"

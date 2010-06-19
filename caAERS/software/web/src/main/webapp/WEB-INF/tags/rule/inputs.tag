@@ -7,7 +7,7 @@
     <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" id="${field.propertyName}"/></c:when>
     <%-- TODO: a calendar popup of some description --%>
     <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}"/></c:when>
-    <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}"/></c:when>
+    <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" id="${field.propertyName}"/></c:when>
     <c:when test="${field.categoryName == 'select'}">
         <form:select path="${field.propertyName}" id="${field.propertyName}" items="${field.options}"/>
     </c:when>

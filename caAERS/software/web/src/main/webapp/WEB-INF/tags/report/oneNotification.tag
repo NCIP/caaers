@@ -71,7 +71,7 @@ id="nf-${index}" cssClass="nf-section" >
 </div>
 <div class="row">
  <div class="label"><tags:requiredIndicator/><label for="message">Message</label></div>
- <div class="value"><form:textarea cssStyle="width:96%; height:300px"  path="emailNotifications[${index}].notificationBodyContent.body" onfocus="lastElement = this;"/></div>
+ <div class="value"><form:textarea cssStyle="width:96%; height:300px" path="emailNotifications[${index}].notificationBodyContent.body" id="emailNotifications[${index}].notificationBodyContent.body" onfocus="lastElement = this;"/></div>
 </div>
 
 </chrome:division>
