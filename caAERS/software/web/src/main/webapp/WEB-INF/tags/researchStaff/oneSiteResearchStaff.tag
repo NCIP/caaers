@@ -96,7 +96,9 @@
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].faxNumber" labelProperty="faxNumber" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].faxNumber" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
-                            <c:if test="${hasRSCreate}">
+
+                            <%--This iteration doesn't need this checkbox--%>
+                            <c:if test="${false && hasRSCreate}">
 							<div class="row">
                                 <div class="label">Associate to all studies</div>
                                 <div class="value">
@@ -134,8 +136,6 @@
                             </div>
                         </div>
                     </div>
-
-        <c:set var="hasSRSRUpdate" value="true" />
 
     <div class="row">
 
