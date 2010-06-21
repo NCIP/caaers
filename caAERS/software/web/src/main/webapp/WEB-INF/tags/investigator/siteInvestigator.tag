@@ -2,13 +2,15 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@attribute name="index" required="true" type="java.lang.Integer"%>
 <%@attribute name="style"%>
 <%@attribute name="title"%>
 <%@attribute name="sectionClass" required="true"%>
 <%@attribute name="enableDelete" type="java.lang.Boolean"%>
+<%@attribute name="enableActivateDeactivate" type="java.lang.Boolean"%>
+<%@attribute name="enableAutocompleter" type="java.lang.Boolean"%>
 <%@attribute name="active" type="java.lang.Boolean"%>
 <%@attribute name="orgName" type="java.lang.String"%>
 
@@ -22,7 +24,7 @@
          			path="${fieldGroups[mainGroup].fields[0].propertyName}" 
 					enableClearButton="false" 
 					initialDisplayValue="${not empty orgName ? orgName : 'Begin typing here...'}"
-					readonly="${not enableDelete}"
+					readonly="${(not enableDelete) || (enableAutocompleter==false)}"
 					displayNamePath="${fieldGroups[mainGroup].fields[0].propertyName}.name"
 					title="${fieldGroups[mainGroup].fields[0].displayName}"
 					required="true"/>
@@ -38,13 +40,15 @@
         	<img src="/caaers/images/checkno.gif" border="0" alt="delete"></a>
 	   </c:if>
 	   <c:if test="${not enableDelete}">
-	   		<tags:button id="${sectionClass}-${listEditorIndex}_btn" 
+	   		<c:if test="${!(enableActivateDeactivate==false)}">
+	   			<tags:button id="${sectionClass}-${listEditorIndex}_btn" 
 	   					 size="small" 
 	   					 onclick="javascript:toggleDate('${active ? 'Deactivate' : 'Activate'}','${index}');" 
 	   					 color="${active ? 'red' : 'green'}" 
 	   					 value="${active ? 'Deactivate' : 'Activate'}" 
 	   					 icon="${active ? 'x' : 'check'}"
 	   					 type="button" />
+	   		</c:if>
 	   </c:if>
 	</td>
 </tr>

@@ -218,6 +218,10 @@ function toggelUserName(checkBoxChecked) {
 </head>
 <body>
 
+<csmauthz:accesscontrol var="siteInvestigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteInvestigatorRole:UPDATE"/>
+<csmauthz:accesscontrol var="investigatorCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
+<csmauthz:accesscontrol var="investigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
+
 <div id="display_remote_inv" style="display:none;text-align:left" >
 	<chrome:box title="Please select a Investigator to be saved in caAERS" id="popupId">
 		<div class="eXtremeTable">
@@ -306,11 +310,11 @@ function toggelUserName(checkBoxChecked) {
 		<div class="leftpanel">
 
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
-               <tags:renderRow field="${field}"  />
+               <tags:renderRow readOnly="${!investigatorUpdate}" field="${field}"/>
             </c:forEach>
             
             <c:if test="${command.wasLoginDisallowed}">
-            	<tags:renderRow field="${fieldGroups.investigator.fields[4]}"/>
+            	<tags:renderRow readOnly="${!(siteInvestigatorUpdate==true)}" field="${fieldGroups.investigator.fields[4]}"/>
             </c:if>
             <c:if test="${!command.wasLoginDisallowed}">
            	 <tags:renderRow field="${fieldGroups.investigator.fields[4]}">
@@ -321,7 +325,7 @@ function toggelUserName(checkBoxChecked) {
 		</div>
 		<div class="rightpanel">
 		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
-              <tags:renderRow field="${field}" />
+              <tags:renderRow readOnly="${!investigatorUpdate}" field="${field}" />
             </c:forEach>
             <tags:renderRow field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
 		</div>
@@ -351,6 +355,8 @@ function toggelUserName(checkBoxChecked) {
 							<investigator:siteInvestigator 	
 								title="Associated Sites ${status.index + 1}" 
 								enableDelete="${empty siteInvestigator.id}"
+								enableActivateDeactivate="${siteInvestigatorUpdate==true}"
+								enableAutocompleter="${investigatorCreate==true}"
 								sectionClass="site-investigator-row" 
 								index="${status.index}" 
 								active="${siteInvestigator.active}"
@@ -369,27 +375,17 @@ function toggelUserName(checkBoxChecked) {
 	</chrome:division>
         
     <br>
-    <tags:button cssClass="foo" id="addSiteInvestigator_btn" color="blue" value="Add Organization" icon="Add" type="button" onclick="addSiteInvestigator();" size="small"/>
-	
+    <c:if test="${investigatorCreate}">
+    	<tags:button cssClass="foo" id="addSiteInvestigator_btn" color="blue" value="Add Organization" icon="Add" type="button" onclick="addSiteInvestigator();" size="small"/>
+	</c:if>
      </jsp:attribute>
      
 	<jsp:attribute name="tabControls">
-	 	<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
-	 	
-	 	<%--
-	 		<jsp:attribute name="customNextButton">
-	 		 <csmauthz:accesscontrol domainObject="${tab}" authorizationCheckName="tabAuthorizationCheck">
-	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalInvestigator'}">
-	 				 	  <tags:button type="submit" value="Sync" color="blue" id="sync-rs" onclick="javascript:syncInvestigator();" /> 
-				</c:if>
-				</csmauthz:accesscontrol>
-	 		</jsp:attribute>
-	 	--%>	
-	 	
-	 	</tags:tabControls>
-	 </jsp:attribute>		
-	
-		
+		<c:if test="${investigatorUpdate}">
+	 		<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
+	 		</tags:tabControls>
+	 	</c:if>
+	 </jsp:attribute>	
 </tags:tabForm>
 </div>
 </body>
