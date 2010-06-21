@@ -1,5 +1,11 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 <jsp:useBean id="today" class="java.util.Date" scope="request" /><c:set var="editMode" value="${command.researchStaff.id > 0}" /><jsp:useBean id="date" class="java.util.Date" />
+
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" var="hasRSCreate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" var="hasRSUpdate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" var="hasRSRead"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:CREATE" var="hasSRSRCreate"/>
+
 <html>
     <head>
     	<title>Research Staff</title>
@@ -117,8 +123,8 @@
         <div class="tabpane">
             <div class="workflow-tabs2">
                 <ul id="" class="tabs autoclear">
-                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE"><li id="thirdlevelnav" class="tab selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></csmauthz:accesscontrol>
-                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"><li id="thirdlevelnav" class=""><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></csmauthz:accesscontrol>
+                    <c:if test="${hasRSCreate || hasRSUpdate}"><li id="thirdlevelnav" class="tab selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></c:if>
+                    <c:if test="${hasRSRead}"><li id="thirdlevelnav" class=""><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></c:if>
                 </ul>
             </div>
             
@@ -149,23 +155,22 @@
                             <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email"/></div>
                         </div>
             
-                        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:CREATE" var="_loginEditable"/>
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !_loginEditable}" cssClass="required" required="true" title="Login ID"/></div>
+                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasSRSRCreate}" cssClass="required" required="true" title="Login ID"/></div>
                         </div>
                         <c:if test="${editMode}">
                             <div class="row">
                                 <div class="label">Active Date</div>
                                 <div class="value">
                                     <tags:formatDate value="${command.researchStaff.activeDate}" />&nbsp;
-                                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE">
+                                    <c:if test="${hasRSCreate || hasRSUpdate}">
                                         <c:if test="${!readOnly}">
                                             <c:if test="${command.researchStaff.active}">
                                                 <tags:button type="button" color="${true ? 'red' : 'green'}" cssClass="" value="${true ? 'Deactivate' : 'Activate'}" size="small" onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, 0,0,-1,-1)" icon="${true ? 'x' : 'check'}"/>
                                             </c:if>
                                         </c:if>
-                                    </csmauthz:accesscontrol>
+                                    </c:if>
                                 </div>
                             </div>
                             
@@ -189,16 +194,16 @@
 	                            <c:set var="newIndex" value="${size - (status.index + 1)}" /><researchStaff:oneSiteResearchStaff index="${newIndex}" collapsed="false" />
 	                        </c:forEach>
 	                    </div>
-                        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE">
+                        <c:if test="${hasRSCreate}">
 						    <div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
-                        </csmauthz:accesscontrol>
+                        </c:if>
 					</chrome:box>
                 </jsp:attribute>
 
                 <jsp:attribute name="tabControls">
-                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE">
+                    <c:if test="${hasRSUpdate}">
                         <tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save"></tags:tabControls>
-                    </csmauthz:accesscontrol>
+                    </c:if>
                 </jsp:attribute>
 
             </tags:tabForm>
