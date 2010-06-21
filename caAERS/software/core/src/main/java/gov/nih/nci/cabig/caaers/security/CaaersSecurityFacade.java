@@ -37,6 +37,15 @@ public interface CaaersSecurityFacade {
     boolean checkAuthorization(Authentication auth, String objectId, String privilege);
 
     /**
+     * Will check the authorization status
+     * @param auth   - An authentication object
+     * @param objectPrivilege  - An object privilege (Eg: - "Study:READ || Study:UPDATE)
+     * @return
+     */
+    boolean checkAuthorization(Authentication auth, String objectPrivilege);
+
+
+    /**
      * Will get the accessible protection element Ids (ObjectIDs) for the login. 
      * @param loginId - The loginId
      * @return

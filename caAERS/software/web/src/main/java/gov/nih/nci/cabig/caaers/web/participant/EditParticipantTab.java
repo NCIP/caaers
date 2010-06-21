@@ -46,14 +46,6 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     private static final String PARTICIPANT_FIELD_GROUP = "participant";
     private static final String SITE_FIELD_GROUP = "site";
 
-    @Override
-    public Map<String, Object> referenceData(final T command) {
-        Map<String, Object> refdata = referenceData();
-        Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
-        refdata.put("fieldGroups", groupMap);
-//        refdata.put("action", "New");
-        return refdata;
-    }
 
     protected Map<Object, Object> collectOptions(final List<ListValues> list) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();

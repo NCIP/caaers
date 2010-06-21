@@ -6,24 +6,24 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 /**
  * @author: Ion C. Olaru
+ * @author Biju Joseph
  */
 public class ReadonlyFieldDecorator implements FieldDecorator {
 
-    private CaaersSecurityFacade caaersSecurityFacade;
-
-    /**
-     * @see TabWithFields  
-     *
-     * */
-    public ReadonlyFieldDecorator() {
-        this.caaersSecurityFacade = CaaersSecurityFacadeImpl.getInstance();
-    }
-
-    /*
+  /*
    *   Decorate the field appropriately filling the readonly attribute
    * */
     public void decorate(InputField f) {
-        // if (caaersSecurityFacade == null) return;
+       CaaersSecurityFacade securityFacade = CaaersSecurityFacadeImpl.getInstance();
+       if(securityFacade != null){
+           if(f.getPrivilegeToModify() != null && f.isModifiable()){
+               f.setModifiable(securityFacade.checkAuthorization(SecurityUtils.getAuthentication(), f.getPrivilegeToModify()));
+           }
+
+           if(f.getPrivilegeToRead() != null && f.isReadable()){
+               f.setReadable(securityFacade.checkAuthorization(SecurityUtils.getAuthentication(), f.getPrivilegeToRead()));
+           }
+       }
       
     }
 

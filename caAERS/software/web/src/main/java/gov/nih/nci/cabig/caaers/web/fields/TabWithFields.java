@@ -23,6 +23,7 @@ import org.springframework.validation.Errors;
  * @see InputFieldGroup
  * @author Rhett Sutphin
  * @author Ion C. Olaru
+ * @author Biju Joseph
  */
 public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     private boolean autoPopulateHelpKey;
@@ -41,6 +42,19 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
      * @see RepeatingFieldGroupFactory
      */                                                                         
     public abstract Map<String, InputFieldGroup> createFieldGroups(C command);
+
+    
+    /**
+     * Will obtain the field groups for this tab. 
+     * @param command
+     * @return
+     */
+    public final Map<String, InputFieldGroup> fetchFieldGroups(C command){
+       Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
+       if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the help keys
+       decorateFieldGroups(groupMap);
+       return groupMap;
+    }
     
     /**
      * Tabs should not override this anymore.
@@ -56,9 +70,8 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     @Override
     public Map<String,Object> referenceData(C command) {
         Map<String, Object> refdata = super.referenceData(command);
-        Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
-        decorateFieldGroups(groupMap);
-        if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the help keys
+        Map<String, InputFieldGroup> groupMap = fetchFieldGroups(command);
+
         refdata.put("fieldGroups", groupMap);
         return refdata;
     };
@@ -95,8 +108,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     public final void validate(C command, Errors errors) {
         super.validate(command, errors);
         BeanWrapper commandBean = new BeanWrapperImpl(command);
-        Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
-        decorateFieldGroups(fieldGroups);
+        Map<String, InputFieldGroup> fieldGroups = fetchFieldGroups(command);
         for (InputFieldGroup fieldGroup : fieldGroups.values()) {
             for (InputField field : fieldGroup.getFields()) {
                 if (field.isValidateable()) field.validate(commandBean, errors);

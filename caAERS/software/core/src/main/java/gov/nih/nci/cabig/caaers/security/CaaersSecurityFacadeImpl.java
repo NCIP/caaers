@@ -43,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
-    private static CaaersSecurityFacade instance;
+    protected static CaaersSecurityFacade instance;
     protected final Log log = LogFactory.getLog(getClass());
 	private CSMUserRepositoryImpl csmUserRepository;
 	private RolePrivilegeDao rolePrivilegeDao;
@@ -61,11 +61,23 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	
 	//For all Investigators
 	private String AE_REPORTER = "ae_reporter";
-	
+
+    /**
+     * Will check the authorization status
+     *
+     * @param auth            - An authentication object
+     * @param objectPrivilege - An object privilege (Eg: - "Study:READ || Study:UPDATE)
+     * @return
+     */
+    public boolean checkAuthorization(Authentication auth, String objectPrivilege) {
+
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     /**
      * Will check the authorization status.
      *
-     * @param auth      - The acegi authentication object
+     * @param authentication      - The acegi authentication object
      * @param objectId  - The secure object Id
      * @param privilege - The privilege (CREATE,UPDATE)
      * @return
@@ -94,6 +106,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		return false;
 
     }
+
+
 
     /**
      * Will provision user in CSM, i.e. will only populate the role associations and protection group association.
@@ -270,7 +284,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     /**
      * Will create or update a csm user.
      *
-     * @param csmUser - A user defined in CSM.
+     * @param user - A user defined in CSM.
+     * @param changeURL - The URL send email
      */
     public void createOrUpdateCSMUser(User user,String changeURL) {
     	if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){

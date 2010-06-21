@@ -18,9 +18,4 @@ public class EditParticipantReviewParticipantTab<T extends ParticipantInputComma
         return map;
     }
 
-    @Override
-    public Map<String, Object> referenceData(T command) {
-        return super.referenceData(command);
-    }
-
 }

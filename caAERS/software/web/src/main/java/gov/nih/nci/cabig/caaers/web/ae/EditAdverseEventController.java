@@ -43,7 +43,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * The Webflow for ExpeditedAdverseEventReport creation and updation is maintained by this controller. 
+ * The Webflow for ExpeditedAdverseEventReport modification is maintained by this controller. 
  * @author Rhett Sutphin
  * @author Biju Joseph
  */

@@ -25,7 +25,7 @@ public class SecurityObjectIdFieldDecorator implements FieldDecorator {
    *   Decorate the field appropriately
    * */
     public void decorate(InputField f) {
-       f.setPrivilegeToModify(objectId + ":" + updatePrivilege);
-       f.setPrivilegeToRead(objectId + ":" + readPrivilege);
+       if(f.getPrivilegeToModify() == null) f.setPrivilegeToModify(objectId + ":" + updatePrivilege);
+       if(f.getPrivilegeToRead() == null) f.setPrivilegeToRead(objectId + ":" + readPrivilege);
     }
 }

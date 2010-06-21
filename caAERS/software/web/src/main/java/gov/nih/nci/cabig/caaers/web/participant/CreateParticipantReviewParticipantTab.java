@@ -19,9 +19,4 @@ public class CreateParticipantReviewParticipantTab<T extends ParticipantInputCom
         return map;
     }
 
-    @Override
-    public Map<String, Object> referenceData(T command) {
-        return super.referenceData(command);
-    }
-
 }
