@@ -30,7 +30,7 @@
     </c:when>
 
     <c:when test="${field.categoryName == 'date'}">
-        <tags:dateInput path="${field.propertyName}" title="${field.displayName}" cssClass="${cssValue} ${field.validatorClassName}" field="${field}" size="${empty size ? field.attributes.size : size}"/>
+        <tags:dateInput readOnly="${readonly}" disabled="${disabled}" path="${field.propertyName}" title="${field.displayName}" cssClass="${cssValue} ${field.validatorClassName}" field="${field}" size="${empty size ? field.attributes.size : size}"/>
     </c:when>
 
     <c:when test="${field.categoryName == 'split_date'}">

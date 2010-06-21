@@ -11,6 +11,7 @@
 <%@attribute name="enableDelete" type="java.lang.Boolean"%>
 <%@attribute name="enableActivateDeactivate" type="java.lang.Boolean"%>
 <%@attribute name="enableAutocompleter" type="java.lang.Boolean"%>
+<%@attribute name="readOnly" type="java.lang.Boolean"%>
 <%@attribute name="active" type="java.lang.Boolean"%>
 <%@attribute name="orgName" type="java.lang.String"%>
 
@@ -31,7 +32,7 @@
 		</td>
                 
     <c:forEach begin="1" items="${fieldGroups[mainGroup].fields}" var="field">
-    		<td><tags:renderInputs field="${field}" /></td>
+    		<td><tags:renderInputs readonly="${readOnly}" disabled="${readOnly}" field="${field}" /></td>
     </c:forEach>
 	
     <td align="right">

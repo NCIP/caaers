@@ -220,7 +220,8 @@ function toggelUserName(checkBoxChecked) {
 
 <csmauthz:accesscontrol var="siteInvestigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteInvestigatorRole:UPDATE"/>
 <csmauthz:accesscontrol var="investigatorCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
-<csmauthz:accesscontrol var="investigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
+<csmauthz:accesscontrol var="investigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE"/>
+<c:set var="createUpdateAllowed" value="${investigatorCreate || investigatorUpdate}"></c:set>
 
 <div id="display_remote_inv" style="display:none;text-align:left" >
 	<chrome:box title="Please select a Investigator to be saved in caAERS" id="popupId">
@@ -264,16 +265,18 @@ function toggelUserName(checkBoxChecked) {
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
             <li id="thirdlevelnav" class="tab0 selected">
-	            <csmauthz:accesscontrol var="createUpdateAllowed" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE">
-                	<div>
-	                    <a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a>
-                	</div>
-                </csmauthz:accesscontrol>
-                <c:if test="${!(createUpdateAllowed==true)}">
-                	<div>
-	                    <a href="#"><caaers:message code="investigator.menu.viewInvestigator"/></a>
-                	</div>                
-                </c:if>
+            	<c:choose>
+            		<c:when test="${createUpdateAllowed}">
+                		<div>
+	                  	  	<a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a>
+                		</div>            		
+            		</c:when>
+            		<c:otherwise>
+                		<div>
+	                    	<a href="#"><caaers:message code="investigator.menu.viewInvestigator"/></a>
+                		</div>             		
+            		</c:otherwise>
+            	</c:choose>
             </li>            
             <li id="thirdlevelnav" class="tab1">
             	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:READ">
@@ -327,7 +330,7 @@ function toggelUserName(checkBoxChecked) {
 		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow readOnly="${!investigatorUpdate}" field="${field}" />
             </c:forEach>
-            <tags:renderRow field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
+            <tags:renderRow readOnly="${!investigatorUpdate}" field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
 		</div>
 		<br>
 		<br>
@@ -355,8 +358,9 @@ function toggelUserName(checkBoxChecked) {
 							<investigator:siteInvestigator 	
 								title="Associated Sites ${status.index + 1}" 
 								enableDelete="${empty siteInvestigator.id}"
-								enableActivateDeactivate="${siteInvestigatorUpdate==true}"
+								enableActivateDeactivate="${siteInvestigatorUpdate}"
 								enableAutocompleter="${investigatorCreate==true}"
+								readOnly="${!siteInvestigatorUpdate}"
 								sectionClass="site-investigator-row" 
 								index="${status.index}" 
 								active="${siteInvestigator.active}"
