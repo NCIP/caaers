@@ -135,6 +135,15 @@ Event.observe(window, "load", function() {
 
 
 		toggelUserName(${command.allowedToLogin});
+
+		$$('input#allowedToLogin').each(function(allowedLoginChkBox) {
+			allowedLoginChkBox.observe('click',function(evt){
+				var element = Event.element(evt);
+				toggelUserName(element.checked);
+			});			
+		});
+
+		/*
 		var allowedLoginChkBox = $('allowedToLogin');
 		if(allowedLoginChkBox){
 			allowedLoginChkBox.observe('click',function(evt){
@@ -142,7 +151,7 @@ Event.observe(window, "load", function() {
 				toggelUserName(element.checked);
 			});
 		}
-		
+		*/
 	
 		
 	});
@@ -317,7 +326,7 @@ function toggelUserName(checkBoxChecked) {
             </c:forEach>
             
             <c:if test="${command.wasLoginDisallowed}">
-            	<tags:renderRow readOnly="${!(siteInvestigatorUpdate==true)}" field="${fieldGroups.investigator.fields[4]}"/>
+            	<tags:renderRow readOnly="${!siteInvestigatorUpdate}" field="${fieldGroups.investigator.fields[4]}"/>
             </c:if>
             <c:if test="${!command.wasLoginDisallowed}">
            	 <tags:renderRow field="${fieldGroups.investigator.fields[4]}">
@@ -330,7 +339,7 @@ function toggelUserName(checkBoxChecked) {
 		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow readOnly="${!investigatorCreate}" field="${field}" />
             </c:forEach>
-            <tags:renderRow readOnly="${!investigatorCreate}" field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
+            <tags:renderRow readOnly="${!siteInvestigatorUpdate}" field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
 		</div>
 		<br>
 		<br>
