@@ -9,23 +9,11 @@
     </head>
     <body>
         <style>
-            
-            .CSSDate {
-                width: 80px;
-            }
-            
-            .hand {
-                cursor: pointer;
-            }
-			div.row div.label {
-				width:13em;
-			}
-			div.row div.value {
-				margin-left:14em;
-			}
-			.rightpanel {
-				width:54%
-			}
+            .CSSDate { width: 80px; }
+            .hand { cursor: pointer; }
+			div.row div.label { width:13em; }
+			div.row div.value { margin-left:14em; }
+			.rightpanel { width:54% }
         </style>
         <script language="JavaScript">
             
@@ -129,21 +117,25 @@
         <div class="tabpane">
             <div class="workflow-tabs2">
                 <ul id="" class="tabs autoclear">
-                    <li id="thirdlevelnav" class="tab selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li>
-                    <li id="thirdlevelnav" class=""><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li>
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE"><li id="thirdlevelnav" class="tab selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></csmauthz:accesscontrol>
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"><li id="thirdlevelnav" class=""><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></csmauthz:accesscontrol>
                 </ul>
             </div>
+            
             <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm" hideErrorDetails="false" hideBox="true">
             	
                 <jsp:attribute name="repeatingFields">
                 	<chrome:box title="Basic Details">
                     <input type="hidden" name="_action" value=""><input type="hidden" name="_selected" value=""><input type="hidden" name="_finish" value="true"/><input type="hidden" name="srsID"/><input type="hidden" name="srsrID"/><tags:instructions code="researchstaffdetails" /><caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/><caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
                     <chrome:division title="${detailsSectionTitle}" id="details">
+                                                
+                        <%--<csmauthz:accesscontrol var="r" objectPrivilege=""/>--%>
 
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
                             <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name"/></div>
                         </div>
+
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></div>
                             <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name"/></div>
@@ -156,20 +148,24 @@
                             <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
                             <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email"/></div>
                         </div>
+            
+                        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:CREATE" var="_loginEditable"/>
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${(readonly || editMode) and not empty command.researchStaff.loginId}" cssClass="required" required="true" title="Login ID"/></div>
+                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !_loginEditable}" cssClass="required" required="true" title="Login ID"/></div>
                         </div>
                         <c:if test="${editMode}">
                             <div class="row">
                                 <div class="label">Active Date</div>
                                 <div class="value">
                                     <tags:formatDate value="${command.researchStaff.activeDate}" />&nbsp;
-                                    <c:if test="${!readOnly}">
-                                        <c:if test="${command.researchStaff.active}">
-                                            <tags:button type="button" color="${true ? 'red' : 'green'}" cssClass="" value="${true ? 'Deactivate' : 'Activate'}" size="small" onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, 0,0,-1,-1)" icon="${true ? 'x' : 'check'}"/>
+                                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE">
+                                        <c:if test="${!readOnly}">
+                                            <c:if test="${command.researchStaff.active}">
+                                                <tags:button type="button" color="${true ? 'red' : 'green'}" cssClass="" value="${true ? 'Deactivate' : 'Activate'}" size="small" onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, 0,0,-1,-1)" icon="${true ? 'x' : 'check'}"/>
+                                            </c:if>
                                         </c:if>
-                                    </c:if>
+                                    </csmauthz:accesscontrol>
                                 </div>
                             </div>
                             
@@ -193,14 +189,18 @@
 	                            <c:set var="newIndex" value="${size - (status.index + 1)}" /><researchStaff:oneSiteResearchStaff index="${newIndex}" collapsed="false" />
 	                        </c:forEach>
 	                    </div>
-						<div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+                        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE">
+						    <div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+                        </csmauthz:accesscontrol>
 					</chrome:box>
                 </jsp:attribute>
+
                 <jsp:attribute name="tabControls">
-                    <tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
-                    </tags:tabControls>
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE">
+                        <tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save"></tags:tabControls>
+                    </csmauthz:accesscontrol>
                 </jsp:attribute>
-				
+
             </tags:tabForm>
             </body>
         </html>

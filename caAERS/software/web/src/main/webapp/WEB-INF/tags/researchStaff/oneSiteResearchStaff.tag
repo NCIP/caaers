@@ -6,6 +6,7 @@
 <%@taglib prefix="rs" tagdir="/WEB-INF/tags/researchStaff" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+<%@taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
@@ -15,6 +16,10 @@
 
 <c:set var="orgName" value="${command.researchStaff.siteResearchStaffs[index].organization}" />
 <c:set var="editMode" value="${command.researchStaff.id > 0}" />
+
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" var="hasRSCreate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:READ" var="hasSRSRRead"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:UPDATE" var="hasSRSRUpdate"/>
 
 <chrome:division id="siteResearchStaff_${index}" collapsable="true" collapsed="false" enableDelete="true" title="&nbsp;${orgName}">
     <jsp:attribute name="titleFragment">
@@ -38,6 +43,7 @@
     </jsp:attribute>
 
     <jsp:body>
+                <c:if test="${hasRSCreate}">
                 <c:if test="${!readOnly && empty orgName}">
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].organization" labelProperty="organization" text="" required="true"/></div>
@@ -65,28 +71,32 @@
                         </div>
                     </div>
                 </c:if>
+                </c:if>
 
 <%--
 --%>
 
 
-                <caaers:message code="researchstaff.details.contact" var="contacts"/>
-                <b>${contacts}</b>
 
+                <caaers:message code="researchstaff.details.contact" var="contacts"/>
+                <%--<c:set var="_RSCreate" value="false" />--%>
+        
+                <b>${contacts}</b>
                 <div class="row">
                         <div class="leftpanel">
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].emailAddress" labelProperty="emailAddress" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].emailAddress" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].emailAddress" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].phoneNumber" labelProperty="phoneNumber" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].phoneNumber" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].phoneNumber" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].faxNumber" labelProperty="faxNumber" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].faxNumber" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].faxNumber" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
+                            <c:if test="${hasRSCreate}">
 							<div class="row">
                                 <div class="label">Associate to all studies</div>
                                 <div class="value">
@@ -99,49 +109,37 @@
                                     </c:if>
                                 </div>
                             </div>
+                            </c:if>
                         </div>
                         <div class="rightpanel">
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.street" labelProperty="street" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.street" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.street" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.city" labelProperty="city" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.city" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.city" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.state" labelProperty="state" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.state" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.state" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.zip" labelProperty="zip" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.zip" cssClass="validate-ZIPCODE" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.zip" cssClass="validate-ZIPCODE" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.country" labelProperty="country" text=""/></div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.country" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.country" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                         </div>
                     </div>
 
+        <c:set var="hasSRSRUpdate" value="true" />
+
     <div class="row">
 
-<%--
-        <caaers:message code="researchstaff.details.studiesSection" var="studiesSectionTitle"/>
-        <chrome:division id="studies-details" title="${studiesSectionTitle}">
-            <div>
-                <div id="_studies_${index}">
-                    <div class="row">
-                        <div class="label">Associate to all studies:</div>
-                        <div class="value">
-                            <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </chrome:division>
---%>
-
+                <c:if test="${hasSRSRRead || hasSRSRUpdate}">
                 <div style="margin-left:30px">
                     <c:if test="${!readOnly}">
                         <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
@@ -162,19 +160,24 @@
                                 <c:set var="isActive" value="${command.siteResearchStaffCommandHelper[index].rsRoles[j.index].active}" />
                                 <tr bgcolor="white">
                                     <td>
-                                        <c:if test="${!role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" onclick="applyRole(${index}, ${j.index})"/>&nbsp;${allRoles[j.index].name}</c:if>
-                                        <c:if test="${role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${!role.checked && hasSRSRUpdate}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" onclick="applyRole(${index}, ${j.index})"/>&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${role.checked || !hasSRSRUpdate}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
                                     <td>
-                                        <ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate SiteResearchStaffRoleStartDateCSS${index}" />
-                                        <c:if test="${!role.checked}">
-                                            <script type="text/javascript">
-                                                $('siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate').value = '';
-                                            </script>
+                                        <c:if test="${hasSRSRUpdate}">
+                                            <ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate SiteResearchStaffRoleStartDateCSS${index}" />
+                                            <c:if test="${!role.checked}">
+                                                <script type="text/javascript">
+                                                    $('siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate').value = '';
+                                                </script>
+                                            </c:if>
                                         </c:if>
+                                        <c:if test="${!hasSRSRUpdate}"><caaers:value path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" /></c:if>
                                 <c:if test="${editMode}">
-                                    <td><ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].endDate" cssClass="CSSDate ${role.checked ? 'CSSEndDate SiteResearchStaffRoleEndDateCSS' : ''}${role.checked ? index : ''}" />
                                     <td>
-                                        <c:if test="${role.checked}">
+                                        <c:if test="${hasSRSRUpdate}"><ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].endDate" cssClass="CSSDate ${role.checked ? 'CSSEndDate SiteResearchStaffRoleEndDateCSS' : ''}${role.checked ? index : ''}" /></c:if>
+                                        <c:if test="${!hasSRSRUpdate}"><caaers:value path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].endDate" /></c:if>
+                                    <td>
+                                        <c:if test="${role.checked && hasSRSRUpdate}">
                                                 <tags:button type="button" 
                                                              color="${isActive ? 'red' : 'green'}"
                                                              cssClass=""
@@ -210,6 +213,7 @@
                         </chrome:division>
                     </c:if>
                 </div>
+                </c:if>
     </div>
     </jsp:body>
 </chrome:division>

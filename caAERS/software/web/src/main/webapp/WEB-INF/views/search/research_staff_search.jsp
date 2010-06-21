@@ -45,16 +45,8 @@ function buildTable(form) {
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <li id="thirdlevelnav" class="tab">
-                <div>
-                    <a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a>
-                </div>
-            </li>
-            <li id="thirdlevelnav" class="tab selected">
-                <div>
-                    <a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a>
-                </div>
-            </li>
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE"><li id="thirdlevelnav" class="tab"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></csmauthz:accesscontrol>
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"><li id="thirdlevelnav" class="tab selected"><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></csmauthz:accesscontrol>
         </ul>
 		<tags:pageHelp propertyKey="searchResearchStaff" />
     </div>
