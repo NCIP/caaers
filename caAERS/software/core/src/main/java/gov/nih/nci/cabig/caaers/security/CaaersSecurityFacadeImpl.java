@@ -133,11 +133,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			suiteRoleMembership.addSite(orgIdentifier);
 		}
 		List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
-		//Temporary --Start
-		if(studyIndetifiers == null || studyIndetifiers.size() == 0){
-			suiteRoleMembership.forAllStudies();
-		}
-		//Temporary --End
 		for(String studyIdentifier : studyIndetifiers){
 			suiteRoleMembership.addStudy(studyIdentifier);
 		}
@@ -171,11 +166,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 				    			suiteRoleMembership.addSite(orgIdentifier);
 				    		}
 							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
-							//Temporary --Start
-							if(studyIndetifiers == null || studyIndetifiers.size() == 0){
-								suiteRoleMembership.forAllStudies();
-							}
-							//Temporary --End
 				    		for(String studyIdentifier : studyIndetifiers){
 				    			suiteRoleMembership.addStudy(studyIdentifier);
 				    		}
