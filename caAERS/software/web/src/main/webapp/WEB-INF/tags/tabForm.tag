@@ -28,8 +28,9 @@
 <c:if test="${empty willSave}">
     <c:set var="willSave" value="${true}"/>
 </c:if>
+
 <c:if test="${not hideBox}">
-    <form:form name="${formName}" enctype="${enctype}" id="${formId}">
+    <form:form name="${formName}" enctype="${enctype}" id="${empty formId ? 'command' : formId}">
     	<jsp:invoke fragment="header" />
     	<chrome:warningMessage/>
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">

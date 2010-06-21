@@ -36,8 +36,15 @@
 
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}">
 <jsp:attribute name="field">
-  <input size="${empty size ? '50' : size}" type="text" id="${path}-input" name="${path}-input" title="${title}" ${disabled ? 'disabled' : ''} value="${initialDisplayValue}" 
-	class="autocomplete ${cssValue} ${cssClass} ${validationCss}" onkeydown="suppressEnter(event)"/>
+  <input
+          size="${empty size ? '50' : size}"
+          type="text" id="${path}-input"
+          name="${path}-input"
+          title="${title}" ${disabled ? 'disabled' : ''}
+          value="${initialDisplayValue}"
+          class="autocomplete ${cssValue} ${cssClass} ${validationCss}"
+          onkeydown="suppressEnter(event)"/>
+    
   <c:if test="${enableClearButton and not disabled}"><a id="${path}-clear" onclick="javascript:$('${path}-input').clear();$('${path}').clear();" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a></c:if>
   <tags:indicator id="${path}-indicator"/>
   <div id="${path}-choices" class="autocomplete" style="display: none"></div>
