@@ -59,7 +59,7 @@
 </c:if>
 <c:if test="${hideBox}">
 	<chrome:warningMessage/>
-    <form:form name="${formName}" enctype="${enctype}" id="${formId}">
+    <form:form name="${formName}" enctype="${enctype}"  id="${empty formId ? 'command' : formId}">
     	<jsp:invoke fragment="header" />
     	<chrome:flashMessage/>
         <tags:tabFields tab="${tab}"/>
