@@ -313,7 +313,7 @@ function toggelUserName(checkBoxChecked) {
 		<div class="leftpanel">
 
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
-               <tags:renderRow readOnly="${!investigatorUpdate}" field="${field}"/>
+               <tags:renderRow readOnly="${!investigatorCreate}" field="${field}"/>
             </c:forEach>
             
             <c:if test="${command.wasLoginDisallowed}">
@@ -328,9 +328,9 @@ function toggelUserName(checkBoxChecked) {
 		</div>
 		<div class="rightpanel">
 		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
-              <tags:renderRow readOnly="${!investigatorUpdate}" field="${field}" />
+              <tags:renderRow readOnly="${!investigatorCreate}" field="${field}" />
             </c:forEach>
-            <tags:renderRow readOnly="${!investigatorUpdate}" field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
+            <tags:renderRow readOnly="${!investigatorCreate}" field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
 		</div>
 		<br>
 		<br>
