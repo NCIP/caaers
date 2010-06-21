@@ -3,8 +3,7 @@
 <%@ tag import="org.springframework.web.servlet.tags.form.FormTag" %>
 <% 
    request.setAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME, "command");
-   request.setAttribute(org.springframework.web.servlet.tags.NestedPathTag.NESTED_PATH_VARIABLE_NAME,
-			"command.");   
+   request.setAttribute(org.springframework.web.servlet.tags.NestedPathTag.NESTED_PATH_VARIABLE_NAME, "command.");   
 %>
 <jsp:doBody/>
 <% 
