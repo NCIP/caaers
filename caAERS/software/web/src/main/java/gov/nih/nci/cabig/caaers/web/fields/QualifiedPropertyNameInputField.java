@@ -12,6 +12,7 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public abstract class QualifiedPropertyNameInputField implements InputField {
 
@@ -19,10 +20,8 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     private Map<String, Object> attributes;
     private boolean mandatory;
     private FieldValidator[] validators;
-    private boolean readonly;
-    private String displayTextProperty;
-    private String securityObjectId;
 
+    
     public QualifiedPropertyNameInputField(InputField src) {
         this.src = src;
         setAttributes(src.getAttributes());
@@ -38,6 +37,8 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     public void validate(BeanWrapper commandBean, Errors errors) {
         FieldValidator[] validators = getValidators();
         if (validators == null) return;
+        if(!src.isValidateable()) return;
+
         for (FieldValidator validator : validators) {
             if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
                 errors.rejectValue(this.getPropertyName(), "REQUIRED", "<b>" + validator.getMessagePrefix()
@@ -127,31 +128,75 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         return validatorClassName.toString();
     }
 
-    public boolean isReadonly() {
-        return readonly;
-    }
 
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
-    }
 
     public String getDisplayTextProperty() {
-        return displayTextProperty;
+        return src.getDisplayTextProperty();
     }
 
-    public void setDisplayTextProperty(String displayTextProperty) {
-        this.displayTextProperty = displayTextProperty;
+    
+
+    /**
+     * Will be true, if the property represented by this field can be modified.
+     *
+     * @return
+     */
+    public boolean isModifiable() {
+        return src.isModifiable();
     }
 
-    public String getSecurityObjectId() {
-        return securityObjectId;
+    public void setModifiable(boolean modifiable){
+        src.setModifiable(modifiable);
     }
 
-    public void setSecurityObjectId(String securityObjectId) {
-        this.securityObjectId = securityObjectId;
+    /**
+     * Will be true if the property represented by this field can be read
+     *
+     * @return
+     */
+    public boolean isReadable() {
+        return src.isReadable();
     }
 
+    public void setReadable(boolean readable){
+        src.setReadable(readable);
+    }
+
+    /**
+     * Will return true, if the property represented by this field can be validated.
+     *
+     * @return
+     */
     public boolean isValidateable() {
-        return !isReadonly();  
+        return src.isModifiable();
     }
+
+    /**
+     * The privilege required to read this field.
+     *
+     * @return
+     */
+    public String getPrivilegeToRead() {
+        return src.getPrivilegeToRead();
+    }
+
+    public void setPrivilegeToRead(String privilege) {
+        src.setPrivilegeToRead(privilege);
+    }
+
+
+    /**
+    * The security privilege needed to Modify this field
+    *
+    * @return
+    */
+    public String getPrivilegeToModify() {
+        return src.getPrivilegeToModify();
+    }
+
+    public void setPrivilegeToModify(String privilege) {
+       this.src.setPrivilegeToModify(privilege);
+    }
+    
+
 }

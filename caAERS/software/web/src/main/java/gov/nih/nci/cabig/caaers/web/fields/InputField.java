@@ -15,6 +15,8 @@ import org.springframework.validation.Errors;
  * Also enables (but does not implement) some simple automatic validation (via the required flag).
  *
  * @author Rhett Sutphin
+ * @author Biju Joseph
+ * 
  * @see TabWithFields
  * @see InputFieldGroup
  */
@@ -56,6 +58,7 @@ public interface InputField {
     
     String LABEL_PROPERTY = "labelProperty";
 
+    /** The field type */
     Category getCategory();
 
     /**
@@ -65,16 +68,52 @@ public interface InputField {
 
     String getDisplayName();
 
+    /**
+     * Will be true if the field is "Required" 
+     * @return
+     */
     boolean isRequired();
 
-    boolean isReadonly();
+    /**
+     * Will be true, if the property represented by this field can be modified.
+     * @return
+     */
+    boolean isModifiable();
+    void setModifiable(boolean modifiable);
 
+    /**
+     * Will be true if the property represented by this field can be read
+     * @return
+     */
+    boolean isReadable();
+    void setReadable(boolean readable);
+    
+    /**
+     * Will represent the property that this field should represent when the field is readOnly. 
+     * @return
+     */
     String getDisplayTextProperty();
 
-    String getSecurityObjectId();
-    void setSecurityObjectId(String s);
 
+    /**
+     * Will return true, if the property represented by this field can be validated. 
+     * @return
+     */
     boolean isValidateable();
+
+    /**
+     * The security privilege needed to Modify this field
+     * @return
+     */
+    String getPrivilegeToModify();
+    void setPrivilegeToModify(String privilege);
+
+    /**
+     * The privilege required to read this field. 
+     * @return
+     */
+    String getPrivilegeToRead();
+    void setPrivilegeToRead(String privilege);
 
     void validate(BeanWrapper commandBean, Errors errors);
 

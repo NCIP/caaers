@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 
 /**
@@ -33,7 +32,7 @@ public class CompositeField extends AbstractInputField {
         setGroup(group);
         setPropertyName(propertyName);
         getAttributes().put(SUBFIELDS, createSubfields());
-        if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
+        if (labelProperty != null) InputFieldAttributes.setI18NLabelProperty(this, labelProperty);
     }
 
     @SuppressWarnings( { "unchecked" })

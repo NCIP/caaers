@@ -81,6 +81,62 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
         assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&EMAIL", field.getValidatorClassName());
     }
 
+    public void testReadable(){
+        InputField nameField = InputFieldFactory.createTextField("test", "test", false);
+        nameField.setReadable(true);
+        
+        
+        createField(nameField);
+        assertTrue(field.isReadable());
+        field.setReadable(false);
+        assertFalse(field.isReadable());
+        assertFalse(nameField.isReadable());
+    }
+
+    public void testValidatable(){
+        InputField nameField = InputFieldFactory.createTextField("test", "test", false);
+        nameField.setReadable(true);
+
+        createField(nameField);
+        assertTrue(field.isReadable());
+        assertTrue(field.isValidateable());
+        nameField.setModifiable(false);
+        assertFalse(field.isValidateable());
+    }
+
+
+    public void testSetPrivilegeToModify(){
+        InputField nameField = InputFieldFactory.createTextField("test", "test", false);
+        nameField.setReadable(true);
+
+        createField(nameField);
+
+        assertNull(field.getPrivilegeToModify());
+        nameField.setPrivilegeToModify("abcd:efg");
+        
+        assertEquals("abcd:efg", field.getPrivilegeToModify());
+
+        field.setPrivilegeToModify("kk:kk");
+        assertEquals("kk:kk", nameField.getPrivilegeToModify());
+
+    }
+
+
+    public void testSetPrivilegeToRead(){
+         InputField nameField = InputFieldFactory.createTextField("test", "test", false);
+        nameField.setReadable(true);
+
+        createField(nameField);
+
+        assertNull(field.getPrivilegeToRead());
+        nameField.setPrivilegeToRead("abcd:efg");
+
+        assertEquals("abcd:efg", field.getPrivilegeToRead());
+
+        field.setPrivilegeToRead("kk:kk");
+        assertEquals("kk:kk", nameField.getPrivilegeToRead());
+    }
+
 
     private void createField(final InputField dateField) {
         field = new TestQualifiedPropertyNameInputField(dateField);

@@ -24,9 +24,7 @@ public class ReadonlyFieldDecorator implements FieldDecorator {
    * */
     public void decorate(InputField f) {
         // if (caaersSecurityFacade == null) return;
-        if (!f.isReadonly()) {
-            if (caaersSecurityFacade.checkAuthorization(SecurityUtils.getAuthentication(), f.getSecurityObjectId(), "UPDATE")); 
-        }
+      
     }
 
 }

@@ -1,24 +1,31 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 /**
  * @author: Ion C. Olaru
+ * @author Biju Joseph
  */
 public class SecurityObjectIdFieldDecorator implements FieldDecorator {
 
-    private Class objectIdClass; 
+    private String objectId;
+    private String updatePrivilege;
+    private String readPrivilege;
 
     public SecurityObjectIdFieldDecorator(Class objectIdClass) {
-        this.objectIdClass = objectIdClass;
+        this(objectIdClass, "READ", "UPDATE");
+    }
+
+    public SecurityObjectIdFieldDecorator(Class klass, String readPrivilege, String updatePrivilege){
+        objectId = klass.getName();
+        this.readPrivilege = readPrivilege;
+        this.updatePrivilege = updatePrivilege;
     }
 
   /**
    *   Decorate the field appropriately
    * */
     public void decorate(InputField f) {
-        if (f.getSecurityObjectId() == null) {
-            f.setSecurityObjectId(objectIdClass.getName());
-        }
+       f.setPrivilegeToModify(objectId + ":" + updatePrivilege);
+       f.setPrivilegeToRead(objectId + ":" + readPrivilege);
     }
 }

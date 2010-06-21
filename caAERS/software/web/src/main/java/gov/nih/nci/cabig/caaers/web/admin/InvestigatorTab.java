@@ -22,7 +22,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Date;
@@ -166,12 +165,12 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
         }
 
-        InputFieldAttributes.setLabelProperty(ncidIdField, "investigator.nciIdentifier");
+        InputFieldAttributes.setI18NLabelProperty(ncidIdField, "investigator.nciIdentifier");
         investigatorFieldGroup.getFields().add(ncidIdField);
         
         InputField allowToLoginField = null;
         allowToLoginField = InputFieldFactory.createCheckboxField("allowedToLogin", "Allow Login");
-        InputFieldAttributes.setLabelProperty(allowToLoginField, "investigator.allowedToLogin");
+        InputFieldAttributes.setI18NLabelProperty(allowToLoginField, "investigator.allowedToLogin");
         investigatorFieldGroup.getFields().add(allowToLoginField);
         
         InputField emailAddressField = emailAddressField = InputFieldFactory.createEmailField("emailAddress","Email address", true);

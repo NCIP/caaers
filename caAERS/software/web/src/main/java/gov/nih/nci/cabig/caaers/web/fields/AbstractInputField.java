@@ -18,16 +18,22 @@ public abstract class AbstractInputField implements InputField {
 
     private String displayName;
     private String propertyName;
-    private boolean required;
-    private boolean mandatory;
     private Map<String, Object> attributes;
     private FieldValidator[] validators;
-    private boolean readonly;
-    private String displayTextProperty;
-    private String securityObjectId;
+
+    protected boolean readable;
+    protected boolean modifiable;
+    protected String displayTextProperty;
+
+    protected String updatePrivilege;
+    protected String readPrivilege;
+
+   
 
     protected AbstractInputField() {
         this.attributes = new LinkedHashMap<String, Object>();
+        this.readable = true;
+        this.modifiable = true;
     }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
@@ -50,6 +56,8 @@ public abstract class AbstractInputField implements InputField {
         this();
         this.displayName = displayName;
         this.propertyName = propertyName;
+        this.displayTextProperty = propertyName;
+        
         if (validators != null && validators.length > 0) this.validators = validators;
         if (required != null && required) {
             if (this.validators == null) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
@@ -62,7 +70,7 @@ public abstract class AbstractInputField implements InputField {
                 this.validators = fv;
             }
         }
-        if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
+        if (labelProperty != null) InputFieldAttributes.setI18NLabelProperty(this, labelProperty);
     }
 
     /**
@@ -70,6 +78,8 @@ public abstract class AbstractInputField implements InputField {
      */
     public void validate(BeanWrapper commandBean, Errors errors) {
         if (validators == null) return;
+        if(!isValidateable()) return ;
+        
         for (FieldValidator validator : validators) {
             if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
                 errors.rejectValue(this.getPropertyName(), "REQUIRED", "<b>" + validator.getMessagePrefix() + ":</b> &quot;" + this.getDisplayName() +"&quot;");
@@ -83,6 +93,8 @@ public abstract class AbstractInputField implements InputField {
      * just like this class.
      */
     public static void validateRequired(InputField field, BeanWrapper commandBean, Errors errors) {
+        if(!field.isValidateable()) return;
+        
         if (field.isRequired() && isEmpty(field, commandBean)) {
             errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
                     + field.getDisplayName());
@@ -177,21 +189,7 @@ public abstract class AbstractInputField implements InputField {
         return validatorClassNameBuffer.toString();
     }
 
-    public String getSecurityObjectId() {
-        return securityObjectId;
-    }
-
-    public void setSecurityObjectId(String securityObjectId) {
-        this.securityObjectId = securityObjectId;
-    }
-
-    public boolean isReadonly() {
-        return readonly;
-    }
-
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
-    }
+    
 
     public String getDisplayTextProperty() {
         return displayTextProperty;
@@ -200,6 +198,69 @@ public abstract class AbstractInputField implements InputField {
     public void setDisplayTextProperty(String displayTextProperty) {
         this.displayTextProperty = displayTextProperty;
     }
+
+    /**
+     * Will be true, if the property represented by this field can be modified.
+     *
+     * @return
+     */
+    public boolean isModifiable() {
+        return modifiable;
+    }
+
+    public void setModifiable(boolean modifiable){
+        this.modifiable = modifiable;
+    }
+
+    /**
+     * Will be true if the property represented by this field can be read
+     *
+     * @return
+     */
+    public boolean isReadable() {
+        return readable;
+    }
+
+    public void setReadable(boolean readable){
+        this.readable = readable;
+    }
+
+    /**
+     * Will return true, if the property represented by this field can be validated.
+     *
+     * @return
+     */
+    public boolean isValidateable() {
+        return isModifiable() && isReadable(); 
+    }
+
+    /**
+     * The privilege required to read this field.
+     *
+     * @return
+     */
+    public String getPrivilegeToRead() {
+        return readPrivilege;
+    }
+
+    public void setPrivilegeToRead(String privilege) {
+        readPrivilege = privilege;
+    }
+
+
+    /**
+    * The security privilege needed to Modify this field
+    *
+    * @return
+    */
+    public String getPrivilegeToModify() {
+        return updatePrivilege;
+    }
+
+    public void setPrivilegeToModify(String privilege) {
+       this.updatePrivilege = privilege;
+    }
+
 
     // ////OBJECT METHODS
 
@@ -210,7 +271,5 @@ public abstract class AbstractInputField implements InputField {
                 ']').toString();
     }
 
-    public boolean isValidateable() {
-        return !isReadonly();
-    }
+
 }
