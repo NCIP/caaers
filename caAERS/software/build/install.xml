@@ -670,6 +670,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@DB_HOST@" value="${database.server}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@DB_PORT@" value="${database.port}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@DB_NAME@" value="${database.name}" />
+		
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@CSM_DB_USER@" value="${database.csm.username}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@CSM_DB_PASSWORD@" value="${database.csm.password}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@CSM_DB_HOST@" value="${database.csm.host}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@CSM_DB_PORT@" value="${database.csm.port}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@CSM_DB_NAME@" value="${database.csm.name}" />
+		
 		<condition property="rules.repository" value="${rules.repository.linux}">
 			<or>
 				<os family="unix" />
@@ -714,11 +721,11 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	
 	<!-- caaers csm_jass.config file copy and configure -->
 	<target name="caaers:csm_jass:config">
-		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_USER@" value="${database.user}" />
-		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_PASSWORD@" value="${database.password}" />
-		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_HOST@" value="${database.server}" />
-		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_PORT@" value="${database.port}" />
-		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_NAME@" value="${database.name}" />	
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_USER@" value="${database.csm.user}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_PASSWORD@" value="${database.csm.password}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_HOST@" value="${ddatabase.csm.host}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_PORT@" value="${database.csm.port}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_NAME@" value="${database.csm.name}" />	
 		
 		<loadfile property="caaers.csm.jass.content" srcFile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config"/>
 		<touch file="${tomcat.home}/conf/cabig/csm_jaas.config"/>
