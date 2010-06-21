@@ -16,15 +16,15 @@
     </bean>
 
     <bean id="csmApplicationContextName" class="java.lang.String">
-        <constructor-arg value="caaers"/>
+        <constructor-arg value="CTMS_SUITE"/>
     </bean>
 
 	<util:map id="connectionProperties" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
-		<entry key="hibernate.connection.url" value="s[datasource.url]"></entry>
-		<entry key="hibernate.connection.driver_class" value="org.postgresql.Driver"></entry>
-		<entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"></entry>
-		<entry key="hibernate.connection.username" value="s[datasource.username]"></entry>
-		<entry key="hibernate.connection.password" value="s[datasource.password]"></entry>
+		<entry key="hibernate.connection.url" value="s[csm.datasource.url]"></entry>
+		<entry key="hibernate.connection.driver_class" value="s[datasource.driver]"></entry>
+		<entry key="hibernate.dialect" value="s[csm.datasource.dialect]"></entry>
+		<entry key="hibernate.connection.username" value="s[csm.datasource.username]"></entry>
+		<entry key="hibernate.connection.password" value="s[csm.datasource.password]"></entry>
 		<entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
 		<entry key="hibernate.c3p0.min_size" value="2"></entry>
 		<entry key="hibernate.c3p0.max_size" value="15"></entry>

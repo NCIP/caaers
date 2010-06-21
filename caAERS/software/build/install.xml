@@ -647,7 +647,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		
 		<mkdir dir="${tomcat.home}/conf/caaers"/>
 		<mkdir dir="${tomcat.home}/conf/cabig"/>
-		
 		<switch value="${database.type}">
 			<case value="oracle">
 				<copy file="${caAERS-templates.dir.dist}/oracle/oracle.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
@@ -658,7 +657,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 				<copy file="${caAERS-templates.dir.dist}/postgres/postgres.csm_jaas.config" tofile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" overwrite="true" />
 			</case>
 		</switch>
-
 		<antcall target="caaers:datasource:properties:config"/>
 		<antcall target="caaers:csm_jass:config"/>
 	</target>
