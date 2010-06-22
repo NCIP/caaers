@@ -658,7 +658,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			</case>
 		</switch>
 		<antcall target="caaers:datasource:properties:config"/>
-		<antcall target="caaers:csm_jass:config"/>
+		<!-- <antcall target="caaers:csm_jass:config"/>  -->
 	</target>
 	
 	<!-- caaers datasource.properties file copy and configure -->
@@ -727,7 +727,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		
 		<loadfile property="caaers.csm.jass.content" srcFile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config"/>
 		<touch file="${tomcat.home}/conf/cabig/csm_jaas.config"/>
-		<replaceregexp file="${tomcat.home}/conf/cabig/csm_jaas.config" byline="false" match="[\s]*caaers[\s]*\{[.*[^.]*]*\};" replace=""/>
+		<replaceregexp file="${tomcat.home}/conf/cabig/csm_jaas.config" byline="false" match="[\s]*CTMS_SUITE[\s]*\{[.*[^.]*]*\};" replace=""/>
 		<echo file="${tomcat.home}/conf/cabig/csm_jaas.config" append="true">&#x0A;${caaers.csm.jass.content}
 		</echo>	
 		
