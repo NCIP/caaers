@@ -35,7 +35,7 @@
     		<td><tags:renderInputs readonly="${readOnly}" disabled="${readOnly}" field="${field}" /></td>
     </c:forEach>
 	
-    <td align="right">
+    <td align="right" nowrap="nowrap">
        <c:if test="${enableDelete}">
         	<a href="javascript:fireAction(${index});">
         	<img src="/caaers/images/checkno.gif" border="0" alt="delete"></a>

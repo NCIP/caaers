@@ -213,11 +213,13 @@ function toggelUserName(checkBoxChecked) {
         $('loginId-row').show();
         $('loginId').addClassName("required");
         $('loginId').addClassName("validate-NOTEMPTY&&MAXLENGTH2000");
-    } else {
-    	$('loginId').value="";
+    } else {    	
         $('loginId-row').hide();
-        $('loginId').removeClassName("required");
-        $('loginId').removeClassName("validate-NOTEMPTY&&MAXLENGTH2000");
+        if ($('loginId')!=null) {
+        	$('loginId').value="";
+        	$('loginId').removeClassName("required");
+        	$('loginId').removeClassName("validate-NOTEMPTY&&MAXLENGTH2000");
+        }
     }
 }
 </script>
