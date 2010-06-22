@@ -66,8 +66,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/importMeddra" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/createIND" value="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:CREATE"/>
         <entry key="/pages/admin/searchIND" value="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:READ"/>
-        <entry key="/pages/admin/createOrganization" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <entry key="/pages/admin/searchOrganization" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:CREATE"/>
+        <entry key="/pages/admin/searchOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:READ"/>
         <entry key="/pages/admin/passwordPolicyConfigure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/mandatoryFields" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/trackReports" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
