@@ -124,7 +124,7 @@
         <div class="tabpane">
             <div class="workflow-tabs2">
                 <ul id="" class="tabs autoclear">
-                    <c:if test="${hasRSCreate || hasRSUpdate}"><li id="thirdlevelnav" class="tab selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></c:if>
+                    <c:if test="${hasRSCreate || hasRSUpdate}"><li id="thirdlevelnav" class="selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></c:if>
                     <c:if test="${hasRSRead}"><li id="thirdlevelnav" class=""><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></c:if>
                 </ul>
             </div>
