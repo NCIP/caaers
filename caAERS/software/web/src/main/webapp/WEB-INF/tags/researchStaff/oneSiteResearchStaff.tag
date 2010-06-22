@@ -21,7 +21,7 @@
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:READ" var="hasSRSRRead"/>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:UPDATE" var="hasSRSRUpdate"/>
 
-<c:set var="hasSRSRUpdate" value="false" />
+<%--<c:set var="hasSRSRUpdate" value="false" />--%>
 
 <chrome:division id="siteResearchStaff_${index}" collapsable="true" collapsed="false" enableDelete="true" title="&nbsp;${orgName}">
     <jsp:attribute name="titleFragment">

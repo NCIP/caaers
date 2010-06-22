@@ -5,7 +5,7 @@
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" var="hasRSUpdate"/>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" var="hasRSRead"/>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:CREATE" var="hasSRSRCreate"/>
-<c:set var="hasRSCreate" value="false" />
+<%--<c:set var="hasRSCreate" value="false" />--%>
 
 <html>
     <head>
