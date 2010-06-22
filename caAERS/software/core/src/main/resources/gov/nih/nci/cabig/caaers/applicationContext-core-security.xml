@@ -549,7 +549,7 @@
     
     <bean id="querySecurityFilterDispatcher" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
           <property name="filtererMap">
-              <map>
+              <map><!-- 
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery"   value-ref="studyQuerySecurityFilterer"/>
                   <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery"   value-ref="studyQuerySecurityFilterer"/>
@@ -559,6 +559,9 @@
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery" value-ref="organizationQuerySecurityFilterer" />
               	  <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery" value-ref="reportVersionQuerySecurityFilterer" />
+              	   -->
+              	   <!--  TEMPORARY -->
+              	   <entry key="java.lang.String"   value-ref="studyQuerySecurityFilterer"/>
               </map>
           </property>
     </bean>

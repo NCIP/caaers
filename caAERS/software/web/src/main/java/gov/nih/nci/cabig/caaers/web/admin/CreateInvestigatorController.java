@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import com.semanticbits.rules.utils.DateUtil;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -11,14 +13,22 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author Priyatam
  */
 public class CreateInvestigatorController extends InvestigatorController<Investigator> {
+	
+	private CaaersSecurityFacade securityFacade;
 
-    @Override
+    public CaaersSecurityFacade getSecurityFacade() {
+		return securityFacade;
+	}
+
+	public void setSecurityFacade(CaaersSecurityFacade securityFacade) {
+		this.securityFacade = securityFacade;
+	}
+
+	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
         return createInvestigatorWithDesign();
     }
@@ -40,16 +50,21 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
     }
 
     private Investigator createInvestigatorWithDesign() {
-        SiteInvestigator siteInvestigator = new SiteInvestigator();
-        Investigator investigator = new LocalInvestigator();
-        siteInvestigator.setInvestigator(investigator);
-        investigator.addSiteInvestigator(siteInvestigator);
-        investigator.setAllowedToLogin(Boolean.TRUE);
-        investigator.setWasLoginDisallowed(true);
-        investigator.setWasLoginIdNull(true);
-        siteInvestigator.setStartDate(DateUtils.today());
-        
-        return investigator;
+    	
+		boolean canCreateUsers = securityFacade != null
+				&& securityFacade.checkAuthorization(SecurityUtils
+						.getAuthentication(),
+						"gov.nih.nci.cabig.caaers.domain.SiteInvestigatorRole",
+						"UPDATE");
+		SiteInvestigator siteInvestigator = new SiteInvestigator();
+		Investigator investigator = new LocalInvestigator();
+		siteInvestigator.setInvestigator(investigator);
+		investigator.addSiteInvestigator(siteInvestigator);
+		investigator.setAllowedToLogin(canCreateUsers);
+		investigator.setWasLoginDisallowed(true);
+		investigator.setWasLoginIdNull(true);
+		siteInvestigator.setStartDate(DateUtils.today());
+		return investigator;
     }
     
     @Override
