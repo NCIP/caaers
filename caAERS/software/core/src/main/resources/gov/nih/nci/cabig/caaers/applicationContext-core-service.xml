@@ -25,16 +25,6 @@ default-lazy-init="true">
 	<bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
 	<bean id="passwordPolicyService" class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 	<bean id="organizationRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl" autowire="byType">
-		<property name="csmApplicationContextName" ref="csmApplicationContextName"/>
-		<property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-		<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-		<property name="siteProtectionGroupId">
-			<!--id for site protection group-->
-			<value>-5</value>
-		</property>
-		<property name="siteAccessRoleId">
-			<value>-14</value>
-		</property>
 		<property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
 	</bean>
 	<bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
