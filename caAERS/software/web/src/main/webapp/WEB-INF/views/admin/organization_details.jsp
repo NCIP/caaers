@@ -56,6 +56,8 @@
 
 <body>
 
+
+
 <div id="display_remote_org" style="display:none;text-align:left" >
 	<chrome:box title="Please select an Organization to be saved in caAERS" id="popupId">
 		<div class="eXtremeTable">
@@ -95,19 +97,22 @@
 
   <div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="createOrganization">Create/Edit Organization</a>
-    </div></li>
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="searchOrganization">Search Organization</a>
-    </div></li>
+   		 <li id="thirdlevelnav" class="tab selected">
+	   		 	<div>
+	       		 <a href="createOrganization">Create/Edit Organization</a>
+	    		</div>
+    	</li>
+	    <li id="thirdlevelnav" class="tab"><div>
+	        <a href="searchOrganization">Search Organization</a>
+	    </div></li>
   </ul>
     </div>      
 
  
 
+<csmauthz:accesscontrol var="_hasUpdateRights" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:UPDATE" />
 
-<tags:tabForm tab="${tab}" flow="${flow}"  formName="organizationForm">
+<tags:tabForm tab="${tab}" flow="${flow}"  formName="organizationForm" hideTabControls="${!_hasUpdateRights}">
 		 <jsp:attribute name="singleFields">
 		 	<tags:instructions code="organizationdetails" />
             <div>
@@ -121,11 +126,13 @@
             </c:forEach>
             
             <c:if test="${(command.id gt 0) }">
+
             	<div class="row">
             		<div class="value">
             			<input type="submit" value="Sync" id="sync-org" onClick="javascript:syncOrganization();"/>
             		</div>
             	</div>
+
             </c:if>
                 	
         </jsp:attribute>
