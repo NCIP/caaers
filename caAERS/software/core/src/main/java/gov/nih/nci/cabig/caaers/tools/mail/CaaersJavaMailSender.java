@@ -69,7 +69,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     public void afterPropertiesSet() throws Exception {
     	Properties properties = new Properties();
     	
-    	if (StringUtils.isNotBlank(getPassword())) {
+    	if (StringUtils.isNotBlank(getPassword()) || StringUtils.isNotBlank(getUsername())) {
     		properties.setProperty("mail.smtp.auth", "true");
     	}
     	
