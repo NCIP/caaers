@@ -68,6 +68,11 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
      */
     public void afterPropertiesSet() throws Exception {
     	Properties properties = new Properties();
+    	
+    	if (StringUtils.isNotBlank(getPassword())) {
+    		properties.setProperty("mail.smtp.auth", "true");
+    	}
+    	
     	if(configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED)){
     		
 //    		properties.setProperty("mail.smtp.starttls.enable", "true");
@@ -78,8 +83,10 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
 
             properties.setProperty("mail.smtp.auth", "true");
             properties.setProperty("mail.smtp.starttls.enable", "true");
-            properties.setProperty("mail.smtp.timeout", "8500");
-        	setJavaMailProperties(properties);	
+            properties.setProperty("mail.smtp.timeout", "8500");        		
+    	}
+    	if (!properties.isEmpty()) {
+    		setJavaMailProperties(properties);
     	}
     }
     
