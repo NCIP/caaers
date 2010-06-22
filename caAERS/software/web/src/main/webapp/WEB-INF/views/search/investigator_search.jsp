@@ -44,7 +44,7 @@
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-        	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE">
+        	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE">
             	<li id="thirdlevelnav" class="tab0"><div><a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a></div></li>
             </csmauthz:accesscontrol>
             <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:READ">
