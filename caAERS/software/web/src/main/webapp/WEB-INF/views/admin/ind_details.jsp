@@ -35,12 +35,15 @@
 	</script>
  </head>
  <body>
+ <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:READ" var="_hasRead"/>
  <div class="tabpane">
      <div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="#">Create IND#</a>
-    </div></li>
+    <c:if test="${_hasRead}">
+       <li id="thirdlevelnav" class="tab selected">
+           <div><a href="#">Create IND#</a></div>
+       </li>
+    </c:if>
     <li id="thirdlevelnav" class="tab"><div>
         <a href="searchIND">Search IND#</a>
     </div></li>
@@ -61,8 +64,9 @@
              </c:forEach>
 			</div>
 		</chrome:division>
-    </chrome:box>
-        <div class="content buttons autoclear">
+        </chrome:box>
+        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:UPDATE || gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:READ">
+         <div class="content buttons autoclear">
           <div class="flow-buttons">
            <span class="next">
               <!--  reset and save buttons -->
@@ -70,6 +74,8 @@
            </span>
           </div>
         </div>
+        </csmauthz:accesscontrol>
+
 	</form:form>
 
   </div>

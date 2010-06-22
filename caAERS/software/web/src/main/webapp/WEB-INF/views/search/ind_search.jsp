@@ -34,10 +34,14 @@ function buildTable(form) {
 </script>
 </head>
 <body>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:CREATE" var="_hasCreate"/>
+
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <li id="thirdlevelnav" class="tab"><div><a href="createIND">Create IND#</a></div></li>
+            <c:if test="${_hasCreate}">
+              <li id="thirdlevelnav" class="tab"><div><a href="createIND">Create IND#</a></div></li>
+            </c:if>
             <li id="thirdlevelnav" class="tab selected"><div><a href="#">Search IND#</a></div></li>
         </ul>
         <tags:pageHelp propertyKey="searchIND"/>
