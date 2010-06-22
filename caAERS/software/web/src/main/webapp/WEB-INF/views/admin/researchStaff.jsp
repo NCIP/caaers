@@ -5,6 +5,7 @@
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" var="hasRSUpdate"/>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" var="hasRSRead"/>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:CREATE" var="hasSRSRCreate"/>
+<c:set var="hasRSCreate" value="false" />
 
 <html>
     <head>
@@ -139,25 +140,25 @@
 
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name"/></div>
+                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name" readonly="${!hasRSCreate}"/></div>
                         </div>
 
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name"/></div>
+                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name" readonly="${!hasRSCreate}"/></div>
                         </div>
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name"/></div>
+                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}"/></div>
                         </div>
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email"/></div>
+                            <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email" readonly="${!hasRSCreate}"/></div>
                         </div>
             
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasSRSRCreate}" cssClass="required" required="true" title="Login ID"/></div>
+                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasRSCreate}" cssClass="required" required="true" title="Login ID"/></div>
                         </div>
                         <c:if test="${editMode}">
                             <div class="row">
@@ -173,8 +174,8 @@
                                     </c:if>
                                 </div>
                             </div>
-                            
-                             <c:if test="${command.researchStaff.locked}">
+
+                             <c:if test="${hasSRSRCreate && command.researchStaff.locked}">
                 				<ui:row path="researchStaff.locked">
                     				<jsp:attribute name="value">
                     				<div id="unlock-confirmation">&nbsp;</div>

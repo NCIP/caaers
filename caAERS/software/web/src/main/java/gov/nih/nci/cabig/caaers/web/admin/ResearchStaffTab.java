@@ -8,6 +8,9 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -113,20 +116,23 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     @Override
     protected void validate(final ResearchStaffCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+        boolean hasSRSRUpdate = CaaersSecurityFacadeImpl.getInstance().checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole", "UPDATE");
+        boolean hasRSCreate = CaaersSecurityFacadeImpl.getInstance().checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.ResearchStaff", "CREATE");
+
         super.validate(command, commandBean, fieldGroups, errors);
 
         String em = command.getResearchStaff().getEmailAddress();
-        if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
+        if (hasRSCreate && em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
             errors.rejectValue("researchStaff.emailAddress", "USR_006", "Invalid email");
         }
 
         List<SiteResearchStaff> srs = command.getResearchStaff().getSiteResearchStaffs();
         for (int i=0; i<srs.size(); i++) {
-            if (srs.get(i).getOrganization() == null || srs.get(i).getOrganization().getId() == null)
+            if (hasRSCreate && (srs.get(i).getOrganization() == null || srs.get(i).getOrganization().getId() == null))
                 errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
 
             String email = srs.get(i).getEmailAddress();
-            if (email != null && !email.trim().equals("") && !GenericValidator.isEmail(email))
+            if (hasRSCreate && email != null && !email.trim().equals("") && !GenericValidator.isEmail(email))
                 errors.rejectValue(String.format("researchStaff.siteResearchStaffs[%d].emailAddress", i), "USR_006", "Invalid email");
         }
 
@@ -145,12 +151,13 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                             if (srsrch.getChecked()) hasRoles = true;
                         }
                     }
-                    if (!hasRoles) errors.reject("USR_003", "Please provide research staff roles for every organization.");
+                    if (!hasRoles && hasRSCreate) errors.reject("USR_003", "Please provide research staff roles for every organization.");
                     i++;
                 }
             }
         } else {
-            errors.reject("USR_005", "Provide at least one  organization");
+            if (hasRSCreate)
+                errors.reject("USR_005", "Provide at least one  organization");
         }
 
         // validate only create mode
@@ -174,31 +181,24 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         	errors.rejectValue("researchStaff.emailAddress", "USR_010");
         }
 
-        byte i = 0;
-        if (command.getSiteResearchStaffCommandHelper() != null) {
-            for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
-                byte j = 0;
-                    for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
-                        if (srsrch.getChecked()) {
-    /*
-                            if (srsrch.getStartDate() != null && DateUtils.compareDate(srsrch.getStartDate(), DateUtils.today()) < 0){
-                                errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].startDate", i, j), "USR_007", "Start date cannot be before today's date.");
+        // DATES validation
+        if (hasSRSRUpdate) {
+            byte i = 0;
+            if (command.getSiteResearchStaffCommandHelper() != null) {
+                for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
+                    byte j = 0;
+                        for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
+                            if (srsrch.getChecked()) {
+                                if (srsrch.getStartDate() != null && srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), srsrch.getStartDate()) < 0){
+                                    errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j),"USR_009","End date cannot be before Start date.");
+                                }
                             }
-                            if (srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), DateUtils.today()) < 0){
-                                errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j), "USR_008", "End date cannot be before today's date.");
-                            }
-    */
-                            if (srsrch.getStartDate() != null && srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), srsrch.getStartDate()) < 0){
-                                errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j),"USR_009","End date cannot be before Start date.");
-                            }
+                            j++;
                         }
-                        j++;
-                    }
-                i++;
+                    i++;
+                }
             }
         }
-        
-
         
     }
 
