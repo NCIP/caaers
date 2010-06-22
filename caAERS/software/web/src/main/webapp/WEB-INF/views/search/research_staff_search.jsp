@@ -1,5 +1,9 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" var="hasRSCreate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" var="hasRSUpdate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" var="hasRSRead"/>
+
 <html>
 <head>
 
@@ -45,8 +49,8 @@ function buildTable(form) {
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE"><li id="thirdlevelnav" class="tab"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></csmauthz:accesscontrol>
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"><li id="thirdlevelnav" class="tab selected"><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></csmauthz:accesscontrol>
+            <c:if test="${hasRSCreate || hasRSUpdate}"><li id="thirdlevelnav" class="tab"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li></c:if>
+            <c:if test="${hasRSRead}"><li id="thirdlevelnav" class="tab selected"><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li></c:if>
         </ul>
 		<tags:pageHelp propertyKey="searchResearchStaff" />
     </div>
