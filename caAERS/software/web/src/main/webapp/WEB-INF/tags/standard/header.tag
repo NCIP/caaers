@@ -27,15 +27,11 @@
             <c:forEach var="task" items="${section.tasks}">
                 <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="tasksAuthorizationCheck">
                     <c:set var="_showSection" value="true"/>
-                    <c:if test="${section.mainController eq task.linkName}">
-                        <c:set var="_useSectionLink" value="true"/>
-                    </c:if>
-                    <c:set var="_sectionLink" value="${task.url}"/>
                 </csmauthz:accesscontrol>
             </c:forEach>
             <c:if test="${_showSection}">
                 <li class="${section == currentSection ? 'selected' : ''}">
-                    <a id="firstlevelnav_${section.mainController}" href="<c:url value="${_useSectionLink ? section.mainUrl : _sectionLink}"/>" index="${index.index}">${section.displayName}</a>
+                    <a id="firstlevelnav_${section.mainController}" href="<c:url value="${section.mainUrl}"/>" index="${index.index}">${section.displayName}</a>
                 </li>
             </c:if>
         </c:forEach>

@@ -18,19 +18,27 @@
 	<div class="tabpane">
 	    <div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
-        	    <li id="thirdlevelnav" class="tab selected">
-           	    	<div>
-                    	<a href="configure"><caaers:message code="configure.menu.general"/></a>
-                	</div>
-            	</li>
-            	<li id="thirdlevelnav" class="tab">
-                	<div>
-                   		<a href="passwordPolicyConfigure"><caaers:message code="configure.menu.passwordPolicy"/></a>
-                	</div>
-            	</li>
-            	<li id="thirdlevelnav" class="tab">
-                	<div><a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a></div>
-            	</li>
+    	    	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+        	    	<li id="thirdlevelnav" class="tab selected">
+           	    		<div>
+                    		<a href="configure"><caaers:message code="configure.menu.general"/></a>
+                		</div>
+            		</li>
+            	</csmauthz:accesscontrol>
+            	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:READ || gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:UPDATE">
+            		<li id="thirdlevelnav" class="tab">
+                		<div>
+                   			<a href="passwordPolicyConfigure"><caaers:message code="configure.menu.passwordPolicy"/></a>
+                		</div>
+            		</li>
+            	</csmauthz:accesscontrol>
+            	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:READ || gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:UPDATE">
+            		<li id="thirdlevelnav" class="tab">
+                		<div>
+                			<a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a>
+                		</div>
+            		</li>
+            	</csmauthz:accesscontrol>
         	</ul>
     	</div>
 
@@ -48,11 +56,13 @@
     <form:form action="${action}" cssClass="standard">
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
-
-        <div class="row">
-            <div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
-            <div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
-        </div>
+		
+		<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+        	<div class="row">
+            	<div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
+            	<div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
+        	</div>
+        </csmauthz:accesscontrol>
             <c:forEach items="${command.conf}" var="entry" varStatus="status">
                     <div class="row">
                         <div class="label"><form:label path="conf[${entry.key}].value" id="conf[${entry.key}].value">${entry.value.property.name}</form:label></div>
@@ -81,7 +91,9 @@
         <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
         </chrome:box>
 
-        <div class="row submit"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
+        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+	        <div class="row submit"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
+    	</csmauthz:accesscontrol>
     </form:form>
     </div>
 </body>

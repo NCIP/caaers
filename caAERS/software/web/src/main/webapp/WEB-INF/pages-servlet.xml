@@ -223,7 +223,7 @@
 	    </list>
 	  </property>
 	</bean>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Administration" p:mainController="configurationController">
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Administration" p:mainController="adminResolverController">
         <property name="pathMapping"><value>/admin/**</value></property>
         <property name="urlResolver" ref="urlResolver"/>
 	  <property name="tasks">
@@ -281,6 +281,63 @@
   	<property name="meddraVersionDao" ref="meddraVersionDao" />
   	<property name="asaelImporter" ref="asaelImporter" />
   	<property name="messageSource" ref="messageSource" />
+  </bean>
+  
+  <bean id="adminResolverController" name="/adminResolverController" class="gov.nih.nci.cabig.caaers.web.TaskResolverController" autowire="byType">
+  	<property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
+  	<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+  	<property name="urls">
+	    <list>
+	    	<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/configure"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/passwordPolicyConfigure"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/mandatoryFields"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/searchInvestigator"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/createInvestigator"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/searchResearchStaff"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/createResearchStaff"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/import"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/searchIND"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/createIND"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/searchOrganization"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/createOrganization"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/trackReports"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/happy"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/asaelSearch"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/asaelCreate"/>
+    		</bean>
+	    </list>
+	</property>
   </bean> 
 
   <bean name="asaelImporter" class="gov.nih.nci.cabig.caaers.web.admin.ASAELImporter" autowire="byType"/>
