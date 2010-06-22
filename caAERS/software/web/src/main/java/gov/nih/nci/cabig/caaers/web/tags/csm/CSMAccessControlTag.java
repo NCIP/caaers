@@ -19,6 +19,7 @@ import org.springframework.web.servlet.tags.RequestContextAwareTag;
 import org.springframework.web.util.ExpressionEvaluationUtils;
 /**
  * This is coded in the same lines of {@link gov.nih.nci.cabig.ctms.acegi.csm.web.CSMAccessControlTag}
+ * gov.....Study:READ&gov.. Study:UPDATE
  * 
  * @author Biju Joseph
  * @author Ion C. Olaru
