@@ -143,7 +143,7 @@ public class SecurityUtils {
     }
     
     /**
-     * This method will return true if the logged in user has at least one globally scoped role. 
+     * This method will return false if the logged in user has at least one globally scoped role. 
      * @return
      */
     public static boolean isScoped(){
