@@ -178,7 +178,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
       </util:map>
 
-
+    <bean id="taskGroupAuthorizationCheck" class="gov.nih.nci.cabig.caaers.web.security.TaskGroupAuthorizationCheck">
+        <property name="taskAuthorizationCheck" ref="taskAuthorizationCheck"/>
+    </bean>
+         
     <!--
 	<bean id="taskPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.TaskPrivilegeAndObjectIdGenerator">
 		<property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
@@ -199,9 +202,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>	
 	</bean>
 
-    <bean id="taskGroupAuthorizationCheck" class="gov.nih.nci.cabig.caaers.web.security.TaskGroupAuthorizationCheck">
-        <property name="taskAuthorizationCheck" ref="taskAuthorizationCheck"/>
-    </bean>
 
 
 	<bean id="sectionPrivilegeAndObjectIdGenerator"
