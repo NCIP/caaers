@@ -187,19 +187,12 @@
 
 
         <!-- aspects -->
-        <!--
-              <aop:aspect id="assignDomainObjectOwnershipAspect"
-              ref="assignDomainObjectOwnershipBean">
-              <aop:after-returning
-              pointcut-ref="daoSaveOrUpdatePointcut"
-              method="assignOwner"
-              returning="domainObject" />
-              </aop:aspect>
-          -->
 
+      <!--
         <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
             <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
         </aop:aspect>
+      -->
 <!--
         <aop:aspect ref="refreshIndexAspect">		
 			<aop:pointcut id="executionOfIndexRefreshAfterUpdate"
@@ -225,11 +218,7 @@
 
     </aop:config>
 
-    <!--
-         <bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.cabig.caaers.security.CaaersDomainObjectOwnershipAssigner">
-         <property name="csmAuthorizationManager" ref="csmUserProvisioningManager"/>
-         </bean>
-     -->
+
 
     <bean id="daoSecurityInterceptorAspectBean" class="gov.nih.nci.cabig.ctms.acegi.csm.aop.SecurityInterceptorAspect">
         <property name="securityInterceptor" ref="daoSecurity"/>
