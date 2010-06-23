@@ -39,7 +39,6 @@
             <exclude org="net.sf.hibernate" />
             <exclude org="cglib" module="cglib" />
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
-			<exclude conf="dist,distGrid" module="jsp-api" />
 			<exclude conf="runtime,dist,distGrid" name="spring-aop"  />
             <exclude conf="runtime,dist,distGrid" name="spring-context"  />
 			<exclude conf="runtime,dist,distGrid" name="spring-beans"  />
@@ -351,6 +350,9 @@
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-unit" rev="${ctms.version}" conf="test->default(*)" transitive="false"/>            
 			<!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-all" rev="0.8" conf="test->default"/>-->
 			<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
+
+            <!-- apache commons EL -->
+            <dependency org="commons-el" name="commons-el" rev="1.0" />
 
         </dependencies>
 </ivy-module>

@@ -1,13 +1,7 @@
-package gov.nih.nci.cabig.caaers.web.utils;
+package gov.nih.nci.cabig.caaers.utils;
 
+import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import junit.framework.TestCase;
-import org.apache.taglibs.standard.lang.jstl.BinaryOperatorExpression;
-import org.apache.taglibs.standard.lang.jstl.ExpressionString;
-import org.apache.taglibs.standard.lang.jstl.parser.ELParser;
-import org.apache.taglibs.standard.lang.jstl.parser.ParseException;
-
-import javax.servlet.jsp.el.Expression;
-import java.io.StringReader;
 
 /**
  *
@@ -31,7 +25,7 @@ public class ObjectPrivilegeParserTest extends TestCase {
     }
 
     public void testParserSimple() {
-        ObjectPrivilegeParser opp = new ObjectPrivilegeParser("gov.AdverseEvent:EDIT");
+        ObjectPrivilegeParser opp = new gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser("gov.AdverseEvent:EDIT");
         assertEquals(1, opp.getDomainObjectPrivileges().length);
 
         assertEquals("gov.AdverseEvent", opp.getDomainObjectPrivileges()[0][0]);

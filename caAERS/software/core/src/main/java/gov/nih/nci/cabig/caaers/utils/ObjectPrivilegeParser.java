@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.utils;
+package gov.nih.nci.cabig.caaers.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

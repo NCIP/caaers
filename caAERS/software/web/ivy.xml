@@ -82,8 +82,6 @@
 			<!-- JAWR -->
 			 <dependency org="net.jawr" name="jawr" rev="2.1" />
 
-            <dependency org="commons-el" name="commons-el" rev="1.0" />
-
             <!-- JSTL   dependency -->
             <dependency org="jstl" name="jstl" rev="1.1.2" force="true"/>
             <dependency org="taglibs" name="standard" rev="1.1.2" force="true"/>

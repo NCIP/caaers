@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package gov.nih.nci.cabig.caaers.web.utils.el;
+package gov.nih.nci.cabig.caaers.utils.el;
 
 import junit.framework.TestCase;
 

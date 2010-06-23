@@ -16,14 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package gov.nih.nci.cabig.caaers.web.utils.el;
+package gov.nih.nci.cabig.caaers.utils.el;
 
-import junit.framework.TestCase;
 import org.apache.commons.el.BinaryOperatorExpression;
+import org.apache.commons.el.BooleanLiteral;
 import org.apache.commons.el.ExpressionString;
 import org.apache.commons.el.parser.ELParser;
 import org.apache.commons.el.parser.ParseException;
-import org.apache.commons.el.BooleanLiteral;
 
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.Expression;
@@ -31,8 +30,8 @@ import java.io.StringReader;
 
 public class EL {
 
-    private MockVariableResolver resolver;
-    private MockFunctionMapper mapper;
+    private gov.nih.nci.cabig.caaers.utils.el.MockVariableResolver resolver;
+    private gov.nih.nci.cabig.caaers.utils.el.MockFunctionMapper mapper;
 
     public String evaluate(String input) {
         try {

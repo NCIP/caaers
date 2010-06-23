@@ -2,8 +2,6 @@ package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-import gov.nih.nci.cabig.caaers.web.utils.ObjectPrivilegeParser;
-import gov.nih.nci.cabig.ctms.web.chrome.Task;
 
 import java.util.List;
 import java.util.Map;
@@ -11,12 +9,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import org.acegisecurity.Authentication;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
-import org.springframework.web.servlet.view.RedirectView;
-
-import antlr.StringUtils;
 
 /**
  * This class redirects the Task to the first url in the list provided based on whether the logged in person is authorized to access the page. 

@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
+import gov.nih.nci.cabig.caaers.utils.el.EL;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
@@ -70,8 +72,18 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     public boolean checkAuthorization(Authentication auth, String objectPrivilege) {
-
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        String op = objectPrivilege;
+        ObjectPrivilegeParser p = new ObjectPrivilegeParser(objectPrivilege);
+        for (String[] s : p.getDomainObjectPrivileges()) {
+            String domainObject = s[0];
+            String privilege = s[1];
+            boolean isAuth = checkAuthorization(auth, domainObject, privilege);
+            op = op.replace(domainObject + ":" + privilege, String.valueOf(isAuth));
+        }
+        EL el = new EL();
+        String s = el.evaluate("${" + op + "}");
+        boolean isAuth = Boolean.parseBoolean(s);
+        return isAuth;
     }
 
     /**
