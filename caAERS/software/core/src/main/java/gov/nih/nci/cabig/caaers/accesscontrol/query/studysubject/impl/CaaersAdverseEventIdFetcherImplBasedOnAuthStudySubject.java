@@ -37,7 +37,7 @@ public class CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject extends Abst
     private List<Integer> fetchIds(String loginId){
     	StringBuilder hql = new StringBuilder("select distinct ae.id from  ParticipantIndex pi " )
     	.append(" join pi.participant p ")
-    	.append(" join p.assignment spa ")
+    	.append(" join p.assignments spa ")
     	.append(" join spa.reportingPeriods rp ")
         .append(" join rp.adverseEvents ae ")
         .append(" where pi.loginId = :loginId ");

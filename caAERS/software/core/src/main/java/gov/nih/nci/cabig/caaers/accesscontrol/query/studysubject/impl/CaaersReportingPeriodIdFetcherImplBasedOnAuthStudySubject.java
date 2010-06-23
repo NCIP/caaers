@@ -33,10 +33,10 @@ public class CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject extends A
      * 
      * @return
      */
-    private List<Integer> fetchIds(String loginId){
+    public List<Integer> fetchIds(String loginId){
     	StringBuilder hql = new StringBuilder("select distinct rp.id from  ParticipantIndex pi " )
     	.append(" join pi.participant p ")
-    	.append(" join p.assignment spa ")
+    	.append(" join p.assignments spa ")
     	.append(" join spa.reportingPeriods rp ")
         .append(" where pi.loginId = :loginId ");
 		
