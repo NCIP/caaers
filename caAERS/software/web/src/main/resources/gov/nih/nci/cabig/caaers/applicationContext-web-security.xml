@@ -30,25 +30,22 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
 
 		<!--========== ADVERSE EVENT REPORT ===========-->
-		<entry key="/pages/ae/create" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
-		<entry key="/pages/ae/createRoutine" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
-		<entry key="/pages/ae/captureRoutine" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+        <entry key="/pages/ae/list" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
+		<entry key="/pages/ae/captureRoutine" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:CREATE" />
 
-		<entry key="/pages/ae/reviewResolver" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS" />
-		<entry key="/pages/ae/reviewEvaluationPeriod" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS" />
-		<entry key="/pages/ae/reviewAeReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS" />
-		<entry key="/pages/ae/submitReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
-		<entry key="/pages/ae/createReportingPeriod" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
-		<entry key="/pages/ae/createAeReportingPeriod" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+		<entry key="/pages/ae/reviewResolver" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
+		<entry key="/pages/ae/reviewEvaluationPeriod" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
+		<entry key="/pages/ae/reviewAeReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ" />
+		<entry key="/pages/ae/submitReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
+		<entry key="/pages/ae/createReportingPeriod" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:CREATE" />
 		<entry key="/pages/ae/edit" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
-		<entry key="/pages/ae/editRoutine" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
-		<entry key="/pages/ae/list" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
-		<entry key="/pages/ae/routingAndReview" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS" />
-		<entry key="/pages/ae/generateExpeditedfPdf" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS" />
 
-		<!--========== TODO: REPORT ===========-->
+		<entry key="/pages/ae/routingAndReview" value="gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
+		<entry key="/pages/ae/generateExpeditedfPdf" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 
-		<!--========== TODO: ADMIN ===========-->
+
+		<!--========== ADMIN ===========-->
+        <entry key="/pages/adminResolverController" value="gov.nih.nci.cabig.caaers.domain.Agent:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ || gov.nih.nci.cabig.caaers.domain.ReportStatus:READ" />
 		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE"/>
 		<entry key="/pages/admin/passwordPolicyConfigure" value="gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:READ"/>
 		<entry key="/pages/admin/mandatoryFields" value="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:READ || gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:UPDATE"/>
@@ -77,7 +74,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/addRule" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/addColumn" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/notification/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/rule/notification/list" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/rule/notification/list" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="/pages/rule/deploy" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/export" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/notification/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
