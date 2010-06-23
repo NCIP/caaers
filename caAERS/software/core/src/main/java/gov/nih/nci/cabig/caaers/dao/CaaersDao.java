@@ -376,7 +376,12 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                 Map<String, Object> queryParameterMap = query.getParameterMap();
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
-                    hibernateQuery.setParameter(key, value);
+                    if (value instanceof Collection) {
+                    	hibernateQuery.setParameterList(key, (Collection) value);
+                    } else {
+                    	hibernateQuery.setParameter(key, value);
+                    }
+                    //hibernateQuery.setParameter(key, value);
 
                 }
                 return hibernateQuery.list();
