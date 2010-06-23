@@ -24,8 +24,20 @@ public class FilterInvocationObjectPrivilegeGenerator implements ObjectPrivilege
     }
 
     public String resolve(Object o) {
-        String s = ((FilterInvocation)o).getRequestUrl();
-        return objectPrivilegeMap.get(s);
+        
+        String requestURL = ((FilterInvocation)o).getRequestUrl();
+        
+        //remove ? parameters
+        int i = requestURL.indexOf('?');
+        String baseURL  = requestURL;
+
+        if(i > 0) baseURL = requestURL.substring(0, i);
+
+        //remove #jsessionId
+        i = baseURL.indexOf(';');
+        if(i > 0) baseURL = baseURL.substring(0,i);
+
+        return objectPrivilegeMap.get(baseURL);
     }
 
 }
