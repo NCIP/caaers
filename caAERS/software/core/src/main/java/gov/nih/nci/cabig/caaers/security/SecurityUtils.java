@@ -158,4 +158,17 @@ public class SecurityUtils {
     	}
     	return true;
     }
+    
+    public static boolean isScoped(Authentication authentication){
+    	SuiteRole suiteRole;
+
+    	GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
+    	for (int i = 0; i < authorities.length; i++) {
+    		suiteRole = SuiteRole.getByCsmName(authorities[i].getAuthority());
+    		if(!suiteRole.isScoped()){
+    			return false; 
+    		}
+    	}
+    	return true;
+    }
 }
