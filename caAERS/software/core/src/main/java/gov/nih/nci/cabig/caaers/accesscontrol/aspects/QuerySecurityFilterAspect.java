@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 
 import gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import org.acegisecurity.Authentication;
@@ -14,11 +13,8 @@ public class QuerySecurityFilterAspect  {
 
 	public Object applyFilter(AbstractQuery qry) throws Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
+
 		if(authentication != null) {
-			if (SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user)) {
-				return new Object[] {qry};	
-			}
 			String userName = SecurityUtils.getUserLoginName(authentication);
 			querySecurityFilterDispatcher.filter(qry, userName);
 		}
