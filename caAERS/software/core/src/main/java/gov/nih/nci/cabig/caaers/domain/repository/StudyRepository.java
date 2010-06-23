@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.CaaersUserProvisioningException;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
@@ -28,10 +29,12 @@ import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -63,6 +66,7 @@ public class StudyRepository {
     private WorkflowConfigDao workflowConfigDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private SiteResearchStaffDao siteResearchStaffDao;
+    private CaaersSecurityFacade caaersSecurityFacade;
     
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI";
@@ -359,8 +363,45 @@ public class StudyRepository {
     @Transactional(readOnly = false)
     public void save(Study study){
     	associateSiteToWorkflowConfig(study.getStudySites());
+    	//Provision instances an Investigator or ResearchStaff has acces to in CSM
+    	provisionStudyTeam(study);
     	//Save the study
         studyDao.save(study);
+    }
+    
+    /**
+     * This method provision's the study team members into CSM.
+     * @param study
+     */
+    private void provisionStudyTeam(Study study){
+    	try{
+    		List<StudyOrganization> studyOrgs = study.getActiveStudyOrganizations();
+    		List<StudyInvestigator> studyInvs = null;
+    		List<StudyPersonnel> studyPersonnel = null;
+    		for(StudyOrganization studyOrg : studyOrgs){
+    			//Remove, add or update what instances an Investigator is entitled to.
+    			studyInvs = studyOrg.getActiveStudyInvestigators();
+    			if(studyInvs != null){
+        			for(StudyInvestigator studyInv : studyInvs){
+        				if(studyInv.isActive()){
+        					caaersSecurityFacade.provisionUser(studyInv.getSiteInvestigator().getInvestigator());
+        				}
+        			}
+    			}
+    			//Remove, add or update what instances an ResearchStaff is entitled to.
+    			studyPersonnel = studyOrg.getStudyPersonnels();
+    			if(studyPersonnel != null){
+    				for(StudyPersonnel studyPer : studyPersonnel){
+    					if(studyPer.isActive()){
+    						caaersSecurityFacade.provisionUser(studyPer.getSiteResearchStaff().getResearchStaff());
+    					}
+    				}
+    			}
+    		}
+    	}catch(CaaersUserProvisioningException ex){
+    		log.error("Exception while provisioning StudyTeam", ex);
+    		throw ex;
+    	}
     }
 
     @Required
@@ -441,5 +482,9 @@ public class StudyRepository {
 
 	public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
 		this.siteResearchStaffDao = siteResearchStaffDao;
+	}
+
+	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
+		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 }
