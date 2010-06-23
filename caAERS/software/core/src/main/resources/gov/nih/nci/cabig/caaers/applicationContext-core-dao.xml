@@ -221,6 +221,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.index.ExpeditedAdverseEventReportIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.ReportingPeriodIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.InvestigatorIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ResearchStaffIndex</value>
 				
 				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
             </list>
@@ -408,6 +410,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.index.ExpeditedAdverseEventReportIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex</value>
 				<value>gov.nih.nci.cabig.caaers.domain.index.ReportingPeriodIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.InvestigatorIndex</value>
+				<value>gov.nih.nci.cabig.caaers.domain.index.ResearchStaffIndex</value>
 				
 				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
             </list>
@@ -669,6 +673,9 @@ This applicationContext contains the definition of the DAOs
     <bean id="expeditedAdverseEventReportIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ExpeditedAdverseEventReportIndexDao"/>
     <bean id="organizationIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.OrganizationIndexDao"/>
     <bean id="reportingPeriodIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ReportingPeriodIndexDao"/>
+    <bean id="researchStaffIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.ResearchStaffIndexDao"/>
+    <bean id="investigatorIndexDao" parent="abstractIndexDao" class="gov.nih.nci.cabig.caaers.dao.index.InvestigatorIndexDao"/>
+
     
     <bean id="rolePrivilegeDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao"/>
     
