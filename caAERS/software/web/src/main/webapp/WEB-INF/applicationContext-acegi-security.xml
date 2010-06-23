@@ -70,7 +70,7 @@
 						</bean>
 						<bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.CSMAuthorizationCheckVoter">
 							<property name="processConfigAttribute" value="CSM_FILTER_CHECK"/>
-							<property name="authorizationCheck" ref="taskAuthorizationCheck"/>
+							<property name="authorizationCheck" ref="urlAuthorizationCheck"/>
 						</bean>
 					</list>
 				</property>
