@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
@@ -140,5 +141,21 @@ public class SecurityUtils {
     public static Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
-
+    
+    /**
+     * This method will return true if the logged in user has at least one globally scoped role. 
+     * @return
+     */
+    public static boolean isScoped(){
+    	SuiteRole suiteRole;
+    	Authentication authentication = getAuthentication(); 
+    	GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
+    	for (int i = 0; i < authorities.length; i++) {
+    		suiteRole = SuiteRole.getByCsmName(authorities[i].getAuthority());
+    		if(!suiteRole.isScoped()){
+    			return false; 
+    		}
+    	}
+    	return true;
+    }
 }
