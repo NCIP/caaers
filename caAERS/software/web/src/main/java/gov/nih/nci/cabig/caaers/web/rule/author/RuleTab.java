@@ -111,7 +111,7 @@ public class RuleTab extends DefaultTab {
     @Override
     public Map<String, Object> referenceData(RuleInputCommand command) {
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
-        Map referenceData =  super.referenceData(command);
+        Map<String, Object> referenceData =  super.referenceData(command);
 
         createRuleCommand.setRuleUi(createRuleCommand.getTerminology());
 
@@ -121,7 +121,7 @@ public class RuleTab extends DefaultTab {
         if (ruleSet != null && ruleSet.getDescription() != null
                         && ruleSet.getDescription().equals(createRuleCommand.getRuleSetName())
                         && !createRuleCommand.isDataChanged()) {
-            return super.referenceData(command);
+            return referenceData;
         }
         createRuleCommand.setDataChanged(false);
 

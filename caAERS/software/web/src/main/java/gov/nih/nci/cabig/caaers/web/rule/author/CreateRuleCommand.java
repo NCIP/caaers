@@ -379,16 +379,6 @@ public class CreateRuleCommand implements RuleInputCommand {
         return (List<ReportDefinition>) result;
     }
 
-    /**
-     * Populates the readable rule and action in the ruleset. 
-     */
-    public void makeRuleSetReadable(){
-        if(ruleSet != null) caaersRulesEngineService.makeRuleSetReadable(ruleSet);
-    }
-    
-    public void unDeployRuleSet() throws RemoteException {
-        caaersRulesEngineService.unDeployRuleSet(ruleSet.getName());
-    }
     
     public void deployRuleSet() throws RemoteException {
         caaersRulesEngineService.deployRuleSet(ruleSet.getName());
@@ -399,7 +389,7 @@ public class CreateRuleCommand implements RuleInputCommand {
     	try{
     		deployRuleSet();
     	}catch (RemoteException e){
-			logger.warn("Error while deployting the ruleSet ", e);
+			logger.warn("Error while deploying the ruleSet ", e);
 		}
     }
 

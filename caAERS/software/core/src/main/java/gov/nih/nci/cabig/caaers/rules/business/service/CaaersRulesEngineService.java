@@ -778,7 +778,7 @@ public class CaaersRulesEngineService {
             sb.append(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix())
                     .append(".").append(modifyOrganizationName(institutionName))
                     .append(".").append(modifyStudyName(studyShortTitle));
-        }else if (RuleType.FIELD_LEVEL_RULES.getName().equals(level)){
+        }else if (StringUtils.isBlank(level) && RuleType.FIELD_LEVEL_RULES.getName().equals(ruleSetName)){
             sb.append(CategoryConfiguration.CAAERS_BASE.getPackagePrefix());
         }
 

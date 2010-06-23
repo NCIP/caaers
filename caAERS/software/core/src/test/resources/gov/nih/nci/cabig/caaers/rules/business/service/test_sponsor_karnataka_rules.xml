@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ruleSet xmlns="http://semanticbits.com/rules/brxml">
+    <id>23e0f6ce-d276-42d4-9f3c-6f0343446da5</id>
+    <name>gov.nih.nci.cabig.caaers.rules.sponsor.ORG_100779.sae_reporting_rules</name>
+    <description>SAE Reporting Rules</description>
+    <subject>SAE Reporting Rules||Sponsor||37007|| ||</subject>
+    <coverage>Enabled</coverage>
+    <import>gov.nih.nci.cabig.caaers.domain.*</import>
+    <rule id="d2f838ca-03b0-456f-9f25-50c3ead07710">
+        <condition>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-prefix="Severity" display-uri="undefined" field-name="grade">
+                    <literal-restriction display-uri="is greater than or equal to" evaluator="&gt;=">
+                        <value>0</value>
+                        <readable-value>Grade 0</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+        </condition>
+        <action>karthik test report 1</action>
+        <readableAction>karthik test report 1</readableAction>
+        <metaData checkinComment="Initial Version"
+                  packageName="gov.nih.nci.cabig.caaers.rules.sponsor.ORG_100779.sae_reporting_rules"
+                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-1">
+            <category>
+                <path>CAAERS_BASE/SPONSOR/ORG_100779</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp;Severityis greater than or equal to 'Grade 0' null</line>
+        </readableRule>
+    </rule>
+</ruleSet>

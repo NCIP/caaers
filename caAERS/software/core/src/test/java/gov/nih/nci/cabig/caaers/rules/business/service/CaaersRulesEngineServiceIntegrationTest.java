@@ -19,7 +19,9 @@ import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.impl.RuleServiceContext;
 import com.semanticbits.rules.utils.RepositoryCleaner;
 import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * This is a unit TestCase for RulesEngineServiceImpl class.
@@ -36,9 +38,7 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	private CaaersRulesEngineService caaersRulesEngineService;
 	private RulesEngineService rulesEngineService;
 	private RepositoryService repositoryService;
-	private JAXBContext jaxbContext = null;
-    private Unmarshaller unmarshaller = null;
-    private RuleSet ruleSet;
+
     RulesPropertiesFileLoader propertiesBean;
 	
     private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
@@ -49,33 +49,63 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		
-		propertiesBean = RulesPropertiesFileLoader.getLoadedInstance();
-        String url = propertiesBean.getProperties().getProperty("rules.repository");
-        new RepositoryCleaner(url);
         
+		//cleans the rules repository
+        cleanRulesRepo();
+
 		caaersRulesEngineService = (CaaersRulesEngineService)getDeployedApplicationContext().getBean("caaersRulesEngineService");
 		rulesEngineService = (RulesEngineService)getDeployedApplicationContext().getBean("ruleEngineService");
 		repositoryService = (RepositoryService)getDeployedApplicationContext().getBean("jcrService");
-		jaxbContext = JAXBContext.newInstance("com.semanticbits.rules.brxml");
-		unmarshaller = jaxbContext.createUnmarshaller();
-		InputStream xmlInputDataStream = createInputStream("test_sponsor_ctep_rules.xml");
-		if(xmlInputDataStream != null){
-			ruleSet = (RuleSet) unmarshaller.unmarshal(xmlInputDataStream);
-		}
-		try {
-			List<RuleSet> ruleSetListBeforeDelete = rulesEngineService.getAllRuleSets();
-			for (RuleSet ruleSet : ruleSetListBeforeDelete){
-				rulesEngineService.deleteRuleSet(ruleSet.getName());
-			}
-			List<RuleSet> ruleSetListAfterDelete = rulesEngineService.getAllRuleSets();
-			assertEquals(1,ruleSetListAfterDelete.size());
-		} catch (Exception e) {
-			//BJ : This is to handle the Crazy sporadic  org.apache.jackrabbit.core.state.NoSuchItemStateException: 5d6e9bff-9322-4db9-a9a4-641469c8a3e2
-			//exception from Jackrabbit. 
-			e.printStackTrace();
-		}
+
 	}
+
+    @Override
+    protected void tearDown() throws Exception {
+        cleanRulesRepo();//cleans the rules repository
+        super.tearDown();
+    }
+
+    private void cleanRulesRepo(){
+       try{
+
+		propertiesBean = RulesPropertiesFileLoader.getLoadedInstance();
+        String url = propertiesBean.getProperties().getProperty("rules.repository");
+        new RepositoryCleaner(url);
+
+       }catch(Exception ignore){
+           System.out.println("Ignore below exception");
+           ignore.printStackTrace();
+       }
+    }
+
+
+    private RuleSet loadRuleSetFromFile(String fileName) throws RuntimeException{
+        RuleSet ruleSet = null;
+        
+        try{
+
+            JAXBContext jaxbContext = null;
+            Unmarshaller unmarshaller = null;
+            jaxbContext = JAXBContext.newInstance("com.semanticbits.rules.brxml");
+            unmarshaller = jaxbContext.createUnmarshaller();
+            InputStream xmlInputDataStream = createInputStream(fileName);
+            if(xmlInputDataStream != null){
+                ruleSet = (RuleSet) unmarshaller.unmarshal(xmlInputDataStream);
+                ruleSet.getRule().get(0).setId(null);
+            }
+
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return ruleSet;
+    }
+
+    private Organization createAndSaveOrganziation(String nciCode){
+        Organization org = Fixtures.createOrganization("test", nciCode);
+        caaersRulesEngineService.getOrganizationDao().save(org);
+        return org;
+    }
 	
 	/**
 	 * Tests method createRuleForSponsor(...) in RulesEngineServiceImpl
@@ -83,11 +113,20 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	 */
 	public void testSaveRuleSetForSponsor() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-		fail("Not implemented.");
+        RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
+
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.sponsor.ORG_" + orgId + ".sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||Sponsor||" +  nciCode + "|| || ";
+        caaersRulesEngineService.saveRuleSet(rs, SPONSOR_LEVEL, "SAE Reporting Rules", org, null,null);
+
+        RuleSet loadedRs = caaersRulesEngineService.getRuleSetByPackageName(modifiedPackageName);
+        assertEquals(1, loadedRs.getRule().size());
+        assertEquals("karthik test report 1", loadedRs.getRule().get(0).getAction().get(0));
+        assertEquals(modifiedSubject,loadedRs.getSubject());
+
 	}
 
     /**
@@ -96,11 +135,20 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	 */
 	public void testSaveRuleSetForInstitution() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-		fail("Not implemented.");
+        RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
+
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.institution.ORG_" + orgId + ".sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||Institution|| ||" +  nciCode + "|| ";
+        caaersRulesEngineService.saveRuleSet(rs, INSTITUTIONAL_LEVEL, "SAE Reporting Rules", null, org,null);
+
+        RuleSet loadedRs = caaersRulesEngineService.getRuleSetByPackageName(modifiedPackageName);
+        assertEquals(1, loadedRs.getRule().size());
+        assertEquals("karthik test report 1", loadedRs.getRule().get(0).getAction().get(0));
+        assertEquals(modifiedSubject,loadedRs.getSubject());
+        
 	}
 
 
@@ -110,11 +158,30 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
      */
     public void testSaveRuleSetForSponsorDefinedStudy() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("Not implemented.");
+        RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
+
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        Study study = Fixtures.createStudy("test");
+        study.setId(12);
+        SystemAssignedIdentifier sysId1 = Fixtures.createSystemAssignedIdentifier("9876");
+        sysId1.setPrimaryIndicator(false);
+        study.addIdentifier(sysId1);
+
+        SystemAssignedIdentifier sysId2 = Fixtures.createSystemAssignedIdentifier("6789");
+        sysId2.setPrimaryIndicator(true);
+        study.addIdentifier(sysId2);
+
+
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_" + orgId  +".STU_12.sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||SponsorDefinedStudy||" +  nciCode + "|| ||value:6789";
+        caaersRulesEngineService.saveRuleSet(rs, SPONSOR_DEFINED_STUDY_LEVEL, "SAE Reporting Rules", org, null,study);
+
+        RuleSet loadedRs = caaersRulesEngineService.getRuleSetByPackageName(modifiedPackageName);
+        assertEquals(1, loadedRs.getRule().size());
+        assertEquals("karthik test report 1", loadedRs.getRule().get(0).getAction().get(0));
+        assertEquals(modifiedSubject,loadedRs.getSubject());
     }
 
     /**
@@ -123,46 +190,51 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
      */
     public void testSaveRuleSetForInstitutionStudy() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("Not implemented.");
+        RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
+
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        Study study = Fixtures.createStudy("test");
+        study.setId(12);
+        SystemAssignedIdentifier sysId1 = Fixtures.createSystemAssignedIdentifier("9876");
+        sysId1.setPrimaryIndicator(false);
+        study.addIdentifier(sysId1);
+
+        SystemAssignedIdentifier sysId2 = Fixtures.createSystemAssignedIdentifier("6789");
+        sysId2.setPrimaryIndicator(true);
+        study.addIdentifier(sysId2);
+
+
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.institution.study.ORG_" + orgId  +".STU_12.sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||InstitutionDefinedStudy|| ||" +  nciCode + "||value:6789";
+        caaersRulesEngineService.saveRuleSet(rs, INSTITUTION_DEFINED_STUDY_LEVEL, "SAE Reporting Rules", null, org,study);
+
+        RuleSet loadedRs = caaersRulesEngineService.getRuleSetByPackageName(modifiedPackageName);
+        assertEquals(1, loadedRs.getRule().size());
+        assertEquals("karthik test report 1", loadedRs.getRule().get(0).getAction().get(0));
+        assertEquals(modifiedSubject,loadedRs.getSubject());
     }
 
 	
-	
-	/**
-	 * Tests constructPackageName method
-	 */
-	public void testConstructPackageName()
-         throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-		if(ruleSet != null){
-			try{
-				String packageName = caaersRulesEngineService.constructPackageName("Sponsor", "Cancer Therapy Evaluation Program", null, null, "SAE Reporting Rules");
-				assertEquals("Incorrect package name constructed", "gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules", packageName);
-			}catch(Exception e){
-				fail("No exceptions are expected");
-			}
-		}
-	}
-	
 	
 	/**
 	 * Tests saveRuleSet method
 	 */
-	public void testSaveRuleSet() throws Exception{
+	public void testSaveRuleSetFieldLevelRules() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("todo");
+        RuleSet rs = loadRuleSetFromFile("test_field_rules.xml");
+
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.sae_reporting_rules";
+        String modifiedSubject = "Field Rules|| || || ";
+        caaersRulesEngineService.saveRuleSet(rs, INSTITUTION_DEFINED_STUDY_LEVEL, "Field Rules", null, null,null);
+
+        RuleSet loadedRs = caaersRulesEngineService.getRuleSetByPackageName(modifiedPackageName);
+        assertEquals(1, loadedRs.getRule().size());
+        assertEquals("karthik test report 1", loadedRs.getRule().get(0).getAction().get(0));
+        assertEquals(modifiedSubject,loadedRs.getSubject());
+
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.api.RulesEngineService;
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.utils.RuleUtil;
@@ -15,6 +16,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
+import org.apache.commons.lang.StringUtils;
 import org.easymock.classextension.EasyMock;
 
 import java.util.ArrayList;
@@ -33,12 +35,15 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
 
     CaaersRulesEngineService service;
     RuleAuthoringService ruleAuthoringService;
+    RulesEngineService ruleEngineService;
 
     public void setUp() throws Exception {
         super.setUp();
         service = new CaaersRulesEngineService();
         ruleAuthoringService = registerMockFor(RuleAuthoringService.class);
+        ruleEngineService = registerMockFor(RulesEngineService.class);
         service.setRuleAuthoringService(ruleAuthoringService);
+        service.setRuleEngineService(ruleEngineService);
     }
 
     //tests that call is delegated properly to rules engine.
@@ -138,30 +143,59 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
     }
 
     public void testGetRuleSetByPackageName() throws Exception{
-
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("BJ: todo.") ;
+        RuleSet rs = new RuleSet();
+        rs.setDescription("test");
+        ArrayList<Rule> rules = new ArrayList<Rule>();
+        rs.setRule(rules);
+        rules.add(Fixtures.createRule(Fixtures.createCondition("abcd")));
+        EasyMock.expect(ruleAuthoringService.getRuleSet("test", false)).andReturn(rs);
+        replayMocks();
+        assertSame(rs,service.getRuleSetByPackageName("test"));
+        verifyMocks();
+        
     }
 
     public void testConstructPackageName() throws Exception{
+        //sponsor
+        String pkgName =  service.constructPackageName(CaaersRulesEngineService.SPONSOR_LEVEL, "12", null, null, "jank") ;
+        assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.ORG_12.jank", pkgName);
+        //sponsor with ruleset name null
+        try{
+            pkgName =  service.constructPackageName(CaaersRulesEngineService.SPONSOR_LEVEL, "12", null, null, null) ;
+            fail("must throw exception");
+        }catch(NullPointerException e){
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
         }
-        fail("Bj todo");
+
+        //sponsor null
+        pkgName =  service.constructPackageName(CaaersRulesEngineService.SPONSOR_LEVEL, null, null, null, "jank") ;
+        assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.ORG_null.jank", pkgName);
+
+
+        //sponsor study
+        pkgName =  service.constructPackageName(CaaersRulesEngineService.SPONSOR_DEFINED_STUDY_LEVEL, "12", null, "13", "jank") ;
+        assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_12.STU_13.jank", pkgName);
+
+        //sponsor study, study null
+        pkgName =  service.constructPackageName(CaaersRulesEngineService.SPONSOR_DEFINED_STUDY_LEVEL, "12", null, null, "jank") ;
+        assertEquals("gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_12.STU_null.jank", pkgName);
+
+        //institution
+        pkgName =  service.constructPackageName(CaaersRulesEngineService.INSTITUTIONAL_LEVEL, "12", "12", null, "jank") ;
+        assertEquals("gov.nih.nci.cabig.caaers.rules.institution.ORG_12.jank", pkgName);
+
+        //field rules
+        pkgName =  service.constructPackageName("", null, null, null, "Field Rules") ;
+        assertEquals("gov.nih.nci.cabig.caaers.rules.field_rules", pkgName);
+
+
     }
 
     public void testDeleteRule() throws Exception{
-
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("todo implement it");
+        ruleEngineService.deleteRule("abcd", "efg");
+        replayMocks();
+        service.deleteRule("abcd", "efg");
+        verifyMocks();
     }
 
     public void testGeneratePath() throws Exception{
@@ -195,32 +229,24 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
     public void testParseRuleLevel(){
       String c = service.parseRuleLevel("gov.nih.nci.cabig.caaers.rules.sponsor.ORG_22.STU_99.odododo") ;
       assertEquals("Sponsor", c);
-      assertNull(service.parseRuleLevel("junki"));
+      assertTrue(StringUtils.isEmpty(service.parseRuleLevel("junki")));
     }
 
 
     public void testParseOrganizationId()
          throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
         String orgId = service.parseOrganizationId("gov.nih.nci.cabig.caaers.rules.sponsor.ORG_11.STU_33.abcdefg") ;
         assertEquals("11", orgId);
-        assertNull(service.parseOrganizationId("test"));
+        assertTrue(StringUtils.isEmpty(service.parseOrganizationId("test")));
     }
 
     public void testParseStudyId()
          throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
         String stuId = service.parseStudyId("gov.nih.nci.cabig.caaers.rules.sponsor.ORG_11.STU_33.abcdefg") ;
         assertEquals("33", stuId);
-        assertNull(service.parseOrganizationId("test"));
+        assertTrue(StringUtils.isEmpty(service.parseOrganizationId("test")));
     }
 
     public void assertCorrectValuesInList(List<String> list, String... values){
