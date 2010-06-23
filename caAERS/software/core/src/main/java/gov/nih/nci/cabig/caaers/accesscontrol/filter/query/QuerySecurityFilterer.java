@@ -27,7 +27,7 @@ public class QuerySecurityFilterer {
 
 
     public void filter(AbstractQuery query){
-
+    	
         boolean shouldFilter = shouldFilter();
         if(log.isInfoEnabled()){
             log.info("Query filtering will " + (shouldFilter ? "" : "not ") + "get applied");
@@ -39,9 +39,13 @@ public class QuerySecurityFilterer {
 
     /**
      * If returns true will apply the filtering. 
-     * @return - true - if the logged in user is not "caaers_super_user" or any of the roles mentioned in rolesNotNeedFiltering property. 
+     * @return - true - if the logged in user is not global 
      */
     public boolean shouldFilter(){
+    	//if global scoped user- ignore filtering.
+		if(!SecurityUtils.isScoped()) return false;
+		return true;
+    	/*
         List<UserGroupType> rolesToExclude = new ArrayList<UserGroupType>();
         rolesToExclude.add(UserGroupType.caaers_super_user);
         
@@ -51,7 +55,7 @@ public class QuerySecurityFilterer {
             }
         }
         
-        return !SecurityUtils.checkAuthorization(rolesToExclude.toArray(new UserGroupType[0]));
+        return !SecurityUtils.checkAuthorization(rolesToExclude.toArray(new UserGroupType[0]));*/
     }
   
     /**
