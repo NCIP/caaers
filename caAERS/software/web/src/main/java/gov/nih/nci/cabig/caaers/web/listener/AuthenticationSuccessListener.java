@@ -43,9 +43,11 @@ public class AuthenticationSuccessListener  implements ApplicationListener {
 
 		if (event instanceof AuthenticationSuccessEvent) {
 			AuthenticationSuccessEvent authenticationSuccessEvent = (AuthenticationSuccessEvent)event;
-			Authentication authentication = authenticationSuccessEvent.getAuthentication();
-            //if super user- ignore indexing. 
-            if(SecurityUtils.checkAuthorization(authentication,UserGroupType.caaers_super_user)) return;
+			Authentication authentication = authenticationSuccessEvent.getAuthentication();             
+            //if(SecurityUtils.checkAuthorization(authentication,UserGroupType.caaers_super_user)) return;
+			
+			//if global user- ignore indexing.
+			if(!SecurityUtils.isScoped(authentication)) return;
             String userName = SecurityUtils.getUserLoginName(authentication);
 			filteredDataLoader.updateIndexByUserName(userName);
 		}		
