@@ -316,6 +316,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 		for(SiteResearchStaff xmlSiteResearchStaff : xmlResearchStaff.getSiteResearchStaffs()){
 			SiteResearchStaff existing = dbResearchStaff.findSiteResearchStaff(xmlSiteResearchStaff);
 			if(existing != null){
+				existing.setAssociateAllStudies(xmlSiteResearchStaff.getAssociateAllStudies());
 				//sync the roles
 				List<SiteResearchStaffRole> existingRoles = new ArrayList<SiteResearchStaffRole>();
 				List<SiteResearchStaffRole> newRoles = new ArrayList<SiteResearchStaffRole>();
@@ -340,9 +341,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			}else {
 				newSiteResearchStaffs.add(xmlSiteResearchStaff);
 			}
-			
 		}
-		
 		//add the items in new
 		for(SiteResearchStaff sRs : newSiteResearchStaffs){
 			dbResearchStaff.addSiteResearchStaff(sRs);
