@@ -352,7 +352,8 @@
 			<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
 
             <!-- apache commons EL -->
-            <dependency org="commons-el" name="commons-el" rev="1.0" />
+            <dependency org="jspapi" name="jsp-api" rev="2.0" transitive="true" />
+            <dependency org="commons-el" name="commons-el" rev="1.0" transitive="true" />
 
         </dependencies>
 </ivy-module>
