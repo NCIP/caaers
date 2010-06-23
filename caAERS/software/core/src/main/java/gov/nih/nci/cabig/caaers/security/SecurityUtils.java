@@ -90,7 +90,8 @@ public class SecurityUtils {
 	
 	/**
 	 * Checks whether the logged-in user has the roles supplied in the privilege
-	 * @param privilege
+	 * @param authentication - A valid authentication object
+     * @param roles - A list of UserGroupType
 	 * @return
 	 */
 	public static boolean checkAuthorization(Authentication authentication, UserGroupType... roles){

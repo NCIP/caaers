@@ -1,19 +1,22 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
-import gov.nih.nci.cabig.ctms.web.chrome.Task;
+import gov.nih.nci.cabig.ctms.web.chrome.Section;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Map;
 
 /**
  * @author Ion C. Olaru
+ * @author Biju Joseph (refactoring)
  *
  */
-public class TasksWebTabResolver implements WebTabResolver {
+public class TabObjectPrivilegeGenerator implements ObjectPrivilegeGenerator {
 
     protected Map<String, String> objectPrivilegeMap;
 
     public String resolve(Object o) {
-        return objectPrivilegeMap.get(((Task)o).getUrl());
+        Tab t = (Tab) o;
+        return objectPrivilegeMap.get(t.getClass().getName());
     }
 
     public void setObjectPrivilegeMap(Map<String, String> objectPrivilegeMap) {

@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 
-import gov.nih.nci.cabig.caaers.accesscontrol.BaseSecurityFilterer;
 import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 
@@ -12,7 +11,7 @@ import org.acegisecurity.context.SecurityContextHolder;
  * @author akkalas
  *
  */
-public class RefreshIndexAspect extends BaseSecurityFilterer{
+public class RefreshIndexAspect {
 	
 
 	private FilteredDataLoader filteredDataLoader;
@@ -25,11 +24,14 @@ public class RefreshIndexAspect extends BaseSecurityFilterer{
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication != null) {
 			String userName = SecurityUtils.getUserLoginName(authentication);
-			// no need to refresh index for super user .. 
-			if (filteringNotRequired(authentication)) {
-				return ; 
-			} else {
-				
+			// no need to refresh index for super user ..
+
+            if(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user)) return;
+
+            //NOTE : BJ - FOR GLOBAL USERS ALSO WE SHOULD NOT INDEX (AS THEY CAN SEE EVERY THING)
+
+            // proceed for other users.
+
 				filteredDataLoader.updateIndexByUserName(userName);
 				
 				/*
@@ -38,8 +40,8 @@ public class RefreshIndexAspect extends BaseSecurityFilterer{
 					CaaersDao indexDao = (CaaersDao)idFetcherIndexDaoMap.get(idFetcher);
 					indexDao.clearIndex(userName);
 					indexDao.updateIndex(listOfIds, userName);
-				}*/				
-			}
+				}*/
+            
 			/*
 			FilteredDataProvider filteredDataProvider = new FilteredDataProvider(authentication,idFetcher);
 			// No filtering for super user . 
