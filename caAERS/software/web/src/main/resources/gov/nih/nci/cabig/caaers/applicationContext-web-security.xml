@@ -324,7 +324,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
 
     <bean id="urlAuthorizationCheck" parent="caaersWebAuthorizationCheck">
-        <property name="objectPrivilegeGenerator" ref="defaultObjectPrivilegeGenerator" />
+        <property name="objectPrivilegeGenerator" ref="filterInvocationObjectPrivilegeGenerator" />
     </bean>
 
     <bean id="taskObjectPrivilegeGenerator" class="gov.nih.nci.cabig.caaers.web.security.TasksObjectPrivilegeGenerator">
@@ -335,7 +335,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="objectPrivilegeMap" ref="tabObjectPrivilegeMap" />
     </bean>
 
-    <bean id="defaultObjectPrivilegeGenerator" class="gov.nih.nci.cabig.caaers.web.security.DefaultObjectPrivilegeGenerator">
+    <bean id="filterInvocationObjectPrivilegeGenerator" class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationObjectPrivilegeGenerator">
            <property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
     </bean>
 
