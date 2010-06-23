@@ -19,24 +19,24 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	}
 	
 	public void testGetAccessibleOrganizationIds() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("1");
+		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln2");
 		assertEquals(2,list.size());
 	}
 
 	public void testGetAccessibleOrganizationIdsUserWithAllOrgs() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("-7");
+		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln1");
 		assertEquals(3,list.size());
 	}
 	
 	public void testGetAccessibleStudyIds() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleStudyIds("1");
+		List<Integer> list = caaersSecurityFacade.getAccessibleStudyIds("ln2");
 		assertEquals(2,list.size());
 	}
 	public void testGetAccessibleStudyIdsUserWithAllStudies() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleStudyIds("-7");
+		List<Integer> list = caaersSecurityFacade.getAccessibleStudyIds("ln1");
 		assertEquals(0,list.size());
 		
-		list = caaersSecurityFacade.getAccessibleStudyIds("-8");
+		list = caaersSecurityFacade.getAccessibleStudyIds("ln");
 		assertEquals(1,list.size());
 	}
 	
