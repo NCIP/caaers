@@ -327,7 +327,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	public List<Integer> getAccessibleStudyIds(String loginId) {
+	public List<Integer> getAccessibleStudyIds(String userName) {
+    	String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
     	List<Integer> resultList = new ArrayList<Integer>();
     	try {
 			Set<ProtectionGroupRoleContext> contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
@@ -384,12 +385,15 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	public List<Integer> getAccessibleOrganizationIds(String loginId) {
+	public List<Integer> getAccessibleOrganizationIds(String userName) {
+    	//get csm user DB id . 
+    	String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
+
     	List<Integer> resultList = new ArrayList<Integer>();
     	try {
 			Set<ProtectionGroupRoleContext> contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
 			List identifiers = new ArrayList();
-			String hql = "";
+
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
