@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import java.util.List;
 
 import org.globus.wsrf.security.SecurityManager;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * This class is used by caaers grid services to check users authorization.
@@ -14,7 +13,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class GridServicesAuthorizationHelper {
 
-	CaaersSecurityFacadeImpl caaersSecurityFacade;
+	private CaaersSecurityFacadeImpl caaersSecurityFacade;
 	
 	/**
 	 * This method checks if the user has registrar  role.
@@ -67,12 +66,9 @@ public class GridServicesAuthorizationHelper {
 		}
 	}
 
-	public CaaersSecurityFacade getCaaersSecurityFacade() {
-		return caaersSecurityFacade;
-	}
-
-	@Required
-	public void setCaaersSecurityFacade(CaaersSecurityFacadeImpl caaersSecurityFacade) {
+	public void setCaaersSecurityFacade(
+			CaaersSecurityFacadeImpl caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
+
 }
