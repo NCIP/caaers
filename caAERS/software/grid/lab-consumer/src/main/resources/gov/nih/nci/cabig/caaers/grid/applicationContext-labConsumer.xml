@@ -14,7 +14,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
-				<ref bean="s[authenticationMode]AuthenticationProvider"/>
 				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
 					<property name="key" value="anonymousAuthKey"/>
 				</bean>
