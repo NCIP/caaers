@@ -546,6 +546,7 @@
   -->
 
   <bean name="/rule/export" id="exportRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController"></bean>
+  <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
   <bean name="/rule/create" id="createRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController"></bean>
   <bean name="/rule/list" id="listRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController"></bean>
   <bean name="/rule/util" id="ruleUtilController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController"></bean>
@@ -583,7 +584,7 @@
     </bean>
   
     <bean name="/rule/notification/list" id="listNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController" />
-    <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
+
     <bean name="/rule/notification/export" id="exportReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ExportReportDefinitionController" />
     <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
     <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />

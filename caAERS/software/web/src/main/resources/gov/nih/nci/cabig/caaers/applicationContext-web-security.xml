@@ -70,15 +70,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
         <!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/createOptions" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/list" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+        <entry key="/pages/rule/util" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="/pages/rule/addRule" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/addColumn" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/rule/export" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+        <entry key="/pages/rule/deploy" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        
 		<entry key="/pages/rule/notification/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/notification/edit" value="gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
 		<entry key="/pages/rule/notification/list" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
-		<entry key="/pages/rule/deploy" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/rule/export" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/notification/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-
+        <entry key="/pages/rule/notification/export" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/notification/createConfigProperty" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        
         <!-- Advance Search -->
         <entry key="/pages/search/exportSearchResults" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
         <entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
