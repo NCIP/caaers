@@ -399,7 +399,7 @@
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
     <property name="viewName"><value>study/ajax/studyAgentINDSection</value></property>
   </bean>    
-  
+  <bean name="/study/export" id="exportStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ExportStudyController" /> 
    <!--  AE   -->
   
   <bean name="aeEditTask" id="aeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
@@ -423,7 +423,7 @@
   <bean name="/ae/submitReport" id="submitReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
   <bean name="/ae/blankForm" id="generateBlankFormPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateBlankFormPdfController"/>
-  <bean name="/search/exportSearchResults" id="exportSearchResultsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ExportSearchResultsController"/>    
+
   <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>
 
   <bean name="/admin/configure" id="configurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
@@ -510,7 +510,10 @@
   	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>
   
   <bean name="/search/routineReport" id="routineReportController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>                         
+	class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>
+    
+  <bean name="/search/exportSearchResults" id="exportSearchResultsController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.search.ExportSearchResultsController"/>   
   <!--
   <bean name="/help" id="helpController" autowire="byType"
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
@@ -589,7 +592,7 @@
     <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
     <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />
 
-    <bean name="/study/export" id="exportStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ExportStudyController" />
+
     
     <bean name="/admin/reload" id="messageReload" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MessageReloadController">
         <property name="messageSource" ref="messageSource" />
