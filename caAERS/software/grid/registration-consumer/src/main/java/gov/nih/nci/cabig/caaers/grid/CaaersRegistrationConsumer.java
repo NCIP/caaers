@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper;
 import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -29,7 +30,6 @@ import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.common.RegistrationConsumerI;
 import gov.nih.nci.ccts.grid.stubs.types.InvalidRegistrationException;
 import gov.nih.nci.ccts.grid.stubs.types.RegistrationConsumptionException;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -66,8 +66,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private ConfigProperty configurationProperty;
 
-    private AuthorizationSwitch authorizationSwitch;
-
     private StudyParticipantAssignmentAspect assignmentAspect;
 
     private AuditHistoryRepository auditHistoryRepository;
@@ -76,6 +74,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private Integer rollbackInterval;
 
+    private GridServicesAuthorizationHelper gridServicesAuthorizationHelper;
 
     // @Transactional(readOnly=false)
     public void commit(Registration registration) throws RemoteException,
@@ -105,7 +104,11 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         logger.info("Begining of registration-register");
         System.out.println("-- RegistrationConsumer : register");
         try {
-
+        	if(!gridServicesAuthorizationHelper.authorizedRegistrationConsumer()){
+                String message = "Access denied";
+                RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
+                throw exp;
+        	}
             String ccIdentifier = findCoordinatingCenterIdentifier(registration);
             Study study = fetchStudy(ccIdentifier,
                             OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
@@ -538,17 +541,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         this.configurationProperty = configurationProperty;
     }
 
-
-
-    @Required
-    public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
-        this.authorizationSwitch = authorizationSwitch;
-    }
-
-    public AuthorizationSwitch getAuthorizationSwitch() {
-        return authorizationSwitch;
-    }
-
     public StudyParticipantAssignmentAspect getStudyParticipantAssignmentAspect() {
         return assignmentAspect;
     }
@@ -574,8 +566,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         this.auditHistoryRepository = auditHistoryRepository;
     }
 
-
-
 	public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(GetMultipleResourceProperties_Element params) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
@@ -594,5 +584,10 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+
+	public void setGridServicesAuthorizationHelper(
+			GridServicesAuthorizationHelper gridServicesAuthorizationHelper) {
+		this.gridServicesAuthorizationHelper = gridServicesAuthorizationHelper;
 	}
 }

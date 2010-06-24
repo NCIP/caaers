@@ -27,6 +27,7 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -93,6 +94,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     private String studyConsumerGridServiceUrl;
 
     private Integer rollbackInterval;
+    
+    private GridServicesAuthorizationHelper gridServicesAuthorizationHelper;
     
 
     public void commit(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
@@ -195,6 +198,12 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                     InvalidStudyException, StudyCreationException {
     	try {
         	logger.info("Begining of studyConsumer : createStudy");
+        	
+        	if(!gridServicesAuthorizationHelper.authorizedStudyConsumer()){
+                String message = "Access denied";
+                throw getStudyCreationException(message);
+        	}
+        	
             if (studyDto == null) throw getInvalidStudyException("null input");
 
             gov.nih.nci.cabig.caaers.domain.Study study = null;
@@ -798,4 +807,9 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             return null;
         }
     }
+
+	public void setGridServicesAuthorizationHelper(
+			GridServicesAuthorizationHelper gridServicesAuthorizationHelper) {
+		this.gridServicesAuthorizationHelper = gridServicesAuthorizationHelper;
+	}
 }

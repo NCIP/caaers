@@ -15,7 +15,6 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cabig.ccts.domain.Registration;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,11 +52,6 @@ public class CaaersRegistrationConsumerTest extends CaaersDbTestCase {
 
     public CaaersRegistrationConsumer getRegistrationConsumer() {
         CaaersRegistrationConsumer consumer = new CaaersRegistrationConsumer();
-       // OpenSessionInViewInterceptor os = (OpenSessionInViewInterceptor) getDeployedApplicationContext()
-         //               .getBean("openSessionInViewInterceptor");
-        //consumer.setOpenSessionInViewInterceptor(os);
-        consumer.setAuthorizationSwitch((AuthorizationSwitch) getDeployedApplicationContext()
-                        .getBean("authorizationSwitch"));
         consumer.setConfigurationProperty((ConfigProperty) getDeployedApplicationContext().getBean(
                         "configurationProperty"));
         consumer.setOrganizationRepository((OrganizationRepository) getDeployedApplicationContext().getBean(

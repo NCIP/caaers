@@ -9,14 +9,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
  default-lazy-init="true">
 	 
-	<!--  overriding the authorization -->
-	<!-- 
-	<bean id="authorizationSwitch"
-		class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.AuthorizationSwitch"
-		factory-method="getInstance">
-		<property name="on" value="false" />
-	</bean>
-	-->
 	<bean id="authenticationManager"
 		class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">

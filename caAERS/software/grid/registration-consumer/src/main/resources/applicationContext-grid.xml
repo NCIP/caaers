@@ -35,6 +35,7 @@
 	 <bean id="registrationConsumerTarget" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
         <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
      	<property name="rollbackInterval" ref ="registrationRollbackInterval" />
+     	<property name="gridServicesAuthorizationHelper" ref="gridServicesAuthorizationHelper"/>
     </bean>
     
 	<bean id="registrationConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
@@ -42,7 +43,7 @@
 		<property name="target"><ref local="registrationConsumerTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>gridAutenticationInterceptor</value>
+				<value>runAsAutenticationProviderInterceptor</value>
 				<value>registrationConsumerAuditInfoPopulatorInterceptor</value>
 				<value>hibernateInterceptor</value> 
 			</list> 

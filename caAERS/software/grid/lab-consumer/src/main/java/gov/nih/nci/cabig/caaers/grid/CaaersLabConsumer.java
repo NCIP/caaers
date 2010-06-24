@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository;
+import gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper;
 import gov.nih.nci.cabig.ccts.domain.loadlabs.AckStatus;
 import gov.nih.nci.cabig.ccts.domain.loadlabs.Acknowledgement;
 import gov.nih.nci.cabig.ccts.domain.loadlabs.ErrorCodes;
@@ -19,7 +20,6 @@ import gov.nih.nci.cabig.ccts.domain.loadlabs.StudySubject;
 import gov.nih.nci.cabig.ccts.domain.loadlabs.WsError;
 import gov.nih.nci.cabig.ccts.domain.loadlabs.WsErrors;
 import gov.nih.nci.ccts.grid.common.LabConsumerServiceI;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -28,11 +28,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
@@ -48,12 +43,17 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
 	private LabLoadRepository labLoadRepository;
-	private AuthorizationSwitch authorizationSwitch;
 	private static final Log log = LogFactory.getLog(CaaersLabConsumer.class);
+	private GridServicesAuthorizationHelper gridServicesAuthorizationHelper;
 
 	public Acknowledgement loadLabs(LoadLabsRequest loadLabsRequest) throws RemoteException {
 		log.info("In loadlabs Implementation.....");
 		errorList = new ArrayList<WsError>();
+		
+		if(!gridServicesAuthorizationHelper.authorizedLabConsumer()){
+			addError(ErrorCodes.ApplicationError,"Access denied");
+			return buildAcknowledgement();
+		}
 		
 		LabResult[] results = loadLabsRequest.getLabResult();
 		for (int i=0 ; i<results.length; i++ ) {
@@ -200,6 +200,11 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 	public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element params) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setGridServicesAuthorizationHelper(
+			GridServicesAuthorizationHelper gridServicesAuthorizationHelper) {
+		this.gridServicesAuthorizationHelper = gridServicesAuthorizationHelper;
 	}
 
 }

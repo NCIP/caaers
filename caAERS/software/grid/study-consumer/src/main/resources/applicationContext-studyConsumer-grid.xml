@@ -33,13 +33,14 @@
 	 <bean id="studyConsumerTarget" class="gov.nih.nci.cabig.caaers.grid.CaaersStudyConsumer" autowire="byType">
         <property name="studyConsumerGridServiceUrl" ref="studyConsumerGridServiceUrl"/>
      	<property name="rollbackInterval" ref ="studyRollbackInterval" />
+     	<property name="gridServicesAuthorizationHelper" ref="gridServicesAuthorizationHelper"/>
     </bean>
 	<bean id="studyConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="proxyTargetClass"><value>true</value></property>
 		<property name="target"><ref local="studyConsumerTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>gridAutenticationInterceptor</value>
+				<value>runAsAutenticationProviderInterceptor</value>
 				<value>studyConsumerAuditInfoPopulatorInterceptor</value>
 				<value>hibernateInterceptor</value> 
 			</list> 
