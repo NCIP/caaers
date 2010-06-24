@@ -131,7 +131,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.ae.ReviewAndReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
           <!--  Advanced search flow -->
-          <entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaTab" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESSD"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaTab" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchViewTab" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchResultsTab" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
 
