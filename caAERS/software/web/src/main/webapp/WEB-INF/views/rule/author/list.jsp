@@ -77,7 +77,9 @@ YAHOO.example.Data = {
             rsDescription: "${rs.description}",
             rsOrganization: "${empty rs.organization ? 'NA' : rs.organization}",
             rsStudyID: "${rs.study}",
-            rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>",
+            rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>"
+            	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+            ,
             rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.name}', 'status-${rs.id}')\">" +
             			"<option value=\"\">Please select</option>" +
             			"<option value=\"\">Edit</option>" +
@@ -86,7 +88,7 @@ YAHOO.example.Data = {
             			"<option value=\"\">Export</option>" +
             			"<option value=\"\">Delete</option>" +
             			"</select>"
-            			
+            </csmauthz:accesscontrol>			
 
         }
         <c:if test="${!status.last}">,</c:if>
@@ -98,6 +100,7 @@ YAHOO.example.Data = {
     /////////////////////////////////
 
 YAHOO.util.Event.addListener(window, "load", function() {
+	
     YAHOO.example.CustomSort = function() {
 
         var myColumnDefs = [
@@ -105,8 +108,11 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"rsDescription",       label:"Rule Set",           sortable:true,      resizeable:true},
             {key:"rsOrganization",      label:"Organization",       sortable:true,      resizeable:true},
             {key:"rsStudyID",           label:"Study",              sortable:true,      resizeable:true},
-            {key:"rsStatus",            label:"Status",             sortable:true,      resizeable:true, formatter:"myCustom"},
+            {key:"rsStatus",            label:"Status",             sortable:true,      resizeable:true, formatter:"myCustom"}
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+            ,
             {key:"rsAction",            label:"Action",             sortable:false,     resizeable:true}
+            </csmauthz:accesscontrol>
         ];
 
         var myCustomFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -132,7 +138,11 @@ YAHOO.util.Event.addListener(window, "load", function() {
         var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.rsList.slice(0,50));
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         myDataSource.responseSchema = {
-            fields: ["rsLevel", "rsDescription", "rsOrganization", "rsStudyID", "rsStatus", "rsAction"]
+            fields: ["rsLevel", "rsDescription", "rsOrganization", "rsStudyID", "rsStatus"
+                     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+                     , "rsAction"
+                     </csmauthz:accesscontrol>
+                     ]
         };
 
         //Create config
@@ -179,12 +189,15 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	<chrome:division title="Manage rules" id="rule-set-id" >
 	    <tags:instructions code="listrules" />
     	<div id="basic" class="yui-skin-sam"></div>
+		<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
 		<div class="new_rule">
 			<c:set var="create_url"><c:url value="/pages/rule/create"/></c:set>
 			<tags:button color="blue" icon="add" size="small" type="button" value="New Rule" markupWithTag="a" href="${create_url}"/>
 		</div>
+		</csmauthz:accesscontrol>
 		</div>
     </chrome:division>
+    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
     <chrome:division title="Import rules" id="import-rules-id">
     	<p>
 			<tags:instructions code="importxmlrules" />
@@ -207,6 +220,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </form:form>
 
     </chrome:division>
+    </csmauthz:accesscontrol>
 </chrome:box>
 
 </body>

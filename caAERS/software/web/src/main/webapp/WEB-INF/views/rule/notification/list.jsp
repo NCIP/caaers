@@ -50,15 +50,18 @@ YAHOO.example.Data = {
             rdName: "${rd.name}",
             rdOrganization: "${rd.organization.fullName}",
             rdFinalReportDue: "${rd.duration} ${rd.timeScaleUnitType.displayName}(s)",
-            rdDescription: "${rd.description}",
-            
+            rdDescription: "${rd.description}"
+
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+                ,
             rdAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rd.id}')\">" +
             			"<option value=\"\">Please select</option>" +
             			"<option value=\"\">Edit</option>" +
             			"<option value=\"\">Export</option>" +
             			"<option value=\"\">Disable</option>" +
             			"</select>"
-            
+			</csmauthz:accesscontrol>
+                        
          }
          <c:if test="${!status.last}">,</c:if>
 </c:forEach>
@@ -71,15 +74,17 @@ YAHOO.example.Data = {
             rdName: "${rd.name}",
             rdOrganization: "${rd.organization.fullName}",
             rdFinalReportDue: "${rd.duration} ${rd.timeScaleUnitType.displayName}(s)",
-            rdDescription: "${rd.description}",
-            
+            rdDescription: "${rd.description}"
+
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+                ,
             rdAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rd.id}')\">" +
             			"<option value=\"\">Please select</option>" +
             			"<option value=\"\">Edit</option>" +
             			"<option value=\"\">Export</option>" +
             			"<option value=\"\">Enable</option>" +
             			"</select>"
-            
+            </csmauthz:accesscontrol>
          }
          <c:if test="${!status.last}">,</c:if>
 </c:forEach>
@@ -97,14 +102,21 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"rdName",              label:"Name",               sortable:true,      resizeable:true},
             {key:"rdDescription",       label:"Description",        sortable:true,      resizeable:true},
             {key:"rdOrganization",      label:"Organization",       sortable:true,      resizeable:true},
-            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120},
+            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120}
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+            ,
             {key:"rdAction",            label:"Action",             sortable:false,     resizeable:true}
+            </csmauthz:accesscontrol>
         ];
 
         var activeDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.activeReportDefinitions.slice(0,50));
         activeDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         activeDataSource.responseSchema = {
-            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue", "rdAction"]
+            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue"
+                 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+                     , "rdAction"
+				 </csmauthz:accesscontrol>
+                 ]
         };
 
         //Create config
@@ -126,14 +138,21 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"rdName",              label:"Name",               sortable:true,      resizeable:true},
             {key:"rdDescription",       label:"Description",        sortable:true,      resizeable:true},
             {key:"rdOrganization",      label:"Organization",       sortable:true,      resizeable:true},
-            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120},
+            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120}
+            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+            ,
             {key:"rdAction",            label:"Action",             sortable:false,     resizeable:true}
+            </csmauthz:accesscontrol>
         ];
 
         var inactiveDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.inactiveReportDefinitions.slice(0,50));
         inactiveDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         inactiveDataSource.responseSchema = {
-            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue", "rdAction"]
+            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue"
+                     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+                     , "rdAction"
+					</csmauthz:accesscontrol>
+                     ]
         };
 
         //Create config
@@ -190,16 +209,19 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	<chrome:box title="${manageReportDefinitionTitle }" autopad="true">
 		<chrome:division title="${manageActiveReportDefinitionTitle }" id="rule-set-id-active" collapsable="true" collapsed="false">
 			<p><tags:instructions code="listreportdefinitions" /></p>
-		    <div id="basic" class="yui-skin-sam"></div> 
+		    <div id="basic" class="yui-skin-sam"></div>
+		    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"> 
 			<div class="new_definition">
 				<c:set var="create_url"><c:url value="/pages/rule/notification/create"/></c:set>
 				<tags:button color="blue" icon="add" size="small" type="button" value="New Report Definition" markupWithTag="a" href="${create_url}" />
 			</div>
+			</csmauthz:accesscontrol>
 		</chrome:division>
 		<chrome:division title="${manageInactiveReportDefinitionTitle }" id="rule-set-id-inactive" collapsable="true" collapsed="true">
 			<p><tags:instructions code="listreportdefinitions" /></p>
 			<div id="basic-inactive" class="yui-skin-sam"></div>
 		</chrome:division>
+		<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
 		<chrome:division title="${importReportDefinitionTitle}" id="import-rules-id" collapsable="true" collapsed="true">
 
 				<tags:instructions code="importxmlreportdefinitions" />
@@ -222,7 +244,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 				<c:if test="${not empty command.errorMessage}"><div id="flash-message" class="error">${command.errorMessage}</div></c:if>
 			</c:if>
 		</chrome:division>
-    
+    	</csmauthz:accesscontrol>
     </chrome:box>
 </body>
 </html>
