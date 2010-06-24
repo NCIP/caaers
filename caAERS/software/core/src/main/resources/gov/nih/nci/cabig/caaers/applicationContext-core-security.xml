@@ -276,7 +276,7 @@
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>  -->             
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
+               value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.find(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
