@@ -54,7 +54,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/trackReports" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
 		<entry key="/pages/admin/happy" value="gov.nih.nci.cabig.caaers.domain.Notification:READ"/>
 		<entry key="/pages/admin/asaelSearch" value="gov.nih.nci.cabig.caaers.domain.Agent:READ"/>
-		<entry key="/pages/admin/asaelCreate" value="gov.nih.nci.cabig.caaers.domain.Agent:CREATE || gov.nih.nci.cabig.caaers.domain.Agent:UPDATE || gov.nih.nci.cabig.caaers.domain.Agent:READ"/>
+		<entry key="/pages/admin/asaelCreate" value="gov.nih.nci.cabig.caaers.domain.Agent:CREATE"/>
+        <entry key="/admin/asaelEdit" value="gov.nih.nci.cabig.caaers.domain.Agent:UPDATE || gov.nih.nci.cabig.caaers.domain.Agent:READ" /> 
         <entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
         <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
         <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
