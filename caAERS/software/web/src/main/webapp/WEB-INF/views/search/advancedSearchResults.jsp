@@ -239,9 +239,11 @@
               				<tags:button type="submit" value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
 			  			</span>
 					</div>
-					<div align="right">
-						<tags:button color="green" type="button" id="save-search" value="Save search" onclick="javascript:renderSaveSearchPopup();"/>
-					</div>
+					<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:CREATE">
+						<div align="right">
+							<tags:button color="green" type="button" id="save-search" value="Save search" onclick="javascript:renderSaveSearchPopup();"/>
+						</div>
+					</csmauthz:accesscontrol>
       			</div>
 			</jsp:attribute>
 		</tags:tabForm>
