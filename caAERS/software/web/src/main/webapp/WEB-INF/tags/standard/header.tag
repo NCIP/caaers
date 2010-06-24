@@ -20,6 +20,7 @@
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
         
         <ul id="sections" class="tabs">
+        <c:set var="_visibleTabIndex" value="-1" />
         <c:forEach items="${sections}" var="section" varStatus="index">
             <c:set var="_showSection" value="false" />
             <c:set var="_useSectionLink" value="false" />
@@ -30,8 +31,9 @@
                 </csmauthz:accesscontrol>
             </c:forEach>
             <c:if test="${_showSection}">
+                <c:set var="_visibleTabIndex" value="${_visibleTabIndex + 1}" />
                 <li class="${section == currentSection ? 'selected' : ''}">
-                    <a id="firstlevelnav_${section.mainController}" href="<c:url value="${section.mainUrl}"/>" index="${index.index}">${section.displayName}</a>
+                    <a id="firstlevelnav_${section.mainController}" href="<c:url value="${section.mainUrl}"/>" index="${_visibleTabIndex}">${section.displayName}</a>
                 </li>
             </c:if>
         </c:forEach>
