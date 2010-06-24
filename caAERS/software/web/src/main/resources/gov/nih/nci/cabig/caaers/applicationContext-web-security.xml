@@ -59,7 +59,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
         <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
         <entry key="/pages/admin/viewInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
-        <entry key="/pages/admin/import" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
+        <entry key="/pages/admin/import" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
 
         <entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"/>
         <entry key="/pages/admin/createResearchStaff" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE"/>
@@ -170,9 +170,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReviewTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 
           <!--========= TODO ADMIN ========-->
-          <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportReviewTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportSummaryTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportReviewTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportSummaryTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
 
       </util:map>
 
