@@ -340,10 +340,8 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)cmd;
 
         String index = request.getParameter("index"); 
-        String realIndex = request.getParameter("realIndex");
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/gradeFormSection");
         modelAndView.getModel().put("index", index);
-        modelAndView.getModel().put("realIndex", realIndex);
 
         AdverseEvent ae = command.getAdverseEvents().get(Integer.parseInt(index));
         ae.setLowLevelTerm(null);

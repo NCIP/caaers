@@ -38,7 +38,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
-                                    updateExpected(${realIndex}, ${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${ae.detailsForOther}');
+                                    updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${ae.detailsForOther}');
 								}
 							}
 						</jsp:attribute>
