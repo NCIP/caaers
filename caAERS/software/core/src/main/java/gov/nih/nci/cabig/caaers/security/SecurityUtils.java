@@ -47,7 +47,6 @@ public class SecurityUtils {
 
 	/**
 	 * Returns the granted authorities
-	 * @param authentication
 	 * @return
 	 */
 	public static GrantedAuthority[] getGrantedAuthorities() {
@@ -80,14 +79,7 @@ public class SecurityUtils {
 		return checkAuthorization(SecurityContextHolder.getContext().getAuthentication(), roles);
 	}
 	
-	/**
-	 * Checks whether the logged-in user has the roles supplied in the privilege
-	 * @param privilege
-	 * @return
-	 */
-	public static boolean checkAuthorization(String... privilege){
-		return checkAuthorization(SecurityContextHolder.getContext().getAuthentication(), privilege);
-	}
+	
 	
 	/**
 	 * Checks whether the logged-in user has the roles supplied in the privilege
@@ -102,29 +94,20 @@ public class SecurityUtils {
 		}
 		return checkAuthorization(authentication, privileges );
 	}
+
 	
 	/**
-	 * Checks whether the supplied authentication has the required privilege
+	 * Will check whether, the authentication, has all the roleNames
 	 * @param authentication
-	 * @param privilege
+	 * @param roleNames
 	 * @return
 	 */
-	public static boolean checkAuthorization(Authentication authentication, String privilege){
-		return checkAuthorization(authentication, privilege );
-	}
-	
-	/**
-	 * Will check whether, the authentication, has all the privileges
-	 * @param authentication
-	 * @param privileges
-	 * @return
-	 */
-	public static boolean checkAuthorization(Authentication authentication, String... privileges){
+	public static boolean checkAuthorization(Authentication authentication, String... roleNames){
 		GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
 		
 	    for (int i = 0; i < authorities.length; i++) {
-	    	 for (int j = 0; j < privileges.length; j++) {
-	                if (authorities[i].getAuthority().equals(privileges[j].trim())) {
+	    	 for (int j = 0; j < roleNames.length; j++) {
+	                if (authorities[i].getAuthority().equals(roleNames[j].trim())) {
 	                    return true;
 	                }
 	         }

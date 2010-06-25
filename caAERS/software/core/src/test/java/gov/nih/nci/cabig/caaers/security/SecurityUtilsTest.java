@@ -67,11 +67,6 @@ public class SecurityUtilsTest extends AbstractTestCase {
 		assertFalse(SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd, UserGroupType.caaers_site_cd));
 	}
 
-	public void testCheckAuthorizationStringArray() {
-		SecurityTestUtils.switchToSuperuser();
-		assertTrue(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user.getSecurityRoleName(), UserGroupType.caaers_site_cd.getSecurityRoleName()));
-		assertFalse(SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd.getSecurityRoleName(), UserGroupType.caaers_site_cd.getSecurityRoleName()));
-	}
 
 
 }

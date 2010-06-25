@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -26,16 +27,29 @@ public class CreateStudyController extends StudyController<StudyCommand> {
             public Flow<StudyCommand> createFlow(StudyCommand cmd) {
                 Flow<StudyCommand> flow = new Flow<StudyCommand>("Create Study");
                 flow.addTab(new DetailsTab());
-                flow.addTab(new StudyTherapiesTab());
-                flow.addTab(new AgentsTab());
-                flow.addTab(new TreatmentAssignmentTab());
-                flow.addTab(new DiseaseTab());
-                flow.addTab(new SolicitedAdverseEventTab());
-                flow.addTab(new ExpectedAEsTab());
-                flow.addTab(new SitesTab());
-                flow.addTab(new InvestigatorsTab());
-                flow.addTab(new PersonnelTab());
-                flow.addTab(new IdentifiersTab());
+                
+                if(SecurityUtils.checkAuthorization(UserGroupType.supplemental_study_information_manager)){
+                    flow.addTab(new StudyTherapiesTab());
+                    flow.addTab(new AgentsTab());
+                    flow.addTab(new TreatmentAssignmentTab());
+                    flow.addTab(new DiseaseTab());
+                    flow.addTab(new SolicitedAdverseEventTab());
+                    flow.addTab(new ExpectedAEsTab());
+                }
+                
+                if(SecurityUtils.checkAuthorization(UserGroupType.study_site_participation_administrator)){
+                    flow.addTab(new SitesTab());
+                }
+
+                if(SecurityUtils.checkAuthorization(UserGroupType.study_team_administrator)){
+                    flow.addTab(new InvestigatorsTab());
+                    flow.addTab(new PersonnelTab());
+                }
+                
+                if(SecurityUtils.checkAuthorization(UserGroupType.supplemental_study_information_manager)){
+                    flow.addTab(new IdentifiersTab());
+                }
+
                 flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
                 return flow;
             }

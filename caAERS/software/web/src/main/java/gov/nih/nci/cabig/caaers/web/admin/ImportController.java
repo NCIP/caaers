@@ -94,39 +94,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
 
-        String redirectTo = "redirectToSearchInStudyTab";
-        ImportCommand cObject = (ImportCommand) command;
-        
-        //System.out.println("T Y P E : " + cObject.getType());
-        if (cObject.getType().startsWith("study")) {
-            redirectTo = "redirectToSearchInStudyTab";
-        }
-
-        if (cObject.getType().startsWith("participant")) {
-            redirectTo = "redirectToSearchInParticipantTab";
-        }
-
-        if (cObject.getType().startsWith("organization")) {
-            redirectTo = "redirectToSearchOrganizationTab";
-        }
-        
-        if (cObject.getType().startsWith("investigator")) {
-            redirectTo = "redirectToSearchInvestigatorTab";
-        }
-
-        if (cObject.getType().startsWith("researchStaff")) {
-            redirectTo = "redirectToSearchResearchStaffTab";
-        }
-        
-        if (cObject.getType().startsWith("agent")) {
-            redirectTo = "redirectToImportTab";
-        }
-        
-        if (cObject.getType().startsWith("medDRA")) {
-            redirectTo = "redirectToImportTab";
-        }
-        
-        // System.out.println("Redirecting to : " + redirectTo);
+        String redirectTo = "redirectToImportTab";
         return new ModelAndView(redirectTo);
     }
 
