@@ -389,9 +389,9 @@
 
 
     <!--==================================  STUDY   =========================================== -->
-    <bean name="/study/create" id="createStudyController" autowire="byType"class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController" />
+    <bean name="/study/create" id="createStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController" />
     <bean name="/study/view" id="viewStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController"  />
-    <bean name="/study/search" id="searchStudyController" autowire="byType"class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
+    <bean name="/study/search" id="searchStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
         <property name="sessionForm" value="true"/>
         <property name="studyRepository" ref="studyRepository"/>
     </bean>
@@ -443,25 +443,21 @@
     <property name="investigatorRepository" ref="investigatorRepository" />
   </bean>
   
-  <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
+  <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
 	<property name="authenticationMode" ref="authenticationMode"/>   
 	<property name="investigatorRepository" ref="investigatorRepository" />      
   </bean>
   
 
-  <bean name="/admin/searchInvestigator" id="searchInvestigatorController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.SearchInvestigatorController">
+  <bean name="/admin/searchInvestigator" id="searchInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchInvestigatorController">
   </bean>     
   
-  <bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
+  <bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
     <property name="sessionForm"><value>true</value></property>
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
   
-  <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
+  <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
   
@@ -492,23 +488,17 @@
   <bean name="/participant/search" id="searchParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
   
   
-  <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/> 
+  <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/>
   
-  <bean name="/search/report" id="reportController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
+  <bean name="/search/report" id="reportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
   	
-  <bean name="/search/listSearch" id="listSearchController" autowire="byType"
-  	class="gov.nih.nci.cabig.caaers.web.search.ListSearchController"/>
+  <bean name="/search/listSearch" id="listSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ListSearchController"/>
   
-  <bean name="/search/advancedSearch" id="advancedSearchController" autowire="byType"
-  	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>
+  <bean name="/search/advancedSearch" id="advancedSearchController" autowire="byType" 	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>
   
-  <bean name="/search/routineReport" id="routineReportController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>
+  <bean name="/search/routineReport" id="routineReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>
     
-  <bean name="/search/exportSearchResults" id="exportSearchResultsController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.search.ExportSearchResultsController"/>   
+  <bean name="/search/exportSearchResults" id="exportSearchResultsController" autowire="byType"  class="gov.nih.nci.cabig.caaers.web.search.ExportSearchResultsController"/>
   <!--
   <bean name="/help" id="helpController" autowire="byType"
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
