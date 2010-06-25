@@ -60,6 +60,11 @@ public class ParticipantInputCommand {
     private DiseaseCodeTerm diseaseCodingTerm;
     private boolean unidentifiedMode;
 
+    private boolean hasRegistrar;
+    private boolean hasDataReader;
+    private boolean hasSubjectManager;
+    private boolean hasRegistrationQAManager;
+
     public ParticipantInputCommand() {
     	this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
     }

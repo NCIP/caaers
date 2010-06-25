@@ -68,5 +68,15 @@ public class SecurityUtilsTest extends AbstractTestCase {
 	}
 
 
+    public void testHasAuthorityOf() {
+        SecurityTestUtils.switchToSuperuser();
+        assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_super_user));
+        assertEquals(false, SecurityUtils.hasAuthorityOf(UserGroupType.ae_reporter));
+
+        SecurityTestUtils.switchUser("JOHN", UserGroupType.caaers_ae_cd.getCsmName(), UserGroupType.registrar.getCsmName());
+        assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_ae_cd));
+        assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.registrar));
+        assertEquals(false, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_super_user));
+    }
 
 }

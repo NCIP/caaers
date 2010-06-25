@@ -80,7 +80,21 @@ public final class SecurityUtils {
 		
 		return grantedAuthorities;
 	}
-	
+
+    /**
+     * 
+     * Determines whether or not the logged in user has the needed role
+     * @param   role - the role to be checked for the logged in user
+     * @return  boolean
+     *
+     * */
+    public static boolean hasAuthorityOf(UserGroupType role) {
+        for (GrantedAuthority ga : getGrantedAuthorities()) {
+            if (ga.getAuthority().equals(role.getSecurityRoleName())) return true;
+        }
+        return false;
+    }
+
 	/**
 	 * Checks whether the logged-in user has the roles supplied in the roles parameter
 	 * @param roles

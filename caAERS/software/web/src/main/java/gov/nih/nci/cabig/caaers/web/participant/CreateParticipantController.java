@@ -5,8 +5,11 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -74,6 +77,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         return new FlowFactory<ParticipantInputCommand>() {
             public Flow<ParticipantInputCommand> createFlow(ParticipantInputCommand cmd) {
                 Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Enter Subject");
+                // if ()
                 flow.addTab(new CreateParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
                 flow.addTab(new SubjectMedHistoryTab());
@@ -97,16 +101,16 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected Object formBackingObject(final HttpServletRequest request) throws Exception {
         ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
         participantInputCommand.setUnidentifiedMode(getUnidentifiedMode());
+/*
+        request.getSession().setAttribute("hasRegistrar", SecurityUtils.hasAuthorityOf(UserGroupType.registrar));
+        request.getSession().setAttribute("hasDataReader", SecurityUtils.hasAuthorityOf(UserGroupType.data_reader));
+        request.getSession().setAttribute("hasSubjectManager", SecurityUtils.hasAuthorityOf(UserGroupType.subject_manager));
+        request.getSession().setAttribute("hasRegistrationQAManager", SecurityUtils.hasAuthorityOf(UserGroupType.registration_qa_manager));
+*/
         participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
 
-        User user = null;
-        SecurityContext context = (SecurityContext) request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-        if (context != null) {
-            user = (User)context.getAuthentication().getPrincipal();
-        }
-
-        participantInputCommand.setLoggedinResearchStaff(rsDao.getByLoginId(user.getUsername()));
-        participantInputCommand.setLoggedinInvestigator(investigatorDao.getByLoginId(user.getUsername()));
+        participantInputCommand.setLoggedinResearchStaff(rsDao.getByLoginId(SecurityUtils.getUserLoginName()));
+        participantInputCommand.setLoggedinInvestigator(investigatorDao.getByLoginId(SecurityUtils.getUserLoginName()));
 
         return participantInputCommand;
     }
