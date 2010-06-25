@@ -8,6 +8,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
+	<!--
+		This map defines rules for filtering granted authorities by FabricatedAuthenticationFilter.  
+		Key is an URL to the protected page. Value is an entity's fully qualified class name along with a request parameter name, which holds the entity's ID.
+	 -->
+	<util:map id="fabricatedAuthenticationURLMap">
+		<entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:researchStaffId"/>
+	</util:map>
 
 	<util:map id="taskObjectPrivilegeMap">
         <!--========== TASK PAGE ===========-->
