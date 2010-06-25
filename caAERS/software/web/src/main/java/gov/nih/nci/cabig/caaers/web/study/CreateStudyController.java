@@ -37,7 +37,6 @@ public class CreateStudyController extends StudyController<StudyCommand> {
                 flow.addTab(new PersonnelTab());
                 flow.addTab(new IdentifiersTab());
                 flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
-                getTabConfigurer().injectDependencies(flow);
                 return flow;
             }
         };
