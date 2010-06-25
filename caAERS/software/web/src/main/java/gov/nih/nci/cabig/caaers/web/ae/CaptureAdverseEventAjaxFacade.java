@@ -156,12 +156,25 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     }
 
 
-    public AjaxOutput isExpected(Integer ctcTermID, Integer lowLevelTermID, String verbatim) {
+    /**
+     *
+     * Determnines whether or not the passed ID is af a expected AE, also this sets the AE as expected
+     * @param realIndex - the index of the actual AE in the command.study list,
+     *                    this may be different than the index used on the page to display the AEs
+     *
+     * */
+    public AjaxOutput isExpected(Integer realIndex, Integer ctcTermID, Integer lowLevelTermID, String verbatim) {
         AjaxOutput ajaxOutput = new AjaxOutput();
+
         ajaxOutput.setObjectContent(Boolean.TRUE);
-        
+        AdverseEvent actualTerm = null;
+
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
         // command.reassociate();
+
+        // get the actual term from the command
+        actualTerm = command.getAdverseEvents().get(realIndex);
+        actualTerm.setExpected(Boolean.TRUE);
 
         CtcTerm ctcTerm = null;
         LowLevelTerm lowLevelTerm = null;
@@ -226,6 +239,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         }
 */
 
+        actualTerm.setExpected(Boolean.FALSE);
         ajaxOutput.setObjectContent("");
         return ajaxOutput;
     }

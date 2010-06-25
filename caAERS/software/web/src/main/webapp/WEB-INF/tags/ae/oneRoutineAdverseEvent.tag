@@ -13,6 +13,7 @@
 
 <%@attribute name="adverseEvent" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" required="true" description="The adverse event that is being rendered" %>
 <%@attribute name="index" required="true" type="java.lang.Integer" description="The index of the AE that is rendered" %>
+<%@attribute name="realIndex" required="false" type="java.lang.Integer" description="The index of the AE that is rendered" %>
 <%@attribute name="collapsed" required="true" type="java.lang.Boolean" description="If true, will display the box collapsed"%>
 <%@attribute name="enableDelete" description="If true, the delete button will be enabled" %>
 <%@attribute name="style" %>
@@ -80,8 +81,8 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].ctcTerm').value = selectedChoice.id; 
-                                    refreshGrades(${index});
-                                    updateExpected(${index}, selectedChoice.id, '-1', '${adverseEvent.detailsForOther}');
+                                    refreshGrades(${realIndex}, ${index});
+                                    updateExpected(${realIndex}, ${index}, selectedChoice.id, '-1', '${adverseEvent.detailsForOther}');
 								}
 							}
 						</jsp:attribute>
@@ -106,7 +107,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
-                                    updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${adverseEvent.detailsForOther}');
+                                    updateExpected(${realIndex}, ${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${adverseEvent.detailsForOther}');
 								}
 							}
 						</jsp:attribute>
@@ -149,7 +150,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
-                                    updateExpected(${index}, $('_ctcTermValue${index}').value, selectedChoice.id, ${_verbatimValueFrom});
+                                    updateExpected(${realIndex}, ${index}, $('_ctcTermValue${index}').value, selectedChoice.id, ${_verbatimValueFrom});
                             // IOO
 								}
 							}
@@ -219,7 +220,7 @@
                 Event.observe('adverseEvents[${index}].detailsForOther', 'change', function() {
                     var _llt = 0;
                     if ($('adverseEvents[${index}].lowLevelTerm').value && $('adverseEvents[${index}].lowLevelTerm').value > 0) _llt = $('adverseEvents[${index}].lowLevelTerm').value;
-                    updateExpected(${index}, $('_ctcTermValue${index}').value, _llt, $('adverseEvents[${index}].detailsForOther').value);
+                    updateExpected(${realIndex}, ${index}, $('_ctcTermValue${index}').value, _llt, $('adverseEvents[${index}].detailsForOther').value);
                 });
             }
             // IOO2

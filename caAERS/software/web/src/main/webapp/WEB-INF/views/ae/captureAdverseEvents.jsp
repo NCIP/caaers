@@ -243,9 +243,10 @@
 
      // ----------------------------------------------------------------------------------------------------------------
 
-function refreshGrades(index) {
+function refreshGrades(realIndex, index) {
      var paramHash = new Hash(); //parameters to post to server
      paramHash.set('index', index);
+     paramHash.set('realIndex', realIndex);
      var page = 1;
      var target = '_target' + 1;
      paramHash.set('_page', page);
@@ -268,13 +269,13 @@ function refreshGrades(index) {
 
  }
 
- function updateExpected(index, ctcTermID, meddraTermID, verbatimText) {
+ function updateExpected(realIndex, index, ctcTermID, meddraTermID, verbatimText) {
      var _el = $('adverseEvents[' + index + '].expected');
 
      // $('_test' + index).innerHTML = index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText;
      //alert(index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText);
 
-     captureAE.isExpected(ctcTermID, meddraTermID, verbatimText, function(ajaxOutput) {
+     captureAE.isExpected(realIndex, ctcTermID, meddraTermID, verbatimText, function(ajaxOutput) {
          // alert(ajaxOutput.objectContent == true);
          if (ajaxOutput.objectContent) _el.selectedIndex = 1;
          else { if (_el.selectedIndex == 1) _el.selectedIndex = 0; } 
@@ -336,7 +337,7 @@ function refreshGrades(index) {
 	            			<c:forEach var="i" step="1" begin="0" end="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1}">
    		         				<c:set var="j" value="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1 - i}"/>
 		            			<c:if test="${not command.adverseEventReportingPeriod.adverseEvents[j].solicited and not command.adverseEventReportingPeriod.adverseEvents[j].retired}">
-        	    					<ae:oneRoutineAdverseEvent index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" 
+        	    					<ae:oneRoutineAdverseEvent realIndex="${i}" index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" 
         	    						collapsed="true" enableDelete="true" isSolicited="false" hasOtherMeddra="${not empty command.study.otherMeddra}"/>
            		 				</c:if>
             				</c:forEach>
