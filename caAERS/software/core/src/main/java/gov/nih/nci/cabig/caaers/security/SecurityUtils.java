@@ -171,4 +171,13 @@ public class SecurityUtils {
     	}
     	return true;
     }
+    /**
+     * checks if  a role is scoped or not 
+     * @param roleName
+     * @return
+     */
+    public static boolean isScoped(String roleName) {
+    	SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
+    	return suiteRole.isScoped();
+    }
 }
