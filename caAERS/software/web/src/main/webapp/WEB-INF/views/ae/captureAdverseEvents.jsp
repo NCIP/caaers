@@ -337,7 +337,7 @@ function refreshGrades(realIndex, index) {
 	            			<c:forEach var="i" step="1" begin="0" end="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1}">
    		         				<c:set var="j" value="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1 - i}"/>
 		            			<c:if test="${not command.adverseEventReportingPeriod.adverseEvents[j].solicited and not command.adverseEventReportingPeriod.adverseEvents[j].retired}">
-        	    					<ae:oneRoutineAdverseEvent realIndex="${i}" index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" 
+        	    					<ae:oneRoutineAdverseEvent realIndex="${j}" index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" 
         	    						collapsed="true" enableDelete="true" isSolicited="false" hasOtherMeddra="${not empty command.study.otherMeddra}"/>
            		 				</c:if>
             				</c:forEach>
