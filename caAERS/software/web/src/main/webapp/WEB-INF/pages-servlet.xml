@@ -170,7 +170,7 @@
   <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
     <property name="sections">
       <list>
-	    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Adverse Events" p:mainController="listAdverseEventsController">
+	    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Adverse Events" p:mainController="aeModuleResolverController">
             <property name="pathMapping"><value>/ae/**</value></property>
             <property name="urlResolver" ref="urlResolver"/>
 
@@ -283,7 +283,7 @@
   	<property name="messageSource" ref="messageSource" />
   </bean>
   
-  <bean id="adminResolverController" name="/adminResolverController" class="gov.nih.nci.cabig.caaers.web.TaskResolverController" autowire="byType">
+  <bean id="adminResolverController" name="/admin/adminResolverController" class="gov.nih.nci.cabig.caaers.web.TaskResolverController" autowire="byType">
   	<property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
   	<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
   	<property name="urls">
@@ -340,6 +340,18 @@
 	</property>
   </bean> 
 
+  <bean id="aeModuleResolverController" name="/ae/aeModuleResolverController" class="gov.nih.nci.cabig.caaers.web.TaskResolverController">
+    <property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
+  	<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+  	<property name="urls">
+	    <list>
+            <value>/pages/ae/list</value>
+            <value>/pages/ae/captureRoutine</value>
+            <value>/pages/ae/routingAndReview</value>
+        </list>
+     </property>
+  </bean>
+    
   <bean name="asaelImporter" class="gov.nih.nci.cabig.caaers.web.admin.ASAELImporter" autowire="byType"/>
   <!-- Validators -->
 

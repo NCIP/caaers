@@ -37,6 +37,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
 
 		<!--========== ADVERSE EVENT REPORT ===========-->
+        <entry key="/pages/ae/aeModuleResolverController" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
         <entry key="/pages/ae/list" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 		<entry key="/pages/ae/captureRoutine" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:CREATE" />
 		<entry key="/pages/ae/reviewResolver" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
@@ -52,7 +53,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
 		<!--========== ADMIN ===========-->
-        <entry key="/pages/adminResolverController" value="gov.nih.nci.cabig.caaers.domain.Agent:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ || gov.nih.nci.cabig.caaers.domain.ReportStatus:READ || gov.nih.nci.cabig.caaers.domain.Import:ACCESS" />
+        <entry key="/pages/admin/adminResolverController" value="gov.nih.nci.cabig.caaers.domain.Agent:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ || gov.nih.nci.cabig.caaers.domain.ReportStatus:READ || gov.nih.nci.cabig.caaers.domain.Import:ACCESS" />
 		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE"/>
 		<entry key="/pages/admin/passwordPolicyConfigure" value="gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:READ"/>
 		<entry key="/pages/admin/mandatoryFields" value="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:READ || gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:UPDATE"/>
