@@ -66,6 +66,6 @@ public interface CaaersSecurityFacade {
      */
     List<Integer> getAccessibleOrganizationIds(String loginId);
 
-
+    
 
 }

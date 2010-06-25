@@ -13,9 +13,20 @@ import org.acegisecurity.userdetails.User;
  * @author Biju Joseph
  *
  */
-public class SecurityUtils {
+public final class SecurityUtils {
 	
+	private SecurityUtils() {
+	}
 	
+	/**
+	 * Returns the original unfabricated {@link Authentication} created by Acegi.
+	 * NOTE: Hopefully, this solution -- we need to keep two different {@link Authentication} objects and swap them out when need be -- is temporary, and later
+	 * we will figure out a more elegant way. But for now it is what it is. 
+	 * @return
+	 */
+	public static Authentication getOriginalAuthentication() {
+		return OriginalAuthenticationHolder.getAuthentication();
+	}
 
 	/**
 	 * This method will find the login name, of the user available in 
