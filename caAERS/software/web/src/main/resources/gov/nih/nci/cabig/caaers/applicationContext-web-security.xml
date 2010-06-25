@@ -35,6 +35,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/view" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
 		<entry key="/pages/study/search" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
+        <entry key="/pages/study/studyAgentIND" value="gov.nih.nci.cabig.caaers.domain.StudyAgent:CREATE" />
+        <entry key="/pages/study/export" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
+        
 
 		<!--========== ADVERSE EVENT REPORT ===========-->
         <entry key="/pages/ae/aeModuleResolverController" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
@@ -57,6 +60,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE"/>
 		<entry key="/pages/admin/passwordPolicyConfigure" value="gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:READ"/>
 		<entry key="/pages/admin/mandatoryFields" value="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:READ || gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:UPDATE"/>
+        <entry key="/pages/admin/reload" value="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:READ || gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition:UPDATE"/>
 		<entry key="/pages/admin/searchOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:READ"/>
 		<entry key="/pages/admin/createOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:CREATE"/>
 		<entry key="/pages/admin/trackReports" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
@@ -113,16 +117,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
           <!-- STUDY FLOW ,  UPDATE (assumption : user with CREATE would automatically have UPDATE )-->
           <entry key="gov.nih.nci.cabig.caaers.web.study.DetailsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.StudyTherapiesTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.AgentsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.TreatmentAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.DiseaseTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.SolicitedAdverseEventTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.ExpectedAEsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.SitesTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.InvestigatorsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.PersonnelTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.IdentifiersTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.StudyTherapiesTab" value="gov.nih.nci.cabig.caaers.domain.StudyTherapy:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.AgentsTab" value="gov.nih.nci.cabig.caaers.domain.StudyAgent:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.TreatmentAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.DiseaseTab" value="gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.SolicitedAdverseEventTab" value="gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.ExpectedAEsTab" value="gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.SitesTab" value="gov.nih.nci.cabig.caaers.domain.StudySite:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.InvestigatorsTab" value="gov.nih.nci.cabig.caaers.domain.StudyInvestigator:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.PersonnelTab" value="gov.nih.nci.cabig.caaers.domain.StudyPersonnel:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.study.IdentifiersTab" value="gov.nih.nci.cabig.caaers.domain.Identifier:CREATE"/>
 
 
           <!-- SUBJECT FLOW , READ (assumption : user with CREATE , UPDATE would automatically have READ ) -->

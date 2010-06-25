@@ -1,9 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -87,17 +85,35 @@ public class EditStudyController extends StudyController<StudyCommand> {
             public Flow<StudyCommand> createFlow(StudyCommand cmd) {
                 Flow<StudyCommand> flow = new Flow<StudyCommand>("Edit Study");
                 flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
-                flow.addTab(new DetailsTab());
-                flow.addTab(new StudyTherapiesTab());
-                flow.addTab(new AgentsTab());
-                flow.addTab(new TreatmentAssignmentTab());
-                flow.addTab(new DiseaseTab());
-                flow.addTab(new SolicitedAdverseEventTab());
-                flow.addTab(new ExpectedAEsTab());
-                flow.addTab(new SitesTab());
-                flow.addTab(new InvestigatorsTab());
-                flow.addTab(new PersonnelTab());
-                flow.addTab(new IdentifiersTab());
+
+                boolean isSupplementalInfoManager = SecurityUtils.checkAuthorization(UserGroupType.supplemental_study_information_manager);
+
+                if(SecurityUtils.checkAuthorization(UserGroupType.study_creator, UserGroupType.study_qa_manager) || isSupplementalInfoManager){
+                    flow.addTab(new DetailsTab());
+                }
+
+                if(isSupplementalInfoManager){
+                    flow.addTab(new StudyTherapiesTab());
+                    flow.addTab(new AgentsTab());
+                    flow.addTab(new TreatmentAssignmentTab());
+                    flow.addTab(new DiseaseTab());
+                    flow.addTab(new SolicitedAdverseEventTab());
+                    flow.addTab(new ExpectedAEsTab());
+                }
+                
+                if(SecurityUtils.checkAuthorization(UserGroupType.study_site_participation_administrator)){
+                    flow.addTab(new SitesTab());
+                }
+                
+                if(SecurityUtils.checkAuthorization(UserGroupType.study_team_administrator)){
+                    flow.addTab(new InvestigatorsTab());
+                    flow.addTab(new PersonnelTab());
+                }
+                
+                if(isSupplementalInfoManager){
+                    flow.addTab(new IdentifiersTab());
+                }
+                
                 return flow;
             }
         };
