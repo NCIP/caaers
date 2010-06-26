@@ -45,6 +45,7 @@ import org.hibernate.annotations.Where;
  * @author Ion Olaru
  * @author Sameer Sawant
  * @author Monish Dombla
+ * 
  */
 @Entity
 @Table(name = "studies")
@@ -535,7 +536,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany
     @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "STU_ID")
-    @OrderBy("id")
+    @OrderBy
     public List<Identifier> getIdentifiers() {
         return lazyListHelper.getInternalList(Identifier.class);
     }
@@ -558,7 +559,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy("id")
+    @OrderBy
     public List<StudyAgent> getStudyAgentsInternal() {
         return lazyListHelper.getInternalList(StudyAgent.class);
     }
@@ -571,7 +572,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'ctep'")
-    @OrderBy("id")
+    @OrderBy
     @UniqueObjectInCollection(message = "Duplicates found in CtepStudyDiseases list")
     // it is pretty lame that this is necessary
     public List<CtepStudyDisease> getCtepStudyDiseases() {
@@ -591,7 +592,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'meddra'")
-    @OrderBy("id")
+    @OrderBy
     @UniqueObjectInCollection(message = "Duplicates found in MeddraStudyDiseases list")
     // it is pretty lame that this is necessary
     public List<MeddraStudyDisease> getMeddraStudyDiseases() {
@@ -720,7 +721,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicates found in StudyOrganizations list")
-    @OrderBy("id")
+    @OrderBy
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
     }
@@ -737,7 +738,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy("id")
+    @OrderBy
     public List<TreatmentAssignment> getTreatmentAssignmentsInternal() {
         return lazyListHelper.getInternalList(TreatmentAssignment.class);
     }
@@ -1092,7 +1093,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'dcp'")
-    @OrderBy("id")
+    @OrderBy
     @UniqueObjectInCollection(message = "Duplicate - Same condition is associated to the study more than ones")
     public List<StudyCondition> getStudyConditions() {
         return studyConditions;
