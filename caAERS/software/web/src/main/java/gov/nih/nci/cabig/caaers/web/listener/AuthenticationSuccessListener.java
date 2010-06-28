@@ -47,7 +47,7 @@ public class AuthenticationSuccessListener  implements ApplicationListener {
             //if(SecurityUtils.checkAuthorization(authentication,UserGroupType.caaers_super_user)) return;
 			
 			//if global user- ignore indexing.
-			if(!SecurityUtils.isScoped(authentication)) return;
+			//if(!SecurityUtils.isScoped(authentication)) return;
             String userName = SecurityUtils.getUserLoginName(authentication);
 			filteredDataLoader.updateIndexByUserName(userName);
 		}		
