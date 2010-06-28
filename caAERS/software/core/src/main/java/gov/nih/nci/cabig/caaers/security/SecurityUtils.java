@@ -156,7 +156,11 @@ public final class SecurityUtils {
      */
     public static boolean isScoped(){
     	SuiteRole suiteRole;
-    	Authentication authentication = getAuthentication(); 
+    	Authentication authentication = getAuthentication();
+    	//caaers_super_user is globally scoped.
+    	if(checkAuthorization(authentication, UserGroupType.caaers_super_user)){
+    		return false;
+    	}
     	GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
     	for (int i = 0; i < authorities.length; i++) {
     		suiteRole = SuiteRole.getByCsmName(authorities[i].getAuthority());
@@ -168,8 +172,12 @@ public final class SecurityUtils {
     }
     
     public static boolean isScoped(Authentication authentication){
+    	//caaers_super_user is globally scoped.
+    	if(checkAuthorization(authentication, UserGroupType.caaers_super_user)){
+    		return false;
+    	}
+    	
     	SuiteRole suiteRole;
-
     	GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
     	for (int i = 0; i < authorities.length; i++) {
     		suiteRole = SuiteRole.getByCsmName(authorities[i].getAuthority());
@@ -185,6 +193,10 @@ public final class SecurityUtils {
      * @return
      */
     public static boolean isScoped(String roleName) {
+    	//caaers_super_user is globally scoped.
+    	if(UserGroupType.caaers_super_user.getSecurityRoleName().equals(roleName)){
+    		return false;
+    	}
     	SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
     	return suiteRole.isScoped();
     }
