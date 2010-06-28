@@ -81,9 +81,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		if (user != null) {
 			try {
 				String loginId = user.getUserId() + "";
-				Set<ProtectionGroupRoleContext> contexts = csmUserRepository
-						.getUserProvisioningManager()
-						.getProtectionGroupRoleContextForUser(loginId);			
+				Set<ProtectionGroupRoleContext> contexts = this.getProtectionGroupRoleContextForUser(loginId);
 
 				for (ProtectionGroupRoleContext context : contexts) {
 					ProtectionGroup pe = context.getProtectionGroup();
@@ -360,7 +358,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public List<String> getAccessibleProtectionElements(String loginId) {
 		List<String> pes = new ArrayList<String>();
     	try {
-			Set<ProtectionElementPrivilegeContext> contexts = csmUserRepository.getUserProvisioningManager().getProtectionElementPrivilegeContextForUser(loginId);
+			Set<ProtectionElementPrivilegeContext> contexts = getProtectionElementPrivilegeContextForUser(loginId);
 			for (ProtectionElementPrivilegeContext context : contexts) {
 				ProtectionElement pe = context.getProtectionElement();
 				pes.add(pe.getProtectionElementName());
@@ -372,7 +370,38 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
         return pes;  
     }
-
+    /**
+     * Will get the accessible ProtectionGroupRoleContexts for the login. Gets from CSM or Cache
+     * @param loginId
+     * @return
+     * @throws CSObjectNotFoundException
+     */
+    public Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException {
+    	Set<ProtectionGroupRoleContext> contexts = null;
+    	contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_GROUP_ROLE_CONTEXT);
+    	if (contexts  == null ) {
+    		contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
+    		CSMCacheManager.addProtectionGroupRoleContextToCache(loginId , loginId, contexts);
+    	}
+		return contexts;
+    }
+    
+    /**
+     * Will get the accessible ProtectionElementPrivilegeContext for the login. Gets from CSM or Cache
+     * @param loginId
+     * @return
+     * @throws CSObjectNotFoundException
+     */
+    public Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException {
+    	Set<ProtectionElementPrivilegeContext> contexts = null;
+    	contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
+    	if (contexts  == null ) {
+    		contexts = csmUserRepository.getUserProvisioningManager().getProtectionElementPrivilegeContextForUser(loginId);
+    		CSMCacheManager.addProtectionElementPrivilegeContextToCache(loginId, loginId, contexts);
+    	}
+    	return contexts;
+    }
+    
     /**
      * Will the caAERS database IDs of Study that one can access.
      *
@@ -384,12 +413,16 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
     	List<Integer> resultList = new ArrayList<Integer>();
     	try {
-			Set<ProtectionGroupRoleContext> contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
+			Set<ProtectionGroupRoleContext> contexts = this.getProtectionGroupRoleContextForUser(loginId);
 			List identifiers = new ArrayList();
 			String hql = "";
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
 				String roleName = getRoleName(context);
+				// if user has global role , no need index data for that context . 
+				if (!SecurityUtils.isScoped(roleName)) {
+					continue;
+				}				
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
 				
 				// if STUDY_PE , that means user have access to all studies (all means not all , he has access to studies 
@@ -444,11 +477,17 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
     	List<Integer> resultList = new ArrayList<Integer>();
     	try {
-			Set<ProtectionGroupRoleContext> contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
+			Set<ProtectionGroupRoleContext> contexts = getProtectionGroupRoleContextForUser(loginId);
 			List identifiers = new ArrayList();
 
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
+				String roleName = getRoleName(context);
+				// if user has global role , no need index data for that context . 
+				if (!SecurityUtils.isScoped(roleName)) {
+					continue;
+				}
+
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
 
 				if (caaersEquivalentName.equals(ORGANIZATION_PE)) {
@@ -484,7 +523,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     @SuppressWarnings("unchecked")
 	private List<Integer> getAccessibleOrganizationIdsFilterByRole(String loginId, String roleNameToCheck) {
     	try {
-			Set<ProtectionGroupRoleContext> contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
+			Set<ProtectionGroupRoleContext> contexts = getProtectionGroupRoleContextForUser(loginId);
 			List identifiers = new ArrayList();
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
@@ -540,7 +579,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         resultList = (List<Integer>) search(query);
 		return resultList;
     }
-  
+
+    
 	private List<?> search(final AbstractQuery query){
     	return rolePrivilegeDao.search(query);
     }
