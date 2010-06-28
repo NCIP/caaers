@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.utils.el.EL;
@@ -111,6 +112,11 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     public boolean checkAuthorization(Authentication auth, String objectPrivilege) {
+    	//Return true id caaers_super_user
+    	if(SecurityUtils.checkAuthorization(auth, UserGroupType.caaers_super_user)){
+    		return true;
+    	}
+    	
         String op = objectPrivilege;
         ObjectPrivilegeParser p = new ObjectPrivilegeParser(objectPrivilege);
         for (String[] s : p.getDomainObjectPrivileges()) {
@@ -134,9 +140,13 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     public boolean checkAuthorization(Authentication authentication, String objectId, String privilege) {
-		//Fetch all the roles of the logged in user.
-		//Granted Authorities is populated when user is authenticated. 
+    	//Return true id caaers_super_user
+    	if(SecurityUtils.checkAuthorization(authentication, UserGroupType.caaers_super_user)){
+    		return true;
+    	}
 
+    	//Fetch all the roles of the logged in user.
+		//Granted Authorities is populated when user is authenticated. 
 		try{
 			GrantedAuthority[] authorities = authentication.getAuthorities();
 			List<String> privilegedRoles;

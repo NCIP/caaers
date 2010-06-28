@@ -421,29 +421,7 @@
 		<property name="password" value="ignoreme" />
 		<property name="authorities">
 			<list>
-				<value>system_administrator</value>
-				<value>business_administrator</value>
-				<value>person_and_organization_information_manager</value>
-				<value>data_importer</value>
-				<value>user_administrator</value>
-				<value>study_qa_manager</value>
-				<value>study_creator</value>
-				<value>supplemental_study_information_manager</value>
-				<value>study_team_administrator</value>
-				<value>study_site_participation_administrator</value>
-				<value>ae_rule_and_report_manager</value>
-				<value>study_calendar_template_builder</value>
-				<value>registration_qa_manager</value>
-				<value>subject_manager</value>
-				<value>study_subject_calendar_manager</value>
-				<value>registrar</value>
-				<value>ae_reporter</value>
-				<value>ae_expedited_report_reviewer</value>
-				<value>ae_study_data_reviewer</value>
-				<value>lab_impact_calendar_notifier</value>
-				<value>lab_data_user</value>
-				<value>data_reader</value>
-				<value>data_analyst</value>
+				<value>caaers_super_user</value>
 			</list>
 		</property>
 	</bean>
