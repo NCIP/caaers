@@ -2,8 +2,12 @@ package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersDaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
@@ -22,6 +26,37 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln2");
 		assertEquals(2,list.size());
 	}
+	public void testGetProtectionGroupRoleContextForUser() throws Exception {
+		
+		Date  d1 = new Date();
+		Set<ProtectionGroupRoleContext> contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
+		Date  d2 = new Date();
+		System.out.println("execution time : ");
+		System.out.println(d2.getTime()-d1.getTime());
+		assertEquals(4,contexts.toArray().length);
+		
+		//from cache...
+		Date  d3 = new Date();
+		contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
+		Date  d4 = new Date();
+		System.out.println("execution time : ");
+		System.out.println(d4.getTime()-d3.getTime());
+		assertEquals(4,contexts.toArray().length);
+    }
+	
+	public void testCacheManager () throws Exception {
+		String loginId = "1";
+		// shud be null , nothing in cache
+		Set<ProtectionElementPrivilegeContext> contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
+		assertNull(contexts);
+		caaersSecurityFacade.getProtectionElementPrivilegeContextForUser(loginId);
+		// now data is in cache 
+		contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
+		assertNotNull(contexts);
+		assertEquals(0,contexts.toArray().length);
+	}
+ 
+	
 
 	public void testGetAccessibleOrganizationIdsUserWithAllOrgs() {
 		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln1");
@@ -90,4 +125,6 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
         return auth;
         //SecurityContextHolder.getContext().setAuthentication(auth);
     }
+
+
 }
