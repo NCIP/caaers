@@ -90,7 +90,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 					String caaersEquivalentName = pe.getProtectionGroupName();// call
 					// SecurityObjectIdGenerator.toCaaersObjectName
 					if (orgId.equals(caaersEquivalentName)) {
-						roles.addAll(context.getRoles());
+						Iterator it = context.getRoles().iterator();
+						while (it.hasNext()) {
+							Role role = (Role) it.next();
+							roles.add(role.getName());
+						}
+						
 					} 
 				}
 			} catch (CSObjectNotFoundException e) {
