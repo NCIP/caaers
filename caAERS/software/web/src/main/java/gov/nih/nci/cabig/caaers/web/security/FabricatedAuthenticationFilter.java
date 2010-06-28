@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
 import gov.nih.nci.cabig.caaers.security.OriginalAuthenticationHolder;
@@ -41,6 +43,7 @@ import org.apache.commons.validator.GenericValidator;
 
 public final class FabricatedAuthenticationFilter implements Filter {
 
+	private static final String STUDY = "gov.nih.nci.cabig.caaers.domain.Study";
 	private static final String INVESTIGATOR = "gov.nih.nci.cabig.caaers.domain.Investigator";
 	public static final String RESEARCH_STAFF = "gov.nih.nci.cabig.caaers.ResearchStaff";
 	private static final Log log = LogFactory
@@ -55,6 +58,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private ResearchStaffRepository researchStaffRepository;
 
 	private InvestigatorRepository investigatorRepository;
+	
+	private StudyRepository studyRepository;
 
 	private Map<String, String> urlMap = new HashMap<String, String>();
 
@@ -138,10 +143,24 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				} else if (INVESTIGATOR.equalsIgnoreCase(entry.getClassName())) {
 					int investigatorId = entry.getObjectId();
 					filterAuthoritiesByInvestigator(list, investigatorId);
+				} else if (STUDY.equalsIgnoreCase(entry.getClassName())) {
+					int studyId = entry.getObjectId();
+					filterAuthoritiesByStudy(list, studyId);
 				}
 			}
 		}
 		return list.toArray(new GrantedAuthority[0]);
+	}
+
+	private void filterAuthoritiesByStudy(List<GrantedAuthority> list,
+			int studyId) {		
+		Study study = studyRepository.getById(studyId);
+		if (study!=null) {
+			CurrentEntityHolder.setEntity(study);
+			//list.clear();
+			// get user's roles on the study.
+			
+		}
 	}
 
 	private void filterAuthoritiesByResearchStaff(List<GrantedAuthority> list,
@@ -253,6 +272,14 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	public void setInvestigatorRepository(
 			InvestigatorRepository investigatorRepository) {
 		this.investigatorRepository = investigatorRepository;
+	}
+
+	public StudyRepository getStudyRepository() {
+		return studyRepository;
+	}
+
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
 	}
 
 	private static class URLMapEntry {

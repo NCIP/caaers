@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
@@ -40,6 +41,7 @@ import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,7 +52,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
-    protected static CaaersSecurityFacade instance;
+    private static final String OBJ_ID_SEPARATOR = ".";
+	protected static CaaersSecurityFacade instance;
     protected final Log log = LogFactory.getLog(getClass());
 	private CSMUserRepositoryImpl csmUserRepository;
 	private RolePrivilegeDao rolePrivilegeDao;
@@ -69,30 +72,71 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	//For all Investigators
 	private String AE_REPORTER = "ae_reporter";
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#getRoles(java.lang.String, gov.nih.nci.cabig.caaers.domain.Study)
+	 */
+	public Collection<String> getRoles(String userName, Study study) {
+		Set<String> roles = new HashSet<String>();
+		final gov.nih.nci.security.authorization.domainobjects.User user = csmUserRepository
+				.getCSMUserByName(userName);
+
+		if (user != null) {
+			String loginId = user.getUserId() + "";
+			// first get user's roles provisioned on this study directly
+			String protGroupName = STUDY_PE + OBJ_ID_SEPARATOR
+					+ study.getPrimaryIdentifierValue();
+			roles.addAll(getRoles(userName, protGroupName));
+
+			// need to check for the situation when the user has been
+			// provisioned on all studies of his/her organization with a single
+			// entry.
+			Collection<String> orgWideStudyRoles = getRoles(userName, STUDY_PE);
+			if (CollectionUtils.isNotEmpty(orgWideStudyRoles)) {
+				for (String roleName : orgWideStudyRoles) {
+					List<Integer> studyIds = getStudyIdsByRoleName(loginId,
+							roleName);
+					if (studyIds!=null && studyIds.contains(study.getId())) {
+						roles.add(roleName);
+					}
+				}
+			}
+		}
+		return roles;
+	}
 	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#getRoles(java.lang.String, gov.nih.nci.cabig.caaers.domain.Organization)
 	 */
 	public Collection<String> getRoles(String userName, Organization org) {
 		Set<String> roles = new HashSet<String>();
-		String orgId = ORGANIZATION_PE + "." + org.getNciInstituteCode();
+		// first get user's roles provisioned on this organization directly
+		String protGroupName = ORGANIZATION_PE + OBJ_ID_SEPARATOR + org.getNciInstituteCode();		
+		roles.addAll(getRoles(userName, protGroupName));
+		// now, user can be provisioned in CSM with a single entry giving him or her roles on all sites
+		// so we need to check for that as well.
+		roles.addAll(getRoles(userName, ORGANIZATION_PE));
+		return roles;
+	}
+
+	private Collection<String> getRoles(String userName, String protectionGroupName) {
+		Set<String> roles = new HashSet<String>();		
 		final gov.nih.nci.security.authorization.domainobjects.User user = csmUserRepository
 				.getCSMUserByName(userName);
-
 		if (user != null) {
 			try {
 				String loginId = user.getUserId() + "";
 				Set<ProtectionGroupRoleContext> contexts = this.getProtectionGroupRoleContextForUser(loginId);
-
 				for (ProtectionGroupRoleContext context : contexts) {
 					ProtectionGroup pe = context.getProtectionGroup();
 					String caaersEquivalentName = pe.getProtectionGroupName();// call
 					// SecurityObjectIdGenerator.toCaaersObjectName
-					if (orgId.equals(caaersEquivalentName)) {
+					if (protectionGroupName.equals(caaersEquivalentName)) {
 						Iterator it = context.getRoles().iterator();
 						while (it.hasNext()) {
 							Role role = (Role) it.next();
-							roles.add(role.getName());
+							if (SecurityUtils.isScoped(role.getName())) {
+								roles.add(role.getName());
+							}
 						}
 						
 					} 
@@ -439,14 +483,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 				// on organizations which he belongs to as this role on that organization ) 
 				
 				if (roleName != null && caaersEquivalentName.equals(STUDY_PE)) {
-					// get acessible organization with above role.  
-					List<Integer> userOrgs = getAccessibleOrganizationIdsFilterByRole(loginId, roleName);
-					if (userOrgs.size() > 0) {
-						hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
-						HQLQuery query = new HQLQuery(hql.toString());
-						query.setParameterList("userOrgs", userOrgs);
-						resultList = (List<Integer>) search(query);
-					}
+					// get acessible organization with above role.
+					resultList = getStudyIdsByRoleName(loginId, roleName);
 				} else {
 					//parse name ..
 					String[] tokens = caaersEquivalentName.split("\\.");
@@ -472,6 +510,25 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		
 		return resultList ;  
     }
+
+	/**
+	 * @param loginId
+	 * @param roleName
+	 * @return
+	 */
+	private List<Integer> getStudyIdsByRoleName(String loginId,
+			 String roleName) {
+		List<Integer> resultList = new ArrayList<Integer>();
+		String hql;
+		List<Integer> userOrgs = getAccessibleOrganizationIdsFilterByRole(loginId, roleName);
+		if (userOrgs.size() > 0) {
+			hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
+			HQLQuery query = new HQLQuery(hql.toString());
+			query.setParameterList("userOrgs", userOrgs);
+			resultList = (List<Integer>) search(query);
+		}
+		return resultList;
+	}
 
 
     /**

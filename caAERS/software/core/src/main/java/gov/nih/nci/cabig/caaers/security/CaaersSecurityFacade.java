@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
@@ -80,6 +81,14 @@ public interface CaaersSecurityFacade {
 	 * @return
 	 */
 	Collection<String> getRoles(String userLoginName, Organization org);
+	
+	/**
+	 * Obtains roles of the user with the given loginId on the given study.
+	 * @param userLoginName
+	 * @param study
+	 * @return
+	 */
+	Collection<String> getRoles(String userLoginName, Study study);
 	
 	/**
      * Will get all ProtectionGroupRoleContext for the user 

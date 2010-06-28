@@ -413,6 +413,14 @@ public class StudyRepository {
         return studyDao.find(query);
     }
     
+    /**
+     * @param id
+     * @return
+     */
+    public Study getById(int id) {
+    	return studyDao.getById(id);
+    }
+    
     //Associate the ResearchStaff to all the Studies 
     public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
     	List<StudyOrganization> studyOrganizations = null;

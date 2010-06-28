@@ -15,6 +15,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<util:map id="fabricatedAuthenticationURLMap">
 		<entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:researchStaffId"/>
 		<entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:investigatorId"/>
+		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:studyId" />
 	</util:map>
 
 	<util:map id="taskObjectPrivilegeMap">
