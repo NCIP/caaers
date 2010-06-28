@@ -1167,6 +1167,9 @@ public class CaaersRulesEngineService {
 
            String levelCode = subjectParts[1].trim();
            String orgNCICode = subjectParts[2].trim();
+           if(StringUtils.isEmpty(orgNCICode)){
+               orgNCICode = subjectParts[3].trim();
+           }
            String studyPrimaryIDValue = subjectParts[4].trim();
            ruleSet.setOrganization(orgNCICode);
            ruleSet.setStudy(studyPrimaryIDValue);
