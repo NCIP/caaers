@@ -24,6 +24,10 @@
        
         <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->master(*),runtime(default);distGrid->master(*),runtime(default)"  >
 			
+			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
+			<exclude conf="distGrid" org="globus" module="jcog" />
+			<exclude conf="distGrid" org="*" name="cog*"/>
+			
 			<!-- caAERS module dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>

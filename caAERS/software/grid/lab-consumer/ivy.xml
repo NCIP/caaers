@@ -30,7 +30,10 @@
         
         <!-- dependencies for the rules module -->
         <dependencies defaultconfmapping="build->master(*);runtime->master(*),runtime(*);dist->default(*);distGrid->default(*)">
-
+			
+			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
+			<exclude conf="distGrid" org="globus" module="jcog" />
+			<exclude conf="distGrid" org="*" name="cog*"/>
 			
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
