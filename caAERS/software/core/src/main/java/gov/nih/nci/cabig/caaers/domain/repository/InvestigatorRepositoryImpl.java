@@ -166,6 +166,14 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		return siteInvestigators;
 	}
 	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Investigator getById(int id) {
+		return getInvestigatorDao().getInvestigatorById(id);
+	}
+	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<Investigator> merge(List<Investigator> localList , List<Investigator> remoteList) {
 		for (Investigator remoteInvestigator:remoteList) {

@@ -17,4 +17,9 @@ public interface InvestigatorRepository {
   public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text);
   public List<SiteInvestigator> getBySubnames(final String[] subnames,int siteId);
   public void convertToRemote(Investigator localInvestigator, Investigator remoteInvestigator);
+/**
+ * @param id
+ * @return
+ */
+public Investigator getById(int id);
 }

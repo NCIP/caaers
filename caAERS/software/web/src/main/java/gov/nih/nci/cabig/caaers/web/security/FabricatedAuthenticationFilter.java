@@ -1,8 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
@@ -38,6 +41,7 @@ import org.apache.commons.validator.GenericValidator;
 
 public final class FabricatedAuthenticationFilter implements Filter {
 
+	private static final String INVESTIGATOR = "gov.nih.nci.cabig.caaers.domain.Investigator";
 	public static final String RESEARCH_STAFF = "gov.nih.nci.cabig.caaers.ResearchStaff";
 	private static final Log log = LogFactory
 			.getLog(FabricatedAuthenticationFilter.class);
@@ -49,6 +53,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private CaaersSecurityFacade securityFacade;
 
 	private ResearchStaffRepository researchStaffRepository;
+
+	private InvestigatorRepository investigatorRepository;
 
 	private Map<String, String> urlMap = new HashMap<String, String>();
 
@@ -129,6 +135,9 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				if (RESEARCH_STAFF.equalsIgnoreCase(entry.getClassName())) {
 					int staffId = entry.getObjectId();
 					filterAuthoritiesByResearchStaff(list, staffId);
+				} else if (INVESTIGATOR.equalsIgnoreCase(entry.getClassName())) {
+					int investigatorId = entry.getObjectId();
+					filterAuthoritiesByInvestigator(list, investigatorId);
 				}
 			}
 		}
@@ -148,6 +157,32 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				for (SiteResearchStaff siteResearchStaff : siteStaffs) {
 					if (siteResearchStaff.isActive()) {
 						Organization org = siteResearchStaff.getOrganization();
+						Collection<String> roles = securityFacade.getRoles(
+								SecurityUtils.getUserLoginName(), org);
+						for (String role : roles) {
+							GrantedAuthority ga = new GrantedAuthorityImpl(role);
+							if (!list.contains(ga)) {
+								list.add(ga);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void filterAuthoritiesByInvestigator(List<GrantedAuthority> list,
+			int invId) {
+		Investigator investigator = investigatorRepository.getById(invId);
+		if (investigator != null) {
+			CurrentEntityHolder.setEntity(investigator);
+			list.clear();
+			List<SiteInvestigator> siteInvestigators = investigator
+					.getSiteInvestigatorsInternal();
+			if (CollectionUtils.isNotEmpty(siteInvestigators)) {
+				for (SiteInvestigator siteInvestigator : siteInvestigators) {
+					if (siteInvestigator.isActive()) {
+						Organization org = siteInvestigator.getOrganization();
 						Collection<String> roles = securityFacade.getRoles(
 								SecurityUtils.getUserLoginName(), org);
 						for (String role : roles) {
@@ -209,6 +244,15 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	public void setResearchStaffRepository(
 			ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
+	}
+
+	public InvestigatorRepository getInvestigatorRepository() {
+		return investigatorRepository;
+	}
+
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
 	}
 
 	private static class URLMapEntry {

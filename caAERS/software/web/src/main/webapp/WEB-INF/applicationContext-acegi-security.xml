@@ -23,6 +23,7 @@
     <bean id="fabricatedAuthenticationFilter" class="gov.nih.nci.cabig.caaers.web.security.FabricatedAuthenticationFilter" 
     	autowire-candidate="false" p:urlMap-ref="fabricatedAuthenticationURLMap"
     	p:researchStaffRepository-ref="researchStaffRepository" p:securityFacade-ref="caaersSecurityFacade"
+    	p:investigatorRepository-ref="investigatorRepository"
     	/>
         
     
