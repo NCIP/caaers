@@ -39,8 +39,9 @@
         	<exclude conf="*" name="asm-1*" />
         	<exclude conf="*" org="objectweb" module="asm"/>
         	<exclude conf="distGrid" org="bouncycastle" name="bouncycastle-jce-jdk13" />
-			<exclude conf="distGrid" org="org.globus" name="cog-jglobus" />
-			<exclude conf="distGrid" org="globus" name="jcog" />
+			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
+			<exclude conf="distGrid" org="globus" module="jcog" />
+			<exclude conf="distGrid" org="*" name="cog*"/>
 			<exclude conf="distGrid" org="cryptix" name="cryptix" />
 			<exclude conf="distGrid" org="cryptix" name="cryptix-impl" />
 			<exclude conf="distGrid" org="cryptix" name="cryptix-asn1" />
