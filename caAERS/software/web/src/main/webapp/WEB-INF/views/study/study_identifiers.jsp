@@ -208,7 +208,7 @@ margin:5px;
    <jsp:attribute name="tabControls">
         <tags:tabControls flow="${flow}" tab="${tab}" willSave="true">
             <jsp:attribute name="customNextButton">
-                <c:if test="${command.dataEntryComplete}">
+                <c:if test="${not command.dataEntryComplete}">
                     <tags:button value="Data Entry Complete" color="green" icon="check" id="btnDataEntryComplete" onclick="dataEntryComplete();" type="submit"/>
                 </c:if>
             </jsp:attribute>
