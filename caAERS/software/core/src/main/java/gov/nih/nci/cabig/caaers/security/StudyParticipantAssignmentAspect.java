@@ -23,7 +23,7 @@ public class StudyParticipantAssignmentAspect {
 
     private AspectJSecurityInterceptor securityInterceptor;
 
-    @Before("execution(public void gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment+.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant+))")
+    // @Before("execution(public void gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment+.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant+))")
     public void advise(JoinPoint jp) {
         // logger.debug("############ advising " + jp.toLongString()
         // + " ############");
