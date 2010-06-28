@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
 import gov.nih.nci.cabig.caaers.security.OriginalAuthenticationHolder;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
@@ -79,6 +80,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 						OriginalAuthenticationHolder.getAuthentication());
 				OriginalAuthenticationHolder.setAuthentication(null);
 			}
+			CurrentEntityHolder.setEntity(null);
 		}
 		return;
 	}
@@ -138,6 +140,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		// Authentication authentication = SecurityUtils.getAuthentication();
 		ResearchStaff staff = researchStaffRepository.getById(staffId);
 		if (staff != null) {
+			CurrentEntityHolder.setEntity(staff);
 			list.clear();
 			List<SiteResearchStaff> siteStaffs = staff
 					.getSiteResearchStaffsInternal();
