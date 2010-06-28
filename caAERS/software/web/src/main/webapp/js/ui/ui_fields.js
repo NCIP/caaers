@@ -12,7 +12,7 @@
 *
 * */
 function showRow(_rowId){
-    if($(_rowId)) $(_rowId).show();
+    if(exist(_rowId)) $(_rowId).show();
 }
 
 /*
@@ -20,7 +20,7 @@ function showRow(_rowId){
 * 
 * */
 function hideRow(_rowId){
-   if($(_rowId)) $(_rowId).hide();
+   if(exist(_rowId)) $(_rowId).hide();
 }
 
 /*
@@ -43,7 +43,7 @@ function makeFieldMandatory(_fieldPath){
   var _row = $(_fieldPath + "-row");
 
   //add asterisk to the label
-  if(_row){
+  if(exist(_row)){
     _row.select('div.label').each(function(_lbl){
         if(!_lbl.hasClassName('mandatory')){
             _lbl.addClassName('mandatory');
@@ -61,7 +61,7 @@ function makeFieldMandatory(_fieldPath){
 
   //add required class to the field.
   var _fld = $(_fieldPath);
-  if(_fld){
+  if(exist(_fld)){
     _fld.addClassName('required');
 
   }
@@ -74,7 +74,7 @@ function makeFieldOptional(_fieldPath){
     var _row = $(_fieldPath + "-row");
 
     //remove asterisk to the label
-    if(_row){
+    if(exist(_row)){
       _row.select('div.label').each(function(_lbl){
           _lbl.removeClassName('required') ;
           _lbl.removeClassName('mandatory') ;
@@ -90,7 +90,7 @@ function makeFieldOptional(_fieldPath){
 
     //remove required class to the field.
     var _fld = $(_fieldPath);
-    if(_fld){
+    if(exist(_fld)){
       _fld.removeClassName('required');
       var _vClass = _fld.classNames().find(function(n){
          if(n.indexOf('validate-') >= 0) {
@@ -115,7 +115,7 @@ function makeFieldRequired(_fieldPath){
   var _row = $(_fieldPath + "-row");
 
   //add asterisk to the label
-  if(_row){
+  if(exist(_row)){
     _row.select('div.label').each(function(_lbl){
         if(!_lbl.hasClassName('required')){
             _lbl.addClassName('required');
@@ -126,7 +126,7 @@ function makeFieldRequired(_fieldPath){
 
   //add required class to the field.
   var _fld = $(_fieldPath);
-  if(_fld){
+  if(exist(_fld)){
     _fld.addClassName('required');
     var _vClass = _fld.classNames().find(function(n){
        if(n.indexOf('validate-') >= 0) {
@@ -142,4 +142,10 @@ function makeFieldRequired(_fieldPath){
     }
   }
 
+}
+
+//checks whether the element exists or not. 
+function exist(_fieldPath){
+    if($(_fieldPath)) return true;
+    return false;
 }

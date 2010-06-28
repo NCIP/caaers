@@ -30,7 +30,7 @@ public class DetailsTab extends StudyTab {
 
     private CtcDao ctcDao;
     private MeddraVersionDao meddraVersionDao;
-    InputFieldGroup fieldGroup, reportFormatFieldGroup, fundSponsorFieldGroup, coordinatingCenterFieldGroup, dcpCodeFieldGroup;
+
 
     public DetailsTab() {
         super("Details", "Details", "study/study_details");
@@ -56,6 +56,20 @@ public class DetailsTab extends StudyTab {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final StudyCommand command) {
+
+
+        // TODO: Add validation for when terminology.term = Term.CTC
+        List<Ctc> ctcList = ctcDao.getAll();
+        for(Ctc ctc : ctcList){
+        	ctc.getCategories().size();
+        }
+
+        InputFieldGroup fieldGroup = null,
+                reportFormatFieldGroup = null,
+                fundSponsorFieldGroup = null,
+                coordinatingCenterFieldGroup = null,
+                dcpCodeFieldGroup = null;
+
         if (fieldGroup == null) {
             // set up the fields
             fieldGroup = new DefaultInputFieldGroup("studyDetails");
@@ -146,11 +160,6 @@ public class DetailsTab extends StudyTab {
         List<InputField> scFields = studyCodeFieldGroup.getFields();
         scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.term", "Terminology", true, WebUtils.collectOptions(Arrays.asList(Term.values()), null, "displayName")));
 
-        // TODO: Add validation for when terminology.term = Term.CTC
-        List<Ctc> ctcList = ctcDao.getAll();
-        for(Ctc ctc : ctcList){
-        	ctc.getCategories().size();
-        }
 
         scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.ctcVersion", "CTC version", false, collectOptions(ctcList, "id", "name")));
         scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));

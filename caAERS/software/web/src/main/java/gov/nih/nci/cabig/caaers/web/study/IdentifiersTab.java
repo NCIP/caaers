@@ -1,3 +1,4 @@
+
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -28,7 +29,6 @@ import org.springframework.validation.Errors;
  */
 public class IdentifiersTab extends StudyTab {
 
-    private RepeatingFieldGroupFactory rfgFactory;
 
     public IdentifiersTab() {
         super("Identifiers", "Identifiers", "study/study_identifiers");
@@ -56,24 +56,22 @@ public class IdentifiersTab extends StudyTab {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final StudyCommand command) {
-        if (rfgFactory == null) {
-            rfgFactory = new RepeatingFieldGroupFactory("main", "study.identifiersLazy");
-            InputField idField = InputFieldFactory.createTextField("value", "Identifier", true);
-            InputFieldAttributes.setSize(idField, 20);
-            rfgFactory.addField(idField);
+        RepeatingFieldGroupFactory rfgFactory  = new RepeatingFieldGroupFactory("main", "study.identifiersLazy");
+        InputField idField = InputFieldFactory.createTextField("value", "Identifier", true);
+        InputFieldAttributes.setSize(idField, 20);
+        rfgFactory.addField(idField);
 
-            rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, collectOptionsFromConfig("identifiersType", "desc", "desc")));
-            InputField sysNameField = InputFieldFactory.createTextField("systemName", "System Name", false);
-            InputFieldAttributes.setSize(sysNameField, 40);
-            rfgFactory.addField(sysNameField);
-            InputField orgNameField = InputFieldFactory.createAutocompleterField("organization", "Organization", false);
-            InputFieldAttributes.setSize(orgNameField, 40);
-            orgNameField.getAttributes().put(InputField.ENABLE_CLEAR, true);
-            rfgFactory.addField(orgNameField);
+        rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, collectOptionsFromConfig("identifiersType", "desc", "desc")));
+        InputField sysNameField = InputFieldFactory.createTextField("systemName", "System Name", false);
+        InputFieldAttributes.setSize(sysNameField, 40);
+        rfgFactory.addField(sysNameField);
+        InputField orgNameField = InputFieldFactory.createAutocompleterField("organization", "Organization", false);
+        InputFieldAttributes.setSize(orgNameField, 40);
+        orgNameField.getAttributes().put(InputField.ENABLE_CLEAR, true);
+        rfgFactory.addField(orgNameField);
 
-            rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
+        rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 
-        }
         Study study = command.getStudy();
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addRepeatingFieldGroupFactory(rfgFactory, study.getIdentifiersLazy().size());

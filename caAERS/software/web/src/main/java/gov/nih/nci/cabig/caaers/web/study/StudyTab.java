@@ -29,7 +29,6 @@ public abstract class StudyTab extends TabWithFields<StudyCommand> {
 
     public StudyTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
-        addFieldDecorators(new SecurityObjectIdFieldDecorator(Study.class), new ReadonlyFieldDecorator());
     }
 
     public ConfigProperty getConfigurationProperty() {

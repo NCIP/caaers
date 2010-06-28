@@ -5,6 +5,7 @@
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -129,7 +130,13 @@
              }
             });      	
     });
-	
+
+    /* Will finish the data entry status*/
+    function dataEntryComplete(){
+       if(exist('study.dataEntryStatus')){
+           $('study.dataEntryStatus').value = 'true';
+       }
+    }
 </script>
 <!--[if IE]>
 <style>
@@ -143,6 +150,7 @@ margin:5px;
 <body>
 <study:summary />
 <p><tags:instructions code="study.study_identifers.top" /></p>
+<c:set var="isLast" value="${not (tab.number < flow.tabCount - 1)}"/>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="false">   
    <jsp:attribute name="repeatingFields">
         	<div>
@@ -195,9 +203,16 @@ margin:5px;
 <tags:listEditorAddButton divisionClass="system-section-row" label="Add System Identifier"/>
 <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier"/>
 <br/>
-        	
+   <form:hidden path="study.dataEntryStatus" id="study.dataEntryStatus" />  	
    </jsp:attribute>
-   <jsp:attribute name="localButtons"> 
+   <jsp:attribute name="tabControls">
+        <tags:tabControls flow="${flow}" tab="${tab}" willSave="true">
+            <jsp:attribute name="customNextButton">
+                <c:if test="${command.dataEntryComplete}">
+                    <tags:button value="Data Entry Complete" color="green" icon="check" id="btnDataEntryComplete" onclick="dataEntryComplete();" type="submit"/>
+                </c:if>
+            </jsp:attribute>
+        </tags:tabControls>
    </jsp:attribute>
 </tags:tabForm>
 </body>
