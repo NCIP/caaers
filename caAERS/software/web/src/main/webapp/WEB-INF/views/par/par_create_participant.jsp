@@ -122,8 +122,10 @@
 
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm" hideErrorDetails="false" willSave="false">
 
+    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm" hideErrorDetails="false" willSave="false" hideTabControls="${command.hasSubjectManager && !command.hasDataReader && !command.hasRegistrationQAManager && !command.hasRegistrar}">
+
+        
     <jsp:attribute name="singleFields">
       <p><tags:instructions code="instruction_subject_enter.details"/></p>
         <div>
@@ -133,7 +135,15 @@
     </jsp:attribute>
 
     <jsp:attribute name="repeatingFields">
-
+    <center>
+        <c:if test="${command.hasSubjectManager && !command.hasRegistrar}">
+            <div style="border: 1px red solid; width: 300px; background-color: #ffcccc; text-align:left; padding : 10px;">
+                Your role doesn't allow you to create subjects.<br>
+                Contact your caAERS's system administrator and ask more privileges.<br><br>
+                Thank you.
+            </div>
+        </c:if>
+    </center>
 <chrome:division  title="Site"  >
 
 <c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
@@ -282,8 +292,7 @@ ${command.organization}
 
      </jsp:attribute>
 
-     <jsp:attribute name="localButtons">
-    </jsp:attribute>
+     <jsp:attribute name="localButtons"></jsp:attribute>
 
      </tags:tabForm>
 </body>

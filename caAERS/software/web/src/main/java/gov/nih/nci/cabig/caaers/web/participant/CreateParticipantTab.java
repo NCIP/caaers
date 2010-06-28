@@ -32,7 +32,6 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
     public CreateParticipantTab() {
         super("Enter Subject Information", "Details", "par/par_create_participant");
-        System.out.println("Creating participant tab...");
         addFieldDecorators(new SecurityObjectIdFieldDecorator(Participant.class), new ReadonlyFieldDecorator());
     }
 

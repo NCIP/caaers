@@ -77,11 +77,12 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         return new FlowFactory<ParticipantInputCommand>() {
             public Flow<ParticipantInputCommand> createFlow(ParticipantInputCommand cmd) {
                 Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Enter Subject");
-                // if ()
+                
                 flow.addTab(new CreateParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
-                flow.addTab(new SubjectMedHistoryTab());
+                flow.addTab(new CreateSubjectMedHistoryTab());
                 flow.addTab(new CreateParticipantReviewParticipantTab());
+                
                 return flow;
             }
         };
@@ -99,20 +100,18 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws Exception {
-        ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
-        participantInputCommand.setUnidentifiedMode(getUnidentifiedMode());
-/*
-        request.getSession().setAttribute("hasRegistrar", SecurityUtils.hasAuthorityOf(UserGroupType.registrar));
-        request.getSession().setAttribute("hasDataReader", SecurityUtils.hasAuthorityOf(UserGroupType.data_reader));
-        request.getSession().setAttribute("hasSubjectManager", SecurityUtils.hasAuthorityOf(UserGroupType.subject_manager));
-        request.getSession().setAttribute("hasRegistrationQAManager", SecurityUtils.hasAuthorityOf(UserGroupType.registration_qa_manager));
-*/
-        participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
+        ParticipantInputCommand c = new ParticipantInputCommand();
+        c.setUnidentifiedMode(getUnidentifiedMode());
 
-        participantInputCommand.setLoggedinResearchStaff(rsDao.getByLoginId(SecurityUtils.getUserLoginName()));
-        participantInputCommand.setLoggedinInvestigator(investigatorDao.getByLoginId(SecurityUtils.getUserLoginName()));
+        c.initRoles();
 
-        return participantInputCommand;
+        //if (!c.isHasSubjectManager() || c.isHasDataReader() || c.isHasRegistrar() || c.isHasRegistrationQAManager())
+        c.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
+
+        c.setLoggedinResearchStaff(rsDao.getByLoginId(SecurityUtils.getUserLoginName()));
+        c.setLoggedinInvestigator(investigatorDao.getByLoginId(SecurityUtils.getUserLoginName()));
+
+        return c;
     }
 
     protected void initBinder(HttpServletRequest httpServletRequest, ServletRequestDataBinder binder) throws Exception {

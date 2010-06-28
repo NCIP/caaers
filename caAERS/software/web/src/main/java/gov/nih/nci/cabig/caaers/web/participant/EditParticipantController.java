@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.study.StudyCommand;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -36,6 +35,7 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
     private static final Log log = LogFactory.getLog(EditParticipantController.class);
     private Task task;
     private ConfigProperty configurationProperty;
+    private CaaersSecurityFacade csf;
 
     public EditParticipantController() {
         setBindOnNewForm(true);
@@ -52,6 +52,9 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         EditParticipantCommand cmd = new EditParticipantCommand(participant);
         cmd.setUnidentifiedMode(getUnidentifiedMode());
         List<StudyParticipantAssignment> assignments = participant.getAssignments();
+
+        cmd.initRoles();
+        cmd.setHasParUpdate(csf.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"));
 
         // store StudySites from Participant object to Command object
         List<StudySite> studySites = new ArrayList<StudySite>();
@@ -79,7 +82,7 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
                 Flow<T> flow = new Flow<T>("Edit Subject");
                 flow.addTab(new EditParticipantReviewParticipantTab());
                 flow.addTab(new EditParticipantTab());
-                flow.addTab(new SubjectMedHistoryTab());
+                flow.addTab(new EditSubjectMedHistoryTab());
                 return flow;
             }
         };
@@ -185,5 +188,13 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
 
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
         this.configurationProperty = configurationProperty;
+    }
+
+    public CaaersSecurityFacade getCsf() {
+        return csf;
+    }
+
+    public void setCsf(CaaersSecurityFacade csf) {
+        this.csf = csf;
     }
 }

@@ -25,12 +25,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
         <!--========== PARTICIPANT ===========-->
 		<entry key="/pages/participant/create" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
-		<entry key="/pages/participant/edit" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
+        <entry key="/pages/participant/search" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+        <entry key="/pages/participant/assignParticipant" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE" />
+
+		<entry key="/pages/participant/edit" value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
 		<entry key="/pages/participant/view" value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
-		<entry key="/pages/participant/assign" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
-		<entry key="/pages/participant/assignStudy" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
-		<entry key="/pages/participant/assignParticipant" value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
-		<entry key="/pages/participant/search" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 
 		<!--========== STUDY ===========-->
 		<entry key="/pages/study/create" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
@@ -131,20 +130,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.study.IdentifiersTab" value="gov.nih.nci.cabig.caaers.domain.Identifier:CREATE"/>
 
 
+
+        
           <!-- SUBJECT FLOW , READ (assumption : user with CREATE , UPDATE would automatically have READ ) -->
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignStudyTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignSubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.ReviewAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
 
           <!-- SUBJECT FLOW , UPDATE (assumption : user with CREATE would automatically have UPDATE )-->
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
           <entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.SubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignStudyTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.ReviewAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.EditSubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:UPDATE"/>
 
           <!-- SUBJECT FLOW , CREATE -->
           <entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.SelectStudyForParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.SelectStudyForParticipantTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.participant.CreateSubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
+
+
+
 
           <!-- AE FLOW , CREATE (assumption : user with CREATE would automatically have UPDATE )-->
           <entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>

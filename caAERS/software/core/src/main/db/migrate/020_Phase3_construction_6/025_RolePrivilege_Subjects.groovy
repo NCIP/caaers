@@ -11,6 +11,7 @@ class RolePrivilegeImport extends edu.northwestern.bioinformatics.bering.Migrati
       insert('role_privilege', [ version: '0',role_name : 'registar',object_id : 'gov.nih.nci.cabig.caaers.domain.Participant',privilege :'UPDATE']);
       insert('role_privilege', [ version: '0',role_name : 'registration_qa_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.Participant',privilege :'UPDATE']);
       insert('role_privilege', [ version: '0',role_name : 'registration_qa_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment',privilege :'READ']);
+      insert('role_privilege', [ version: '0',role_name : 'registration_qa_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment',privilege :'UPDATE']);
     }
 
     void down(){

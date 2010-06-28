@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
@@ -41,6 +43,8 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     private ResearchStaffDao rsDao;
     private InvestigatorDao investigatorDao;
 
+    private CaaersSecurityFacade csf;
+
     @Override
     @SuppressWarnings(value = {"unchecked"})
     protected Map referenceData(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
@@ -58,7 +62,7 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
                 Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
                 flow.addTab(new AssignParticipantTab());
                 flow.addTab(new AssignStudyTab());
-                flow.addTab(new SubjectMedHistoryTab());
+                flow.addTab(new AssignSubjectMedHistoryTab());
                 flow.addTab(new ReviewAssignmentTab());
                 return flow;
             }
@@ -77,6 +81,9 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         if (context != null) {
             user = (User)context.getAuthentication().getPrincipal();
         }
+
+        command.initRoles();
+        command.setHasParUpdate(csf.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"));
 
         command.setLoggedinResearchStaff(rsDao.getByLoginId(user.getUsername()));
         command.setLoggedinInvestigator(investigatorDao.getByLoginId(user.getUsername()));
@@ -263,6 +270,14 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
     public void setInvestigatorDao(InvestigatorDao investigatorDao) {
         this.investigatorDao = investigatorDao;
+    }
+
+    public CaaersSecurityFacade getCsf() {
+        return csf;
+    }
+
+    public void setCsf(CaaersSecurityFacade csf) {
+        this.csf = csf;
     }
 }
 
