@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.OriginalAuthenticationHolder;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -7,6 +11,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +27,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.GenericValidator;
 
 public final class FabricatedAuthenticationFilter implements Filter {
 
+	public static final String RESEARCH_STAFF = "gov.nih.nci.cabig.caaers.ResearchStaff";
 	private static final Log log = LogFactory
 			.getLog(FabricatedAuthenticationFilter.class);
 	private static final String FILTER_APPLIED = "gov.nih.nci.cabig.caaers.web.security.FabricatedAuthenticationFilter.FILTER_APPLIED";
@@ -38,6 +46,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private static final String COLON = ":";
 
 	private CaaersSecurityFacade securityFacade;
+
+	private ResearchStaffRepository researchStaffRepository;
 
 	private Map<String, String> urlMap = new HashMap<String, String>();
 
@@ -114,10 +124,39 @@ public final class FabricatedAuthenticationFilter implements Filter {
 			if (entry != null) {
 				// protection element info found. Possibly need to restrict the
 				// set of granted authorities.
-				
+				if (RESEARCH_STAFF.equalsIgnoreCase(entry.getClassName())) {
+					int staffId = entry.getObjectId();
+					filterAuthoritiesByResearchStaff(list, staffId);
+				}
 			}
 		}
 		return list.toArray(new GrantedAuthority[0]);
+	}
+
+	private void filterAuthoritiesByResearchStaff(List<GrantedAuthority> list,
+			int staffId) {
+		// Authentication authentication = SecurityUtils.getAuthentication();
+		ResearchStaff staff = researchStaffRepository.getById(staffId);
+		if (staff != null) {
+			list.clear();
+			List<SiteResearchStaff> siteStaffs = staff
+					.getSiteResearchStaffsInternal();
+			if (CollectionUtils.isNotEmpty(siteStaffs)) {
+				for (SiteResearchStaff siteResearchStaff : siteStaffs) {
+					if (siteResearchStaff.isActive()) {
+						Organization org = siteResearchStaff.getOrganization();
+						Collection<String> roles = securityFacade.getRoles(
+								SecurityUtils.getUserLoginName(), org);
+						for (String role : roles) {
+							GrantedAuthority ga = new GrantedAuthorityImpl(role);
+							if (!list.contains(ga)) {
+								list.add(ga);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private URLMapEntry getURLMapEntryFromRequest(HttpServletRequest request) {
@@ -141,8 +180,6 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		return null;
 	}
 
-	
-
 	public void init(FilterConfig arg0) throws ServletException {
 	}
 
@@ -160,6 +197,15 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 	public void setUrlMap(Map<String, String> urlMap) {
 		this.urlMap = urlMap;
+	}
+
+	public ResearchStaffRepository getResearchStaffRepository() {
+		return researchStaffRepository;
+	}
+
+	public void setResearchStaffRepository(
+			ResearchStaffRepository researchStaffRepository) {
+		this.researchStaffRepository = researchStaffRepository;
 	}
 
 	private static class URLMapEntry {

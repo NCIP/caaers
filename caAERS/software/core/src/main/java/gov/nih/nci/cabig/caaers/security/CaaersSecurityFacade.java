@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.User;
 import org.acegisecurity.Authentication;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -65,6 +67,14 @@ public interface CaaersSecurityFacade {
      * @return
      */
     List<Integer> getAccessibleOrganizationIds(String loginId);
+
+	/**
+	 * Obtains roles of the user with the given loginId on the given organization.
+	 * @param userLoginName
+	 * @param org
+	 * @return
+	 */
+	Collection<String> getRoles(String userLoginName, Organization org);
 
     
 

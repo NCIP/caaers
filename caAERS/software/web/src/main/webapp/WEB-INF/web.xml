@@ -54,6 +54,36 @@
      <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
     
+    <filter>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.caaers.web.OpenSessionInViewInterceptorFilter</filter-class>
+        <init-param>
+            <param-name>interceptorBeanName</param-name>
+            <param-value>openSessionInViewInterceptor</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/pages/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/public/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/dwr/*</url-pattern>
+    </filter-mapping>
+    
+        <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/services/*</url-pattern>
+    </filter-mapping>
+    
+    
 	<filter>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<filter-class>
@@ -102,35 +132,6 @@
     <filter-mapping>
         <filter-name>Sitemesh</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
-        <filter-class>gov.nih.nci.cabig.caaers.web.OpenSessionInViewInterceptorFilter</filter-class>
-        <init-param>
-            <param-name>interceptorBeanName</param-name>
-            <param-value>openSessionInViewInterceptor</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
-        <url-pattern>/pages/*</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
-        <url-pattern>/public/*</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
-        <url-pattern>/dwr/*</url-pattern>
-    </filter-mapping>
-    
-        <filter-mapping>
-        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
-        <url-pattern>/services/*</url-pattern>
     </filter-mapping>
 
     <filter>

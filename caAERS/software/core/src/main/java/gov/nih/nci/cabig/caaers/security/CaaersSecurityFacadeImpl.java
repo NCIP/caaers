@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -29,13 +30,16 @@ import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,6 +68,38 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	//For all Investigators
 	private String AE_REPORTER = "ae_reporter";
 
+	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#getRoles(java.lang.String, gov.nih.nci.cabig.caaers.domain.Organization)
+	 */
+	public Collection<String> getRoles(String userName, Organization org) {
+		Set<String> roles = new HashSet<String>();
+		String orgId = ORGANIZATION_PE + "." + org.getNciInstituteCode();
+		final gov.nih.nci.security.authorization.domainobjects.User user = csmUserRepository
+				.getCSMUserByName(userName);
+
+		if (user != null) {
+			try {
+				String loginId = user.getUserId() + "";
+				Set<ProtectionGroupRoleContext> contexts = csmUserRepository
+						.getUserProvisioningManager()
+						.getProtectionGroupRoleContextForUser(loginId);			
+
+				for (ProtectionGroupRoleContext context : contexts) {
+					ProtectionGroup pe = context.getProtectionGroup();
+					String caaersEquivalentName = pe.getProtectionGroupName();// call
+					// SecurityObjectIdGenerator.toCaaersObjectName
+					if (orgId.equals(caaersEquivalentName)) {
+						roles.addAll(context.getRoles());
+					} 
+				}
+			} catch (CSObjectNotFoundException e) {
+				log.error(ExceptionUtils.getFullStackTrace(e), e);
+			}
+		}
+		return roles;
+	}		
+	
     /**
      * Will check the authorization status
      *
