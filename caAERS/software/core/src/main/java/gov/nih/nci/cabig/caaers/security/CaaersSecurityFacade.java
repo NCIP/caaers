@@ -2,10 +2,15 @@ package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.User;
-import org.acegisecurity.Authentication;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+
+import org.acegisecurity.Authentication;
 
 /**
  * 
@@ -75,6 +80,23 @@ public interface CaaersSecurityFacade {
 	 * @return
 	 */
 	Collection<String> getRoles(String userLoginName, Organization org);
+	
+	/**
+     * Will get all ProtectionGroupRoleContext for the user 
+     * @param loginId
+     * @return
+     * @throws CSObjectNotFoundException
+     */
+    Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException ;
+    
+    /**
+     * Will get all ProtectionElementPrivilegeContext for the user 
+     * @param loginId
+     * @return
+     * @throws CSObjectNotFoundException
+     */
+    Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException ;
+
 
     
 
