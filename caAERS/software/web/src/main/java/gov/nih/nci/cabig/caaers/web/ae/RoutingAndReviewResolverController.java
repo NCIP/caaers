@@ -44,14 +44,9 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		if(reportingPeriod.isRetired()){
 			redirectUrl = "routingAndReview?study=" + studyId + "&participant=" + participantId + "&retiredReportingPeriod=true&paginationAction=firstPage&numberOfResultsPerPage=15";
 		}else{
-			boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
 			redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
-			//CAAERS-3308
-			//if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
-			// above logic works if user has only one role , if user has another which is authorized to write , based on the above logic the conrol is taking user to read view , 
-			// so checking with roles which excludes above roles  
-			if(!isSuperUser && !SecurityUtils.checkAuthorization(UserGroupType.caaers_user , UserGroupType.caaers_admin, UserGroupType.caaers_super_user,
-				UserGroupType.caaers_participant_cd,UserGroupType.caaers_ae_cd,UserGroupType.caaers_site_cd, UserGroupType.caaers_physician)){
+			// Only ae_reporter will be taken to the edit flow of adverse events ie the url mentioned above. For all other roles, the user will be redirected to the read-only page.
+			if(!SecurityUtils.checkAuthorization(UserGroupType.ae_reporter)){
 				redirectUrl = "reviewEvaluationPeriod?adverseEventReportingPeriod=" + reportingPeriodId;
 			}
 		}
@@ -71,13 +66,8 @@ public class RoutingAndReviewResolverController extends AbstractController{
 			Integer participantId = aeReport.getReportingPeriod().getParticipant().getId();
 			redirectUrl = "routingAndReview?study=" + studyId + "&participant=" + participantId + "&retiredReportingPeriod=true&paginationAction=firstPage&numberOfResultsPerPage=15";
 		}else{
-			boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-			//CAAERS-3308
-			//if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
-			// above logic works if user has only one role , if user has another which is authorized to write , based on the above logic the conrol is taking user to read view , 
-			// so checking with roles which excludes above roles  
-			if(!isSuperUser && !SecurityUtils.checkAuthorization(UserGroupType.caaers_user , UserGroupType.caaers_admin, UserGroupType.caaers_super_user,
-					UserGroupType.caaers_participant_cd,UserGroupType.caaers_ae_cd,UserGroupType.caaers_site_cd, UserGroupType.caaers_physician)){
+			// Only ae_reporter will be taken to the edit flow of adverse events ie the url mentioned above. For all other roles, the user will be redirected to the read-only page.
+			if(!SecurityUtils.checkAuthorization(UserGroupType.ae_reporter)){
 				redirectUrl = "reviewAeReport?aeReport=" + aeReportId + "&report=" + reportId;
 			}
 		}
