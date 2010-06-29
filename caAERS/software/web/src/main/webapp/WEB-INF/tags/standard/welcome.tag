@@ -68,7 +68,7 @@ function showUserRolesToolTip(text, title) {
             BORDERCOLOR, "#444",
             BGCOLOR, "#444",
             PADDING, 15,
-            FONTSIZE, "13px"
+            FONTSIZE, "12px"
     );
 }
 </script>
