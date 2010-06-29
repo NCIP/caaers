@@ -34,9 +34,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
+import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.GenericValidator;
@@ -77,6 +81,11 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+		final SecurityContext contextBeforeExec = SecurityContextHolder
+				.getContext();
+		Authentication authBeforeExec = contextBeforeExec.getAuthentication();
+
 		try {
 			if (request.getAttribute(FILTER_APPLIED) == null) {
 				doProcessing(httpRequest, httpResponse, chain);
@@ -86,11 +95,15 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 		} finally {
 			request.removeAttribute(FILTER_APPLIED);
-			if (OriginalAuthenticationHolder.getAuthentication() != null) {
-				SecurityContextHolder.getContext().setAuthentication(
-						OriginalAuthenticationHolder.getAuthentication());
-				OriginalAuthenticationHolder.setAuthentication(null);
-			}
+			SecurityContextHolder.setContext(contextBeforeExec);
+			SecurityContextHolder.getContext()
+					.setAuthentication(authBeforeExec);
+			httpRequest
+					.getSession()
+					.setAttribute(
+							HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY,
+							SecurityContextHolder.getContext());
+			OriginalAuthenticationHolder.setAuthentication(null);
 			CurrentEntityHolder.setEntity(null);
 		}
 		return;
@@ -110,14 +123,19 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 		Authentication authentication = SecurityUtils.getAuthentication();
 		if (authentication != null) {
-			OriginalAuthenticationHolder.setAuthentication(authentication);
 			GrantedAuthority[] authorities = authentication.getAuthorities();
 			GrantedAuthority[] adjustedAuthorities = filterAuthorities(
 					authorities, request);
-			FabricatedAuthentication fabricatedAuthentication = new FabricatedAuthentication(
-					authentication, adjustedAuthorities);
-			SecurityContextHolder.getContext().setAuthentication(
-					fabricatedAuthentication);
+			// do not set fabricated authentication if authorities are the same.
+			if (!CollectionUtils.disjunction(Arrays.asList(authorities),
+					Arrays.asList(adjustedAuthorities)).isEmpty()) {
+				OriginalAuthenticationHolder.setAuthentication(authentication);
+				FabricatedAuthentication fabricatedAuthentication = new FabricatedAuthentication(
+						authentication, adjustedAuthorities);
+				SecurityContextHolder.setContext(new SecurityContextImpl());
+				SecurityContextHolder.getContext().setAuthentication(
+						fabricatedAuthentication);
+			}
 		}
 	}
 

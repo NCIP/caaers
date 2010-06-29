@@ -37,9 +37,10 @@ public final class SwapAuthenticationsTag extends SimpleTagSupport {
 	public void doTag() throws JspException, IOException {
 		Authentication copy = SecurityUtils.getAuthentication();
 
-		if (useOriginal && SecurityUtils.getOriginalAuthentication() != null) {
+		final Authentication originalAuthentication = SecurityUtils.getOriginalAuthentication();
+		if (useOriginal && originalAuthentication != null) {
 			SecurityContextHolder.getContext().setAuthentication(
-					SecurityUtils.getOriginalAuthentication());
+					originalAuthentication);
 
 		}
 		try {
