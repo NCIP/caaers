@@ -76,7 +76,7 @@
 	<bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
 		<constructor-arg index="0" ref="csmApplicationContextName"/>
 		<constructor-arg index="1" ref="connectionProperties"/>
-        <property name="authorizationDAO" ref="fasterAuthorizationDao"/>
+        <!-- <property name="authorizationDAO" ref="fasterAuthorizationDao"/>  -->
     </bean>
 
     <bean id="csmObjectIdGenerator"
