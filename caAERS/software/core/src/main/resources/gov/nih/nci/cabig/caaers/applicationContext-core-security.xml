@@ -27,31 +27,31 @@
 		<entry key="hibernate.connection.password" value="s[csm.datasource.password]"></entry>
 		<entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
 		<entry key="hibernate.c3p0.min_size" value="2"></entry>
-		<entry key="hibernate.c3p0.max_size" value="15"></entry>
+		<entry key="hibernate.c3p0.max_size" value="5"></entry>
 		<entry key="hibernate.c3p0.timeout" value="300"></entry>
 		<entry key="hibernate.c3p0.max_statements" value="50"></entry>
 		<entry key="hibernate.c3p0.idle_test_period" value="3000"></entry>
 	</util:map>
 
-<!--
+
 	<bean id="csmSessionFactory " class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="csmDataSource"/>
 		<property name="mappingResources">
 	        <list>
-	            <value>gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml</value>
-	            <value>gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml</value>
-	            <value>gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml</value>
-	            <value>gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/User.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml</value>
+	        	<value>gov/nih/nci/security/authorization/domainobjects/InstanceLevelMappingElement.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml</value>
 				<value>gov/nih/nci/security/authorization/domainobjects/FilterClause.hbm.xml</value>
-	            <value>gov/nih/nci/security/authorization/domainobjects/InstanceLevelMappingElement.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml</value>
+				<value>gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml</value>
+				<value>gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml</value>
+				<value>gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml</value>     
+				<value>gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/User.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml</value>
+				<value>gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml</value>
 	        </list>
 	    </property>
 		<property name="hibernateProperties">
@@ -68,86 +68,17 @@
 		</property>
 	</bean>
 	 
-	<bean id="fasterAuthorizationDaoImpl" class="gov.nih.nci.cabig.caaers.dao.security.FasterAuthorizationDaoImpl">
+	<bean id="fasterAuthorizationDao" class="gov.nih.nci.cabig.ctms.suite.authorization.csmext.FasterAuthorizationDao">
 		<constructor-arg index="0" ref="csmSessionFactory"/>
 		<constructor-arg index="1" ref="csmApplicationContextName"/>
 	</bean>
--->
+
 	<bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
 		<constructor-arg index="0" ref="csmApplicationContextName"/>
 		<constructor-arg index="1" ref="connectionProperties"/>
-        <!-- <property name="authorizationDAO" ref="fasterAuthorizationDaoImpl"/>  -->
+        <property name="authorizationDAO" ref="fasterAuthorizationDao"/>
     </bean>
- <!--    
-    <bean id="csmAuthorizationDao"
-          class="gov.nih.nci.security.dao.DIAuthorizationDao"
-          init-method="init">
-        <property name="sessionFactory">
-            <bean
-                    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-                <property name="dataSource" ref="csmDataSource"/>
-                <property name="mappingResources">
-                    <list>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/User.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml
-                        </value>
-                    </list>
-                </property>
-                <property name="hibernateProperties">
-                    <bean
-                            class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
-                       
-                        <property name="properties">
-                            <props>
-                     
-                                <prop
-                                        key="hibernate.connection.release_mode">
-                                    after_transaction
-                                </prop>
 
-                            </props>
-                        </property>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-        <property name="applicationContextName"
-                  ref="csmApplicationContextName"/>
-    </bean>
- -->
     <bean id="csmObjectIdGenerator"
           class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.BasicCSMObjectIdGenerator">
         <property name="idMethodName" value="getId"/>
