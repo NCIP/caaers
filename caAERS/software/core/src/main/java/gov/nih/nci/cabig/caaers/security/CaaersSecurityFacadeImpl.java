@@ -483,26 +483,33 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 				// on organizations which he belongs to as this role on that organization ) 
 				
 				if (roleName != null && caaersEquivalentName.equals(STUDY_PE)) {
-					// get acessible organization with above role.
+					// get acessible organizations with above role , and then associated Studies
 					resultList = getStudyIdsByRoleName(loginId, roleName);
 				} else {
-					//parse name ..
-					String[] tokens = caaersEquivalentName.split("\\.");
-					if (tokens.length == 2) {
-						if (tokens[0].equals(STUDY_PE)) {
-							identifiers.add(tokens[1]);
+					SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
+					// if user is study scoped 
+					if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
+						String[] tokens = caaersEquivalentName.split("\\.");
+						if (tokens.length == 2) {
+							if (tokens[0].equals(STUDY_PE)) {
+								identifiers.add(tokens[1]);
+							}
 						}
-					}					
+					} else if (suiteRole.isSiteScoped())
+						//if the user is site scoped , no study information is provisioned .. only Org is provisioned and he has access to all srtudies for those orgs 
+						//get acessible organization with above role, and then associated Studies
+						resultList = getStudyIdsByRoleName(loginId, roleName);
+					}
+					
 				}
 
-			}
-			if (identifiers.size() > 0) {
-				// get caAERS IDs from Studies table , primary key ..
-				hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
-				HQLQuery query = new HQLQuery(hql.toString());
-				query.setParameterList("identifiers", identifiers);
-				resultList.addAll((List<Integer>) search(query));
-			}
+				if (identifiers.size() > 0) {
+					// get caAERS IDs from Studies table , primary key ..
+					hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
+					HQLQuery query = new HQLQuery(hql.toString());
+					query.setParameterList("identifiers", identifiers);
+					resultList.addAll((List<Integer>) search(query));
+				}
 		} catch (CSObjectNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
