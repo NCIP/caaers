@@ -134,10 +134,11 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
+        ParticipantInputCommand c = (ParticipantInputCommand)command;
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("currentTask", task);
 
-        if (getFlow().getTabCount() == page + 1) {
+        if (getFlow((T)command).getTabCount() == page + 1) {
             refdata.put("_finish", true);
         }
         return refdata;

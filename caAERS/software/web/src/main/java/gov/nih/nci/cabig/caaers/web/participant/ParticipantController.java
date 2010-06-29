@@ -235,4 +235,12 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
+
+    public ParticipantRepository getParticipantRepository() {
+        return participantRepository;
+    }
+
+    public void setParticipantRepository(ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
+    }
 }
