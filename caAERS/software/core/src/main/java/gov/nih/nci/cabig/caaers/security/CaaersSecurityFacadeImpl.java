@@ -271,15 +271,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
    		for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
 			for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
 				SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-				if(eachSrsRole.isInActive()){
-					provisioningSession.deleteRole(suiteRole);
-				}else{
-					if(suiteRole.isScoped()){
-						SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
-						List<String> orgIdentifiers = getAllOrganizationIdentifiers(researchStaff);
-						if(orgIdentifiers == null || orgIdentifiers.isEmpty()){
-							return;
-						}
+				if(suiteRole.isScoped()){
+					SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
+					List<String> orgIdentifiers = getAllOrganizationIdentifiers(researchStaff);
+					if(orgIdentifiers == null || orgIdentifiers.isEmpty()){
+						provisioningSession.deleteRole(suiteRole);
+					}else{
 						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
 							for(String orgIdentifier : orgIdentifiers){
 				    			suiteRoleMembership.addSite(orgIdentifier);
@@ -687,4 +684,54 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public CSMUserRepositoryImpl getCsmUserRepository() {
 		return csmUserRepository;
 	}
+	
+	
+	
+	
+	
+	   private void __provisionResearchStaff(ResearchStaff researchStaff){
+	       	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
+	    	if(csmUser == null){
+	    		return;
+	    	}
+	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+	   		for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
+				for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
+					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+					SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+						if(suiteRole.isScoped()){
+							List<String> orgIdentifiers = getAllOrganizationIdentifiers(researchStaff);
+							if(orgIdentifiers == null || orgIdentifiers.isEmpty()){
+								provisioningSession.deleteRole(suiteRole);
+							}
+							if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
+								for(String orgIdentifier : orgIdentifiers){
+					    			suiteRoleMembership.addSite(orgIdentifier);
+					    		}
+								List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
+					    		for(String studyIdentifier : studyIndetifiers){
+					    			suiteRoleMembership.addStudy(studyIdentifier);
+					    		}
+							}else if(suiteRole.isSiteScoped()){
+								if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
+									suiteRoleMembership.forAllSites();
+								}else{
+		    						for(String orgIdentifier : orgIdentifiers){
+		    			    			suiteRoleMembership.addSite(orgIdentifier);
+		    			    		}
+								}
+							}
+							provisioningSession.replaceRole(suiteRoleMembership);
+						}
+					}
+				}
+			}
+	    
+
+	
+	
+	
+	
+	
+	
 }
