@@ -31,14 +31,14 @@ public class ParticipantQuery extends AbstractQuery {
      * SELECT distinct p from Participant p left join fetch p.identifiers
      */
     public void leftJoinFetchOnIdentifiers() {
-        leftJoinFetch("p.identifiers");
+        leftJoinFetch("p.identifiers identifier");
     }
 
     /**
      * select distinct p from Participant p join p.identifiers
      */
     public void joinOnIdentifiers() {
-        join("p.identifiers");
+        join("p.identifiers identifier");
     }
 
     public void filterByFirstName(final String firstName) {
@@ -55,17 +55,17 @@ public class ParticipantQuery extends AbstractQuery {
 
     public void filterByIdentifierValue(final String value) {
         String searchString = "%" + value.toLowerCase() + "%";
-        andWhere("lower(p.identifiers.value) LIKE :" + IDENTIFIER_VALUE);
+        andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE);
         setParameter(IDENTIFIER_VALUE, searchString);
     }
 
     public void filterByIdentifierValueExactMatch(final String value) {
-        andWhere("p.identifiers.value = :" + IDENTIFIER_VALUE);
+        andWhere("identifier.value = :" + IDENTIFIER_VALUE);
         setParameter(IDENTIFIER_VALUE, value);
     }
 
     public void filterByIdentifierTypeExactMatch(final String type) {
-        andWhere("p.identifiers.type = :" + IDENTIFIER_TYPE);
+        andWhere("identifier.type = :" + IDENTIFIER_TYPE);
         setParameter(IDENTIFIER_TYPE, type);
     }
 
