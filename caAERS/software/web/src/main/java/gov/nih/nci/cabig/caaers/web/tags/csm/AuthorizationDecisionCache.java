@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
+import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
+
 import java.io.Serializable;
 import java.util.HashMap;
 /**
@@ -18,7 +20,7 @@ public class AuthorizationDecisionCache implements Serializable{
 	}
 	
 	public void addDecision(Object domainObject, String privilege, Boolean allowed){
-		if(domainObject == null) return;
+		if(domainObject == null || isCacheToBeBypassed()) return;
 		
 		AuthorizationDecisionCacheEntry entry = null;
 		if(decisionCache.containsKey(domainObject)){
@@ -32,12 +34,21 @@ public class AuthorizationDecisionCache implements Serializable{
 	
 	public Boolean isAuthorized(Object domainObject, String privilege){
 		AuthorizationDecisionCacheEntry  entry = decisionCache.get(domainObject);
-		if(entry == null) return null;
+		if(entry == null || isCacheToBeBypassed()) return null;
 		return entry.isAuthorized(privilege);
 	}
 	
 	public void clear(){
 		decisionCache.clear();
+	}
+	
+	/**
+	 * To avoid stale data problems, skip the cache when there is an entity in context, based on which fabricated authentication has been created.
+	 * @see http://jira.semanticbits.com/browse/CAAERS-4098
+	 * @return
+	 */
+	public boolean isCacheToBeBypassed() {
+		return CurrentEntityHolder.getEntity()!=null;
 	}
 	
 	@SuppressWarnings("serial")

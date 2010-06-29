@@ -13,7 +13,7 @@
             --%>
                     <c:set var="_showSection" value="false" />
                     <c:forEach var="task" items="${section.tasks}">
-                        <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="tasksAuthorizationCheck">
+                        <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
                             <c:set var="_showSection" value="true" />
                         </csmauthz:accesscontrol>
                     </c:forEach>
@@ -22,7 +22,7 @@
                         <c:set var="noOfTasks" value="${fn:length(section.tasks)}" />
                         ['<c:out value="${section.displayName}" />', ${noOfTasks}, ${section == currentSection ? "true" : "false"},
                                 <c:forEach items="${section.tasks}" var="task" varStatus="index">
-                                    <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="tasksAuthorizationCheck">
+                                    <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
                                        ['<c:out value="${task.displayName}" />', '<c:url value="${task.url}"/>', '/caaers/images/blue/icons/${task.linkName}_icon.png', 'secondlevelnav_<c:out value="${task.linkName}" />'] ${!index.last ? ", " : ""}
                                     </csmauthz:accesscontrol>
                                 </c:forEach>
