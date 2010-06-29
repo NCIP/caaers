@@ -1,7 +1,10 @@
 <%@ tag import = "org.acegisecurity.context.SecurityContext" %>
 <%@ tag import = "gov.nih.nci.cabig.caaers.security.CaaersUser" %>
 <%@ tag import = "gov.nih.nci.cabig.caaers.security.WebSSOUser" %>
+<%@ tag import = "gov.nih.nci.cabig.caaers.domain.UserGroupType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 <% 
 Object caaersUser = null;
@@ -20,9 +23,52 @@ try{
 	
 }
 %>
+
+<div id="USER_ROLES" style="display:none;">
+
+<ol>
+<c:if test="${fn:length(ol) > 0}">
+    <b>Original Roles:</b><br>
+<div style='color:lightgreen;'>
+<c:forEach items="${ol}" var="a">
+    <li>${a}</li>
+</c:forEach>
+</div>
+</c:if>
+    
+    <b>Contextual Roles:</b><br>
+<div style='color:yellow;'>
+<c:forEach items="${cl}" var="a">
+    <li>${a}</li>
+</c:forEach>
+</div>
+</ol>   
+</div>
+
 <c:set var="user" value="<%= caaersUser %>" />
 <span id="welcome-user">
 	<c:if test="${user != null }">
-		Welcome <b> ${user.firstName} ${user.lastName}</b>
+		<a onmouseover="showUserRolesToolTip($('USER_ROLES').innerHTML, '')" onmouseout="tt_Hide();">Welcome <b> ${user.firstName} ${user.lastName}</b></a>
 	</c:if>
 </span>
+
+<script>
+function showUserRolesToolTip(text, title) {
+    Tip(text,
+            WIDTH, 300,
+            TITLE, title,
+            SHADOW, false,
+            FADEIN, 300,
+            FADEOUT, 300,
+            STICKY, 1,
+            CLOSEBTN, false,
+            CLICKCLOSE, false,
+            OPACITY, 85,
+            FONTCOLOR, "#fff",
+            BORDERCOLOR, "#444",
+            BGCOLOR, "#444",
+            PADDING, 15,
+            FONTSIZE, "13px"
+    );
+}
+</script>

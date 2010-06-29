@@ -1,3 +1,4 @@
+<%@ tag import="gov.nih.nci.cabig.caaers.security.SecurityUtils" %>
 <%@tag%>
 <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -61,6 +62,11 @@
     <c:forEach items="<%= edu.nwu.bioinformatics.commons.WebUtils.servletContextAttributesToMap(application) %>" var="item">
         <dt class="var">${item.key}</dt><dd>${commons:nl2br(item.value)} <em class="clazz">${commons:classname(item.value)}</em></dd>
     </c:forEach>
+    </dl>
+
+    <h2>Original Authentication</h2>
+    <dl>
+        <%= SecurityUtils.getOriginalAuthentication() %>
     </dl>
 
     <%--
