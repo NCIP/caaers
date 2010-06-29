@@ -58,7 +58,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private ResearchStaffRepository researchStaffRepository;
 
 	private InvestigatorRepository investigatorRepository;
-	
+
 	private StudyRepository studyRepository;
 
 	private Map<String, String> urlMap = new HashMap<String, String>();
@@ -153,13 +153,19 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	}
 
 	private void filterAuthoritiesByStudy(List<GrantedAuthority> list,
-			int studyId) {		
+			int studyId) {
 		Study study = studyRepository.getById(studyId);
-		if (study!=null) {
+		if (study != null) {
 			CurrentEntityHolder.setEntity(study);
-			//list.clear();
-			// get user's roles on the study.
-			
+			list.clear();
+			for (String role : securityFacade.getRoles(SecurityUtils
+					.getUserLoginName(), study)) {
+				GrantedAuthority ga = new GrantedAuthorityImpl(role);
+				if (!list.contains(ga)) {
+					list.add(ga);
+				}
+			}
+
 		}
 	}
 

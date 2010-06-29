@@ -4,6 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
+<csmauthz:swapAuth useOriginal="true">
 <div id="header">
   <div id="skipnav">
   <a href="#skipnav">Skip Navigation</a>
@@ -58,4 +59,5 @@
         </div>
     </div>
 </div>
+</csmauthz:swapAuth>
 <!-- end header -->
