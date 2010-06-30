@@ -134,13 +134,21 @@
             <c:if test="${command.studySiteIndex > -1 }">
 				<study:oneStudySiteInvestigator index="${command.studySiteIndex}"/>
 			</c:if>
-            <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
+            <csmauthz:accesscontrol var="_canModifyTheSite" scope="request" domainObject="${command.study.activeStudyOrganizations[command.studySiteIndex]}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator">
+                <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
+            </csmauthz:accesscontrol>
 		</div>
 	    </td>
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Investigators" id="participant-entry2" autopad="true">
+                <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.studyInvestigators)})</b></div>
+ 					<div class ="">
+                         <c:if test="${_isATeamAdmin}">
+                            <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a>
+                         </c:if>
+                         <c:if test="${!_isATeamAdmin}">${studySite.organization.name}</c:if>
+                         <b>(${fn:length(studySite.studyInvestigators)})</b></div>
  				</c:forEach>
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />

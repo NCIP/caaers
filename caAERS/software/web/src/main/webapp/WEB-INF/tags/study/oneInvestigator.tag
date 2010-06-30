@@ -47,13 +47,14 @@
     </td>
 
     <td style="border-left:none;">
-        <c:if test="${!isNew && si.siteInvestigator.investigator != null && si.id != null}">
-            <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
-            <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
+        <c:if test="${requestScope._canModifyTheSite}">
+            <c:if test="${!isNew && si.siteInvestigator.investigator != null && si.id != null}">
+                <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
+                <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
+            </c:if>
+            <c:if test="${isNew || si.siteInvestigator.investigator.id == null || si.id == null}">
+                <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}');"/>
+            </c:if>
         </c:if>
-        <c:if test="${isNew || si.siteInvestigator.investigator.id == null || si.id == null}">
-            <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}');"/>
-        </c:if>
-
     </td>
 </tr>

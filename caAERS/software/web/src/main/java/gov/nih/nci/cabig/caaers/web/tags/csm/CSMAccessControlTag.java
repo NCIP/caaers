@@ -144,7 +144,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 
         if(authzCheck == null){
            CaaersSecurityFacade caaersSecurityFacade = (CaaersSecurityFacade)context.getBean(securityFacade);
-           decision =  caaersSecurityFacade.checkAuthorization(auth,object.toString(), privilege);
+           decision =  caaersSecurityFacade.checkAuthorization(auth, object != null ? object.toString() : null, privilege);
         }else{
            decision = authzCheck.checkAuthorization(auth, privilege, object);
         }
