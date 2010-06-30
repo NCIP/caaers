@@ -84,7 +84,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			String loginId = user.getUserId() + "";
 			// first get user's roles provisioned on this study directly
 			String protGroupName = STUDY_PE + OBJ_ID_SEPARATOR
-					+ study.getPrimaryIdentifierValue();
+					+ study.getCoordinatingCenterIdentifier().getValue();
 			roles.addAll(getRoles(userName, protGroupName));
 
 			// need to check for the situation when the user has been
