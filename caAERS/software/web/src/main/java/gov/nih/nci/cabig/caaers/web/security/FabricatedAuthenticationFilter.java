@@ -88,39 +88,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				doProcessing(httpRequest, httpResponse, chain);
 				request.setAttribute(FILTER_APPLIED, true);
 			}
-
-
-            // START Roles
-            Map<String, String> roles = new HashMap<String, String>();
-            for (UserGroupType r : UserGroupType.values()) {
-                roles.put(r.getCsmName(), r.getDisplayName());
-            }
-
-            List ol = new ArrayList();
-            List cl = new ArrayList();
-
-            Authentication oa = SecurityUtils.getOriginalAuthentication();
-            if (oa != null && oa.getAuthorities() != null && oa.getAuthorities().length > 0) {
-                for (GrantedAuthority ga : oa.getAuthorities()) {
-                    ol.add(roles.get(ga.getAuthority()));
-                }
-            }
-
-            Authentication ca = SecurityUtils.getAuthentication();
-            if (ca != null && ca.getAuthorities() != null && ca.getAuthorities().length > 0) {
-                for (GrantedAuthority ga : ca.getAuthorities()) {
-                    cl.add(roles.get(ga.getAuthority()));
-                }
-            }
-
-            ol = (List)CollectionUtils.subtract(ol, cl);
-            httpRequest.setAttribute("cl", cl);
-            httpRequest.setAttribute("ol", ol);
-
-            // END Roles
-            
+            prepareRolesCollections(httpRequest);            
 			chain.doFilter(httpRequest, httpResponse);
-
 		} finally {
 			request.removeAttribute(FILTER_APPLIED);
 			SecurityContextHolder.setContext(contextBeforeExec);
@@ -135,6 +104,40 @@ public final class FabricatedAuthenticationFilter implements Filter {
 			CurrentEntityHolder.setEntity(null);
 		}
 		return;
+	}
+
+	/**
+	 * @param httpRequest
+	 */
+	private void prepareRolesCollections(HttpServletRequest httpRequest) {
+		// START Roles
+		Map<String, String> roles = new HashMap<String, String>();
+		for (UserGroupType r : UserGroupType.values()) {
+		    roles.put(r.getCsmName(), r.getDisplayName());
+		}
+
+		List ol = new ArrayList();
+		List cl = new ArrayList();
+
+		Authentication oa = SecurityUtils.getOriginalAuthentication();
+		if (oa != null && oa.getAuthorities() != null && oa.getAuthorities().length > 0) {
+		    for (GrantedAuthority ga : oa.getAuthorities()) {
+		        ol.add(roles.get(ga.getAuthority()));
+		    }
+		}
+
+		Authentication ca = SecurityUtils.getAuthentication();
+		if (ca != null && ca.getAuthorities() != null && ca.getAuthorities().length > 0) {
+		    for (GrantedAuthority ga : ca.getAuthorities()) {
+		        cl.add(roles.get(ga.getAuthority()));
+		    }
+		}
+
+		ol = (List)CollectionUtils.subtract(ol, cl);
+		httpRequest.setAttribute("cl", cl);
+		httpRequest.setAttribute("ol", ol);
+
+		// END Roles
 	}
 
 	/**
