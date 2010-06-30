@@ -7,10 +7,12 @@
        xsi:schemaLocation="
 						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd" >
- 
-    <bean id="authorizationSwitch"
-          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.AuthorizationSwitch"
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <aop:aspectj-autoproxy/>
+    <aop:spring-configured/>
+
+    <bean id="authorizationSwitch" class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.AuthorizationSwitch"
           factory-method="getInstance">
         <property name="on" value="true"/>
     </bean>
@@ -19,78 +21,64 @@
         <constructor-arg value="CTMS_SUITE"/>
     </bean>
 
-	<util:map id="connectionProperties" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
-		<entry key="hibernate.connection.url" value="s[csm.datasource.url]"></entry>
-		<entry key="hibernate.connection.driver_class" value="s[datasource.driver]"></entry>
-		<entry key="hibernate.dialect" value="s[csm.datasource.dialect]"></entry>
-		<entry key="hibernate.connection.username" value="s[csm.datasource.username]"></entry>
-		<entry key="hibernate.connection.password" value="s[csm.datasource.password]"></entry>
-		<entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
-		<entry key="hibernate.c3p0.min_size" value="2"></entry>
-		<entry key="hibernate.c3p0.max_size" value="5"></entry>
-		<entry key="hibernate.c3p0.timeout" value="300"></entry>
-		<entry key="hibernate.c3p0.max_statements" value="50"></entry>
-		<entry key="hibernate.c3p0.idle_test_period" value="3000"></entry>
-	</util:map>
+    <util:map id="connectionProperties" map-class="java.util.HashMap" key-type="java.lang.String"
+              value-type="java.lang.String">
+        <entry key="hibernate.connection.url" value="s[csm.datasource.url]"></entry>
+        <entry key="hibernate.connection.driver_class" value="s[datasource.driver]"></entry>
+        <entry key="hibernate.dialect" value="s[csm.datasource.dialect]"></entry>
+        <entry key="hibernate.connection.username" value="s[csm.datasource.username]"></entry>
+        <entry key="hibernate.connection.password" value="s[csm.datasource.password]"></entry>
+        <entry key="hibernate.connection.release_mode" value="after_transaction"></entry>
+        <entry key="hibernate.c3p0.min_size" value="2"></entry>
+        <entry key="hibernate.c3p0.max_size" value="5"></entry>
+        <entry key="hibernate.c3p0.timeout" value="300"></entry>
+        <entry key="hibernate.c3p0.max_statements" value="50"></entry>
+        <entry key="hibernate.c3p0.idle_test_period" value="3000"></entry>
+    </util:map>
 
 
-	<bean id="csmSessionFactory " class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource" ref="csmDataSource"/>
-		<property name="mappingResources">
-	        <list>
-	        	<value>gov/nih/nci/security/authorization/domainobjects/InstanceLevelMappingElement.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/FilterClause.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml</value>
-				<value>gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml</value>
-				<value>gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml</value>
-				<value>gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml</value>     
-				<value>gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/User.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml</value>
-				<value>gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml</value>
-	        </list>
-	    </property>
-		<property name="hibernateProperties">
-			<bean
-		        class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
-				<property name="properties">
-		    		<props>
-		                <prop key="hibernate.connection.release_mode">
-		                    auto
-		                </prop>
-		            </props>
-		        </property>
-		    </bean>
-		</property>
-	</bean>
-	 
-	<bean id="fasterAuthorizationDao" class="gov.nih.nci.cabig.ctms.suite.authorization.csmext.FasterAuthorizationDao">
-		<constructor-arg index="0" ref="csmSessionFactory"/>
-		<constructor-arg index="1" ref="csmApplicationContextName"/>
-	</bean>
+    <bean id="csmSessionFactory " class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="csmDataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>gov/nih/nci/security/authorization/domainobjects/InstanceLevelMappingElement.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/FilterClause.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml</value>
+                <value>gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml</value>
+                <value>gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml</value>
+                <value>gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/User.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml</value>
+                <value>gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <bean class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
+                <property name="properties">
+                    <props>
+                        <prop key="hibernate.connection.release_mode">auto</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
-		<constructor-arg index="0" ref="csmApplicationContextName"/>
-		<constructor-arg index="1" ref="connectionProperties"/>
+    <bean id="fasterAuthorizationDao" class="gov.nih.nci.cabig.ctms.suite.authorization.csmext.FasterAuthorizationDao">
+        <constructor-arg index="0" ref="csmSessionFactory"/>
+        <constructor-arg index="1" ref="csmApplicationContextName"/>
+    </bean>
+
+    <bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
+        <constructor-arg index="0" ref="csmApplicationContextName"/>
+        <constructor-arg index="1" ref="connectionProperties"/>
         <!-- <property name="authorizationDAO" ref="fasterAuthorizationDao"/>  -->
     </bean>
 
-    <bean id="csmObjectIdGenerator"
-          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.BasicCSMObjectIdGenerator">
-        <property name="idMethodName" value="getId"/>
-        <property name="classNameFirst" value="true"/>
-        <property name="separator" value=":"/>
-    </bean>
-
-    <bean id="csmExtentIdGenerator"
-          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.BasicCSMObjectIdGenerator"/>
-
-    <aop:aspectj-autoproxy/>
-    <aop:spring-configured/>
 
     <aop:config>
         <!-- pointcuts -->
@@ -119,24 +107,24 @@
 
         <!-- aspects -->
 
-      <!--
-        <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
-            <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
-        </aop:aspect>
-      -->
-<!--
-        <aop:aspect ref="refreshIndexAspect">		
-			<aop:pointcut id="executionOfIndexRefreshAfterUpdate"
-                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
-                    	     || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
-                    		 || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
-                    		 "/>
-            <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>			
-		</aop:aspect>
--->
-        <aop:aspect ref="querySecurityFilterAspect">		
-			<aop:pointcut id="QuerySecurityFilterAspectPointCut"
-                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
+        <!--
+          <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
+              <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
+          </aop:aspect>
+        -->
+        <!--
+                <aop:aspect ref="refreshIndexAspect">
+                    <aop:pointcut id="executionOfIndexRefreshAfterUpdate"
+                            expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
+                                     || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
+                                     || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
+                                     "/>
+                    <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>
+                </aop:aspect>
+        -->
+        <aop:aspect ref="querySecurityFilterAspect">
+            <aop:pointcut id="QuerySecurityFilterAspectPointCut"
+                          expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.find(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
@@ -144,11 +132,10 @@
 	       						|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
 	       						|| execution(* gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao.search*(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
                     			"/>
-            <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>			
-		</aop:aspect>
+            <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>
+        </aop:aspect>
 
     </aop:config>
-
 
 
     <bean id="daoSecurityInterceptorAspectBean" class="gov.nih.nci.cabig.ctms.acegi.csm.aop.SecurityInterceptorAspect">
@@ -157,13 +144,11 @@
 
 
     <bean id="daoSecurityTemplate" abstract="true">
-        <property name="authenticationManager"
-                  ref="authenticationManager"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
-    <util:map id="joinPointObjectPrivilegeMap"
-              map-class="java.util.LinkedHashMap">
-		<!-- CAAERS-3565 -->
+    <util:map id="joinPointObjectPrivilegeMap" map-class="java.util.LinkedHashMap">
+        <!-- CAAERS-3565 -->
         <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 
@@ -178,46 +163,46 @@
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.updateStudyForServiceUseOnly(gov.nih.nci.cabig.caaers.domain.Study))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.get*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.find*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.find*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
- 
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getApplicableOrganizationsFromStudySites*(java.lang.String,java.lang.Integer))"
                value="gov.nih.nci.cabig.caaers.domain.Organization:ACCESS"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
         <!--                                    
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.search*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>  -->             
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>  -->
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
                value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.find(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))"
-               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
-               
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-               
+
         <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
@@ -226,29 +211,23 @@
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService+.saveInvestigator(..))"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-                              
+
     </util:map>
 
-    <bean id="joinPointPrivilegeAndObjectIdGenerator"
-          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.JoinPointPrivilegeAndObjectIdGenerator">
+    <bean id="joinPointPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.JoinPointPrivilegeAndObjectIdGenerator">
         <property name="objectPrivilegeMap"
                   ref="joinPointObjectPrivilegeMap"/>
     </bean>
 
-    <bean id="daoAuthorizationCheck" autowire="byType"
-          class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+    <bean id="daoAuthorizationCheck" autowire="byType" class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
         <property name="csmAuthorizationCheck">
-            <bean
-                    class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
-                <property name="csmUserProvisioningManager"
-                          ref="csmUserProvisioningManager"/>
+            <bean class="gov.nih.nci.cabig.ctms.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+                <property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
             </bean>
         </property>
-        <property name="objectIdGenerator"
-                  ref="joinPointPrivilegeAndObjectIdGenerator"/>
-        <property name="privilegeGenerator"
-                  ref="joinPointPrivilegeAndObjectIdGenerator"/>
+        <property name="objectIdGenerator" ref="joinPointPrivilegeAndObjectIdGenerator"/>
+        <property name="privilegeGenerator" ref="joinPointPrivilegeAndObjectIdGenerator"/>
     </bean>
 
     <bean id="daoSecurity" parent="daoSecurityTemplate" class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
@@ -264,8 +243,8 @@
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.searchOrganization=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK 
-                gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService.saveResearchStaff=CSM_AUTHN_CHECK     
+                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService.saveResearchStaff=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService.saveInvestigator=CSM_AUTHN_CHECK
             </value>
         </property>
@@ -276,19 +255,17 @@
                 </property>
                 <property name="decisionVoters">
                     <list>
-                    	<bean class="gov.nih.nci.cabig.caaers.security.SystemUserVoter">
-                    		<property name="username" value="SYSTEM"/>
-							<property name="password" value="ignoreme" />
-                    	</bean>
+                        <bean class="gov.nih.nci.cabig.caaers.security.SystemUserVoter">
+                            <property name="username" value="SYSTEM"/>
+                            <property name="password" value="ignoreme"/>
+                        </bean>
                         <bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.AuthorizationSwitchVoter">
                             <property name="authorizationSwitch" ref="authorizationSwitch"/>
                             <property name="requiresAuthentication" value="false"/>
                         </bean>
                         <bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.CSMAuthorizationCheckVoter">
-                            <property name="processConfigAttribute"
-                                      value="CSM_AUTHN_CHECK"/>
-                            <property name="authorizationCheck"
-                                      ref="daoAuthorizationCheck"/>
+                            <property name="processConfigAttribute" value="CSM_AUTHN_CHECK"/>
+                            <property name="authorizationCheck" ref="daoAuthorizationCheck"/>
                         </bean>
                     </list>
                 </property>
@@ -311,207 +288,220 @@
 
 
     <bean id="studyParticipantAssignmentAspect"
-          class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"
-          factory-method="aspectOf">
-
-        <property name="securityInterceptor"
-                  ref="daoSecurity"/>
+          class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect" factory-method="aspectOf">
+        <property name="securityInterceptor" ref="daoSecurity"/>
 
     </bean>
-    <!--> oraganization security beans  start here-->
-    <bean id="sitePrivilegeAndObjectIdGenerator"
-          class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
-        <property name="accessPrivilege" value="ACCESS"/>
-        <property name="pathSeperator" value="."/>
-    </bean>
-
-    
-    <bean id="ACCESS_PRIVILEGE" class="java.lang.String">
-        <constructor-arg value="ACCESS"/>
-    </bean>
-
-
-    <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-              map-class="java.util.LinkedHashMap">
-     </util:map>
-
-    <!--> oraganization security beans end here  -->
 
 
     <bean id="csmGroupAuthorizationCheck"
           class="gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMGroupAuthorizationCheck">
-        <property name="csmUserProvisioningManager"
-                  ref="csmUserProvisioningManager"/>
+        <property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="authorizationSwitch" ref="authorizationSwitch"/>
     </bean>
 
-	<!-- Run as authentication Populator -->
-	<bean id="runAsAuthenticationPopulator"
-		class="gov.nih.nci.cabig.caaers.security.RunAsAuthenticationPopulator">
-		<property name="username" value="SYSTEM" />
-		<property name="password" value="ignoreme" />
-		<property name="authorities">
-			<list>
-				<value>caaers_super_user</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="runAsAutenticationProviderInterceptor" class="gov.nih.nci.cabig.caaers.security.RunAsAuthenticationPopulatorIncerceptor">
-		<property name="runAsAuthenticationPopulator" ref="runAsAuthenticationPopulator" />
-	</bean>	
+    <!-- Run as authentication Populator -->
+    <bean id="runAsAuthenticationPopulator" class="gov.nih.nci.cabig.caaers.security.RunAsAuthenticationPopulator">
+        <property name="username" value="SYSTEM"/>
+        <property name="password" value="ignoreme"/>
+        <property name="authorities">
+            <list>
+                <value>caaers_super_user</value>
+            </list>
+        </property>
+    </bean>
 
-	<bean id="gridAutenticationInterceptor" class="gov.nih.nci.cabig.caaers.security.GridAuthenticationInterceptor">
-		<property name="csmUserDetailsService" ref="csmUserDetailsService" />
-	</bean>
-		
-	<!-- ==== Authentication Related Stuff ================ -->
-	
-    <bean id="csmLockoutManager" class="gov.nih.nci.cabig.caaers.security.CaaersCSMLockoutManagerFactoryBean"  /> 
-    
-    <bean id="csmAuthenticationManager" class="gov.nih.nci.security.SecurityServiceProvider" factory-method="getAuthenticationManager" depends-on="csmLockoutManager">
+    <bean id="runAsAutenticationProviderInterceptor"
+          class="gov.nih.nci.cabig.caaers.security.RunAsAuthenticationPopulatorIncerceptor">
+        <property name="runAsAuthenticationPopulator" ref="runAsAuthenticationPopulator"/>
+    </bean>
+
+    <bean id="gridAutenticationInterceptor" class="gov.nih.nci.cabig.caaers.security.GridAuthenticationInterceptor">
+        <property name="csmUserDetailsService" ref="csmUserDetailsService"/>
+    </bean>
+
+    <!-- ==== Authentication Related Stuff ================ -->
+
+    <bean id="csmLockoutManager" class="gov.nih.nci.cabig.caaers.security.CaaersCSMLockoutManagerFactoryBean"/>
+
+    <bean id="csmAuthenticationManager" class="gov.nih.nci.security.SecurityServiceProvider"
+          factory-method="getAuthenticationManager" depends-on="csmLockoutManager">
         <constructor-arg ref="csmApplicationContextName"/>
-    </bean>   
-		
-	<bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider" lazy-init="true">
-		<property name="csmAuthenticationManager" ref="csmAuthenticationManager" />
-		<property name="userDetailsService" ref="csmUserDetailsService" />
-		<property name="passwordPolicyService" ref="passwordPolicyService" />
-		<property name="userDao" ref="userDao" />
-		<property name="userCache" ref="userCache"/>
-	</bean>
-	
-	<bean id="csmUserDetailsService" class="gov.nih.nci.cabig.caaers.security.CaaersCSMUserDetailsService" lazy-init="true">
-		<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
-	</bean>
-	
-	
-	<bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-		<property name="cache">
-			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-				<property name="cacheManager" ref="cacheManager" />
-				<property name="cacheName" value="userCache"/>
-			</bean>
-		</property>
-	</bean>
-	<!-- Cached Manager -->
-	 <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
-	 
-	 <bean id="refreshIndexAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.RefreshIndexAspect">
-		  <property name="filteredDataLoader" ref="filteredDataLoader"/>
-     </bean>      	
-	 <bean id="filteredDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
-		  <property name="idFetchers">
-             <list>
-             	<ref bean="organizationIdFetcher"/>
+    </bean>
+
+    <bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider"
+          lazy-init="true">
+        <property name="csmAuthenticationManager" ref="csmAuthenticationManager"/>
+        <property name="userDetailsService" ref="csmUserDetailsService"/>
+        <property name="passwordPolicyService" ref="passwordPolicyService"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="userCache" ref="userCache"/>
+    </bean>
+
+    <bean id="csmUserDetailsService" class="gov.nih.nci.cabig.caaers.security.CaaersCSMUserDetailsService"
+          lazy-init="true">
+        <property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
+    </bean>
+
+
+    <bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+        <property name="cache">
+            <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+                <property name="cacheManager" ref="cacheManager"/>
+                <property name="cacheName" value="userCache"/>
+            </bean>
+        </property>
+    </bean>
+    <!-- Cached Manager -->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
+
+    <bean id="refreshIndexAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.RefreshIndexAspect">
+        <property name="filteredDataLoader" ref="filteredDataLoader"/>
+    </bean>
+    <bean id="filteredDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
+        <property name="idFetchers">
+            <list>
+                <ref bean="organizationIdFetcher"/>
                 <ref bean="studyIdFetcher"/>
                 <ref bean="participantIdFetcher"/>
                 <ref bean="adverseEventIdFetcher"/>
                 <ref bean="expeditedAdverseEventReportIdFetcher"/>
-                <ref bean="reportingPeriodIdFetcher"/>    
-                <ref bean="researchStaffIdFetcher"/> 
-                <ref bean="investigatorIdFetcher"/>             
+                <ref bean="reportingPeriodIdFetcher"/>
+                <ref bean="researchStaffIdFetcher"/>
+                <ref bean="investigatorIdFetcher"/>
             </list>
-         </property> 
-         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
-     </bean> 
-     <util:map id="idFetcherIndexDaoMap"
-              map-class="java.util.LinkedHashMap">
-        <entry key-ref="organizationIdFetcher"
-               value-ref="organizationIndexDao"/>    
-        <entry key-ref="studyIdFetcher"
-               value-ref="studyIndexDao"/>                           
-        <entry key-ref="participantIdFetcher"
-               value-ref="participantIndexDao"/>
-        <entry key-ref="adverseEventIdFetcher"
-               value-ref="adverseEventIndexDao"/>
-        <entry key-ref="expeditedAdverseEventReportIdFetcher"
-               value-ref="expeditedAdverseEventReportIndexDao"/>  
-        <entry key-ref="reportingPeriodIdFetcher"
-               value-ref="reportingPeriodIndexDao"/>                 
-        <entry key-ref="researchStaffIdFetcher"
-               value-ref="researchStaffIndexDao"/>
-        <entry key-ref="investigatorIdFetcher"
-               value-ref="investigatorIndexDao"/> 
-    </util:map>
-      
-  <bean id="filteredDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean"> 
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="filteredDataLoaderTarget"/></property> 
-		<property name="interceptorNames"> 
-			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
-				<value>auditInfoPopulatorInterceptor</value>
-				<value>hibernateInterceptor</value> 
-			</list> 
-		</property> 
-	</bean>
-	    
-    
-    <bean id="abstractIdFetcher" abstract="true">
-        <property name="hibernateTemplate" ref="hibernateTemplate" />
-        <property name="csmUserRepository" ref="csmUserRepository" />
-        <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+        </property>
+        <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
     </bean>
-    
-   <!-- BEGIN PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
-	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" parent ="abstractIdFetcher"/>
-    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl" parent="abstractIdFetcher"/>
-    <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl" parent="abstractIdFetcher"/>
-    <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
-    
-    
-    <bean id="adverseEventIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
-    <bean id="expeditedAdverseEventReportIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>    
-    <bean id="reportingPeriodIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject" parent="abstractIdFetcher"/>
-    <bean id="researchStaffIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersResearchStaffIdFetcherImpl" parent="abstractIdFetcher"/>
-    <bean id="investigatorIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersInvestigatorIdFetcherImpl" parent="abstractIdFetcher"/>
+    <util:map id="idFetcherIndexDaoMap" map-class="java.util.LinkedHashMap">
+        <entry key-ref="organizationIdFetcher"  value-ref="organizationIndexDao"/>
+        <entry key-ref="studyIdFetcher"  value-ref="studyIndexDao"/>
+        <entry key-ref="participantIdFetcher" value-ref="participantIndexDao"/>
+        <entry key-ref="adverseEventIdFetcher" value-ref="adverseEventIndexDao"/>
+        <entry key-ref="expeditedAdverseEventReportIdFetcher" value-ref="expeditedAdverseEventReportIndexDao"/>
+        <entry key-ref="reportingPeriodIdFetcher" value-ref="reportingPeriodIndexDao"/>
+        <entry key-ref="researchStaffIdFetcher" value-ref="researchStaffIndexDao"/>
+        <entry key-ref="investigatorIdFetcher" value-ref="investigatorIndexDao"/>
+    </util:map>
 
+    <bean id="filteredDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyTargetClass">
+            <value>true</value>
+        </property>
+        <property name="target">
+            <ref local="filteredDataLoaderTarget"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>runAsAutenticationProviderInterceptor</value>
+                <value>auditInfoPopulatorInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="abstractIdFetcher" abstract="true">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+        <property name="csmUserRepository" ref="csmUserRepository"/>
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+    </bean>
+
+    <!-- BEGIN PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+    <bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="adverseEventIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher"/>
+    <bean id="expeditedAdverseEventReportIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher"/>
+    <bean id="reportingPeriodIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher"/>
+    <bean id="researchStaffIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersResearchStaffIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="investigatorIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersInvestigatorIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
 
     <!-- Pluggable Query Filterer implementation -->
 
-    <bean id="querySecurityFilterAspect"   class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect" >
-    	<property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>
-    </bean>
-    
-    <bean id="querySecurityFilterDispatcher" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
-          <property name="filtererMap">
-              <map>
-                  <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery"   value-ref="studyQuerySecurityFilterer"/>
-                  <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery"   value-ref="studyQuerySecurityFilterer"/>
-                  <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery"   value-ref="studyQuerySecurityFilterer"/>
-                  <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"   value-ref="participantQuerySecurityFilterer" />
-                  <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery" value-ref="participantAjaxableQuerySecurityFilterer" />
-                  <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery" value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer" />
-              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery" value-ref="organizationQuerySecurityFilterer" />
-              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery" value-ref="organizationQuerySecurityFilterer" />
-              	  <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery" value-ref="reportVersionQuerySecurityFilterer" />
-              	   
-              </map>
-          </property>
+    <bean id="querySecurityFilterAspect"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect">
+        <property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>
     </bean>
 
-    <bean id="studyQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="study" p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx" />
-    <bean id="participantQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="p" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
-    <bean id="participantAjaxableQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
-    <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod" p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
-    <bean id="organizationQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex" p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
-    <bean id="reportVersionQuerySecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport" p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx" />
+    <bean id="querySecurityFilterDispatcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
+        <property name="filtererMap">
+            <map>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery" value-ref="studyQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery"
+                       value-ref="studyQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery"
+                       value-ref="studyQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"
+                       value-ref="participantQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery"
+                       value-ref="participantAjaxableQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery"
+                       value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery"
+                       value-ref="organizationQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery"
+                       value-ref="organizationQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery"
+                       value-ref="reportVersionQuerySecurityFilterer"/>
 
-	<!-- Common API for provisioning into csm -->
-	<bean id="provisioningSessionFactory" class="gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory">
- 		<property name="authorizationManager" ref="csmUserProvisioningManager"/>
-	</bean>
- 
+            </map>
+        </property>
+    </bean>
+
+    <bean id="studyQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="study"
+          p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx"/>
+    <bean id="participantQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="p"
+          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+    <bean id="participantAjaxableQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex"
+          p:indexAlias="pIndx"/>
+    <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod"
+          p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
+    <bean id="organizationQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex"
+          p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
+    <bean id="reportVersionQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport"
+          p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
+
+    <!-- Common API for provisioning into csm -->
+    <bean id="provisioningSessionFactory" class="gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory">
+        <property name="authorizationManager" ref="csmUserProvisioningManager"/>
+    </bean>
+
     <!-- The security facade bean -->
-    <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl"  >
-    	<property name="csmUserRepository" ref="csmUserRepository"/>
-    	<property name="rolePrivilegeDao" ref="rolePrivilegeDao" />
-    	<property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
+    <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl">
+        <property name="csmUserRepository" ref="csmUserRepository"/>
+        <property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>
+        <property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>
-	
-	<bean id="gridServicesAuthorizationHelper" class="gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper"  >
-		<property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+
+    <bean id="gridServicesAuthorizationHelper"
+          class="gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper">
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
-    
+
 </beans>

@@ -52,7 +52,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 	@Override
 	protected int doStartTagInternal() throws Exception {
 
-        if(StringUtils.isEmpty(authorizationCheckName) && StringUtils.isEmpty(objectPrivilege)) {
+        if(StringUtils.isBlank(authorizationCheckName) && StringUtils.isBlank(objectPrivilege)) {
             throw new JspException("Either 'authorizationCheckName' or 'objectPrivilege' are required");
         }
 
@@ -72,7 +72,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
         String[] requiredPrivileges = evaledPrivilegesString.split(",");
 
         boolean authFlag = false;
-        if(authorizationCheckName != null){
+        if(StringUtils.isNotBlank(authorizationCheckName)){
             authFlag =  checkAuthorization(resolvedDomainObject, requiredPrivileges);
         }else{
             authFlag = checkAuthorization(objectPrivilege);

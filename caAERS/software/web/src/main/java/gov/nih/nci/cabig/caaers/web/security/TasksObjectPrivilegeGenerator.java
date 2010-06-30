@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.security.authorization.ObjectPrivilegeGenerator;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 
 import java.util.Map;

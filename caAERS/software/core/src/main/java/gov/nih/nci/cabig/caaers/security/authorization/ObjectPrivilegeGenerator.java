@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.security;
+package gov.nih.nci.cabig.caaers.security.authorization;
 
 import java.util.Map;
 

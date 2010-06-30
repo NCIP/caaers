@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.security.authorization;
 
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.web.security.ObjectPrivilegeGenerator;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
 import org.acegisecurity.Authentication;
 

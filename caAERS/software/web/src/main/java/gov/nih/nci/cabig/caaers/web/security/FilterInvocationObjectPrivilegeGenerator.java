@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.security.authorization.ObjectPrivilegeGenerator;
 import org.acegisecurity.intercept.web.FilterInvocation;
 
 import java.util.Map;
