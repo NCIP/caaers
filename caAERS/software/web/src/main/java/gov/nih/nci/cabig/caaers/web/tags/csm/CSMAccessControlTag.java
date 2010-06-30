@@ -47,9 +47,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 	private String objectPrivilege = "";
 	private String authorizationCheckName = "";
 
-    private String securityFacade;
-	private String defaultSecurityFacadeBeanID = "caaersSecurityFacade";
-
+    private String securityFacade = "caaersSecurityFacade";
 
 	@Override
 	protected int doStartTagInternal() throws Exception {
