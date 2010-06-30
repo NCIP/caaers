@@ -54,7 +54,7 @@
             	<tags:button type="submit" icon="${continueLabel}" color="green" id="flow-next" value="${continueLabel}"/>
             </c:if>
             <c:if test="${not empty tab}">
-            	<csmauthz:accesscontrol domainObject="${flow.tabs[tabNumber + 1]}" authorizationCheckName="tabAuthorizationCheck">
+            	<csmauthz:accesscontrol domainObject="${isLast ? tab : flow.tabs[tabNumber + 1]}" authorizationCheckName="tabAuthorizationCheck">
             		<tags:button type="submit" icon="${continueLabel}" color="green" id="flow-next" value="${continueLabel}"/>
             	</csmauthz:accesscontrol>
             </c:if>

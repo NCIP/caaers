@@ -202,6 +202,7 @@
                 </jsp:attribute>
 
                 <jsp:attribute name="tabControls">
+
                     <c:if test="${hasRSUpdate}">
                         <tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save"></tags:tabControls>
                     </c:if>
