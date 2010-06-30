@@ -36,6 +36,7 @@ public class MessageTagTest extends AbstractTestCase {
 		verifyMocks();
 		assertEquals("hello", msg);
 	}
+    
 	public void testResolveMessage_LookingForArrayProperty() throws Exception {
 		EasyMock.expect(messageSource.getMessage("joel[5].abc", null, null)).andThrow(new NoSuchMessageException("x"));
 		EasyMock.expect(messageSource.getMessage("joel.abc", null,null, null)).andReturn("hello");

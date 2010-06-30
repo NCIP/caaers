@@ -55,8 +55,10 @@
         </c:if>
     </c:forEach>
 
+
+
     <td style="border-left:none;">
-        <c:if test="${activateButtonVisibility }">
+        <c:if test="${activateButtonVisibility and requestScope._canModifyTheSite}">
             <c:if test="${!isNew && sp.siteResearchStaff.researchStaff != null && sp.id != null}">
                 <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
                 <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>

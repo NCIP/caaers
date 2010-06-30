@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,44 +13,82 @@ import java.util.HashMap;
  */
 @SuppressWarnings("serial")
 public class AuthorizationDecisionCache implements Serializable{
+
+    private static final String defaultKey = "0";
 	
-	private HashMap<Object, AuthorizationDecisionCacheEntry> decisionCache;
+	private HashMap<Object, HashMap<Object, AuthorizationDecisionCacheEntry>> decisionCache;
 	
 	public AuthorizationDecisionCache(){
-		decisionCache = new HashMap<Object, AuthorizationDecisionCacheEntry>();
+		decisionCache = new HashMap<Object, HashMap<Object, AuthorizationDecisionCacheEntry>>();
 	}
-	
+
+    /**
+     * Will add the decision on to the cache. 
+     * @param domainObject
+     * @param privilege
+     * @param allowed
+     */
 	public void addDecision(Object domainObject, String privilege, Boolean allowed){
-		if(domainObject == null || isCacheToBeBypassed()) return;
-		
-		AuthorizationDecisionCacheEntry entry = null;
-		if(decisionCache.containsKey(domainObject)){
-			entry = decisionCache.get(domainObject);
+        addDecision(getCacheKeyDiscriminator(), domainObject, privilege, allowed);
+	}
+
+    public void addDecision(Object key, Object domainObject, String privilege, Boolean allowed){
+        if(domainObject == null) return;
+        HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = decisionCache.get(key);
+        if(decisionMap == null){
+            decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
+            decisionCache.put(key, decisionMap);
+        }
+        
+        AuthorizationDecisionCacheEntry entry = decisionMap.get(domainObject);
+        if(entry == null){
+            entry = new AuthorizationDecisionCacheEntry(domainObject);
+            decisionMap.put(domainObject, entry);
+        }
+        entry.addDecision(privilege, allowed);
+    }
+
+    /**
+     * Will return the authorization decision from the cache.
+     * @param domainObject
+     * @param privilege
+     * @return
+     */
+	public Boolean isAuthorized(Object domainObject, String privilege){
+		return isAuthorized(getCacheKeyDiscriminator(), domainObject, privilege);
+	}
+
+    public Boolean isAuthorized(Object key, Object domainObject, String privilege){
+
+
+        HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = decisionCache.get(key);
+        if(decisionMap == null){
+            decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
+            decisionCache.put(key, decisionMap);
+        }
+        AuthorizationDecisionCacheEntry entry = null;
+		if(decisionMap.containsKey(domainObject)){
+			entry = decisionMap.get(domainObject);
 		}else{
 			entry = new AuthorizationDecisionCacheEntry(domainObject);
-			decisionCache.put(domainObject, entry);
+			decisionMap.put(domainObject, entry);
 		}
-		entry.addDecision(privilege, allowed);
-	}
-	
-	public Boolean isAuthorized(Object domainObject, String privilege){
-		AuthorizationDecisionCacheEntry  entry = decisionCache.get(domainObject);
-		if(entry == null || isCacheToBeBypassed()) return null;
 		return entry.isAuthorized(privilege);
-	}
+    }
 	
 	public void clear(){
 		decisionCache.clear();
 	}
-	
-	/**
-	 * To avoid stale data problems, skip the cache when there is an entity in context, based on which fabricated authentication has been created.
-	 * @see http://jira.semanticbits.com/browse/CAAERS-4098
-	 * @return
-	 */
-	public boolean isCacheToBeBypassed() {
-		return CurrentEntityHolder.getEntity()!=null;
-	}
+
+    /**
+     * Will return the cache key to use.
+     * http://jira.semanticbits.com/browse/CAAERS-4098
+     * @return
+     */
+    public Object getCacheKeyDiscriminator(){
+       String key = CurrentEntityHolder.getEntityCacheKeyDiscriminator();
+       return StringUtils.isBlank(key) ? defaultKey : key;
+    }
 	
 	@SuppressWarnings("serial")
 	public class AuthorizationDecisionCacheEntry implements Serializable{

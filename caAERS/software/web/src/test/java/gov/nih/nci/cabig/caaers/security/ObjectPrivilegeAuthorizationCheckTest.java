@@ -1,32 +1,30 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.security.authorization.ObjectPrivilegeAuthorizationCheck;
 import gov.nih.nci.cabig.caaers.web.security.DefaultObjectPrivilegeGenerator;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
 import org.acegisecurity.Authentication;
 import org.easymock.classextension.EasyMock;
 
 import java.util.HashMap;
 
 /**
- * WebTabsAuthorizationCheck Tester.
+ * ObjectPrivilegeAuthorizationCheck Tester.
  *
  * @author Biju Joseph
  * @since <pre>06/23/2010</pre>
  * 
  */
-public class WebTabsAuthorizationCheckTest extends AbstractTestCase {
+public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
 
-    WebTabsAuthorizationCheck chk;
+    ObjectPrivilegeAuthorizationCheck chk;
     DefaultObjectPrivilegeGenerator gen;
     CaaersSecurityFacade facade;
 
     public void setUp() throws Exception {
         super.setUp();
 
-        chk = new WebTabsAuthorizationCheck();
+        chk = new ObjectPrivilegeAuthorizationCheck();
         HashMap<String,String> map = new HashMap<String,String>();
         map.put("/x","y");
         gen = new DefaultObjectPrivilegeGenerator();

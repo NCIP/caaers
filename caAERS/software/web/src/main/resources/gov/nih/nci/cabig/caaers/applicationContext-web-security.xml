@@ -337,7 +337,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="caaersDataMigratorDelegate" ref="caaersDataMigratorDelegate"/>
 	</bean>
 
-    <bean id="caaersWebAuthorizationCheck" abstract="true" class="gov.nih.nci.cabig.caaers.security.WebTabsAuthorizationCheck">
+    <bean id="siteAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck">
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+    </bean>
+    
+    <bean id="caaersWebAuthorizationCheck" abstract="true" class="gov.nih.nci.cabig.caaers.security.authorization.ObjectPrivilegeAuthorizationCheck">
           <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
     </bean>
     <bean id="taskAuthorizationCheck" parent="caaersWebAuthorizationCheck">

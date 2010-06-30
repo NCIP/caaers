@@ -1,10 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
 <html>
  <head>
@@ -165,13 +161,21 @@ margin:5px;
 					<study:oneStudySitePersonnel index="${command.studySiteIndex}"/>
 				</c:if>
 				<span id="ss-bookmark" />
-                <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" /></div>
+                <csmauthz:accesscontrol var="_canModifyTheSite" scope="request" domainObject="${command.study.activeStudyOrganizations[command.studySiteIndex]}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator">
+                <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}">
+                    <tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" />
+                </div>
+                </csmauthz:accesscontrol>
 			</div>
 	    </td>
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Personnel" id="participant-entry2"  autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a style="cursor:pointer;" onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit research staff assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.studyPersonnels)})</b></div>
+                    <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+ 					<div class ="">
+                         <a style="cursor:pointer;" onclick="${_isATeamAdmin ? 'javascript:void();' : 'javascript:chooseSitesfromSummary(${status.index});'}" title="click here to edit research staff assigned to study">${studySite.organization.name}</a>
+                         <b>(${fn:length(studySite.studyPersonnels)})</b>
+                     </div>
  					<%--<div class="">Personnel Assigned: <b>  </b></div>--%>
  				</c:forEach>
  				<div><img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" /></div>

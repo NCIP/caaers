@@ -1,5 +1,6 @@
-package gov.nih.nci.cabig.caaers.security;
+package gov.nih.nci.cabig.caaers.security.authorization;
 
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.web.security.ObjectPrivilegeGenerator;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMAuthorizationCheck;
 import org.acegisecurity.Authentication;
@@ -10,7 +11,7 @@ import org.acegisecurity.Authentication;
  * @author Biju Joseph (refactored)
  * 
  */
-public class WebTabsAuthorizationCheck implements CSMAuthorizationCheck {
+public class ObjectPrivilegeAuthorizationCheck implements CSMAuthorizationCheck {
 
     protected CaaersSecurityFacade caaersSecurityFacade;
     protected ObjectPrivilegeGenerator objectPrivilegeGenerator;
