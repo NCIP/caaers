@@ -133,7 +133,9 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
         return false;
     }
     protected boolean checkAuthorization(Object object, String privilege){
-        
+
+        if (object == null) return false;
+
         //get it from the cache
         Boolean decision = getAuthorizationDecisionCache().isAuthorized(object, privilege);
         if(decision != null) return decision;
@@ -144,7 +146,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 
         if(authzCheck == null){
            CaaersSecurityFacade caaersSecurityFacade = (CaaersSecurityFacade)context.getBean(securityFacade);
-           decision =  caaersSecurityFacade.checkAuthorization(auth, object != null ? object.toString() : null, privilege);
+           decision =  caaersSecurityFacade.checkAuthorization(auth, object.toString(), privilege);
         }else{
            decision = authzCheck.checkAuthorization(auth, privilege, object);
         }
