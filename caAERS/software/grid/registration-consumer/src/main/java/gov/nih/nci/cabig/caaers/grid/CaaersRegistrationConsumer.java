@@ -103,13 +103,17 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                     InvalidRegistrationException, RegistrationConsumptionException {
         logger.info("Begining of registration-register");
         System.out.println("-- RegistrationConsumer : register");
+        
+        OrganizationAssignedIdentifierType ccIdentifierType = (OrganizationAssignedIdentifierType)findCoordinatingCenterIdentifier(registration); 
+        String ccIdentifier = ccIdentifierType.getValue();
+        
         try {
-        	if(!gridServicesAuthorizationHelper.authorizedRegistrationConsumer()){
+        	if(!gridServicesAuthorizationHelper.authorizedRegistrationConsumer(ccIdentifierType.getHealthcareSite().getNciInstituteCode(),ccIdentifierType.getValue())){
                 String message = "Access denied";
                 RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                 throw exp;
         	}
-            String ccIdentifier = findCoordinatingCenterIdentifier(registration);
+            
             Study study = fetchStudy(ccIdentifier,
                             OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             
@@ -339,7 +343,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
     /*
      * Finds the coordinating center identifier for the sutdy
      */
-    String findCoordinatingCenterIdentifier(Registration registration) throws InvalidRegistrationException {
+    IdentifierType findCoordinatingCenterIdentifier(Registration registration) throws InvalidRegistrationException {
         List<IdentifierType> identifierTypeList = findIdentifiersOfType(registration.getStudyRef().getIdentifier(),
                         OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE, null);
 
@@ -347,7 +351,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             String message = "In StudyRef-Identifiers, Coordinating Center Identifier is not available";
             throw getInvalidRegistrationException(message);
         }
-        return identifierTypeList.get(0).getValue();
+        return identifierTypeList.get(0);
 
     }
 

@@ -199,15 +199,17 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     	try {
         	logger.info("Begining of studyConsumer : createStudy");
         	
-        	if(!gridServicesAuthorizationHelper.authorizedStudyConsumer()){
-                String message = "Access denied";
-                throw getStudyCreationException(message);
-        	}
-        	
             if (studyDto == null) throw getInvalidStudyException("null input");
 
             gov.nih.nci.cabig.caaers.domain.Study study = null;
-            String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
+            OrganizationAssignedIdentifierType idType = (OrganizationAssignedIdentifierType)findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+            String ccIdentifier = idType.getValue();
+            
+        	if(!gridServicesAuthorizationHelper.authorizedStudyConsumer(idType.getHealthcareSite().getNciInstituteCode())){
+        		String message = "Access denied";
+        		throw getStudyCreationException(message);
+        	}
+            
             study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             if (study != null) {
             	logger.error("Already a study with the same Coordinating Center Identifier ("
@@ -244,11 +246,11 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @param identifierType
      * @return
      */
-    private String findOrganizationIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto , String identifierType){
+    private IdentifierType findOrganizationIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto , String identifierType){
     	
     	for (IdentifierType idType : studyDto.getIdentifier()) {
     		if(idType instanceof SystemAssignedIdentifierType) continue;
-            if (StringUtils.equals(idType.getType(),identifierType)) return idType.getValue();
+            if (StringUtils.equals(idType.getType(),identifierType)) return idType;
         }
     	
     	return null;
@@ -277,7 +279,11 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @throws InvalidStudyException
      */
     String findCoordinatingCenterIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws InvalidStudyException {
-        String ccIdentifier = findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+    	OrganizationAssignedIdentifierType idType = (OrganizationAssignedIdentifierType)findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+    	String ccIdentifier = null;
+    	if(idType != null){
+    		ccIdentifier = idType.getValue();
+    	}
         if (ccIdentifier == null) {
         	logger.error("Could not find Coordinating center identifier in the Study message");
             InvalidStudyException exp = getInvalidStudyException("In Study/Identifiers, Coordinating Center Identifier is not available");
@@ -298,9 +304,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @param studyDto
      * @return
      */
-    String findFundingSponsorIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto){
-    	return findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-    }
+//    String findFundingSponsorIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto){
+//    	
+//    	return findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+//    }
     
     
     void populateStudyDetails(gov.nih.nci.cabig.ccts.domain.Study studyDto,
