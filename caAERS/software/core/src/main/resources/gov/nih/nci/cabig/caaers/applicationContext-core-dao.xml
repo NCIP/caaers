@@ -720,6 +720,7 @@ This applicationContext contains the definition of the DAOs
         <property name="investigatorDao" ref="investigatorDao" />
         <property name="workflowConfigDao" ref="workflowConfigDao" />
         <property name="investigationalNewDrugDao" ref="investigationalNewDrugDao" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
 
 
