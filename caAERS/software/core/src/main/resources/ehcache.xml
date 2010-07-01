@@ -282,6 +282,15 @@
             memoryStoreEvictionPolicy="LRU"
             />
             
-            
+	<cache name="authCache"
+           maxElementsInMemory="1000000"
+           eternal="false"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="false"
+           overflowToDisk="false"/>      
+        
+                
           
 </ehcache>

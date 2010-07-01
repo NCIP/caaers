@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
@@ -15,12 +18,9 @@ import java.util.HashMap;
 public class AuthorizationDecisionCache implements Serializable{
 
     private static final String defaultKey = "0";
+	    
+    private Ehcache decisionCache;
 	
-	private HashMap<Object, HashMap<Object, AuthorizationDecisionCacheEntry>> decisionCache;
-	
-	public AuthorizationDecisionCache(){
-		decisionCache = new HashMap<Object, HashMap<Object, AuthorizationDecisionCacheEntry>>();
-	}
 
     /**
      * Will add the decision on to the cache. 
@@ -34,10 +34,13 @@ public class AuthorizationDecisionCache implements Serializable{
 
     public void addDecision(Object key, Object domainObject, String privilege, Boolean allowed){
         if(domainObject == null) return;
-        HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = decisionCache.get(key);
+		HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = (HashMap<Object, AuthorizationDecisionCacheEntry>) (decisionCache
+				.get(key) != null ? decisionCache.get(key).getObjectValue()
+				: null);
         if(decisionMap == null){
             decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
-            decisionCache.put(key, decisionMap);
+            Element element = new Element(key, decisionMap);
+            decisionCache.put(element);
         }
         
         AuthorizationDecisionCacheEntry entry = decisionMap.get(domainObject);
@@ -61,10 +64,12 @@ public class AuthorizationDecisionCache implements Serializable{
     public Boolean isAuthorized(Object key, Object domainObject, String privilege){
 
 
-        HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = decisionCache.get(key);
+		HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = (HashMap<Object, AuthorizationDecisionCacheEntry>) (decisionCache
+				.get(key) != null ? decisionCache.get(key).getObjectValue()
+				: null);
         if(decisionMap == null){
             decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
-            decisionCache.put(key, decisionMap);
+            decisionCache.put(new Element(key,decisionMap));
         }
         AuthorizationDecisionCacheEntry entry = null;
 		if(decisionMap.containsKey(domainObject)){
@@ -77,7 +82,7 @@ public class AuthorizationDecisionCache implements Serializable{
     }
 	
 	public void clear(){
-		decisionCache.clear();
+		decisionCache.removeAll();
 	}
 
     /**
@@ -117,6 +122,14 @@ public class AuthorizationDecisionCache implements Serializable{
 			privilageHash.put(previlegeKey, allowed);
 		}
 		
+	}
+
+	public Ehcache getDecisionCache() {
+		return decisionCache;
+	}
+
+	public void setDecisionCache(Ehcache decisionCache) {
+		this.decisionCache = decisionCache;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
+import net.sf.ehcache.CacheManager;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -17,6 +18,9 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
     public void setUp() throws Exception {
        super.setUp();
        cache = new AuthorizationDecisionCache();
+       if (CacheManager.getInstance().getCache("authCache")==null)
+    	   CacheManager.getInstance().addCache("authCache");
+       cache.setDecisionCache(CacheManager.getInstance().getEhcache("authCache"));
     }
 
     public void testGetCacheKeyDiscriminator() throws Exception {

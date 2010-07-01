@@ -157,14 +157,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
 
 	
 	public AuthorizationDecisionCache getAuthorizationDecisionCache() {
-		AuthorizationDecisionCache cache = (AuthorizationDecisionCache) pageContext.getSession().getAttribute(AUTH_DECISION_CACHE_KEY);
-		if(cache == null){
-			synchronized (CSMAccessControlTag.class) {
-				cache = new AuthorizationDecisionCache();
-				pageContext.getSession().setAttribute(AUTH_DECISION_CACHE_KEY, cache);
-			}
-		}
-		return cache;
+		return (AuthorizationDecisionCache) getRequestContext().getWebApplicationContext().getBean("authorizationDecisionCache");	
 	}
 	
 
