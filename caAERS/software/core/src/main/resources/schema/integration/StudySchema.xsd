@@ -682,16 +682,134 @@
 					  <xs:documentation>Site coordinator </xs:documentation>
  				</xs:annotation>
  			</xs:enumeration>
+            <xs:enumeration value="caaers_physician">
+               <xs:annotation>
+					  <xs:documentation>Physician </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 	
+  			<xs:enumeration value="caaers_central_office_sae_cd">
+               <xs:annotation>
+					  <xs:documentation>Coordinating Center SAE Coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>					
  			<xs:enumeration value="caaers_data_cd">
                <xs:annotation>
-					  <xs:documentation>Coordinating center data coordinator </xs:documentation>
+					  <xs:documentation>Coordinating Center Data Coordinator </xs:documentation>
  				</xs:annotation>
  			</xs:enumeration>
- 			<xs:enumeration value="caaers_central_office_sae_cd">
+
+
+ 			<xs:enumeration value="business_administrator">
                <xs:annotation>
-					  <xs:documentation>Central office report reviewer</xs:documentation>
+					  <xs:documentation>Business Administrator </xs:documentation>
  				</xs:annotation>
  			</xs:enumeration>
+ 			<xs:enumeration value="person_and_organization_information_manager">
+               <xs:annotation>
+					  <xs:documentation>Person and Organization Information Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+ 			<xs:enumeration value="data_importer">
+               <xs:annotation>
+					  <xs:documentation>Data Importer </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="user_administrator">
+               <xs:annotation>
+					  <xs:documentation>User Admin</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="study_qa_manager">
+               <xs:annotation>
+					  <xs:documentation>Study QA Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="study_creator">
+               <xs:annotation>
+					  <xs:documentation>Study Creator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="supplemental_study_information_manager">
+               <xs:annotation>
+					  <xs:documentation>Supplemantal Study Information Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="study_team_administrator">
+               <xs:annotation>
+					  <xs:documentation>Study Team Admin  </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="study_site_participation_administrator">
+               <xs:annotation>
+					  <xs:documentation>Study Site Participation Admin  </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="ae_rule_and_report_manager">
+               <xs:annotation>
+					  <xs:documentation>AE Rule and Report Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="study_calendar_template_builder">
+               <xs:annotation>
+					  <xs:documentation>Study Calendar Template Builder </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="registration_qa_manager">
+               <xs:annotation>
+					  <xs:documentation>Registration QA Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="subject_manager">
+               <xs:annotation>
+					  <xs:documentation>Subject Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="study_subject_calendar_manager">
+               <xs:annotation>
+					  <xs:documentation>Study Subject Calendar Manager </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="registrar">
+               <xs:annotation>
+					  <xs:documentation>Registrar </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="ae_reporter">
+               <xs:annotation>
+					  <xs:documentation>AE Reporter </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="ae_expedited_report_reviewer">
+               <xs:annotation>
+					  <xs:documentation>AE Expedited Report Reviewer </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="ae_study_data_reviewer">
+               <xs:annotation>
+					  <xs:documentation>AE Study Data Reviewer </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="lab_impact_calendar_notifier">
+               <xs:annotation>
+					  <xs:documentation>Lab Impact Calendar Notifier </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 			
+ 			<xs:enumeration value="lab_data_user">
+              	<xs:annotation>
+					  <xs:documentation>Lab Data User </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="data_reader">
+              	<xs:annotation>
+					  <xs:documentation>Data Reader </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+ 			<xs:enumeration value="data_analyst">
+              	<xs:annotation>
+					  <xs:documentation>Data Analyst </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration> 
+
         </xs:restriction>
     </xs:simpleType>
 
