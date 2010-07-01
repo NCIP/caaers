@@ -29,12 +29,12 @@
         		</ns1:organizationRef>
         		<siteResearchStaffRoles>
         			<ns2:siteResearchStaffRole>
-        				<role>caaers_participant_cd</role>
+        				<role>subject_manager</role>
         				<startDate>2009-01-01</startDate>
         				<endDate>2010-01-01</endDate>
         			</ns2:siteResearchStaffRole>
         			<ns2:siteResearchStaffRole>
-        				<role>caaers_study_cd</role>
+        				<role>study_creator</role>
         				<startDate>2008-01-01</startDate>
         				<endDate>2010-01-01</endDate>
         			</ns2:siteResearchStaffRole>
@@ -54,12 +54,12 @@
         		</ns1:organizationRef>
         		<siteResearchStaffRoles>
         			<ns2:siteResearchStaffRole>
-        				<role>caaers_participant_cd</role>
+        				<role>subject_manager</role>
         				<startDate>2009-01-01</startDate>
         				<endDate>2010-01-01</endDate>
         			</ns2:siteResearchStaffRole>
         			<ns2:siteResearchStaffRole>
-        				<role>caaers_study_cd</role>
+        				<role>study_creator</role>
         				<startDate>2008-01-01</startDate>
         				<endDate>2010-01-01</endDate>
         			</ns2:siteResearchStaffRole>
