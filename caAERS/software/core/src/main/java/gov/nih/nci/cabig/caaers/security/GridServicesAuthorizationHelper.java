@@ -137,4 +137,9 @@ public class GridServicesAuthorizationHelper {
 			CaaersSecurityFacadeImpl caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
+
+	public void setProvisioningSessionFactory(
+			ProvisioningSessionFactory provisioningSessionFactory) {
+		this.provisioningSessionFactory = provisioningSessionFactory;
+	}
 }
