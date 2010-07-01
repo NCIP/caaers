@@ -35,7 +35,9 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.GenericValidator;
@@ -62,6 +64,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 	private Map<String, String> filterByURLAndEntityMap = new HashMap<String, String>();
 
+	private Map<String, String> filterByURLAndRoleListMap = new HashMap<String, String>();
+
 	public void destroy() {
 	}
 
@@ -81,14 +85,14 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				.getContext();
 		Authentication authBeforeExec = contextBeforeExec.getAuthentication();
 
-        OriginalAuthenticationHolder.setAuthentication(authBeforeExec);
+		OriginalAuthenticationHolder.setAuthentication(authBeforeExec);
 
 		try {
 			if (request.getAttribute(FILTER_APPLIED) == null) {
 				doProcessing(httpRequest, httpResponse, chain);
 				request.setAttribute(FILTER_APPLIED, true);
 			}
-            prepareRolesCollections(httpRequest);            
+			prepareRolesCollections(httpRequest);
 			chain.doFilter(httpRequest, httpResponse);
 		} finally {
 			request.removeAttribute(FILTER_APPLIED);
@@ -113,27 +117,29 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		// START Roles
 		Map<String, String> roles = new HashMap<String, String>();
 		for (UserGroupType r : UserGroupType.values()) {
-		    roles.put(r.getCsmName(), r.getDisplayName());
+			roles.put(r.getCsmName(), r.getDisplayName());
 		}
 
 		List ol = new ArrayList();
 		List cl = new ArrayList();
 
 		Authentication oa = SecurityUtils.getOriginalAuthentication();
-		if (oa != null && oa.getAuthorities() != null && oa.getAuthorities().length > 0) {
-		    for (GrantedAuthority ga : oa.getAuthorities()) {
-		        ol.add(roles.get(ga.getAuthority()));
-		    }
+		if (oa != null && oa.getAuthorities() != null
+				&& oa.getAuthorities().length > 0) {
+			for (GrantedAuthority ga : oa.getAuthorities()) {
+				ol.add(roles.get(ga.getAuthority()));
+			}
 		}
 
 		Authentication ca = SecurityUtils.getAuthentication();
-		if (ca != null && ca.getAuthorities() != null && ca.getAuthorities().length > 0) {
-		    for (GrantedAuthority ga : ca.getAuthorities()) {
-		        cl.add(roles.get(ga.getAuthority()));
-		    }
+		if (ca != null && ca.getAuthorities() != null
+				&& ca.getAuthorities().length > 0) {
+			for (GrantedAuthority ga : ca.getAuthorities()) {
+				cl.add(roles.get(ga.getAuthority()));
+			}
 		}
 
-		ol = (List)CollectionUtils.subtract(ol, cl);
+		ol = (List) CollectionUtils.subtract(ol, cl);
 		httpRequest.setAttribute("cl", cl);
 		httpRequest.setAttribute("ol", ol);
 
@@ -182,7 +188,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		if (authorities != null) {
 			list.addAll(Arrays.asList(authorities));
-			URLMapEntry entry = getURLMapEntryFromRequest(request);
+			URLToEntityIdMapEntry entry = getURLToEntityIdEntryFromRequest(request);
 			if (entry != null) {
 				// protection element info found. Possibly need to restrict the
 				// set of granted authorities.
@@ -195,6 +201,18 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				} else if (STUDY.equalsIgnoreCase(entry.getClassName())) {
 					int studyId = entry.getObjectId();
 					filterAuthoritiesByStudy(list, studyId);
+				}
+			} else {
+				final URLToRoleListMapEntry rolesEntry = getURLToRolesEntryFromRequest(request);
+				if (rolesEntry != null) {
+					// simply return the disjunction of roles.
+					org.apache.commons.collections15.CollectionUtils.filter(
+							list, new Predicate<GrantedAuthority>() {
+								public boolean evaluate(GrantedAuthority ga) {
+									return rolesEntry.getRoleNames().contains(
+											ga.getAuthority());
+								}
+							});
 				}
 			}
 		}
@@ -271,18 +289,16 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		}
 	}
 
-	private URLMapEntry getURLMapEntryFromRequest(HttpServletRequest request) {
-		String uri = request.getRequestURI();
-		String context = request.getContextPath();
-		String path = uri.length() > context.length() ? uri.substring(context
-				.length()) : uri;
+	private URLToEntityIdMapEntry getURLToEntityIdEntryFromRequest(
+			HttpServletRequest request) {
+		String path = getPathFromRequest(request);
 		String value = getFilterByURLAndEntityMap().get(path);
 		if (value != null) {
 			String className = value.split(COLON)[0];
 			String parameterName = value.split(COLON)[1];
 			String parameterValue = request.getParameter(parameterName);
 			if (GenericValidator.isInt(parameterValue)) {
-				URLMapEntry entry = new URLMapEntry();
+				URLToEntityIdMapEntry entry = new URLToEntityIdMapEntry();
 				entry.setClassName(className);
 				entry.setParameterName(parameterName);
 				entry.setObjectId(Integer.parseInt(parameterValue));
@@ -290,6 +306,30 @@ public final class FabricatedAuthenticationFilter implements Filter {
 			}
 		}
 		return null;
+	}
+
+	private URLToRoleListMapEntry getURLToRolesEntryFromRequest(
+			HttpServletRequest request) {
+		String path = getPathFromRequest(request);
+		String value = getFilterByURLAndRoleListMap().get(path);
+		if (StringUtils.isNotBlank(value)) {
+			URLToRoleListMapEntry entry = new URLToRoleListMapEntry();
+			entry.setRoleNames(Arrays.asList(value.split("\\s*,\\s*")));
+			return entry;
+		}
+		return null;
+	}
+
+	/**
+	 * @param request
+	 * @return
+	 */
+	private String getPathFromRequest(HttpServletRequest request) {
+		String uri = request.getRequestURI();
+		String context = request.getContextPath();
+		String path = uri.length() > context.length() ? uri.substring(context
+				.length()) : uri;
+		return path;
 	}
 
 	public void init(FilterConfig arg0) throws ServletException {
@@ -309,6 +349,15 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 	public void setFilterByURLAndEntityMap(Map<String, String> urlMap) {
 		this.filterByURLAndEntityMap = urlMap;
+	}
+
+	public Map<String, String> getFilterByURLAndRoleListMap() {
+		return filterByURLAndRoleListMap;
+	}
+
+	public void setFilterByURLAndRoleListMap(
+			Map<String, String> filterByURLAndRoleListMap) {
+		this.filterByURLAndRoleListMap = filterByURLAndRoleListMap;
 	}
 
 	public ResearchStaffRepository getResearchStaffRepository() {
@@ -337,7 +386,28 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		this.studyRepository = studyRepository;
 	}
 
-	private static class URLMapEntry {
+	/**
+	 * @author dkrylov
+	 * 
+	 */
+	private static class URLToRoleListMapEntry {
+		private Collection<String> roleNames = new ArrayList<String>();
+
+		public Collection<String> getRoleNames() {
+			return roleNames;
+		}
+
+		public void setRoleNames(Collection<String> roleNames) {
+			this.roleNames = roleNames;
+		}
+
+	}
+
+	/**
+	 * @author dkrylov
+	 * 
+	 */
+	private static class URLToEntityIdMapEntry {
 		private String className;
 		private String parameterName;
 		private Integer objectId;

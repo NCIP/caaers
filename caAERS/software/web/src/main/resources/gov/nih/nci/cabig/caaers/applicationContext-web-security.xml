@@ -28,6 +28,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	
 	<util:map id="filterByURLAndRoleListMap">		
 		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>		
+		<entry key="/pages/admin/createInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
 	</util:map>
 	
 

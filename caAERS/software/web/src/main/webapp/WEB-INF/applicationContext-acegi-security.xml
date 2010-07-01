@@ -21,7 +21,7 @@
     </bean>
     
     <bean id="fabricatedAuthenticationFilter" class="gov.nih.nci.cabig.caaers.web.security.FabricatedAuthenticationFilter" 
-    	autowire-candidate="false" p:filterByURLAndEntityMap-ref="filterByURLAndEntityMap"
+    	autowire-candidate="false" p:filterByURLAndEntityMap-ref="filterByURLAndEntityMap" p:filterByURLAndRoleListMap-ref="filterByURLAndRoleListMap"
     	p:researchStaffRepository-ref="researchStaffRepository" p:securityFacade-ref="caaersSecurityFacade"
     	p:investigatorRepository-ref="investigatorRepository" p:studyRepository-ref="studyRepository"
     	/>
