@@ -28,15 +28,14 @@ try{
 
 <ol>
 <c:if test="${fn:length(ol) > 0}">
-    <b>Original Roles:</b><br>
-<div style='color:lightgreen;'>
+    <b>Roles:</b><br>
+<div style='color:#aaa;'>
 <c:forEach items="${ol}" var="a">
     <li>${a}</li>
 </c:forEach>
 </div>
 </c:if>
     
-    <b>Contextual Roles:</b><br>
 <div style='color:yellow;'>
 <c:forEach items="${cl}" var="a">
     <li>${a}</li>
@@ -63,7 +62,7 @@ function showUserRolesToolTip(text, title) {
             STICKY, 1,
             CLOSEBTN, false,
             CLICKCLOSE, false,
-            OPACITY, 85,
+            OPACITY, 95,
             FONTCOLOR, "#fff",
             BORDERCOLOR, "#444",
             BGCOLOR, "#444",
