@@ -24,27 +24,27 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
     }
 
     public void testGetCacheKeyDiscriminator() throws Exception {
-        assertEquals("0", cache.getCacheKeyDiscriminator());
+        assertEquals("0", cache.getEnityContextCacheKeyDiscriminator());
     }
 
 
     public void testIsAuthorized(){
-      assertNull( cache.isAuthorized("hi", "hello") );
+      assertNull( cache.isAuthorized("","hi", "hello") );
     }
 
      public void testIsAuthorizedAfterAdd(){
-      assertNull( cache.isAuthorized("hi", "hello") );
-      cache.addDecision("hi", "hello", true);
-      assertTrue(cache.isAuthorized("hi", "hello"));
+      assertNull( cache.isAuthorized("","hi", "hello") );
+      cache.addDecision("","hi", "hello", true);
+      assertTrue(cache.isAuthorized("","hi", "hello"));
     }
 
     public void testAddDecision(){
       
-      cache.addDecision("hi", "hello", true);
-      cache.addDecision("hi","man", false);
+      cache.addDecision("","hi", "hello", true);
+      cache.addDecision("","hi","man", false);
       
-      assertTrue(cache.isAuthorized("hi", "hello"));
-      assertFalse(cache.isAuthorized("hi", "man"));
-      assertNull(cache.isAuthorized("hi","boy"));
+      assertTrue(cache.isAuthorized("","hi", "hello"));
+      assertFalse(cache.isAuthorized("","hi", "man"));
+      assertNull(cache.isAuthorized("","hi","boy"));
     }
 }

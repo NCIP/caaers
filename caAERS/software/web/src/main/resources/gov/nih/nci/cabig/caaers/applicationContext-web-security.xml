@@ -20,11 +20,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		This map defines rules for filtering granted authorities by FabricatedAuthenticationFilter.  
 		Key is an URL to the protected page. Value is an entity's fully qualified class name along with a request parameter name, which holds the entity's ID.
 	 -->
-	<util:map id="fabricatedAuthenticationURLMap">
+	<util:map id="filterByURLAndEntityMap">
 		<entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:researchStaffId"/>
 		<entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:investigatorId"/>
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:studyId" />
 	</util:map>
+	
+	<util:map id="filterByURLAndRoleListMap">		
+		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>		
+	</util:map>
+	
 
 	<util:map id="taskObjectPrivilegeMap">
         <!--========== TASK PAGE ===========-->

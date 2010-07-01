@@ -137,7 +137,7 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
         if (object == null) return false;
 
         //get it from the cache
-        Boolean decision = getAuthorizationDecisionCache().isAuthorized(object, privilege);
+        Boolean decision = getAuthorizationDecisionCache().isAuthorized(getSessionId(),object, privilege);
         if(decision != null) return decision;
 
         Authentication auth = SecurityUtils.getAuthentication();
@@ -151,13 +151,20 @@ public class CSMAccessControlTag extends RequestContextAwareTag {
            decision = authzCheck.checkAuthorization(auth, privilege, object);
         }
 
-        getAuthorizationDecisionCache().addDecision(object, privilege, decision);
+        getAuthorizationDecisionCache().addDecision(getSessionId(),object, privilege, decision);
         return decision;
     }
 
 	
 	public AuthorizationDecisionCache getAuthorizationDecisionCache() {
 		return (AuthorizationDecisionCache) getRequestContext().getWebApplicationContext().getBean("authorizationDecisionCache");	
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getSessionId() {
+		return super.pageContext.getSession().getId();
 	}
 	
 

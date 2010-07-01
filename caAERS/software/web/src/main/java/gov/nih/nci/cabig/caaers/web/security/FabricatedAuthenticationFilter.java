@@ -60,7 +60,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 	private StudyRepository studyRepository;
 
-	private Map<String, String> urlMap = new HashMap<String, String>();
+	private Map<String, String> filterByURLAndEntityMap = new HashMap<String, String>();
 
 	public void destroy() {
 	}
@@ -276,7 +276,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		String context = request.getContextPath();
 		String path = uri.length() > context.length() ? uri.substring(context
 				.length()) : uri;
-		String value = getUrlMap().get(path);
+		String value = getFilterByURLAndEntityMap().get(path);
 		if (value != null) {
 			String className = value.split(COLON)[0];
 			String parameterName = value.split(COLON)[1];
@@ -303,12 +303,12 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		this.securityFacade = securityFacade;
 	}
 
-	public Map<String, String> getUrlMap() {
-		return urlMap;
+	public Map<String, String> getFilterByURLAndEntityMap() {
+		return filterByURLAndEntityMap;
 	}
 
-	public void setUrlMap(Map<String, String> urlMap) {
-		this.urlMap = urlMap;
+	public void setFilterByURLAndEntityMap(Map<String, String> urlMap) {
+		this.filterByURLAndEntityMap = urlMap;
 	}
 
 	public ResearchStaffRepository getResearchStaffRepository() {

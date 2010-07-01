@@ -22,46 +22,55 @@ public class AuthorizationDecisionCache implements Serializable{
     private Ehcache decisionCache;
 	
 
-    /**
-     * Will add the decision on to the cache. 
-     * @param domainObject
-     * @param privilege
-     * @param allowed
-     */
-	public void addDecision(Object domainObject, String privilege, Boolean allowed){
-        addDecision(getCacheKeyDiscriminator(), domainObject, privilege, allowed);
+	/**
+	 * Will add the decision on to the cache.
+	 * 
+	 * @param domainObject
+	 * @param privilege
+	 * @param allowed
+	 */
+	public void addDecision(String scopeDiscriminator, Object domainObject,
+			String privilege, Boolean allowed) {
+		addDecisionInternal((scopeDiscriminator+getEnityContextCacheKeyDiscriminator()),
+				domainObject, privilege, allowed);
 	}
 
-    public void addDecision(Object key, Object domainObject, String privilege, Boolean allowed){
-        if(domainObject == null) return;
+	private void addDecisionInternal(Object key,
+			Object domainObject, String privilege, Boolean allowed) {
+		if (domainObject == null)
+			return;
 		HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = (HashMap<Object, AuthorizationDecisionCacheEntry>) (decisionCache
 				.get(key) != null ? decisionCache.get(key).getObjectValue()
 				: null);
-        if(decisionMap == null){
-            decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
-            Element element = new Element(key, decisionMap);
-            decisionCache.put(element);
-        }
-        
-        AuthorizationDecisionCacheEntry entry = decisionMap.get(domainObject);
-        if(entry == null){
-            entry = new AuthorizationDecisionCacheEntry(domainObject);
-            decisionMap.put(domainObject, entry);
-        }
-        entry.addDecision(privilege, allowed);
-    }
+		if (decisionMap == null) {
+			decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
+			Element element = new Element(key, decisionMap);
+			decisionCache.put(element);
+		}
 
-    /**
-     * Will return the authorization decision from the cache.
-     * @param domainObject
-     * @param privilege
-     * @return
-     */
-	public Boolean isAuthorized(Object domainObject, String privilege){
-		return isAuthorized(getCacheKeyDiscriminator(), domainObject, privilege);
+		AuthorizationDecisionCacheEntry entry = decisionMap.get(domainObject);
+		if (entry == null) {
+			entry = new AuthorizationDecisionCacheEntry(domainObject);
+			decisionMap.put(domainObject, entry);
+		}
+		entry.addDecision(privilege, allowed);
 	}
 
-    public Boolean isAuthorized(Object key, Object domainObject, String privilege){
+	/**
+	 * Will return the authorization decision from the cache.
+	 * 
+	 * @param domainObject
+	 * @param privilege
+	 * @return
+	 */
+	public Boolean isAuthorized(String scopeDiscriminator, Object domainObject,
+			String privilege) {
+		return isAuthorizedInternal(scopeDiscriminator
+				+ getEnityContextCacheKeyDiscriminator(), domainObject,
+				privilege);
+	}
+
+    private Boolean isAuthorizedInternal(Object key, Object domainObject, String privilege){
 
 
 		HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = (HashMap<Object, AuthorizationDecisionCacheEntry>) (decisionCache
@@ -90,7 +99,7 @@ public class AuthorizationDecisionCache implements Serializable{
      * http://jira.semanticbits.com/browse/CAAERS-4098
      * @return
      */
-    public Object getCacheKeyDiscriminator(){
+    public Object getEnityContextCacheKeyDiscriminator(){
        String key = CurrentEntityHolder.getEntityCacheKeyDiscriminator();
        return StringUtils.isBlank(key) ? defaultKey : key;
     }
