@@ -499,9 +499,9 @@
         <property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>
 
-    <bean id="gridServicesAuthorizationHelper"
-          class="gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper">
+    <bean id="gridServicesAuthorizationHelper" class="gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper">
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>
 
 </beans>
