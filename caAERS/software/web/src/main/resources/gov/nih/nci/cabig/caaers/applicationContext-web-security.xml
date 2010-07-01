@@ -209,7 +209,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportReviewTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportSummaryTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ResearchStaffTab" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" />
-
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.AgentTab" value="gov.nih.nci.cabig.caaers.domain.Agent:READ" />
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.InvestigatorTab" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.OrganizationTab" value="gov.nih.nci.cabig.caaers.domain.Organization:READ" />
+          
       </util:map>
 
     <bean id="taskGroupAuthorizationCheck" class="gov.nih.nci.cabig.caaers.web.security.TaskGroupAuthorizationCheck">
