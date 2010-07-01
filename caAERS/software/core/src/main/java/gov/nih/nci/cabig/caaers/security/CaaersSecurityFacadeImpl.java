@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
@@ -100,6 +101,19 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 					}
 				}
 			}
+			
+			// get an intersection of the study's and user's organizations, and collect roles on them
+			// per Denis, Biju, Ion, Monish discussion on 07/01/2010.					
+			List<StudyOrganization> studyOrganizations = study.getActiveStudyOrganizations();
+			if (CollectionUtils.isNotEmpty(studyOrganizations)) {
+				for (StudyOrganization studyOrganization : studyOrganizations) {
+					Organization org = studyOrganization.getOrganization();
+					if (org!=null) {
+						roles.addAll(getRoles(userName, org));
+					}
+				}
+			}
+			
 		}
 		return roles;
 	}
