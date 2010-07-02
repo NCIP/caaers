@@ -297,10 +297,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 				for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
 					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
 					if(suiteRole.isScoped()){
-						SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
+						SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
 						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-							groupId = csmUserRepository.getGroupIdByName(eachSrsRole.getRoleCode());
-							csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
 							String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
 				    		suiteRoleMembership.addSite(orgIdentifier);
 							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
@@ -317,6 +315,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 						}
 						provisioningSession.replaceRole(suiteRoleMembership);
 					}
+					groupId = csmUserRepository.getGroupIdByName(eachSrsRole.getRoleCode());
+					csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
 				}
 			}
 		} catch (CSObjectNotFoundException e) {
