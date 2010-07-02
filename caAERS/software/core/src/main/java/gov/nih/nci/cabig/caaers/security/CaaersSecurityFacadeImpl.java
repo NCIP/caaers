@@ -282,34 +282,30 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     		return;
     	}
     	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-   		for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
-			for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
+   		for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
+			for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
 				SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
 				if(suiteRole.isScoped()){
 					SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
 					List<String> orgIdentifiers = getAllOrganizationIdentifiers(researchStaff);
-					if(orgIdentifiers == null || orgIdentifiers.isEmpty()){
-						provisioningSession.deleteRole(suiteRole);
-					}else{
-						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-							for(String orgIdentifier : orgIdentifiers){
-				    			suiteRoleMembership.addSite(orgIdentifier);
-				    		}
-							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
-				    		for(String studyIdentifier : studyIndetifiers){
-				    			suiteRoleMembership.addStudy(studyIdentifier);
-				    		}
-						}else if(suiteRole.isSiteScoped()){
-							if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
-								suiteRoleMembership.forAllSites();
-							}else{
-	    						for(String orgIdentifier : orgIdentifiers){
-	    			    			suiteRoleMembership.addSite(orgIdentifier);
-	    			    		}
-							}
+					if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
+						for(String orgIdentifier : orgIdentifiers){
+			    			suiteRoleMembership.addSite(orgIdentifier);
+			    		}
+						List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
+			    		for(String studyIdentifier : studyIndetifiers){
+			    			suiteRoleMembership.addStudy(studyIdentifier);
+			    		}
+					}else if(suiteRole.isSiteScoped()){
+						if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
+							suiteRoleMembership.forAllSites();
+						}else{
+    						for(String orgIdentifier : orgIdentifiers){
+    			    			suiteRoleMembership.addSite(orgIdentifier);
+    			    		}
 						}
-						provisioningSession.replaceRole(suiteRoleMembership);
 					}
+					provisioningSession.replaceRole(suiteRoleMembership);
 				}
 			}
 		}

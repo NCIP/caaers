@@ -234,9 +234,7 @@ public abstract class ResearchStaff extends User {
         for(SiteResearchStaff  srs : getSiteResearchStaffs()){
             if(srs.isActive()) srsList.add(srs);
         }
-        
         return srsList;
-
     }
 
     /**

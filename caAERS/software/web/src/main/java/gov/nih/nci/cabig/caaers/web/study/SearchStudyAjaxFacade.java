@@ -256,8 +256,7 @@ public class SearchStudyAjaxFacade {
             }
         }
 
-        
-        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery,type, text);
+        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery,type, text,true);
         return studySearchableAjaxableDomainObjects;
     }
 

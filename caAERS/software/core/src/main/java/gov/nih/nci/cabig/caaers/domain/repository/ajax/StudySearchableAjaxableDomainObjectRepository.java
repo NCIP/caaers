@@ -29,10 +29,15 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
 
     }
     
-	@Transactional(readOnly = false)
+    @Transactional(readOnly = false)
     public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query,String type, String text) {
+    	return findStudies(query, type, text,false);
+    }
+    
+	@Transactional(readOnly = false)
+    public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query,String type, String text,boolean searchInCOPPA) {
 
-    	List<Object[]> objects = studyRepository.search(query,type,text);
+    	List<Object[]> objects = studyRepository.search(query,type,text,searchInCOPPA);
         Map<Integer, T> existingStudyMap = new LinkedHashMap<Integer, T>();
 
 
