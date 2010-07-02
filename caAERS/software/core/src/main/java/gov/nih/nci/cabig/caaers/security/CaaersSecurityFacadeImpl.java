@@ -286,12 +286,11 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
 				SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
 				if(suiteRole.isScoped()){
+					provisioningSession.deleteRole(suiteRole);
 					SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
-					List<String> orgIdentifiers = getAllOrganizationIdentifiers(researchStaff);
 					if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-						for(String orgIdentifier : orgIdentifiers){
-			    			suiteRoleMembership.addSite(orgIdentifier);
-			    		}
+						String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
+			    		suiteRoleMembership.addSite(orgIdentifier);
 						List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
 			    		for(String studyIdentifier : studyIndetifiers){
 			    			suiteRoleMembership.addStudy(studyIdentifier);
@@ -300,9 +299,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 						if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
 							suiteRoleMembership.forAllSites();
 						}else{
-    						for(String orgIdentifier : orgIdentifiers){
-    			    			suiteRoleMembership.addSite(orgIdentifier);
-    			    		}
+							String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
+    			    		suiteRoleMembership.addSite(orgIdentifier);
 						}
 					}
 					provisioningSession.replaceRole(suiteRoleMembership);
@@ -310,6 +308,9 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			}
 		}
     }
+    
+    
+    
     
     /**
      * This method returns a list of organization identifiers for a given user.
