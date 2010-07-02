@@ -38,6 +38,23 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/participant/edit" value="registration_qa_manager,subject_manager,registrar,data_reader" />
 		<entry key="/pages/participant/view" value="registration_qa_manager,subject_manager,registrar,data_reader" />
 		
+		<entry key="/pages/study/create" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+		<entry key="/pages/study/view" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+		<entry key="/pages/study/search" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+		<entry key="/pages/study/edit" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+        <entry key="/pages/study/studyAgentIND" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+        <entry key="/pages/study/export" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator" />		
+
+        <entry key="/pages/ae/list" value="ae_reporter,data_reader" />
+		<entry key="/pages/ae/captureRoutine" value="ae_reporter,data_reader" />
+		<entry key="/pages/ae/reviewResolver" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+		<entry key="/pages/ae/reviewEvaluationPeriod" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+		<entry key="/pages/ae/reviewAeReport" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+		<entry key="/pages/ae/submitReport" value="ae_reporter,data_reader" />		        
+		<entry key="/pages/ae/edit" value="ae_reporter,data_reader" />        
+		<entry key="/pages/ae/routingAndReview" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+		
 	</util:map>
 	
 
