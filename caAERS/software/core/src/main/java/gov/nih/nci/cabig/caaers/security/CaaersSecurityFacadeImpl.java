@@ -31,6 +31,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.security.exceptions.CSTransactionException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -281,36 +282,51 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	if(csmUser == null){
     		return;
     	}
-    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-   		for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
-			for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
-				SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-				if(suiteRole.isScoped()){
-					provisioningSession.deleteRole(suiteRole);
-					SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
-					if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-						String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
-			    		suiteRoleMembership.addSite(orgIdentifier);
-						List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
-			    		for(String studyIdentifier : studyIndetifiers){
-			    			suiteRoleMembership.addStudy(studyIdentifier);
-			    		}
-					}else if(suiteRole.isSiteScoped()){
-						if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
-							suiteRoleMembership.forAllSites();
-						}else{
+		try {
+			String groupId;
+	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+	    	for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
+	    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
+	    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+	    			provisioningSession.deleteRole(suiteRole);
+	    			groupId = csmUserRepository.getGroupIdByName(eachSrsRole.getRoleCode());
+	    			csmUserRepository.getUserProvisioningManager().removeUserFromGroup(groupId,String.valueOf(csmUser.getUserId()));
+	    		}
+	    	}
+	   		for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
+				for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
+					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+					if(suiteRole.isScoped()){
+						SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole, null, null);
+						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
+							groupId = csmUserRepository.getGroupIdByName(eachSrsRole.getRoleCode());
+							csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
 							String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
-    			    		suiteRoleMembership.addSite(orgIdentifier);
+				    		suiteRoleMembership.addSite(orgIdentifier);
+							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
+				    		for(String studyIdentifier : studyIndetifiers){
+				    			suiteRoleMembership.addStudy(studyIdentifier);
+				    		}
+						}else if(suiteRole.isSiteScoped()){
+							if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
+								suiteRoleMembership.forAllSites();
+							}else{
+								String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
+	    			    		suiteRoleMembership.addSite(orgIdentifier);
+							}
 						}
+						provisioningSession.replaceRole(suiteRoleMembership);
 					}
-					provisioningSession.replaceRole(suiteRoleMembership);
 				}
 			}
+		} catch (CSObjectNotFoundException e) {
+			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+		} catch (CSTransactionException e) {
+			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+		} catch (Exception e){
+			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
 		}
     }
-    
-    
-    
     
     /**
      * This method returns a list of organization identifiers for a given user.

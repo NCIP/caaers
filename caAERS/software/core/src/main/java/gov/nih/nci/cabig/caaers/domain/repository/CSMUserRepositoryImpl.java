@@ -208,7 +208,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         }
     }
 
-    private String getGroupIdByName(final String groupName) throws CSObjectNotFoundException {
+    public String getGroupIdByName(final String groupName) throws CSObjectNotFoundException {
         Group search = new Group();
         search.setGroupName(groupName);
         GroupSearchCriteria sc = new GroupSearchCriteria(search);
