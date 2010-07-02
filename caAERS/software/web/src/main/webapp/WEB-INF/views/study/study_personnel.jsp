@@ -157,24 +157,31 @@ margin:5px;
 			<br />
 			<hr>
 			<div id="content-section">
+                <csmauthz:accesscontrol var="_canModifyTheSite" scope="request" domainObject="${command.study.activeStudyOrganizations[command.studySiteIndex].organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+
 				<c:if test="${command.studySiteIndex > -1 }">
 					<study:oneStudySitePersonnel index="${command.studySiteIndex}"/>
 				</c:if>
 				<span id="ss-bookmark" />
-                <csmauthz:accesscontrol var="_canModifyTheSite" scope="request" domainObject="${command.study.activeStudyOrganizations[command.studySiteIndex]}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator">
-                <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}">
-                    <tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" />
-                </div>
-                </csmauthz:accesscontrol>
+
+                <c:if test="${_canModifyTheSite}">
+                    <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}">
+                        <tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" />
+                    </div>
+                </c:if>
 			</div>
 	    </td>
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Personnel" id="participant-entry2"  autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
-                    <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
- 					<div class ="">
-                         <a style="cursor:pointer;" onclick="${_isATeamAdmin ? 'javascript:void();' : 'javascript:chooseSitesfromSummary(${status.index});'}" title="click here to edit research staff assigned to study">${studySite.organization.name}</a>
-                         <b>(${fn:length(studySite.studyPersonnels)})</b>
+                    <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+
+                     <div class ="">
+                         <c:if test="${_isATeamAdmin}">
+                             <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit reasearch staff assigned to study">${studySite.organization.name}</a>
+                             <b>(${fn:length(studySite.studyPersonnels)})</b>
+                         </c:if>
+                         <c:if test="${!_isATeamAdmin}">${studySite.organization.name}</c:if>
                      </div>
  					<%--<div class="">Personnel Assigned: <b>  </b></div>--%>
  				</c:forEach>
