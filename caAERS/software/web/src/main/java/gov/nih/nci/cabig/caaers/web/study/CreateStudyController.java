@@ -26,9 +26,11 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         return new FlowFactory<StudyCommand>() {
             public Flow<StudyCommand> createFlow(StudyCommand cmd) {
                 Flow<StudyCommand> flow = new Flow<StudyCommand>("Create Study");
-                flow.addTab(new DetailsTab());
-                boolean isSupplementalInfoManager = SecurityUtils.checkAuthorization(UserGroupType.supplemental_study_information_manager);
-                if(isSupplementalInfoManager){
+
+                if (cmd.getStudyCreator())
+                    flow.addTab(new DetailsTab());
+
+                if(cmd.getSupplementalInfoManager()){
                     flow.addTab(new StudyTherapiesTab());
                     flow.addTab(new AgentsTab());
                     flow.addTab(new TreatmentAssignmentTab());
@@ -46,7 +48,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
                     flow.addTab(new PersonnelTab());
                 }
                 
-                if(isSupplementalInfoManager){
+                if(cmd.getSupplementalInfoManager()){
                     flow.addTab(new IdentifiersTab());
                 }
 

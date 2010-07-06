@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import javax.persistence.Transient;
 
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.webservice.*;
 import org.apache.commons.lang.BooleanUtils;
@@ -87,7 +88,12 @@ public class StudyCommand {
 
     protected StudyCoordinatingCenter prevCC;
     protected StudyFundingSponsor prevFS;
-    
+
+    // SECURITY STUFF
+    boolean isSupplementalInfoManager = SecurityUtils.checkAuthorization(UserGroupType.supplemental_study_information_manager);
+    boolean isStudyQAManager = SecurityUtils.checkAuthorization(UserGroupType.study_qa_manager);
+    boolean isStudyCreator = SecurityUtils.checkAuthorization(UserGroupType.study_creator);
+
     public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
     	this.investigationalNewDrugDao = investigationalNewDrugDao;
@@ -655,5 +661,29 @@ public class StudyCommand {
 
     public void setPrevFS(StudyFundingSponsor prevFS) {
         this.prevFS = prevFS;
+    }
+
+    public boolean getSupplementalInfoManager() {
+        return isSupplementalInfoManager;
+    }
+
+    public void setSupplementalInfoManager(boolean supplementalInfoManager) {
+        isSupplementalInfoManager = supplementalInfoManager;
+    }
+
+    public boolean getStudyQAManager() {
+        return isStudyQAManager;
+    }
+
+    public void setStudyQAManager(boolean studyQAManager) {
+        isStudyQAManager = studyQAManager;
+    }
+
+    public boolean getStudyCreator() {
+        return isStudyCreator;
+    }
+
+    public void setStudyCreator(boolean studyCreator) {
+        isStudyCreator = studyCreator;
     }
 }

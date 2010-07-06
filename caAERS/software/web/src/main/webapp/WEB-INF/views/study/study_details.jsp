@@ -1,5 +1,10 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
+<c:set var="isDEComplete" value="${command.dataEntryStatus}" />
+<c:set var="isStudyCreator" value="${command.studyCreator}" />
+<c:set var="isStudyQAmanager" value="${command.studyQAManager}" />
+<c:set var="isStudySuplimental" value="${command.supplementalInfoManager}" />
+
 <html>
 <head>
 	<title>${tab.longTitle}</title>
@@ -144,10 +149,12 @@
     <input type="hidden" name="_action" value="">
       
         <p><tags:instructions code="study.study_details.study.top"/></p>
+
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && (isStudyQAmanager || isStudySuplimental)}">
         <c:forEach items="${fieldGroups.studyDetails.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
-
+      </c:if>
     <%----%>
     <chrome:division title="Adverse event coding terminology">
 

@@ -86,13 +86,12 @@ public class EditStudyController extends StudyController<StudyCommand> {
                 Flow<StudyCommand> flow = new Flow<StudyCommand>("Edit Study");
                 flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
 
-                boolean isSupplementalInfoManager = SecurityUtils.checkAuthorization(UserGroupType.supplemental_study_information_manager);
 
-                if(SecurityUtils.checkAuthorization(UserGroupType.study_creator, UserGroupType.study_qa_manager) || isSupplementalInfoManager){
+                if(cmd.isDataEntryComplete() && (cmd.getStudyQAManager() || cmd.getSupplementalInfoManager()) || (!cmd.isDataEntryComplete() && cmd.getStudyCreator())) {
                     flow.addTab(new DetailsTab());
                 }
 
-                if(isSupplementalInfoManager){
+                if(cmd.getSupplementalInfoManager()){
                     flow.addTab(new StudyTherapiesTab());
                     flow.addTab(new AgentsTab());
                     flow.addTab(new TreatmentAssignmentTab());
@@ -101,16 +100,16 @@ public class EditStudyController extends StudyController<StudyCommand> {
                     flow.addTab(new ExpectedAEsTab());
                 }
                 
-                if(SecurityUtils.checkAuthorization(UserGroupType.study_site_participation_administrator)){
+                if (SecurityUtils.checkAuthorization(UserGroupType.study_site_participation_administrator)){
                     flow.addTab(new SitesTab());
                 }
                 
-                if(SecurityUtils.checkAuthorization(UserGroupType.study_team_administrator)){
+                if (SecurityUtils.checkAuthorization(UserGroupType.study_team_administrator)){
                     flow.addTab(new InvestigatorsTab());
                     flow.addTab(new PersonnelTab());
                 }
                 
-                if(isSupplementalInfoManager){
+                if (cmd.getSupplementalInfoManager()){
                     flow.addTab(new IdentifiersTab());
                 }
                 
