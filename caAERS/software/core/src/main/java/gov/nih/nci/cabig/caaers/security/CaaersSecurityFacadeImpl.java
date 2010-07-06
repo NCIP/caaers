@@ -47,6 +47,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.common.util.StringUtils;
 
 /**
  * The Facade Layer to CSM. 
@@ -252,10 +253,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param investigator
      */
     private void provisionInvestigator(Investigator investigator){
+    	
+    	if(StringUtils.isEmpty(investigator.getLoginId())) return;
+    	
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(investigator.getLoginId());
-    	if(csmUser == null){
-    		return;
-    	}
+    	if(csmUser == null) return;
+    	
     	try {
 			String groupId;
 	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
@@ -290,10 +293,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param researchStaff
      */
     private void provisionResearchStaff(ResearchStaff researchStaff){
-       	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
-    	if(csmUser == null){
-    		return;
-    	}
+    	
+    	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
+       	
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
+    	if(csmUser == null) return;
+    	
 		try {
 			String groupId;
 	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
