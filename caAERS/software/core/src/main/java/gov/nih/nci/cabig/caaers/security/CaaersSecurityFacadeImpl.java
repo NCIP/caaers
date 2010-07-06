@@ -256,21 +256,33 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	if(csmUser == null){
     		return;
     	}
-    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-		SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(SuiteRole.getByCsmName(AE_REPORTER), null, null);
-		
-		List<String> orgIdentifiers = getAllOrganizationIdentifiers(investigator);
-		if(orgIdentifiers == null || orgIdentifiers.isEmpty()){
-			return;
+    	try {
+			String groupId;
+	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
+			provisioningSession.deleteRole(suiteRole);
+			groupId = csmUserRepository.getGroupIdByName(AE_REPORTER);
+			csmUserRepository.getUserProvisioningManager().removeUserFromGroup(groupId,String.valueOf(csmUser.getUserId()));
+			
+			SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole,null,null);
+			for(SiteInvestigator eachSiteInv : investigator.getActiveSiteInvestigators()){
+				suiteRoleMembership.addSite(eachSiteInv.getOrganization().getNciInstituteCode());
+			}
+			List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
+			for(String studyIdentifier : studyIndetifiers){
+				suiteRoleMembership.addStudy(studyIdentifier);
+			}
+			if(suiteRoleMembership.getSiteIdentifiers() != null && suiteRoleMembership.getSiteIdentifiers().size() > 0){
+				provisioningSession.replaceRole(suiteRoleMembership);
+				csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
+			}
+    	}catch (CSObjectNotFoundException e) {
+			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+		} catch (CSTransactionException e) {
+			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+		} catch (Exception e){
+			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
 		}
-		for(String orgIdentifier : orgIdentifiers){
-			suiteRoleMembership.addSite(orgIdentifier);
-		}
-		List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
-		for(String studyIdentifier : studyIndetifiers){
-			suiteRoleMembership.addStudy(studyIdentifier);
-		}
-		provisioningSession.replaceRole(suiteRoleMembership);
     }
     
     /**
@@ -327,32 +339,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
 		}
     }
-    
-    /**
-     * This method returns a list of organization identifiers for a given user.
-     * @param user
-     * @return
-     */
-    private List<String> getAllOrganizationIdentifiers(User user){
-    	List<String> orgIndetifiers = new ArrayList<String>();
-    	if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
-    		List<SiteResearchStaff> siteRs = ((ResearchStaff)user).getSiteResearchStaffs();
-    		for(SiteResearchStaff eachSiteRs : siteRs){
-    			if(eachSiteRs.isActive()){
-    				orgIndetifiers.add(eachSiteRs.getOrganization().getNciInstituteCode());
-    			}
-    		}
-    	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
-    		List<SiteInvestigator> siteInvs = ((Investigator)user).getSiteInvestigators();
-    		for(SiteInvestigator eachSiteInv : siteInvs){
-    			if(eachSiteInv.isActive()){
-    				orgIndetifiers.add(eachSiteInv.getOrganization().getNciInstituteCode());
-    			}
-    		}
-    	}
-    	return orgIndetifiers;
-    }
-    
     
     /**
      * This method will return a list if co-ordinating center assigned identifiers for studies which the investigator has access to. 
