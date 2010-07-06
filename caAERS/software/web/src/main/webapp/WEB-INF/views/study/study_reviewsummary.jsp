@@ -19,19 +19,6 @@
 </style> 
 <![endif]-->
 
-<script type="text/javascript">
-	Event.observe(window, "load", function(){
-		var openStudyBtn = $('open-study-btn');
-		if(openStudyBtn){
-			openStudyBtn.observe("click", function(){
-				openStudyBtn.writeAttribute('disabled', 'disabled');
-				createStudy.openStudy(function(status){
-					$('data-entry-status-div').innerHTML = status;
-				})
-			});
-		}
-	});
-</script>
 </head>
 <body>
 
@@ -124,17 +111,6 @@
                 	<div class="label">Data Entry Status</div>
                 	<div id="data-entry-status-div" class="value">${command.dataEntryStatus} </div>
             	</div>		
-            		
-            	<div class="row">
-                	<div class="label"></div>
-                	<div class="value">
-                        <c:if test="${editFlow and not command.dataEntryComplete}">
-                             <tags:button id="open-study-btn" type="button" value="Study Set-up Complete" color="green" icon="check" size="small"/>
-                        </c:if>
-                	</div>
-            	</div>
-
-
        </chrome:division>
     <chrome:division title="Report Formats">
     	<!--[if lte IE 6]>
