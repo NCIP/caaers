@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
-<c:set var="isDEComplete" value="${command.dataEntryStatus}" />
+<c:set var="isDEComplete" value="${command.study.dataEntryStatus}" />
 <c:set var="isStudyCreator" value="${command.studyCreator}" />
 <c:set var="isStudyQAmanager" value="${command.studyQAManager}" />
 <c:set var="isStudySuplimental" value="${command.supplementalInfoManager}" />
@@ -149,6 +149,14 @@
     <input type="hidden" name="_action" value="">
       
       <p><tags:instructions code="study.study_details.study.top"/></p>
+
+<%--
+      DEComplete: ${isDEComplete}<br>
+      QAManager: ${isStudyQAmanager}<br>
+      Study Creator: ${isStudyCreator}<br>
+      Suplimental: ${isStudySuplimental}<br>
+      [${isDEComplete && isStudyQAmanager}]
+--%>
 
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager}">
 
