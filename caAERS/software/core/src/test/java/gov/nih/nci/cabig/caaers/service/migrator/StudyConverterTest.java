@@ -70,7 +70,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		List<StudyPersonnelType> studyPersonnelList = new ArrayList<StudyPersonnelType>();
 		StudyPersonnelType person = new StudyPersonnelType();
 		person.setStartDate(now);
-		person.setRoleCode(PersonnelRoleCodeType.CAAERS_AE_CD);
+		person.setRoleCode(PersonnelRoleCodeType.AE_REPORTER);
 		gov.nih.nci.cabig.caaers.webservice.ResearchStaffType staff = new gov.nih.nci.cabig.caaers.webservice.ResearchStaffType();
 		staff.setFirstName("abc");
 		staff.setLastName("hov");
