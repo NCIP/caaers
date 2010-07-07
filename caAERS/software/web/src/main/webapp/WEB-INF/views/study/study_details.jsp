@@ -148,59 +148,95 @@
   <jsp:attribute name="repeatingFields">
     <input type="hidden" name="_action" value="">
       
-        <p><tags:instructions code="study.study_details.study.top"/></p>
+      <p><tags:instructions code="study.study_details.study.top"/></p>
 
-      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && (isStudyQAmanager || isStudySuplimental)}">
-        <c:forEach items="${fieldGroups.studyDetails.fields}" var="field">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager}">
+
+          <%-- Short Title--%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[0]}"/>
+
+          <%-- Long Title--%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[1]}"/>
+
+          <%-- Precis --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
+
+          <%-- Description --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
+
+          <%-- Phase --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[4]}"/>
+          
+          <%-- Status --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[5]}"/>
+
       </c:if>
-    <%----%>
-    <chrome:division title="Adverse event coding terminology">
 
-        <c:forEach items="${fieldGroups.scFieldGroup.fields}" var="field" varStatus="status" begin="0" end="0">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
 
-        <c:forEach var="i" begin="1" end="3">
-            <ui:row path="${fieldGroups.scFieldGroup.fields[i].propertyName}">
-                <jsp:attribute name="label"><ui:label required="${i < 3}" path="${fieldGroups.scFieldGroup.fields[i].propertyName}" text="${fieldGroups.scFieldGroup.fields[i].displayName}"/></jsp:attribute>
-                <jsp:attribute name="value"><ui:select path="${fieldGroups.scFieldGroup.fields[i].propertyName}" required="false" options="${fieldGroups.scFieldGroup.fields[i].attributes.options}" /></jsp:attribute>
-            </ui:row>
-        </c:forEach>
+          <%-- MultiInstitutional --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[6]}"/>
 
-    </chrome:division>
-    <%----%>
+          <%-- Adeers reporting --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[7]}"/>
 
-    <chrome:division title="Disease coding terminology">
-        <c:forEach begin="0" end="0" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
-        <div id="diseaseMeddraOption" style="display:none">
-            <c:forEach begin="1" end="1" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
-                <ui:row path="${field.propertyName}">
-                    <jsp:attribute name="label"><ui:label required="true" path="${field.propertyName}" text="${field.displayName}"/></jsp:attribute>
-                    <jsp:attribute name="value"><ui:select path="${field.propertyName}" required="false" options="${field.attributes.options}" /></jsp:attribute>
-                </ui:row>
-            </c:forEach>
-        </div>
-    </chrome:division>
+          <%-- Verbatim first --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[8]}"/>
 
-     <chrome:division title="Study method details">
-         <c:forEach items="${fieldGroups.dcpFieldGroup.fields}" var="field" varStatus="status">
-             <tags:renderRow field="${field}"/>
-         </c:forEach>
-     </chrome:division>
-
-     <chrome:division title="Expedited report formats">
-         <c:forEach items="${fieldGroups.rfFieldGroup.fields}" var="field" varStatus="status">
-             <tags:renderRow field="${field}"/>
-         </c:forEach>
-     </chrome:division>
+          <%-- Data Entry Status --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[9]}"/>
+          
+      </c:if>
 
 
 
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
+          <chrome:division title="Adverse event coding terminology">
+              <c:forEach items="${fieldGroups.scFieldGroup.fields}" var="field" varStatus="status" begin="0" end="0">
+                  <tags:renderRow field="${field}"/>
+              </c:forEach>
 
+              <c:forEach var="i" begin="1" end="3">
+                  <ui:row path="${fieldGroups.scFieldGroup.fields[i].propertyName}">
+                      <jsp:attribute name="label"><ui:label required="${i < 3}" path="${fieldGroups.scFieldGroup.fields[i].propertyName}" text="${fieldGroups.scFieldGroup.fields[i].displayName}"/></jsp:attribute>
+                      <jsp:attribute name="value"><ui:select path="${fieldGroups.scFieldGroup.fields[i].propertyName}" required="false" options="${fieldGroups.scFieldGroup.fields[i].attributes.options}"/></jsp:attribute>
+                  </ui:row>
+              </c:forEach>
+          </chrome:division>
+      </c:if>
+
+      
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
+          <chrome:division title="Disease coding terminology">
+              <c:forEach begin="0" end="0" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
+                  <tags:renderRow field="${field}"/>
+              </c:forEach>
+              <div id="diseaseMeddraOption" style="display:none">
+                  <c:forEach begin="1" end="1" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
+                      <ui:row path="${field.propertyName}">
+                          <jsp:attribute name="label"><ui:label required="true" path="${field.propertyName}" text="${field.displayName}"/></jsp:attribute>
+                          <jsp:attribute name="value"><ui:select path="${field.propertyName}" required="false" options="${field.attributes.options}"/></jsp:attribute>
+                      </ui:row>
+                  </c:forEach>
+              </div>
+          </chrome:division>
+      </c:if>
+
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager}">
+          <chrome:division title="Study method details">
+              <c:forEach items="${fieldGroups.dcpFieldGroup.fields}" var="field" varStatus="status">
+                  <tags:renderRow field="${field}"/>
+              </c:forEach>
+          </chrome:division>
+      </c:if>
+
+      <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
+          <chrome:division title="Expedited report formats">
+              <c:forEach items="${fieldGroups.rfFieldGroup.fields}" var="field" varStatus="status">
+                  <tags:renderRow field="${field}"/>
+              </c:forEach>
+          </chrome:division>
+      </c:if>
 
     <c:set var="hasCC" value="${command.study.studyCoordinatingCenter.organization != null}" />
     <c:set var="hasFS" value="${command.study.primaryFundingSponsor.organization != null}" />
@@ -208,6 +244,8 @@
     <c:set var="ccField" value="${fieldGroups.ccFieldGroup.fields[0]}" />
     <c:set var="fsField" value="${fieldGroups.fsFieldGroup.fields[0]}" />
 
+
+    <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager}">
 
     <chrome:division title="Coordinating center details">
         <c:if test="${hasCC}">
@@ -244,8 +282,7 @@
         <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[1]}" />
     </chrome:division>
 
-
-
+    </c:if>
 
       
   </jsp:attribute>
