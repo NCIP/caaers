@@ -30,7 +30,9 @@
     	</div>
     </div>
 </c:if>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="review" hideBox="true">
+
+
+<tags:tabForm tab="${tab}" flow="${flow}" formName="review" hideBox="true" hideTabControls="${flow.tabCount < 2}">
     <jsp:attribute name="repeatingFields">
        <c:if test="${(empty command.study.id) or ( command.study.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
 	   <div class="summary">
