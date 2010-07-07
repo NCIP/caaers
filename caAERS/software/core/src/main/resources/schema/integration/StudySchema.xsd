@@ -662,42 +662,6 @@
     
     <xs:simpleType name="PersonnelRoleCodeType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="caaers_participant_cd">
-            	<xs:annotation>
-					  <xs:documentation>Subject coordinator </xs:documentation>
- 				</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="caaers_study_cd">
-                <xs:annotation>
-					  <xs:documentation>Study coordinator </xs:documentation>
- 				</xs:annotation>
- 			</xs:enumeration>
-            <xs:enumeration value="caaers_ae_cd">
-                <xs:annotation>
-					  <xs:documentation>Adverse event coordinator </xs:documentation>
- 				</xs:annotation>
- 			</xs:enumeration>
-            <xs:enumeration value="caaers_site_cd">
-               <xs:annotation>
-					  <xs:documentation>Site coordinator </xs:documentation>
- 				</xs:annotation>
- 			</xs:enumeration>
-            <xs:enumeration value="caaers_physician">
-               <xs:annotation>
-					  <xs:documentation>Physician </xs:documentation>
- 				</xs:annotation>
- 			</xs:enumeration> 	
-  			<xs:enumeration value="caaers_central_office_sae_cd">
-               <xs:annotation>
-					  <xs:documentation>Coordinating Center SAE Coordinator </xs:documentation>
- 				</xs:annotation>
- 			</xs:enumeration>					
- 			<xs:enumeration value="caaers_data_cd">
-               <xs:annotation>
-					  <xs:documentation>Coordinating Center Data Coordinator </xs:documentation>
- 				</xs:annotation>
- 			</xs:enumeration>
-
 
  			<xs:enumeration value="business_administrator">
                <xs:annotation>
