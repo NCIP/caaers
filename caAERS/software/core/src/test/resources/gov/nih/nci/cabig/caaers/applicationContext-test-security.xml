@@ -15,7 +15,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="password" value="ignored" />
 		<property name="authorities">
 			<list>
-				<value>ROLE_caaers_super_user</value>
+				<value>caaers_super_user</value>
 			</list>
 		</property>
 	</bean>
