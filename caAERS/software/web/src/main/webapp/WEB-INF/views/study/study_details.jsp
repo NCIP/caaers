@@ -81,6 +81,7 @@
 		}
         showDiseaseMeddraTerms();
 
+<c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager}">
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
             AE.createStandardAutocompleter('study.primaryFundingSponsorOrganization',
                  function(autocompleter, text) {
@@ -136,6 +137,9 @@
 		<c:if test="${not empty command.study.studyCoordinatingCenter.organization.fullName}">
 		    $('study.studyCoordinatingCenter.organization-input').value = "${command.study.studyCoordinatingCenter.organization.fullName}";
 		</c:if>
+
+</c:if>
+        
 	});
 
 	</script>
