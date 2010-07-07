@@ -59,11 +59,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	            throw new CaaersSystemException("Email address is required");
 	        }
 	    	
-	    	//note - to support allowLogin of investigators added via COPPA, we shoudld set the default groups if they do not exist
-	    	if(!investigator.getUserGroupTypes().contains(UserGroupType.system_administrator)){
-	    		investigator.addUserGroupType(UserGroupType.system_administrator);
-	    	}
-	    	
 	    	if(investigator.getId() == null &&  StringUtilities.isBlank(investigator.getLoginId())) {
 	    		investigator.setLoginId(investigator.getEmailAddress());
 	    	}

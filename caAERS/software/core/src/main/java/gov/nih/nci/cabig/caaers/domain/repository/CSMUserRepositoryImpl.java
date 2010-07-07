@@ -60,12 +60,6 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         } catch (MailException e) {
             mailException = e;
         }
-        /*
-        List<Organization> associatedOrgList = new ArrayList<Organization>();
-        for (SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()) {
-            associatedOrgList.add(siteRs.getOrganization());
-        }
-        */
         createCSMUserGroups(csmUser, researchStaff, null);
         if (mailException != null) throw mailException;
     }
@@ -91,12 +85,6 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 		} catch (MailException e) {
 			mailException = e;
 		}
-		/*
-    	List<Organization> associatedOrgList = new ArrayList<Organization>();
-    	for(SiteInvestigator siteInv : investigator.getSiteInvestigatorsInternal()){
-    		associatedOrgList.add(siteInv.getOrganization());
-    	}
-    	*/
         createCSMUserGroups(csmUser, investigator, null);
         if(mailException != null) throw mailException;
     }
@@ -108,12 +96,6 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             	String groupId = getGroupIdByName(group.getCsmName());
                 groupIds.add(groupId);
             }
-            /*
-            for(Organization org :  allowedOrgs){
-            	String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(org.getNciInstituteCode()));
-                groupIds.add(organizationGroupId);
-            }
-            */
             if (csmUser.getUserId() == null) {
                 throw new CaaersSystemException("ID has not been assigned to CSM user.");
             }
