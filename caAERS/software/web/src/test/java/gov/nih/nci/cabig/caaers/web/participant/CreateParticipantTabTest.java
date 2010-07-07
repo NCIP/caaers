@@ -55,6 +55,10 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 				// TODO Auto-generated method stub
 				return null;
 			}
+			public List<Organization> restrictBySubnames(String[] subnames, boolean b) {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			public List<Organization> restrictBySubnames(String[] subnames) {
 				// TODO Auto-generated method stub
 				return null;

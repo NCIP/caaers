@@ -134,6 +134,17 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 
     }
 
+    /**
+     *
+     * This method fetches all organization mathing the name without filtering it by logged in user id.
+     * @see "QuerySecurityFilterAspectPointCut" 
+     * 
+     * */
+    public List<Organization> fetchAllBySubname(final OrganizationQuery query) {
+    	List<Organization> organizations = executeQuery(query);
+    	return organizations;
+    }
+
 
     /**
      * Save or update the organization in the db.

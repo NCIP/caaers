@@ -168,8 +168,8 @@ public class CreateStudyAjaxFacade {
     /*
      * added this method to call this wherever any security filtering on organization is required
      */
-    public List<Organization> restrictOrganizations(final String text) {
-        List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text));
+    public List<Organization> restrictOrganizations(final String text, Boolean skipFiltering) {
+        List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text), skipFiltering);
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
     

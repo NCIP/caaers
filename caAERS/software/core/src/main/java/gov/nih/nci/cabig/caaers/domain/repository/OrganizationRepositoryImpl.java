@@ -144,10 +144,18 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	}
  	
  	public List<Organization> restrictBySubnames(final String[] subnames) {
+         return restrictBySubnames(subnames, false);
+    }
+
+ 	public List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering) {
  		String text = subnames[0];
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
- 		List<Organization> localOrganizations = organizationDao.getBySubnames(query);
+
+         List<Organization> localOrganizations;
+ 		if (!skipFiltering) localOrganizations = organizationDao.getBySubnames(query);
+        else localOrganizations = organizationDao.fetchAllBySubname(query);
+
  		//get organizations from remote service
  		List<Organization> remoteOrganizations = null;
  		if (coppaModeForAutoCompleters) {

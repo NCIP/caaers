@@ -85,7 +85,7 @@
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
             AE.createStandardAutocompleter('study.primaryFundingSponsorOrganization',
                  function(autocompleter, text) {
-                    createStudy.restrictOrganizations(text, function(values) {
+                    createStudy.restrictOrganizations(text, true, function(values) {
                       autocompleter.setChoices(values)
                      })
                  },
@@ -108,7 +108,7 @@
 
             AE.createStandardAutocompleter('study.studyCoordinatingCenter.organization',
                 function(autocompleter, text) {
-                    createStudy.restrictOrganizations(text, function(values) {
+                    createStudy.restrictOrganizations(text, true, function(values) {
                         autocompleter.setChoices(values)
                     })
 

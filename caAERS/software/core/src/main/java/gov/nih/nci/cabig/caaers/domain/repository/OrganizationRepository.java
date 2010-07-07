@@ -21,6 +21,7 @@ public interface OrganizationRepository {
 
     List<Organization> searchRemoteOrganization(String coppaSearchText, String sType);
     List<Organization> searchOrganization(final OrganizationQuery query);
+    List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering);
     List<Organization> restrictBySubnames(final String[] subnames);
     List<Organization> getLocalOrganizations(final OrganizationQuery query);
     

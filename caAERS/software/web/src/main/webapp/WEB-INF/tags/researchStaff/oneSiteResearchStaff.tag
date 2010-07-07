@@ -55,7 +55,7 @@
                                             <jsp:attribute name="embededJS"></jsp:attribute>
                                             <jsp:attribute name="populatorJS">
                                                 function(autocompleter, text) {
-                                                    createStudy.restrictOrganizations(text, function(values) { autocompleter.setChoices(values);})
+                                                    createStudy.restrictOrganizations(text, false, function(values) { autocompleter.setChoices(values);})
                                                 }
                                             </jsp:attribute>
                                             <jsp:attribute name="selectorJS">
