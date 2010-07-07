@@ -188,7 +188,6 @@
 			<property name="resolve.confs" value="runtime,test" />
 			<property name="resolve.to.dir" value="${user.home}/ivylibs" />
 		</subant>
-        <delete includes="${user.home}/ivylibs/*caaers-*.jar" />
 		<taskdef name="eclipseClasspath" classname="com.semanticbits.ctms.ant.BuildPathGenerator">
 		  <classpath>
 		  	<path>
