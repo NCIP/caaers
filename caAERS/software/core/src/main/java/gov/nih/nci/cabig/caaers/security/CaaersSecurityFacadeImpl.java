@@ -44,10 +44,10 @@ import java.util.Set;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.cxf.common.util.StringUtils;
 
 /**
  * The Facade Layer to CSM. 
@@ -474,7 +474,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     /**
      * Will the caAERS database IDs of Study that one can access.
      *
-     * @param loginId - The loginId
+     * @param userName - The loginId
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -556,7 +556,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     /**
      * Will the caAERS database IDs of Organization that one can access.
      *
-     * @param loginId - The loginId
+     * @param userName - The loginId
      * @return
      */
     @SuppressWarnings("unchecked")
