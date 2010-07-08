@@ -485,8 +485,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	List<Integer> resultList = new ArrayList<Integer>();
     	try {
 			Set<ProtectionGroupRoleContext> contexts = this.getProtectionGroupRoleContextForUser(loginId);
-			Set<ProtectionElementPrivilegeContext> contexts1 = this.getProtectionElementPrivilegeContextForUser(loginId);
-			System.out.println(contexts1.size());
+
 			
 			List identifiers = new ArrayList();
 			String hql = "";
