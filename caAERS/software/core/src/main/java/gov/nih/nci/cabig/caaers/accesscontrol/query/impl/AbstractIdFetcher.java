@@ -5,18 +5,16 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -132,17 +130,30 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 		HQLQuery query = new HQLQuery(hql.toString());
         query.setParameter("loginId", loginId);
         List<Integer> organizationIds = (List<Integer>) search(query);
+        
+        // get all orgs from DB ..
+        String hqlStr = "select distinct o.id from Organization o ";
+        query = new HQLQuery(hqlStr);
+        List<Integer> allOrgsInDB = (List<Integer>) search(query);
+        
         // check for these organizations , if these are SCC or SFS on any Study . 
         List<Integer> studySiteIds = new ArrayList<Integer>();
         if (organizationIds.size()>0) {
-            StringBuilder sql = new StringBuilder("select distinct so.organization.id from StudyOrganization so where so.study.id in ");
-            sql.append(" (select distinct so.study.id from StudyOrganization so");
-            sql.append(" where so.class = 'SFS'");
-            sql.append(" or so.class = 'SCC'");
-            sql.append(" and so.organization.id in (:organizationIds) )");
-        	query = new HQLQuery(sql.toString());
-        	query.setParameterList("organizationIds", organizationIds);
-        	studySiteIds = (List<Integer>) search(query);
+            if (organizationIds.size() != allOrgsInDB.size()) {
+	        	StringBuilder sql = new StringBuilder("select distinct so.organization.id from StudyOrganization so where so.study.id in ");
+	            sql.append(" (select distinct so.study.id from StudyOrganization so");
+	            sql.append(" where so.class = 'SFS'");
+	            sql.append(" or so.class = 'SCC'");
+	            sql.append(" and so.organization.id in (:organizationIds) )");
+	        	query = new HQLQuery(sql.toString());
+	        	query.setParameterList("organizationIds", organizationIds);
+	        	studySiteIds = (List<Integer>) search(query);
+            } else {
+            	//if org index has all orgs in DB , that means all study sites are applicable ..
+            	List<Integer> allIds = new ArrayList<Integer>();
+            	allIds.add(CaaersSecurityFacadeImpl.ALL_IDS_FABRICATED_ID);
+            	return allIds;
+            }
         }
         if (studySiteIds.size() > 0) {
         	organizationIds.addAll(studySiteIds);
