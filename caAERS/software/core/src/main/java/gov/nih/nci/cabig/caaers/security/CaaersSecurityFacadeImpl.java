@@ -214,7 +214,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			List<String> privilegedRoles;
 			if(authorities  != null){
 				//Fetch all the roles which have the given privilege on the given objectId
-				privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);				
+				privilegedRoles = getRolesFromRolePrivilegeMapping(objectId,
+						privilege);				
 				if(privilegedRoles != null){
 					for(int i=0;i < authorities.length;i++){
 						if(privilegedRoles.contains(authorities[i].getAuthority())){
@@ -229,6 +230,24 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		return false;
 
     }
+
+	/**
+	 * @param objectId
+	 * @param privilege
+	 * @return
+	 */
+	private List<String> getRolesFromRolePrivilegeMapping(String objectId,
+			String privilege) {
+		
+		List<String> privilegedRoles = CSMCacheManager.getRolesFromCache(objectId, privilege);
+		if (privilegedRoles==null) {		
+			privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);
+			if (privilegedRoles!=null) {
+				CSMCacheManager.addRolePrivilegeMappingToCache(objectId, privilege, privilegedRoles);
+			}
+		}
+		return privilegedRoles;
+	}
 
 
 
@@ -449,7 +468,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException {
     	Set<ProtectionGroupRoleContext> contexts = null;
-    	contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_GROUP_ROLE_CONTEXT);
+    	contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_GROUP_ROLE_CONTEXT);
     	if (contexts  == null ) {
     		contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
     		CSMCacheManager.addProtectionGroupRoleContextToCache(loginId , loginId, contexts);
@@ -465,7 +484,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException {
     	Set<ProtectionElementPrivilegeContext> contexts = null;
-    	contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
+    	contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
     	if (contexts  == null ) {
     		contexts = csmUserRepository.getUserProvisioningManager().getProtectionElementPrivilegeContextForUser(loginId);
     		CSMCacheManager.addProtectionElementPrivilegeContextToCache(loginId, loginId, contexts);

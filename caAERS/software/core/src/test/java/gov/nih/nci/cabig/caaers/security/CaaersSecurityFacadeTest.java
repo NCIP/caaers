@@ -47,11 +47,11 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	public void testCacheManager () throws Exception {
 		String loginId = "1";
 		// shud be null , nothing in cache
-		Set<ProtectionElementPrivilegeContext> contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
+		Set<ProtectionElementPrivilegeContext> contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
 		assertNull(contexts);
 		caaersSecurityFacade.getProtectionElementPrivilegeContextForUser(loginId);
 		// now data is in cache 
-		contexts = CSMCacheManager.getFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
+		contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
 		assertNotNull(contexts);
 		assertEquals(0,contexts.toArray().length);
 	}
