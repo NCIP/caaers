@@ -51,11 +51,11 @@
                     <name>Cancer Therapy Evaluation Program</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
-                <p:startDate>2002-02-02</p:startDate>
+                <startDate>2002-02-02</startDate>
                 <studyInvestigators>
                     <p:studyInvestigator>
                         <roleCode>SPI</roleCode>
-                        <p:startDate>2002-02-02</p:startDate>
+                        <startDate>2002-02-02</startDate>
                         <p:siteInvestigator>
                             <p:investigator>
                                 <firstName>Gerry</firstName>
@@ -66,7 +66,7 @@
                     </p:studyInvestigator>
                     <p:studyInvestigator>
                         <roleCode>SI</roleCode>
-                        <p:startDate>2002-02-02</p:startDate>
+                        <startDate>2002-02-02</startDate>
                         <p:siteInvestigator>
                             <p:investigator>
                                 <firstName>George</firstName>
@@ -78,8 +78,8 @@
                 </studyInvestigators>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>caaers_participant_cd</roleCode>
-                        <p:startDate>2002-02-02</p:startDate>
+                        <roleCode>subject_manager</roleCode>
+                        <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Mike</firstName>
                             <lastName>Conway</lastName>
@@ -95,8 +95,8 @@
                 </p:organization>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>caaers_participant_cd</roleCode>
-                        <p:startDate>2002-02-02</p:startDate>
+                        <roleCode>subject_manager</roleCode>
+                        <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Allan</firstName>
                             <lastName>Border</lastName>
