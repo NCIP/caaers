@@ -53,7 +53,40 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/submitReport" value="ae_reporter,data_reader" />		        
 		<entry key="/pages/ae/edit" value="ae_reporter,data_reader" />        
 		<entry key="/pages/ae/routingAndReview" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
-		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />		
+        
+		<entry key="/pages/admin/configure" value="system_administrator,data_reader"/>
+		<entry key="/pages/admin/passwordPolicyConfigure" value="system_administrator,data_reader"/>
+		<entry key="/pages/admin/mandatoryFields" value="business_administrator,data_reader"/>        
+		<entry key="/pages/admin/searchOrganization" value="person_and_organization_information_manager,data_reader"/>
+		<entry key="/pages/admin/createOrganization" value="person_and_organization_information_manager,data_reader"/>
+		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>		
+		<entry key="/pages/admin/asaelSearch" value="business_administrator,data_reader"/>
+		<entry key="/pages/admin/asaelCreate" value="business_administrator,data_reader"/>
+        <entry key="/admin/asaelEdit" value="business_administrator,data_reader" />
+        <entry key="/pages/admin/import" value="data_importer"/>
+        <entry key="/pages/admin/createIND" value="business_administrator,data_reader"/>
+        <entry key="/pages/admin/searchIND" value="business_administrator,data_reader"/>	
+        
+        <entry key="/pages/search/exportSearchResults" value="data_reader,data_analyst"/>
+        <entry key="/pages/search/advancedSearch" value="data_reader,data_analyst"/>
+        <entry key="/pages/search/listSearch" value="data_reader,data_analyst"/>   
+        
+		<entry key="/pages/rule/create" value="ae_rule_and_report_manager,data_reader"/>
+        <entry key="/pages/rule/createOptions" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/list" value="ae_rule_and_report_manager,data_reader"/>
+        <entry key="/pages/rule/util" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/addRule" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/addColumn" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/export" value="ae_rule_and_report_manager,data_reader"/>
+        <entry key="/pages/rule/deploy" value="ae_rule_and_report_manager,data_reader"/>
+        
+		<entry key="/pages/rule/notification/create" value="ae_rule_and_report_manager,data_reader"/>
+        <entry key="/pages/rule/notification/edit" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/notification/list" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/notification/import" value="ae_rule_and_report_manager,data_reader"/>
+        <entry key="/pages/rule/notification/export" value="ae_rule_and_report_manager,data_reader"/>
+        <entry key="/pages/rule/notification/createConfigProperty" value="ae_rule_and_report_manager,data_reader"/>             	
 		
 	</util:map>
 	
