@@ -13,6 +13,7 @@ import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 
 /**
+ * Does the integration test on workflow service. 
  * 
  * @author Biju Joseph
  *
@@ -29,13 +30,15 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		wfService = (WorkflowServiceImpl)getDeployedApplicationContext().getBean("workflowService");
 		
 	}
-	
+
+    //creation of a process instance is tested here. 
 	public void testCreateProcessInstance() {
 		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 		assertNotNull(pInstance);
 		assertEquals( "Submit Reporting Period for Data Coordinator Review" ,pInstance.getRootToken().getNode().getName());
 	}
-	
+
+    //creating and testing whether the task instances are created
 	public void testFetchTaskInstances() {
 		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 		assertNotNull(pInstance);
@@ -45,7 +48,8 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		assertFalse(tasks.isEmpty());
 		assertEquals("Submit Reporting Period for Data Coordinator Review",tasks.get(0).getName());
 	}
-	
+
+    //test creation and feting the process and tasks correctly
 	public void testFetchProcessInstance() {
 		Long id = null;
 		{
@@ -60,6 +64,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 	}
 
+    //checks whether the transition tokens are properly executed. 
 	public void testNextTransitions() {
 		Integer id = null;
 		String loginId = "SYSTEM_ADMIN";
@@ -78,6 +83,8 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 			assertEquals("Approved", nextTransitions.get(0).getTo().getName());
 		}
 	}
+
+    //identifies that the base workflow is correctly deployed and retrieves the transitions names correctly
 	public void testNextTransitionNames() {
 		Integer id = null;
 		String loginId = "SYSTEM_ADMIN";
@@ -95,6 +102,8 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 			assertEquals("Approve Reporting Period", nextTransitions.get(0));
 		}
 	}
+
+    //makes sure that the CRA login see only the transitions designated to him.
 	public void testNextTransitions_SiteCRA() {
 		Integer id = null;
 		String loginId = "pc@def.com";
@@ -114,7 +123,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 	}
 	
-	
+	//makes sure that the DC see only the designated transitions. 
 	public void testNextTransitions_DataCoordinator() {
 		Integer id = null;
 		String loginId = "aec@def.com";
@@ -131,7 +140,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 	}
 
-	
+	//test the propogation of the workfow flow via a specified token.
 	public void testAdvanceWorkflow(){
 		String loginId = "SYSTEM_ADMIN";
 		Integer id = null;
@@ -160,7 +169,8 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		
 		
 	}
-	
+
+    //when the workflow is terminated, makessure that the opent tasks are terminated properly. 
 	public void testCloseAllOpenTaskInstances() {
 		Long id = null;
 		{
@@ -194,8 +204,9 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 		
 	}
-	
-	
+
+    
+    //retrieves the assignees of the tasks
 	public void testFindTaskAssignees() {
 		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 		assertNotNull(pInstance);
