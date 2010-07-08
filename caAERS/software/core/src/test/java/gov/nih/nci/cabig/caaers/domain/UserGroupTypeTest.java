@@ -28,7 +28,7 @@ public class UserGroupTypeTest extends TestCase {
 
 	public void testStrValues() {
 		
-		assertEquals(10, UserGroupType.strValues().length);
+		assertEquals(33, UserGroupType.strValues().length);
 		assertEquals(grpType.toString(), UserGroupType.strValues()[7]);
 	}
 	
@@ -46,7 +46,7 @@ public class UserGroupTypeTest extends TestCase {
 	
 	public void testCodes(){
 		int[] codes = UserGroupType.codes();
-		assertEquals(10, codes.length);
+		assertEquals(33, codes.length);
 		assertEquals(-2, codes[0]);
 		assertEquals(-8, codes[7]);
 		assertEquals(-7942, codes[9]);
