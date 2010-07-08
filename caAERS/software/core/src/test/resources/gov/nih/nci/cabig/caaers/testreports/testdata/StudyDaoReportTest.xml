@@ -376,7 +376,8 @@
             type="SCC"
             />
 
-    <STUDY_DISEASES id="-4" study_id="-2" term_type="dcp" meddra_code="1233212"/>
+    <STUDY_DISEASES id="-4" study_id="-2" term_type="dcp" 
+                    />
 
     <investigational_new_drugs id="-881" ind_number="-881"/>
     <investigational_new_drugs id="-882" ind_number="-882"/>

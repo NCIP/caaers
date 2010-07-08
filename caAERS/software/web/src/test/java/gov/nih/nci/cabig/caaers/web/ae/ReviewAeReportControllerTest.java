@@ -96,7 +96,6 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
-        expect(csmUserRepository.isSuperUser("SYSTEM_ADMIN")).andReturn(true);
 		replayMocks();
 		Map<String, Object> refdata = controller.referenceData(request, command, errors);
 		verifyMocks();

@@ -299,7 +299,6 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		expect(template.findProcessInstance(new Long(1))).andReturn(pInstance);
 		expect(wfConfigDao.getByWorkflowDefinitionName("test Definition")).andReturn(wConfig);
 		expect(possibleTransitionsResolver.fetchNextTransitions(wConfig, pInstance)).andReturn(transitionList);
-		expect(csmUserRepository.isSuperUser("SYSTEM_ADMIN")).andReturn(true);
 		replayMocks();
 		List<Transition> transitions = wfService.nextTransitions(1, "SYSTEM_ADMIN");
 		verifyMocks();

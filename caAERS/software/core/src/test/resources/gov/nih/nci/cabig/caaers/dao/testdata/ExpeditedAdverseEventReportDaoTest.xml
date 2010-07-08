@@ -29,7 +29,7 @@
     <STUDIES id="-1" short_title="That one" load_status="1" design_code="1"/>
 
     <STUDY_DISEASES id="-4" study_id="-1" term_type="meddra"
-                    meddra_code="1233212"/>
+                    />
     <TREATMENT_ASSIGNMENT id="-11" code="TAC001"
                           study_id="-1" dose_level_order="22" description="description"
                           comments="comments" version="0" grid_id="TAC333"/>

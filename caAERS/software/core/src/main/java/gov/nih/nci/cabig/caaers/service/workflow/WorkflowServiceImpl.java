@@ -43,17 +43,13 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.jbpm.graph.def.Node;
-import org.jbpm.graph.def.ProcessDefinition;
-import org.jbpm.graph.def.Transition;
-import org.jbpm.graph.exe.ExecutionContext;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.graph.exe.Token;
-import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jbpm.graph.def.*;
+import org.jbpm.graph.exe.*;
+import org.jbpm.taskmgmt.exe.*;
 import org.springframework.mail.MailException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springmodules.workflow.jbpm31.JbpmTemplate;
+import org.springmodules.workflow.jbpm31.*;
 
 /**
  * This class has methods, that deals with the JBPM workflow engine.
@@ -145,10 +141,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefinitionName);
 		List<Transition> possibleTransitions =  possibleTransitionsResolver.fetchNextTransitions(wfConfig, processInstance);
 		//now filter based on login roles
-		
-		//super user should see everything.
-		if(csmUserRepository.isSuperUser(loginId)) return possibleTransitions;
-		
+	
 		String taskNodeName = processInstance.getRootToken().getNode().getName();
 		TaskConfig taskConfig = wfConfig.findTaskConfig(taskNodeName);
 		if(taskConfig == null )  return possibleTransitions; // task is not configured
@@ -196,37 +189,30 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public List<ReviewStatus> allowedReviewStatuses(String loginId){
 		Map<ReviewStatus, Boolean> allowedReviewStatusMap = new HashMap<ReviewStatus, Boolean>();
 		
-
-		Boolean isSuperUser = csmUserRepository.isSuperUser(loginId);
-		if(isSuperUser){
-			for(ReviewStatus rs: ReviewStatus.values())
-				allowedReviewStatusMap.put(rs, true);
-		}else{
-			User user = csmUserRepository.getUserByName(loginId);
-			//first fetch all the possible workflow configs.
-			List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
-			for(WorkflowConfig wc : workflowConfigList){
-				for(TaskConfig tc: wc.getTaskConfigs()){
-					for(Assignee assignee: tc.getAssignees()){
-						if(assignee.isUser()){
-							PersonAssignee personAssignee = (PersonAssignee) assignee;
-							if(personAssignee.getUser().getLoginId().equals(user.getLoginId())){
-								allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
-							}
-						}else if(assignee.isRole()){
-							RoleAssignee roleAssignee = (RoleAssignee) assignee;
-							PersonRole role = roleAssignee.getUserRole();
-							for(UserGroupType type: user.getUserGroupTypes()){
-								if(ArrayUtils.contains(role.getUserGroups(), type)){
-									allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+        User user = csmUserRepository.getUserByName(loginId);
+        //first fetch all the possible workflow configs.
+        List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
+        for(WorkflowConfig wc : workflowConfigList){
+            for(TaskConfig tc: wc.getTaskConfigs()){
+                for(Assignee assignee: tc.getAssignees()){
+                    if(assignee.isUser()){
+                        PersonAssignee personAssignee = (PersonAssignee) assignee;
+                        if(personAssignee.getUser().getLoginId().equals(user.getLoginId())){
+                            allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
+                        }
+                    }else if(assignee.isRole()){
+                        RoleAssignee roleAssignee = (RoleAssignee) assignee;
+                        PersonRole role = roleAssignee.getUserRole();
+                        for(UserGroupType type: user.getUserGroupTypes()){
+                            if(ArrayUtils.contains(role.getUserGroups(), type)){
+                                allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 		List<ReviewStatus> allowedReviewStatusList = new ArrayList<ReviewStatus>(allowedReviewStatusMap.keySet());
 		return allowedReviewStatusList;
 	}

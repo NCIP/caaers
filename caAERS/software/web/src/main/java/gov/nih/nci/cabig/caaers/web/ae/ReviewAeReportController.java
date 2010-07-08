@@ -104,12 +104,10 @@ public class ReviewAeReportController extends SimpleFormController{
         SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
 		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
 		boolean isUserSAECoordinator = false;
-		if(!csmUserRepository.isSuperUser(userId)){
-			User user = csmUserRepository.getUserByName(userId);
-			if(user.getUserGroupTypes().contains(UserGroupType.caaers_central_office_sae_cd)){
-					isUserSAECoordinator = true;
-			}
-		}
+        User user = csmUserRepository.getUserByName(userId);
+        if(user.getUserGroupTypes().contains(UserGroupType.caaers_central_office_sae_cd)){
+            isUserSAECoordinator = true;
+        }
         
         //boolean canSubmit = false;
         //if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isUserSAECoordinator)
