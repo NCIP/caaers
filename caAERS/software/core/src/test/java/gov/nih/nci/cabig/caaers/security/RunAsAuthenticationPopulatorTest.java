@@ -29,8 +29,6 @@ public class RunAsAuthenticationPopulatorTest extends CaaersTestCase {
 
 	public void testGetAuthorities() {
 		assertTrue(populator.getAuthorities().contains("caaers_super_user"));
-		assertTrue(populator.getAuthorities().contains("caaers_admin"));
-		assertTrue(populator.getAuthorities().contains("caaers_grid_user"));
 	}
 
 }
