@@ -392,25 +392,27 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     
     @SuppressWarnings("unchecked")
 	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {
-        String queryString = query.getQueryString();
-        log.debug("::: " + queryString);
-        List<Object[]> objectArray = (List<Object[]>) getHibernateTemplate().execute(new HibernateCallback() {
+		String queryString = query.getQueryString();
+        log.debug("::: " + queryString.toString());
+       return (List<Object[]>) getHibernateTemplate().execute(new HibernateCallback() {
 
-            public Object doInHibernate(final Session session) throws HibernateException,SQLException {
-            	
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
-               
-                // hiberanteQuery.setMaxResults(null);
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
+                    if (value instanceof Collection) {
+                    	hibernateQuery.setParameterList(key, (Collection) value);
+                    } else {
+                    	hibernateQuery.setParameter(key, value);
+                    }
+                    //hibernateQuery.setParameter(key, value);
+
                 }
-                return hiberanteQuery.list();
+                return hibernateQuery.list();
             }
 
         });
-        return objectArray;
 
     }
 	
