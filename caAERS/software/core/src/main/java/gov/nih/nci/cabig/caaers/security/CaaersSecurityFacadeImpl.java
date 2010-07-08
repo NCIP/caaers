@@ -72,6 +72,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	private String USER_ADMINISTRATOR = "user_administrator";
 	private String PO_INFO_MANAGER = "person_and_organization_information_manager";
 	
+	public static Integer ALL_IDS_FABRICATED_ID = -99887766;
+	
 	//For all Investigators
 	private String AE_REPORTER = "ae_reporter";
 
@@ -483,6 +485,9 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	List<Integer> resultList = new ArrayList<Integer>();
     	try {
 			Set<ProtectionGroupRoleContext> contexts = this.getProtectionGroupRoleContextForUser(loginId);
+			Set<ProtectionElementPrivilegeContext> contexts1 = this.getProtectionElementPrivilegeContextForUser(loginId);
+			System.out.println(contexts1.size());
+			
 			List identifiers = new ArrayList();
 			String hql = "";
 			for (ProtectionGroupRoleContext context : contexts) {
@@ -543,11 +548,17 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		List<Integer> resultList = new ArrayList<Integer>();
 		String hql;
 		List<Integer> userOrgs = getAccessibleOrganizationIdsFilterByRole(loginId, roleName);
-		if (userOrgs.size() > 0) {
-			hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
-			HQLQuery query = new HQLQuery(hql.toString());
-			query.setParameterList("userOrgs", userOrgs);
-			resultList = (List<Integer>) search(query);
+		if (userOrgs.size() > 0) {			
+			if (userOrgs.size() == 1 && (userOrgs.get(0) == ALL_IDS_FABRICATED_ID)) {
+				hql = "select study.id from Study study ";	
+				HQLQuery query = new HQLQuery(hql.toString());
+				resultList = (List<Integer>) search(query);
+			} else {			
+				hql = "select distinct so.study.id from StudyOrganization so where so.organization.id in (:userOrgs) ";					
+				HQLQuery query = new HQLQuery(hql.toString());
+				query.setParameterList("userOrgs", userOrgs);
+				resultList = (List<Integer>) search(query);
+			}
 		}
 		return resultList;
 	}
@@ -620,7 +631,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 				String roleName = getRoleName(context);
 				// check user has access to all orgs AS this role .
 				if (roleName != null && roleName.equals(roleNameToCheck) && caaersEquivalentName.equals(ORGANIZATION_PE)) {
-					return getAllOrganizationIdsFromDB();
+					// here we need all orgs in DB , instead of getting all orgs just fabricate an org id to indicate all ORGS .(ALL_ORGS_FABRICATED_ID)
+					List<Integer> allIds = new ArrayList<Integer>();
+					allIds.add(ALL_IDS_FABRICATED_ID);
+					return allIds;
+					//return getAllOrganizationIdsFromDB();
+					
 				} else {
 					//parse name ..
 					String[] tokens = caaersEquivalentName.split("\\.");
