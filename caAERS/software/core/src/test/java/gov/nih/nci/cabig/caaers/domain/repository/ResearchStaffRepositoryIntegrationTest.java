@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
@@ -10,10 +7,14 @@ import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.UserProvisioningManager;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,6 +41,12 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
     CSMUserRepositoryImpl csmUserRepository;
     
+    
+  @Override
+  protected void tearDown() throws Exception {
+      super.tearDown(); 
+  }
+    
     @Override
     protected void setUp() throws Exception {
     	super.setUp();
@@ -59,9 +66,10 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     	String name = "" + System.currentTimeMillis();
     	{
     		List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
-        	userGroupTypes.add(UserGroupType.caaers_super_user);
-        	userGroupTypes.add(UserGroupType.caaers_ae_cd);
+        	userGroupTypes.add(UserGroupType.ae_reporter);
         	ResearchStaff staff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+        	SiteResearchStaffRole siteResearchStaffRole = Fixtures.createSiteResearchStaffRole("ae_reporter", DateUtils.today(), null);
+        	staff.getSiteResearchStaffs().get(0).addSiteResearchStaffRole(siteResearchStaffRole);
         	staff.setLoginId(name);
         	staff.setAddress(new Address());
         	staff.setNciIdentifier(name);
@@ -82,9 +90,8 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     		assertNotNull(staff);
     		List<UserGroupType> userGroupTypes = staff.getUserGroupTypes();
     		assertNotNull(userGroupTypes);
-    		assertEquals(2, userGroupTypes.size());
-    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_ae_cd));
-    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_super_user));
+    		assertEquals(1, userGroupTypes.size());
+    		assertTrue(userGroupTypes.contains(UserGroupType.ae_reporter));
     	}
     	
     	
@@ -94,9 +101,15 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     	String name = "" + System.currentTimeMillis();
     	{
     		List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
-        	userGroupTypes.add(UserGroupType.caaers_super_user);
-        	userGroupTypes.add(UserGroupType.caaers_ae_cd);
+        	userGroupTypes.add(UserGroupType.system_administrator);
+        	userGroupTypes.add(UserGroupType.ae_reporter);
         	ResearchStaff staff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+        	SiteResearchStaffRole siteResearchStaffRole1 = Fixtures.createSiteResearchStaffRole("system_administrator", DateUtils.today(), null);
+        	SiteResearchStaffRole siteResearchStaffRole2 = Fixtures.createSiteResearchStaffRole("ae_reporter", DateUtils.today(), null);
+        	
+        	staff.getSiteResearchStaffs().get(0).addSiteResearchStaffRole(siteResearchStaffRole1);
+        	staff.getSiteResearchStaffs().get(0).addSiteResearchStaffRole(siteResearchStaffRole2);
+        	
         	staff.setLoginId(name);
         	staff.setAddress(new Address());
         	staff.setNciIdentifier(name);
@@ -119,8 +132,8 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     		List<UserGroupType> userGroupTypes = staff.getUserGroupTypes();
     		assertNotNull(userGroupTypes);
     		assertEquals(2, userGroupTypes.size());
-    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_ae_cd));
-    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_super_user));
+    		assertTrue(userGroupTypes.contains(UserGroupType.ae_reporter));
+    		assertTrue(userGroupTypes.contains(UserGroupType.system_administrator));
     	}
     }
     

@@ -6,5 +6,12 @@
         nci_institute_code="CTEP"
         type="LOCAL"
     />
-	<site_research_staffs />
+    <research_staffs/>
+	<site_research_staffs/>
+	<site_rs_staff_roles/>
+	<csm_user/>
+	<csm_protection_element/>
+	<csm_protection_group/>
+	<csm_pg_pe/>
+	<csm_user_group_role_pg/>
 </dataset>
