@@ -14,7 +14,7 @@ class RolePrivilegeStudies extends edu.northwestern.bioinformatics.bering.Migrat
       insert('role_privilege', [ version: '0',role_name : 'supplemental_study_information_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.Study',privilege :'UPDATE']);
       insert('role_privilege', [ version: '0',role_name : 'study_team_administrator',object_id : 'gov.nih.nci.cabig.caaers.domain.Study',privilege :'UPDATE']);
       insert('role_privilege', [ version: '0',role_name : 'study_site_participation_administrator',object_id : 'gov.nih.nci.cabig.caaers.domain.Study',privilege :'UPDATE']);
-      insert('role_privilege', [ version: '0',role_name : 'supplemental_study_information_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.StudySite',privilege :'CREATE']);
+      insert('role_privilege', [ version: '0',role_name : 'study_site_participation_administrator',object_id : 'gov.nih.nci.cabig.caaers.domain.StudySite',privilege :'CREATE']);
       insert('role_privilege', [ version: '0',role_name : 'supplemental_study_information_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.StudyTherapy',privilege :'CREATE']);
       insert('role_privilege', [ version: '0',role_name : 'supplemental_study_information_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.StudyAgent',privilege :'CREATE']);
       insert('role_privilege', [ version: '0',role_name : 'supplemental_study_information_manager',object_id : 'gov.nih.nci.cabig.caaers.domain.TreatmentAssignment',privilege :'CREATE']);
