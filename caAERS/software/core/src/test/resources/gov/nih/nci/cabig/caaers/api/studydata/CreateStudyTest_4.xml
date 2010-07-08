@@ -68,7 +68,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
                  <startDate>2002-02-02</startDate>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>caaers_participant_cd</roleCode>
+                        <roleCode>subject_manager</roleCode>
                           <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Allan</firstName>
