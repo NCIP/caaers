@@ -1,29 +1,39 @@
-/**
- * 
- */
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.security.UserProvisioningManager;
-
-import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
-import org.aspectj.lang.Aspects;
-import org.springframework.context.ApplicationContext;
-
-import com.mchange.v2.c3p0.DriverManagerDataSource;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
 public class CSMTest extends CaaersTestCase {
-    private UserProvisioningManager mgr;
-
-    public CSMTest() {
+    
+    @Override
+    public void setUp() throws Exception {
+    	super.setUp();
     }
-
+    
+    @Override
+    public void tearDown() throws Exception {
+    	super.tearDown();
+    }
+    
+    public void testStudyCreatorPolicy() {
+    	//TODO
+    }
+    
+    public void testSubjectManagerPolicy() {
+    	//TODO
+    }
+    
+    public void testAeReporterPolicy() {
+    	//TODO
+    }
+    
    
+  //Entire test case has to be rewritten
 
+    /*
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -34,9 +44,7 @@ public class CSMTest extends CaaersTestCase {
         aspect.setSecurityInterceptor(interceptor);
     }
 
-
-
- /*   public void testCSMLoad() {
+   public void testCSMLoad() {
 
         try {
             String userId = "study_cd1";
@@ -59,7 +67,7 @@ public class CSMTest extends CaaersTestCase {
             fail("Error encountered: " + ex.getMessage());
         }
 
-    }*/
+    }
 
     private void printStats(DriverManagerDataSource bds) {
         System.out.println("##########################################");
@@ -133,5 +141,5 @@ public class CSMTest extends CaaersTestCase {
     private static String getGroupAccessErrorMessage(String group, String privilege, String objectId) {
         return group + " doesn't have " + privilege + " privilege on " + objectId;
     }
-
+*/
 }
