@@ -247,7 +247,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 					.getSiteResearchStaffsInternal();
 			if (CollectionUtils.isNotEmpty(siteStaffs)) {
 				for (SiteResearchStaff siteResearchStaff : siteStaffs) {
-					if (siteResearchStaff.isActive()) {
+					//if (siteResearchStaff.isActive()) {
 						Organization org = siteResearchStaff.getOrganization();
 						Collection<String> roles = securityFacade.getRoles(
 								SecurityUtils.getUserLoginName(), org);
@@ -257,7 +257,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 								list.add(ga);
 							}
 						}
-					}
+					//}
 				}
 			}
 		}
@@ -273,7 +273,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 					.getSiteInvestigatorsInternal();
 			if (CollectionUtils.isNotEmpty(siteInvestigators)) {
 				for (SiteInvestigator siteInvestigator : siteInvestigators) {
-					if (siteInvestigator.isActive()) {
+					//if (siteInvestigator.isActive()) {
 						Organization org = siteInvestigator.getOrganization();
 						Collection<String> roles = securityFacade.getRoles(
 								SecurityUtils.getUserLoginName(), org);
@@ -283,7 +283,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 								list.add(ga);
 							}
 						}
-					}
+					//}
 				}
 			}
 		}
