@@ -70,7 +70,8 @@ public final class SecurityUtils {
 	 * @return
 	 */
 	public static GrantedAuthority[] getGrantedAuthorities(Authentication authentication) {
-		Object principal  =  authentication.getPrincipal();
+		// commented out according to my discussion with Biju regarding CAAERS-4135
+		/**Object principal  =  authentication.getPrincipal();
 		GrantedAuthority[] grantedAuthorities = null;
 		if (principal instanceof User) {
 			grantedAuthorities = ((User)principal).getAuthorities();
@@ -79,6 +80,8 @@ public final class SecurityUtils {
 		}
 		
 		return grantedAuthorities;
+		**/
+		return authentication.getAuthorities();
 	}
 
     /**
