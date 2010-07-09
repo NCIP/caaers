@@ -52,7 +52,9 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
     @Transient
     public List<SiteResearchStaffRole> getActiveSiteResearchStaffRoles(){
         List<SiteResearchStaffRole> srsRoleList = new ArrayList<SiteResearchStaffRole>();
-        for(SiteResearchStaffRole  srsRole : getSiteResearchStaffRoles()){
+        List<SiteResearchStaffRole> roles = getSiteResearchStaffRoles();
+        if (roles == null) return  srsRoleList;
+        for(SiteResearchStaffRole  srsRole : roles){
             if(srsRole.isActive()) srsRoleList.add(srsRole);
         }
         return srsRoleList;

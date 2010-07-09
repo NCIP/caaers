@@ -18,7 +18,10 @@ public class SiteResearchStaffTest extends TestCase {
 		assertFalse(new SiteResearchStaff().isActive());
 	}
 	
-	
+	public void testGetActiveSiteResearchStaffRoles() {
+		assertNotNull(new SiteResearchStaff().getActiveSiteResearchStaffRoles());
+	}
+
 	public void testIsActive_ReallyActive(){
 		SiteResearchStaffRole role1 = new SiteResearchStaffRole();
 		role1.setStartDate(new Date());
