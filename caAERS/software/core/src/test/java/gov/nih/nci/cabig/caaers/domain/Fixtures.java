@@ -441,7 +441,7 @@ public class Fixtures {
     
     public static SiteResearchStaff createSiteResearchStaff(Organization org, ResearchStaff rStaff){
     	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
-    	siteResearchStaff.setResearchStaff(rStaff);
+        rStaff.addSiteResearchStaff(siteResearchStaff);
     	siteResearchStaff.setOrganization(org);
     	return siteResearchStaff;
     }

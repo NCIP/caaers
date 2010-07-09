@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -14,7 +13,6 @@ import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.security.RoleCheck;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,11 +20,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.userdetails.User;
 import org.springframework.beans.BeanWrapper;
-import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 
 /**

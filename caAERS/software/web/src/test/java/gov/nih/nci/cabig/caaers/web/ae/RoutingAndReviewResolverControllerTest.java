@@ -79,24 +79,4 @@ public class RoutingAndReviewResolverControllerTest extends WebTestCase{
         assertNotNull("ModelAndView object returned by handleRequestInternal cannot be null", mv);
 	}
 	
-	/**
-	 * This method tests handleRequestInternal with an EvaluationPeriod in context. This is the flow of the controller
-	 * when an evaluationPeriod link is clicked on the RoutingAndReview page. The user is not SYSTEM_ADMIN.
-	 * @throws Exception
-	 */
-	/*public void testHandleRequestInternalForReportingPeriodNotSystemAdmin() throws Exception{
-		request.setParameter("adverseEventReportingPeriod", "1");
-		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
-		reportingPeriod.getStudy().setId(1);
-		reportingPeriod.getParticipant().setId(1);
-		expect(adverseEventReportingPeriodDao.getById(1)).andReturn(reportingPeriod);
-		expect(context.getAuthentication()).andReturn(auth);
-        expect(auth.getPrincipal()).andReturn(user);
-        expect(user.getUsername()).andReturn("TEST_USER");
-        expect(csmUserRepository.isSuperUser("SYSTEM_ADMIN")).andReturn(true);
-        replayMocks();
-        ModelAndView mv = controller.handleRequest(request, response);
-        verifyMocks();
-        assertNotNull("ModelAndView object returned by handleRequestInternal cannot be null", mv);
-	}*/
 }

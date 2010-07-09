@@ -195,7 +195,11 @@ public abstract class ResearchStaff extends User {
 		}
 		return null;
 	}
-	
+
+    /**
+     * The earliest start date of this research staff.
+     * @return
+     */
     @Transient
     public Date getActiveDate() {
         SortedSet<Date> dates = new TreeSet<Date>();

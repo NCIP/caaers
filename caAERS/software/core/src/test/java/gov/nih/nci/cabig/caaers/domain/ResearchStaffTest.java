@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import junit.framework.TestCase;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Biju Joseph
  *
  */
-public class ResearchStaffTest extends TestCase {
+public class ResearchStaffTest extends AbstractTestCase {
 	ResearchStaff staff;
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -24,19 +24,19 @@ public class ResearchStaffTest extends TestCase {
 	}
 
 	public void testIsAssociatedToUserGroup() {
-		assertFalse(staff.isAssociatedToUserGroup(UserGroupType.caaers_admin));
+		assertFalse(staff.isAssociatedToUserGroup(UserGroupType.ae_reporter));
 	}
 	
 	public void testGetAllRoles(){
-		assertTrue(staff.getAllRoles().isEmpty());
+		assertFalse(staff.getAllRoles().isEmpty());
 	}
 	
 	public void testGetSiteRolesMapping(){
-		assertTrue(staff.getSiteRolesMapping().isEmpty());
+		assertFalse(staff.getSiteRolesMapping().isEmpty());
 	}
 	
 	public void testGetActiveDate(){
-		assertNull(staff.getActiveDate());
+		assertTrue(DateUtils.compareDate(DateUtils.yesterday(), staff.getActiveDate()) == 0);
 	}
 	
     public void testGetActiveSiteResearchStaff(){

@@ -180,7 +180,7 @@ public class StudyCommandTest extends AbstractTestCase {
 		Organization o = Fixtures.createOrganization("test");
 		
 		List<UserGroupType> groups = new ArrayList<UserGroupType>();
-		groups.add(UserGroupType.caaers_admin);
+		groups.add(UserGroupType.study_team_administrator);
 		
 		ResearchStaff s1 = Fixtures.createResearchStaff(o, groups, "test1");
 		ResearchStaff s2 = Fixtures.createResearchStaff(o, groups, "test2");

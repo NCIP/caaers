@@ -38,7 +38,7 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 		userName = "wxyz1234";        
 		password = "Password1!";  
 		Organization org = Fixtures.createOrganization("test");        
-		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.caaers_admin, UserGroupType.caaers_ae_cd}) , "Test");
+		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.business_administrator}) , "Test");
 		
 		csmUserRepository = registerMockFor(CSMUserRepository.class);       
 		passwordPolicy = new PasswordPolicy();   

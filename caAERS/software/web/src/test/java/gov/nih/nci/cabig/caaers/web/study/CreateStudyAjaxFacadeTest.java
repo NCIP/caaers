@@ -148,14 +148,14 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     	studyOrg.setId(new Integer(5));
     
     	
-    	ResearchStaff rs1 = Fixtures.createResearchStaff(organization, Arrays.asList(UserGroupType.caaers_admin), "Jank");
+    	ResearchStaff rs1 = Fixtures.createResearchStaff(organization, Arrays.asList(UserGroupType.business_administrator), "Jank");
     	rs1.setId(1);
     	
     	SiteResearchStaff srs1 = rs1.getSiteResearchStaffs().get(0);
     	srs1.setId(1);
     	srs1.setGridId("89899");
     	
-    	ResearchStaff rs2 = Fixtures.createResearchStaff(organization, Arrays.asList(UserGroupType.caaers_admin), "Sank");
+    	ResearchStaff rs2 = Fixtures.createResearchStaff(organization, Arrays.asList(UserGroupType.business_administrator), "Sank");
     	rs2.setId(2);
     	SiteResearchStaff srs2 = rs2.getSiteResearchStaffs().get(0);
     	srs2.setId(2);

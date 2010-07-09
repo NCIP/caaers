@@ -297,32 +297,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             throw new CaaersSystemException(e);
         }
     }
-    
-  
-    public boolean isSuperUser(String loginId) {
-       try {
-		if(StringUtils.isEmpty(loginId)) return false;
-		
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
-		if(csmUser == null) return false;
-		
-		Set groups = userProvisioningManager.getGroups(csmUser.getUserId().toString());
-		if(groups != null){
-			for(java.util.Iterator it = groups.iterator() ; it.hasNext();){
-				Group group = (Group) it.next();
-				if(StringUtils.containsIgnoreCase(group.getGroupName(), UserGroupType.caaers_admin.getCsmName()) || 
-				   StringUtils.containsIgnoreCase(group.getGroupName(), UserGroupType.caaers_super_user.getCsmName())	){
-					return true;
-				}
-			}
-		}
-			
-	} catch (CSObjectNotFoundException e) {
-		log.warn("The login " + loginId + ", not found in CSM, something is wrong in the way the login ID is fetched");
-	}
-    	
-    	return false;
-    }
+
 
     // end
 

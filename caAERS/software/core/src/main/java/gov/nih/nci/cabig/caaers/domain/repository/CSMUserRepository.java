@@ -55,14 +55,7 @@ public interface CSMUserRepository {
     public void sendUserEmail(String emailAddress, String subject, String text);
     
     public boolean loginIDInUse(String loginId);
-    /**
-     * Returns true, if the user is a Super user, ie associated to roles
-     * {@link UserGroupType}caaers_admin or caaers_super_user
-     * @param loginId
-     * @return
-     */
-    public boolean isSuperUser(String loginId);
-    
+
     public gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName);
   
 }

@@ -37,7 +37,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		password = "Abcdef1!";  
 		credential = new Credential(userName, password);
 		Organization org = Fixtures.createOrganization("test");        
-		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.caaers_admin, UserGroupType.caaers_ae_cd}) , "Test");
+		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.business_administrator}) , "Test");
 		credential.setUser(user);
 		loginPolicyValidator = new LoginPolicyValidator();
 		loginPolicy = new LoginPolicy();
