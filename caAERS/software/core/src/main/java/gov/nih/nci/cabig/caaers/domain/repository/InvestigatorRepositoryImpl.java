@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.util.StringUtilities;
@@ -76,7 +75,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	}
 	
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text){
-		List<Investigator> localInvestigators = investigatorDao.getLocalInvestigator(query);
 		
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");
@@ -105,23 +103,23 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
         			StringUtils.isEmpty(nciIdentifier) &&
         				StringUtils.isEmpty(organization)){
         	
-        	return localInvestigators;
+        	return investigatorDao.getLocalInvestigator(query);
         }
         
     	if(StringUtils.isNotEmpty(firstName) && firstName.indexOf("%") != -1){
-    		return localInvestigators;
+    		return investigatorDao.getLocalInvestigator(query);
     	}
     	if(StringUtils.isNotEmpty(lastName) && lastName.indexOf("%") != -1){
-    		return localInvestigators;
+    		return investigatorDao.getLocalInvestigator(query);
     	}
     	if(StringUtils.isNotEmpty(nciIdentifier) && nciIdentifier.indexOf("%") != -1){
-    		return localInvestigators;
+    		return investigatorDao.getLocalInvestigator(query);
     	}
 		
         Map<String, Object> queryParameterMap = query.getParameterMap();
         for (String key : queryParameterMap.keySet()) {
 			if (key.equals("loginId")) {
-				return localInvestigators;
+				return investigatorDao.getLocalInvestigator(query);
 			}
         }
         
@@ -142,11 +140,77 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			logger.warn("Error searching Investiagators from PO -- " + e.getMessage());
 		}
 		if(remoteInvestigators == null){
-			return localInvestigators;
+			return investigatorDao.getLocalInvestigator(query);
+		}else{
+			saveRemoteInvestigators(remoteInvestigators);
 		}
-		return merge(localInvestigators,remoteInvestigators);
+		return investigatorDao.getLocalInvestigator(query);
 	}
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+	private void saveRemoteInvestigators(List<Investigator> remoteList){
+		for (Investigator remoteInvestigator:remoteList) {
+
+			Investigator inv = investigatorDao.getByExternalId(remoteInvestigator.getExternalId());
+    		if (inv == null ) {
+    			try {
+    				List<SiteInvestigator> siList = remoteInvestigator.getSiteInvestigators();
+    				List<SiteInvestigator> siDBList = new ArrayList<SiteInvestigator>();
+    				for (SiteInvestigator si:siList) {
+    					Organization remoteOrganization = si.getOrganization();
+    					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    	    			if (organization == null) {
+    	    				organizationRepository.create(remoteOrganization);
+    	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    	    			} 
+    	    			SiteInvestigator dbSI = new SiteInvestigator();
+    	    			dbSI.setOrganization(organization);
+    	    			dbSI.setStartDate(DateUtils.today());
+    	    			dbSI.setInvestigator(remoteInvestigator);
+    	    			siDBList.add(dbSI);
+    	    			
+    				}
+    				remoteInvestigator.getSiteInvestigators().clear();
+    				remoteInvestigator.setSiteInvestigators(siDBList);
+    				
+    				save(remoteInvestigator,"URL");
+    				remoteInvestigator = investigatorDao.getByExternalId(remoteInvestigator.getExternalId());
+    			} catch (MailException e) {
+    				logger.error("Mail send exception --" + e.getMessage());
+    			}
+        	} else {
+        		try {
+    				List<SiteInvestigator> siList = remoteInvestigator.getSiteInvestigators();
+    				for (SiteInvestigator si:siList) {
+    					Organization remoteOrganization = si.getOrganization();
+    					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    	    			if (organization == null) {
+    	    				organizationRepository.create(remoteOrganization);
+    	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    	    			} 
+    	    			SiteInvestigator siteInvestigator = new SiteInvestigator();
+    	    			siteInvestigator.setOrganization(organization);
+    	    			siteInvestigator.setStartDate(DateUtils.today());
+    	    			siteInvestigator.setInvestigator(remoteInvestigator);
+    	    			List<SiteInvestigator> siDBList = inv.getSiteInvestigators();
+    	    			boolean exists = false;
+    	    			for (SiteInvestigator sid:siDBList){
+    	    				if (sid.getOrganization().getNciInstituteCode().equals(organization.getNciInstituteCode())) {
+    	    					exists = true;
+    	    					break;
+    	    				}
+    	    			}
+    	    			if (!exists) {
+    	    				inv.addSiteInvestigator(siteInvestigator);
+    	    			}
+    				}
+    				save(inv,"URL");
+    			} catch (MailException e) {
+    				logger.error("Mail send exception --" + e.getMessage());
+    			}
+        	}
+    	}
+	}
 	
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query){
 		List<Investigator> localInvestigators = investigatorDao.getLocalInvestigator(query);
@@ -155,9 +219,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	
 	public List<SiteInvestigator> getBySubnames(String[] subnames, int siteId) {
 		List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(subnames,siteId);
-		//RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
-		//List<SiteInvestigator> remoteInvestigators = siteInvestigatorDao.getRemoteInvestigators(searchCriteria);
-		//return merge(localInvestigators,remoteInvestigators);
 		return siteInvestigators;
 	}
 	
@@ -168,7 +229,8 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	public Investigator getById(int id) {
 		return getInvestigatorDao().getInvestigatorById(id);
 	}
-	
+
+/* MERGING the search results in java, would not allow us to security filer the results. Hence commented the below method and introduced saveRemoteInvestigators method.
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<Investigator> merge(List<Investigator> localList , List<Investigator> remoteList) {
 		for (Investigator remoteInvestigator:remoteList) {
@@ -251,6 +313,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     	}
 		return localList;
 	}
+*/
 	
 	@Transactional(readOnly = false)
     public void convertToRemote(Investigator localInvestigator, Investigator remoteInvestigator){
