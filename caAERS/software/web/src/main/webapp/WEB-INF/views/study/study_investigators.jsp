@@ -133,35 +133,37 @@
             <span id="ssi-bookmark" />
 
             <csmauthz:accesscontrol var="_canModifyTheSite" scope="request" domainObject="${command.study.activeStudyOrganizations[command.studySiteIndex].organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+            <csmauthz:accesscontrol var="_canModifyTheCC" scope="request" domainObject="${command.study.studyCoordinatingCenter.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+            <csmauthz:accesscontrol var="_canModifyTheFS" scope="request" domainObject="${command.study.primaryFundingSponsor.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
 
             <c:if test="${command.studySiteIndex > -1 }">
 				<study:oneStudySiteInvestigator index="${command.studySiteIndex}"/>
 			</c:if>
 
-            <c:if test="${_canModifyTheSite}">
+            <c:if test="${_canModifyTheSite || _canModifyTheCC || _canModifyTheFS}">
                 <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
             </c:if>
 
 		</div>
 	    </td>
       	<td valign="top" width="35%">
-			<chrome:box title="Assigned Investigators" id="participant-entry2" autopad="true">
- 				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
-                     <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
-                     
-                     <div class ="">
-                         <c:if test="${_isATeamAdmin}">
-                            <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a>
-                         </c:if>
-                         <c:if test="${!_isATeamAdmin}">${studySite.organization.name}
-                     </c:if>
-                     <b>(${fn:length(studySite.studyInvestigators)})</b></div>
- 				</c:forEach>
- 				<div>
- 				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
- 				</div>
-                
- 			</chrome:box>
+                <chrome:division title="Assigned Investigators" style="margin:5px;">
+                        <c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
+                                 <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+                                 <div class="" style="font-size: 11px;">
+                                     <c:choose>
+                                         <c:when test="${_isATeamAdmin || _canModifyTheCC || _canModifyTheFS}">
+                                             <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a>
+                                         </c:when>
+                                         <c:otherwise>${studySite.organization.name}</c:otherwise>
+                                     </c:choose>
+                                     <b>(${fn:length(studySite.studyInvestigators)})</b>
+                                 </div>
+                         </c:forEach>
+                        <div>
+                           <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
+                        </div>
+                </chrome:division>
 		</td>
 	  </tr>
 	</table>

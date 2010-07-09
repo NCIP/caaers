@@ -47,7 +47,7 @@
     </td>
 
     <td style="border-left:none;">
-        <c:if test="${requestScope._canModifyTheSite}">
+        <c:if test="${requestScope._canModifyTheSite || requestScope._canModifyTheCC || requestScope._canModifyTheFS}">
             <c:if test="${!isNew && si.siteInvestigator.investigator != null && si.id != null}">
                 <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
                 <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>

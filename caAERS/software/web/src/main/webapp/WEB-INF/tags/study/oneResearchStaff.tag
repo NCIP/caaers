@@ -58,7 +58,7 @@
 
 
     <td style="border-left:none;">
-        <c:if test="${requestScope._canModifyTheSite}">
+        <c:if test="${requestScope._canModifyTheSite || requestScope._canModifyTheCC || requestScope._canModifyTheFS}">
             <c:if test="${activateButtonVisibility}">
                 <c:if test="${!isNew && sp.siteResearchStaff.researchStaff != null && sp.id != null}">
                     <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>

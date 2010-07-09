@@ -158,13 +158,15 @@ margin:5px;
 			<hr>
 			<div id="content-section">
                 <csmauthz:accesscontrol var="_canModifyTheSite" scope="request" domainObject="${command.study.activeStudyOrganizations[command.studySiteIndex].organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+                <csmauthz:accesscontrol var="_canModifyTheCC" scope="request" domainObject="${command.study.studyCoordinatingCenter.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+                <csmauthz:accesscontrol var="_canModifyTheFS" scope="request" domainObject="${command.study.primaryFundingSponsor.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
 
 				<c:if test="${command.studySiteIndex > -1 }">
 					<study:oneStudySitePersonnel index="${command.studySiteIndex}"/>
 				</c:if>
 				<span id="ss-bookmark" />
 
-                <c:if test="${_canModifyTheSite}">
+                <c:if test="${_canModifyTheSite || _canModifyTheCC || _canModifyTheFS}">
                     <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}">
                         <tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" />
                     </div>
@@ -172,21 +174,22 @@ margin:5px;
 			</div>
 	    </td>
       	<td valign="top" width="35%">
-			<chrome:box title="Assigned Personnel" id="participant-entry2"  autopad="true">
+			<chrome:division title="Assigned Personnel" style="margin:5px;">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
                     <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
 
-                     <div class ="">
-                         <c:if test="${_isATeamAdmin}">
-                             <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit reasearch staff assigned to study">${studySite.organization.name}</a>
-                             <b>(${fn:length(studySite.studyPersonnels)})</b>
-                         </c:if>
-                         <c:if test="${!_isATeamAdmin}">${studySite.organization.name}</c:if>
+                     <div class="" style="font-size: 11px;">
+                         <c:choose>
+                             <c:when test="${_isATeamAdmin || _canModifyTheCC || _canModifyTheFS}">
+                                 <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit reasearch staff assigned to study">${studySite.organization.name}</a>
+                             </c:when>
+                             <c:otherwise>${studySite.organization.name}</c:otherwise>
+                         </c:choose>
+                         <b>(${fn:length(studySite.studyPersonnels)})</b>
                      </div>
- 					<%--<div class="">Personnel Assigned: <b>  </b></div>--%>
  				</c:forEach>
  				<div><img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" /></div>
- 			</chrome:box>
+ 			</chrome:division>
 		</td>
 	  </tr>
 	</table>
