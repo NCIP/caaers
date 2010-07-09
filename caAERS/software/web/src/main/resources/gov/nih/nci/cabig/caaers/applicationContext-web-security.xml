@@ -32,7 +32,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>		
 		<entry key="/pages/admin/createInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
 		
-		<entry key="/pages/participant/create" value="subject_manager" />
+		<entry key="/pages/participant/create" value="subject_manager,registrar" />
         <entry key="/pages/participant/search" value="registration_qa_manager,subject_manager,registrar,data_reader"/>
         <entry key="/pages/participant/assignParticipant" value="registrar" />
 		<entry key="/pages/participant/edit" value="registration_qa_manager,subject_manager,registrar,data_reader" />
