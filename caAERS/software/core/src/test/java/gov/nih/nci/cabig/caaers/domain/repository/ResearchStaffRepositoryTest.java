@@ -38,13 +38,13 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 	public void testSave() throws Exception {
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		groupList.add(UserGroupType.caaers_study_cd);
+		groupList.add(UserGroupType.ae_reporter);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setEmailAddress("Joel@def.com");
 		siteResearchStaff.setOrganization(org);
 		SiteResearchStaffRole siteResearchStaffRole = new SiteResearchStaffRole();
-		siteResearchStaffRole.setRoleCode("caaers_study_cd");
+		siteResearchStaffRole.setRoleCode("ae_reporter");
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		siteResearchStaff.setAssociateAllStudies(Boolean.TRUE);
@@ -65,13 +65,13 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		repository.setAuthenticationMode("webSSO");
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		groupList.add(UserGroupType.caaers_study_cd);
+		groupList.add(UserGroupType.ae_reporter);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setEmailAddress("Joel@def.com");
 		siteResearchStaff.setOrganization(org);
 		SiteResearchStaffRole siteResearchStaffRole = new SiteResearchStaffRole();
-		siteResearchStaffRole.setRoleCode("caaers_study_cd");
+		siteResearchStaffRole.setRoleCode("ae_reporter");
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		staff.addSiteResearchStaff(siteResearchStaff);
@@ -90,13 +90,13 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		repository.setAuthenticationMode("webSSO");
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		groupList.add(UserGroupType.caaers_study_cd);
+		groupList.add(UserGroupType.ae_reporter);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setEmailAddress("Joel@def.com");
 		siteResearchStaff.setOrganization(org);
 		SiteResearchStaffRole siteResearchStaffRole = new SiteResearchStaffRole();
-		siteResearchStaffRole.setRoleCode("caaers_study_cd");
+		siteResearchStaffRole.setRoleCode("ae_reporter");
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		staff.addSiteResearchStaff(siteResearchStaff);
@@ -112,13 +112,13 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 	public void testUnlockUser() {
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		groupList.add(UserGroupType.caaers_study_cd);
+		groupList.add(UserGroupType.ae_reporter);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setEmailAddress("Joel@def.com");
 		siteResearchStaff.setOrganization(org);
 		SiteResearchStaffRole siteResearchStaffRole = new SiteResearchStaffRole();
-		siteResearchStaffRole.setRoleCode("caaers_study_cd");
+		siteResearchStaffRole.setRoleCode("ae_reporter");
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		siteResearchStaff.setAssociateAllStudies(Boolean.TRUE);
