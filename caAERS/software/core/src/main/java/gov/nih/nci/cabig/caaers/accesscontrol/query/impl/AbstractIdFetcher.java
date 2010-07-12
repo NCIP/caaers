@@ -131,6 +131,10 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
        return null;
     }
 
+    protected Set<Integer> getAccessibleStudys(String loginId, UserGroupType... roles){
+        return null;
+    }
+
     protected List<Integer> getAccesibleOrganizationsIncludingStudySites(String loginId){
     	StringBuilder hql = new StringBuilder("select distinct oi.organization.id from  OrganizationIndex oi");
 		hql.append(" where oi.loginId = :loginId ");
