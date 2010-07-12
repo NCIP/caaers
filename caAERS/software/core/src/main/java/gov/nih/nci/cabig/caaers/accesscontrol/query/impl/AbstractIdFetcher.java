@@ -6,15 +6,13 @@ import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -123,6 +121,15 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     	return null;
     }
 
+    /**
+     * Will return the OrganizationIds for the user for the roles mentioned. 
+     * @param loginId
+     * @param roles
+     * @return
+     */
+    protected Set<Integer> getAccessibleOrganizations(String loginId, UserGroupType roles){
+       return null;
+    }
 
     protected List<Integer> getAccesibleOrganizationsIncludingStudySites(String loginId){
     	StringBuilder hql = new StringBuilder("select distinct oi.organization.id from  OrganizationIndex oi");
