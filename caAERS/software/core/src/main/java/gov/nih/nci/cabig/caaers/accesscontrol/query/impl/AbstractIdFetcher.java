@@ -127,7 +127,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * @param roles
      * @return
      */
-    protected Set<Integer> getAccessibleOrganizations(String loginId, UserGroupType roles){
+    protected Set<Integer> getAccessibleOrganizations(String loginId, UserGroupType... roles){
        return null;
     }
 
