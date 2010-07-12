@@ -18,7 +18,16 @@ public class ExpeditedAdverseEventReportIndex extends AbstractMutableDomainObjec
 	
 	private String loginId;
 	private ExpeditedAdverseEventReport expeditedAdverseEventReport;
-	
+
+    private Integer roleCode;
+
+    public Integer getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(Integer roleCode) {
+        this.roleCode = roleCode;
+    }
 	public String getLoginId() {
 		return loginId;
 	}

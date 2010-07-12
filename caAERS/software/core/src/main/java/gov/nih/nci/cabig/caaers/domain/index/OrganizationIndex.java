@@ -18,8 +18,18 @@ public class OrganizationIndex extends AbstractMutableDomainObject{
 	
 	private String loginId;
 	private Organization organization;
-	
-	public String getLoginId() {
+
+    private Integer roleCode;
+
+    public Integer getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(Integer roleCode) {
+        this.roleCode = roleCode;
+    }
+
+    public String getLoginId() {
 		return loginId;
 	}
 	public void setLoginId(String loginId) {

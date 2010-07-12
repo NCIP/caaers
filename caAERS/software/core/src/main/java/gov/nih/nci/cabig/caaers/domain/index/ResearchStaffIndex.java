@@ -18,7 +18,16 @@ public class ResearchStaffIndex extends AbstractMutableDomainObject{
 	
 	private String loginId;
 	private ResearchStaff researchStaff;
-	
+
+    private Integer roleCode;
+
+    public Integer getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(Integer roleCode) {
+        this.roleCode = roleCode;
+    }
 	public String getLoginId() {
 		return loginId;
 	}

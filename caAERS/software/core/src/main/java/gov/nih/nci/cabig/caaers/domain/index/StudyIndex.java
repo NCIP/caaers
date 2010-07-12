@@ -18,7 +18,16 @@ public class StudyIndex extends AbstractMutableDomainObject{
 	
 	private String loginId;
 	private Study study;
-	
+
+    private Integer roleCode;
+
+    public Integer getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(Integer roleCode) {
+        this.roleCode = roleCode;
+    }
 	public String getLoginId() {
 		return loginId;
 	}
