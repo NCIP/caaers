@@ -170,7 +170,22 @@ public class CreateStudyAjaxFacade {
         List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text), skipFiltering);
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
-    
+
+    /**
+     * @author Ion C. Olaru
+     * Brings all the study's related organizations (CC + FS + Study Sites)  
+     *
+     * */
+    public List<Organization> matchStudyOrganizations(final String text, final Integer studyId) {
+        List<StudyOrganization> sos = organizationRepository.getApplicableOrganizationsFromStudyOrganizations(text, studyId);
+        List<Organization> organizations = new ArrayList<Organization>();
+        for (StudyOrganization so : sos) {
+            organizations.add(ObjectTools.reduce(so.getOrganization(), "id", "name", "nciInstituteCode", "externalId"));
+        }
+        // return ObjectTools.reduceAll(orgs, "organization.id", "organization.name", "organization.nciInstituteCode", "organization.externalId");
+        return organizations;
+    }
+
     public List<Organization> matchOrganization(final String text) {
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
@@ -183,8 +198,7 @@ public class CreateStudyAjaxFacade {
     }
 
     public List<DiseaseCategory> matchDiseaseCategories(final String text, final Integer categoryId) {
-        List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getBySubname(
-                        extractSubnames(text), categoryId);
+        List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getBySubname(extractSubnames(text), categoryId);
         return diseaseCategories;
     }
 

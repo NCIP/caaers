@@ -4,13 +4,10 @@ public class OrganizationFromStudySiteQuery extends AbstractQuery {
 
     //private static String queryString = "SELECT distinct ss.organization from StudySite ss";//order by ss.organization.name";
     private static String queryString = "SELECT distinct organization from Organization organization ";
-
     private static String ORGANIZATION_NAME = "name";
-
     private static String STUDY_ID = "STUDY_ID";
 
     public OrganizationFromStudySiteQuery() {
-
         super(queryString);
         join("organization.studyOrganizations ss");
         andWhere("ss.class='SST'");

@@ -11,4 +11,11 @@ public class StudyOrganizationsQueryTest extends TestCase {
 		assertTrue(query.getParameterMap().containsKey("orgId"));
 		assertEquals(10, query.getParameterMap().get("orgId"));
 	}
+
+	public void testFilterByStudyId(){
+		StudyOrganizationsQuery query = new StudyOrganizationsQuery();
+		query.filterByStudyId(3);
+		assertEquals("select so from StudyOrganization so WHERE  so.retiredIndicator <> true  AND  so.study.id = :studyId", query.getQueryString());
+		assertTrue(query.getParameterMap().containsKey("studyId"));
+	}
 }

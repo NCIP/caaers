@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
@@ -12,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,6 +147,19 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	
  	public List<Organization> restrictBySubnames(final String[] subnames) {
          return restrictBySubnames(subnames, false);
+    }
+
+ 	public List<StudyOrganization> getApplicableOrganizationsFromStudyOrganizations(final String text, Integer studyId) {
+         StudyOrganizationsQuery query = new StudyOrganizationsQuery();
+
+         if(text != null && !text.equals(""))
+             query.filterByOrganizationName(text);
+
+         if(studyId != null) 
+             query.filterByStudyId(studyId);
+         
+         List<StudyOrganization> organizations = (List<StudyOrganization>)organizationDao.search(query);
+         return organizations;
     }
 
  	public List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering) {

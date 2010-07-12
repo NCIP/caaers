@@ -87,6 +87,9 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 				// TODO Auto-generated method stub
 				
 			}
+            public List<StudyOrganization> getApplicableOrganizationsFromStudyOrganizations(final String text, Integer studyId) {
+                return null;
+            }
         });
         createParticipantTab.setListValues(listValues);
         createParticipantTab.setConfigurationProperty(configProperty);

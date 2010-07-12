@@ -50,24 +50,24 @@
             	 }.bind(this));
                
             
-            },sitePopulator: function(autocompleter, text) {
-         		createStudy.restrictOrganizations(text, false, function(values) {
+            },
+
+            sitePopulator: function(autocompleter, text) {
+         		createStudy.matchStudyOrganizations(text, ${command.study.id}, function(values) {
          			autocompleter.setChoices(values)
          		})
         	},
         	
         	siteSelector: function(organization) {
         	    var image;            	
-            	if(organization.externalId != null){
-                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+            	if (organization.externalId != null) {
+                    image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
                 } else {
-                          image = '';
+                    image = '';
                 }
                 
-        		var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
-            							 " ( " + organization.nciInstituteCode + " ) ";
-        		
-        		return image + "" +organization.name + nciInstituteCode 
+        		var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+        		return image + "" + organization.name + nciInstituteCode
         	}
         	}
         	       
