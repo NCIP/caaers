@@ -11,6 +11,11 @@ This applicationContext contains the definition of the DAOs
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
         default-lazy-init="true">
+
+
+    <tx:annotation-driven proxy-target-class="true"/>
+    
+
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName" />
 
     <bean id="medDRADao" class="gov.nih.nci.cabig.caaers.dao.MedDRADao">
@@ -19,28 +24,6 @@ This applicationContext contains the definition of the DAOs
         </property>
         <property name="properties" ref="caaersDatasourceFactoryBean"/>
     </bean>
-    
-    <bean id="remoteSession" class="com.semanticbits.coppa.infrastructure.RemoteSession" init-method="init">
-         <property name="remoteEntities">
-            <list>
-                <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
-                <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
-                <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
-				<value>gov.nih.nci.cabig.caaers.domain.RemoteStudy</value>                
-            </list>
-         </property>    
-         <property name="remoteResolvers">
-            <list>
-                <ref bean="organizationResolver"/>
-                <ref bean="researchStaffResolver"/>
-                <ref bean="investigatorResolver"/>
-                <ref bean="remoteStudyResolver"/>
-            </list>
-         </property> 
-         <property name="enableCaching" ref="coppaCache"/>
-		 <property name="enabled" ref="coppaMode" />
-     </bean>    
-
     <!-- HIBERNATE CONFIGURATION -->
      <bean id="wonderfulNamingStrategy" class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy">
       <property name="uppercaseColumnNames">
@@ -232,24 +215,6 @@ This applicationContext contains the definition of the DAOs
         </property>
     </bean>
 
-    <!-- Auditing related beans definition start here-->
-    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
-          autowire="byName">
-        <property name="mappingLocations">
-            <list>
-                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
-            </list>
-        </property>
-        <property name="namingStrategy" ref="wonderfulNamingStrategy">
-        </property>
-        <property name="annotatedClasses">
-            <list>
-                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue</value>
-                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent</value>
-            </list>
-        </property>
-    </bean>
-
     <bean id="chainedInterceptor" class="gov.nih.nci.cabig.ctms.audit.ChainedInterceptor" autowire="byType">
         <property name="interceptors">
             <list>
@@ -421,30 +386,6 @@ This applicationContext contains the definition of the DAOs
         -->
     </bean>
 
-    <bean id="dataAuditRepositoryTarget" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
-        <property name="sessionFactory">
-            <ref local="auditSessionFactory"/>
-        </property>
-    </bean>
-
-    <bean id="dataAuditRepository" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="dataAuditRepositoryTarget"/></property>
-		<property name="interceptorNames">
-			<list>
-				<value>auditHibernateInterceptor</value>
-			</list>
-		</property>
-	</bean>
-
-    <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
-        <property name="auditHistoryDao" ref="auditHistoryDao"/>
-    </bean>
-    
-    <bean id="auditHistoryDao" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao">
-        <property name="sessionFactory" ref="auditSessionFactory"></property>
-    </bean>
-
     <!-- auditing beans definition end here -->
 
     <bean id="gridIdentifierInterceptor" class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor"
@@ -493,16 +434,6 @@ This applicationContext contains the definition of the DAOs
         </property>
     </bean>
 
-     <bean id="auditHibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
-        <property name="sessionFactory">
-             <ref local="auditSessionFactory"/>
-        </property>
-		<property name="flushModeName">
-            <value>FLUSH_EAGER</value>
-        </property>
-    </bean>
-
-	<bean id="auditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor" />
 		
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
 
@@ -531,53 +462,8 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
 
-	<!--  Another Session Factory for Local to Remote Entity Conversion -->
-	<!-- Start -->
-	<bean id="converterSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
-    	<property name="mappingLocations">
-            <list>
-                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
-            </list>
-        </property>
-        <property name="namingStrategy" ref="wonderfulNamingStrategy" />
-        <property name="annotatedClasses">
-        	<list>
-        		<value>gov.nih.nci.cabig.caaers.domain.ConverterOrganization</value>
-        		<value>gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff</value>
-        		<value>gov.nih.nci.cabig.caaers.domain.ConverterInvestigator</value>
-        	</list>
-        </property>
-    </bean>
-    
-    <bean id="converterHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
-        <property name="checkWriteOperations">
-            <value>false</value>
-        </property>
-        <property name="sessionFactory">
-            <ref bean="converterSessionFactory"/>
-        </property>
-    </bean>
-	
-	<bean id="converterDaoTemplate" abstract="true">
-        <property name="hibernateTemplate">
-            <ref local="converterHibernateTemplate"/>
-        </property>
-    </bean>
-	
-	<!-- DAOs -->
-	
-	<bean id="organizationConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao"/>
-	<bean id="researchStaffConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao"/>
-	<bean id="investigatorConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao"/>
-	
-	<!-- End -->
-	
-	
-
-
     <!--- ACTUAL DAOS -->
 
-    <tx:annotation-driven proxy-target-class="true"/>
 
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao">
     	<property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao"/>
@@ -679,132 +565,6 @@ This applicationContext contains the definition of the DAOs
     
     <bean id="rolePrivilegeDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao"/>
     
-    <!-- validator beans starts here-->
-    <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
-
-    <bean id="uniqueNciIdentifierForOrganizationValidator" class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
-        <property name="organizationDao" ref="organizationDao"/>
-        <property name="organizationRepository" ref="organizationRepository"/>
-    </bean>
-
-    <bean id="uniqueIdentifierValidator"
-          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipantValidator">
-        <property name="participantDao" ref="participantDao"/>
-    </bean>
-
-    <bean id="uniqueObjectInCollectionValidator"
-          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator"/>
-
-    <bean id="uniqueIdentifierForStudyValidator"
-          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator">
-        <property name="studyDao" ref="studyDao"/>
-    </bean>
-    
-    <bean id="uniqueResearchStaffEmailAddressValidator"
-          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueResearchStaffEmailAddressValidator">
-        <property name="researchStaffRepository" ref="researchStaffRepository"/>
-    </bean>
-    
-    <!-- validator beans end here-->
-
-    <!-- Repository beans starts here-->
-    <bean id="participantRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository">
-        <property name="participantDao" ref="participantDao"></property>
-    </bean>
-    <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
-        <property name="studyDao" ref="studyDao"></property>
-        <property name="researchStaffDao" ref="researchStaffDao"></property>
-        <property name="siteResearchStaffDao" ref="siteResearchStaffDao"></property>
-        <property name="organizationDao" ref="organizationDao"></property>
-        <property name="organizationRepository" ref="organizationRepository" />
-        <property name="investigatorDao" ref="investigatorDao" />
-        <property name="workflowConfigDao" ref="workflowConfigDao" />
-        <property name="investigationalNewDrugDao" ref="investigationalNewDrugDao" />
-        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
-    </bean>
-
-
-    <bean id="studySearchableAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository" parent="daoTemplate">
-    	<property name="studyRepository" ref="studyRepository"></property>
-    </bean>	
-
-    <bean id="participantAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository" parent="daoTemplate" />
-    
-    <bean id="studySiteAjaxableDomainObjectRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository"
-          parent="daoTemplate">
-    </bean>
-    
-    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
-          lazy-init="true" autowire="byType">
-        <property name="authenticationMode" ref="authenticationMode"/>
-        <property name="mailSender" ref="mailer"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="userDao" ref="userDao" />
-    </bean>
-    
-    <bean id="reportVersionRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository">
-        <property name="reportVersionDao" ref="reportVersionDao"/>
-    </bean>
-    
-    <bean id="expeditedAdverseEventReportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ExpeditedAdverseEventReportRepository" autowire="byType" />
-
-    <bean id="researchStaffRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
-        <property name="siteResearchStaffDao" ref="siteResearchStaffDao"/>
-        <property name="organizationDao" ref="organizationDao"/>
-        <property name="organizationRepository" ref="organizationRepository"/>
-        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
-        <property name="authenticationMode" ref="authenticationMode"/>
-        <property name="researchStaffConverterDao" ref="researchStaffConverterDao"/>
-        <property name="studyRepository" ref="studyRepository"/>
-        <property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
-    </bean>
-	<bean id="investigatorRepository" class="gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl">
-		<property name="authenticationMode" ref="authenticationMode"/>
-		<property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
-		<property name="investigatorDao" ref="investigatorDao" />
-		<property name="investigatorConverterDao" ref="investigatorConverterDao" />
-		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
-		<property name="organizationDao" ref="organizationDao" />
-		<property name="organizationRepository" ref="organizationRepository" />
-	</bean>
-    <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
-        <property name="nowFactory" ref="nowFactory"/>
-        <property name="reportDao" ref="reportDao"/>
-		<property name="reportDefinitionDao" ref="reportDefinitionDao" />
-        <property name="reportFactory" ref="reportFactory"/>
-        <property name="schedulerService" ref="schedulerService"/>
-        <property name="studyDao" ref="studyDao"/>
-		<property name="reportWithdrawalService" ref="reportWithdrawalService" />
-		<property name="configuration" ref="configuration" />
-		<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository" />
-    </bean>
-
-    <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
-        <property name="labLoadDao" ref="labLoadDao"></property>
-    </bean>
-    <bean id="adverseEventRoutingAndReviewRepository" class="gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl">
-    	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
-    	<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
-    	<property name="workflowService" ref="workflowService" />
-    	<property name="reportValidationService" ref="reportValidationService" />
-    	<property name="reportDao" ref="reportDao" />
-    </bean>
-    
-    <bean id="ajaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.AjaxableDomainObjectRepository" parent="daoTemplate" />
-
-    
-    <!-- Repository beans end here-->
-
-
-    <!-- Factor beans starts here-->
-    <bean id="reportFactory" class="gov.nih.nci.cabig.caaers.domain.factory.ReportFactory">
-        <property name="nowFactory" ref="nowFactory"></property>
-    </bean>
-
-    <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
-
 
     <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao"/>
     
@@ -813,34 +573,4 @@ This applicationContext contains the definition of the DAOs
 	<bean id="reportVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao"/>
     <!-- Factory beans end here-->
 
-    <bean id="terminologyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepositoryImpl" autowire="byType"/>
-    
-    <bean id="caaersDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigrator">
-		<property name="jdbcTemplate">
-            <ref bean="jdbcTemplate"/>
-        </property>
-        <property name="properties" ref="caaersDatasourceFactoryBean"/>
-        <property name="userDao" ref="userDao"/>
-        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
-    </bean>
-    
- 	<bean id="caaersDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="caaersDataMigratorTarget"/></property>
-		<property name="interceptorNames">
-			<list>
-				<value>hibernateInterceptor</value>
-			</list>
-		</property>
-	</bean>   
-    
-	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
-		<property name="migrators">
-			<list>
-				<ref bean="caaersDataMigrator"/>
-			</list>
-		</property>
-		<property name="authenticationMode" ref="authenticationMode"/>
-    </bean>
-    
 </beans>

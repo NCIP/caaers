@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ =====================================================================================
+       This XML is defined to store all the data migrator
+ =====================================================================================
+-->
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+        default-lazy-init="true">
+
+
+    <bean id="caaersDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigrator">
+		<property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+    </bean>
+
+ 	<bean id="caaersDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="caaersDataMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
+		<property name="migrators">
+			<list>
+				<ref bean="caaersDataMigrator"/>
+			</list>
+		</property>
+		<property name="authenticationMode" ref="authenticationMode"/>
+    </bean>
+
+</beans>

@@ -13,9 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.Date;
 import java.util.Map;

@@ -3,23 +3,19 @@ package gov.nih.nci.cabig.caaers.web.participant;
 //java imports
 
 import gov.nih.nci.cabig.caaers.dao.*;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +31,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.acegisecurity.userdetails.User;
-import org.acegisecurity.context.SecurityContext;
 
 public class CreateParticipantController extends AutomaticSaveAjaxableFormController<ParticipantInputCommand, Participant, ParticipantDao> {
 

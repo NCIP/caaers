@@ -1,18 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.EpochDao;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import junit.framework.TestCase;
 
 import org.easymock.classextension.EasyMock;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
 public class GenerateBlankFormPdfControllerTest extends WebTestCase {

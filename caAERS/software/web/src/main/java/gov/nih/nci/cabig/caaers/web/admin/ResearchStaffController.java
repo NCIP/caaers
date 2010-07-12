@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
@@ -11,7 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
-import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
@@ -19,7 +18,6 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Locale;

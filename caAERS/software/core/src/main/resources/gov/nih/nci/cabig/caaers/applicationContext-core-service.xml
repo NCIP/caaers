@@ -17,6 +17,9 @@ default-lazy-init="true">
 		<property name="studyMigrator" ref="studyMigrator"/>
 		<property name="studyDao" ref="studyDao"/>
 	</bean>
+
+    <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
+    
 	<bean id="interoperationService" class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl">
 		<property name="aeNotificationFactory" ref="aeNotificationFactory" />
 		<property name="messageBroadcastService" ref="webSSOmessageBroadcastService" />

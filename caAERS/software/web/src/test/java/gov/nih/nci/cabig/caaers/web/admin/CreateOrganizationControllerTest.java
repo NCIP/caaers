@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import junit.framework.TestCase;
 
 import org.easymock.classextension.EasyMock;

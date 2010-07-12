@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ =====================================================================================
+       This XML is defined to store all the Auditing related beans
+ =====================================================================================
+-->
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+        default-lazy-init="true">
+
+    <!-- Auditing related beans definition start here-->
+    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          autowire="byName">
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
+        <property name="namingStrategy" ref="wonderfulNamingStrategy">
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue</value>
+                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent</value>
+            </list>
+        </property>
+    </bean>
+
+     <bean id="auditHibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+        <property name="sessionFactory">
+             <ref local="auditSessionFactory"/>
+        </property>
+		<property name="flushModeName">
+            <value>FLUSH_EAGER</value>
+        </property>
+    </bean>
+
+	<bean id="auditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor" />   
+
+    <bean id="dataAuditRepositoryTarget" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
+        <property name="sessionFactory">
+            <ref local="auditSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="dataAuditRepository" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="dataAuditRepositoryTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>auditHibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+    <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
+        <property name="auditHistoryDao" ref="auditHistoryDao"/>
+    </bean>
+
+    <bean id="auditHistoryDao" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao">
+        <property name="sessionFactory" ref="auditSessionFactory"></property>
+    </bean>
+
+</beans>

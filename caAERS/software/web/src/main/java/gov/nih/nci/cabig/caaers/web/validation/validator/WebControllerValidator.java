@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.validation.validator;
+package gov.nih.nci.cabig.caaers.web.validation.validator;
 
 import javax.servlet.http.HttpServletRequest;
 

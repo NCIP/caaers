@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.validation.validator;
+package gov.nih.nci.cabig.caaers.web.validation.validator;
 
 import gov.nih.nci.cabig.caaers.validation.PropertyUtil;
 import gov.nih.nci.cabig.caaers.validation.annotation.Validator;

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ =====================================================================================
+       This XML is defined to store all the Remote Entity related beans
+ =====================================================================================
+-->
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+        default-lazy-init="true">
+
+
+
+    <bean id="remoteSession" class="com.semanticbits.coppa.infrastructure.RemoteSession" init-method="init">
+         <property name="remoteEntities">
+            <list>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
+				<value>gov.nih.nci.cabig.caaers.domain.RemoteStudy</value>
+            </list>
+         </property>
+         <property name="remoteResolvers">
+            <list>
+                <ref bean="organizationResolver"/>
+                <ref bean="researchStaffResolver"/>
+                <ref bean="investigatorResolver"/>
+                <ref bean="remoteStudyResolver"/>
+            </list>
+         </property>
+         <property name="enableCaching" ref="coppaCache"/>
+		 <property name="enabled" ref="coppaMode" />
+     </bean>
+
+
+	<!--  Another Session Factory for Local to Remote Entity Conversion -->
+	<!-- Start -->
+	<bean id="converterSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+    	<property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
+        <property name="namingStrategy" ref="wonderfulNamingStrategy" />
+        <property name="annotatedClasses">
+        	<list>
+        		<value>gov.nih.nci.cabig.caaers.domain.ConverterOrganization</value>
+        		<value>gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff</value>
+        		<value>gov.nih.nci.cabig.caaers.domain.ConverterInvestigator</value>
+        	</list>
+        </property>
+    </bean>
+
+    <bean id="converterHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="checkWriteOperations">
+            <value>false</value>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="converterSessionFactory"/>
+        </property>
+    </bean>
+
+	<bean id="converterDaoTemplate" abstract="true">
+        <property name="hibernateTemplate">
+            <ref local="converterHibernateTemplate"/>
+        </property>
+    </bean>
+
+	<!-- DAOs -->
+
+	<bean id="organizationConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao"/>
+	<bean id="researchStaffConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao"/>
+	<bean id="investigatorConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao"/>
+
+	<!-- End -->
+</beans>
