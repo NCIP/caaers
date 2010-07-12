@@ -23,6 +23,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
+import org.springframework.mail.MailException;
 
 /**
  * @author Sameer Sawant
@@ -111,10 +112,13 @@ public class ResearchStaffImporter extends Importer{
 	public void save(ImportCommand command, HttpServletRequest request){
 		List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = command.getImportableResearchStaff();
         for (DomainObjectImportOutcome<ResearchStaff> importOutcome : importableResearchStaff) {
-        	//researchStaffDao.save(importOutcome.getImportedDomainObject());
-        	researchStaffRepository.save(importOutcome.getImportedDomainObject(), ResetPasswordController.getURL(request
-                    .getScheme(), request.getServerName(), request.getServerPort(), request
-                    .getContextPath()));
+        	try{
+            	researchStaffRepository.save(importOutcome.getImportedDomainObject(), ResetPasswordController.getURL(request
+                        .getScheme(), request.getServerName(), request.getServerPort(), request
+                        .getContextPath()));
+        	}catch(MailException mEx){
+        		logger.warn("Exception wile sending email to ResearchStaff", mEx);
+        	}
         }
 	}
 }
