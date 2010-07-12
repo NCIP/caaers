@@ -1,11 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
+<csmauthz:accesscontrol var="_isSSIMonCC" scope="request" domainObject="${command.study.studyCoordinatingCenter.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="supplemental_study_information_manager" />
+<csmauthz:accesscontrol var="_isSSIMonFS" scope="request" domainObject="${command.study.primaryFundingSponsor.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="supplemental_study_information_manager" />
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -53,9 +49,16 @@
             },
 
             sitePopulator: function(autocompleter, text) {
-         		createStudy.matchStudyOrganizations(text, ${command.study.id}, function(values) {
-         			autocompleter.setChoices(values)
-         		})
+                <c:if test="${_isSSIMonCC || _isSSIMonFS}">
+                    createStudy.matchStudyOrganizations(text, ${command.study.id}, function(values) {
+                        autocompleter.setChoices(values)
+                    })
+                </c:if>
+                <c:if test="${!_isSSIMonCC && !_isSSIMonFS}">
+                    createStudy.restrictOrganizations(text, false, function(values) {
+                        autocompleter.setChoices(values)
+                    })
+                </c:if>
         	},
         	
         	siteSelector: function(organization) {
