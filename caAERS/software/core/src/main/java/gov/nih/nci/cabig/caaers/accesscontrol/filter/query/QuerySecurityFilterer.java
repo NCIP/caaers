@@ -98,7 +98,7 @@ public class QuerySecurityFilterer {
        query.andWhere(getIndexAlias() + ".loginId = :loginId");
        query.andWhere(getIndexAlias() + ".roleCode in (" + ":roleCodes" +")");
        query.setParameter("loginId", getLoginId());
-       query.setParameter("roleCodes", getRoleCodes() );
+       query.setParameterList("roleCodes", getRoleCodes() );
     }
 
     /**
