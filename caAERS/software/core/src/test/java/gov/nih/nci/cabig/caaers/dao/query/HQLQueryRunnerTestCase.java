@@ -4,13 +4,10 @@ import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: Biju Joseph
@@ -297,7 +294,83 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
     	ResearchStaff rs = researchStaffDao.getByLoginId("whosbaum@yahoo.com");
     	securityFacade.provisionUser(rs);
     }
-    
+
+
+    public void testHQL(){
+
+
+        ArrayList<Integer> orgIds = new ArrayList<Integer>();
+        //orgIds.add(107068);
+        orgIds.add(104522);
+//
+        StringBuilder hql = new StringBuilder()
+//                .append(
+//                "select si.researchStaff.id from SiteResearchStaff si"
+//                ).append(
+//                " union ")
+                .append("select distinct si.researchStaff.id from SiteResearchStaff si where si.organization.id in (" +
+                        " select distinct ss.organization.id from StudyOrganization so , StudySite ss " +
+                        " where so.study = ss.study and so.organization.id in (:ORG_IDS)" +
+                        "  ) or si.organization.id in (:ORG_IDS)");
+
+
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("ORG_IDS", orgIds);
+        
+        List<String> resultList = (List<String>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new HashSet(resultList));
+    }
+
+
+
+
+    public void testHQL2(){
+
+        ArrayList<Integer> orgIds = new ArrayList<Integer>();
+       // orgIds.add(102452);
+        orgIds.add(104522);
+        String ORG_INDEX_BASE_QUERY = "select oi.organization.id from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
+        StringBuilder hql = new StringBuilder().append("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a ")
+        .append("join a.studySite ss where ss.study = so.study  ")
+        .append("and ( ss.organization.id  in ( ").append(ORG_INDEX_BASE_QUERY).append(" ) ")
+        .append("or ( so.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(") and so.class in ('SFS', 'SCC') ) )");
+
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("LOGIN_ID", "sponsor");
+        query.getParameterMap().put("ROLE_CODE", 0) ;
+
+        List<String> resultList = (List<String>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new TreeSet(resultList));
+    }
+
+
+
+
+    public void testHQL3(){
+
+        ArrayList<Integer> orgIds = new ArrayList<Integer>();
+       // orgIds.add(102452);
+        orgIds.add(104522);
+        String ORG_INDEX_BASE_QUERY = "select oi.organization.id from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
+        String STUDY_INDEX_BASE_QUERY = "select sti.study.id from StudyIndex sti where sti.roleCode = :ROLE_CODE and sti.loginId = :LOGIN_ID";
+
+        StringBuilder hql = new StringBuilder().append("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a ")
+        .append("join a.studySite ss where ss.study = so.study  ")
+        .append("and ss.study.id in (").append(STUDY_INDEX_BASE_QUERY).append(") ")
+        .append("and ( ss.organization.id  in ( ").append(ORG_INDEX_BASE_QUERY).append(" ) ")
+        .append("or ( so.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(") and so.class in ('SFS', 'SCC') ) )");
+
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("LOGIN_ID", "sponsor");
+        query.getParameterMap().put("ROLE_CODE", 0) ;
+
+        List<String> resultList = (List<String>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new TreeSet(resultList));
+    }
+
 
     private List<Integer> orgIds(){
        return orgIds(1, 5000);
