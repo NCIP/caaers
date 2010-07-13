@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersDaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 
@@ -23,7 +24,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	}
 	
 	public void testGetAccessibleOrganizationIds() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln2");
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln2");
 		assertEquals(2,list.size());
 	}
 	public void testGetProtectionGroupRoleContextForUser() throws Exception {
@@ -59,16 +60,16 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	
 
 	public void testGetAccessibleOrganizationIdsUserWithAllOrgs() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln1");
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln1");
 		assertEquals(3,list.size());
 	}
 	
 	public void testGetAccessibleStudyIds() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleStudyIds("ln2");
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("ln2");
 		assertEquals(2,list.size());
 	}
 	public void testGetAccessibleStudyIdsUserWithAllStudies() {
-		List<Integer> list = caaersSecurityFacade.getAccessibleStudyIds("ln1");
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("ln1");
 		assertEquals(0,list.size());
 		
 		list = caaersSecurityFacade.getAccessibleStudyIds("ln");
