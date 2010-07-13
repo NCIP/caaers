@@ -8,6 +8,9 @@ import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.userdetails.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * @author Biju Joseph
@@ -83,6 +86,34 @@ public final class SecurityUtils {
 		**/
 		return authentication.getAuthorities();
 	}
+
+    /**
+     * Will return the roles of the logged-in user. 
+     * @return
+     */
+    public static UserGroupType[] getRoles(){
+        return getRoles(getAuthentication());
+    }
+
+    /**
+     * Will return the roles of the logged-in user. 
+     * @param auth - Authentication
+     * @return
+     */
+    public static UserGroupType[] getRoles(Authentication auth){
+
+        List<UserGroupType> roles = new ArrayList<UserGroupType>();
+        GrantedAuthority[] authorities = getGrantedAuthorities(auth);
+        if(authorities != null){
+           for(GrantedAuthority ga : authorities){
+              for(UserGroupType role : UserGroupType.values()){
+                if (ga.getAuthority().equals(role.getSecurityRoleName())) roles.add(role);
+              }
+           }
+        }
+
+        return roles.toArray(new UserGroupType[0]);
+    }
 
     /**
      * 

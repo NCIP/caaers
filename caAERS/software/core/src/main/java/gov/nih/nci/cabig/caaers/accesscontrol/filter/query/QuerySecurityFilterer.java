@@ -1,12 +1,16 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.filter.query;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class will take care of applying the filter based on the indexes. 
@@ -92,7 +96,9 @@ public class QuerySecurityFilterer {
         //issue joins with index and extra conditions.
        query.join(getIndexAlias() + "." + getEntityAssociation() + " " +  entityAlias, 0);
        query.andWhere(getIndexAlias() + ".loginId = :loginId");
+       query.andWhere(getIndexAlias() + ".roleCode in (" + ":roleCodes" +")");
        query.setParameter("loginId", getLoginId());
+       query.setParameter("roleCodes", getRoleCodes() );
     }
 
     /**
@@ -101,6 +107,15 @@ public class QuerySecurityFilterer {
      */
     public String getLoginId(){
         return SecurityUtils.getUserLoginName();
+    }
+
+    public List<Integer> getRoleCodes(){
+       List<Integer> roleCodes = new ArrayList<Integer>();
+       roleCodes.add(0);
+       for(UserGroupType role  : SecurityUtils.getRoles()){
+           roleCodes.add(role.getCode());
+       }
+       return roleCodes;
     }
 
     /**
