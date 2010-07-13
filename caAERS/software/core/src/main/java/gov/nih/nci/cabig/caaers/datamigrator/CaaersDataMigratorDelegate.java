@@ -10,7 +10,6 @@ import java.util.List;
 public class CaaersDataMigratorDelegate {
 
 	private List<CaaersDataMigrator> migrators;
-	private String authenticationMode="local";
 	
 	/**
 	 * 
@@ -18,10 +17,6 @@ public class CaaersDataMigratorDelegate {
 	 */
 	public void doMigrate() throws Exception{
 					
-		if ("webSSO".equalsIgnoreCase(authenticationMode)) {
-			return;
-		}
-		
 		for(CaaersDataMigrator migrator : migrators){
 			migrator.migrateData();
 		}
@@ -33,9 +28,5 @@ public class CaaersDataMigratorDelegate {
 
 	public void setMigrators(List<CaaersDataMigrator> migrators) {
 		this.migrators = migrators;
-	}
-
-	public void setAuthenticationMode(String authenticationMode) {
-		this.authenticationMode = authenticationMode;
 	}
 }

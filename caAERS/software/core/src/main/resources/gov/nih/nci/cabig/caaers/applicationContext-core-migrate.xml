@@ -21,6 +21,7 @@
         <property name="properties" ref="caaersDatasourceFactoryBean"/>
         <property name="userDao" ref="userDao"/>
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="authenticationMode" ref="authenticationMode"/>
     </bean>
 
  	<bean id="caaersDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
@@ -39,10 +40,7 @@
 				<ref bean="caaersDataMigrator"/>
 			</list>
 		</property>
-		<property name="authenticationMode" ref="authenticationMode"/>
     </bean>
-
-
 
     <!-- Context refresh event is defined here -->
 

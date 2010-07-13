@@ -28,6 +28,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class CaaersDataMigrator {
 
 	protected final Log log = LogFactory.getLog(getClass());
+	private String authenticationMode="local";
     private JdbcTemplate jdbcTemplate;
     private UserDao userDao;
     private CaaersSecurityFacade caaersSecurityFacade;
@@ -60,10 +61,14 @@ public class CaaersDataMigrator {
  			//Migrate SP role codes
  			migrateStudyPersonnelRole();
  			deleteUnusedStudyPersonnel();
- 			//Provision Instances for existing users.  
- 			provisionExistingUsers();
- 			log.debug("Migration complete");
+ 			//Provision Instances for existing users.
+ 			if ("webSSO".equalsIgnoreCase(authenticationMode)) {
+ 				//do nothing
+    		}else{
+    			provisionExistingUsers();
+    		}
      		postMigrate();
+     		log.debug("Migration complete");
      	 }else{
      		 log.debug("Migration not required");
      	 }
@@ -577,5 +582,10 @@ public class CaaersDataMigrator {
 	@Required
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
+	}
+
+	@Required
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
 	}
 }
