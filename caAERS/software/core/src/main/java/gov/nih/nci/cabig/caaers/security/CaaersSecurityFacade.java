@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.security;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
@@ -65,14 +66,14 @@ public interface CaaersSecurityFacade {
      * @param loginId - The loginId
      * @return
      */
-    List<Integer> getAccessibleStudyIds(String loginId);
+    List<IndexEntry> getAccessibleStudyIds(String loginId);
 
     /**
      * Will the caAERS database IDs of Organization that one can access. 
      * @param loginId - The loginId
      * @return
      */
-    List<Integer> getAccessibleOrganizationIds(String loginId);
+    List<IndexEntry> getAccessibleOrganizationIds(String loginId);
 
 	/**
 	 * Obtains roles of the user with the given loginId on the given organization.

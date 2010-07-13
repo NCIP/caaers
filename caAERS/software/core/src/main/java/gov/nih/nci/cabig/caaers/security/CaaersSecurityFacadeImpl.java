@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.utils.el.EL;
@@ -36,9 +37,11 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.acegisecurity.Authentication;
@@ -491,70 +494,100 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	}
     	return contexts;
     }
-    
-    /**
-     * Will the caAERS database IDs of Study that one can access.
-     *
-     * @param userName - The loginId
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-	public List<Integer> getAccessibleStudyIds(String userName) {
+    public List<IndexEntry> getAccessibleStudyIds(String userName) {
+		//		get csm user DB id . 
     	String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
-    	List<Integer> resultList = new ArrayList<Integer>();
-    	try {
-			Set<ProtectionGroupRoleContext> contexts = this.getProtectionGroupRoleContextForUser(loginId);
+    	Map<UserGroupType, List<Integer>> accessibleStudyIds = new HashMap<UserGroupType , List<Integer>>();
 
+    	try {
+			Set<ProtectionGroupRoleContext> contexts = getProtectionGroupRoleContextForUser(loginId);
 			
-			List identifiers = new ArrayList();
-			String hql = "";
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
-				String roleName = getRoleName(context);
-				// if user has global role , no need index data for that context . 
-				if (!SecurityUtils.isScoped(roleName)) {
-					continue;
-				}				
-				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
+				List<String> roles = getRoles(context);
+				for (String roleName:roles) {
 				
-				// if STUDY_PE , that means user have access to all studies (all means not all , he has access to studies 
-				// on organizations which he belongs to as this role on that organization ) 
-				
-				if (roleName != null && caaersEquivalentName.equals(STUDY_PE)) {
-					// get acessible organizations with above role , and then associated Studies
-					resultList = getStudyIdsByRoleName(loginId, roleName);
-				} else {
-					SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
-					// if user is study scoped 
-					if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-						String[] tokens = caaersEquivalentName.split("\\.");
-						if (tokens.length == 2) {
-							if (tokens[0].equals(STUDY_PE)) {
-								identifiers.add(tokens[1]);
-							}
-						}
-					} else if (suiteRole.isSiteScoped())
-						//if the user is site scoped , no study information is provisioned .. only Org is provisioned and he has access to all srtudies for those orgs 
-						//get acessible organization with above role, and then associated Studies
-						resultList = getStudyIdsByRoleName(loginId, roleName);
+					// if user has global role , no need index data for that context . 
+					if (!SecurityUtils.isScoped(roleName)) {
+						continue;
 					}
 					
+					UserGroupType userGroupType = UserGroupType.valueOf(roleName);
+					List<Integer> ids = accessibleStudyIds.get(userGroupType);
+					String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
+					
+					
+					// if STUDY_PE , that means user have access to all studies (all means not all , he has access to studies 
+					// on organizations which he belongs to as this role on that organization ) 
+					
+					if (roleName != null && caaersEquivalentName.equals(STUDY_PE)) {
+						// get acessible organizations with above role , and then associated Studies
+						List<Integer>  studyIds= getStudyIdsByRoleName(loginId, roleName);
+						if (ids == null) {
+							accessibleStudyIds.put(userGroupType, studyIds);
+						} else {
+							ids.addAll(studyIds);
+							accessibleStudyIds.put(userGroupType, ids);
+						}
+					} else {
+						SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
+						// if user is study scoped 
+						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
+							List identifiers = new ArrayList();
+							String[] tokens = caaersEquivalentName.split("\\.");
+							if (tokens.length == 2) {
+								if (tokens[0].equals(STUDY_PE)) {
+									identifiers.add(tokens[1]);
+								}
+							}
+							if (identifiers.size() > 0) {
+								// get caAERS IDs from Studies table , primary key ..
+								String hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
+								HQLQuery query = new HQLQuery(hql.toString());
+								query.setParameterList("identifiers", identifiers);
+								List<Integer>  studyIds= (List<Integer>) search(query);
+								if (ids == null) {
+									accessibleStudyIds.put(userGroupType, studyIds);
+								} else {
+									ids.addAll(studyIds);
+									accessibleStudyIds.put(userGroupType, ids);
+								}							
+							}
+						} else if (suiteRole.isSiteScoped()) {
+							//if the user is site scoped , no study information is provisioned .. only Org is provisioned and he has access to all srtudies for those orgs 
+							//get acessible organization with above role, and then associated Studies
+							List<Integer>  studyIds = getStudyIdsByRoleName(loginId, roleName);
+							if (ids == null) {
+								accessibleStudyIds.put(userGroupType, studyIds);
+							} else {
+								ids.addAll(studyIds);
+								accessibleStudyIds.put(userGroupType, ids);
+							}
+						}
+					}
 				}
+			}	
 
-				if (identifiers.size() > 0) {
-					// get caAERS IDs from Studies table , primary key ..
-					hql = " select distinct s.id from Study s join s.identifiers as identifier where identifier.value in (:identifiers)";
-					HQLQuery query = new HQLQuery(hql.toString());
-					query.setParameterList("identifiers", identifiers);
-					resultList.addAll((List<Integer>) search(query));
-				}
 		} catch (CSObjectNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return resultList ;  
+
+		   List<IndexEntry> list = new ArrayList<IndexEntry>();
+		   Set keys = accessibleStudyIds.keySet();
+	       Iterator itr = keys.iterator();
+	       while (itr.hasNext()) {
+	    	   UserGroupType key = (UserGroupType)itr.next();
+	    	   List<Integer> pIds = accessibleStudyIds.get(key);
+	    	   if(pIds != null && !accessibleStudyIds.isEmpty()){
+	               IndexEntry ie = new IndexEntry(key);
+	               ie.setEntityIds(pIds);
+	               list.add(ie);
+	           }
+	       }
+	       return list;
     }
+
 
 	/**
 	 * @param loginId
@@ -581,56 +614,77 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		return resultList;
 	}
 
-
-    /**
-     * Will the caAERS database IDs of Organization that one can access.
-     *
-     * @param userName - The loginId
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-	public List<Integer> getAccessibleOrganizationIds(String userName) {
-    	//get csm user DB id . 
+	public List<IndexEntry> getAccessibleOrganizationIds(String userName) {
+		//		get csm user DB id . 
     	String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
+    	Map<UserGroupType, List<Integer>> accessibleOrganizationIds = new HashMap<UserGroupType , List<Integer>>();
 
-    	List<Integer> resultList = new ArrayList<Integer>();
     	try {
 			Set<ProtectionGroupRoleContext> contexts = getProtectionGroupRoleContextForUser(loginId);
-			List identifiers = new ArrayList();
-
+			
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
-				String roleName = getRoleName(context);
-				// if user has global role , no need index data for that context . 
-				if (!SecurityUtils.isScoped(roleName)) {
-					continue;
-				}
-
-				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
-
-				if (caaersEquivalentName.equals(ORGANIZATION_PE)) {
-					return getAllOrganizationIdsFromDB();
-				} else {
-					//parse name ..
-					String[] tokens = caaersEquivalentName.split("\\.");
-					if (tokens.length == 2) {
-						if (tokens[0].equals(ORGANIZATION_PE)) {
-							identifiers.add(tokens[1]);
-						}
+				List<String> roles = getRoles(context);
+				for (String roleName:roles) {
+				
+					// if user has global role , no need index data for that context . 
+					if (!SecurityUtils.isScoped(roleName)) {
+						continue;
 					}
+					
+					UserGroupType userGroupType = UserGroupType.valueOf(roleName);
+					List<Integer> ids = accessibleOrganizationIds.get(userGroupType);
+					String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
+	
+					if (caaersEquivalentName.equals(ORGANIZATION_PE)) {
+						// all orgs , no no need to get the existing list and add .. just override it 
+						accessibleOrganizationIds.put(userGroupType, getAllOrganizationIdsFromDB());
+					} else {
+						//parse name ..
+						String[] tokens = caaersEquivalentName.split("\\.");
+						List identifiers = new ArrayList();
+						if (tokens.length == 2) {
+							if (tokens[0].equals(ORGANIZATION_PE)) {
+								identifiers.add(tokens[1]);
+							}
+						}
+						// get caAERS IDs from Organizations table , primary key ..
+						if (identifiers.size() > 0) {
+							List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(identifiers);
+							if (orgIds.size() > 0) {
+								if (ids == null){
+									accessibleOrganizationIds.put(userGroupType, orgIds);
+								} else {
+									ids.addAll(orgIds);
+									accessibleOrganizationIds.put(userGroupType, ids);
+								}
+							}
+						}
+	
+					}
+				
 				}
+				
 			}
-			// get caAERS IDs from Organizations table , primary key ..
-			if (identifiers.size() > 0) {
-				return getOrganizationIdsByIdentifiersFromDB(identifiers);
-			}
+
 		} catch (CSObjectNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return resultList ;  
-    }
+		   List<IndexEntry> list = new ArrayList<IndexEntry>();
+		   Set keys = accessibleOrganizationIds.keySet();
+	       Iterator itr = keys.iterator();
+	       while (itr.hasNext()) {
+	    	   UserGroupType key = (UserGroupType)itr.next();
+	    	   List<Integer> pIds = accessibleOrganizationIds.get(key);
+	    	   if(pIds != null && !accessibleOrganizationIds.isEmpty()){
+	               IndexEntry ie = new IndexEntry(key);
+	               ie.setEntityIds(pIds);
+	               list.add(ie);
+	           }
+	       }
+	       return list;
+	}
 
     /**
      * 
@@ -646,25 +700,28 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			for (ProtectionGroupRoleContext context : contexts) {
 				ProtectionGroup pe = context.getProtectionGroup();
 				String caaersEquivalentName = pe.getProtectionGroupName();// call SecurityObjectIdGenerator.toCaaersObjectName
-				String roleName = getRoleName(context);
-				// check user has access to all orgs AS this role .
-				if (roleName != null && roleName.equals(roleNameToCheck) && caaersEquivalentName.equals(ORGANIZATION_PE)) {
-					// here we need all orgs in DB , instead of getting all orgs just fabricate an org id to indicate all ORGS .(ALL_ORGS_FABRICATED_ID)
-					List<Integer> allIds = new ArrayList<Integer>();
-					allIds.add(ALL_IDS_FABRICATED_ID);
-					return allIds;
-					//return getAllOrganizationIdsFromDB();
-					
-				} else {
-					//parse name ..
-					String[] tokens = caaersEquivalentName.split("\\.");
-					if (tokens.length == 2) {
-						// check if user has access to this org AS this role . 
-						if (tokens[0].equals(ORGANIZATION_PE) && roleName.equals(roleNameToCheck)) {
-							identifiers.add(tokens[1]);
+				List<String> roles = getRoles(context);
+				for (String roleName:roles) {
+					if (roleName != null && roleName.equals(roleNameToCheck) && caaersEquivalentName.equals(ORGANIZATION_PE)) {
+						// here we need all orgs in DB , instead of getting all orgs just fabricate an org id to indicate all ORGS .(ALL_ORGS_FABRICATED_ID)
+						List<Integer> allIds = new ArrayList<Integer>();
+						allIds.add(ALL_IDS_FABRICATED_ID);
+						return allIds;
+						//return getAllOrganizationIdsFromDB();
+						
+					} else {
+						//parse name ..
+						String[] tokens = caaersEquivalentName.split("\\.");
+						if (tokens.length == 2) {
+							// check if user has access to this org AS this role . 
+							if (tokens[0].equals(ORGANIZATION_PE) && roleName.equals(roleNameToCheck)) {
+								identifiers.add(tokens[1]);
+							}
 						}
-					}
+					}					
 				}
+				// check user has access to all orgs AS this role .
+				
 			}
 			if (identifiers.size() > 0) {
 				return getOrganizationIdsByIdentifiersFromDB(identifiers);
@@ -675,15 +732,16 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		}
     	return new ArrayList<Integer>();
     }
-    private String getRoleName(ProtectionGroupRoleContext context) {
+    private List<String> getRoles(ProtectionGroupRoleContext context) {
+    	List<String> rolesList = new ArrayList<String>();
     	Set roles = context.getRoles();
 		Iterator itr = roles.iterator();
 
 		while (itr.hasNext()) {
 			Role role = (Role)itr.next();
-			return  role.getName();
+			rolesList.add(role.getName());
 		}
-		return null;
+		return rolesList;
     }
     
     private List<Integer> getAllOrganizationIdsFromDB() {
@@ -736,4 +794,5 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public CSMUserRepositoryImpl getCsmUserRepository() {
 		return csmUserRepository;
 	}
+
 }
