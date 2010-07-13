@@ -87,9 +87,12 @@ public class EditStudyController extends StudyController<StudyCommand> {
                 flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
 
 
-                if(cmd.isDataEntryComplete() && (cmd.getStudyQAManager() || cmd.getSupplementalInfoManager()) || (!cmd.isDataEntryComplete() && cmd.getStudyCreator())) {
-                    flow.addTab(new DetailsTab());
-                }
+				if (cmd.getSupplementalInfoManager()
+						|| (cmd.isDataEntryComplete() && cmd
+								.getStudyQAManager())
+						|| (!cmd.isDataEntryComplete() && cmd.getStudyCreator())) {
+					flow.addTab(new DetailsTab());
+				}
 
                 if(cmd.getSupplementalInfoManager()){
                     flow.addTab(new StudyTherapiesTab());
