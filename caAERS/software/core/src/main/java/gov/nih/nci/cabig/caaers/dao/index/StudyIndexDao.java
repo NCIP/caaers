@@ -24,17 +24,17 @@ public class StudyIndexDao extends AbstractIndexDao {
     
     @Override
     @Transactional(readOnly = false)
-    public int[] updateIndex(final List pIds , final String userName){
-    	String sql = "insert into study_index (login_id,study_id) "
-            + "values (?,?)";
+    public int[] updateIndex(final List pIds , final String userName, final Integer roleCode){
+    	String sql = "insert into study_index (login_id,study_id,role_code) "
+            + "values (?,?,?)";
     	
         String dataBase = "";
     	if(getProperties().getProperty(DB_NAME) != null){
     		dataBase = getProperties().getProperty(DB_NAME);
     	}
     	if(dataBase.equals(ORACLE_DB))
-    		sql = "insert into study_index (id,login_id,study_id) "
-                + "values (seq_study_index_id.NEXTVAL,?,?)";
+    		sql = "insert into study_index (id,login_id,study_id,role_code) "
+                + "values (seq_study_index_id.NEXTVAL,?,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;
@@ -48,6 +48,7 @@ public class StudyIndexDao extends AbstractIndexDao {
             	Integer pId = (Integer) pIds.get(index);
             	ps.setString(1, userName);
                 ps.setInt(2, pId);
+                ps.setInt(3, roleCode);
             }
 
 
