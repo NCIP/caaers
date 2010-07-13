@@ -112,7 +112,7 @@
               <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
           </aop:aspect>
         -->
-        
+        <!--
         <aop:aspect ref="refreshIndexAspect">
             <aop:pointcut id="executionOfIndexRefreshAfterUpdate"
                     expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
@@ -121,7 +121,7 @@
                              "/>
             <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>
         </aop:aspect>
-        
+        -->
         <aop:aspect ref="querySecurityFilterAspect">
             <aop:pointcut id="QuerySecurityFilterAspectPointCut"
                           expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
