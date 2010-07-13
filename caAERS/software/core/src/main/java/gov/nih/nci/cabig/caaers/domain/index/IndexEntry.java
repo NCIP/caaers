@@ -21,6 +21,7 @@ public class IndexEntry {
     public IndexEntry(UserGroupType role){
 
         entityIds = new ArrayList<Integer>();
+        this.role = role;
     }
    
     public Integer getRoleCode(){
