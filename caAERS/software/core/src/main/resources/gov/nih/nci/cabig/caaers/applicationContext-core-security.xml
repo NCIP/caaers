@@ -112,16 +112,16 @@
               <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
           </aop:aspect>
         -->
-        <!--
-                <aop:aspect ref="refreshIndexAspect">
-                    <aop:pointcut id="executionOfIndexRefreshAfterUpdate"
-                            expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
-                                     || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
-                                     || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
-                                     "/>
-                    <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>
-                </aop:aspect>
-        -->
+        
+        <aop:aspect ref="refreshIndexAspect">
+            <aop:pointcut id="executionOfIndexRefreshAfterUpdate"
+                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
+                             || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
+                             || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
+                             "/>
+            <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>
+        </aop:aspect>
+        
         <aop:aspect ref="querySecurityFilterAspect">
             <aop:pointcut id="QuerySecurityFilterAspectPointCut"
                           expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
@@ -131,6 +131,7 @@
                     			|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
 	       						|| execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
 	       						|| execution(* gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao.search*(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
+	       						|| execution(* gov.nih.nci.cabig.caaers.dao.ResearchStaffDao.getSiteResearchStaff(gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery)) and args(qry)
                     			"/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>
         </aop:aspect>
@@ -459,7 +460,8 @@
                        value-ref="organizationQuerySecurityFilterer"/>
                 <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery"
                        value-ref="reportVersionQuerySecurityFilterer"/>
-
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery"
+                       value-ref="siteResearchStaffQuerySecurityFilterer"/>
             </map>
         </property>
     </bean>
@@ -486,7 +488,11 @@
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport"
           p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
-
+    <bean id="siteResearchStaffQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="researchStaff" p:entityName="ResearchStaff"
+          p:indexName="ResearchStaffIndex" p:indexAlias="rsIndx"/>
+          
     <!-- Common API for provisioning into csm -->
     <bean id="provisioningSessionFactory" class="gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory">
         <property name="authorizationManager" ref="csmUserProvisioningManager"/>
