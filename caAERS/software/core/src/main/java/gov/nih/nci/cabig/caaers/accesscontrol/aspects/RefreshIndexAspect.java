@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 
 import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 
@@ -23,16 +22,16 @@ public class RefreshIndexAspect {
 	public void updateIndexByUserName(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication != null) {
-			String userName = SecurityUtils.getUserLoginName(authentication);
+			//String userName = SecurityUtils.getUserLoginName(authentication);
 			// no need to refresh index for super user ..
 
-            if(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user)) return;
+           // if(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user)) return;
 
             //NOTE : BJ - FOR GLOBAL USERS ALSO WE SHOULD NOT INDEX (AS THEY CAN SEE EVERY THING)
 
             // proceed for other users.
-
-				filteredDataLoader.updateIndexByUserName(userName);
+				System.out.println(" UPDATING INDEX ......");
+				filteredDataLoader.updateIndexByUserName(authentication);
 				
 				/*
 				for (IdFetcher idFetcher : idFetchers) {

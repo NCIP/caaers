@@ -8,44 +8,89 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 /**
- * Will return the ID of ExpeditedAdverseEventReport which the logged-in user have access.
- * This implementation doesnt check for user or access permissions , This implementation relies on authorized 
- * studies and subjects which are loaded prior to this index . 
- * @author Biju Joseph
+ * Will find the ExpeditedAdverseEventReport a logged-in person has access to.
+ * This will work-off the ReportingPeriod Index.
+ *
+ * Assumptions:-
+ * =============
+ *
+ *  The roles requiring subject Indexing are :-
+ * Site Scoped Roles:
+ *     NONE
+ *
+ * Study Scoped Roles:
+        UserGroupType.ae_reporter,
+        UserGroupType.ae_expedited_report_reviewer,
+        UserGroupType.ae_study_data_reviewer,
+        UserGroupType.data_reader,
+        UserGroupType.data_analyst
+ *
+ * The Reporting Period Index is available at the time for the given login-Id
+ *
+ *
+ *
  * @author Srini Akkala
+ * @author Biju Joseph
+ *
  */
+
 public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
 
-    public List<Integer> fetch(ResearchStaff rs){
-         return fetchIds(rs.getLoginId());
+
+
+    //the query
+    private final String siteScopedHQL;
+    private final String studyScopedHQL;
+
+    public CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject(){
+
+        //site query
+       siteScopedHQL = null;
+
+       StringBuilder query = new StringBuilder();
+
+        //study query
+       query.append("select distinct r.id from  ReportingPeriodIndex ri ")
+        .append(" join ri.reportingPeriod rp  ")
+        .append(" join rp.aeReports r ")
+        .append(" where ri.roleCode = :ROLE_CODE ")
+        .append(" and ri.loginId = :LOGIN_ID");
+
+        studyScopedHQL = query.toString();
+
     }
 
-    public List<Integer> fetch(Investigator inv){
-         return fetchIds(inv.getLoginId());
-    }
- 
     /**
-     * The reports that are belonging to subjects the user can access, can be accessed by the user.
-     * studies and subjects cab be accessed by this user are already loaded into StudyIndex and ParticipantIndex
-     * So , This query joins with those indexes . 
-     * 
+     * All the Site scoped roles that require subject indexing
      * @return
      */
-    private List<Integer> fetchIds(String loginId){
-    	StringBuilder hql = new StringBuilder("select distinct r.id from  ParticipantIndex pi " )
-    	.append(" join pi.participant p ")
-    	.append(" join p.assignments spa ")
-    	.append(" join spa.reportingPeriods rp ")
-        .append(" join rp.aeReports r ")
-        .append(" where pi.loginId = :loginId ");
-		
-		HQLQuery query = new HQLQuery(hql.toString());
-		query.getParameterMap().put("loginId", loginId);
+    public UserGroupType[] getApplicableSiteScopedRoles(){
+        return new UserGroupType[]{};
+    }
 
-    	List<Integer> resultList = (List<Integer>) search(query);
-        return resultList;
+
+    /**
+     * All the Study scoped roles that require subject indexing
+     * @return
+     */
+    public UserGroupType[] getApplicableStudyScopedRoles(){
+        return new UserGroupType[]{
+                UserGroupType.ae_reporter,
+                UserGroupType.ae_expedited_report_reviewer,
+                UserGroupType.ae_study_data_reviewer,
+                UserGroupType.data_reader,
+                UserGroupType.data_analyst};
+    }
+
+    public String getSiteScopedHQL(){
+        return siteScopedHQL;
+    }
+
+    public String getStudyScopedHQL(){
+        return studyScopedHQL;
     }
 
     

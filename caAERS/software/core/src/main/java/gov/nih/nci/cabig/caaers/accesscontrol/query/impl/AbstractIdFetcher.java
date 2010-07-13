@@ -7,12 +7,17 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,11 +34,63 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  * @author: Biju Joseph
  */
 public abstract class AbstractIdFetcher extends HibernateDaoSupport implements IdFetcher {
+
     protected final Log log = LogFactory.getLog(AbstractIdFetcher.class);
 
     protected CSMUserRepository csmUserRepository;
     
     protected CaaersSecurityFacade caaersSecurityFacade;
+    protected final String ORG_INDEX_BASE_QUERY = "select oi.organization.id from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
+    protected final String STUDY_INDEX_BASE_QUERY = "select sti.study.id from StudyIndex sti where sti.roleCode = :ROLE_CODE and sti.loginId = :LOGIN_ID";
+
+    /**
+     * Will return the Site scoped HQL query
+     * @return
+     */
+    public abstract String getSiteScopedHQL();
+
+    /**
+     * Will return the Study scoped HQL query
+     * @return
+     */
+    public abstract String getStudyScopedHQL();
+
+
+    /**
+     * All the Site scoped roles that require subject indexing
+     * @return
+     */
+    public abstract UserGroupType[] getApplicableSiteScopedRoles();
+
+
+    /**
+     * All the Study scoped roles that require subject indexing
+     * @return
+     */
+    public abstract UserGroupType[] getApplicableStudyScopedRoles();
+
+    /**
+     * Will fetch all the accessible subjectIds per-role
+     * @param loginId - username
+     * @return
+     */
+	public List fetch(String loginId){
+
+        List<IndexEntry> list = new ArrayList<IndexEntry>();
+
+        //for all site scoped roles
+        for(UserGroupType role : getApplicableSiteScopedRoles()){
+            list.add(fetch(loginId, role, getSiteScopedHQL()));
+        }
+
+        //for all study scoped roles
+        for(UserGroupType role : getApplicableStudyScopedRoles()){
+            list.add(fetch(loginId, role, getStudyScopedHQL()));
+        }
+
+        return list;
+	}
+
 
     /**
      * Will fetch the user identified by the loginId. 
@@ -76,13 +133,33 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     }
 
 
-
     /**
-     * Will return a list consisting of ID of subject that could be accessed by the loginId
-     * @param loginId - username
+     * Will execute the query and will return an IndexEntry
+     * @param loginId
+     * @param role
+     * @param hql
      * @return
      */
-	public  List fetch(String loginId) {
+    protected IndexEntry fetch(String loginId, UserGroupType role, String hql){
+       IndexEntry entry = new IndexEntry(role);
+       HQLQuery query = new HQLQuery(hql);
+       query.getParameterMap().put("LOGIN_ID", loginId);
+       query.getParameterMap().put("ROLE_CODE", role.getCode()) ;
+
+       List<Integer> resultList = (List<Integer>) search(query);
+       entry.setEntityIds(resultList);
+
+       if(log.isDebugEnabled()){
+           log.debug("HQL : " + hql + "\r\n [" + loginId + ", " + role.name() + "] fetched : " + String.valueOf(resultList));
+       }
+
+       return entry;
+    }
+
+    
+
+   /*
+	public  List fetchOld(String loginId) {
 
         List<Integer> participantIdList = null;
 
@@ -102,7 +179,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
        return participantIdList;
 	}
-
+*/
     /**
      * Will fetch Ids of entities accessible to investigators
      * @param inv - An investigator
@@ -135,6 +212,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         return null;
     }
 
+/*
     protected List<Integer> getAccesibleOrganizationsIncludingStudySites(String loginId){
     	StringBuilder hql = new StringBuilder("select distinct oi.organization.id from  OrganizationIndex oi");
 		hql.append(" where oi.loginId = :loginId ");
@@ -171,6 +249,8 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         }
         return organizationIds;
     }
+*/    
+
 
     public CSMUserRepository getCsmUserRepository() {
         return csmUserRepository;
@@ -188,6 +268,4 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 		return caaersSecurityFacade;
 	}
 
-    
-    
 }

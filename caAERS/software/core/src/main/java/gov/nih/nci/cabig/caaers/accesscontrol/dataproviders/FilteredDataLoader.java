@@ -1,13 +1,20 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.dataproviders;
 
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.acegisecurity.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Will take care of updating an index
@@ -19,11 +26,12 @@ public class FilteredDataLoader {
 	private List<IdFetcher> idFetchers = new ArrayList<IdFetcher>();
 	private LinkedHashMap idFetcherIndexDaoMap;
 
-	public void updateIndexByUserName(String userName){
+	public void updateIndexByUserName(Authentication authentication){
 		for (IdFetcher idFetcher : idFetchers) {
-			List listOfIds = idFetcher.fetch(userName);
+			String userName = SecurityUtils.getUserLoginName(authentication);
+			List<IndexEntry> indexEntries = idFetcher.fetch(userName);
 			CaaersDao indexDao = (CaaersDao)idFetcherIndexDaoMap.get(idFetcher);
-			updateAnIndex(listOfIds, userName, indexDao);
+			updateAnIndex(indexEntries, userName, indexDao);
 		}
 	}
 
@@ -35,10 +43,10 @@ public class FilteredDataLoader {
      */
     //should run in a transaction. 
     @Transactional
-	public void updateAnIndex(List ids, String userName, CaaersDao indexDao){
+	public void updateAnIndex(List<IndexEntry> indexEntries, String userName, CaaersDao indexDao){
        indexDao.clearIndex(userName);
-       if(ids != null && !ids.isEmpty()){
-           indexDao.updateIndex(ids, userName);
+       for (IndexEntry ie:indexEntries) {
+    	   indexDao.updateIndex(ie.getEntityIds(), userName,ie.getRoleCode());
        }
     }
 	
