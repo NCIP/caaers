@@ -1,20 +1,15 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.dataproviders;
 
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import com.semanticbits.security.contentfilter.IdFetcher;
+import gov.nih.nci.cabig.caaers.dao.index.AbstractIndexDao;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.acegisecurity.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.semanticbits.security.contentfilter.IdFetcher;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Will take care of updating an index
@@ -30,20 +25,20 @@ public class FilteredDataLoader {
 		for (IdFetcher idFetcher : idFetchers) {
 			String userName = SecurityUtils.getUserLoginName(authentication);
 			List<IndexEntry> indexEntries = idFetcher.fetch(userName);
-			CaaersDao indexDao = (CaaersDao)idFetcherIndexDaoMap.get(idFetcher);
+			AbstractIndexDao indexDao = (AbstractIndexDao)idFetcherIndexDaoMap.get(idFetcher);
 			updateAnIndex(indexEntries, userName, indexDao);
 		}
 	}
 
     /**
      * Will take care of refreshing a particular index. 
-     * @param ids
+     * @param indexEntries
      * @param userName
      * @param indexDao
      */
     //should run in a transaction. 
     @Transactional
-	public void updateAnIndex(List<IndexEntry> indexEntries, String userName, CaaersDao indexDao){
+	public void updateAnIndex(List<IndexEntry> indexEntries, String userName, AbstractIndexDao indexDao){
        indexDao.clearIndex(userName);
        for (IndexEntry ie:indexEntries) {
     	   indexDao.updateIndex(ie.getEntityIds(), userName,ie.getRoleCode());

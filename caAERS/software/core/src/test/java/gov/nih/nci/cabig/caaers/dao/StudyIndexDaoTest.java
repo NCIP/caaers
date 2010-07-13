@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.index.StudyIndexDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.index.StudyIndex;
 
-public class StudyIndexDaoTest extends DaoNoSecurityTestCase<StudyIndexDao> {
+public class StudyIndexDaoTest extends CaaersDbTestCase {
 	StudyDao studyDao ; 
 	@Override
 	protected void setUp() throws Exception {
@@ -21,6 +22,5 @@ public class StudyIndexDaoTest extends DaoNoSecurityTestCase<StudyIndexDao> {
         StudyIndex studyIndex = new StudyIndex();
         studyIndex.setLoginId(userName);
         studyIndex.setStudy(study);
-        getDao().save(studyIndex);
     }
 }

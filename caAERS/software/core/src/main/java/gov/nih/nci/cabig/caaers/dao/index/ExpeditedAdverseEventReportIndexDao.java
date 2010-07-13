@@ -10,16 +10,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ExpeditedAdverseEventReportIndexDao extends AbstractIndexDao {
-	@Override
-	public Class<ExpeditedAdverseEventReportIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final ExpeditedAdverseEventReportIndex expeditedAdverseEventReportIndex) {
-        getHibernateTemplate().saveOrUpdate(expeditedAdverseEventReportIndex);
-    }
+
     
     @Override
     @Transactional(readOnly = false)

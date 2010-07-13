@@ -1,11 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.dao.index.ParticipantIndexDao;
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex;
 
-public class ParticipantIndexDaoTest extends DaoNoSecurityTestCase<ParticipantIndexDao> {
+public class ParticipantIndexDaoTest extends CaaersDbTestCase {
 	
 	ParticipantDao participantDao ; 
 	@Override
@@ -22,13 +21,11 @@ public class ParticipantIndexDaoTest extends DaoNoSecurityTestCase<ParticipantIn
         ParticipantIndex participantIndex = new ParticipantIndex();
         participantIndex.setLoginId(userName);
         participantIndex.setParticipant(participant);
-        getDao().save(participantIndex);
-        
+
         participant = participantDao.getById(-101);
         participantIndex = new ParticipantIndex();
         participantIndex.setLoginId(userName);
         participantIndex.setParticipant(participant);
-        getDao().save(participantIndex);
         
         System.out.print("sss");
     }

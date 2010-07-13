@@ -10,18 +10,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ResearchStaffIndexDao extends AbstractIndexDao {
-    
-	@Override
-	public Class<ResearchStaffIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final ResearchStaffIndex researchStaffIndex) {
-        getHibernateTemplate().saveOrUpdate(researchStaffIndex);
-    }
-    
+
     
     @Override
     @Transactional(readOnly = false)

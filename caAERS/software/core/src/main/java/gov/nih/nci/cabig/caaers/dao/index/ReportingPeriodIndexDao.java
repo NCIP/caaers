@@ -10,19 +10,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ReportingPeriodIndexDao extends AbstractIndexDao {
-	@Override
-	public Class<ReportingPeriodIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final ReportingPeriodIndex reportingPeriodIndex) {
-        getHibernateTemplate().saveOrUpdate(reportingPeriodIndex);
-    }
-    
-    
-    
+
     @Override
     @Transactional(readOnly = false)
     public int[] updateIndex(final List pIds , final String userName, final Integer roleCode){

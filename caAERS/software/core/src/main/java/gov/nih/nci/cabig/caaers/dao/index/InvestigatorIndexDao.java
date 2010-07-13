@@ -11,17 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class InvestigatorIndexDao extends AbstractIndexDao {
     
-	@Override
-	public Class<InvestigatorIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final InvestigatorIndex investigatorIndex) {
-        getHibernateTemplate().saveOrUpdate(investigatorIndex);
-    }
-    
     
     @Override
     @Transactional(readOnly = false)

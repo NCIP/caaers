@@ -13,18 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ParticipantIndexDao extends AbstractIndexDao {
 
 
-    
-	@Override
-	public Class<ParticipantIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final ParticipantIndex participantIndex) {
-        getHibernateTemplate().saveOrUpdate(participantIndex);
-    }
-    
     @Override
     @Transactional(readOnly = false)
     public int[] updateIndex(final List pIds , final String userName, final Integer roleCode){

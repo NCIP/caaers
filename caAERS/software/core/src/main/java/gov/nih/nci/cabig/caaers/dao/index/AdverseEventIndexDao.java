@@ -10,16 +10,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.transaction.annotation.Transactional;
 
 public class AdverseEventIndexDao extends AbstractIndexDao {
-	@Override
-	public Class<AdverseEventIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final AdverseEventIndex adverseEventIndex) {
-        getHibernateTemplate().saveOrUpdate(adverseEventIndex);
-    }
+
     
     @Override
     @Transactional(readOnly = false)

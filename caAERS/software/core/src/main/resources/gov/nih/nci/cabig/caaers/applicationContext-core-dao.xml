@@ -546,7 +546,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
     <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
     
-    <bean id="abstractIndexDao" abstract="true" parent="daoTemplate" >
+    <bean id="abstractIndexDao" abstract="true"  >
         <property name="jdbcTemplate">
             <ref bean="jdbcTemplate"/>
         </property>

@@ -11,17 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class StudyIndexDao extends AbstractIndexDao {
 
-	@Override
-	public Class<StudyIndex> domainClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-    @Transactional(readOnly = false)
-    public void save(final StudyIndex studyIndex) {
-        getHibernateTemplate().saveOrUpdate(studyIndex);
-    }
-    
     @Override
     @Transactional(readOnly = false)
     public int[] updateIndex(final List pIds , final String userName, final Integer roleCode){
