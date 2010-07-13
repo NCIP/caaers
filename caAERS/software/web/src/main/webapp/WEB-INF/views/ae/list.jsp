@@ -310,10 +310,13 @@ color:#0033FF;
 </c:if>
     <tags:instructions code="instruction_manage_reports"/>
 
-
-
 <c:if test="${not empty configuration.map.pscBaseUrl}">
-    <p>View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p>
+<csmauthz:accesscontrol 
+	domainObject="${command.assignment.studySite.organization}" 
+	authorizationCheckName="siteAuthorizationCheck" 
+	hasPrivileges="study_subject_calendar_manager" > 
+	<p>View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p> 
+</csmauthz:accesscontrol>
 </c:if>
 
 <div class="eXtremeTable" >
