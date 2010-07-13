@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ =====================================================================================
+       This XML is defined to store all the indexing related beans
+ =====================================================================================
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+
+    <aop:aspectj-autoproxy/>
+    <aop:spring-configured/>
+
+    <aop:config>
+         <!--
+        <aop:aspect ref="refreshIndexAspect">
+            <aop:pointcut id="executionOfIndexRefreshAfterUpdate"
+                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.save(..))
+                             || execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.merge(..))
+                             || execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.save(..))
+                             "/>
+            <aop:after pointcut-ref="executionOfIndexRefreshAfterUpdate" method="updateIndexByUserName"/>
+        </aop:aspect>
+        -->
+        <aop:aspect ref="querySecurityFilterAspect">
+            <aop:pointcut id="QuerySecurityFilterAspectPointCut"
+                          expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search(gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.find(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao.findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao.get*(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao.search*(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
+                                || execution(* gov.nih.nci.cabig.caaers.dao.ResearchStaffDao.getSiteResearchStaff(gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery)) and args(qry)
+                                "/>
+            <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>
+        </aop:aspect>
+    </aop:config>
+
+
+    <bean id="refreshIndexAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.RefreshIndexAspect">
+        <property name="filteredDataLoader" ref="filteredDataLoader"/>
+    </bean>
+    <bean id="filteredDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
+        <property name="idFetchers">
+            <list>
+                <ref bean="organizationIdFetcher"/>
+                <ref bean="studyIdFetcher"/>
+                <ref bean="participantIdFetcher"/>
+                <ref bean="adverseEventIdFetcher"/>
+                <ref bean="expeditedAdverseEventReportIdFetcher"/>
+                <ref bean="reportingPeriodIdFetcher"/>
+                <ref bean="researchStaffIdFetcher"/>
+                <ref bean="investigatorIdFetcher"/>
+            </list>
+        </property>
+        <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
+    </bean>
+    <util:map id="idFetcherIndexDaoMap" map-class="java.util.LinkedHashMap">
+        <entry key-ref="organizationIdFetcher"  value-ref="organizationIndexDao"/>
+        <entry key-ref="studyIdFetcher"  value-ref="studyIndexDao"/>
+        <entry key-ref="participantIdFetcher" value-ref="participantIndexDao"/>
+        <entry key-ref="adverseEventIdFetcher" value-ref="adverseEventIndexDao"/>
+        <entry key-ref="expeditedAdverseEventReportIdFetcher" value-ref="expeditedAdverseEventReportIndexDao"/>
+        <entry key-ref="reportingPeriodIdFetcher" value-ref="reportingPeriodIndexDao"/>
+        <entry key-ref="researchStaffIdFetcher" value-ref="researchStaffIndexDao"/>
+        <entry key-ref="investigatorIdFetcher" value-ref="investigatorIndexDao"/>
+    </util:map>
+
+    <bean id="filteredDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyTargetClass">
+            <value>true</value>
+        </property>
+        <property name="target">
+            <ref local="filteredDataLoaderTarget"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>runAsAutenticationProviderInterceptor</value>
+                <value>auditInfoPopulatorInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="abstractIdFetcher" abstract="true">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+        <property name="csmUserRepository" ref="csmUserRepository"/>
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+    </bean>
+
+    <!-- BEGIN PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+    <bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="adverseEventIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher"/>
+    <bean id="expeditedAdverseEventReportIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher"/>
+    <bean id="reportingPeriodIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher"/>
+    <bean id="researchStaffIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersResearchStaffIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <bean id="investigatorIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersInvestigatorIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+    <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+
+    <!-- Pluggable Query Filterer implementation -->
+
+    <bean id="querySecurityFilterAspect"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect">
+        <property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>
+    </bean>
+
+    <bean id="querySecurityFilterDispatcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.QuerySecurityFiltererDispatcher">
+        <property name="filtererMap">
+            <map>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyQuery" value-ref="studyQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery"
+                       value-ref="studyQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery"
+                       value-ref="studyQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery"
+                       value-ref="participantQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery"
+                       value-ref="participantAjaxableQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery"
+                       value-ref="adverseEventReportingPeriodForReviewQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery"
+                       value-ref="organizationQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery"
+                       value-ref="organizationQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery"
+                       value-ref="reportVersionQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery"
+                       value-ref="siteResearchStaffQuerySecurityFilterer"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="studyQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="study"
+          p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx"/>
+    <bean id="participantQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="p"
+          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+    <bean id="participantAjaxableQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex"
+          p:indexAlias="pIndx"/>
+    <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod"
+          p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
+    <bean id="organizationQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex"
+          p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
+    <bean id="reportVersionQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport"
+          p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
+    <bean id="siteResearchStaffQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
+          p:entityAssociation="researchStaff" p:entityName="ResearchStaff"
+          p:indexName="ResearchStaffIndex" p:indexAlias="rsIndx"/>
+
+</beans>

@@ -42,4 +42,12 @@
 		<property name="authenticationMode" ref="authenticationMode"/>
     </bean>
 
+
+
+    <!-- Context refresh event is defined here -->
+
+	<bean id="contextRefreshEventListener" class="gov.nih.nci.cabig.caaers.event.ContextRefreshEventListener">
+		<property name="caaersDataMigratorDelegate" ref="caaersDataMigratorDelegate"/>
+	</bean>
+
 </beans>

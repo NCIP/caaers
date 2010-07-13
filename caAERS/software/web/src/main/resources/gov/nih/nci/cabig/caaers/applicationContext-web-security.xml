@@ -410,11 +410,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     	<property name="caaersFieldDefinitionDao" ref="caaersFieldDefinitionDao" />
     </bean>
     
-    
-	<bean id="authenticationSuccessListener" class="gov.nih.nci.cabig.caaers.web.listener.AuthenticationSuccessListener">
-		<property name="filteredDataLoader" ref="filteredDataLoader"/>
-		<property name="caaersDataMigratorDelegate" ref="caaersDataMigratorDelegate"/>
-	</bean>
 
     <bean id="siteAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck">
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />

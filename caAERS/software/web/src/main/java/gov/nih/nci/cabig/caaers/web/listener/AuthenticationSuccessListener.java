@@ -24,7 +24,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class AuthenticationSuccessListener  implements ApplicationListener {
 	
 	private FilteredDataLoader filteredDataLoader;
-	private CaaersDataMigratorDelegate caaersDataMigratorDelegate;
+
     private static final Log log = LogFactory.getLog(AuthenticationSuccessListener.class);
     
 	/**
@@ -32,14 +32,7 @@ public class AuthenticationSuccessListener  implements ApplicationListener {
 	 * This data is basically domain object IDs to use in IN clause of Query . 
 	 */
 	public void onApplicationEvent(ApplicationEvent event) {
-        if (event instanceof ContextRefreshedEvent) {
-            try {
-                caaersDataMigratorDelegate.doMigrate();
-            } catch (Exception e) {
-                log.error("Error while migrating the database. Alert your caAERS administrator, please.", e);
-                throw(new CaaersSystemException("Error while migrating the database. Alert your caAERS administrator, please."));
-            }
-        }
+        
 
 		if (event instanceof AuthenticationSuccessEvent) {
 			AuthenticationSuccessEvent authenticationSuccessEvent = (AuthenticationSuccessEvent)event;
@@ -57,11 +50,5 @@ public class AuthenticationSuccessListener  implements ApplicationListener {
 		this.filteredDataLoader = filteredDataLoader;
 	}
 
-    public CaaersDataMigratorDelegate getCaaersDataMigratorDelegate() {
-        return caaersDataMigratorDelegate;
-    }
-
-    public void setCaaersDataMigratorDelegate(CaaersDataMigratorDelegate caaersDataMigratorDelegate) {
-        this.caaersDataMigratorDelegate = caaersDataMigratorDelegate;
-    }
+    
 }
