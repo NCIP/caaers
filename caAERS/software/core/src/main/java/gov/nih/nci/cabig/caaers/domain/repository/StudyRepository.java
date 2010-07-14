@@ -36,6 +36,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -350,6 +351,8 @@ public class StudyRepository {
     @Transactional(readOnly=false)
     public Study merge(Study study){
     	associateSiteToWorkflowConfig(study.getStudySites());
+    	//Provision instances an Investigator or ResearchStaff has acces to in CSM
+    	provisionStudyTeam(study);
     	return studyDao.merge(study);
     }
     
@@ -375,26 +378,32 @@ public class StudyRepository {
      */
     private void provisionStudyTeam(Study study){
     	try{
+    		List<Integer> processedInvList = new ArrayList<Integer>();
+    		List<Integer> processedRsList = new ArrayList<Integer>();
     		List<StudyOrganization> studyOrgs = study.getActiveStudyOrganizations();
     		List<StudyInvestigator> studyInvs = null;
     		List<StudyPersonnel> studyPersonnel = null;
     		for(StudyOrganization studyOrg : studyOrgs){
     			//Remove, add or update what instances an Investigator is entitled to.
-    			studyInvs = studyOrg.getActiveStudyInvestigators();
+    			studyInvs = studyOrg.getStudyInvestigators();
     			if(studyInvs != null){
         			for(StudyInvestigator studyInv : studyInvs){
-        				if(studyInv.isActive()){
-        					caaersSecurityFacade.provisionUser(studyInv.getSiteInvestigator().getInvestigator());
-        				}
+    					if(!processedInvList.contains(studyInv.getSiteInvestigator().getInvestigator().getId())){
+    						Investigator investigator = investigatorDao.getById(studyInv.getSiteInvestigator().getInvestigator().getId());
+    						processedInvList.add(studyInv.getSiteInvestigator().getInvestigator().getId());
+        					caaersSecurityFacade.provisionUser(investigator);
+    					}
         			}
     			}
     			//Remove, add or update what instances an ResearchStaff is entitled to.
     			studyPersonnel = studyOrg.getStudyPersonnels();
     			if(studyPersonnel != null){
     				for(StudyPersonnel studyPer : studyPersonnel){
-    					if(studyPer.isActive()){
-    						caaersSecurityFacade.provisionUser(studyPer.getSiteResearchStaff().getResearchStaff());
-    					}
+						if(!processedRsList.contains(studyPer.getSiteResearchStaff().getResearchStaff().getId())){
+							processedRsList.add(studyPer.getSiteResearchStaff().getResearchStaff().getId());
+							ResearchStaff researchStaff = researchStaffDao.getById(studyPer.getSiteResearchStaff().getResearchStaff().getId());
+    						caaersSecurityFacade.provisionUser(researchStaff);
+						}
     				}
     			}
     		}
