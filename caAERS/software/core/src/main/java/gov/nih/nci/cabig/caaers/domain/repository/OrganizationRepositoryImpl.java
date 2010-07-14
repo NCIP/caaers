@@ -166,10 +166,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  		String text = subnames[0];
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
+        query.setFiltered(skipFiltering);
 
-         List<Organization> localOrganizations;
- 		if (!skipFiltering) localOrganizations = organizationDao.getBySubnames(query);
-        else localOrganizations = organizationDao.fetchAllBySubname(query);
+        List<Organization> localOrganizations;
+ 		localOrganizations = organizationDao.getBySubnames(query);
 
  		//get organizations from remote service
  		List<Organization> remoteOrganizations = null;

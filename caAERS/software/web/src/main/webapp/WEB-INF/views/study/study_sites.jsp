@@ -1,5 +1,8 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
+<csmauthz:accesscontrol var="_isSSPAonCC" scope="request" domainObject="${command.study.studyCoordinatingCenter.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_site_participation_administrator" />
+<csmauthz:accesscontrol var="_isSSPAonFS" scope="request" domainObject="${command.study.primaryFundingSponsor.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_site_participation_administrator" />
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -57,7 +60,7 @@
                 
             },
             sitePopulator: function(autocompleter, text) {
-                createStudy.restrictOrganizations(text, false, function(values) {
+                createStudy.restrictOrganizations(text, ${_isSSPAonCC || _isSSPAonFS}, function(values) {
                     autocompleter.setChoices(values)
                 })
             },
