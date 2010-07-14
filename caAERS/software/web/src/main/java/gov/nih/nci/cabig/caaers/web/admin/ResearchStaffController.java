@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -55,6 +56,8 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     private ResearchStaffDao researchStaffDao;
     protected WebControllerValidator webControllerValidator;
     private String authenticationMode;
+    private EventFactory eventFactory;
+
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
@@ -155,6 +158,9 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
                     // e.printStackTrace();  
                 }
             }
+            if(eventFactory != null)
+                eventFactory.publishEntityModifiedEvent(researchStaff);
+            
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
@@ -237,5 +243,12 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
     	this.researchStaffDao = researchStaffDao;
     }
-    
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

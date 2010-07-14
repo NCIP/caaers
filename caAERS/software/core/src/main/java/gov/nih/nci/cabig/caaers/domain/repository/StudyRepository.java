@@ -351,8 +351,6 @@ public class StudyRepository {
     @Transactional(readOnly=false)
     public Study merge(Study study){
     	associateSiteToWorkflowConfig(study.getStudySites());
-    	//Provision instances an Investigator or ResearchStaff has acces to in CSM
-    	provisionStudyTeam(study);
     	return studyDao.merge(study);
     }
     
@@ -376,7 +374,7 @@ public class StudyRepository {
      * This method provision's the study team members into CSM.
      * @param study
      */
-    private void provisionStudyTeam(Study study){
+    public  void provisionStudyTeam(Study study){
     	try{
     		List<Integer> processedInvList = new ArrayList<Integer>();
     		List<Integer> processedRsList = new ArrayList<Integer>();

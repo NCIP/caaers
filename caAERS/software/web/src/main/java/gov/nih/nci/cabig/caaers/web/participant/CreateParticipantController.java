@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -56,6 +57,8 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected ChemoAgentDao chemoAgentDao;
     private Configuration configuration;
 
+    private EventFactory eventFactory;
+
     public CreateParticipantController() {
     }
 
@@ -87,6 +90,8 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
         Participant participant = participantCommand.getParticipant();
         participantDao.save(participant);
+        if(eventFactory != null) eventFactory.publishEntityModifiedEvent(participant);
+        
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=create");
 
         return null;

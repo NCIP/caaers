@@ -94,6 +94,8 @@ public class StudyCommand {
     boolean isStudyQAManager = SecurityUtils.checkAuthorization(UserGroupType.study_qa_manager);
     boolean isStudyCreator = SecurityUtils.checkAuthorization(UserGroupType.study_creator);
 
+    private boolean mustFireEvent;
+
     public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
     	this.investigationalNewDrugDao = investigationalNewDrugDao;
@@ -685,5 +687,13 @@ public class StudyCommand {
 
     public void setStudyCreator(boolean studyCreator) {
         isStudyCreator = studyCreator;
+    }
+
+    public boolean isMustFireEvent() {
+        return mustFireEvent;
+    }
+
+    public void setMustFireEvent(boolean mustFireEvent) {
+        this.mustFireEvent = mustFireEvent;
     }
 }

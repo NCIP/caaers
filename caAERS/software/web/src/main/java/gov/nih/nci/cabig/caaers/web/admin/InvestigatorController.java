@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -49,6 +50,8 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
 
     protected ConfigProperty configurationProperty;
     private String authenticationMode;
+    
+    private EventFactory eventFactory;
 
     public InvestigatorController() {
         setCommandClass(Investigator.class);
@@ -153,6 +156,7 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
         	}else{
         		investigatorRepository.save(investigator, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         	}
+            if(eventFactory != null) eventFactory.publishEntityModifiedEvent(investigator);
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
@@ -223,4 +227,11 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
 		this.investigatorRepository = investigatorRepository;
 	}
 
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
@@ -55,6 +57,8 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     private LowLevelTermDao lowLevelTermDao;
     
     private Configuration configuration;
+
+    private EventFactory eventFactory;
 
     // validator needs to be called in onBindAndValidate()
     protected WebControllerValidator webControllerValidator;
@@ -145,8 +149,21 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     }
 
+    protected void populateMustFireEvent(HttpServletRequest request, final C command , final Tab<C> tab){
+
+        command.setMustFireEvent(false);
+
+        if(tab instanceof PersonnelTab || tab instanceof InvestigatorsTab || command.getStudy().getId() == null){
+            command.setMustFireEvent(true);
+        }
+        
+    }
+
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final C command, final Tab<C> tab) {
+
+        populateMustFireEvent(request, command, tab);
+
     	//do not save if it is an AJAX request, 
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null || isAjaxRequest(request)) return false;
@@ -156,6 +173,8 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         if (StringUtils.isNotEmpty(action)) {
             return false;
         }
+
+
         
         // always save - otherwise 
         return true; 
@@ -219,15 +238,20 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     	if(StringUtils.isEmpty(request.getParameter("_action")))  	super.populateSaveConfirmationMessage(refdata, request, command, errors, page);
     }
 
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected C save(C command, Errors errors) {
 
-        if(!errors.hasErrors()){
-           command.save();
+        if(errors.hasErrors()) return null;
+        
+        command.save();
+        if(eventFactory != null && command.isMustFireEvent()){
+           eventFactory.publishEntityModifiedEvent(command.getStudy());
         }
+
         
         return null;
     }
@@ -349,5 +373,13 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     public void setStudyRepository(StudyRepository studyRepository) {
         this.studyRepository = studyRepository;
+    }
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
     }
 }

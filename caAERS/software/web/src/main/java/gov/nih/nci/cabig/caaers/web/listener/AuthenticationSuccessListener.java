@@ -21,34 +21,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @author Ion C. Olaru
  *
  */
-public class AuthenticationSuccessListener  implements ApplicationListener {
-	
-	private FilteredDataLoader filteredDataLoader;
+public class AuthenticationSuccessListener extends AbstractEventListener {
 
-    private static final Log log = LogFactory.getLog(AuthenticationSuccessListener.class);
-    
-	/**
-	 * Capture AuthenticationSuccessEvent event . THis is the entry point to get the data from DB and cache.
-	 * This data is basically domain object IDs to use in IN clause of Query . 
-	 */
-	public void onApplicationEvent(ApplicationEvent event) {
-        
-
-		if (event instanceof AuthenticationSuccessEvent) {
-			AuthenticationSuccessEvent authenticationSuccessEvent = (AuthenticationSuccessEvent)event;
-			Authentication authentication = authenticationSuccessEvent.getAuthentication();             
-            //if(SecurityUtils.checkAuthorization(authentication,UserGroupType.caaers_super_user)) return;
-			
-			//if global user- ignore indexing.
-			//if(!SecurityUtils.isScoped(authentication)) return;
-            //String userName = SecurityUtils.getUserLoginName(authentication);
-			filteredDataLoader.updateIndexByUserName(authentication);
-		}		
-	}
-	
-	public void setFilteredDataLoader(FilteredDataLoader filteredDataLoader) {
-		this.filteredDataLoader = filteredDataLoader;
-	}
-
-    
+    @Override
+    public boolean isSupported(ApplicationEvent event) {
+        return event instanceof AuthenticationSuccessEvent;
+    }
 }
