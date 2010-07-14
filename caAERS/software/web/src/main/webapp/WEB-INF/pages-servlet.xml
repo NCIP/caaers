@@ -89,24 +89,17 @@
         </property>
       </bean>
 
-      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Rules" p:mainController="createRuleController">
-          <property name="pathMapping"><value>/rule/**</value></property>
-          <property name="urlResolver" ref="urlResolver"/>
-        <property name="tasks">
-          <list>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Rules" p:linkName="listRuleController"/>
-            <!--
-             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-             p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
-
-             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-             p:displayName="Export Rules" p:linkName="exportRuleController"/>
-            -->
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
-          </list>
-        </property>
+      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Rules" p:mainController="listRuleController">
+            <property name="pathMapping"><value>/rule/**</value></property>
+            <property name="urlResolver" ref="urlResolver"/>
+            <property name="tasks">
+                <list>
+                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Rules" p:linkName="listRuleController"/>
+                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>
+                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
+                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
+                </list>
+            </property>
       </bean>
       <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Administration" p:mainController="adminResolverController">
           <property name="pathMapping"><value>/admin/**</value></property>
@@ -187,8 +180,8 @@
   <bean id="ruleTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup" p:displayName="Reporting Rules">
     <property name="taskList">
       <list>
-        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>
         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Rules" p:linkName="listRuleController"/>
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>
       </list>
     </property>
   </bean>
@@ -196,8 +189,8 @@
   <bean id="reportCalendarTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup" p:displayName="Report Definitions">
     <property name="taskList">
       <list>
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
 		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
-		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
       </list>
     </property>
   </bean>
