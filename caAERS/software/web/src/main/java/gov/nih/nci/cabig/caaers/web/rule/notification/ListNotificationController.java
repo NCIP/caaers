@@ -103,6 +103,7 @@ public class ListNotificationController extends SimpleFormController {
         		return modelAndView;
         	}
         }
+    	initializeActiveInactiveLists(command);
     	command.setUpdated(true);
 		ModelAndView modelAndView = new ModelAndView(getSuccessView(), errors.getModel());
 	    return modelAndView;
