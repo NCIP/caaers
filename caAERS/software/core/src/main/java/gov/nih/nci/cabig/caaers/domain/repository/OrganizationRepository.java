@@ -33,4 +33,7 @@ public interface OrganizationRepository {
     List<Organization> getAllOrganizations();
     List<Organization> getAllNciInstitueCodes();
     void saveImportedOrganization(Organization organization);
+    
+    Organization getById(int id);
+    void evict(Organization org);
 }

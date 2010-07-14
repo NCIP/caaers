@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
@@ -47,6 +48,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private static final String STUDY = "gov.nih.nci.cabig.caaers.domain.Study";
 	private static final String INVESTIGATOR = "gov.nih.nci.cabig.caaers.domain.Investigator";
 	public static final String RESEARCH_STAFF = "gov.nih.nci.cabig.caaers.ResearchStaff";
+	public static final String ORGANIZATION = "gov.nih.nci.cabig.caaers.domain.Organization";
+	
 	private static final Log log = LogFactory
 			.getLog(FabricatedAuthenticationFilter.class);
 	private static final String FILTER_APPLIED = "gov.nih.nci.cabig.caaers.web.security.FabricatedAuthenticationFilter.FILTER_APPLIED";
@@ -59,6 +62,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private ResearchStaffRepository researchStaffRepository;
 
 	private InvestigatorRepository investigatorRepository;
+	
+	private OrganizationRepository organizationRepository;
 
 	private StudyRepository studyRepository;
 
@@ -201,6 +206,9 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				} else if (STUDY.equalsIgnoreCase(entry.getClassName())) {
 					int studyId = entry.getObjectId();
 					filterAuthoritiesByStudy(list, studyId);
+				} else if (ORGANIZATION.equalsIgnoreCase(entry.getClassName())) {
+					int orgId = entry.getObjectId();
+					filterAuthoritiesByOrganization(list, orgId);
 				}
 			} else {
 				final URLToRoleListMapEntry rolesEntry = getURLToRolesEntryFromRequest(request);
@@ -262,6 +270,24 @@ public final class FabricatedAuthenticationFilter implements Filter {
 			}
 		}
 	}
+	
+	private void filterAuthoritiesByOrganization(List<GrantedAuthority> list,
+			int orgId) {
+		Organization org = organizationRepository.getById(orgId);
+		if (org != null) {
+			CurrentEntityHolder.setEntity(org);
+			list.clear();
+			Collection<String> roles = securityFacade.getRoles(SecurityUtils
+					.getUserLoginName(), org);
+			for (String role : roles) {
+				GrantedAuthority ga = new GrantedAuthorityImpl(role);
+				if (!list.contains(ga)) {
+					list.add(ga);
+				}
+			}
+			organizationRepository.evict(org);
+		}
+	}	
 
 	private void filterAuthoritiesByInvestigator(List<GrantedAuthority> list,
 			int invId) {
@@ -384,6 +410,15 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
+	}
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 
 	/**

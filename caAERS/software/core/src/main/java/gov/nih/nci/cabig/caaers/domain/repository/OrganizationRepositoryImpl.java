@@ -217,4 +217,18 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	public List<Organization> getAllNciInstitueCodes() {
 		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getById(int)
+	 */
+	public Organization getById(int id) {
+		return organizationDao.getById(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#evict(gov.nih.nci.cabig.caaers.domain.Organization)
+	 */
+	public void evict(Organization org) {
+		organizationDao.evict(org);		
+	}
 }

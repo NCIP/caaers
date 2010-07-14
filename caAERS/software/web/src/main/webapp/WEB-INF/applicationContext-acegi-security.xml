@@ -24,6 +24,7 @@
     	autowire-candidate="false" p:filterByURLAndEntityMap-ref="filterByURLAndEntityMap" p:filterByURLAndRoleListMap-ref="filterByURLAndRoleListMap"
     	p:researchStaffRepository-ref="researchStaffRepository" p:securityFacade-ref="caaersSecurityFacade"
     	p:investigatorRepository-ref="investigatorRepository" p:studyRepository-ref="studyRepository"
+    	p:organizationRepository-ref="organizationRepository"
     	/>
         
     
