@@ -12,7 +12,7 @@
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
-	
+	 <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-repository.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-studyConsumer.xml"/>
 	
 	<bean id="studyRollbackInterval" class="java.lang.Integer">
