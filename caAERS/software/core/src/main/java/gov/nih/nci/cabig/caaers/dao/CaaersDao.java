@@ -381,7 +381,6 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                     } else {
                     	hibernateQuery.setParameter(key, value);
                     }
-                    //hibernateQuery.setParameter(key, value);
 
                 }
                 return hibernateQuery.list();
@@ -406,7 +405,6 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                     } else {
                     	hibernateQuery.setParameter(key, value);
                     }
-                    //hibernateQuery.setParameter(key, value);
 
                 }
                 return hibernateQuery.list();

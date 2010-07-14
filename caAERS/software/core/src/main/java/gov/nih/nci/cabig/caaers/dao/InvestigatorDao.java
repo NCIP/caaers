@@ -132,20 +132,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     public List<Investigator> searchInvestigator(final InvestigatorQuery query) {
         String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        return (List<Investigator>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
-
+        return (List<Investigator>) super.search(query);
     }
     
 
@@ -166,21 +153,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
 	public List<Investigator> getLocalInvestigator(final InvestigatorQuery query){
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        List<Investigator> investigators = (List<Investigator>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException,
-                            SQLException {
-                org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hibernateQuery.setParameter(key, value);
-
-                }
-                return hibernateQuery.list();
-            }
-
-        });
+        List<Investigator> investigators = (List<Investigator>) super.search(query);
         return investigators;
     }
 

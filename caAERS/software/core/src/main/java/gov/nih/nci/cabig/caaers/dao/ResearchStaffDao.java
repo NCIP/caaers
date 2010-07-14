@@ -87,19 +87,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 	public List<ResearchStaff> getLocalResearchStaff(final ResearchStaffQuery query){
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        List<ResearchStaff> researchStaffs = (List<ResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
+        List<ResearchStaff> researchStaffs = (List<ResearchStaff>) super.search(query);
         return researchStaffs;
     }
     
@@ -113,20 +101,8 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 	public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query){
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        List<SiteResearchStaff> researchStaffs = (List<SiteResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
-        return researchStaffs;
+        List<SiteResearchStaff> siteResearchStaffs = (List<SiteResearchStaff>) super.search(query);
+        return siteResearchStaffs;
     }
 
     /**
@@ -154,22 +130,10 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings( { "unchecked" })
     public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
-        String queryString = query.getQueryString();
+       String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        return (List<ResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
-
+        List<ResearchStaff> researchStaffs = (List<ResearchStaff>) super.search(query);
+        return researchStaffs;
     }
     
     /**

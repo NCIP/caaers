@@ -179,7 +179,7 @@
           p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
     <bean id="siteResearchStaffQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-          p:entityAssociation="researchStaff" p:entityName="SiteResearchStaff"
+          p:entityAssociation="researchStaff.siteResearchStaffsInternal" p:entityName="SiteResearchStaff"
           p:indexName="ResearchStaffIndex" p:indexAlias="rsIndx"/>
 
 </beans>

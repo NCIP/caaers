@@ -34,7 +34,15 @@ public class QuerySecurityFilterer {
             log.info("Query filtering will " + (shouldFilter ? "" : "not ") + "get applied");
         }
         if(shouldFilter){
-            applyFilter(query);
+
+            if(!query.isFiltered()){
+              applyFilter(query);
+            }else{
+                log.warn("****************** ****************************************************\n\n\n " +
+                        "DOUBLE FILTERING PREVENTED ON QUERY   [" + query.getClass() + "]\n\n\n" +
+                        "____________________________________________________________________");
+            }
+
         }
     }
 
@@ -99,6 +107,7 @@ public class QuerySecurityFilterer {
        query.andWhere(getIndexAlias() + ".roleCode in (" + ":roleCodes" +")");
        query.setParameter("loginId", getLoginId());
        query.setParameterList("roleCodes", getRoleCodes() );
+       query.setFiltered(true);
     }
 
     /**

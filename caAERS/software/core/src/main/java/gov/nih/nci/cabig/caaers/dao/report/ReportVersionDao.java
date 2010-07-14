@@ -133,17 +133,7 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     public List<ReportVersion> search(final AbstractQuery query) {
         String queryString = query.getQueryString();
         // System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
-        return (List<ReportVersion>) getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-                }
-                return hiberanteQuery.list();
-            }
-        });
+        return (List<ReportVersion>) super.search(query);
 
     }
 
@@ -151,17 +141,7 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     public List<ReportVersionDTO> searchDTO(final AbstractQuery query) {
         String queryString = query.getQueryString();
         // System.out.println("\n\n\n------------------\n\n\n" + queryString.toString() + "\n\n\n");
-        return (List<ReportVersionDTO>) getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-                }
-                return hiberanteQuery.list();
-            }
-        });
+        return (List<ReportVersionDTO>) super.search(query);
 
     }
 

@@ -35,6 +35,8 @@ public abstract class AbstractQuery {
 
     private String orderByClause;
 
+    private boolean filtered;
+
     public AbstractQuery(final String queryString) {
         this.queryString = new StringBuffer(queryString);
         queryParameterMap = new HashMap<String, Object>(0);
@@ -228,6 +230,14 @@ public abstract class AbstractQuery {
      */
     public String getBaseQueryString(){
         return queryString.toString();
+    }
+
+    public boolean isFiltered(){
+        return filtered;
+    }
+
+    public void setFiltered(boolean b){
+        filtered = b;
     }
 
     

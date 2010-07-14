@@ -167,20 +167,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
     public List<Participant> searchParticipant(final ParticipantQuery query) {
         String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        return (List<Participant>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
+        return (List<Participant>) super.search(query);
     }
     
     /**

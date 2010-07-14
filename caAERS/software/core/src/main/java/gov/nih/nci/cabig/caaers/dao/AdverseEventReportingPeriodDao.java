@@ -87,18 +87,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     @SuppressWarnings("unchecked")
 	public Object find(final AbstractQuery query){
          log.debug("::: " + query.getQueryString());
-         return getHibernateTemplate().execute(new HibernateCallback(){
-        	  public Object doInHibernate(final Session session) throws HibernateException,SQLException {
-        		  org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-        		  Map<String, Object> queryParameterMap = query.getParameterMap();
-        		  for (String key : queryParameterMap.keySet()) {
-        			  Object value = queryParameterMap.get(key);
-        			  hiberanteQuery.setParameter(key, value);
-
-        		  }
-        		  return hiberanteQuery.list();
-        	  } 
-         });
+         return super.search(query);
     }
     
     public boolean isAdverseEventPresent(AdverseEvent ae){

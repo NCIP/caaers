@@ -271,21 +271,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     public List<Study> find(final AbstractQuery query) {
         String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        return (List<Study>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
-
+        return (List<Study>) super.search(query);
     }
     
     /**
@@ -298,20 +284,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     	String queryString = query.getQueryString();
     	log.debug("::: " + queryString.toString());
     	
-    	return (List<StudyOrganization>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
-
-                }
-                return hiberanteQuery.list();
-            }
-
-        });
+    	return (List<StudyOrganization>) super.search(query);
     }
     
 	/**Gets by the unique Identifier
