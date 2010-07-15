@@ -106,8 +106,11 @@ public interface CaaersSecurityFacade {
      * @throws CSObjectNotFoundException
      */
     Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException ;
-
-
+    
+    /*
+     * Clears user cache by login Name 
+     */
+    void clearUserCache(String userName);
     
 
 }
