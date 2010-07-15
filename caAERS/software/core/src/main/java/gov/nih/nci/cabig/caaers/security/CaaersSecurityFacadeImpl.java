@@ -44,6 +44,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.collections.CollectionUtils;
@@ -761,7 +764,19 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		return resultList;
     }
 
-    
+	public void clearUserCache(String userName) {
+		String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
+		//loginId is cacheKey , remove the cache for that user .. 
+		CacheManager cacheManager = CSMCacheManager.getCacheManager() ;
+		
+		Cache cache = cacheManager.getCache(loginId);
+		if (cache == null) {
+			return;
+		} else {
+			cacheManager.removeCache(loginId);
+		}	
+	}
+	
 	private List<?> search(final AbstractQuery query){
     	return rolePrivilegeDao.search(query);
     }
@@ -794,5 +809,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public CSMUserRepositoryImpl getCsmUserRepository() {
 		return csmUserRepository;
 	}
+
+
 
 }
