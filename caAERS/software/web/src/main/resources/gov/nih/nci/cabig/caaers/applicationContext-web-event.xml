@@ -21,6 +21,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="studyModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener">
         <property name="filteredDataLoader" ref="studyIndexDataLoader" />
         <property name="studyRepository" ref="studyRepository" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
 
     <bean id="subjectModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.SubjectModificationEventListener">
