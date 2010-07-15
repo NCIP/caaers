@@ -9,7 +9,7 @@
 <jwr:style src="/csslib/caaers.zcss" />
 <tags:js name="compressed/co_calendar" />
 <tags:js name="common" />
-<jwr:script src="/jslib/caaers.zjs" />
+<jwr:script src="/jslib/caaers.zjs" useRandomParam="false"/>
 <tags:js name="advancedSearch"/>
 <tags:js name="side-bar/side-bar"/>
 

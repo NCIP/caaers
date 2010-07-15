@@ -29,11 +29,11 @@
                <tags:renderLabel field="${field.attributes.subfields[0]}" />
             </jsp:attribute>
             <jsp:attribute name="value">
-                <a name="${field.attributes.subfields[0].propertyName}"></a>
+                <a name="${field.attributes.subfields[0].propertyName}_anchor"></a>
                 <ui:select path="${field.attributes.subfields[0].propertyName}"
                  options="${field.attributes.subfields[0].attributes.options}"
                  title="${field.attributes.subfields[0].displayName}">
-                    <jsp:attribute name="embededJS">
+                    <jsp:attribute name="embededJS">                    	 
                          Event.observe('${field.attributes.subfields[0].propertyName}', 'change', function(evt){
                             selectFieldChanged('${field.attributes.subfields[0].propertyName}','${field.attributes.subfields[1].propertyName}','${field.attributes.subfields[2].propertyName}');
                         })
@@ -42,7 +42,7 @@
                 <tags:renderInputs field="${field.attributes.subfields[1]}" />
                 <tags:renderInputs field="${field.attributes.subfields[2]}" />
                 <span id="${field.attributes.subfields[0].propertyName}-adiv" style="${_curCode eq 2 ? '' : 'display:none;'}">
-                <a id="${field.attributes.subfields[0].propertyName}-a" href="#${field.attributes.subfields[0].propertyName}" onclick="showRulePicker('${field.attributes.subfields[0].propertyName}', '${field.attributes.subfields[1].propertyName}', '${field.attributes.subfields[2].propertyName}')">Show rules</a>
+                <a id="${field.attributes.subfields[0].propertyName}-a" href="#${field.attributes.subfields[0].propertyName}_anchor" onclick="showRulePicker('${field.attributes.subfields[0].propertyName}', '${field.attributes.subfields[1].propertyName}', '${field.attributes.subfields[2].propertyName}')">Show rules</a>
                 </span>
             </jsp:attribute>
         </ui:row>
@@ -62,7 +62,7 @@
                <caaers:value path="${field.attributes.subfields[0].propertyName}.code" />
            </jsp:attribute>
         </c:set>
-        <a name="${field.attributes.subfields[0].propertyName}"></a>
+        <a name="${field.attributes.subfields[0].propertyName}_anchor"></a>
         <ui:select path="${field.attributes.subfields[0].propertyName}"
              options="${field.attributes.subfields[0].attributes.options}"
              title="${field.attributes.subfields[0].displayName}">
@@ -75,7 +75,7 @@
         <tags:renderInputs field="${field.attributes.subfields[1]}" />
         <tags:renderInputs field="${field.attributes.subfields[2]}" />
         <span id="${field.attributes.subfields[0].propertyName}-adiv" style="${_curCode eq 2 ? '' : 'display:none;'}">
-        <a id="${field.attributes.subfields[0].propertyName}-a" href="#${field.attributes.subfields[0].propertyName}" onclick="showRulePicker('${field.attributes.subfields[0].propertyName}', '${field.attributes.subfields[1].propertyName}', '${field.attributes.subfields[2].propertyName}')">Show rules</a>
+        <a id="${field.attributes.subfields[0].propertyName}-a" href="#${field.attributes.subfields[0].propertyName}_anchor" onclick="showRulePicker('${field.attributes.subfields[0].propertyName}', '${field.attributes.subfields[1].propertyName}', '${field.attributes.subfields[2].propertyName}')">Show rules</a>
         </span>
     </td>
 
@@ -97,7 +97,7 @@
                     <caaers:value path="${field.attributes.subfields[0].propertyName}.code" />
                 </jsp:attribute>
               </c:set>
-              <a name="${field.attributes.subfields[0].propertyName}"></a>
+              <a name="${field.attributes.subfields[0].propertyName}_anchor"></a>
               <ui:select path="${field.attributes.subfields[0].propertyName}"
                    options="${field.attributes.subfields[0].attributes.options}"
                    title="${field.attributes.subfields[0].displayName}">
@@ -110,7 +110,7 @@
               <tags:renderInputs field="${field.attributes.subfields[1]}" />
               <tags:renderInputs field="${field.attributes.subfields[2]}" />
               <span id="${field.attributes.subfields[0].propertyName}-adiv" style="${_curCode eq 2 ? '' : 'display:none;'}">
-                <a id="${field.attributes.subfields[0].propertyName}-a" href="#${field.attributes.subfields[0].propertyName}" onclick="showRulePicker('${field.attributes.subfields[0].propertyName}', '${field.attributes.subfields[1].propertyName}', '${field.attributes.subfields[2].propertyName}')">Show rules</a>
+                <a id="${field.attributes.subfields[0].propertyName}-a" href="#${field.attributes.subfields[0].propertyName}_anchor" onclick="showRulePicker('${field.attributes.subfields[0].propertyName}', '${field.attributes.subfields[1].propertyName}', '${field.attributes.subfields[2].propertyName}')">Show rules</a>
               </span>
           </td>
 		</tr>
