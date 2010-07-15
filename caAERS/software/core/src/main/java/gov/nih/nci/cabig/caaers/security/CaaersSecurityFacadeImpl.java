@@ -279,7 +279,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * Will only populate the role associations and protection group association for ResearchStaff
      * @param investigator
      */
-    private void provisionInvestigator(Investigator investigator){
+    public void provisionInvestigator(Investigator investigator){
     	
     	if(StringUtils.isEmpty(investigator.getLoginId())) return;
     	
@@ -316,10 +316,10 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     }
     
     /**
-     * Will only populate the role associations and protection group association for Investigator
+     * Will only populate the role associations and protection group association for ResearchStaff
      * @param researchStaff
      */
-    private void provisionResearchStaff(ResearchStaff researchStaff){
+    public void provisionResearchStaff(ResearchStaff researchStaff){
     	
     	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
        	
@@ -371,6 +371,68 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
 		}
     }
+    
+    
+    /**
+     * Will provision studies for ResearchStaff in CSM.
+     * @param researchStaff
+     */
+    public void provisionStudiesForResearchStaff(ResearchStaff researchStaff){
+    	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
+       	
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
+    	if(csmUser == null) return;
+    	
+		try {
+			ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+	   		for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
+				for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
+					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+					if(suiteRole.isScoped()){
+						SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
+							suiteRoleMembership.getStudyIdentifiers().clear();
+							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
+				    		for(String studyIdentifier : studyIndetifiers){
+				    			suiteRoleMembership.addStudy(studyIdentifier);
+				    		}
+						}
+						provisioningSession.replaceRole(suiteRoleMembership);
+					}
+				}
+			}
+		}catch (Exception e){
+			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+csmUser.getLoginName() ,e);
+		}
+    }
+    
+    /**
+     * Will provision studies for Investigator in CSM.
+     * @param researchStaff
+     */
+    public void provisionStudiesForInvestigator(Investigator investigator){
+    	if(StringUtils.isEmpty(investigator.getLoginId())) return;
+    	
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(investigator.getLoginId());
+    	if(csmUser == null) return;
+    	
+    	try {
+	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
+			provisioningSession.deleteRole(suiteRole);
+			
+			SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+			suiteRoleMembership.getStudyIdentifiers().clear();
+			List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
+			for(String studyIdentifier : studyIndetifiers){
+				suiteRoleMembership.addStudy(studyIdentifier);
+			}
+			provisioningSession.replaceRole(suiteRoleMembership);
+    	}catch (Exception e){
+			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+csmUser.getLoginName() ,e);
+		}
+    }
+    
     
     /**
      * This method will return a list if co-ordinating center assigned identifiers for studies which the investigator has access to. 

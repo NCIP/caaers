@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
@@ -111,6 +113,16 @@ public interface CaaersSecurityFacade {
      * Clears user cache by login Name 
      */
     void clearUserCache(String userName);
+    /**
+     * Will provision studies for ResearchStaff in CSM.
+     * @param researchStaff
+     */
+    void provisionStudiesForResearchStaff(ResearchStaff researchStaff);
     
+    /**
+     * Will provision studies for Investigator in CSM.
+     * @param investigator
+     */
+    void provisionStudiesForInvestigator(Investigator investigator);
 
 }

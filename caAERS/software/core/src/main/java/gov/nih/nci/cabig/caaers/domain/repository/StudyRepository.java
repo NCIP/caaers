@@ -389,7 +389,7 @@ public class StudyRepository {
     					if(!processedInvList.contains(studyInv.getSiteInvestigator().getInvestigator().getId())){
     						Investigator investigator = investigatorDao.getById(studyInv.getSiteInvestigator().getInvestigator().getId());
     						processedInvList.add(studyInv.getSiteInvestigator().getInvestigator().getId());
-        					caaersSecurityFacade.provisionUser(investigator);
+        					caaersSecurityFacade.provisionStudiesForInvestigator(investigator);
     					}
         			}
     			}
@@ -400,7 +400,7 @@ public class StudyRepository {
 						if(!processedRsList.contains(studyPer.getSiteResearchStaff().getResearchStaff().getId())){
 							processedRsList.add(studyPer.getSiteResearchStaff().getResearchStaff().getId());
 							ResearchStaff researchStaff = researchStaffDao.getById(studyPer.getSiteResearchStaff().getResearchStaff().getId());
-    						caaersSecurityFacade.provisionUser(researchStaff);
+    						caaersSecurityFacade.provisionStudiesForResearchStaff(researchStaff);
 						}
     				}
     			}
