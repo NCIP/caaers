@@ -11,17 +11,16 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 public enum PersonRole implements CodedEnum<Integer>{
 	
 	
-	SITE_PRINCIPAL_INVESTIGATOR(1, "Site Principal Investigator","SPI", UserGroupType.caaers_physician),
-	SITE_INVESTIGATOR(2, "Site Investigator","SI", UserGroupType.caaers_physician),
-	PRINCIPAL_INVESTIGATOR(3, "Principal Investigator","PI", UserGroupType.caaers_physician),
-	PARTICIPANT_COORDINATOR(4, "Participant Coordinator","caaers_participant_cd", UserGroupType.caaers_participant_cd),
-	STUDY_COORDINATOR(5, "Study Coordinator","caaers_study_cd", UserGroupType.caaers_study_cd),
-	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "caaers_ae_cd", UserGroupType.caaers_ae_cd),
-	REPORTER(7, "Reporter", "PC", UserGroupType.caaers_participant_cd, UserGroupType.caaers_ae_cd),
-	PHYSICIAN (8, "Physician", "SI", UserGroupType.caaers_physician),
-	CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office Report Reviewer","caaers_central_office_sae_cd", UserGroupType.caaers_central_office_sae_cd),
-	DATA_COORDINATOR(10, "Data Coordinator", "caaers_data_cd", UserGroupType.caaers_data_cd),
-	//SITE_CRA(11, "Site Clinical Research Assistant", "PC")
+	SITE_PRINCIPAL_INVESTIGATOR(1, "Site Principal Investigator","SPI", UserGroupType.ae_reporter),
+	SITE_INVESTIGATOR(2, "Site Investigator","SI", UserGroupType.ae_reporter),
+	PRINCIPAL_INVESTIGATOR(3, "Principal Investigator","PI", UserGroupType.ae_reporter),
+	PARTICIPANT_COORDINATOR(4, "Participant Coordinator","caaers_participant_cd", UserGroupType.registrar),
+	STUDY_COORDINATOR(5, "Study Coordinator","caaers_study_cd", UserGroupType.supplemental_study_information_manager),
+	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "caaers_ae_cd", UserGroupType.ae_reporter),
+	REPORTER(7, "Reporter", "PC", UserGroupType.ae_reporter),
+	PHYSICIAN (8, "Physician", "SI", UserGroupType.ae_reporter),
+	CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office Report Reviewer","caaers_central_office_sae_cd", UserGroupType.ae_expedited_report_reviewer),
+	DATA_COORDINATOR(10, "Data Coordinator", "caaers_data_cd", UserGroupType.ae_study_data_reviewer),
 	;
 	
 	private Integer code;

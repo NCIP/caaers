@@ -83,15 +83,15 @@ public class ListAdverseEventsCommand {
     	// so simply return in this case
     	if(isSuperUser) return;
     	
-    	boolean canLoggedInUserSubmit = SecurityUtils.checkAuthorization(UserGroupType.caaers_ae_cd,
-				UserGroupType.caaers_participant_cd,UserGroupType.caaers_central_office_sae_cd);
+    	boolean canLoggedInUserSubmit = SecurityUtils.checkAuthorization(UserGroupType.ae_reporter,
+				UserGroupType.ae_expedited_report_reviewer);
     	
     	// We update reportSubmittability based on workflow if the workflow is enabled at the System level first
     	if(getWorkflowEnabled()){
-    		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
+    		boolean isReportReviewer = SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer); 
     		boolean isSAECoordinatorAtCC = false;
 			//now check if the sae coordinator is associated to the coordinaoting center
-			if(isSAECoordinator && getStudy() != null){
+			if(isReportReviewer && getStudy() != null){
 				Organization ccOrg = getStudy().getStudyCoordinatingCenter().getOrganization();
 				ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
 				if(researchStaff != null && ccOrg != null){
@@ -132,8 +132,7 @@ public class ListAdverseEventsCommand {
     
     public void updateOptions() {
     	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-    	if(isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , 
-    			UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd)){
+    	if(isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.ae_study_data_reviewer ,UserGroupType.ae_reporter)){
     		setAmendAnOption(true);
     	} else {
     		setAmendAnOption(false);

@@ -103,19 +103,19 @@ public class ReviewAeReportController extends SimpleFormController{
         // Data coordinator cannot submit a report.
         SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
 		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
-		boolean isUserSAECoordinator = false;
+		boolean isReportReviewer = false;
         User user = csmUserRepository.getUserByName(userId);
-        if(user.getUserGroupTypes().contains(UserGroupType.caaers_central_office_sae_cd)){
-            isUserSAECoordinator = true;
+        if(user.getUserGroupTypes().contains(UserGroupType.ae_expedited_report_reviewer)){
+            isReportReviewer = true;
         }
         
         //boolean canSubmit = false;
-        //if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isUserSAECoordinator)
+        //if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isReportReviewer)
         //	canSubmit = true;
         
         
         //refdata.put("canSubmit", canSubmit);
-		refdata.put("isUserSAECoordinato", isUserSAECoordinator);
+		refdata.put("isUserSAECoordinato", isReportReviewer);
         
         return refdata;
 	}

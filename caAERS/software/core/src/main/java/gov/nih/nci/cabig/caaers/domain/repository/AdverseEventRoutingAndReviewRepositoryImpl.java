@@ -330,7 +330,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, 
 			Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId, Boolean courseWorkflowEnabled){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
-		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
+		boolean isReportReviewer = SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer); 
 		
 		if(participant != null){
 			query.filterByParticipant(participant.getId());
@@ -361,7 +361,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 						if(!aeReportHasWorkflowOnActiveReports(aeReport)) continue; //this report is prior to workflow integration
 						ExpeditedAdverseEventReportDTO reportDTO = routingAndReviewFactory.createAdverseEventReportDTO(aeReport, userId);
 						if(reportDTO.hasActionsToDo()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
-						if(isSAECoordinator && reportDTO.hasWorkflowEnded()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
+						if(isReportReviewer && reportDTO.hasWorkflowEnded()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
 					}//aereport
 				}
 				
@@ -375,7 +375,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 				}
 				//only add the dto, if there is action to do.
 				if(reportingPeriodDTO.hasActionsToDo()) reportingPeriodDTOs.add(reportingPeriodDTO);
-				if(isSAECoordinator && reportingPeriodDTO.hasReportWorkflowEnded()) reportingPeriodDTOs.add(reportingPeriodDTO);
+				if(isReportReviewer && reportingPeriodDTO.hasReportWorkflowEnded()) reportingPeriodDTOs.add(reportingPeriodDTO);
 			}
 			
 		}
