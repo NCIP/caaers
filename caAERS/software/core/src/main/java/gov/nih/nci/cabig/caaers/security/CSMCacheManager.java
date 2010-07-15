@@ -123,5 +123,21 @@ public class CSMCacheManager {
 		}
 		return (Set)ele.getObjectValue();
 	}
+	/**
+	 * 
+	 * @param loginId is gov.nih.nci.security.authorization.domainobjects.User.getUserId();
+	 * @param context
+	 */
+	public static void clearUserCache(Long loginId )  {
+		//loginId is cacheKey , remove the cache for that user .. 
+		CacheManager cacheManager = getCacheManager() ;
+		
+		Cache cache = cacheManager.getCache(loginId+"");
+		if (cache == null) {
+			return;
+		} else {
+			cacheManager.removeCache(loginId+"");
+		}
+	}
 
 }
