@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.web.listener;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.event.StudyModificationEvent;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -10,6 +13,8 @@ import org.springframework.context.ApplicationEvent;
  */
 public class StudyModificationEventListener extends AbstractEventListener {
     private StudyRepository studyRepository;
+    private CaaersSecurityFacade caaersSecurityFacade;
+    
 
     @Override
     public boolean isSupported(ApplicationEvent event) {
@@ -21,6 +26,7 @@ public class StudyModificationEventListener extends AbstractEventListener {
         StudyModificationEvent studyEvent = (StudyModificationEvent) event;
         Study study = (Study) studyEvent.getSource();
         studyRepository.provisionStudyTeam(study);
+        caaersSecurityFacade.clearUserCache(SecurityUtils.getUserLoginName(getAuthentication(event)));
     }
 
     public StudyRepository getStudyRepository() {
@@ -30,4 +36,8 @@ public class StudyModificationEventListener extends AbstractEventListener {
     public void setStudyRepository(StudyRepository studyRepository) {
         this.studyRepository = studyRepository;
     }
+
+	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
+		this.caaersSecurityFacade = caaersSecurityFacade;
+	}
 }
