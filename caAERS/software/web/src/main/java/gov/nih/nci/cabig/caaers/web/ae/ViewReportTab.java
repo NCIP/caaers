@@ -102,41 +102,40 @@ public class ViewReportTab extends AeTab {
     	// so simply return in this case
     	if(isSuperUser) return renderSubmitLink;
     	
-    	boolean canLoggedInUserSubmit = SecurityUtils.checkAuthorization(UserGroupType.caaers_ae_cd,
-				UserGroupType.caaers_participant_cd,UserGroupType.caaers_central_office_sae_cd);
+    	boolean canLoggedInUserSubmit = SecurityUtils.checkAuthorization(UserGroupType.ae_reporter,UserGroupType.ae_expedited_report_reviewer);
     	
     	// We update reportSubmittability based on workflow if the workflow is enabled at the System level first
-    		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
-    		boolean isSAECoordinatorAtCC = false;
-			//now check if the sae coordinator is associated to the coordinaoting center
-			if(isSAECoordinator && command.getStudy() != null){
-				Organization ccOrg = command.getStudy().getStudyCoordinatingCenter().getOrganization();
-				ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
-				if(researchStaff != null && ccOrg != null){
-			    	for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
-			    		if(siteRs.getOrganization().getId().equals(ccOrg.getId())){
-			    			isSAECoordinatorAtCC = true;
-			    			break;
-			    		}
-			    	}
-				}
-			}
+        boolean isReportReviewer = SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer); 
+        boolean isReviewerAtCC = false;
+        //now check if the reviewer is associated to the coordinating center
+        if(isReportReviewer && command.getStudy() != null){
+            Organization ccOrg = command.getStudy().getStudyCoordinatingCenter().getOrganization();
+            ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
+            if(researchStaff != null && ccOrg != null){
+                for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
+                    if(siteRs.getOrganization().getId().equals(ccOrg.getId())){
+                        isReviewerAtCC = true;
+                        break;
+                    }
+                }
+            }
+        }
     		
-    		// Now we have to check again whether the worklow is enabled for each individual report
-			// If the workflow is disabled for a report then canLoggedInUserSubmit will determine the reportSubmittability
-			// else if the workflow is enabled for a report then only SAE Coordinator at the coordinating center can submit
-			// the report
-    		for(Report report: command.getAeReport().getActiveReports()){
-    			if(report.getWorkflowId() != null){
-    				// This implies the report is in a workflow
-    		   			boolean canSubmit = renderSubmitLink.get(report.getId());
-    		   			renderSubmitLink.put(report.getId(), canSubmit && isSAECoordinatorAtCC);
-    			}else{
-    				// This implies that the report is not in a workflow
-    		   			boolean canSubmit = renderSubmitLink.get(report.getId());
-    		   			renderSubmitLink.put(report.getId(), canSubmit && canLoggedInUserSubmit);
-    			}
-    		}
+        // Now we have to check again whether the worklow is enabled for each individual report
+        // If the workflow is disabled for a report then canLoggedInUserSubmit will determine the reportSubmittability
+        // else if the workflow is enabled for a report then only reviewer at the coordinating center can submit
+        // the report
+        for(Report report: command.getAeReport().getActiveReports()){
+            if(report.getWorkflowId() != null){
+                // This implies the report is in a workflow
+                    boolean canSubmit = renderSubmitLink.get(report.getId());
+                    renderSubmitLink.put(report.getId(), canSubmit && isReviewerAtCC);
+            }else{
+                // This implies that the report is not in a workflow
+                    boolean canSubmit = renderSubmitLink.get(report.getId());
+                    renderSubmitLink.put(report.getId(), canSubmit && canLoggedInUserSubmit);
+            }
+        }
     	return renderSubmitLink;
     }
 

@@ -130,7 +130,7 @@
 						</c:if>
 
                         <%--
-                        DISPLAY ALL SUCTOME REPORTS ASSIATES TO DATA COLLECTION
+                        DISPLAY ALL REPORTS Associated TO DATA COLLECTION
                         --%>
 
 	                    <c:if test="${report.reportDefinition.reportFormatType.code == 7}">
