@@ -122,12 +122,11 @@ public class ObjectToSerializeConverter implements Converter{
         if(session instanceof SessionImpl){
            SessionImpl sessionImpl = (SessionImpl)session;
 		   StatefulPersistenceContext sPersistenceContext = (StatefulPersistenceContext)sessionImpl.getPersistenceContext();
-            writer.startNode("HibernateSession");
-			    context.convertAnother(session);
+		    if(sPersistenceContext != null){
+			    writer.startNode("HibernateSession");
+			    context.convertAnother(sPersistenceContext.getEntitiesByKey());
 			    writer.endNode();
-//		    if(sPersistenceContext != null){
-//
-//		    }
+		    }
         }
 
 	}
