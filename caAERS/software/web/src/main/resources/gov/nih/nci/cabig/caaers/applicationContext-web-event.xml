@@ -28,19 +28,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="filteredDataLoader" ref="subjectIndexDataLoader" />
     </bean>
 
-    <bean id="researchStaffModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.SubjectModificationEventListener">
+    <bean id="researchStaffModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ResearchStaffModificationEventListener">
         <property name="filteredDataLoader" ref="researchStaffIndexDataLoader" />
     </bean>
 
-    <bean id="investigatorModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.SubjectModificationEventListener">
+    <bean id="investigatorModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.InvestigatorModificationEventListener">
         <property name="filteredDataLoader" ref="investigatorIndexDataLoader" />
     </bean>
 
-    <bean id="courseModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.SubjectModificationEventListener">
+    <bean id="courseModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.CourseModificationEventListener">
         <property name="filteredDataLoader" ref="courseIndexDataLoader" />
     </bean>
 
-    <bean id="reportModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.SubjectModificationEventListener">
+    <bean id="reportModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ReportModificationEventListener">
         <property name="filteredDataLoader" ref="reportIndexDataLoader" />
     </bean>
 
