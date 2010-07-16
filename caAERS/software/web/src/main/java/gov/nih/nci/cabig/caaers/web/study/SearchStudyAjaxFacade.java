@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
@@ -115,11 +116,29 @@ public class SearchStudyAjaxFacade {
     }
 
     public String getStudiesTable(Map parameterMap, String type, String text, HttpServletRequest request) {
-/*
-        List<Study> studies = getStudyObjects(type, text);
+        StudyQuery sq = new StudyQuery();
+
+        StringTokenizer typeToken = new StringTokenizer(type, ",");
+        StringTokenizer textToken = new StringTokenizer(text, ",");
+        String sType;
+        String sText;
+        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+            sType = typeToken.nextToken();
+            sText = textToken.nextToken();
+
+            if ("idtf".equals(sType)) {
+                sq.filterByIdentifierValue(sText);
+            } else if ("st".equals(sType)) {
+                sq.filterByShortTitle(sText);
+            }
+        }
+
+        List<Study> studies = studyRepository.search(sq, type, text, true);
+
+        // BUILD EC TABLE
+        // 
 
         try {
-
             Context context = null;
             if (parameterMap == null) {
                 context = new HttpServletRequestContext(request);
@@ -128,13 +147,44 @@ public class SearchStudyAjaxFacade {
             }
 
             TableModel model = new TableModelImpl(context);
-            return build(model, studySites).toString();
-        } catch (Exception e) {
+            addTable(model, studies);
+
+            Column columnPrimaryIdentifier = model.getColumnInstance();
+            columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
+            columnPrimaryIdentifier.setTitle("Study ID");
+            columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
+            model.addColumn(columnPrimaryIdentifier);
+
+            Column columnShortTitle = model.getColumnInstance();
+            columnShortTitle.setTitle("Short Title");
+            columnShortTitle.setProperty("shortTitle");
+            columnShortTitle.setSortable(Boolean.TRUE);
+            model.addColumn(columnShortTitle);
+
+            Column columnStatusCode = model.getColumnInstance();
+            columnStatusCode.setTitle("Status");
+            columnStatusCode.setProperty("status");
+            model.addColumn(columnStatusCode);
+            columnStatusCode.setSortable(Boolean.TRUE);
+
+            Column columnPhaseCode = model.getColumnInstance();
+            columnPhaseCode.setTitle("Phase");
+            columnPhaseCode.setProperty("phaseCode");
+            model.addColumn(columnPhaseCode);
+            columnPhaseCode.setSortable(Boolean.TRUE);
+
+            Column columnSponsorCode = model.getColumnInstance();
+            columnSponsorCode.setTitle("Funding Sponsor");
+            columnSponsorCode.setProperty("primarySponsorCode");
+            columnSponsorCode.setSortable(Boolean.TRUE);
+            model.addColumn(columnSponsorCode);
+
+            return model.assemble().toString();
+            
+        } catch(Exception e) {
             e.printStackTrace();
         }
 
-        return "";
-*/
         return "";
     }
 
