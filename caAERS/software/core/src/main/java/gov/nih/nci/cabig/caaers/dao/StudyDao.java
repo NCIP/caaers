@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -67,6 +68,11 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     public Class<Study> domainClass() {
         return Study.class;
     }
+
+	public List<? extends Object> search(final StudyQuery query) {
+		return super.search(query);
+	}
+
     @Override
 	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {
 		return super.search(query);
