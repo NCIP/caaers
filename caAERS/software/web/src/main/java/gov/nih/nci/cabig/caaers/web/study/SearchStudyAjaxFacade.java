@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
@@ -36,6 +36,7 @@ public class SearchStudyAjaxFacade {
 
     private Class<?>[] CONTROLLERS = {AssignParticipantController.class};
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
+    private StudyRepository studyRepository;
     private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
     public Object build(TableModel model, Collection studySearchableAjaxableDomainObjects) throws Exception {
@@ -50,7 +51,7 @@ public class SearchStudyAjaxFacade {
 
     private void addStatusColumn(TableModel model) {
         Column columnStatusCode = model.getColumnInstance();
-        columnStatusCode.setProperty("status");
+        columnStatusCode.setProperty("study.status");
         model.addColumn(columnStatusCode);
         columnStatusCode.setSortable(Boolean.TRUE);
     }
@@ -113,8 +114,9 @@ public class SearchStudyAjaxFacade {
         model.addRow(row);
     }
 
-    public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) {
-        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text);
+    public String getStudiesTable(Map parameterMap, String type, String text, HttpServletRequest request) {
+/*
+        List<Study> studies = getStudyObjects(type, text);
 
         try {
 
@@ -126,16 +128,18 @@ public class SearchStudyAjaxFacade {
             }
 
             TableModel model = new TableModelImpl(context);
-            return build(model, studySearchableAjaxableDomainObjects).toString();
+            return build(model, studySites).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return "";
+*/
+        return "";
     }
 
+    // ASSIGN Study Search
     public String getTableForAssignParticipant(Map parameterMap, String type, String text, HttpServletRequest request) {
-
         int organizationID;
         try {
             organizationID = Integer.parseInt((String) parameterMap.get("organizationID"));
@@ -143,47 +147,7 @@ public class SearchStudyAjaxFacade {
             organizationID = 0;
         }
 
-        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text, organizationID, true);
-
-        // filter objects
-        Object command = extractCommand();
-        if (command instanceof AssignParticipantStudyCommand) {
-            AssignParticipantStudyCommand c = (AssignParticipantStudyCommand)command;
-
-            if (c.getLoggedinResearchStaff() != null) {
-                    List<StudySearchableAjaxableDomainObject> _s = new ArrayList<StudySearchableAjaxableDomainObject>();
-                    boolean isTheSameSite = c.getLoggedInOrganizations().contains(c.getOrganization());
-                    Set<String> orgCodes = new HashSet<String>();
-
-                    for (Organization o : c.getLoggedInOrganizations()) {
-                        orgCodes.add(o.getNciInstituteCode());
-                    }
-
-                    for (StudySearchableAjaxableDomainObject s : studySearchableAjaxableDomainObjects) {
-                        boolean isGood = false;
-
-                            if (isTheSameSite) {
-                                    // if the Participant's Site is the same as Loggedin user, show all studies where this site is just a StudySite
-                                    for (StudySiteAjaxableDomainObject ss : s.getStudySites()) {
-                                        if (ss.getNciInstituteCode().equals(c.getOrganization().getNciInstituteCode())) {
-                                            isGood = true;
-                                        }
-                                    }
-                            } else {
-                                    // if the Participant's Site is other than Loggedin user, show all studies where this site is just a StudySite
-                                    if (orgCodes.contains(s.getCoordinatingCenterCode()) || orgCodes.contains(s.getPrimarySponsorCode())) {
-                                        isGood = true;
-                                    }
-                            }
-
-                        if (isGood) _s.add(s);
-                    }
-
-                    studySearchableAjaxableDomainObjects = _s;
-            } else {
-            }
-        }
-        //
+        List<StudySite> studySites = getStudySites(type, text, organizationID, true);
 
         try {
 
@@ -195,28 +159,42 @@ public class SearchStudyAjaxFacade {
             }
 
             TableModel model = new TableModelImpl(context);
-            addTable(model, studySearchableAjaxableDomainObjects);
+            addTable(model, studySites);
 
 
             Column columnPrimaryIdentifier = model.getColumnInstance();
-            columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
+            columnPrimaryIdentifier.setProperty("study.primaryIdentifierValue");
             columnPrimaryIdentifier.setSortable(true);
             columnPrimaryIdentifier.setTitle("Study ID");
             model.addColumn(columnPrimaryIdentifier);
 
             Column columnShortTitle = model.getColumnInstance();
-            columnShortTitle.setProperty("shortTitle");
+            columnShortTitle.setTitle("Short Title");
+            columnShortTitle.setProperty("study.shortTitle");
             columnShortTitle.setSortable(Boolean.TRUE);
             model.addColumn(columnShortTitle);
 
-            addSponsorColumn(model);
-            addPhaseCodeColumn(model);
-            addStatusColumn(model);
+            Column columnStatusCode = model.getColumnInstance();
+            columnStatusCode.setTitle("Status");
+            columnStatusCode.setProperty("study.status");
+            model.addColumn(columnStatusCode);
+            columnStatusCode.setSortable(Boolean.TRUE);
+
+            Column columnPhaseCode = model.getColumnInstance();
+            columnPhaseCode.setTitle("Phase");
+            columnPhaseCode.setProperty("study.phaseCode");
+            model.addColumn(columnPhaseCode);
+            columnPhaseCode.setSortable(Boolean.TRUE);
+
+            Column columnSponsorCode = model.getColumnInstance();
+            columnSponsorCode.setTitle("Funding Sponsor");
+            columnSponsorCode.setProperty("study.primarySponsorCode");
+            columnSponsorCode.setSortable(Boolean.TRUE);
+            model.addColumn(columnSponsorCode);
 
             Column columnStudySite = model.getColumnInstance();
-            columnStudySite.setProperty("shortTitle");
-            columnStudySite.setSortable(Boolean.TRUE);
             columnStudySite.setTitle("Study Sites");
+            columnStudySite.setProperty("organization.name");
             columnStudySite.setCell("gov.nih.nci.cabig.caaers.web.search.cell.SelectedStudySiteCell");
             model.addColumn(columnStudySite);
 
@@ -229,17 +207,16 @@ public class SearchStudyAjaxFacade {
         return "";
     }
 
-    private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text) {
-        return getObjects(type, text, 0, false);
+    private List<StudySite> getObjects(String type, String text) {
+        return getStudySites(type, text, 0, false);
     }
 
-    public List<StudySearchableAjaxableDomainObject> getObjects(String type, String text, int organizationID, boolean hideIncomplete) {
-        StudySearchableAjaxableDomainObjectQuery studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
+    public List<StudySite> getStudySites(String type, String text, int organizationID, boolean hideIncomplete) {
+        StudySitesQuery studySitesQuery = new StudySitesQuery();
 
         if (organizationID > 0)
-            studySearchableAjaxableDomainObjectQuery.filterStudiesByStudySiteBySiteId(organizationID);
-        
-        studySearchableAjaxableDomainObjectQuery.filterByDataEntryStatus(hideIncomplete);
+            studySitesQuery.filterByOrganizationId(organizationID);
+        studySitesQuery.filterByDataEntryComplete(hideIncomplete);
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");
@@ -250,14 +227,14 @@ public class SearchStudyAjaxFacade {
             sText = textToken.nextToken();
 
             if ("st".equals(sType)) {
-                studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingShortTitleOnly(sText);
+                studySitesQuery.filterStudiesWithMatchingShortTitleOnly(sText);
             } else if ("idtf".equals(sType)) {
-                studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly(sText);
+                studySitesQuery.filterStudiesWithMatchingIdentifierOnly(sText);
             }
         }
 
-        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery,type, text,true);
-        return studySearchableAjaxableDomainObjects;
+        List<StudySite> studySites = studyRepository.search(studySitesQuery, type, text, true);
+        return studySites;
     }
 
 
@@ -294,4 +271,11 @@ public class SearchStudyAjaxFacade {
         this.CONTROLLERS = CONTROLLERS;
     }
 
+    public StudyRepository getStudyRepository() {
+        return studyRepository;
+    }
+
+    public void setStudyRepository(StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
+    }
 }

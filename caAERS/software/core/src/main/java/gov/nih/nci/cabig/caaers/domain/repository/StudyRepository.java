@@ -1,14 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersUserProvisioningException;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -60,6 +56,7 @@ public class StudyRepository {
 	private static Log log = LogFactory.getLog(StudyRepository.class);
 	
     private StudyDao studyDao;
+    private StudySiteDao studySiteDao;
     private ResearchStaffDao researchStaffDao;
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
@@ -93,58 +90,67 @@ public class StudyRepository {
      * @return
      */
     @Transactional(readOnly = false)
-    public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text, boolean searchInCOPPA){
+    public List<Object[]> search(AbstractAjaxableDomainObjectQuery query, String type, String text, boolean searchInCOPPA){
 
-    	try{
-            
-        	if(text.indexOf("%") == -1 && StringUtils.isNotEmpty(text)){
-            	Study study = new RemoteStudy();
-            	Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
-
-                //populate the critera in the Query
-                if(StringUtils.isNotEmpty(text)){
-                    
-                    if(StringUtils.equals("st", type)){
-                       study.setShortTitle(text);
-                    }
-                    
-                    if(StringUtils.equals("idtf", type)){
-                        OrganizationAssignedIdentifier orgAssignedIdentifier = new OrganizationAssignedIdentifier();
-                        orgAssignedIdentifier.setType(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
-                        orgAssignedIdentifier.setValue(text.toUpperCase());
-                        study.addIdentifier(orgAssignedIdentifier);
-            	    }
-
-                }
-
-                if(searchInCOPPA){
-                   //Fetch studies from COPPA matching shortTitle or Identifier
-                    List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
-
-                    if(remoteStudies != null & remoteStudies.size() > 0 ){
-                        for(Study remoteStudy : remoteStudies){
-                            remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
-                            verifyAndSaveOrganizations(remoteStudy);
-                            verifyAndSaveInvestigators(remoteStudy);
-                            verifyAndSaveIND((RemoteStudy)remoteStudy);
-                        }
-                        //Save the studies returned from COPPA
-                        saveRemoteStudies(remoteStudies);
-                    }
-                }
-
-        	}
-            
-    	}catch(Exception e){
-    		log.error("Error saving Remote Studies -- " + e.getMessage());
-    	}
+        if (searchInCOPPA) searchAndSaveRemoteStudies(type, text);
 
         //Perform normal search on caAERS DB & return results. 
     	List<Object[]> objectArray = (List<Object[]>) studyDao.search(query);
         return objectArray;
     }
-    
-    
+
+    private void searchAndSaveRemoteStudies(String type, String text) {
+        try {
+
+            if (text.indexOf("%") == -1 && StringUtils.isNotEmpty(text)) {
+                Study study = new RemoteStudy();
+                Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
+
+                //populate the critera in the Query
+                if (StringUtils.isNotEmpty(text)) {
+
+                    if (StringUtils.equals("st", type)) {
+                        study.setShortTitle(text);
+                    }
+
+                    if (StringUtils.equals("idtf", type)) {
+                        OrganizationAssignedIdentifier orgAssignedIdentifier = new OrganizationAssignedIdentifier();
+                        orgAssignedIdentifier.setType(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
+                        orgAssignedIdentifier.setValue(text.toUpperCase());
+                        study.addIdentifier(orgAssignedIdentifier);
+                    }
+
+                }
+
+                //Fetch studies from COPPA matching shortTitle or Identifier
+                List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
+
+                if (remoteStudies != null & remoteStudies.size() > 0) {
+                    for (Study remoteStudy : remoteStudies) {
+                        remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
+                        verifyAndSaveOrganizations(remoteStudy);
+                        verifyAndSaveInvestigators(remoteStudy);
+                        verifyAndSaveIND((RemoteStudy) remoteStudy);
+                    }
+                    //Save the studies returned from COPPA
+                    saveRemoteStudies(remoteStudies);
+                }
+
+            }
+
+        } catch (Exception e) {
+            log.error("Error saving Remote Studies -- " + e.getMessage());
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public List<StudySite> search(StudySitesQuery query,String type,String text, boolean searchInCOPPA){
+        if (searchInCOPPA) searchAndSaveRemoteStudies(type, text);
+    	List<StudySite> studySites = (List<StudySite>) studySiteDao.search(query);
+        return studySites;
+    }
+
+
     /**
      * This method saves all the RemoteStudies provided in the list.
      * @param remoteStudies
@@ -502,4 +508,12 @@ public class StudyRepository {
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
+
+    public StudySiteDao getStudySiteDao() {
+        return studySiteDao;
+    }
+
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+        this.studySiteDao = studySiteDao;
+    }
 }

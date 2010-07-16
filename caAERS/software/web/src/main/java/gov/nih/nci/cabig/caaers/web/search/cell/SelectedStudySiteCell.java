@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.search.cell;
 
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.extremecomponents.table.bean.Column;
@@ -27,10 +29,12 @@ public class SelectedStudySiteCell implements Cell {
 
 
         try {
-            StudySearchableAjaxableDomainObject study = (StudySearchableAjaxableDomainObject) model.getCurrentRowBean();
-            List<StudySiteAjaxableDomainObject> studySites = study.getStudySites();
+            StudySite ss = (StudySite) model.getCurrentRowBean();
+            List<StudySite> studySites = new ArrayList<StudySite>();
+            studySites.add(ss);
+            
             inputBuilder.getHtmlBuilder().table(0).close();
-            for (StudySiteAjaxableDomainObject studySite : studySites) {
+            for (StudySite studySite : studySites) {
 
                 inputBuilder.getHtmlBuilder().tr(0).close();
                 inputBuilder.tdStart();
@@ -41,7 +45,7 @@ public class SelectedStudySiteCell implements Cell {
                         .onclick("resetStudyAndSites(this);")
                         .styleClass("sitesRadioBtn siteStudy_" + studySite.getId());
                 inputBuilder.getHtmlBuilder().xclose();
-                inputBuilder.tdBody(studySite.getName());
+                inputBuilder.tdBody(studySite.getOrganization().getName());
 
                 inputBuilder.tdEnd();
                 inputBuilder.getHtmlBuilder().trEnd(0);

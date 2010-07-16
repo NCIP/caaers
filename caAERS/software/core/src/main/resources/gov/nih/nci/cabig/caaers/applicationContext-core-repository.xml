@@ -19,6 +19,7 @@
     </bean>
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
         <property name="studyDao" ref="studyDao"></property>
+        <property name="studySiteDao" ref="studySiteDao"></property>
         <property name="researchStaffDao" ref="researchStaffDao"></property>
         <property name="siteResearchStaffDao" ref="siteResearchStaffDao"></property>
         <property name="organizationDao" ref="organizationDao"></property>

@@ -1,14 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class implements the Data access related operations for the StudySite domain object.
@@ -96,16 +93,6 @@ public class StudySiteDao extends CaaersDao<StudySite> {
         List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(), new Object[]{orgId,studyId});
         getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
         return studySites.size() == 1 ? studySites.get(0) : null;
-    }
-
-    public List<String> getSitesOfCoordinatedStudiesByOrganizationCodes(List orgCodes) {
-        StudySitesQuery query = new StudySitesQuery("SELECT o.nciInstituteCode FROM StudyCoordinatingCenter so");
-        query.joinStudies();
-        query.joinStudyOrganizations();
-        query.joinOrganizations();
-        query.filterBySuperOrganizationCode(orgCodes);
-        List<String> coordinatedOrganizationsCodes = this.getHibernateTemplate().find(query.getQueryString());
-        return coordinatedOrganizationsCodes;
     }
 
 }

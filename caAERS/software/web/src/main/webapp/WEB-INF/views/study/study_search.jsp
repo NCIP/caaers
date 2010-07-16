@@ -38,7 +38,7 @@ function buildTable(form) {
 	//	$('assembler_table').hide();  //do not hide the results..becz filter string get disappear
         var parameterMap = getParameterMap(form);
 
-		searchStudy.getTable(parameterMap, type, text, showTable);
+		searchStudy.getStudiesTable(parameterMap, type, text, showTable);
 	}
 }
 

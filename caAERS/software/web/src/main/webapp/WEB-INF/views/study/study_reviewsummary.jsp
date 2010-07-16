@@ -268,7 +268,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.study.uniqueStudyOrganizations}" var="studySite" >
+            <c:forEach items="${command.study.activeStudyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
                         <td>
@@ -318,7 +318,7 @@
             </c:forEach>
 --%>
 
-            <c:forEach items="${command.study.uniqueStudyOrganizations}" var="studySite" >
+            <c:forEach items="${command.study.activeStudyOrganizations}" var="studySite" >
                 <c:set var="orgIndex" value="0" />
                 <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="i">
                     <c:if test="${not i.first}"><c:set var="orgIndex" value="1" /></c:if>
