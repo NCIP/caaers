@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersUserProvisioningException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
@@ -68,6 +69,31 @@ public class StudyRepository {
     
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI";
+
+
+    /**
+     * Search the study
+     * @param query
+     * @param type
+     * @param text
+     * @return
+     */
+    public List<Study> search(StudyQuery query,String type, String text){
+      return search(query, type, text);
+    }
+
+    /**
+     * Search the study 
+     * @param query
+     * @param type
+     * @param text
+     * @param searchInCOPPA
+     * @return
+     */
+    public List<Study> search(StudyQuery query,String type, String text, boolean searchInCOPPA){
+        if(searchInCOPPA) searchAndSaveRemoteStudies(type,text);
+        return (List<Study>)studyDao.search(query);
+    }
 
     /**
      * Will issue a search in the local database only.
