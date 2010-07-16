@@ -8,8 +8,8 @@ public class StudySitesQuery extends AbstractQuery {
     private static final String IDENTIFIER_EXACT_VALUE = "identifierValue";
     
     public StudySitesQuery() {
-        super("SELECT ss FROM StudySite ss");
-        // leftJoin("ss.study.identifiers as identifier");
+        super("SELECT distinct ss FROM StudySite ss");
+        leftJoin("ss.study.identifiers as identifier");
     }
 
     public void joinStudies() {
@@ -43,7 +43,7 @@ public class StudySitesQuery extends AbstractQuery {
     public void filterStudiesWithMatchingIdentifierOnly(String text) {
         if (!StringUtils.isBlank(text)) {
             String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-            andWhere(String.format("(lower(ss.study.identifier.value) LIKE :%s)", IDENTIFIER_EXACT_VALUE));
+            andWhere(String.format("(lower(identifier.value) LIKE :%s)", IDENTIFIER_EXACT_VALUE));
             setParameter(IDENTIFIER_EXACT_VALUE, searchString);
         }
     }
