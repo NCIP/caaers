@@ -15,7 +15,6 @@
 </c:if>
 --%>
 
-<c:if test="${command.assignment.priorTherapies[parentIndex].priorTherapyAgents[index].chemoAgent != null}">
 <div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
 		<table width="100%">
  			<tr>
@@ -51,4 +50,3 @@
  			</tr>
 		</table>
 </div>
-</c:if>    
