@@ -14,5 +14,5 @@ This applicationContext contains the definition aspectJ logging related beans
         default-lazy-init="false">
         
  	<bean id="caaersLoggingAspect" class="gov.nih.nci.cabig.caaers.tools.logging.CaaersLoggingAspect" factory-method="aspectOf" /> 
-   
+    <bean id="paramsTrackerAspect" class="gov.nih.nci.cabig.caaers.utils.MethodParamsTrackerAspect" factory-method="aspectOf" />
 </beans>

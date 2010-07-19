@@ -17,6 +17,7 @@ public class ObjectToSerialize {
 	private HttpSession httpSession;
 	private Session hibernateSession;
 	private Throwable exception;
+    private Object[] methodParameters;
 	
 	public HttpServletRequest getHttpRequest() {
 		return httpRequest;
@@ -36,10 +37,18 @@ public class ObjectToSerialize {
 	public void setHibernateSession(Session hibernateSession) {
 		this.hibernateSession = hibernateSession;
 	}
-	public Throwable getException() {
+	public Throwable getException() {                   
 		return exception;
 	}
 	public void setException(Throwable exception) {
 		this.exception = exception;
 	}
+
+    public Object[] getMethodParameters() {
+        return methodParameters;
+    }
+
+    public void setMethodParameters(Object[] methodParameters) {
+        this.methodParameters = methodParameters;
+    }
 }

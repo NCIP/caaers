@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.utils.CaaersSerializerUtil;
+import gov.nih.nci.cabig.caaers.utils.MethodParamsHolder;
 import gov.nih.nci.cabig.caaers.utils.ObjectToSerialize;
 import gov.nih.nci.cabig.ctms.web.filters.ContextRetainingFilterAdapter;
 
@@ -83,6 +84,7 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
                 }
                 os.setException(e);
                 os.setHibernateSession(session);
+                os.setMethodParameters(MethodParamsHolder.getParams());
                 CaaersSerializerUtil.serialize(os);
         }catch(Exception ex){
             log.warn(ex);

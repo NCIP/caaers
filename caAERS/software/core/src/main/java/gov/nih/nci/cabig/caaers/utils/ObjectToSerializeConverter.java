@@ -54,6 +54,17 @@ public class ObjectToSerializeConverter implements Converter{
 				writeHibernateSession(objectToSerialize.getHibernateSession(), writer, context);
 				writer.endNode();
 			}
+
+            writer.startNode("MethodParams");
+            if(objectToSerialize.getMethodParameters() != null && objectToSerialize.getMethodParameters().length > 0){
+               for(Object o: objectToSerialize.getMethodParameters()){
+                   writer.startNode("param");
+                   context.convertAnother(o);
+                   writer.endNode();
+               }
+            }
+            writer.endNode();
+
 		}
 	}
 

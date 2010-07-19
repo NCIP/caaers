@@ -57,5 +57,6 @@
     </bean>
     
     <bean id="caaersLoggingAspect" class="gov.nih.nci.cabig.caaers.tools.logging.CaaersLoggingAspect"  />
+    <bean id="paramsTrackerAspect" class="gov.nih.nci.cabig.caaers.utils.MethodParamsTrackerAspect"  />
 
 </beans>
