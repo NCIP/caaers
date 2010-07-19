@@ -31,9 +31,10 @@ public class QuerySecurityFiltererTest extends AbstractTestCase {
         filterer.setEntityName("SiteResearchStaff");
         filterer.setIndexAlias("rsIdx");
         filterer.setEntityAssociation("researchStaff");
-        System.out.println(q.getQueryString());
+        assertEquals("SELECT distinct srs from SiteResearchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org order by srs.id",
+                q.getQueryString());
         filterer.applyFilter(q);
-        System.out.println(q.getQueryString());
+        assertEquals("SELECT distinct srs from  rsIdx join rsIdx.researchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org WHERE rsIdx.loginId = :loginId AND rsIdx.roleCode in (:roleCodes)  order by srs.id", q.getQueryString());
     }
 
     public void testApplyFilterForStudySiteQuery(){
@@ -43,9 +44,9 @@ public class QuerySecurityFiltererTest extends AbstractTestCase {
         filterer.setIndexAlias("stuIdx");
         filterer.setEntityAssociation("study.studySite");
         filterer.setIndexName("StudyIndex");
-        assertEquals("SELECT ss FROM StudySite ss left join ss.study.identifiers as identifier join ss.organization AS o WHERE o.id = :orgId", q.getQueryString());
+        assertEquals("SELECT distinct ss FROM StudySite ss left join ss.study.identifiers as identifier join ss.organization AS o WHERE o.id = :orgId", q.getQueryString());
         filterer.applyFilter(q);
-        assertEquals("SELECT ss FROM StudyIndex stuIdx join stuIdx.study.studySite ss left join ss.study.identifiers as identifier join ss.organization AS o WHERE o.id = :orgId AND stuIdx.loginId = :loginId AND stuIdx.roleCode in (:roleCodes)", q.getQueryString());
+        assertEquals("SELECT distinct ss FROM StudyIndex stuIdx join stuIdx.study.studySite ss left join ss.study.identifiers as identifier join ss.organization AS o WHERE o.id = :orgId AND stuIdx.loginId = :loginId AND stuIdx.roleCode in (:roleCodes)", q.getQueryString());
     }
 
     public void tearDown() throws Exception {
