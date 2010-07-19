@@ -419,7 +419,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	try {
 	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
 			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
-			provisioningSession.deleteRole(suiteRole);
 			
 			SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
 			suiteRoleMembership.getStudyIdentifiers().clear();
