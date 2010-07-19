@@ -8,14 +8,14 @@ import junit.framework.TestCase;
  */
 public class UserGroupTypeTest extends TestCase {
 	
-	private UserGroupType grpType = UserGroupType.caaers_physician;;
+	private UserGroupType grpType = UserGroupType.ae_reporter;;
 	
 	public void testGetCsmName() {
-		assertEquals("caaers_physician", grpType.getCsmName());
+		assertEquals("ae_reporter", grpType.getCsmName());
 	}
 
 	public void testGetByCode() {
-		assertSame(grpType, UserGroupType.getByCode(-8));
+		assertSame(grpType, UserGroupType.getByCode(-117));
 	}
 	
 	public void testGetByCode_WrongCode() {
@@ -23,32 +23,22 @@ public class UserGroupTypeTest extends TestCase {
 	}
 
 	public void testToString() {
-		assertEquals("caaers_physician", grpType.toString());
+		assertEquals("ae_reporter", grpType.toString());
 	}
 
-	public void testStrValues() {
-		
-		assertEquals(33, UserGroupType.strValues().length);
-		assertEquals(grpType.toString(), UserGroupType.strValues()[7]);
-	}
+
 	
 	public void testGetDisplayName(){
-		assertEquals("Caaers physician", grpType.getDisplayName());
+		assertEquals("Ae reporter", grpType.getDisplayName());
 	}
 	
 	public void testGetCode(){
-		assertEquals(-8, grpType.getCode().intValue());
+		assertEquals(-117, grpType.getCode().intValue());
 	}
 
     public void testValueOf(){
-        assertEquals(UserGroupType.caaers_physician, UserGroupType.valueOf("caaers_physician"));
+        assertEquals(UserGroupType.ae_reporter, UserGroupType.valueOf("ae_reporter"));
     }
 	
-	public void testCodes(){
-		int[] codes = UserGroupType.codes();
-		assertEquals(33, codes.length);
-		assertEquals(-2, codes[0]);
-		assertEquals(-8, codes[7]);
-		assertEquals(-7942, codes[9]);
-	}
+	
 }
