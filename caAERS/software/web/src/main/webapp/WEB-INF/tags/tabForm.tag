@@ -55,6 +55,10 @@
            </c:if>
         </c:if>
 
+        <%-- All tab titles --%>
+        <c:forEach var="aTab" items="${flow.tabs}" varStatus="loopSt">
+           <input type="hidden" name="_tabTitle${loopSt.index}" value="${aTab.shortTitle}"/>
+        </c:forEach>
     </form:form>
 </c:if>
 <c:if test="${hideBox}">
@@ -80,5 +84,10 @@
                 <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
             </c:if>
         </c:if>
+
+        <%-- All tab titles --%>
+        <c:forEach var="aTab" items="${flow.tabs}" varStatus="loopSt">
+           <input type="hidden" name="_tabTitle${loopSt.index}" value="${aTab.shortTitle}"/>
+        </c:forEach>
     </form:form>
 </c:if><!-- END tags\tabForm.tag -->
