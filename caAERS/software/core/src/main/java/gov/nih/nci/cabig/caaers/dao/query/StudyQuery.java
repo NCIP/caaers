@@ -31,7 +31,7 @@ public class StudyQuery extends AbstractQuery {
     private SimpleDateFormat dateFormat;
 
     public StudyQuery() {
-        super("select s from Study s");
+        super("select distinct s from Study s");
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     }
 
