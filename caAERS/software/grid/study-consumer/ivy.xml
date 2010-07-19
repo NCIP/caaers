@@ -62,7 +62,7 @@
         	<dependency org="axis-unofficial" name="addressing" rev="1.0" />
         	
         	<!--  Apache Commons -->
-        	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
+        	<dependency org="commons-lang" name="commons-lang" rev="2.4" />
         	<dependency org="commons-logging" name="commons-logging" rev="1.1" />
         	
         	<!-- Spring/ Spring Modules -->
