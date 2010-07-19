@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 public class MethodParamsTrackerAspect {
 
     @Around("execution(public * gov.nih.nci.cabig.caaers.dao..*.merge*(..))" +
+            "|| execution(public * gov.nih.nci.cabig.caaers.dao..*.reassociate*(..))" +
 			"|| execution(public * gov.nih.nci.cabig.caaers.dao..*.lock*(..))" +
             "|| execution(public * gov.nih.nci.cabig.caaers.dao..*.save*(..))" +
             "|| execution(public * gov.nih.nci.cabig.caaers.dao..*.update*(..))")

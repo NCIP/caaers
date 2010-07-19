@@ -92,7 +92,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = { CascadeType.EVICT, CascadeType.LOCK })
+    @Cascade(value = { CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }

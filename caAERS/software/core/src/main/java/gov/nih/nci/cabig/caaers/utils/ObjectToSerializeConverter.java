@@ -55,15 +55,15 @@ public class ObjectToSerializeConverter implements Converter{
 				writer.endNode();
 			}
 
-            writer.startNode("MethodParams");
-            if(objectToSerialize.getMethodParameters() != null && objectToSerialize.getMethodParameters().length > 0){
-               for(Object o: objectToSerialize.getMethodParameters()){
-                   writer.startNode("param");
-                   context.convertAnother(o);
-                   writer.endNode();
-               }
-            }
-            writer.endNode();
+//            writer.startNode("MethodParams");
+//            if(objectToSerialize.getMethodParameters() != null && objectToSerialize.getMethodParameters().length > 0){
+//               for(Object o: objectToSerialize.getMethodParameters()){
+//                   writer.startNode("param");
+//                   context.convertAnother(o);
+//                   writer.endNode();
+//               }
+//            }
+//            writer.endNode();
 
 		}
 	}
