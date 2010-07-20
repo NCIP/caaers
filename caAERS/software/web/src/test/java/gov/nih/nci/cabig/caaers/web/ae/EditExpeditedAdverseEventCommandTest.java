@@ -7,6 +7,7 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -46,7 +47,8 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 	protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 	protected StudyParticipantAssignment assignment;
 	private EditExpeditedAdverseEventCommand command;
-	
+
+    private StudyDao studyDao;
 	private ExpeditedAdverseEventReportDao expeditedAeReportDao;
     private ReportDefinitionDao reportDefinitionDao;
     private StudyParticipantAssignmentDao assignmentDao;
@@ -64,6 +66,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 	protected void setUp() throws Exception {
 		super.setUp();
 		assignment = Fixtures.createAssignment();
+        studyDao = registerDaoMockFor(StudyDao.class);
 		expeditedAeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
@@ -340,7 +343,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     }
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
-        return new EditExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitionDao, 
+        return new EditExpeditedAdverseEventCommand(expeditedAeReportDao,studyDao, reportDefinitionDao, 
         		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
     }
     

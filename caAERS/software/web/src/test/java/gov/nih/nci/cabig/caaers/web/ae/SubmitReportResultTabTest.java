@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -39,6 +40,7 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	ReportRepository reportRepository;
 	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	ReportDao reportDao;
+    StudyDao studyDao;
 	HttpServletRequest request;
 	
 	protected void setUp() throws Exception {
@@ -55,9 +57,10 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
 		request = registerMockFor(HttpServletRequest.class);
+        studyDao = registerDaoMockFor(StudyDao.class);
 		tab.setReportDao(reportDao);
 		
-		command = new SubmitExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitonDao, assignmentDao, reportingPeriodDao,
+		command = new SubmitExpeditedAdverseEventCommand(expeditedAeReportDao,studyDao, reportDefinitonDao, assignmentDao, reportingPeriodDao,
 				expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
 		setupCommand();
 	}

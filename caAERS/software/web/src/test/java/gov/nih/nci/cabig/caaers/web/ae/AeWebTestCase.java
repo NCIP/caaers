@@ -95,11 +95,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract EditExpeditedAdverseEventCommand createCommand();
 
     protected final EditExpeditedAdverseEventCommand createRealCommand() {
-    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
+    	return new EditExpeditedAdverseEventCommand(expeditedReportDao,studyDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
     }
 
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
-        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
+        return new EditExpeditedAdverseEventCommand(expeditedReportDao,studyDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
     }
 
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {

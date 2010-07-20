@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.Arrays;
 
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Physician;
@@ -26,10 +27,12 @@ public class SubmitReportTabTest extends SubmitFlowTabTestCase {
 	Report report;
 	ReportDelivery delivery;
 	SubmitReportTab tab;
+    StudyDao studyDao;
 
 	protected void setUp() throws Exception {
 		super.setUp();
         reportSubmissionService = registerMockFor(ReportSubmissionService.class);
+        studyDao = registerDaoMockFor(StudyDao.class);
         errors = new BindException(command, "command");
         tab = createTab();
 	}
@@ -68,7 +71,7 @@ public class SubmitReportTabTest extends SubmitFlowTabTestCase {
 
 	@Override
 	public SubmitExpeditedAdverseEventCommand createCommand() {
-		SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, 
+		SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(expeditedReportDao,studyDao, reportDefinitionDao, 
 				assignmentDao, reportingPeriodDao, expeditedReportTree,  renderDecisionManager, reportRepository,  adverseEventRoutingAndReviewRepository);
 		
 		return command;

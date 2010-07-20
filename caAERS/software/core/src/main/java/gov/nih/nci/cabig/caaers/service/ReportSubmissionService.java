@@ -37,6 +37,7 @@ import org.springframework.util.FileCopyUtils;
 /**
  * This class is responsible for submission of an {@link ExpeditedAdverseEventReport}
  * @author Biju Joseph
+ * @author Srini Akkala
  *
  */
 @Transactional
@@ -224,9 +225,7 @@ public class ReportSubmissionService {
     
     /**
      * This method will generate the message content and forwards it to the caaers mail sender.
-     * @param report
-     * @param xml
-     * @param pdfFilePaths
+     * @param context - The submission context
      * @throws Exception
      */
     
@@ -276,9 +275,7 @@ public class ReportSubmissionService {
   
     /**
      * This method will notify the external systems.
-     * @param report
-     * @param xml
-     * @param pdfFilePaths
+     * @param context - The report submission context
      * @throws Exception
      */
     

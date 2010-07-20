@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
+
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -31,6 +33,7 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 	
 	private EditExpeditedAdverseEventCommand command;
 	private StudyParticipantAssignmentDao assignmentDao;
+    private StudyDao studyDao;
 	private StudyParticipantAssignment assignment;
 	private StudySite studySite;
 	private EditAdverseEventController controller;
@@ -43,8 +46,9 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		now = new Date();
 		assignment = registerMockFor(StudyParticipantAssignment.class);
 		studySite = registerMockFor(StudySite.class);
+        studyDao = registerDaoMockFor(StudyDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
-		command = new EditExpeditedAdverseEventCommand(null, null, assignmentDao, null, 
+		command = new EditExpeditedAdverseEventCommand(null, studyDao,null, assignmentDao, null, 
 								new ExpeditedReportTree(),renderDecisionManager, null, null, null );
 		//Setup the command 
 		ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();

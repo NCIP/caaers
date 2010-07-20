@@ -3,11 +3,13 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
@@ -25,6 +27,7 @@ import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	private SubmitReportAjaxFacade facade;
+    private StudyDao studyDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
 	private ReportDefinitionDao reportDefinitionDao;
 	private StudyParticipantAssignmentDao assignmentDao;
@@ -44,6 +47,7 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 		expeditedReportTree = registerMockFor(ExpeditedReportTree.class);
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
 		reportRepository = registerMockFor(ReportRepository.class);
+        studyDao = registerDaoMockFor(StudyDao.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
 	
 		facade = new SubmitReportAjaxFacade();
@@ -70,7 +74,7 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	private SubmitExpeditedAdverseEventCommand setupSubmitExpeditedAdverseEventCommand(){
-		SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(aeReportDao,
+		SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(aeReportDao,  studyDao,
 				reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager,
 				reportRepository, adverseEventRoutingAndReviewRepository);
 		

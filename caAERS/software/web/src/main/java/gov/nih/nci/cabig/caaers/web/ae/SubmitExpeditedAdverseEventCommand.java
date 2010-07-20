@@ -5,6 +5,7 @@ import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -37,13 +38,13 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     
     // //// LOGIC
 
-    public SubmitExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
+    public SubmitExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao, StudyDao studyDao,
                     ReportDefinitionDao reportDefinitionDao,
                     StudyParticipantAssignmentDao assignmentDao,
                     AdverseEventReportingPeriodDao reportingPeriodDao,
                     ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
                     AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
-        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
+        super(expeditedAeReportDao,studyDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
         reportDeliveries = new ArrayList<ReportDelivery>();
     }
     

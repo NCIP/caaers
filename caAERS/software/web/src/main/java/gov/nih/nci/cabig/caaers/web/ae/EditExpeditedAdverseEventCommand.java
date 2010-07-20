@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -22,7 +23,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	
     private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
     private String task; // will tell the action we perform on the current item.
-
+    private StudyDao studyDao;
     
     
     // //// LOGIC
@@ -31,7 +32,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	this.reportDao = reportDao;
     }
     
-    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
+    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao, StudyDao studyDao,
             ReportDefinitionDao reportDefinitionDao,
             StudyParticipantAssignmentDao assignmentDao,
             AdverseEventReportingPeriodDao reportingPeriodDao,
@@ -51,6 +52,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     @Override
     public void reassociate() {
         assignmentDao.reassociate(getAssignment());
+        studyDao.lock(aeReport.getStudy());
         super.reassociate();
     }
     
