@@ -111,7 +111,7 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
 		reviewComment.setEditable(true);
 		reviewComment.setUserId("4");
 		
-		reportingPeriod.getReviewComments().add(reviewComment);
+		reportingPeriod.getReviewCommentsInternal().add(reviewComment);
 		
     	getDao().modifyOrSaveReviewStatusAndComments(reportingPeriod);
     	

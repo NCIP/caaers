@@ -344,5 +344,17 @@
     <additional_information />
     <ae_radiation_interventions />
     <report_contents />
+    <site_research_staffs />
+    <site_rs_staff_roles />
+    <study_personnel />
+    <ae_report_people />
+    <contact_mechanisms />
+    <study_agent_inds />
+    <report_tracking />
+    <wf_review_comments />
+    <prior_therapy_agents />
+    <metastatic_disease_sites />
+    <adverseevent_index />
+    <site_investigators />
     
 </dataset>

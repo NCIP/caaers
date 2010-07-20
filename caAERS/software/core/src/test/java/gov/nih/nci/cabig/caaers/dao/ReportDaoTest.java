@@ -499,4 +499,46 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     	
     	assertEquals(-224, reports.get(0).getId().intValue());
     }
+
+
+    public void testSaveWithComments(){
+        int id ;
+    	int aeCount = 0;
+    	{
+            Report rs = new Report();
+            rs.setAeReport(null);
+            // rs.setName("My Sample Report");
+            rs.setCreatedOn(new Date());
+            rs.setDueOn(new Date());
+            rs.setSubmittedOn(new Date());
+            rs.setGridId("ADEDR99393939");
+
+            //add adverse events.
+            ExpeditedAdverseEventReport aeReport =  aeDao.getById(-1);
+            for(AdverseEvent ae : aeReport.getAdverseEvents()){
+            	rs.getLastVersion().addReportedAdverseEvent(ae);
+            	aeCount++;
+            }
+
+            //add comments
+            rs.getReviewCommentsInternal().add(Fixtures.createReportReviewComment(null, "hello"));
+            rs.getReviewCommentsInternal().add(Fixtures.createReportReviewComment(null, "below"));
+            rs.getReviewCommentsInternal().add(Fixtures.createReportReviewComment(null, "sello"));
+
+            rsDao.save(rs);
+
+            assertNotNull("report id is null", rs.getId());
+            id = rs.getId();
+            assertNotNull("report version id is null", rs.getReportVersions().get(0).getId());
+    	}
+
+        interruptSession();
+
+        {
+        	Report rs = rsDao.getById(id);
+        	assertNotNull(rs.getReviewComments());
+            assertEquals(3, rs.getReviewComments().size());
+            assertEquals("hello", rs.getReviewComments().get(2).getUserComment()) ;
+        }
+    }
 }

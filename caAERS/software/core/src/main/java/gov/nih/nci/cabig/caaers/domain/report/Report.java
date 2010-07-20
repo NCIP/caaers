@@ -642,22 +642,36 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
 		}    	
 		return null;
     }
+
+    /**
+     * Reverse the comments so that it will return the reversed list. 
+     * @return
+     */
+    @Transient
+    public List<ReportReviewComment> getReviewComments() {
+    	ArrayList<ReportReviewComment> comments = new ArrayList<ReportReviewComment>(getReviewCommentsInternal());
+        Collections.reverse(comments);
+		return comments;
+	}
     
+    public void setReviewComments(List<ReportReviewComment> reviewComments) {
+		setReviewCommentsInternal(reviewComments);
+	}
+
+    //http://opensource.atlassian.com/projects/hibernate/browse/HHH-2802
     @OneToMany
-    @JoinColumn(name = "report_id", nullable = true)
+    @JoinColumn(name = "report_id", nullable = true )
     @IndexColumn(name = "list_index", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy(value = "createdDate DESC")
-    public List<ReportReviewComment> getReviewComments() {
+    public List<ReportReviewComment> getReviewCommentsInternal() {
     	if(reviewComments == null) reviewComments = new ArrayList<ReportReviewComment>();
 		return reviewComments;
 	}
-    
-    public void setReviewComments(
-			List<ReportReviewComment> reviewComments) {
+
+    public void setReviewCommentsInternal(List<ReportReviewComment> reviewComments) {
 		this.reviewComments = reviewComments;
 	}
-
+    
     /**
      * This method will find the recently submitted report
      */

@@ -144,7 +144,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		commentsList.add(comment);
 		rp.setReviewComments(commentsList);
 		impl.editReportingPeriodReviewComment(rp, newComment, userId, commentId);
-		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewComments().get(1).getUserComment());
+		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewCommentsInternal().get(1).getUserComment());
 	}
 	
 	public void testDeleteReportingPeriodReviewComment(){
@@ -160,7 +160,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		impl.deleteReportingPeriodReviewComment(1, 2);
 		verifyMocks();
-		assertEquals("Comment not deleted from comments list", 2, rp.getReviewComments().size());
+		assertEquals("Comment not deleted from comments list", 2, rp.getReviewCommentsInternal().size());
 	}
 	
 	public void testDeleteReportReviewComment(){
@@ -175,7 +175,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		impl.deleteReportReviewComment(10, 2);
 		verifyMocks();
-		assertEquals("Comment not deleted from comments list", 2, report.getReviewComments().size());
+		assertEquals("Comment not deleted from comments list", 2, report.getReviewCommentsInternal().size());
  	}
 	
 	public void testEditReportingPeriodReviewCommentWithId(){
@@ -197,7 +197,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		impl.editReportingPeriodReviewComment(reportingPeriodId, newComment, userId, commentId);
 		verifyMocks();
 		
-		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewComments().get(1).getUserComment());
+		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewCommentsInternal().get(1).getUserComment());
 	}
 
 	public void testFindAdverseEventReportingPeriods() {
@@ -312,7 +312,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		List<String> transitionsNames = impl.advanceReportWorkflow(wfId, transitionToTake, id, loginId);
 		
 		verifyMocks();
-		assertEquals("A review comment for the action of advancing workflow was not added", 1, report.getReviewComments().size());
+		assertEquals("A review comment for the action of advancing workflow was not added", 1, report.getReviewCommentsInternal().size());
 	}
 	
 	public void testAdvanceReportingPeriodWorkflow(){

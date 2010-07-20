@@ -213,7 +213,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 					report.getLastVersion().getReportedAdversEvents().size();
 				}
 			}
-			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
+			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewCommentsInternal();
 			if(reviewCommentList != null)
 				this.adverseEventReportingPeriod.getReviewComments().size();
 			if(this.assignment != null){

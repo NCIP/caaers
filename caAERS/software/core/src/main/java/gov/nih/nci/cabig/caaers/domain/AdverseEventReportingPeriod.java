@@ -377,12 +377,23 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     @JoinColumn(name = "rp_id", nullable = true)
     @IndexColumn(name = "list_index", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @org.hibernate.annotations.OrderBy(clause="created_date desc")
-    public List<ReportingPeriodReviewComment> getReviewComments() {
+    public List<ReportingPeriodReviewComment> getReviewCommentsInternal() {
     	if(reviewComments == null) reviewComments = new ArrayList<ReportingPeriodReviewComment>();
 		return reviewComments;
 	}
     
+    public void setReviewCommentsInternal(List<ReportingPeriodReviewComment> reviewComments) {
+		this.reviewComments = reviewComments;
+	}
+
+    //http://opensource.atlassian.com/projects/hibernate/browse/HHH-2802
+    @Transient
+    public List<ReportingPeriodReviewComment> getReviewComments() {
+    	ArrayList<ReportingPeriodReviewComment> comments = new ArrayList<ReportingPeriodReviewComment>(getReviewCommentsInternal());
+        Collections.reverse(comments);
+        return comments;
+	}
+
     public void setReviewComments(List<ReportingPeriodReviewComment> reviewComments) {
 		this.reviewComments = reviewComments;
 	}
@@ -486,7 +497,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     
     /**
      *  Checks whether a different AE with the same term is avilable in this reporting period
-     * @param ae
+     * @param otherAE
      * @return
      */
     public boolean hasDiffrentAEWithSameTerm(AdverseEvent otherAE){

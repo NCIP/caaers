@@ -177,7 +177,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         studyDao.reassociateStudyOrganizations(expeditedData.getStudy().getStudyOrganizations());
         
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
-        EasyMock.expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
         schedulerService.scheduleNotification(report);
@@ -219,7 +218,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         studyDao.reassociateStudyOrganizations(expeditedData.getStudy().getStudyOrganizations());
         
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
-        EasyMock.expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
         schedulerService.scheduleNotification(report);
@@ -253,7 +251,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         studyDao.reassociateStudyOrganizations(expeditedData.getStudy().getStudyOrganizations());
         
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
-        EasyMock.expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
         
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
