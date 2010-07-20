@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
@@ -40,6 +42,7 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
 
     @OneToOne
     @JoinColumn(name = "coded_site_id")
+    @Cascade(value = {CascadeType.ALL})
     public AnatomicSite getCodedSite() {
         return codedSite;
     }

@@ -112,7 +112,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/create" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
 		<entry key="/pages/study/view" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
 		<entry key="/pages/study/search" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
-		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
+		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
         <entry key="/pages/study/studyAgentIND" value="gov.nih.nci.cabig.caaers.domain.StudyAgent:CREATE" />
         <entry key="/pages/study/export" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE || gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
         

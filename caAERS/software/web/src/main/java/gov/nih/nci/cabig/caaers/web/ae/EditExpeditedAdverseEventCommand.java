@@ -52,9 +52,9 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     
     @Override
     public void reassociate() {
-        assignmentDao.reassociate(getAssignment());
-        studyDao.lock(aeReport.getStudy());
         super.reassociate();
+        assignmentDao.refresh(getAssignment());
+        studyDao.lock(aeReport.getStudy());
     }
     
     /**

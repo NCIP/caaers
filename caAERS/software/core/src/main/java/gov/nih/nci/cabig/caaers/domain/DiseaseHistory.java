@@ -61,7 +61,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "coded_primary_disease_site_id")
-    @Cascade(value = {CascadeType.ALL})
+   // @Cascade(value = {CascadeType.ALL})
     public AnatomicSite getCodedPrimaryDiseaseSite() {
         return codedPrimaryDiseaseSite;
     }
