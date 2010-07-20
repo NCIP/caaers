@@ -192,7 +192,7 @@
     					domainObject="${command.assignment.studySite.organization}" 
     					authorizationCheckName="siteAuthorizationCheck" 
     					hasPrivileges="lab_data_user" > 
-				<p>View this person's details in the <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso" target="labviewer">lab viewer</a>.</p> 
+				<p>View this person's details in <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso" target="_labviewer">lab viewer</a>.</p> 
     		</csmauthz:accesscontrol>
 		</c:if>
     </jsp:attribute>
