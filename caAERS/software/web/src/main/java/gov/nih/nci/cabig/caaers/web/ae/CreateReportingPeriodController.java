@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
@@ -73,6 +74,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 
     private String TAB_NAME = "gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab";
+    
+    private EventFactory eventFactory;
 
     public CreateReportingPeriodController() {
         setFormView(viewName);
@@ -301,7 +304,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
         	}
         }
         adverseEventReportingPeriodDao.save(reportingPeriod);
-
+        
+        
         //call workflow, to enact
         if (command.isWorkflowEnabled() && reportingPeriod.getWorkflowId() == null)
             adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
@@ -311,7 +315,11 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         map.putAll(errors.getModel());
         ModelAndView modelAndView = new ModelAndView("ae/confirmReportingPeriod", map);
-
+        
+    	if(eventFactory != null){
+            eventFactory.publishEntityModifiedEvent(command.getReportingPeriod());
+        }
+    	
         return modelAndView;
     }
     
@@ -571,4 +579,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
     public void setRenderDecisionManagerFactoryBean(RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean) {
         this.renderDecisionManagerFactoryBean = renderDecisionManagerFactoryBean;
     }
+
+	public void setEventFactory(EventFactory eventFactory) {
+		this.eventFactory = eventFactory;
+	}
 }
