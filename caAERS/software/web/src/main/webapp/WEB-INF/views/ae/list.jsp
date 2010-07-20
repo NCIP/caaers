@@ -315,7 +315,7 @@ color:#0033FF;
 	domainObject="${command.assignment.studySite.organization}" 
 	authorizationCheckName="siteAuthorizationCheck" 
 	hasPrivileges="study_subject_calendar_manager" > 
-	<p>View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p> 
+	<p>View this person's schedule in <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p> 
 </csmauthz:accesscontrol>
 </c:if>
 
