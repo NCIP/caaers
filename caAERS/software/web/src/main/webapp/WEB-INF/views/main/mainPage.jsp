@@ -9,168 +9,97 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-<head><title>Welcome to caAERS</title>
-<link rel="icon" href="../images/caaers.ico"/>
-<style>
-.division .header { margin-bottom:5px; }
-</style>
-<script><!--
-	var displayAdminSection = 0;
-	Event.observe(document, "dom:loaded", function(){
-	   if(displayAdminSection == 0) 
-	   		$('admin-division-id').hide();
-	}); 
---></script>
+<head>
+    <title>Welcome to caAERS</title>
+    <link rel="icon" href="../images/caaers.ico"/>
+    <style>
+        .division .header { margin-bottom:5px; }
+    </style>
 </head>
 <body>
 
-<%--
-<a href="dashboard">Dashboard</a>
-<br>
---%>
+
+
+<c:set var="_regularTasksVisible" value="${false}" />
+<c:set var="_regularTasks">
+    <jsp:attribute name="value">
+        <table id="test" class="autoclear" width="100%" border="0">
+        <tr class="results" >
+                <c:forEach begin="0" end="3" items="${taskgroups}" var="taskGroup" varStatus="index">
+                    <c:if test="${index.index != 2}">
+                        <td align="left" valign="top" width="33%">
+                                <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
+                                    <c:set var="_regularTasksVisible" value="${true}" />
+                                    <ul><chrome:division title="${taskGroup.displayName}">
+                                        <c:forEach items="${taskGroup.taskList}" var="task">
+                                            <c:if test="${test}"></c:if>
+                                            <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                                                <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
+                                            </csmauthz:accesscontrol>
+
+                                        </c:forEach>
+                                    </chrome:division>
+                                    </ul>
+                                </csmauthz:accesscontrol>
+                        </td>
+                    </c:if>
+                </c:forEach>
+        </tr>
+    </table>
+    </jsp:attribute>
+</c:set>
+
+<c:set var="_adminTasksVisible" value="${false}" />
+<c:set var="_adminTasks">
+    <jsp:attribute name="value">
+        <table id="test" width="100%" border="0">
+            <tr class="results">
+                    <c:forEach begin="4" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
+                        <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
+                        <c:set var="_adminTasksVisible" value="${true}" />
+                        <td align="left"  valign="top" width="33%">
+                            <ul><chrome:division title="${taskGroup.displayName}">
+                                <c:forEach items="${taskGroup.taskList}" var="task">
+                                    <c:if test="${test}"></c:if>
+                                    <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                                        <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
+                                    </csmauthz:accesscontrol>
+                                </c:forEach>
+                            </chrome:division>
+                            </ul>
+                        </td>
+                        <c:if test="${index.index % 3 == 0}"></tr><tr></c:if>
+                        </csmauthz:accesscontrol>
+                    </c:forEach>
+            </tr>
+        </table>
+    </jsp:attribute>
+</c:set>
+
+
+
+
+<%-- RENDERING PART --%>
+
 
 <chrome:box title="Welcome">
-<chrome:division title="Regular Tasks">
 
     <%--<div><a href='dashboard' style="font-size:7pt; font-weight:bold; font-family:tahoma; text-decoration:underline; color: red;">DASHBOARD</a></div>--%>
-
-    <table id="test" class="autoclear" width="100%">
-        <tr class="results" >
-            
-                <c:forEach begin="0" end="1" items="${taskgroups}" var="taskGroup">
-                	<td align="left" valign="top" width="30%">
-                            <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
-                                <ul><chrome:division title="${taskGroup.displayName}">
-                                    <c:forEach items="${taskGroup.taskList}" var="task">
-                                        <c:if test="${test}"></c:if>
-                                        <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                                            <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                        </csmauthz:accesscontrol>
-
-                                    </c:forEach>
-                                </chrome:division>
-                                </ul>
-                            </csmauthz:accesscontrol>
-					</td>
-                </c:forEach>
-
-   <%--           <td align="left" valign="top" width="30%">
-              <c:forEach begin="2" end="2" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}"
-                                            authorizationCheckName="taskGroupAuthorizationCheck">
-
-                        <ul><chrome:division title="${taskGroup.displayName}">
-                            <c:forEach items="${taskGroup.taskList}" var="task">
-                                <c:if test="${test}"></c:if>
-                                <csmauthz:accesscontrol domainObject="${task}"
-                                                        authorizationCheckName="taskAuthorizationCheck">
-                                    <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                </csmauthz:accesscontrol>
-
-                            </c:forEach>
-                        </chrome:division>
-                        </ul>
-                    </csmauthz:accesscontrol>
-                </c:forEach>
-
-            </td>--%>
-            <td align="left" valign="top" width="30%">
-                <c:forEach begin="3" end="3" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
-                        <ul><chrome:division title="${taskGroup.displayName}">
-                            <c:forEach items="${taskGroup.taskList}" var="task">
-                                <c:if test="${test}"></c:if>
-                                <csmauthz:accesscontrol domainObject="${task}"
-                                                        authorizationCheckName="taskAuthorizationCheck">
-                                    <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                </csmauthz:accesscontrol>
-
-                            </c:forEach>
-                        </chrome:division>
-                        </ul>
-                    </csmauthz:accesscontrol>
-                </c:forEach>
-
-            </td>
-
-        </tr>
-    </table>
-
+    
+<c:if test="${_regularTasksVisible}">
+<chrome:division title="Regular Tasks">
+    ${_regularTasks}
 </chrome:division>
-<chrome:division title="Setup and Administration Tasks" id="admin-division-id">
-    <table id="test" width="100%" >
-        <tr class="results">
-            <td align="left"  valign="top" width="30%">
-                <c:forEach begin="4" end="5" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}"
-                                            authorizationCheckName="taskGroupAuthorizationCheck">
-                        <script>
-                        	displayAdminSection++;
-                        </script>
+</c:if>
 
-                        <ul><chrome:division title="${taskGroup.displayName}">
-                            <c:forEach items="${taskGroup.taskList}" var="task">
-                                <c:if test="${test}"></c:if>
-                                <csmauthz:accesscontrol domainObject="${task}"
-                                                        authorizationCheckName="taskAuthorizationCheck">
-                                    <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                </csmauthz:accesscontrol>
-
-                            </c:forEach>
-                        </chrome:division>
-                        </ul>
-                    </csmauthz:accesscontrol>
-                </c:forEach>
-
-            </td>
-
-            <td align="left" valign="top" width="30%">
-                <c:forEach begin="6" end="7" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}"
-                                            authorizationCheckName="taskGroupAuthorizationCheck">
-                       	<script>
-                        	displayAdminSection++;
-                        </script>
-                        <ul><chrome:division title="${taskGroup.displayName}">
-                            <c:forEach items="${taskGroup.taskList}" var="task">
-                                <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                                    <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                </csmauthz:accesscontrol>
-
-                            </c:forEach>
-                        </chrome:division>
-                        </ul>
-                    </csmauthz:accesscontrol>
-                </c:forEach>
-
-            </td>
-            <td align="left" valign="top" width="30%">
-                <c:forEach begin="8" end="9" items="${taskgroups}" var="taskGroup">
-                    <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
-                        <script>
-                        	displayAdminSection++;
-                        </script>
-                        <ul><chrome:division title="${taskGroup.displayName}">
-                            <c:forEach items="${taskGroup.taskList}" var="task">
-                                <c:if test="${test}"></c:if>
-                                <csmauthz:accesscontrol domainObject="${task}"
-                                                        authorizationCheckName="taskAuthorizationCheck">
-                                    <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                </csmauthz:accesscontrol>
-
-                            </c:forEach>
-                        </chrome:division>
-                        </ul>
-                    </csmauthz:accesscontrol>
-                </c:forEach>
-
-            </td>
-
-        </tr>
-    </table>
+<c:if test="${_adminTasksVisible}">
+<chrome:division title="Setup and Administration Tasks">
+    ${_adminTasks}
 </chrome:division>
-
+</c:if>
 
 </chrome:box>
+
+
 </body>
 </html>
