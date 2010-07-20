@@ -60,7 +60,7 @@ public enum UserGroupType implements CodedEnum<Integer> {
     }
 
     public String getDisplayName() {
-        return EnumHelper.sentenceCasedName(this);
+        return EnumHelper.titleCasedName(this);
     }
 
     public Integer getCode() {
