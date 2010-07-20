@@ -168,9 +168,11 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         if (getTargetPage(request, command, errors, page) - page > 1) {
 
             // if the assisgnment object needed by SubjectMedHistoryTab is not in the command
-            if (cmd.assignment == null || cmd.assignment.getId() == null)
-                if (getTab((T) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)
+            if (cmd.assignment == null || cmd.assignment.getId() == null) {
+                Class c = getTab((T) command, getTargetPage(request, command, errors, page)).getClass();
+                if (c == EditSubjectMedHistoryTab.class)
                     errors.reject("ERR_SELECT_STUDY_FROM_DETAILS", "Please select a study from the \"Details\" tab");
+            }
         }
 
     }
