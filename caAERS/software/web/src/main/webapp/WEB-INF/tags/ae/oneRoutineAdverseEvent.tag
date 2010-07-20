@@ -60,8 +60,8 @@
             </div>
             <div class="row">
                 <div class="label">
-                    <c:if test="${command.study.aeTerminology.term eq 'CTC'}">CTC Term</c:if>
-                    <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}">MEDDRA Term</c:if>
+                    <c:if test="${command.study.aeTerminology.term eq 'CTC'}"><caaers:message code="LBL_aeReport.adverseEvents.ctcTerm" /></c:if>
+                    <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}"><caaers:message code="LBL_aeReport.adverseEvents.meddraTerm" /></c:if>
                 </div>
                 <div class="value">
                     <c:if test="${command.study.aeTerminology.term eq 'CTC'}">
