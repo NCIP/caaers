@@ -35,13 +35,13 @@
 <table cellspacing="0" cellpadding="0" border="0" class="split-date-wrap" width="200px">
     <tr>
         <td valign="top">
-            <form:input title="Month" path="${path}.monthString" cssClass="${monthCSSValue} ${required and monthRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>
+            <form:input title="Month" path="${path}.monthString" id="${path}.monthString" cssClass="${monthCSSValue} ${required and monthRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>
             <label for="${path}.month"><c:if test="${fn:contains(monthCSSValue, 'mandatory')}"><tags:requiredIndicator/></c:if>MM</label>
         </td>
         <td valign="top" align="center">/</td>
 
         <td valign="top" <c:if test="${hideDay}">style="display:none;"</c:if>>
-            <form:input title="Date" path="${path}.dayString" cssClass="${dayCSSValue} ${required and dayRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>
+            <form:input title="Date" path="${path}.dayString" id="${path}.dayString" cssClass="${dayCSSValue} ${required and dayRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>
             <label for="${path}.day"><c:if test="${fn:contains(dayCSSValue, 'mandatory')}"><tags:requiredIndicator/></c:if>DD</label>
         </td>
         <td valign="top" align="center" <c:if test="${hideDay}">style="display:none;"</c:if>>/</td>
