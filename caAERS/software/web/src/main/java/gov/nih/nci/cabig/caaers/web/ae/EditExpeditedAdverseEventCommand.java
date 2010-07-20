@@ -42,6 +42,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
             EvaluationService evaluationService) {
     	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao, adverseEventRoutingAndReviewRepository);
     		this.evaluationService = evaluationService;
+            this.studyDao = studyDao;
     }
 
     
