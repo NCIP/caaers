@@ -139,19 +139,20 @@
                         <%--<csmauthz:accesscontrol var="r" objectPrivilege=""/>--%>
 
                         <div class="leftpanel">
-                        <div class="row">
-                            <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name" readonly="${!hasRSCreate}"/></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name" readonly="${!hasRSCreate}"/></div>
-                        </div>
-                        <div class="row">
-                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></div>
-                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}"/></div>
-                        </div>
+	                        <div class="row">
+	                            <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
+	                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name" readonly="${!hasRSCreate}"/></div>
+	                        </div>
+	
+	                        <div class="row">
+	                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></div>
+	                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}"/></div>
+	                        </div>
+	
+	                        <div class="row">
+	                            <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></div>
+	                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name" readonly="${!hasRSCreate}"/></div>
+	                        </div>
                         </div>
 
                         <div class="rightpanel">
