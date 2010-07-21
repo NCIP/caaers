@@ -42,7 +42,7 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
 
     @OneToOne
     @JoinColumn(name = "coded_site_id")
-    @Cascade(value = {CascadeType.ALL})
+    //@Cascade(value = {CascadeType.ALL})
     public AnatomicSite getCodedSite() {
         return codedSite;
     }

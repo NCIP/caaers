@@ -61,7 +61,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "coded_primary_disease_site_id")
-   // @Cascade(value = {CascadeType.ALL})
+    @Cascade(value = {CascadeType.MERGE, CascadeType.LOCK, CascadeType.REFRESH})
     public AnatomicSite getCodedPrimaryDiseaseSite() {
         return codedPrimaryDiseaseSite;
     }
@@ -150,7 +150,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     @OneToMany
     @JoinColumn(name = "disease_history_id")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    //@Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
         return listHelper.getInternalList(MetastaticDiseaseSite.class);
     }
