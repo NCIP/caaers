@@ -135,9 +135,10 @@
                 	<chrome:box title="Basic Details">
                     <input type="hidden" name="_action" value=""><input type="hidden" name="_selected" value=""><input type="hidden" name="_finish" value="true"/><input type="hidden" name="srsID"/><input type="hidden" name="srsrID"/><tags:instructions code="researchstaffdetails" /><caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/><caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
                     <chrome:division title="${detailsSectionTitle}" id="details">
-                                                
+                        <div style="height:100px;">
                         <%--<csmauthz:accesscontrol var="r" objectPrivilege=""/>--%>
 
+                        <div class="leftpanel">
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
                             <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name" readonly="${!hasRSCreate}"/></div>
@@ -151,6 +152,9 @@
                             <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></div>
                             <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}"/></div>
                         </div>
+                        </div>
+
+                        <div class="rightpanel">
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
                             <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email" readonly="${!hasRSCreate}"/></div>
@@ -185,6 +189,8 @@
                 			</c:if>
                             
                         </c:if>
+                        </div>
+                    </div>
                     </chrome:division>
 					</chrome:box>
 					<chrome:box title="Associate Organizations">
