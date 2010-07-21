@@ -16,14 +16,12 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -36,7 +34,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private MailSender mailSender;
     private String authenticationMode;
     private UserDao userDao;
-    
+    private MessageSource messageSource;
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
@@ -151,18 +149,12 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     
     private void sendCreateAccountEmail(User user, String changeURL){
 
+        String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null, Locale.getDefault());
+        String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getLoginId(), changeURL + "&token" + user.getToken()}, Locale.getDefault());;
+        
         //send out an email
         if ("local".equals(getAuthenticationMode())) {
-            sendUserEmail(user.getEmailAddress(), "Your new caAERS account", "A new caAERS account has been created for you.\n"
-                    + "Your username is follows:\n"
-                    + "Username: " + user.getLoginId()
-                    + "\n"
-                    + "You must create your password before you can login. In order to do so please visit this URL:\n"
-                    + "\n"
-                    + changeURL + "&token=" + user.getToken() + "\n"
-                    + "\n"
-                    + "Regards\n"
-                    + "The caAERS Notification System.\n");
+            sendUserEmail(user.getEmailAddress(), EMAIL_SUBJECT, EMAIL_TEXT);
         }
     }
     
@@ -327,5 +319,13 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     public void setAuthenticationMode(String authenticationMode) {
         this.authenticationMode = authenticationMode;
+    }
+
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }
