@@ -235,11 +235,15 @@ public class SearchStudyAjaxFacade {
         
         Column organizations = model.getColumnInstance();
         organizations.setTitle("Organization(s)");
+        organizations.setProperty("dummyOrg");
+        organizations.setSortable(false);
         organizations.setCell("gov.nih.nci.cabig.caaers.web.search.InvestigatorSiteDisplayCell");
         model.addColumn(organizations);
         
         Column columnStatus = model.getColumnInstance();
         columnStatus.setTitle("Status");
+        columnStatus.setProperty("dummyStatus");
+        columnStatus.setSortable(false);
         model.addColumn(columnStatus);
         columnStatus.setCell("gov.nih.nci.cabig.caaers.web.search.InvestigatorStatusDisplayCell");
 
@@ -299,11 +303,15 @@ public class SearchStudyAjaxFacade {
 
         Column organizations = model.getColumnInstance();
         organizations.setTitle("Organization(s)");
+        organizations.setProperty("dummyOrg");
+        organizations.setSortable(false);
         organizations.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffSiteDisplayCell");
         model.addColumn(organizations);
 
         Column columnStatus = model.getColumnInstance();
         columnStatus.setTitle("Status");
+        columnStatus.setProperty("dummyStatus");
+        columnStatus.setSortable(false);
         columnStatus.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffStatusDisplayCell");
         model.addColumn(columnStatus);
         
