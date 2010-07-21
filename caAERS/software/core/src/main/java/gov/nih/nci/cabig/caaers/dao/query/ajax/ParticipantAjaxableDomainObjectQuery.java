@@ -88,7 +88,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     public void filterByParticipantIdentifierValue(final String value) {
         if (!StringUtils.isBlank(value)) {
             String searchString = "%" + value.toLowerCase() + "%";
-            andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE + " or lower(spa.studySubjectIdentifier) LIKE :" + IDENTIFIER_VALUE);
+            andWhere("(lower(identifier.value) LIKE :" + IDENTIFIER_VALUE + " or lower(spa.studySubjectIdentifier) LIKE :" + IDENTIFIER_VALUE + ")");
             setParameter(IDENTIFIER_VALUE, searchString);
         }
     }
