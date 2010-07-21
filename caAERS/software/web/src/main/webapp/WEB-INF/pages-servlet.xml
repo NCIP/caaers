@@ -114,7 +114,7 @@
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                   p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
                   -->
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="IND#" p:linkName="createINDController"/>
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="IND#" p:linkName="searchINDController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Organization" p:linkName="searchOrganizationController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Agents" p:linkName="asaelSearchController"/>
