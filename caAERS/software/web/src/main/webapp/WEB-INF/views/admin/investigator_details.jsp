@@ -206,8 +206,6 @@ Event.observe(window, "load", function() {
 		}
 	}
 
-//----------------------------------------------------------------------------------------------------------------------
-
 function toggelUserName(checkBoxChecked) {
     if (checkBoxChecked) {
         $('loginId-row').show();
@@ -222,8 +220,6 @@ function toggelUserName(checkBoxChecked) {
         }
     }
 }
-
-//----------------------------------------------------------------------------------------------------------------------
 
 </script>
 
