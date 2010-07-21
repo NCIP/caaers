@@ -164,8 +164,8 @@
                                 <c:set var="isActive" value="${command.siteResearchStaffCommandHelper[index].rsRoles[j.index].active}" />
                                 <tr bgcolor="white">
                                     <td>
-                                        <c:if test="${!role.checked && hasSRSRUpdate || empty command.researchStaff.id}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" onclick="applyRole(${index}, ${j.index})"/>&nbsp;${allRoles[j.index].name}</c:if>
-                                        <c:if test="${(not empty command.researchStaff.id) && (role.checked || !hasSRSRUpdate)}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${!role.checked && hasSRSRUpdate || empty command.researchStaff.id}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" onclick="applyRole(${index}, ${j.index})"/>&nbsp;${command.allRoles[j.index].name}</c:if>
+                                        <c:if test="${(not empty command.researchStaff.id) && (role.checked || !hasSRSRUpdate)}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${command.allRoles[j.index].name}</c:if>
                                     <td>
                                         <c:if test="${hasSRSRUpdate}">
                                             <ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate SiteResearchStaffRoleStartDateCSS${index}" />
