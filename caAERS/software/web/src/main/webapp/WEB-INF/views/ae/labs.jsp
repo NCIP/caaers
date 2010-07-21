@@ -187,13 +187,21 @@
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section15labs">
     <jsp:attribute name="instructions">
     	<tags:instructions code="instruction_ae_labs" />
+  		
+  		<csmauthz:accesscontrol var="_studySitePerson"
+								domainObject="${command.assignment.studySite.organization}" 
+								authorizationCheckName="siteAuthorizationCheck" 
+								hasPrivileges="lab_data_user" /> 
+  		<csmauthz:accesscontrol var="_ccPerson"
+								domainObject="${command.assignment.studySite.study.studyCoordinatingCenter.organization}" 
+								authorizationCheckName="siteAuthorizationCheck" 
+								hasPrivileges="lab_data_user" /> 
+		
+    	
     	<c:if test="${not empty configuration.map.labViewerBaseUrl}">
-    		<csmauthz:accesscontrol 
-    					domainObject="${command.assignment.studySite.organization}" 
-    					authorizationCheckName="siteAuthorizationCheck" 
-    					hasPrivileges="lab_data_user" > 
-				<p>View this person's details in <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso" target="_labviewer">lab viewer</a>.</p> 
-    		</csmauthz:accesscontrol>
+    		<c:if test="${_studySitePerson || _ccPerson}">
+				<p>View this person's details in <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso" target="_labviewer">lab viewer</a>.</p>
+			</c:if>		 
 		</c:if>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
