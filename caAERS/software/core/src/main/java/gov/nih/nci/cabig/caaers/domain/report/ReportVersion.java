@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import java.util.Collections;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
@@ -333,13 +334,28 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     	this.setAssignedIdentifer(rv.getAssignedIdentifer());
     }
     
+    
+    
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_version_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
-    @OrderBy(value = "attemptNumber ASC")
-	public List<ReportTracking> getReportTrackings() {
+	public List<ReportTracking> getReportTrackingsInternal() {
 		return reportTrackings;
 	}
+    
+    public void setReportTrackingsInternal (List<ReportTracking> reportTrackings) {
+		this.reportTrackings = reportTrackings;
+	}
+    
+    @SuppressWarnings("unchecked")
+	@Transient 
+	public List<ReportTracking> getReportTrackings() {
+    	ArrayList<ReportTracking> nonSortedList = new ArrayList<ReportTracking>();
+    	nonSortedList.addAll(getReportTrackingsInternal());
+    	Collections.sort(nonSortedList, new AttemptNumberReportTrackingComparator());
+    	return nonSortedList;
+	}
+    
     public void setReportTrackings(List<ReportTracking> reportTrackings) {
 		this.reportTrackings = reportTrackings;
 	}
