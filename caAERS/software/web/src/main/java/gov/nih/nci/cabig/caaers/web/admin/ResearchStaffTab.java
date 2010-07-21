@@ -174,11 +174,17 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         researchStaffQuery.filterByEmailAddress(command.getResearchStaff().getEmailAddress());
         List<ResearchStaff> researchStaffList = researchStaffRepository.searchResearchStaff(researchStaffQuery);
         
-        if(researchStaffList.size() > 1)
-        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
-        
-        if(researchStaffList.size() == 1 && command.getResearchStaff().getId() == null){
-        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
+        if (researchStaffList.size() > 0) {
+            if (command.getResearchStaff().getId() == null) {
+                errors.rejectValue("researchStaff.emailAddress", "USR_010");
+            } else {
+                for (ResearchStaff rs : researchStaffList) {
+                    if (!command.getResearchStaff().getId().equals(rs.getId())) {
+                        errors.rejectValue("researchStaff.emailAddress", "USR_010");
+                        break;
+                    }
+                }
+            }
         }
 
         // DATES validation
