@@ -148,7 +148,7 @@
                             <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name" readonly="${!hasRSCreate}"/></div>
                         </div>
                         <div class="row">
-                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="true"/></div>
+                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></div>
                             <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}"/></div>
                         </div>
                         <div class="row">
