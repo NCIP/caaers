@@ -30,6 +30,7 @@
                 <div style="float:right;"><span style="font-weight:normal;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
                     <c:if test="${!readOnly}">
                         <c:if test="${command.researchStaff.siteResearchStaffs[index].active}">
+                            <c:if test="${hasSRSRUpdate}">
                             <tags:button type="button"
                                          color="${true ? 'red' : 'green'}"
                                          cssClass=""
@@ -37,6 +38,7 @@
                                          size="small"
                                          onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}', ${index}, -1)"
                                          icon="${true ? 'x' : 'check'}"/>
+                            </c:if>
                         </c:if>
                     </c:if>
 					</div>
