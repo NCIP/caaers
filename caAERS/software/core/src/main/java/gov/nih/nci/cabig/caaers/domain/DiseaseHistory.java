@@ -150,7 +150,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     @OneToMany
     @JoinColumn(name = "disease_history_id")
-    //@Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
         return listHelper.getInternalList(MetastaticDiseaseSite.class);
     }
