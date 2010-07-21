@@ -310,14 +310,20 @@ color:#0033FF;
 </c:if>
     <tags:instructions code="instruction_manage_reports"/>
 
-<c:if test="${not empty configuration.map.pscBaseUrl}">
-<csmauthz:accesscontrol 
-	domainObject="${command.assignment.studySite.organization}" 
-	authorizationCheckName="siteAuthorizationCheck" 
-	hasPrivileges="study_subject_calendar_manager" > 
-	<p>View this person's schedule in <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p> 
-</csmauthz:accesscontrol>
-</c:if>
+	<csmauthz:accesscontrol var="_studySitePerson"
+					domainObject="${command.assignment.studySite.organization}" 
+					authorizationCheckName="siteAuthorizationCheck" 
+					hasPrivileges="study_subject_calendar_manager" /> 
+	<csmauthz:accesscontrol var="_ccPerson"
+					domainObject="${command.assignment.studySite.study.studyCoordinatingCenter.organization}" 
+					authorizationCheckName="siteAuthorizationCheck" 
+					hasPrivileges="study_subject_calendar_manager" /> 
+
+	<c:if test="${not empty configuration.map.pscBaseUrl}">
+		<c:if test="${_studySitePerson || _ccPerson}">
+			<p>View this person's schedule in <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p>
+		</c:if>	 
+	</c:if>
 
 <div class="eXtremeTable" >
 
