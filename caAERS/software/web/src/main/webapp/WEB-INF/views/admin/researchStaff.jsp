@@ -132,8 +132,19 @@
             <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm" hideErrorDetails="false" hideBox="true">
             	
                 <jsp:attribute name="repeatingFields">
-                	<chrome:box title="Basic Details">
-                    <input type="hidden" name="_action" value=""><input type="hidden" name="_selected" value=""><input type="hidden" name="_finish" value="true"/><input type="hidden" name="srsID"/><input type="hidden" name="srsrID"/><tags:instructions code="researchstaffdetails" /><caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/><caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
+
+                    <c:if test="${command.PO && not command.UA}"><tags:instructions code="researchstaffdetailsForPO" /></c:if>
+                    <c:if test="${not command.PO && command.UA}"><tags:instructions code="researchstaffdetailsForUA" /></c:if>
+                    <c:if test="${command.PO && command.UA}"><tags:instructions code="researchstaffdetailsForPOUA" /></c:if>
+
+                <chrome:box title="Basic Details">
+                    <input type="hidden" name="_action" value=""><input type="hidden" name="_selected" value="">
+                    <input type="hidden" name="_finish" value="true"/>
+                    <input type="hidden" name="srsID"/>
+                    <input type="hidden" name="srsrID"/>
+                    <caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/>
+                    <caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
+            
                     <chrome:division title="${detailsSectionTitle}" id="details">
                         <div style="height:100px;">
                         <%--<csmauthz:accesscontrol var="r" objectPrivilege=""/>--%>

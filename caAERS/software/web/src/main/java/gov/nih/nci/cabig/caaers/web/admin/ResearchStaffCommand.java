@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -19,6 +17,8 @@ public class ResearchStaffCommand {
 
     protected List<SiteResearchStaffCommandHelper> siteResearchStaffCommandHelper;
     protected Date activeDate;
+    boolean isPO = SecurityUtils.hasAuthorityOf(UserGroupType.person_and_organization_information_manager);
+    boolean isUA = SecurityUtils.hasAuthorityOf(UserGroupType.user_administrator);
 
     public ResearchStaff getResearchStaff() {
         return researchStaff;
@@ -102,5 +102,13 @@ public class ResearchStaffCommand {
 
     public void setActiveDate(Date activeDate) {
         this.activeDate = activeDate;
+    }
+
+    public boolean getPO() {
+        return isPO;
+    }
+
+    public boolean getUA() {
+        return isUA;
     }
 }
