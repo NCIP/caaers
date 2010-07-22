@@ -178,12 +178,11 @@ public class CreateStudyAjaxFacade {
      * */
     public List<Organization> matchStudyOrganizations(final String text, final Integer studyId) {
         List<StudyOrganization> sos = organizationRepository.getApplicableOrganizationsFromStudyOrganizations(text, studyId);
-        List<Organization> organizations = new ArrayList<Organization>();
+        Set<Organization> organizations = new HashSet<Organization>();
         for (StudyOrganization so : sos) {
             organizations.add(ObjectTools.reduce(so.getOrganization(), "id", "name", "nciInstituteCode", "externalId"));
         }
-        // return ObjectTools.reduceAll(orgs, "organization.id", "organization.name", "organization.nciInstituteCode", "organization.externalId");
-        return organizations;
+        return new ArrayList(organizations);
     }
 
     public List<Organization> matchOrganization(final String text) {
