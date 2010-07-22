@@ -31,9 +31,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<util:map id="filterByURLAndRoleListMap">		
 		<entry key="/pages/admin/createResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>
 		<entry key="/pages/admin/editResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>		
+		<entry key="/pages/admin/searchResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>
+		<entry key="/dwr/call/plaincall/search.getResearchStaffTable.dwr" value="person_and_organization_information_manager,user_administrator,data_reader"/>
 		<entry key="/pages/admin/createInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		
+		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
+		<entry key="/pages/admin/searchInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
+		<entry key="/dwr/call/plaincall/search.getInvestigatorTable.dwr" value="person_and_organization_information_manager,user_administrator,data_reader"/>
+		<entry key="/pages/admin/searchOrganization" value="person_and_organization_information_manager,data_reader"/>
+		<entry key="/dwr/call/plaincall/search.getOrganizationTable.dwr" value="person_and_organization_information_manager,data_reader"/>
+		<entry key="/pages/admin/createOrganization" value="person_and_organization_information_manager,data_reader"/>
+        <entry key="/pages/admin/editOrganization" value="person_and_organization_information_manager,data_reader"/>
+		<entry key="/pages/admin/configure" value="system_administrator,data_reader"/>
+		<entry key="/pages/admin/passwordPolicyConfigure" value="system_administrator,data_reader"/>
+		<entry key="/pages/admin/mandatoryFields" value="business_administrator,data_reader"/>        
+		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>		
+		<entry key="/pages/admin/asaelSearch" value="business_administrator,data_reader"/>
+		<entry key="/pages/admin/asaelCreate" value="business_administrator,data_reader"/>
+        <entry key="/admin/asaelEdit" value="business_administrator,data_reader" />
+        <entry key="/pages/admin/import" value="data_importer"/>
+        <entry key="/pages/admin/createIND" value="business_administrator,data_reader"/>
+        <entry key="/pages/admin/searchIND" value="business_administrator,data_reader"/>
+
 		<entry key="/pages/participant/create" value="subject_manager,registrar" />
         <entry key="/pages/participant/search" value="registration_qa_manager,subject_manager,registrar,data_reader"/>
         <entry key="/pages/participant/assignParticipant" value="registrar" />
@@ -43,7 +61,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/create" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
 		<entry key="/pages/study/view" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
 		<entry key="/pages/study/search" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
-		<entry key="/dwr/call/plaincall/searchStudy.getTable.dwr" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" /> 
+		<entry key="/dwr/call/plaincall/searchStudy.getStudiesTable.dwr" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" /> 
 		<entry key="/pages/study/edit" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
         <entry key="/pages/study/studyAgentIND" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
         <entry key="/pages/study/export" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator" />		
@@ -57,20 +75,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/edit" value="ae_reporter,data_reader" />        
 		<entry key="/pages/ae/routingAndReview" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />		
-        
-		<entry key="/pages/admin/configure" value="system_administrator,data_reader"/>
-		<entry key="/pages/admin/passwordPolicyConfigure" value="system_administrator,data_reader"/>
-		<entry key="/pages/admin/mandatoryFields" value="business_administrator,data_reader"/>        
-		<entry key="/pages/admin/searchOrganization" value="person_and_organization_information_manager,data_reader"/>
-		<entry key="/pages/admin/createOrganization" value="person_and_organization_information_manager,data_reader"/>
-        <entry key="/pages/admin/editOrganization" value="person_and_organization_information_manager,data_reader"/>
-		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>		
-		<entry key="/pages/admin/asaelSearch" value="business_administrator,data_reader"/>
-		<entry key="/pages/admin/asaelCreate" value="business_administrator,data_reader"/>
-        <entry key="/admin/asaelEdit" value="business_administrator,data_reader" />
-        <entry key="/pages/admin/import" value="data_importer"/>
-        <entry key="/pages/admin/createIND" value="business_administrator,data_reader"/>
-        <entry key="/pages/admin/searchIND" value="business_administrator,data_reader"/>	
         
         <entry key="/pages/search/exportSearchResults" value="data_reader,data_analyst"/>
         <entry key="/pages/search/advancedSearch" value="data_reader,data_analyst"/>
