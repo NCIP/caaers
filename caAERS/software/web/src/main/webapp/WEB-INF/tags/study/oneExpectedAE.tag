@@ -6,7 +6,7 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@ taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
-<td>
+<td width="100%">
 <c:set var="ctcTerm" value="study.expectedAECtcTerms[${index}]" />
 <c:if test="${isOtherSpecify}">
                 <c:set var="initValue" value="Begin typing here..."/>
