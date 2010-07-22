@@ -1,5 +1,5 @@
 UPDATE ctc_grades
-SET grade_text = 'Mild; asymptomatic or mild symptoms; clinical or diagnostic observations only; intervention not indicated.'
+SET grade_text = 'Mild\; asymptomatic or mild symptoms\; clinical or diagnostic observations only\; intervention not indicated.'
 WHERE grade_code = 1 AND term_id IN (
     SELECT t.id
     FROM ctc_categories c
@@ -9,7 +9,7 @@ WHERE grade_code = 1 AND term_id IN (
 );
 
 UPDATE ctc_grades
-SET grade_text = 'Moderate; minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.'
+SET grade_text = 'Moderate\; minimal, local or noninvasive intervention indicated\; limiting age-appropriate instrumental ADL.'
 WHERE grade_code = 2 AND term_id IN (
     SELECT t.id
     FROM ctc_categories c
@@ -19,7 +19,7 @@ WHERE grade_code = 2 AND term_id IN (
 );
 
 UPDATE ctc_grades
-SET grade_text = 'Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of hospitalization indicated; disabling; limiting self care ADL.'
+SET grade_text = 'Severe or medically significant but not immediately life-threatening\; hospitalization or prolongation of hospitalization indicated\; disabling\; limiting self care ADL.'
 WHERE grade_code = 3 AND term_id IN (
     SELECT t.id
     FROM ctc_categories c
@@ -29,7 +29,7 @@ WHERE grade_code = 3 AND term_id IN (
 );
 
 UPDATE ctc_grades
-SET grade_text = 'Life-threatening consequences; urgent intervention indicated.'
+SET grade_text = 'Life-threatening consequences\; urgent intervention indicated.'
 WHERE grade_code = 4 AND term_id IN (
     SELECT t.id
     FROM ctc_categories c
