@@ -10,7 +10,14 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Rhett Sutphin
  */
 public enum Grade implements CodedEnum<Integer>, CodedGrade {
-    NOT_EVALUATED(-1,"Not evaluated"), NORMAL(0, "Normal"), MILD(1), MODERATE(2), SEVERE(3), LIFE_THREATENING(4, "Life-threatening or disabling"), DEATH(5);
+    
+    NOT_EVALUATED(-1, "Not evaluated"),
+    NORMAL(0, "Normal"),
+    MILD(1, "Mild; asymptomatic or mild symptoms; clinical or diagnostic observations only; intervention not indicated."),
+    MODERATE(2, "Moderate; minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL."),
+    SEVERE(3, "Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of hospitalization indicated; disabling; limiting self care ADL."),
+    LIFE_THREATENING(4, "Life-threatening consequences; urgent intervention indicated."),
+    DEATH(5, "Death related to AE.");
 
     private Integer code;
 
