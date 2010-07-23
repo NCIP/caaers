@@ -487,7 +487,7 @@ jQuery(function( $ ){
         padding: 8px;
     }
 
-    .boxIPhone h3, .division h3 {
+    .boxIPhone h3 {
         font: bold 15px Arial, Helvetica, sans-serif;
         color: #ea4b4b;
         text-shadow: 0 -1px white;
