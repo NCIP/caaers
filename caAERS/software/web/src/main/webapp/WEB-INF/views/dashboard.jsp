@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
-<%--<h1>Dashboard</h1>--%>
-
 <%--<ol>
 <c:forEach items="${pastDueReports}" var="rv">
     <li>${rvDTO.rv.report.name} - Due Date: <tags:formatDate value="${rvDTO.rv.dueOn}" /> [${rvDTO.rv.reportStatus}]
@@ -18,6 +16,8 @@
         </ol>
 &ndash;%&gt;
 </c:forEach>--%>
+
+<c:if test="${not empty roles.ae_reporter}">
 
 <table width="100%">
     <tr>
@@ -612,6 +612,4 @@ jQuery(function( $ ){
 </style>
 <span id="CC" />
 
-<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.AdverseEvent:UPDATE">
-    ABC
-</csmauthz:accesscontrol>
+</c:if>

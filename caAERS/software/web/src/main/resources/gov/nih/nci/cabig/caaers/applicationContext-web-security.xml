@@ -102,7 +102,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<util:map id="taskObjectPrivilegeMap">
         <!--========== TASK PAGE ===========-->
         <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
-
+        <entry key="/pages/dashboard" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
 
         <!--========== PARTICIPANT ===========-->
 		<entry key="/pages/participant/create" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />

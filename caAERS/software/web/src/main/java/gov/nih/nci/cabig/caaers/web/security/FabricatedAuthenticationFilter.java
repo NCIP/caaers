@@ -127,12 +127,14 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 		List ol = new ArrayList();
 		List cl = new ArrayList();
+        Map<String, String> authorities = new HashMap<String, String>();
 
 		Authentication oa = SecurityUtils.getOriginalAuthentication();
 		if (oa != null && oa.getAuthorities() != null
 				&& oa.getAuthorities().length > 0) {
 			for (GrantedAuthority ga : oa.getAuthorities()) {
 				ol.add(roles.get(ga.getAuthority()));
+                authorities.put(ga.getAuthority(), roles.get(ga.getAuthority()));
 			}
 		}
 
@@ -147,7 +149,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		ol = (List) CollectionUtils.subtract(ol, cl);
 		httpRequest.setAttribute("cl", cl);
 		httpRequest.setAttribute("ol", ol);
-
+        httpRequest.setAttribute("roles", authorities);
 		// END Roles
 	}
 

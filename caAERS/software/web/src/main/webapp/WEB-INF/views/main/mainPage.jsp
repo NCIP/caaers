@@ -84,8 +84,8 @@
 
 <chrome:box title="Welcome">
 
-    <%--<div><a href='dashboard' style="font-size:7pt; font-weight:bold; font-family:tahoma; text-decoration:underline; color: red;">DASHBOARD</a></div>--%>
-    
+    <jsp:include page="/pages/dashboard" />
+
 <c:if test="${_regularTasksVisible}">
 <chrome:division title="Regular Tasks">
     ${_regularTasks}
