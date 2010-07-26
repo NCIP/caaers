@@ -30,10 +30,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <bean id="researchStaffModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ResearchStaffModificationEventListener">
         <property name="filteredDataLoader" ref="researchStaffIndexDataLoader" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
 
     <bean id="investigatorModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.InvestigatorModificationEventListener">
         <property name="filteredDataLoader" ref="investigatorIndexDataLoader" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
 
     <bean id="courseModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.CourseModificationEventListener">
