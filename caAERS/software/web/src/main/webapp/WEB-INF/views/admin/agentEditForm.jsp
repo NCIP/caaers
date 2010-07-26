@@ -1,9 +1,10 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <tags:dwrJavascriptLink objects="agentFacade"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Agent:CREATE" var="hasAgentCreate"/>
 
 <admin:agent3rdLevelMenu selected="create" />
 
-<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
+<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" hideTabControls="${!hasAgentCreate}">
     <jsp:attribute name="singleFields">
         <input type="hidden" name="_action" />
 
@@ -14,11 +15,11 @@
 
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.name" text="" path="agent.name" /></div>
-            <div class="value"><ui:text path="agent.name" size="60" cssClass="${empty command.agent.name ? 'required' : 'valueOK'} validate-NOTEMPTY&&MAXLENGTH2000" title="Agent name"/></div>
+            <div class="value"><ui:text path="agent.name" size="60" cssClass="${empty command.agent.name ? 'required' : 'valueOK'} validate-NOTEMPTY&&MAXLENGTH2000" title="Agent name" readonly="${!hasAgentCreate}"/></div>
         </div>
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.nscNumber" text="" path="agent.nscNumber" /></div>
-            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}"/></div>
+            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber || !hasAgentCreate}"/></div>
         </div>
 
 
@@ -45,17 +46,17 @@
 
             <div class="row" id="terminologyRow">
                 <div class="label"><caaers:message code="LBL_study.aeTerminology.term" /></div>
-                <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${false && command.terminology.code > 0}" /></div>
+                <div class="value"><ui:select options="${terminology}" path="terminology" disabled="${!hasAgentCreate}" /></div>
             </div>
 
             <div class="row" id="ctcRow" style="display: ${command.terminology.code ne '1' ? 'none' : ''};">
                 <div class="label"><caaers:message code="LBL_study.aeTerminology.ctcVersion" /></div>
-                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion" disabled="${false && command.ctcVersion.id > 0}"/></div>
+                <div class="value"><ui:select options="${ctcVersion}" path="ctcVersion" disabled="${!hasAgentCreate}"/></div>
             </div>
 
             <div class="row" id="meddraRow" style="display: ${command.terminology.code ne '2' ? 'none' : ''};">
                 <div class="label"><caaers:message code="LBL_study.aeTerminology.meddraVersion" /></div>
-                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${false && command.meddraVersion.id > 0}" /></div>
+                <div class="value"><ui:select options="${meddraVersion}" path="meddraVersion" disabled="${!hasAgentCreate}" /></div>
             </div>
 
             <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
