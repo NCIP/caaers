@@ -151,30 +151,30 @@
 
                         <div class="leftpanel">
 	                        <div class="row">
-	                            <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></div>
-	                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required='true' title="First name" readonly="${!hasRSCreate}"/></div>
+	                            <div class="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="${fieldGroups['researchStaff'].fields[0].required}"/></div>
+	                            <div class="value"><ui:text path="researchStaff.firstName" cssClass="${not empty command.researchStaff.firstName ? 'valueOK' : 'required'}" required="${fieldGroups['researchStaff'].fields[0].required}" title="First name" readonly="${!hasRSCreate}"/></div>
 	                        </div>
 	
 	                        <div class="row">
-	                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></div>
-	                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}"/></div>
+	                            <div class="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="${fieldGroups['researchStaff'].fields[1].required}"/></div>
+	                            <div class="value"><ui:text path="researchStaff.middleName" title="Middle name" readonly="${!hasRSCreate}" required="${fieldGroups['researchStaff'].fields[1].required}"/></div>
 	                        </div>
 	
 	                        <div class="row">
-	                            <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></div>
-	                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="true" title="Last name" readonly="${!hasRSCreate}"/></div>
+	                            <div class="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="${fieldGroups['researchStaff'].fields[2].required}"/></div>
+	                            <div class="value"><ui:text path="researchStaff.lastName" cssClass="${not empty command.researchStaff.lastName ? 'valueOK' : 'required'}" required="${fieldGroups['researchStaff'].fields[2].required}" title="Last name" readonly="${!hasRSCreate}"/></div>
 	                        </div>
                         </div>
 
                         <div class="rightpanel">
                         <div class="row">
-                            <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="true" title="Primary email" readonly="${!hasRSCreate}"/></div>
+                            <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="${fieldGroups['researchStaff'].fields[3].required}"/></div>
+                            <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="${fieldGroups['researchStaff'].fields[3].required}" title="Primary email" readonly="${!hasRSCreate}"/></div>
                         </div>
             
                         <div class="row">
-                            <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasRSCreate}" cssClass="required" required="true" title="Login ID"/></div>
+                            <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="${fieldGroups['researchStaff'].fields[4].required}"/></div>
+                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasRSCreate}" cssClass="${fieldGroups['researchStaff'].fields[4].required ? 'required' : ''}" required="${fieldGroups['researchStaff'].fields[4].required}" title="Login ID"/></div>
                         </div>
                         <c:if test="${editMode}">
                             <div class="row">
