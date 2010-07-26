@@ -236,8 +236,8 @@
   <bean id="userTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup" p:displayName="User Management ">
     <property name="taskList">
       <list>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Users" p:linkName="createResearchStaffController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Users" p:linkName="searchResearchStaffController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create User Accounts for Research Staff" p:linkName="createResearchStaffController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Research Staff" p:linkName="searchResearchStaffController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
       </list>
     </property>
