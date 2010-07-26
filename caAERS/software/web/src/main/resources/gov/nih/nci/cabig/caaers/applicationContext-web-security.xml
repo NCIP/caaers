@@ -74,7 +74,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/submitReport" value="ae_reporter,data_reader" />		        
 		<entry key="/pages/ae/edit" value="ae_reporter,data_reader" />        
 		<entry key="/pages/ae/routingAndReview" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
-		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />		
+		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+        <entry key="/pages/ae/aeModuleResolverController" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader"  />
         
         <entry key="/pages/search/exportSearchResults" value="data_reader,data_analyst"/>
         <entry key="/pages/search/advancedSearch" value="data_reader,data_analyst"/>
