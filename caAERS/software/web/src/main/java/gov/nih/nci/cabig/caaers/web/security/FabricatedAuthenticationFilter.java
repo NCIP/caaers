@@ -130,19 +130,17 @@ public final class FabricatedAuthenticationFilter implements Filter {
         Map<String, String> authorities = new HashMap<String, String>();
 
 		Authentication oa = SecurityUtils.getOriginalAuthentication();
-		if (oa != null && oa.getAuthorities() != null
-				&& oa.getAuthorities().length > 0) {
+		if (oa != null && oa.getAuthorities() != null && oa.getAuthorities().length > 0) {
 			for (GrantedAuthority ga : oa.getAuthorities()) {
 				ol.add(roles.get(ga.getAuthority()));
-                authorities.put(ga.getAuthority(), roles.get(ga.getAuthority()));
 			}
 		}
 
 		Authentication ca = SecurityUtils.getAuthentication();
-		if (ca != null && ca.getAuthorities() != null
-				&& ca.getAuthorities().length > 0) {
+		if (ca != null && ca.getAuthorities() != null && ca.getAuthorities().length > 0) {
 			for (GrantedAuthority ga : ca.getAuthorities()) {
 				cl.add(roles.get(ga.getAuthority()));
+                authorities.put(ga.getAuthority(), roles.get(ga.getAuthority()));
 			}
 		}
 
