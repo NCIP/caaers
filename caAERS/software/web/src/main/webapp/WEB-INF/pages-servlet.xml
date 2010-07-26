@@ -23,7 +23,8 @@
   </bean>
   <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <!-- =========================== View resolvers ==================================== -->
+    <!-- =========================== View resolvers ====================================
+-->
   <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
     <property name="location"><value>/WEB-INF/special-views.xml</value></property>
   </bean>
@@ -49,7 +50,8 @@
     <property name="servletName"><value>pages</value></property>
   </bean>
 
-  <!-- =============================== Custom Interceptors =================================== -->
+  <!-- =============================== Custom Interceptors ===================================
+-->
   <bean id="stateInformationInterceptor" class="gov.nih.nci.cabig.caaers.web.StateInfoInterceptor" />
 
   <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
@@ -136,7 +138,8 @@
     </bean>
 
 
-    <!-- ===================== Task and Task Groups =================================== -->
+    <!-- ===================== Task and Task Groups ===================================
+-->
   <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
     <property name="taskGroups">
       <list>
@@ -237,7 +240,7 @@
     <property name="taskList">
       <list>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create User Accounts for Research Staff" p:linkName="createResearchStaffController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Research Staff" p:linkName="searchResearchStaffController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Research Staff Users" p:linkName="searchResearchStaffController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
       </list>
     </property>
@@ -278,7 +281,8 @@
   	<property name="messageSource" ref="messageSource" />
   </bean>
     
-  <!-- ============================== Section link - Task Mapping resolvers ==================================== -->
+  <!-- ============================== Section link - Task Mapping resolvers ====================================
+-->
   <bean id="adminResolverController" name="/admin/adminResolverController" class="gov.nih.nci.cabig.caaers.web.TaskResolverController" autowire="byType">
   	<property name="objectPrivilegeMap" ref="taskObjectPrivilegeMap" />
   	<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
@@ -380,7 +384,8 @@
 -->
 
 
-    <!--==================================  STUDY   =========================================== -->
+    <!--==================================  STUDY   ===========================================
+-->
     <bean name="/study/create" id="createStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController" />
     <bean name="/study/view" id="viewStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController"  />
     <bean name="/study/search" id="searchStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
