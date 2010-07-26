@@ -117,6 +117,10 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 	/**
 	 * @param httpRequest
+     * the request object will have 3 attributes:
+     * cl - a map of transformed Strings which are context roles display names
+     * ol - a map of transformed Strings which are original (all) roles display names 
+     * roles - a map of applicable context role codes visible to the entire app, any JSP check "${roles.ae-reporter} for example"
 	 */
 	private void prepareRolesCollections(HttpServletRequest httpRequest) {
 		// START Roles
