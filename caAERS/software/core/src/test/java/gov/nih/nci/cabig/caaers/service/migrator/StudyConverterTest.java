@@ -234,7 +234,7 @@ public class StudyConverterTest extends AbstractTestCase {
         StudyPersonnel sp2 = new StudyPersonnel();
         sp2.setStartDate(new Date());
         sp2.setEndDate(new Date());
-        sp2.setRoleCode("caaers_site_cd");
+        sp2.setRoleCode("ae_reporter");
         sp2.setSiteResearchStaff(new SiteResearchStaff());
         sp2.getSiteResearchStaff().setResearchStaff(r2);
 
@@ -307,7 +307,7 @@ public class StudyConverterTest extends AbstractTestCase {
         StudyPersonnel sp12 = new StudyPersonnel();
         sp12.setStartDate(new Date());
         sp12.setEndDate(new Date());
-        sp12.setRoleCode("caaers_site_cd");
+        sp12.setRoleCode("ae_reporter");
         sp12.setSiteResearchStaff(new SiteResearchStaff());
         sp12.getSiteResearchStaff().setResearchStaff(r12);
 
