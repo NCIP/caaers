@@ -15,12 +15,16 @@
 <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
  <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
     <c:set var="selected" value="${atab.number == tab.number}"/>
+    <c:set var="_isM" value="${fn:contains(mandatoryTabs, atab.shortTitle)}" />
+    <c:set var="_isU" value="${fn:contains(unfilledTabs, atab.shortTitle)}" />
+    <c:set var="_isF" value="${not _isU}" />
+
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
-     <c:if test="${fn:contains(mandatoryTabs, atab.shortTitle)}"><span class="required-indicator">*</span></c:if>
-        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle) ? 'incomplete' : 'complete'):''}">
+     <c:if test="${_isM}"><span class="required-indicator">*</span></c:if>
+        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (_isU ? 'incomplete' : 'complete'):''}">
         	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
 				<c:if test="${!status.last}">
-					<c:if test="${(!fn:contains(unfilledTabs, atab.shortTitle) ) and fn:contains(mandatoryFieldedTabs, atab.shortTitle)}">
+					<c:if test="${ _isF and _isM }">
 		        		<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt="Complete" style="vertical-align:top;" />
 		        	</c:if>
 				</c:if>
@@ -31,7 +35,7 @@
 	<c:if test="${selected}">
 		<tags:pageHelp propertyKey="${tab.class.name}" />
 	</c:if>
- </csmauthz:accesscontrol>	
+ </csmauthz:accesscontrol>
 </c:forEach>
 </ul>
 </div>
