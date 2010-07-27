@@ -307,13 +307,15 @@ public class CreateRuleCommand implements RuleInputCommand {
             //add all report defintions assocated with the organization
             Organization org = getOrganization();
             reportDefinitions.addAll(fetchReportDefinitions(org));
-            if(org!= null && StringUtils.equals(org.getName() , "Division of Cancer Prevention"))  {
+           
+            //CAAERS-4215:
+            //if(org!= null && StringUtils.equals(org.getName() , "Division of Cancer Prevention"))  {
 
                 //BJ :[comment before refactoring]  Get REport definitions of CTEP for DCP studies ,
                 // because DCP uses CTEP report definitions also . TEMP fix.
-                Organization orgCTEP = organizationDao.getByName("Cancer Therapy Evaluation Program");
-                if(orgCTEP != null) reportDefinitions.addAll(fetchReportDefinitions(orgCTEP));
-            }
+              //  Organization orgCTEP = organizationDao.getByName("Cancer Therapy Evaluation Program");
+               // if(orgCTEP != null) reportDefinitions.addAll(fetchReportDefinitions(orgCTEP));
+            //}
 
         } catch (Exception e) {
             logger.error("Exception while retrieving the Rule Set", e);
@@ -458,11 +460,13 @@ public class CreateRuleCommand implements RuleInputCommand {
         /**
          * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP
          * report definitions also . TEMP fix
+         * 
          */
-        if(org != null && StringUtils.equals(org.getName(), "Division of Cancer Prevention")){
-           org = organizationDao.getByName("Cancer Therapy Evaluation Program");
-           reportDefinitions.addAll(fetchReportDefinitions(org));
-        }
+        // above statement not valid any more CAAERS-4215:
+       // if(org != null && StringUtils.equals(org.getName(), "Division of Cancer Prevention")){
+         //  org = organizationDao.getByName("Cancer Therapy Evaluation Program");
+          // reportDefinitions.addAll(fetchReportDefinitions(org));
+        //}
 
 
         // Set the name as the name field has been removed from UI.
