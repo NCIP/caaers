@@ -15,11 +15,11 @@ import junit.framework.TestCase;
  */
 public class GradeTest extends TestCase {
     public void testToString() throws Exception {
-        assertEquals("5: Death", DEATH.toString());
-        assertEquals("4: Life-threatening or disabling", LIFE_THREATENING.toString());
-        assertEquals("3: Severe", SEVERE.toString());
-        assertEquals("2: Moderate", MODERATE.toString());
-        assertEquals("1: Mild", MILD.toString());
+        assertEquals("5: Death related to AE.", DEATH.toString());
+        assertEquals("4: Life-threatening consequences; urgent intervention indicated.", LIFE_THREATENING.toString());
+        assertEquals("3: Severe or medically significant but not immediately life-threatening; hospitalization or prolongation of hospitalization indicated; disabling; limiting self care ADL.", SEVERE.toString());
+        assertEquals("2: Moderate; minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.", MODERATE.toString());
+        assertEquals("1: Mild; asymptomatic or mild symptoms; clinical or diagnostic observations only; intervention not indicated.", MILD.toString());
         assertEquals("0: Normal", NORMAL.toString());
     }
 
