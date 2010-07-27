@@ -432,9 +432,11 @@ public class EvaluationServiceImpl implements EvaluationService {
          * report definitions also . TEMP fix
          */
         Organization primarySponsor = study.getPrimaryFundingSponsorOrganization();
-        if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
-        	reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
-        }
+        
+        //CAAERS-4215
+        //if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
+        	//reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
+        //}
         
         ApplicableReportDefinitionsDTO dto = new ApplicableReportDefinitionsDTO();
         for(ReportDefinition rd : reportDefinitions){
