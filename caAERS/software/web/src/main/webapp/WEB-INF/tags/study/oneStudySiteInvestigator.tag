@@ -17,7 +17,7 @@
             <th width="55%" class="tableHeader"><tags:requiredIndicator/>Investigator</th>
             <th width="20%" class="tableHeader"><tags:requiredIndicator/>Role</th>
             <th width="20%" class="tableHeader"><tags:requiredIndicator/>Status</th>
-            <th width="5%" class="tableHeader">&nbsp;</th>
+            <th width="5%" class="tableHeader">Action</th>
         </tr>
 
         <c:forEach var="si" items="${command.study.activeStudyOrganizations[index].studyInvestigators}" varStatus="status">
