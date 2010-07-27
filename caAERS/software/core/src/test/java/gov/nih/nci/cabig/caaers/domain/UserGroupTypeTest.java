@@ -8,7 +8,7 @@ import junit.framework.TestCase;
  */
 public class UserGroupTypeTest extends TestCase {
 	
-	private UserGroupType grpType = UserGroupType.ae_reporter;;
+	private UserGroupType grpType = UserGroupType.ae_reporter;
 	
 	public void testGetCsmName() {
 		assertEquals("ae_reporter", grpType.getCsmName());
@@ -29,7 +29,7 @@ public class UserGroupTypeTest extends TestCase {
 
 	
 	public void testGetDisplayName(){
-		assertEquals("Ae Reporter", grpType.getDisplayName());
+		assertEquals("AE Reporter", grpType.getDisplayName());
 	}
 	
 	public void testGetCode(){
@@ -40,5 +40,12 @@ public class UserGroupTypeTest extends TestCase {
         assertEquals(UserGroupType.ae_reporter, UserGroupType.valueOf("ae_reporter"));
     }
 	
-	
+	public void testAcronyms() {
+        assertEquals("AE Reporter", UserGroupType.ae_reporter.getDisplayName());
+        assertEquals("AE Expedited Report Reviewer", UserGroupType.ae_expedited_report_reviewer.getDisplayName());
+        assertEquals("AE Rule And Report Manager", UserGroupType.ae_rule_and_report_manager.getDisplayName());
+        assertEquals("AE Study Data Reviewer", UserGroupType.ae_study_data_reviewer.getDisplayName());
+        assertEquals("Study QA Manager", UserGroupType.study_qa_manager.getDisplayName());
+        assertEquals("Registration QA Manager", UserGroupType.registration_qa_manager.getDisplayName());
+    }
 }

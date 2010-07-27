@@ -5,6 +5,9 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * This enumeration represents the user group types
  * 
@@ -45,6 +48,7 @@ public enum UserGroupType implements CodedEnum<Integer> {
     data_analyst(-123, "data_analyst");
     
     private String csmName;
+    private static String[] acronyms = {"AE", "QA"};
 
     private int code;
 
@@ -60,7 +64,13 @@ public enum UserGroupType implements CodedEnum<Integer> {
     }
 
     public String getDisplayName() {
-        return EnumHelper.titleCasedName(this);
+        String s = EnumHelper.titleCasedName(this);
+        for (String a : acronyms) {
+            Pattern pattern = Pattern.compile(String.format("\\b%s\\b", a), Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(s);
+            s = matcher.replaceAll(a);
+        }
+        return s;
     }
 
     public Integer getCode() {
