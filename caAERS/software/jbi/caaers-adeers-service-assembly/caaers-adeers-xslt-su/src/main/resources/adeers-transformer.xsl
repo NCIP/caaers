@@ -398,6 +398,9 @@
 	                        </xsl:when>
 	                        <xsl:when test="MedicalDevice/DeviceOperator = 'OTHER'">
 	                            <DEVICE_OPERATOR>Other</DEVICE_OPERATOR>
+	                            <DEVICE_OPERATOR_OTHER>
+	                            	<xsl:value-of select="MedicalDevice/otherDeviceOperator"/>
+	                            </DEVICE_OPERATOR_OTHER>
 	                        </xsl:when>
 	                        <xsl:otherwise>
 	                            <DEVICE_OPERATOR>
@@ -810,7 +813,14 @@
         <xsl:for-each select="AdverseEvent">
             <ADVERSE_EVENT_CTC>
                 <xsl:attribute name="GRADE">
-                    <xsl:value-of select="substring(grade, 1, 1)"/>
+                  <xsl:choose>
+                	<xsl:when test="substring(grade,1,1) = '-'">
+                		<xsl:value-of select="substring(grade, 1, 2)"/>
+                	</xsl:when>
+                	<xsl:otherwise>
+                    	<xsl:value-of select="substring(grade, 1, 1)"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </xsl:attribute>
 
                 <xsl:choose>
