@@ -52,9 +52,10 @@
                 <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
                 <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
             </c:if>
-            <c:if test="${isNew || si.siteInvestigator.investigator.id == null || si.id == null}">
-                <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}');"/>
-            </c:if>
+        </c:if>
+        <%--this piece of code containing the DELETE button will be visible only if the user has privileges to click the add new investigator button--%>
+        <c:if test="${isNew || si.siteInvestigator.investigator.id == null || si.id == null}">
+            <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}');"/>
         </c:if>
     </td>
 </tr>

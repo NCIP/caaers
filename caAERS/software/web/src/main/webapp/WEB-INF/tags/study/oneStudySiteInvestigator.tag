@@ -1,10 +1,13 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
+
 <div id="ss-section-0" class="row ss-section" style="${style}">
 	<p id="instructions" align="left"><p><tags:instructions code="study.study_investigator.1" /></p>
     <br>
@@ -28,7 +31,7 @@
 
         <c:if test="${fn:length(command.study.activeStudyOrganizations[index].activeStudyInvestigators) lt 1}">
             <tr id="ssi-empty-row" class="ssi-empty-row">
-                <td colspan="4">There are no investigators associated to this study site.</td>
+                <td colspan="4"><caaers:message code="study.noInvestigator" /></td>
             </tr>
         </c:if>
     </table>
