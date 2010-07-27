@@ -150,7 +150,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private void sendCreateAccountEmail(User user, String changeURL){
 
         String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null, Locale.getDefault());
-        String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getLoginId(), changeURL + "&token" + user.getToken()}, Locale.getDefault());;
+        String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getLoginId(), changeURL + "&token=" + user.getToken()}, Locale.getDefault());;
         
         //send out an email
         if ("local".equals(getAuthenticationMode())) {
