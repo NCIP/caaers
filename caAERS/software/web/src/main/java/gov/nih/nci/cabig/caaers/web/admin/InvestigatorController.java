@@ -165,7 +165,7 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
             String statusMessage = "Successfully created Investigator.";
             
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
-                statusMessage = statusMessage + " But we could not send email to user";
+                statusMessage = statusMessage + getMessage("USR_017", "");
             }
             modelAndView.getModel().put("flashMessage", statusMessage);
         }

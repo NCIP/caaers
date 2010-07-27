@@ -170,7 +170,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
             String statusMessage = getMessageSource().getMessage(isCreateMode ? "MSG_RS.created" : "MSG_RS.updated", null, Locale.getDefault());
             
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
-                statusMessage = statusMessage + " But we could not send email to user";
+                statusMessage = statusMessage + getMessage("USR_017", "");
             }
 
             modelAndView.getModel().put("flashMessage", statusMessage);

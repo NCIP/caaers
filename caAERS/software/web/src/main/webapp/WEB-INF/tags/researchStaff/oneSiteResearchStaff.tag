@@ -198,8 +198,8 @@
                         </chrome:division>
                     </c:if>
                     <c:if test="${readOnly}">
-                        <caaers:message code="researchstaff.details.roles" var="roles"/>
-                        <chrome:division id="roles-details" title="${roles}">
+                        <caaers:message code="LBL_researchstaff.details.roles" var="rolesDetails"/>
+                        <chrome:division id="roles-details" title="${rolesDetails}">
                             <table cellpadding="2" cellspacing="0">
                                 <tr>
                                 <th>Role name

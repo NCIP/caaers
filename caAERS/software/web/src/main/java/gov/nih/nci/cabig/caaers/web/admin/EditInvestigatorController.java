@@ -117,7 +117,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
         		}
         	}
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
-                statusMessage = statusMessage + " But we could not send email to user";
+                statusMessage = statusMessage + getMessage("USR_017", "");
             }
             modelAndView.getModel().put("flashMessage", statusMessage);
         	
