@@ -53,7 +53,6 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         cmd.setUnidentifiedMode(getUnidentifiedMode());
         List<StudyParticipantAssignment> assignments = participant.getAssignments();
 
-        cmd.initRoles();
         cmd.setHasParUpdate(csf.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"));
 
         // store StudySites from Participant object to Command object

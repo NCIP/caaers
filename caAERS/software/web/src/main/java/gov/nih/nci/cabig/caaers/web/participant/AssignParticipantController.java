@@ -82,7 +82,6 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
             user = (User)context.getAuthentication().getPrincipal();
         }
 
-        command.initRoles();
         command.setHasParUpdate(csf.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"));
 
         command.setLoggedinResearchStaff(rsDao.getByLoginId(user.getUsername()));

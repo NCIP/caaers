@@ -61,10 +61,6 @@ public class ParticipantInputCommand {
     private DiseaseCodeTerm diseaseCodingTerm;
     private boolean unidentifiedMode;
 
-    private boolean hasRegistrar;
-    private boolean hasDataReader;
-    private boolean hasSubjectManager;
-    private boolean hasRegistrationQAManager;
     private boolean hasParUpdate;
 
     public ParticipantInputCommand() {
@@ -74,14 +70,6 @@ public class ParticipantInputCommand {
     public ParticipantInputCommand(Participant participant) {
     	this();
         this.participant = participant;
-    }
-
-
-    public void initRoles() {
-        hasRegistrar = SecurityUtils.hasAuthorityOf(UserGroupType.registrar);
-        hasDataReader = SecurityUtils.hasAuthorityOf(UserGroupType.data_reader);
-        hasSubjectManager = SecurityUtils.hasAuthorityOf(UserGroupType.subject_manager);
-        hasRegistrationQAManager = SecurityUtils.hasAuthorityOf(UserGroupType.registration_qa_manager);
     }
 
     void init() {
@@ -317,38 +305,6 @@ public class ParticipantInputCommand {
 
     public void setLoggedInOrganizations(Set<Organization> loggedInOrganizations) {
         this.loggedInOrganizations = loggedInOrganizations;
-    }
-
-    public boolean getHasRegistrar() {
-        return hasRegistrar;
-    }
-
-    public void setHasRegistrar(boolean hasRegistrar) {
-        this.hasRegistrar = hasRegistrar;
-    }
-
-    public boolean getHasDataReader() {
-        return hasDataReader;
-    }
-
-    public void setHasDataReader(boolean hasDataReader) {
-        this.hasDataReader = hasDataReader;
-    }
-
-    public boolean getHasSubjectManager() {
-        return hasSubjectManager;
-    }
-
-    public void setHasSubjectManager(boolean hasSubjectManager) {
-        this.hasSubjectManager = hasSubjectManager;
-    }
-
-    public boolean getHasRegistrationQAManager() {
-        return hasRegistrationQAManager;
-    }
-
-    public void setHasRegistrationQAManager(boolean hasRegistrationQAManager) {
-        this.hasRegistrationQAManager = hasRegistrationQAManager;
     }
 
     public boolean isHasParUpdate() {

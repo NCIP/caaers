@@ -102,9 +102,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ParticipantInputCommand c = new ParticipantInputCommand();
         c.setUnidentifiedMode(getUnidentifiedMode());
 
-        c.initRoles();
-
-        //if (!c.isHasSubjectManager() || c.isHasDataReader() || c.isHasRegistrar() || c.isHasRegistrationQAManager())
         c.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
 
         c.setLoggedinResearchStaff(rsDao.getByLoginId(SecurityUtils.getUserLoginName()));

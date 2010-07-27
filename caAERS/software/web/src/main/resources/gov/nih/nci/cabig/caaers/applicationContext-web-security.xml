@@ -106,7 +106,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/dashboard" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
 
         <!--========== PARTICIPANT ===========-->
-		<entry key="/pages/participant/create" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
+		<entry key="/pages/participant/create" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE &amp;&amp; gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE" />
         <entry key="/pages/participant/search" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
         <entry key="/pages/participant/assignParticipant" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE" />
 
