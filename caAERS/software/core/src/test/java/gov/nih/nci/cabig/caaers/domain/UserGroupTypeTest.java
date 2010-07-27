@@ -29,7 +29,7 @@ public class UserGroupTypeTest extends TestCase {
 
 	
 	public void testGetDisplayName(){
-		assertEquals("Ae reporter", grpType.getDisplayName());
+		assertEquals("Ae Reporter", grpType.getDisplayName());
 	}
 	
 	public void testGetCode(){
