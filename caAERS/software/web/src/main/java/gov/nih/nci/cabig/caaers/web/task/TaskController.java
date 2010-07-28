@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ public class TaskController extends AbstractController {
     private List<TaskGroup> taskGroups = new ArrayList<TaskGroup>();
 
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ModelAndView mav = new ModelAndView("main/mainPage");
+        ModelAndView mav = new ModelAndView("main/mainPage?rand=" + new Date().getTime());
         mav.addObject("taskgroups", taskGroups);
         return mav;
     }
