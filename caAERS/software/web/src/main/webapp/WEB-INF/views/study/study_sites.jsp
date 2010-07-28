@@ -114,10 +114,11 @@
 		<input type="hidden" name="_selected" value="">
 		<input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studySites)}">
  	    <div align="left" style="margin-left: 50px">
-             <table width="55%" class="tablecontent">
-                 <tr id="ss-table-head" class="amendment-table-head">
+             <tags:table contentID="studySites" width="55%">
+             <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                 <tr id="ss-table-head" bgcolor="#ccc">
                      <th width="95%" class="tableHeader"><tags:requiredIndicator/>Site</th>
-                     <th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
+                     <th width="5%" class="tableHeader" style=" background-color: none"><caaers:message code="table.action" /></th>
                  </tr>
                  <c:forEach varStatus="status" items="${command.study.studySites}" var="ss">
                  	<c:if test="${not ss.retired}">
@@ -125,6 +126,7 @@
                     </c:if>
                  </c:forEach>
              </table>
+             </tags:table>
          </div>
 		<br>
         <tags:listEditorAddButton divisionClass="ss-section" label="Add Study Site"/>

@@ -19,7 +19,7 @@
                         <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
                             <study:oneExpectedAE isOtherSpecify="${terms[status.index].otherRequired}" index="${status.index}" studyTerm="${terms[status.index]}"/>
                             <td style="text-align:center;">
-                                <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
+                                <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
                             </td>
                         </tr>
                     </c:forEach>
@@ -38,7 +38,7 @@
                                     <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
                                         <study:oneExpectedAE isOtherSpecify="${terms[status.index].otherRequired}" index="${status.index}" studyTerm="${terms[status.index]}"/>
                                         <td style="text-align:center;" width="50px">
-                                            <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>    
+                                            <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>    
                                         </td>
                                     </tr>
                                 </c:forEach>

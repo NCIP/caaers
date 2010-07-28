@@ -354,23 +354,27 @@ Event.observe(window, "load", function() {
             <chrome:division title="CTEP">
             <p><tags:instructions code="study.study_disease.selected" /></p>
 			<center>
-			<table width="100%" class="tablecontent">
-    			<tr>
+
+            <tags:table contentID="ctcDisease">
+
+               <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
+    			<tr bgcolor="#eee">
     				<th scope="col" align="left"><b>CTC disease term</b> </th>
     				<th scope="col" width="10%" align="center"><b>Primary</b> </th>
-    				<th scope="col" width="5%" align="center"></th>
+    				<th scope="col" width="5%" align="center"><caaers:message code="table.action" /></th>
     			</tr>
     			 <c:forEach items="${command.study.activeStudyDiseases}" var="studyDisease" varStatus="status">
-    				<tr>
+    				<tr bgcolor="#fff">
             			<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
             			<td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
-            			<td align="center"><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+            			<td align="center"><div class="label"><tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="javascript:fireAction('removeStudyDisease', ${status.index});"/></div></td>
             		</tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
             	 	<td colspan="3"><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
              </table>
+            </tags:table>
              </center>
             </chrome:division>
             </c:if>
@@ -390,7 +394,7 @@ Event.observe(window, "load", function() {
                     <tr>
                         <td align="left"><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
                         <td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
-                        <td align="center"><div class="label"><a href="javascript:fireAction('removeMeddraStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+                        <td align="center"><div class="label"><tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="javascript:fireAction('removeMeddraStudyDisease', ${status.index});"/></div></td>
                     </tr>
             	</c:forEach>
                 
@@ -416,7 +420,7 @@ Event.observe(window, "load", function() {
     			<c:forEach items="${command.study.activeStudyConditions}" var="studyConditions" varStatus="status">
                     <tr>
                         <td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
-                        <td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+                        <td><div class="label"><tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="javascript:fireAction('removeOtherCondition', ${status.index});"/></div></td>
                     </tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >

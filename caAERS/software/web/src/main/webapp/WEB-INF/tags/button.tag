@@ -126,10 +126,10 @@
 				<c:if test="${fn:toLowerCase(icon) == 'x'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/x_icon_small.png"/>" alt="" />
+		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/trash.gif"/>" alt="" height="16px"/>
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/x_icon.png"/>" alt="" />
+							<img src="<chrome:imageUrl name="../buttons/button_icons/trash.png"/>" alt="" height="23px"/>
 						</c:otherwise>
 					</c:choose>
 				</c:if>

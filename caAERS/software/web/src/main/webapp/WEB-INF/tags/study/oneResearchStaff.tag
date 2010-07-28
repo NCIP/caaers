@@ -67,7 +67,7 @@
             </c:if>
 
             <c:if test="${isNew || sp.siteResearchStaff.researchStaff == null || sp.id == null}">
-                <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}')"/>
+                <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}')"/>
             </c:if>
         </c:if>
 <%--

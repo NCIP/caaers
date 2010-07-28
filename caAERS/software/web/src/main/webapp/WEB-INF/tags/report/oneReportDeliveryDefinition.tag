@@ -38,6 +38,6 @@
 	
 	</c:forEach>
 	<td width="100px;" nowrap="true">
-        <tags:button color="blue" type="button" value="Delete" size="small" icon="x" onclick="javascript:fireDelete(${originalIndex},'${divisionClass}-${index}');"/>
+        <tags:button color="red" type="button" value="Delete" size="small" icon="x" onclick="javascript:fireDelete(${originalIndex},'${divisionClass}-${index}');"/>
     </td>
 </tr>

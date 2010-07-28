@@ -45,7 +45,7 @@
 
     <c:if test="${not disableDelete}">
         <td style="border-left:none;">
-            <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}')"/>
+            <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}')"/>
         </td>
 	</c:if>
 	<c:if test="${disableDelete}">

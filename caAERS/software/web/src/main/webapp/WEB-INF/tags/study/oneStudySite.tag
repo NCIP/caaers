@@ -11,7 +11,7 @@
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
 
-<tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top">
+<tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top" bgcolor="#fff">
 	 <td style="border-right:none;">
 	 <c:set var="_siteField" value="${fieldGroups[mainGroup].fields[0]}" />
 	 <ui:autocompleter path="${_siteField.propertyName}" 
@@ -24,9 +24,5 @@
 			enableClearButton="${_siteField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here..." />
 	 </td>
-	<td style="border-left:none;">
-		<a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
-			<img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="">
-		</a> 
-	</td>
+	<td style="border-left:none;"><tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="javascript:fireDelete(${index},'${cssClass}-${index}');"/></td>
 </tr>
