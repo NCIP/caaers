@@ -8,9 +8,9 @@ package gov.nih.nci.cabig.caaers.utils;
 public class RoleUtils {
 
 	//known site specific roles.
-	public transient static final  String[] studySiteSpecificRoles = {"caaers_participant_cd",
-			  							 "caaers_ae_cd",
-			  							 "caaers_site_cd",
+	public transient static final  String[] studySiteSpecificRoles = {"ae_reporter",
+			  							 "ae_expedited_report_reviewer",
+			  							 "ae_study_data_reviewer",
 			  							 "SI",/*Site Investigator*/
 			  							 "SPI" /*Site Principal Investigator*/};
 	//known report specific roles. 

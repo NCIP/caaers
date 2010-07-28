@@ -153,14 +153,14 @@
     />
     <site_rs_staff_roles
      id="-5001"
-     role_code="caaers_site_cd"
+     role_code="study_site_participation_administrator"
      site_research_staffs_id="-4001"
      start_date="2007-02-02"
      end_date="2008-02-02"
     />
     <site_rs_staff_roles
      id="-5002"
-     role_code="caaers_study_cd"
+     role_code="study_creator"
      site_research_staffs_id="-4001"
      start_date="2007-02-02"
     />
@@ -173,19 +173,19 @@
     />
     <site_rs_staff_roles
      id="-5003"
-     role_code="caaers_study_cd"
+     role_code="study_creator"
      site_research_staffs_id="-4002"
      start_date="2007-02-02"
     />
     <site_rs_staff_roles
      id="-5004"
-     role_code="caaers_site_cd"
+     role_code="study_site_participation_administrator"
      site_research_staffs_id="-4002"
      start_date="2007-02-02"
     />
     <site_rs_staff_roles
      id="-5005"
-     role_code="caaers_participant_cd"
+     role_code="ae_reporter"
      site_research_staffs_id="-4002"
      start_date="2007-02-02"
     />
@@ -200,13 +200,13 @@
     />
     <site_rs_staff_roles
      id="-5006"
-     role_code="caaers_participant_cd"
+     role_code="ae_reporter"
      site_research_staffs_id="-4003"
      start_date="2007-02-02"
     />
     <site_rs_staff_roles
      id="-5007"
-     role_code="caaers_site_cd"
+     role_code="study_site_participation_administrator"
      site_research_staffs_id="-4003"
      start_date="2007-02-02"
     />
@@ -218,7 +218,7 @@
     />
     <site_rs_staff_roles
      id="-5008"
-     role_code="caaers_ae_cd"
+     role_code="ae_expedited_report_reviewer"
      site_research_staffs_id="-4004"
      start_date="2007-02-02"
     />
@@ -232,7 +232,7 @@
     />
     <site_rs_staff_roles
      id="-5009"
-     role_code="caaers_participant_cd"
+     role_code="ae_reporter"
      site_research_staffs_id="-4005"
      start_date="2007-02-02"
     />
@@ -244,7 +244,7 @@
     />
     <site_rs_staff_roles
      id="-5010"
-     role_code="caaers_participant_cd"
+     role_code="ae_reporter"
      site_research_staffs_id="-4006"
      start_date="2007-02-02"
     />
@@ -371,32 +371,32 @@
      id="-1"
      site_research_staffs_id="-4001"
      study_sites_id="-1001"
-     role_code="caaers_study_cd"/>
+     role_code="study_creator"/>
     <study_personnel
      id="-2"
      site_research_staffs_id="-4002"
      study_sites_id="-1001"
-     role_code="caaers_site_cd"/>
+     role_code="study_site_participation_administrator"/>
     <study_personnel
      id="-3"
      site_research_staffs_id="-4003"
      study_sites_id="-1002"
-     role_code="caaers_participant_cd"/>
+     role_code="ae_reporter"/>
     <study_personnel
      id="-4"
      site_research_staffs_id="-4004"
      study_sites_id="-1002"
-     role_code="caaers_participant_cd"/>
+     role_code="ae_reporter"/>
     <study_personnel
      id="-5"
      site_research_staffs_id="-4005"
      study_sites_id="-1003"
-     role_code="caaers_participant_cd"/>
+     role_code="ae_reporter"/>
     <study_personnel
      id="-6"
      site_research_staffs_id="-4006"
      study_sites_id="-1003"
-     role_code="caaers_participant_cd"/>
+     role_code="ae_reporter"/>
     
     <!-- Study Investigators : Test Study 2 -->
     <study_investigators
@@ -411,12 +411,12 @@
      id="-7"
      site_research_staffs_id="-4002"
      study_sites_id="-1005"
-     role_code="caaers_study_cd"/>
+     role_code="study_creator"/>
     <study_personnel
      id="-8"
      site_research_staffs_id="-4006"
      study_sites_id="-1006"
-     role_code="caaers_participant_cd"/>
+     role_code="ae_reporter"/>
     
 	<!-- Configuration Property -->
 	<config_properties id="-1"
@@ -497,28 +497,28 @@
      id="-228"
      plnf_id="-222"
      dtype="role"
-     role_name="caaers_study_cd"
+     role_name="study_creator"
      version="0"
     />
     <recipients
      id="-229"
      plnf_id="-222"
      dtype="role"
-     role_name="caaers_ae_cd"
+     role_name="ae_expedited_report_reviewer"
      version="0"
     />
     <recipients
      id="-230"
      plnf_id="-222"
      dtype="role"
-     role_name="caaers_participant_cd"
+     role_name="ae_reporter"
      version="0"
     />
     <recipients
      id="-231"
      plnf_id="-222"
      dtype="role"
-     role_name="caaers_data_cd"
+     role_name="ae_study_data_reviewer"
      version="0"
     />
     

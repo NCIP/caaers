@@ -26,7 +26,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 	
 	 private static Class<?>[] CONTROLLERS = { 	CaptureAdverseEventController.class   };
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
-	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
+	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
 	 
 	 private static final Log log = LogFactory.getLog(CaptureAdverseEventAjaxFacade.class);
 	 @Override

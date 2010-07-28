@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
+import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
@@ -188,30 +189,35 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	public List<ReviewStatus> allowedReviewStatuses(String loginId){
 		Map<ReviewStatus, Boolean> allowedReviewStatusMap = new HashMap<ReviewStatus, Boolean>();
-		
-        User user = csmUserRepository.getUserByName(loginId);
-        //first fetch all the possible workflow configs.
-        List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
-        for(WorkflowConfig wc : workflowConfigList){
-            for(TaskConfig tc: wc.getTaskConfigs()){
-                for(Assignee assignee: tc.getAssignees()){
-                    if(assignee.isUser()){
-                        PersonAssignee personAssignee = (PersonAssignee) assignee;
-                        if(personAssignee.getUser().getLoginId().equals(user.getLoginId())){
-                            allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
-                        }
-                    }else if(assignee.isRole()){
-                        RoleAssignee roleAssignee = (RoleAssignee) assignee;
-                        PersonRole role = roleAssignee.getUserRole();
-                        for(UserGroupType type: user.getUserGroupTypes()){
-                            if(ArrayUtils.contains(role.getUserGroups(), type)){
+		try{
+
+            User user = csmUserRepository.getUserByName(loginId);
+            //first fetch all the possible workflow configs.
+            List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
+            for(WorkflowConfig wc : workflowConfigList){
+                for(TaskConfig tc: wc.getTaskConfigs()){
+                    for(Assignee assignee: tc.getAssignees()){
+                        if(assignee.isUser()){
+                            PersonAssignee personAssignee = (PersonAssignee) assignee;
+                            if(personAssignee.getUser().getLoginId().equals(user.getLoginId())){
                                 allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
-                                break;
+                            }
+                        }else if(assignee.isRole()){
+                            RoleAssignee roleAssignee = (RoleAssignee) assignee;
+                            PersonRole role = roleAssignee.getUserRole();
+                            for(UserGroupType type: user.getUserGroupTypes()){
+                                if(ArrayUtils.contains(role.getUserGroups(), type)){
+                                    allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+
+        }catch(CaaersNoSuchUserException noUser){
+            log.info("No user is present within caAERS having loginId : " + loginId);
         }
 		List<ReviewStatus> allowedReviewStatusList = new ArrayList<ReviewStatus>(allowedReviewStatusMap.keySet());
 		return allowedReviewStatusList;
@@ -453,11 +459,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 		studyDao.reassociateStudyOrganizations(studyOrganizations);
 		
 		switch(personRole){
-			case CENTRAL_OFFICE_SAE_COORDINATOR:
+			case AE_EXPEDITED_REPORT_REVIEWER:
 				List<User> saeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(saeCoordinators);
 				break;
-			case DATA_COORDINATOR:
+			case AE_STUDY_DATA_REVIEWER:
 				List<User> dataCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(dataCoordinators);
 				break;
@@ -465,7 +471,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				List<User> aeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(aeCoordinators);
 				break;
-			case PARTICIPANT_COORDINATOR:
+			case AE_REPORTER:
 				List<User> participantCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(participantCoordinators);
 				break;

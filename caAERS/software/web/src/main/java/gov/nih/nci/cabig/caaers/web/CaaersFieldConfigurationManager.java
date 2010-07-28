@@ -20,6 +20,10 @@ import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
  * @author Sameer Sawant
  */
 public class CaaersFieldConfigurationManager{
+
+    public static final String COURSE_FIELD_GROUP = "gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab";
+    public static final String AE_FIELD_GROUP = "gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab";
+
 	private CaaersFieldDefinitionDao caaersFieldDefinitionDao;
 	private Map<String, Map<String, Mandatory>> fieldConfigurationMap;
 	

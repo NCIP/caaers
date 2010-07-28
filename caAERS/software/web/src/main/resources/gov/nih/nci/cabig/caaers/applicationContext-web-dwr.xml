@@ -15,9 +15,12 @@
     </bean>
 	
 	<bean id="submitReportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportAjaxFacade" parent="createAeAjaxFacade"/>
-	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade"></bean>
+	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade">
+        <property name="adverseEventReportingPeriodValidator" ref="adverseEventReportingPeriodValidator"  />
+	</bean>
     <bean id="captureAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade">
     	<property name="reportingPeriodDao" ref="adverseEventReportingPeriodDao"></property>
+        <property name="adverseEventReportingPeriodValidator" ref="adverseEventReportingPeriodValidator"  />
     </bean>
     <bean id="reviewRpAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodAjaxFacade" parent="captureAeAjaxFacade"></bean>
    	<bean id="reviewAeReportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportAjaxFacade" parent="createAeAjaxFacade"></bean>

@@ -4,10 +4,11 @@ import java.util.Date;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Grade;
 
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 /**
  * This class validates an AdverseEventReportingPeriod object.
@@ -25,14 +26,20 @@ import org.springframework.validation.Validator;
  */
 
 public class AdverseEventReportingPeriodValidator implements Validator{
-	
+
+    private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
+
 	/**
 	 * This Validator validates just AdverseEventReportingPeriod instances
 	 */
 	public boolean supports(Class clazz) {
 		return AdverseEventReportingPeriod.class.equals(clazz);
 	}
-	
+
+
+    public boolean isMandatory(String groupName, String fieldName){
+        return caaersFieldConfigurationManager.isFieldMandatory(groupName, fieldName );
+    }
 	
 	/**
 	 * This method validates if all the AEs of the Reporting Period are graded. 
@@ -40,11 +47,15 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validGradeValues(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+
+        if(isMandatory(CaaersFieldConfigurationManager.AE_FIELD_GROUP, "adverseEvents[].grade")){
+           for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
 			if(ae.isRetired()) continue;
             if(ae.getGrade() == null) return false;
             if(ae.getGrade() == Grade.NOT_EVALUATED && (!ae.getSolicited()) ) return false;
-		}
+		   } 
+        }
+
 		return true;
 	}
 	
@@ -54,12 +65,15 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validHospitalization(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+        if(isMandatory(CaaersFieldConfigurationManager.AE_FIELD_GROUP, "adverseEvents[].hospitalization")){
+          for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
 			if(ae.isRetired()) continue;
 			if(ae.getGrade() != null && ae.getGrade().getCode() >= 2 && ae.getHospitalization() == null){
 				return false;
 			}
-		}
+		  }  
+        }
+
 		return true;
 	}
 	
@@ -69,12 +83,15 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validAttribution(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
-			if(ae.isRetired()) continue;
-			if(ae.getGrade() != null && ae.getGrade().getCode() >= 1 && ae.getAttributionSummary() == null){
-				return false;
-			}
-		}
+        if(isMandatory(CaaersFieldConfigurationManager.AE_FIELD_GROUP, "adverseEvents[].attributionSummary")){
+            for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+                if(ae.isRetired()) continue;
+                if(ae.getGrade() != null && ae.getGrade().getCode() >= 1 && ae.getAttributionSummary() == null){
+                    return false;
+                }
+            }   
+        }
+
 		return true;
 	}
 	
@@ -84,8 +101,9 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validateEndDateNotNull(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		if(adverseEventReportingPeriod.getEndDate() == null)
-			return false;
+        if(isMandatory(CaaersFieldConfigurationManager.COURSE_FIELD_GROUP, "reportingPeriod.endDate")){
+		    if(adverseEventReportingPeriod.getEndDate() == null)return false;
+        }
 		return true;
 	}
 	
@@ -95,9 +113,12 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validateFutureEndDate(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		Date currentDate = new Date();
-		if(adverseEventReportingPeriod.getEndDate() != null && adverseEventReportingPeriod.getEndDate().compareTo(currentDate) >= 0)
-			return false;
+         if(isMandatory(CaaersFieldConfigurationManager.COURSE_FIELD_GROUP, "reportingPeriod.endDate")){
+            Date currentDate = new Date();
+		    if(adverseEventReportingPeriod.getEndDate() != null && adverseEventReportingPeriod.getEndDate().compareTo(currentDate) >= 0)
+			    return false;
+         }
+
 		return true;
 	}
 	
@@ -107,17 +128,29 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validateOtherSpecifyTerms(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
-			if(ae.isRetired()) continue;
-			if(ae.getAdverseEventTerm().isOtherRequired()){
-				if(ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null){
-					return false;
-				}
-			}
-		}
+        if(isMandatory(CaaersFieldConfigurationManager.AE_FIELD_GROUP, "adverseEvents[].detailsForOther")){
+            for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+                if(ae.isRetired()) continue;
+                if(ae.getAdverseEventTerm().isOtherRequired()){
+                    if(ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null){
+                        return false;
+                    }
+                }
+            }
+        }
+
 		
 		return true;
 	}
+
+
+    public boolean validateTAC(AdverseEventReportingPeriod adverseEventReportingPeriod){
+        if(isMandatory(CaaersFieldConfigurationManager.AE_FIELD_GROUP, "adverseEvents[].detailsForOther")){
+           TreatmentAssignment tac = adverseEventReportingPeriod.getTreatmentAssignment();
+           return tac != null  && !tac.isRetired(); 
+        }
+        return true;
+    }
 	
 	
 	public void validate(Object obj, Errors e) {
@@ -145,11 +178,19 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 		
 		// Validate - All AE's with "Other, Specify" terms must have Verbatim entered or Other MedDRA term selected.
 		if(!validateOtherSpecifyTerms(adverseEventReportingPeriod))
-			e.reject("CAE_012","Either verbatim or Other Meddra should be added if the AE term is of kind - otherSpecify");
+			e.reject("CAE_012","Either verbatim or Other Meddra should be added if the AE term is of kind - otherSpecify.");
 
 		//validate if TAC, present is active
-		if(adverseEventReportingPeriod.getTreatmentAssignment() != null && adverseEventReportingPeriod.getTreatmentAssignment().isRetired()){
+		if(!validateTAC(adverseEventReportingPeriod)){
 			e.reject("CAE_013","Treatment assignment associated to this course, is incorrect or removed from protocol.");
 		}
 	}
+
+    public CaaersFieldConfigurationManager getCaaersFieldConfigurationManager() {
+        return caaersFieldConfigurationManager;
+    }
+
+    public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager) {
+        this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
+    }
 }

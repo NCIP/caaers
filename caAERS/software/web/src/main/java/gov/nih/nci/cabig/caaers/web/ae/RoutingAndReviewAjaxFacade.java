@@ -38,7 +38,7 @@ public class RoutingAndReviewAjaxFacade {
 	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 
 	 private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
+	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	 private StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
 	 private OrganizationRepository organizationRepository;

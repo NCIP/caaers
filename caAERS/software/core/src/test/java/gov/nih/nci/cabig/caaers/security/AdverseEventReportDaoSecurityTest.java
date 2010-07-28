@@ -54,7 +54,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
     }
 
     public void testAdverseEventSave() {
-        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "ae_reporter");
 
         ExpeditedAdverseEventReport newReport = createReport();
 
@@ -74,7 +74,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
                             rootCause instanceof AccessDeniedException);
         }
 
-        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "ae_reporter");
         adverseEventReportDao.save(newReport);
         Integer id = newReport.getId();
         assertNotNull("Report not saved", id);
@@ -85,7 +85,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
     }
 
     public void testAdverseEventUpdate() {
-        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "ae_reporter");
 
         Integer id;
         {
@@ -123,7 +123,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCas
             assertTrue("Expecting AccessDeniedException, got: " + rootCause,
                             rootCause instanceof AccessDeniedException);
         }
-        SecurityTestUtils.switchUser("participant_cd1", "caaers_participant_cd");
+        SecurityTestUtils.switchUser("participant_cd1", "ae_reporter");
 
         // Since there was an exception in a transactional DAO method, we have to get a new
         // hibernate session

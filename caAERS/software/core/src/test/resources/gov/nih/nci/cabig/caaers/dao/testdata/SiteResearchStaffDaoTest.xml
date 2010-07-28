@@ -97,19 +97,19 @@
 	
 	<site_rs_staff_roles
 		id="-7000"
-		role_code="caaers_participant_cd"
+		role_code="ae_reporter"
 		site_research_staffs_id="-4004"
 		start_date="2006-10-10"
 	/>
 	<site_rs_staff_roles
 		id="-7001"
-		role_code="caaers_study_cd"
+		role_code="supplemental_study_information_manager"
 		site_research_staffs_id="-4004"
 		start_date="2006-10-10"
 	/>
 	<site_rs_staff_roles
 		id="-7002"
-		role_code="caaers_site_cd"
+		role_code="study_site_participation_administrator"
 		site_research_staffs_id="-4004"
 		start_date="2006-10-10"
 	/>

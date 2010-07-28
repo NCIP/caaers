@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.web.validation.validator;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.easymock.classextension.EasyMock;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
@@ -20,6 +22,8 @@ public class AdverseEventReportingPeriodValidatorTest extends AbstractNoSecurity
 	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	private Errors errors;
+
+    private CaaersFieldConfigurationManager confManager;
 	
 	@Override
 	protected void setUp() throws Exception{
@@ -28,7 +32,11 @@ public class AdverseEventReportingPeriodValidatorTest extends AbstractNoSecurity
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 		adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		errors = new BindException(adverseEventReportingPeriod, "adverseEventReportingPeriod");
-		setupAdverseEventReportingPeriod();
+        confManager = registerMockFor(CaaersFieldConfigurationManager.class);
+        adverseEventReportingPeriodValidator.setCaaersFieldConfigurationManager(confManager);
+        EasyMock.expect(confManager.isFieldMandatory((String)EasyMock.anyObject(), (String)EasyMock.anyObject())).andReturn(true).anyTimes();
+		replayMocks();
+        setupAdverseEventReportingPeriod();
 	}
 
     @Override

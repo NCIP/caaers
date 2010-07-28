@@ -77,7 +77,7 @@
                 </studyInvestigators>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>caaers_participant_cd</roleCode>
+                        <roleCode>ae_reporter</roleCode>
                         <statusCode>Active</statusCode>
                         <p:researchStaff>
                             <firstName>Mike</firstName>

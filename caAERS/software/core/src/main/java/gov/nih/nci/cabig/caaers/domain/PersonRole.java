@@ -14,13 +14,13 @@ public enum PersonRole implements CodedEnum<Integer>{
 	SITE_PRINCIPAL_INVESTIGATOR(1, "Site Principal Investigator","SPI", UserGroupType.ae_reporter),
 	SITE_INVESTIGATOR(2, "Site Investigator","SI", UserGroupType.ae_reporter),
 	PRINCIPAL_INVESTIGATOR(3, "Principal Investigator","PI", UserGroupType.ae_reporter),
-	PARTICIPANT_COORDINATOR(4, "Participant Coordinator","caaers_participant_cd", UserGroupType.registrar),
-	STUDY_COORDINATOR(5, "Study Coordinator","caaers_study_cd", UserGroupType.supplemental_study_information_manager),
-	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "caaers_ae_cd", UserGroupType.ae_reporter),
+	AE_REPORTER(4, "Participant Coordinator","ae_reporter", UserGroupType.ae_reporter),
+	STUDY_COORDINATOR(5, "Study Coordinator","supplemental_study_information_manager", UserGroupType.supplemental_study_information_manager),
+	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "ae_reporter", UserGroupType.ae_reporter),
 	REPORTER(7, "Reporter", "PC", UserGroupType.ae_reporter),
 	PHYSICIAN (8, "Physician", "SI", UserGroupType.ae_reporter),
-	CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office Report Reviewer","caaers_central_office_sae_cd", UserGroupType.ae_expedited_report_reviewer),
-	DATA_COORDINATOR(10, "Data Coordinator", "caaers_data_cd", UserGroupType.ae_study_data_reviewer),
+	AE_EXPEDITED_REPORT_REVIEWER(9, "Central Office Report Reviewer","ae_expedited_report_reviewer", UserGroupType.ae_expedited_report_reviewer),
+	AE_STUDY_DATA_REVIEWER(10, "Data Coordinator", "ae_study_data_reviewer", UserGroupType.ae_study_data_reviewer),
 	;
 	
 	private Integer code;

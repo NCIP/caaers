@@ -52,10 +52,10 @@ public class SecurityUtilsTest extends AbstractTestCase {
 	}
 
 	public void testGetGrantedAuthoritiesAuthentication() {
-		EasyMock.expect(authentication.getPrincipal()).andReturn(user);
+		//EasyMock.expect(authentication.getPrincipal()).andReturn(user);
 		GrantedAuthority[] authorities = new GrantedAuthority[1];
 		authorities[0] = new GrantedAuthorityImpl("jank");
-		EasyMock.expect(user.getAuthorities()).andReturn(authorities);
+		EasyMock.expect(authentication.getAuthorities()).andReturn(authorities);
 		replayMocks();
 		assertEquals("jank", SecurityUtils.getGrantedAuthorities(authentication)[0].getAuthority());
 		verifyMocks();
@@ -63,8 +63,8 @@ public class SecurityUtilsTest extends AbstractTestCase {
 
 	public void testCheckAuthorizationUserGroupTypeArray() {
 		SecurityTestUtils.switchToSuperuser();
-		assertTrue(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user, UserGroupType.caaers_site_cd));
-		assertFalse(SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd, UserGroupType.caaers_site_cd));
+		assertTrue(SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user, UserGroupType.study_team_administrator));
+		assertFalse(SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer, UserGroupType.study_team_administrator));
 	}
 
 
@@ -73,8 +73,8 @@ public class SecurityUtilsTest extends AbstractTestCase {
         assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_super_user));
         assertEquals(false, SecurityUtils.hasAuthorityOf(UserGroupType.ae_reporter));
 
-        SecurityTestUtils.switchUser("JOHN", UserGroupType.caaers_ae_cd.getCsmName(), UserGroupType.registrar.getCsmName());
-        assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_ae_cd));
+        SecurityTestUtils.switchUser("JOHN", UserGroupType.ae_expedited_report_reviewer.getCsmName(), UserGroupType.registrar.getCsmName());
+        assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.ae_expedited_report_reviewer));
         assertEquals(true, SecurityUtils.hasAuthorityOf(UserGroupType.registrar));
         assertEquals(false, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_super_user));
     }
