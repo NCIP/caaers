@@ -40,7 +40,7 @@
     <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
 
     <!-- box header -->
-    <div class="header"><div class="background-L"><div class="background-R">
+    <div class="header"><div class="bg-L"><div class="bg-R">
         <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr height='36px'>
             <td align="left"><h2><c:if test="${collapsable and not empty id}"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></c:if>${title}</h2></td>
             <td align="right" style="padding-right:10px;">${additionalTitle}</td>

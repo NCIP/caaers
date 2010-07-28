@@ -15,7 +15,7 @@ id="nf-${index}" cssClass="nf-section" >
       <tr align="middle">
          <td width="49%"><tags:button color="blue" type="button" value="Add e-mail" size="small" icon="add" onclick="javascript:insertRecipient('direct', ${index})"/></td>
          <td rowspan="2" width="2%" class="divider">&nbsp;</td>
-         <td><tags:button color="blue" type="button" value="Add Role" size="small" icon="add" onclick="javascript:insertRecipient('role',${index})"/></td>
+         <td><tags:button color="blue" type="button" value="Add Role" size="small" icon="add" onclick="javascript:insertRecipient('role',${index})" hoverTitle="Add Role"/></td>
       </tr>
       <tr>
          <td width="49%" >

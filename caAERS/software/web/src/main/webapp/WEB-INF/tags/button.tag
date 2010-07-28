@@ -6,6 +6,7 @@
 <%@ attribute name="onclick" required="false" %>
 <%@ attribute name="icon" required="false" %>
 <%@ attribute name="value" required="true" %>
+<%@ attribute name="hoverTitle" required="false" %>
 <%@ attribute name="href" required="false" %>
 <%@ attribute name="cssClass" required="false" %>
 <%@ attribute name="markupWithTag" required="false" %>
@@ -164,7 +165,7 @@
 					</c:choose>
 				</c:if>
 				
-				${value}
+				<span title="${hoverTitle}">${value}</span>
 				
 				<c:if test="${fn:toLowerCase(icon) == 'save &amp; continue' || fn:toLowerCase(icon) =='save & continue'}">
 					<c:choose>
