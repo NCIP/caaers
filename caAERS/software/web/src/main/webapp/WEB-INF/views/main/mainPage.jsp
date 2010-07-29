@@ -92,11 +92,49 @@
     </div>
 
     <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
-        <table width="100%" cellpadding="0" cellspacing="0">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-            <td class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">Adverse Events</span>
-            <td class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">Report Definitions</span>
-            <td class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">Reporting Rules</span>
+            <c:forEach begin="0" end="3" items="${taskgroups}" var="taskGroup" varStatus="index">
+                <c:if test="${index.index != 2}">
+                <td align="center" valign="top">
+
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td colspan="2" headers="35px" class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">${taskGroup.displayName}</span></td></tr>
+                    
+                    <c:forEach items="${taskGroup.taskList}" var="task">
+                        <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png" />"></td><td width="100%" class="taskItem" style="margin-right:1px;"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
+                    </c:forEach>
+
+                    </table>
+                </td>
+                </c:if>
+            </c:forEach>
+        </tr>
+        </table>
+    </div>
+
+    <div class="tasksSubheader">
+        <table width='100%' cellpadding="0" cellspacing="0">
+            <tr><td><h3 class='subHeader'>Setup and Administration Tasks</h3></tr>
+        </table>
+    </div>
+
+    <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <c:forEach begin="4" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
+                <td align="center" valign="top">
+
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr><td colspan="3" headers="35px" class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">${taskGroup.displayName}</span></td></tr>
+
+                    <c:forEach items="${taskGroup.taskList}" var="task">
+                        <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png"/>"></td><td width="100%" class="taskItem"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
+                    </c:forEach>
+
+                    </table>
+                </td>
+            </c:forEach>
         </tr>
         </table>
     </div>
@@ -124,6 +162,27 @@
 
 
 <style>
+
+    td.taskItem {
+        height: 37px;
+        background-image: url(../images/iphone2/taskItemImage.jpg);
+    }
+
+    td.taskItemImage {
+        height: 37px;
+        background-image: url(../images/iphone2/quick-links_up.jpg);
+        padding-left:3px;
+        padding-right:10px;
+    }
+
+    td.taskItem a {
+        font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
+        font-size: 11px;
+        color: #094c86;
+        text-shadow: 0 1px white;
+        font-weight: bold;
+        text-decoration: none;
+    }
 
     .tasksSubheader h3.subHeader {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
