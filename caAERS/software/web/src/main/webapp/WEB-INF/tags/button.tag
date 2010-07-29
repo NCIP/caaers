@@ -15,6 +15,10 @@
 <%@ attribute name="type" required="false" %>
 <%@ attribute name="disabled" required="false" %>
 
+<c:if test="${fn:toLowerCase(icon) == 'x' && empty hoverTitle}">
+    <c:set var="hoverTitle" value="Delete..." />
+</c:if>
+
 <<c:choose><c:when test="${markupWithTag=='a'}">a</c:when><c:otherwise>button</c:otherwise></c:choose>
 	title="${hoverTitle}" class="omnipotent-button ${color}<c:if test="${not empty size}"> ${size}</c:if><c:if test="${not empty cssClass}"> ${cssClass}</c:if>"
 	<c:if test="${not empty type && markupWithTag!='a'}">

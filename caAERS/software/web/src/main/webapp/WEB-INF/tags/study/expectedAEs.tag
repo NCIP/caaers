@@ -44,7 +44,7 @@
                        <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
                            <study:oneExpectedAE isOtherSpecify="${studyTerm.otherRequired}" index="${status.index}" studyTerm="${studyTerm}"/>
                            <td style="text-align:center; padding-left:20px; padding-right:20px;" width="50px">
-                                <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})" hoverTitle="Delete an expected AE"/>
+                                <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
                            </td>
                        </tr>
                    </c:forEach>
