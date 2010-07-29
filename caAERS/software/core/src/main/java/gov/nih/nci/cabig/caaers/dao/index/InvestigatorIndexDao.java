@@ -24,7 +24,7 @@ public class InvestigatorIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into investigator_index (id,login_id,investigator_id,role_code) "
-                + "values (seq_inv_index_id.NEXTVAL,?,?,?)";
+                + "values (seq_investigator_index_id.NEXTVAL,?,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;

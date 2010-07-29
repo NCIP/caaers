@@ -24,7 +24,7 @@ public class ResearchStaffIndexDao extends AbstractIndexDao {
     	}
     	if(dataBase.equals(ORACLE_DB))
     		sql = "insert into researchstaff_index (id,login_id,researchstaff_id,role_code) "
-                + "values (seq_rs_index_id.NEXTVAL,?,?,?)";
+                + "values (seq_researchstaff_index_id.NEXTVAL,?,?,?)";
     	
     	
 		BatchPreparedStatementSetter setter = null;
