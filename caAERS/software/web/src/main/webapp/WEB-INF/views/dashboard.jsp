@@ -48,7 +48,7 @@
                     </div>
                 </chrome:boxIPhone>
 
-                <chrome:boxIPhone title="Quick Links" style="width:400px;">
+                <%--<chrome:boxIPhone title="Quick Links" style="width:400px;">
                     <div style="padding-left:2px; padding-right:2px;">
                     <table width="100%" cellpadding="10" cellspacing="0" border="0">
                         <tr>
@@ -81,7 +81,7 @@
                         </tr>
                     </table>
                     </div>
-                </chrome:boxIPhone>
+                </chrome:boxIPhone>--%>
 
         <td valign="top">
             <chrome:boxIPhone title="Expedited Reports" style="width:500px">

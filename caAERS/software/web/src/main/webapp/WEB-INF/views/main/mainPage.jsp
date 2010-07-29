@@ -23,56 +23,74 @@
 <c:set var="_regularTasksVisible" value="${false}" />
 <c:set var="_regularTasks">
     <jsp:attribute name="value">
-        <table id="test" class="autoclear" width="100%" border="0">
-        <tr class="results" >
-                <c:forEach begin="0" end="3" items="${taskgroups}" var="taskGroup" varStatus="index">
-                    <c:if test="${index.index != 2}">
-                        <td align="left" valign="top" width="33%">
-                                <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
-                                    <c:set var="_regularTasksVisible" value="${true}" />
-                                    <ul><chrome:division title="${taskGroup.displayName}">
-                                        <c:forEach items="${taskGroup.taskList}" var="task">
-                                            <c:if test="${test}"></c:if>
-                                            <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                                                <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                            </csmauthz:accesscontrol>
+        <div class="tasksSubheader">
+            <table width='100%' cellpadding="0" cellspacing="0">
+                <tr><td><h3 class='subHeader'>REGULAR TASKS</h3></tr>
+            </table>
+        </div>
 
-                                        </c:forEach>
-                                    </chrome:division>
-                                    </ul>
-                                </csmauthz:accesscontrol>
-                        </td>
+        <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <c:forEach begin="0" end="3" items="${taskgroups}" var="taskGroup" varStatus="index">
+                    <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
+                    <c:if test="${index.index != 2}">
+                    <c:set var="_regularTasksVisible" value="${true}" />
+                    <td align="center" valign="top">
+
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr><td colspan="2" headers="35px" class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">${taskGroup.displayName}</span></td></tr>
+
+                        <c:forEach items="${taskGroup.taskList}" var="task">
+                            <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                            <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png" />"></td><td width="100%" class="taskItem" style="margin-right:1px;"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
+                            </csmauthz:accesscontrol>
+                        </c:forEach>
+
+                        </table>
+                    </td>
                     </c:if>
+                    </csmauthz:accesscontrol>
                 </c:forEach>
-        </tr>
-    </table>
+            </tr>
+            </table>
+        </div>
     </jsp:attribute>
 </c:set>
 
 <c:set var="_adminTasksVisible" value="${false}" />
 <c:set var="_adminTasks">
     <jsp:attribute name="value">
-        <table id="test" width="100%" border="0">
-            <tr class="results">
-                    <c:forEach begin="4" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
-                        <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
-                        <c:set var="_adminTasksVisible" value="${true}" />
-                        <td align="left"  valign="top" width="33%">
-                            <ul><chrome:division title="${taskGroup.displayName}">
-                                <c:forEach items="${taskGroup.taskList}" var="task">
-                                    <c:if test="${test}"></c:if>
-                                    <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                                        <li><a href="<c:url value="${task.url}"/>">${task.displayName}</a></li>
-                                    </csmauthz:accesscontrol>
-                                </c:forEach>
-                            </chrome:division>
-                            </ul>
-                        </td>
-                        <c:if test="${index.index % 3 == 0}"></tr><tr></c:if>
-                        </csmauthz:accesscontrol>
-                    </c:forEach>
+        <div class="tasksSubheader">
+            <table width='100%' cellpadding="0" cellspacing="0">
+                <tr><td><h3 class='subHeader'>Setup and Administration Tasks</h3></tr>
+            </table>
+        </div>
+
+        <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <c:forEach begin="4" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
+                    <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
+                    <c:set var="_adminTasksVisible" value="${true}" />
+                    <td align="center" valign="top">
+
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr><td colspan="3" headers="35px" class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">${taskGroup.displayName}</span></td></tr>
+
+                        <c:forEach items="${taskGroup.taskList}" var="task">
+                            <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                            <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png"/>"></td><td width="100%" class="taskItem"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
+                            </csmauthz:accesscontrol>
+                        </c:forEach>
+
+                        </table>
+                    </td>
+                    </csmauthz:accesscontrol>
+                </c:forEach>
             </tr>
-        </table>
+            </table>
+        </div>
     </jsp:attribute>
 </c:set>
 
@@ -85,81 +103,17 @@
 
 <chrome:boxIPhone title="Quick Links" style="width:100%;">
 <jsp:body>
-    <div class="tasksSubheader">
-        <table width='100%' cellpadding="0" cellspacing="0">
-            <tr><td><h3 class='subHeader'>REGULAR TASKS</h3></tr>
-        </table>
-    </div>
 
-    <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <c:forEach begin="0" end="3" items="${taskgroups}" var="taskGroup" varStatus="index">
-                <c:if test="${index.index != 2}">
-                <td align="center" valign="top">
+    <c:if test="${_regularTasksVisible}">
+        ${_regularTasks}
+    </c:if>
 
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                    <tr><td colspan="2" headers="35px" class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">${taskGroup.displayName}</span></td></tr>
-                    
-                    <c:forEach items="${taskGroup.taskList}" var="task">
-                        <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png" />"></td><td width="100%" class="taskItem" style="margin-right:1px;"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
-                    </c:forEach>
-
-                    </table>
-                </td>
-                </c:if>
-            </c:forEach>
-        </tr>
-        </table>
-    </div>
-
-    <div class="tasksSubheader">
-        <table width='100%' cellpadding="0" cellspacing="0">
-            <tr><td><h3 class='subHeader'>Setup and Administration Tasks</h3></tr>
-        </table>
-    </div>
-
-    <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <c:forEach begin="4" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
-                <td align="center" valign="top">
-
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                    <tr><td colspan="3" headers="35px" class="tasksSubSubheader" align="center"><span class="tasksSubSubheaderText">${taskGroup.displayName}</span></td></tr>
-
-                    <c:forEach items="${taskGroup.taskList}" var="task">
-                        <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png"/>"></td><td width="100%" class="taskItem"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
-                    </c:forEach>
-
-                    </table>
-                </td>
-            </c:forEach>
-        </tr>
-        </table>
-    </div>
+    <c:if test="${_adminTasksVisible}">
+        ${_adminTasks}
+    </c:if>
 
 </jsp:body>
 </chrome:boxIPhone>
-
-
-
-<chrome:box title="Welcome">
-
-<c:if test="${_regularTasksVisible}">
-<chrome:division title="Regular Tasks">
-    ${_regularTasks}
-</chrome:division>
-</c:if>
-
-<c:if test="${_adminTasksVisible}">
-<chrome:division title="Setup and Administration Tasks">
-    ${_adminTasks}
-</chrome:division>
-</c:if>
-
-</chrome:box>
-
 
 <style>
 
