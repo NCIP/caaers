@@ -286,23 +286,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		assertEquals(1, returnedUsers.size());
 		assertSame(users.get(0), returnedUsers.get(0));
 	}
-	
 
-	public void testNextTransitionWithSystemAdmin(){
-		ProcessInstance pInstance = new ProcessInstance();
-		pInstance.setProcessDefinition(new ProcessDefinition());
-		pInstance.getProcessDefinition().setName("test Definition");
-		WorkflowConfig wConfig = new WorkflowConfig();
-		List<Transition> transitionList = new ArrayList<Transition>();
-		transitionList.add(new Transition("t1"));
-		transitionList.add(new Transition("t2"));
-		expect(template.findProcessInstance(new Long(1))).andReturn(pInstance);
-		expect(wfConfigDao.getByWorkflowDefinitionName("test Definition")).andReturn(wConfig);
-		expect(possibleTransitionsResolver.fetchNextTransitions(wConfig, pInstance)).andReturn(transitionList);
-		replayMocks();
-		List<Transition> transitions = wfService.nextTransitions(1, "SYSTEM_ADMIN");
-		verifyMocks();
-		assertEquals("Incorrect Number of transitions", 2, transitions.size());
-	}
+   
 	
 }

@@ -64,44 +64,6 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 	}
 
-    //checks whether the transition tokens are properly executed. 
-	public void testNextTransitions() {
-		Integer id = null;
-		String loginId = "SYSTEM_ADMIN";
-		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
-			Long l = pInstance.getId();
-			id = new Integer(l.intValue());
-		}
-		interruptSession();
-		{
-			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
-			assertNotNull(nextTransitions);
-			assertFalse(nextTransitions.isEmpty());
-			assertEquals(1, nextTransitions.size());
-			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
-			assertEquals("Approved", nextTransitions.get(0).getTo().getName());
-		}
-	}
-
-    //identifies that the base workflow is correctly deployed and retrieves the transitions names correctly
-	public void testNextTransitionNames() {
-		Integer id = null;
-		String loginId = "SYSTEM_ADMIN";
-		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER,variables);
-			Long l = pInstance.getId();
-			id = new Integer(l.intValue());
-		}
-		interruptSession();
-		{
-			List<String> nextTransitions = wfService.nextTransitionNames(id, loginId);
-			assertNotNull(nextTransitions);
-			assertFalse(nextTransitions.isEmpty());
-			assertEquals(1, nextTransitions.size());
-			assertEquals("Approve Reporting Period", nextTransitions.get(0));
-		}
-	}
 
     //makes sure that the CRA login see only the transitions designated to him.
 	public void testNextTransitions_SiteCRA() {
@@ -136,42 +98,14 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
+            System.out.println(nextTransitions);
 			assertTrue(nextTransitions.isEmpty());
 		}
 	}
 
-	//test the propogation of the workfow flow via a specified token.
-	public void testAdvanceWorkflow(){
-		String loginId = "SYSTEM_ADMIN";
-		Integer id = null;
-		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
-			Long l = pInstance.getId();
-			id = new Integer(l.intValue());
-		}
-		interruptSession();
-		String nextTransition = null;
-		{
-			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
-			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
-			assertEquals("Approved", nextTransitions.get(0).getTo().getName());
-			nextTransition = "Approve Reporting Period";
-		}
-		interruptSession();
-		{
-			ReviewStatus status = wfService.advanceWorkflow(id, nextTransition);
-			assertEquals(ReviewStatus.APPROVED, status);
-			List<TaskInstance> taskInstances = wfService.fetchTaskInstances("datacoordinator@abc.com");
-			assertNotNull(taskInstances);
-			assertTrue(taskInstances.isEmpty());
-			
-		}
-		
-		
-	}
 
     //when the workflow is terminated, makessure that the opent tasks are terminated properly. 
-	public void testCloseAllOpenTaskInstances() {
+	public void testAdvanceWorkflow_CloseAllOpenTaskInstances() {
 		Long id = null;
 		{
 			List<TaskInstance>tasks = wfService.fetchTaskInstances("bush@def.com");
