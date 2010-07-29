@@ -54,6 +54,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.mail.MailException;
 
 /**
  * The Facade Layer to CSM. 
@@ -497,10 +498,21 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public void createOrUpdateCSMUser(User user,String changeURL) {
     	if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
-    		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff((ResearchStaff)user, changeURL);
+    		try{
+    			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff((ResearchStaff)user, changeURL);
+    		}catch(MailException e){
+    			provisionResearchStaff((ResearchStaff)user);
+    			throw e;
+    		}
     		provisionResearchStaff((ResearchStaff)user);
+    		
     	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
-    		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator((Investigator)user, changeURL);
+    		try{
+    			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator((Investigator)user, changeURL);
+    		}catch(MailException e){
+    			provisionInvestigator((Investigator)user);
+    			throw e;
+    		}
     		provisionInvestigator((Investigator)user);
     	}
     }
@@ -511,8 +523,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param loginId - The loginId
      * @return
      */
-    @SuppressWarnings("unchecked")
-	public List<String> getAccessibleProtectionElements(String loginId) {
+    public List<String> getAccessibleProtectionElements(String loginId) {
 		List<String> pes = new ArrayList<String>();
     	try {
 			Set<ProtectionElementPrivilegeContext> contexts = getProtectionElementPrivilegeContextForUser(loginId);
@@ -870,7 +881,4 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public CSMUserRepositoryImpl getCsmUserRepository() {
 		return csmUserRepository;
 	}
-
-
-
 }
