@@ -150,7 +150,6 @@
             <ref bean="userTaskGroup"/>
             <ref bean="studyTaskGroup"/>
             <ref bean="participantTaskGroup"/>
-            <ref bean="personalTaskGroup"/>
             <ref bean="medraTaskGroup"/>
             <ref bean="organizationTaskGroup"/>
       </list>
