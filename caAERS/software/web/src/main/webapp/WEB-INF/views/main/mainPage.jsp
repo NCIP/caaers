@@ -150,6 +150,7 @@
     .subSubheader span.tasksSubSubheaderText {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
         font-size: 14px;
+        font-weight: bold;
         color: #fff;
         text-shadow: 0 -1px #4a4a4a;
         margin: 5px;
