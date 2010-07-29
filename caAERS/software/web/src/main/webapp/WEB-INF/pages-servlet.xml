@@ -240,8 +240,8 @@
       <list>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Investigator Users" p:linkName="createInvestigatorController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Research Staff Users" p:linkName="createResearchStaffController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Research Staff Users" p:linkName="searchResearchStaffController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Investigator" p:linkName="searchInvestigatorController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Research Staff Users" p:linkName="searchResearchStaffController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Investigator" p:linkName="searchInvestigatorController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
       </list>
     </property>
