@@ -90,7 +90,7 @@
                             <tr class="agentSpecific-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="AGENT_TERM_-${status.index}" bgcolor="white">
                                 <admin:oneAgentSpecificAE isOtherSpecify="${agentTerm.otherRequired}" index="${status.index}" term="${agentTerm}"/>
                                 <td style="text-align:center;" width="50px">
-                                     <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
+                                     <tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
                                 </td>
                             </tr>
                         </c:if>

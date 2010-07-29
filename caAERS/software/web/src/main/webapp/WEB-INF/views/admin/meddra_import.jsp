@@ -171,7 +171,7 @@ var t= 0 ;
     		<c:forEach items="${meddraVersions}" var="meddraVersion">
 			<tr id="${meddraVersion.name}">
 				<td><c:out value="${meddraVersion.name}"/></td>
-				<td><tags:button id="${meddraVersion.id}" type="button" value="Delete" size="small" color="blue" icon="x" onclick="deleteMeddra('${meddraVersion.id}', '${meddraVersion.name}');"/><br><br></td>
+				<td><tags:button id="${meddraVersion.id}" type="button" value="Delete" size="small" color="red" icon="x" onclick="deleteMeddra('${meddraVersion.id}', '${meddraVersion.name}');"/><br><br></td>
 			</c:forEach>
 			<tr>
 				<td>
