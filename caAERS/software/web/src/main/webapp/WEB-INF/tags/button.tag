@@ -16,7 +16,7 @@
 <%@ attribute name="disabled" required="false" %>
 
 <<c:choose><c:when test="${markupWithTag=='a'}">a</c:when><c:otherwise>button</c:otherwise></c:choose>
-	class="omnipotent-button ${color}<c:if test="${not empty size}"> ${size}</c:if><c:if test="${not empty cssClass}"> ${cssClass}</c:if>"
+	title="${hoverTitle}" class="omnipotent-button ${color}<c:if test="${not empty size}"> ${size}</c:if><c:if test="${not empty cssClass}"> ${cssClass}</c:if>"
 	<c:if test="${not empty type && markupWithTag!='a'}">
 		type="${type}"
 	</c:if>
@@ -165,7 +165,7 @@
 					</c:choose>
 				</c:if>
 				
-				<span title="${hoverTitle}">${value}</span>
+				${value}
 				
 				<c:if test="${fn:toLowerCase(icon) == 'save &amp; continue' || fn:toLowerCase(icon) =='save & continue'}">
 					<c:choose>
