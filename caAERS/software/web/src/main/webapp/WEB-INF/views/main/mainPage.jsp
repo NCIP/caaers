@@ -120,6 +120,7 @@
     td.taskItem {
         height: 37px;
         background-image: url(../images/iphone2/taskItemImage.jpg);
+        text-align:left;
     }
 
     td.taskItemImage {
