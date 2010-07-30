@@ -115,7 +115,7 @@
     <tags:tabFields tab="${tab}"/>
 
     <div class="autoclear" id="criteria-div">
-    	<chrome:box title="Select study" id="study-entry" autopad="true" cssClass="pairedLong">
+    	<chrome:box title="Select study and subject" id="study-entry" autopad="true" cssClass="pairedLong">
             <p><tags:instructions code="instruction_ae_select_study"/></p>
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
@@ -125,9 +125,6 @@
             <tags:errors path="study"/>
             <div id="study-choices" class="autocomplete"></div>
             <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
-        </chrome:box>
-        
-        <chrome:box title="Select subject" id="participant-entry" autopad="true" cssClass="pairedLong">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
             <tags:requiredIndicator/>
