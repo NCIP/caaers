@@ -37,14 +37,10 @@ function buildTable(form) {
 <div class="workflow-tabs2">
  <ul id="" class="tabs autoclear">
     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:CREATE">
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="createOrganization">Create Organization</a>
-    </div></li>
+    <li id="thirdlevelnav" class="tab"><div><a href="createOrganization">Create Organization</a></div></li>
     </csmauthz:accesscontrol>
-     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:READ">
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="searchOrganization">Search Organization</a>
-    </div></li>
+    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:READ">
+    <li id="thirdlevelnav" class="tab selected"><div><a href="searchOrganization">Search Organization</a></div></li>
     </csmauthz:accesscontrol>
  </ul>
 	<tags:pageHelp propertyKey="searchOrganization" />
