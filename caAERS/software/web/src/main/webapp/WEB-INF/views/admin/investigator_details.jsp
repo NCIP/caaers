@@ -229,7 +229,7 @@ function toggelUserName(checkBoxChecked) {
 <csmauthz:accesscontrol var="siteInvestigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteInvestigatorRole:UPDATE"/>
 <csmauthz:accesscontrol var="investigatorCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
 <csmauthz:accesscontrol var="investigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE"/>
-<c:set var="createUpdateAllowed" value="${investigatorCreate || investigatorUpdate}"></c:set>
+<c:set var="createUpdateAllowed" value="${investigatorCreate and investigatorUpdate}"></c:set>
 
 <div id="display_remote_inv" style="display:none;text-align:left" >
 	<chrome:box title="Please select a Investigator to be saved in caAERS" id="popupId">
