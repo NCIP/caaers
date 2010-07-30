@@ -97,14 +97,18 @@
 
   <div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
+      <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:CREATE">
    		 <li id="thirdlevelnav" class="tab selected">
 	   		 	<div>
-	       		 <a href="createOrganization">Create/Edit Organization</a>
+	       		    <a href="createOrganization">Create/Edit Organization</a>
 	    		</div>
     	</li>
+      </csmauthz:accesscontrol>
+      <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:READ">
 	    <li id="thirdlevelnav" class="tab"><div>
 	        <a href="searchOrganization">Search Organization</a>
 	    </div></li>
+      </csmauthz:accesscontrol>
   </ul>
     </div>      
 
@@ -122,7 +126,7 @@
 		    <input type="hidden" name="_finish" value="true"/>
 		
     		<c:forEach  items="${fieldGroups.organization.fields}" var="field">
-            	<tags:renderRow field="${field}"/>
+            	<tags:renderRow field="${field}" readOnly="${!_hasUpdateRights}"/>
             </c:forEach>
             
             <c:if test="${(command.id gt 0) }">
