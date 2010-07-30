@@ -121,42 +121,51 @@
         height: 37px;
         background-image: url(../images/iphone2/taskItemImage.jpg);
         text-align:left;
+        border-right: solid 1px #c8c8c8;
     }
+
 
     td.taskItemImage {
         height: 37px;
         background-image: url(../images/iphone2/quick-links_up.jpg);
-        padding-left:3px;
+        padding-top: 2px;
+        padding-left:10px;
         padding-right:10px;
     }
 
     td.taskItem a {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
-        font-size: 11px;
+        font-size: 12px;
         color: #094c86;
         text-shadow: 0 1px white;
-        font-weight: bold;
         text-decoration: none;
+        padding-right:10px;
+
+    }
+
+    td.taskItem a:hover {
+        color: #1878cc;
+        text-decoration: none;
+
     }
 
     .tasksSubheader h3.subHeader {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
         font-size: 14px;
-        font-weight: bold;
-        color: #094c86;
+        color: #1265ae;
         text-shadow: 0 1px white;
         text-transform: uppercase;
+        height: 27px;
     }
 
     .subSubheader span.tasksSubSubheaderText {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
         font-size: 14px;
-        font-weight: bold;
         color: #fff;
         text-shadow: 0 -1px #4a4a4a;
         margin: 5px;
     }
-    
+
     .reportActivity { background-color: #99cc00; color: #f00; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
     .pastDue { background-color: #ff6666; color: #ff6666; border:0px solid #000; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
     .calendar tbody .rowhilite td.pastDue { background: #ff6666; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
@@ -180,7 +189,7 @@
     .boxIPhone .header .bg-R { background: url(../images/iphone2/box_header_bg_r.png) no-repeat top right; }
     .boxIPhone .subheader {background: url(../images/iphone2/box_subheader_bg.png) repeat-x; margin-left:2px; margin-right:2px; }
     .boxIPhone .tasksSubheader {background: url(../images/iphone2/secondary-header_bg2.jpg) repeat-x;  margin-left:2px; margin-right:2px; margin-bottom:0px; margin-top:0px; height:32px;}
-    .boxIPhone .tasksSubSubheader {background: url(../images/iphone2/tertiary-header_bg.jpg) no-repeat; margin-left:2px; margin-right:2px; height:35px;}
+    .boxIPhone .tasksSubSubheader {background: url(../images/iphone2/tertiary-header_bg.jpg) no-repeat; margin-left:2px; margin-right:2px; height:35px;border-right: solid 1px #303030;}
 
     .b-T {}
     .b-L { background: url(../images/iphone2/box_l.png) repeat-y left;}
@@ -190,7 +199,7 @@
     .b-TR {}
     .b-BL { background: url(../images/iphone2/box_bl.png) no-repeat bottom left; }
     .b-BR { background: url(../images/iphone2/box_br.png) no-repeat bottom right; }
-    .boxIPhone .header h2 { text-align: left; padding: 7px 0 4px 20px; font: 20px Arial, Helvetica, sans-serif; color: #fff; text-shadow: 0 -2px #064d8c; }
+    .boxIPhone .header h2 { text-align: left; padding: 4px 0 0px 20px; font: 20px Lucida Sans Unicode, Lucida Grande, sans-serif; color: #fff; text-shadow: 0 -2px #064d8c; }
 
     .boxIPhone .interior {
         margin: 0px 0px 0px 0px;
@@ -209,11 +218,11 @@
 
     .boxIPhone h3 {
         font: bold 15px Arial, Helvetica, sans-serif;
-        color: #ea4b4b;
+        color: #2774b8;
         text-shadow: 0 -1px white;
-        padding-top: 8px;
+        padding-top: 5px;
         padding-right: 0px;
-        padding-bottom: 7px;
+        padding-bottom: 0px;
         padding-left: 20px;
     }
 
@@ -329,7 +338,7 @@
         color : blue;
         text-decoration: underline;
     }
-    
+
 </style>
 
 </body>
