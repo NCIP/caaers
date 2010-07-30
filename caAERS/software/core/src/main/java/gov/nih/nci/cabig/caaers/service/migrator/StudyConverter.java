@@ -1125,7 +1125,7 @@ public class StudyConverter {
                 ct.setDiseaseTerm(new DiseaseTermType());
                 ct.getDiseaseTerm().setTerm(ctepD.getDiseaseTerm().getTerm());
                 // ct.getDiseaseTerm().setMeddraCode(ctepD.getDiseaseTerm().getMeddraCode());
-                ct.setLeadDisease(ctepD.getLeadDisease());
+                ct.setLeadDisease(ctepD.getLeadDisease() == null ? false : ctepD.getLeadDisease());
 
                 cteps.getCtepStudyDisease().add(ct);
             }
