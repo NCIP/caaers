@@ -202,7 +202,7 @@
       <list>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import Subject" p:linkName="importController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Subject" p:linkName="createParticipantController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Subject" p:linkName="searchParticipantController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Subject" p:linkName="searchParticipantController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Assign Subject to Study" p:linkName="assignParticipantController"/>
       </list>
     </property>
@@ -230,7 +230,7 @@
     <property name="taskList">
       <list>
 	        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Sites" p:linkName="createOrganizationController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Sites" p:linkName="searchOrganizationController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Sites" p:linkName="searchOrganizationController"/>
       </list>
     </property>
   </bean>
