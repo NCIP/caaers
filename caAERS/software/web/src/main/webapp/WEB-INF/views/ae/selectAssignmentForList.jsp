@@ -110,13 +110,14 @@
     </script>
 </head>
 <body>
-<tags:instructions code="instruction_ae_assignment"/>
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
 
     <div class="autoclear" id="criteria-div">
     	<chrome:box title="Select study and subject" id="study-entry" autopad="true" cssClass="pairedLong">
-            <p><tags:instructions code="instruction_ae_select_study"/></p>
+
+            <p><tags:instructions code="instruction_ae_assignment"/></p>
+            <%--<p><tags:instructions code="instruction_ae_select_study"/></p>--%>
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
             <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
@@ -125,7 +126,9 @@
             <tags:errors path="study"/>
             <div id="study-choices" class="autocomplete"></div>
             <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
-            <p><tags:instructions code="instruction_ae_select_subject"/></p>
+
+            <p>
+            <%--<p><tags:instructions code="instruction_ae_select_subject"/></p>--%>
             <form:hidden path="participant"/>
             <tags:requiredIndicator/>
             <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
