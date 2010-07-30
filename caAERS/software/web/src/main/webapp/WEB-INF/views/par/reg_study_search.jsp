@@ -99,7 +99,7 @@
 <!-- TOP NAVIGATION STARTS HERE -->
 <p id="instructions">
 
-<div class="instructions">
+<div class="row">
     <div class="summarylabel"><b>Subject</b></div>
     <div class="summaryvalue">${command.participant.fullName}</div>
 </div>
