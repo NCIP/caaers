@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 
 import java.sql.Timestamp;
@@ -22,9 +23,12 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 	CaaersSecurityFacadeImpl caaersSecurityFacadeImpl;
 	ResearchStaffDao researchStaffDao;
 	StudyRepository studyRepository;
-	
+	EventFactory eventFactory;
+
 	protected void setUp() throws Exception {
 		super.setUp();
+        eventFactory = registerMockFor(EventFactory.class);
+
 		repository = new ResearchStaffRepository();
 		caaersSecurityFacadeImpl = registerMockFor(CaaersSecurityFacadeImpl.class);
 		studyRepository = registerMockFor(StudyRepository.class);
@@ -33,6 +37,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		repository.setResearchStaffDao(researchStaffDao);
 		repository.setAuthenticationMode("local");
 		repository.setStudyRepository(studyRepository);
+        repository.setEventFactory(eventFactory);
 	}
 
 	public void testSave() throws Exception {

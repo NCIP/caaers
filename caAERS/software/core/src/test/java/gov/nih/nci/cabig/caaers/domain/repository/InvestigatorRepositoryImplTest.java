@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 /**
  * This is the repository class for managing investigators
@@ -16,14 +17,18 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 	InvestigatorRepositoryImpl repositoryImpl;
 	InvestigatorDao investigatorDao;
 	CaaersSecurityFacadeImpl caaersSecurityFacadeImpl;
+    EventFactory eventFactory;
 	protected void setUp() throws Exception {
 		super.setUp();
-		repositoryImpl = new InvestigatorRepositoryImpl();
+		eventFactory = registerMockFor(EventFactory.class);
+        repositoryImpl = new InvestigatorRepositoryImpl();
 		investigatorDao = registerDaoMockFor(InvestigatorDao.class);
 		repositoryImpl.setInvestigatorDao(investigatorDao);
 		caaersSecurityFacadeImpl = registerMockFor(CaaersSecurityFacadeImpl.class);
 		repositoryImpl.setCaaersSecurityFacade(caaersSecurityFacadeImpl);
+        repositoryImpl.setEventFactory(eventFactory);
 		repositoryImpl.setAuthenticationMode("local");
+
 	}
 
 	public void testSave() {

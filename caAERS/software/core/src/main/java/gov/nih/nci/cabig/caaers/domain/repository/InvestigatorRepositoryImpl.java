@@ -6,11 +6,8 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.util.StringUtilities;
@@ -40,6 +37,8 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private String authenticationMode;
 	private OrganizationDao organizationDao;
 	private OrganizationRepository organizationRepository;
+    private EventFactory eventFactory;
+        
 	
 	private static final Log logger = LogFactory.getLog(InvestigatorRepositoryImpl.class); 
 	 
@@ -210,6 +209,9 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     			}
         	}
     	}
+
+        eventFactory.publishEntityModifiedEvent(new LocalInvestigator(), false);
+
 	}
 	
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query){
@@ -363,4 +365,12 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			CaaersSecurityFacadeImpl caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

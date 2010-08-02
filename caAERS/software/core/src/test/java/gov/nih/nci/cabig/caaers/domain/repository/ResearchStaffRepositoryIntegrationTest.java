@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -55,6 +56,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         researchStaffRepository = (ResearchStaffRepository) getApplicationContext().getBean("researchStaffRepository");
         csmUserRepository = (CSMUserRepositoryImpl) getApplicationContext().getBean("csmUserRepository");
         organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+       
         
         //load the default organization
         organization = organizationDao.getById(-1004);

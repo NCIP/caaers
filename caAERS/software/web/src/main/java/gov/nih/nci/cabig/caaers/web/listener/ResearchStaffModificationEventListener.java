@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.event.ResearchStaffModificationEvent;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -22,7 +23,10 @@ public class ResearchStaffModificationEventListener extends AbstractEventListene
     public void preProcess(ApplicationEvent event){
     	ResearchStaff rs = (ResearchStaff)event.getSource();
     	String userName = rs.getLoginId();
-    	caaersSecurityFacade.clearUserCache(userName);
+        if(StringUtils.isNotBlank(userName)){
+           caaersSecurityFacade.clearUserCache(userName);
+        }
+
     }
     
 	

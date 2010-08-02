@@ -7,12 +7,8 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
-import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -21,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,6 +45,7 @@ public class ResearchStaffRepository {
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
     private StudyRepository studyRepository;
     private boolean coppaModeForAutoCompleters;
+    private EventFactory eventFactory;
     
 	public List<ResearchStaff> getAll() {
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
@@ -253,12 +251,14 @@ public class ResearchStaffRepository {
         }catch(Exception e){
         	logger.warn("Error searching ResearchStaff from PO -- " + e.getMessage());
         }
-        if(remoteResearchStaffs == null){
-        	return researchStaffDao.getSiteResearchStaff(query);
-        }else{
-        	saveRemoteResearchStaff(remoteResearchStaffs);
+
+        //save remote research staff and refresh index.
+        if(CollectionUtils.isNotEmpty(remoteResearchStaffs)){
+            saveRemoteResearchStaff(remoteResearchStaffs);
+
         }
-    	//return (siteResearchStaffs);
+
+        
         return researchStaffDao.getSiteResearchStaff(query);
     }
     
@@ -327,6 +327,9 @@ public class ResearchStaffRepository {
 				}
         	}
     	}
+
+        //publish event
+        eventFactory.publishEntityModifiedEvent(new LocalResearchStaff(), false);
     }
     
 /* MERGING the search results in java, would not allow us to security filer the results. Hence commented the below method and introduced saveRemoteResearchStaff method.
@@ -516,4 +519,12 @@ public class ResearchStaffRepository {
 			CaaersSecurityFacadeImpl caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

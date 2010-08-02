@@ -3,8 +3,13 @@ package gov.nih.nci.cabig.caaers.event;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationListener;
+
+import java.util.Collection;
 
 /**
  * @author: Biju Joseph
@@ -12,8 +17,14 @@ import org.springframework.context.ApplicationContextAware;
 public class EventFactory implements ApplicationContextAware{
     
     private ApplicationContext ctx;
-
+    
+    private static final Log logger = LogFactory.getLog(EventFactory.class);
+    
     public  void publishEntityModifiedEvent(final DomainObject entity){
+        publishEntityModifiedEvent(entity, true);
+    }
+
+    public void publishEntityModifiedEvent(final DomainObject entity, boolean async){
 
         EntityModificationEvent event = null;
         
@@ -31,13 +42,25 @@ public class EventFactory implements ApplicationContextAware{
            event = new SubjectModificationEvent(SecurityUtils.getAuthentication(), entity);
         }
 
-
-        //publish the event
-        if(event != null){
-            ctx.publishEvent(event);
+        if(async){
+            publishAsync(event);
+        } else{
+           publishSynch(event);
         }
 
 
+    }
+
+    private void publishAsync(EntityModificationEvent event){
+        if(event != null) ctx.publishEvent(event);
+    }
+
+    private void publishSynch(EntityModificationEvent event){
+       if (event == null || ctx == null) return;
+       Collection listenerBeans = ctx.getBeansOfType(ApplicationListener.class, true, false).values();
+       for(Object listenerObj : listenerBeans){
+           ((ApplicationListener)listenerObj).onApplicationEvent(event);
+       }
     }
 
     public void setApplicationContext(ApplicationContext ctx){

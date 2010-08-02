@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.event.InvestigatorModificationEvent;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -22,7 +23,10 @@ public class InvestigatorModificationEventListener extends AbstractEventListener
     public void preProcess(ApplicationEvent event){
     	Investigator inv = (Investigator)event.getSource();
     	String userName = inv.getLoginId();
-    	caaersSecurityFacade.clearUserCache(userName);
+        if(StringUtils.isNotBlank(userName)){
+            caaersSecurityFacade.clearUserCache(userName);
+        }
+
     }
     
 	

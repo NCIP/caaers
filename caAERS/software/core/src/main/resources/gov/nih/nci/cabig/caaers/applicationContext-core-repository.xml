@@ -65,6 +65,7 @@
         <property name="researchStaffConverterDao" ref="researchStaffConverterDao"/>
         <property name="studyRepository" ref="studyRepository"/>
         <property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
+        <property name="eventFactory" ref="eventFactory"  />
     </bean>
 
 	<bean id="investigatorRepository" class="gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl">
@@ -75,6 +76,7 @@
 		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
 		<property name="organizationDao" ref="organizationDao" />
 		<property name="organizationRepository" ref="organizationRepository" />
+         <property name="eventFactory" ref="eventFactory"  />
 	</bean>
 
     <bean id="reportFactory" class="gov.nih.nci.cabig.caaers.domain.factory.ReportFactory">
