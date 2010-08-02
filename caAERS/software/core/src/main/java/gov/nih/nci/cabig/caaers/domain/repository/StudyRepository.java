@@ -78,6 +78,7 @@ public class StudyRepository {
      * @param text
      * @return
      */
+    @Transactional(readOnly = false)
     public List<Study> search(StudyQuery query,String type, String text){
       return search(query, type, text);
     }
@@ -90,6 +91,7 @@ public class StudyRepository {
      * @param searchInCOPPA
      * @return
      */
+    @Transactional(readOnly = false)
     public List<Study> search(StudyQuery query,String type, String text, boolean searchInCOPPA){
         if(searchInCOPPA) searchAndSaveRemoteStudies(type,text);
         return (List<Study>)studyDao.search(query);
@@ -102,7 +104,6 @@ public class StudyRepository {
      * @param text
      * @return
      */
-    @Transactional(readOnly = false)
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text){
         return this.search(query, type, text, false);
     }
@@ -124,7 +125,8 @@ public class StudyRepository {
     	List<Object[]> objectArray = (List<Object[]>) studyDao.search(query);
         return objectArray;
     }
-
+    
+    @Transactional(readOnly = false)
     private void searchAndSaveRemoteStudies(String type, String text) {
         try {
 
@@ -316,6 +318,7 @@ public class StudyRepository {
      * This method iterates the IND list in RemoteStudy and saves it in DB.
      * @param remoteStudy
      */
+    @Transactional(readOnly = false)
     protected void verifyAndSaveIND(RemoteStudy remoteStudy){
     	Organization dbOrg = null;
     	Investigator dbInv = null;
