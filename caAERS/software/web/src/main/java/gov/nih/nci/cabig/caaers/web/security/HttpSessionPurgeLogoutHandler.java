@@ -43,6 +43,7 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler {
                     session.setAttribute(aName , null);
                     session.removeAttribute(aName);
                 }
+			    session.invalidate();
 		    }
 
         }catch(Exception e){
