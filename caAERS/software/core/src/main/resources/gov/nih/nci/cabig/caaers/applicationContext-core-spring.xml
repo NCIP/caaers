@@ -72,4 +72,6 @@
     <property name="collectionClass" value="java.util.concurrent.CopyOnWriteArraySet" />
   </bean>
     
+  <bean id="eventFactory" class="gov.nih.nci.cabig.caaers.event.EventFactory" />  
+    
 </beans>
