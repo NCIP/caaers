@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.cas.CasAuthenticationToken;
 import org.apache.log4j.Logger;
 
 import edu.duke.cabig.c3pr.esb.DelegatedCredential;
@@ -28,14 +27,9 @@ public class SecurityContextCredentialProvider implements DelegatedCredentialPro
         DelegatedCredential cred = null;
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication auth = context.getAuthentication();
-
-        if (auth instanceof CasAuthenticationToken) {
-            CasAuthenticationToken token = (CasAuthenticationToken) auth;
-            WebSSOUser user = (WebSSOUser) token.getUserDetails();
-            cred = new DelegatedCredentialImpl(user.getGridCredential(), user.getDelegatedEPR());
-            log.info("Providing valid credential for user");
-        } else log.warn("Cannot provide valid credential when running in local mode.");
-
+        WebSSOUser user = (WebSSOUser) auth.getPrincipal();
+        cred = new DelegatedCredentialImpl(user.getGridCredential(), user.getDelegatedEPR());
+        log.info("Providing valid credential for user");
         return cred;
     }
 }
