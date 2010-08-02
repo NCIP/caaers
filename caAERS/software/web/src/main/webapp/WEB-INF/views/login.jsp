@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
+<jsp:useBean id="_today" class="java.util.Date" />
 <html>
     <head>
         <title>Enter caAERS</title>
@@ -208,7 +209,7 @@
         <div id="all-login">
             <div class="left">
                 <img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in</h2>
-                <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>'>
+                <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>?rand=${_today.time}'>
                     <c:if test="${not empty param.login_error}">
                         <p class="errors">
                              <img src="/caaers/images/error-yellow.png" style="margin-right:10px">${sessionScope['ACEGI_SECURITY_LAST_EXCEPTION'].message}
@@ -235,7 +236,7 @@
                         </div>
                     </div>            
                     <div class="forgot">
-                        <a href='<c:url value="/public/user/resetPassword" />'>Forgot Password?</a>
+                        <a href='<c:url value="/public/user/resetPassword" />?rand=${_today.time}'>Forgot Password?</a>
                     </div>
                     <div class="right">
                         <input type="image" src="/caaers/images/blue/power-btn-up.jpg" value="Log in" alt="Log in" height="250px" width="250px" id="power_btn" onMouseOver="return changeImage()" onMouseOut="return changeImageBack()" onMouseDown="return handleMDown()" onMouseUp="return handleMUp()"/><h2>Enter</h2>
