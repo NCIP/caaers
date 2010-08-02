@@ -54,7 +54,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     private OrganizationDao organizationDao;
     private CSMUserRepository csmUserRepository;
     private InvestigatorRepository investigatorRepository;
-    
+
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
     }
