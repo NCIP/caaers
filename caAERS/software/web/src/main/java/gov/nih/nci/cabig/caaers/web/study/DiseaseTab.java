@@ -33,7 +33,7 @@ public class DiseaseTab extends StudyTab {
     private DiseaseTermDao diseaseTermDao;
     private LowLevelTermDao lowLevelTermDao;
     private ConditionDao conditionDao;
-    private HashMap<String, Condition> conditionMap;
+    private HashMap<String, Condition> conditionMap = new HashMap<String, Condition>();
     
     public DiseaseTab() {
         super("Disease", "Disease", "study/study_diseases");
@@ -116,7 +116,6 @@ public class DiseaseTab extends StudyTab {
         if (study.getDiseaseTerminology() == null || study.getDiseaseTerminology().getDiseaseCodeTerm() == null) return refdata;
 
         // this will hold the Study Conditions' IDs as keys
-        conditionMap = new HashMap<String, Condition>();
         for (StudyCondition studyCondition : study.getStudyConditions()) {
         	if(studyCondition.isRetired()) continue;
             conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
