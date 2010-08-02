@@ -14,6 +14,6 @@ public class InvestigatorStatusDisplayCell extends AbstractCell {
         Investigator investigator = (Investigator) model.getCurrentRowBean();
         String cellValue = column.getValueAsString();
 
-        if (investigator.getActive()) return "Active"; else return "Inactive";
+        if (investigator.isActive()) return "Active"; else return "Inactive";
     }
 }

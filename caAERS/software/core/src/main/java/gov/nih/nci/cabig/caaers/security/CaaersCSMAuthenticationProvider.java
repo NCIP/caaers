@@ -71,6 +71,12 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 				loginPolicyValidator.validate(passwordPolicy, credential, null);
 				if(caaersUser.getFailedLoginAttempts()==-1)	caaersUser.setFailedLoginAttempts(0);
 				if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt())	caaersUser.setFailedLoginAttempts(0);
+
+                //check if the user is active or not. 
+                if(!caaersUser.isActive()){
+                    throw new DisabledException("User is inactive");
+                }
+
 			}
 			
 			super.additionalAuthenticationChecks(user, token);

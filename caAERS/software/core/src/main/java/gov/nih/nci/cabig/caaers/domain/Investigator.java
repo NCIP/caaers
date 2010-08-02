@@ -223,7 +223,7 @@ public abstract class Investigator extends User {
 	}
 
     @Transient
-    public boolean getActive() {
+    public boolean isActive() {
         for (SiteInvestigator si : this.getSiteInvestigators()) {
             if (si.isActive()) return true;
         }

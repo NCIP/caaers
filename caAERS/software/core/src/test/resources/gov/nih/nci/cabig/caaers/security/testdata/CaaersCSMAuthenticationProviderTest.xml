@@ -76,14 +76,39 @@
     	id="-4007" 
     	site_id="-1001" 
     	researchstaff_id="-1003"/>
-	
+
+	<site_rs_staff_roles
+    	id="-6001"
+    	site_research_staffs_id="-4004"
+    	role_code="caaers_site_cd"
+    	start_date="2008-01-01"
+    />
+    <site_rs_staff_roles
+    	id="-6002"
+    	site_research_staffs_id="-4005"
+    	role_code="caaers_site_cd"
+    	start_date="2008-01-01"
+    />
+
+
+	<site_rs_staff_roles
+    	id="-6003"
+    	site_research_staffs_id="-4006"
+    	role_code="caaers_site_cd"
+    	start_date="2008-01-01"
+    />
+    <site_rs_staff_roles
+    	id="-6004"
+    	site_research_staffs_id="-4007"
+    	role_code="caaers_site_cd"
+    	start_date="2008-01-01"
+    />
+    
     <investigational_new_drugs />
     <ind_holders />	
 	
 	<study_agent_inds />
-	
-	<site_rs_staff_roles />
-    
+
     <ae_report_people />
     
     <contact_mechanisms />

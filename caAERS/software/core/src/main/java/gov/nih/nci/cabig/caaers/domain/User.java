@@ -54,6 +54,9 @@ public abstract class User extends Person implements Comparable<User>{
         userGroupTypes = new ArrayList<UserGroupType>();
         passwordHistory = new ArrayList<String>();
     }
+
+    @Transient
+    public abstract boolean isActive();
     
     @Transient
     public void unlock() {
