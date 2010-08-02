@@ -11,7 +11,7 @@
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
 
-<tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top" bgcolor="#fff">
+<tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top" bgcolor="#ffffff">
 	 <td style="border-right:none;">
 	 <c:set var="_siteField" value="${fieldGroups[mainGroup].fields[0]}" />
 	 <ui:autocompleter path="${_siteField.propertyName}" 

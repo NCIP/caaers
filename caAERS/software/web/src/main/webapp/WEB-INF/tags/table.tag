@@ -4,7 +4,7 @@
 <%@ attribute name="contentID" required="true" %>
 <%@ attribute name="width" required="false" %>
 
-<c:if test="${empty bgColor}"><c:set var="bgColor" value="#aaa" /></c:if>
+<c:if test="${empty bgColor}"><c:set var="bgColor" value="#aaaaaa" /></c:if>
 <c:if test="${empty width}"><c:set var="width" value="95%" /></c:if>
 
 <table width="${width}" cellpadding="0" cellspacing="0">

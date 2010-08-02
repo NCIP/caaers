@@ -116,7 +116,7 @@
  	    <div align="left" style="margin-left: 50px">
              <tags:table contentID="studySites" width="55%">
              <table width="100%" border="0" cellspacing="1" cellpadding="3">
-                 <tr id="ss-table-head" bgcolor="#ccc">
+                 <tr id="ss-table-head" bgcolor="#cccccc">
                      <th width="95%" class="tableHeader"><tags:requiredIndicator/>Site</th>
                      <th width="5%" class="tableHeader" style=" background-color: none"><caaers:message code="table.action" /></th>
                  </tr>

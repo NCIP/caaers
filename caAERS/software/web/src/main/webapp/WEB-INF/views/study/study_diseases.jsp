@@ -353,18 +353,16 @@ Event.observe(window, "load", function() {
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP">
             <p><tags:instructions code="study.study_disease.selected" /></p>
-			<center>
 
             <tags:table contentID="ctcDisease">
-
                <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
-    			<tr bgcolor="#eee">
+    			<tr bgcolor="#eeeeee">
     				<th scope="col" align="left"><b>CTC disease term</b> </th>
     				<th scope="col" width="10%" align="center"><b>Primary</b> </th>
     				<th scope="col" width="5%" align="center"><caaers:message code="table.action" /></th>
     			</tr>
     			 <c:forEach items="${command.study.activeStudyDiseases}" var="studyDisease" varStatus="status">
-    				<tr bgcolor="#fff">
+    				<tr bgcolor="#ffffff">
             			<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
             			<td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
             			<td align="center"><div class="label"><tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="javascript:fireAction('removeStudyDisease', ${status.index});"/></div></td>
@@ -375,7 +373,7 @@ Event.observe(window, "load", function() {
             	 </c:if>
              </table>
             </tags:table>
-             </center>
+
             </chrome:division>
             </c:if>
 
