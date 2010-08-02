@@ -33,7 +33,7 @@
       if (action == 'addInv') {
 
       } else {
-          ValidationManager.validate = false;
+          if (action == 'removeInv')  ValidationManager.validate = false;
           var form = document.getElementById('command')
           form._target.name = '_noname';
           form._action.value = action;
