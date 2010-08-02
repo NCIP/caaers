@@ -21,6 +21,7 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Ram Seethiraju
@@ -43,6 +44,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	 * This method will do Login policy validations and authentication checks.
 	 */
 	@Override
+    @Transactional
 	protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) 
 	throws AccountExpiredException{
 
