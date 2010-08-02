@@ -223,7 +223,7 @@
                         <tags:requiredIndicator/>&nbsp;<b>Username</b>
                         </div>
                         <div class="value">
-                            <input type="text" name="j_username" class="validate-NOTEMPTY required" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" />
+                            <input type="text" name="j_username" class="validate-NOTEMPTY required" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" title="Username"/>
                         </div>
                     </div>
                     <div class="row">
@@ -231,7 +231,7 @@
                             <tags:requiredIndicator/>&nbsp;<b>Password
                         </div>
                         <div class="value">
-                            <input type="password" name="j_password" value="" class="validate-NOTEMPTY required"/>
+                            <input type="password" name="j_password" value="" class="validate-NOTEMPTY required" title="Password"/>
                         </div>
                     </div>            
                     <div class="forgot">
