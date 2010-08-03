@@ -28,8 +28,10 @@ public class FilteredDataLoader {
 	protected final Log log = LogFactory.getLog(getClass());
 
 	public void updateIndexByUserName(Authentication authentication){
+		String userName = SecurityUtils.getUserLoginName(authentication);
+		log.debug("**BEGIN Updating Index for User " + userName);
+		System.out.println("**BEGIN Updating Index for User " + userName);
 		for (IdFetcher idFetcher : idFetchers) {
-			String userName = SecurityUtils.getUserLoginName(authentication);
 			Date da = new Date();
 			List<IndexEntry> indexEntries = idFetcher.fetch(userName);
 			Date db = new Date();
@@ -45,6 +47,8 @@ public class FilteredDataLoader {
 			System.out.println("TIME TOOK TO UPDATE INDEX ..."+ diff/1000 + " seconds");
 
 		}
+		log.debug("**END Updating Index for User " + userName);
+		System.out.println("**END Updating Index for User " + userName);
 	}
 
     /**
