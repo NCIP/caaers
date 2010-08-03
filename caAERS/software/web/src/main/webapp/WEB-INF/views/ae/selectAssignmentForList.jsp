@@ -17,11 +17,11 @@
             background-color: #CCE6FF;
         }
 
-		#criteria-div{
-          width: 70%;
-          margin-left: 10em;
+        #criteria-div{
+          width: 85%;
+          margin-left: 8em;
         }
-
+        
     </style>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
@@ -116,27 +116,34 @@
     <div class="autoclear" id="criteria-div">
     	<chrome:box title="Select study and subject" id="study-entry" autopad="true" cssClass="pairedLong">
 
-            <p><tags:instructions code="instruction_ae_assignment"/></p>
-            <%--<p><tags:instructions code="instruction_ae_select_study"/></p>--%>
-            <form:hidden path="study"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
-			<a id="study-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            <tags:indicator id="study-indicator"/>
-            <tags:errors path="study"/>
-            <div id="study-choices" class="autocomplete"></div>
-            <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
+            <%--<p><tags:instructions code="instruction_ae_assignment"/></p>--%>
+            <div class="row">
+                <div class="label"><tags:requiredIndicator/><caaers:message code="LBL_Study" /></div>
+                <div class="value">
+                    <%--<p><tags:instructions code="instruction_ae_select_study"/></p>--%>
+                    <form:hidden path="study"/>
+                    <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
+                    <a id="study-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
+                    <tags:indicator id="study-indicator"/>
+                    <tags:errors path="study"/>
+                    <div id="study-choices" class="autocomplete"></div>
+                </div>
+                <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
+            </div>
 
-            <p>
-            <%--<p><tags:instructions code="instruction_ae_select_subject"/></p>--%>
-            <form:hidden path="participant"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
-            <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            <tags:indicator id="participant-indicator"/>
-            <div id="participant-choices" class="autocomplete"></div>
-            <tags:errors path="participant"/>
-            <p id="participant-selected" style="display: none">You have selected the subject <span id="participant-selected-name"></span>.</p>
+            <div class="row">
+                <%--<p><tags:instructions code="instruction_ae_select_subject"/></p>--%>
+                <div class="label"><tags:requiredIndicator/><caaers:message code="LBL_Subject" /></div>
+                <div class="value">
+                    <form:hidden path="participant"/>
+                    <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
+                    <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
+                    <tags:indicator id="participant-indicator"/>
+                    <div id="participant-choices" class="autocomplete"></div>
+                    <tags:errors path="participant"/>
+                </div>
+                <p id="participant-selected" style="display: none">You have selected the subject <span id="participant-selected-name"></span>.</p>
+            </div>
         </chrome:box>
     </div>
     <c:choose>
