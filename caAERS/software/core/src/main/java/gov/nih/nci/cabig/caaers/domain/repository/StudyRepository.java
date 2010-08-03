@@ -1,7 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersUserProvisioningException;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
@@ -14,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.INDHolder;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
@@ -30,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
@@ -66,6 +74,7 @@ public class StudyRepository {
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private SiteResearchStaffDao siteResearchStaffDao;
     private CaaersSecurityFacade caaersSecurityFacade;
+    private EventFactory eventFactory;
     
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI";
@@ -169,6 +178,8 @@ public class StudyRepository {
         } catch (Exception e) {
             log.error("Error saving Remote Studies -- " + e.getMessage());
         }
+      //publish event
+        eventFactory.publishEntityModifiedEvent(new LocalStudy(), false);
     }
 
     @Transactional(readOnly = false)
@@ -544,5 +555,13 @@ public class StudyRepository {
 
     public void setStudySiteDao(StudySiteDao studySiteDao) {
         this.studySiteDao = studySiteDao;
+    }
+    
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
     }
 }

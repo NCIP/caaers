@@ -107,13 +107,19 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         OrganizationAssignedIdentifierType ccIdentifierType = (OrganizationAssignedIdentifierType)findCoordinatingCenterIdentifier(registration); 
         String ccIdentifier = ccIdentifierType.getValue();
         
+        boolean associatedToCC = false;
+        boolean associatedToSS = false;
+        
         try {
-        	if(!gridServicesAuthorizationHelper.authorizedRegistrationConsumer(ccIdentifierType.getHealthcareSite().getNciInstituteCode(),ccIdentifierType.getValue())){
-                String message = "Access denied";
+        	associatedToCC = gridServicesAuthorizationHelper.authorizedRegistrationConsumer(ccIdentifierType.getHealthcareSite().getNciInstituteCode(),ccIdentifierType.getValue());
+        	associatedToSS = gridServicesAuthorizationHelper.authorizedRegistrationConsumer(registration.getStudySite().getHealthcareSite(0).getNciInstituteCode(),ccIdentifierType.getValue());
+        	
+        	if(!(associatedToCC || associatedToSS)){
+        		String message = "Access denied";
                 RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
-                throw exp;
+                throw exp; 
         	}
-            
+        	
             Study study = fetchStudy(ccIdentifier,
                             OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             

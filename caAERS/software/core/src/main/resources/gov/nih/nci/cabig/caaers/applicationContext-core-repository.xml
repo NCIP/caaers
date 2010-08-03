@@ -28,6 +28,7 @@
         <property name="workflowConfigDao" ref="workflowConfigDao" />
         <property name="investigationalNewDrugDao" ref="investigationalNewDrugDao" />
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="eventFactory" ref="eventFactory"  />
     </bean>
 
     <bean id="studySearchableAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository" parent="daoTemplate">
