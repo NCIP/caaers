@@ -131,7 +131,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         
 
 		<!--========== ADVERSE EVENT REPORT ===========-->
-        <entry key="/pages/ae/aeModuleResolverController" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
+        <entry key="/pages/ae/aeModuleResolverController" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
         <entry key="/pages/ae/list" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 		<entry key="/pages/ae/captureRoutine" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:CREATE" />
 		<entry key="/pages/ae/reviewResolver" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
