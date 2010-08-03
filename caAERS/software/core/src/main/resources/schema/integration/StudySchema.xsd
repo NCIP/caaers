@@ -663,6 +663,11 @@
     <xs:simpleType name="PersonnelRoleCodeType">
         <xs:restriction base="xs:string">
 
+ 			<xs:enumeration value="system_administrator">
+               <xs:annotation>
+					  <xs:documentation>System Administrator</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
  			<xs:enumeration value="business_administrator">
                <xs:annotation>
 					  <xs:documentation>Business Administrator </xs:documentation>
