@@ -42,7 +42,9 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     protected CaaersSecurityFacade caaersSecurityFacade;
     protected final String ORG_INDEX_BASE_QUERY = "select oi.organization.id from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
     protected final String STUDY_INDEX_BASE_QUERY = "select sti.study.id from StudyIndex sti where sti.roleCode = :ROLE_CODE and sti.loginId = :LOGIN_ID";
-
+    
+    
+    
     /**
      * Will return the Site scoped HQL query
      * @return
@@ -156,7 +158,45 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
        return entry;
     }
 
+    /**
+     * Will execute the query and will return an IndexEntry
+     * @param loginId
+     * @param role
+     * @param hql
+     * @return
+     */
+    protected IndexEntry fetch(UserGroupType role, String hql){
+       IndexEntry entry = new IndexEntry(role);
+       HQLQuery query = new HQLQuery(hql);
+
+
+       List<Integer> resultList = (List<Integer>) search(query);
+       entry.setEntityIds(resultList);
+
+       if(log.isDebugEnabled()){
+           log.debug("HQL : " + hql + "\r\n ["   + role.name() + "] fetched : " + String.valueOf(resultList));
+       }
+
+       return entry;
+    }
     
+    protected long getOrgCountForRoleAndLogin(String loginId , int roleCode) {
+    	String ORG_INDEX_BASE_QUERY_COUNT = "select count(*) as c from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
+    	HQLQuery query = new HQLQuery(ORG_INDEX_BASE_QUERY_COUNT);
+    	
+    	query.getParameterMap().put("LOGIN_ID", loginId);
+        query.getParameterMap().put("ROLE_CODE", roleCode) ;
+        List<Long> resultList = (List<Long>) search(query);
+        return resultList.get(0);
+    }
+
+    protected long getAllOrgsCount() {
+        // get total organizations count . 
+        String hql = " select count(*) as c from Organization org";
+        HQLQuery query = new HQLQuery(hql);
+        List<Long> resultList = (List<Long>) search(query);
+        return resultList.get(0);
+    }  
 
    /*
 	public  List fetchOld(String loginId) {

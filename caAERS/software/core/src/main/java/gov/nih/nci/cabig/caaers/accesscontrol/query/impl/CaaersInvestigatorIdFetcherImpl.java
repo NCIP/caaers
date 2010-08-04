@@ -1,6 +1,10 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 
@@ -33,6 +37,7 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
     //the query
     private final String siteScopedHQL;
     private final String studyScopedHQL;
+    private final String queryWithUserAccessToAllOrgs;
 
 
     public CaaersInvestigatorIdFetcherImpl(){
@@ -53,9 +58,41 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
         query.append("select distinct si.investigator.id from SiteInvestigator si ")
              .append(" where si.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(" )");
         studyScopedHQL = query.toString();
+        
+        queryWithUserAccessToAllOrgs = "select distinct si.investigator.id from SiteInvestigator si ";
 
     }
 
+    @Override
+	public List fetch(String loginId){
+
+        List<IndexEntry> list = new ArrayList<IndexEntry>();
+        
+        long allOrgsCount = getAllOrgsCount();
+        
+        //for all site scoped roles
+        for(UserGroupType role : getApplicableSiteScopedRoles()){
+            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
+            if (allOrgsCount == orgsCount) {
+            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
+            } else {
+            	list.add(fetch(loginId, role, getSiteScopedHQL()));
+            }
+        }
+
+        //for all study scoped roles
+        for(UserGroupType role : getApplicableStudyScopedRoles()){
+            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
+            if (allOrgsCount == orgsCount) {
+            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
+            } else {
+            	list.add(fetch(loginId, role, getStudyScopedHQL()));
+            }            
+        }
+
+        return list;
+	}
+    
     /**
      * Will return the Site scoped HQL query
      *
