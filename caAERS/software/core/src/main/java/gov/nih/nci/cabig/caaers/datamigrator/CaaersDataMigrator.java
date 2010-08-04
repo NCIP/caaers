@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -390,12 +391,18 @@ public class CaaersDataMigrator {
 
             public void setValues(PreparedStatement ps, int index) throws SQLException {
     			
-            	int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
+            	
             	java.sql.Timestamp startDate = (java.sql.Timestamp)map.get("start_date");
             	java.sql.Timestamp endDate = (java.sql.Timestamp)map.get("end_date");
     			
             	ps.setString(1, groups.get(index).toString());
-    			ps.setInt(2, siteResearchStaffId);
+            	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+            		int siteResearchStaffId = ((BigDecimal)map.get("site_research_staffs_id")).intValue();
+            		ps.setInt(2, siteResearchStaffId);
+            	} else {
+            		int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
+            		ps.setInt(2, siteResearchStaffId);
+            	}
     			ps.setTimestamp(3, startDate);
     			ps.setTimestamp(4, endDate);
             }
@@ -495,18 +502,32 @@ public class CaaersDataMigrator {
             }
 
             public void setValues(PreparedStatement ps, int index) throws SQLException {
-    			int studySiteId = ((Integer)map.get("study_sites_id")).intValue();
+    			
     			Boolean retiredIndicator = (Boolean)map.get("retired_indicator");
-    			int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
+    			
             	java.sql.Timestamp startDate = (java.sql.Timestamp)map.get("start_date");
             	java.sql.Timestamp endDate = (java.sql.Timestamp)map.get("end_date");
-
-    			ps.setInt(1, studySiteId);
+    			
+    			if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+    				int studySiteId = ((BigDecimal)map.get("study_sites_id")).intValue();
+    				ps.setInt(1, studySiteId);    				
+    			} else {
+    				int studySiteId = ((Integer)map.get("study_sites_id")).intValue();
+    				ps.setInt(1, studySiteId);
+    			}    			
     			ps.setString(2, groups.get(index).toString());
     			ps.setBoolean(3, retiredIndicator);
     			ps.setTimestamp(4, startDate);
     			ps.setTimestamp(5, endDate);
-    			ps.setInt(6, siteResearchStaffId);
+    			
+    			if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+    				int siteResearchStaffId = ((BigDecimal)map.get("site_research_staffs_id")).intValue();
+    				ps.setInt(6, siteResearchStaffId);    				
+    			} else {
+    				int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
+    				ps.setInt(6, siteResearchStaffId);
+    			}
+    			
             }
         };
         jdbcTemplate.batchUpdate(sql, setter);
