@@ -143,14 +143,14 @@
   <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
     <property name="taskGroups">
       <list>
+            <ref bean="routineReportTaskGroup"/>
             <ref bean="studyTaskGroup"/>
             <ref bean="participantTaskGroup"/>
-            <ref bean="routineReportTaskGroup"/>
 
+            <ref bean="administrationTaskGroup"/>
             <ref bean="userTaskGroup"/>
             <ref bean="reportCalendarTaskGroup"/>
             <ref bean="ruleTaskGroup"/>
-            <ref bean="administrationTaskGroup"/>
           <!--<ref bean="medraTaskGroup"/>-->
           <!--<ref bean="advanceSearchTaskGroup"/>-->
           
