@@ -1290,6 +1290,7 @@ public class SearchStudyAjaxFacade {
 
         table.setSortable(true);
         model.addTable(table);
+/*
         if (StringUtils.isNotEmpty(exportFileName)) {
             Export export = model.getExportInstance();
             export.setView(TableConstants.VIEW_CSV);
@@ -1300,6 +1301,7 @@ public class SearchStudyAjaxFacade {
             export.setFileName(exportFileName);
             model.addExport(export);
         }
+*/
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
@@ -1403,7 +1405,7 @@ public class SearchStudyAjaxFacade {
         table.setTableId("ajaxTable");
         table.setForm("assembler");
         table.setItems(participants);
-        table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
+        table.setAction(model.getContext().getContextPath() + "/pages/participant/search");
         table.setTitle("");
         table.setShowPagination(true);
         table.setOnInvokeAction("buildTable('assembler')");
@@ -1416,14 +1418,14 @@ public class SearchStudyAjaxFacade {
 
         model.addTable(table);
 
-        Export export = model.getExportInstance();
+/*        Export export = model.getExportInstance();
         export.setView(TableConstants.VIEW_CSV);
         export.setViewResolver(TableConstants.VIEW_CSV);
         export.setImageName(TableConstants.VIEW_CSV);
         export.setText(TableConstants.VIEW_CSV);
         export.addAttribute(CsvView.DELIMITER, "|");
         export.setFileName("caaers_participants.txt");
-        model.addExport(export);
+        model.addExport(export);*/
 
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);

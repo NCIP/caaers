@@ -102,6 +102,7 @@ public class CreateParticipantAjaxFacade {
         table.setShowPagination(true);
         model.addTable(table);
 
+/*
         Export export = model.getExportInstance();
         export.setView(TableConstants.VIEW_CSV);
         export.setViewResolver(TableConstants.VIEW_CSV);
@@ -110,6 +111,7 @@ public class CreateParticipantAjaxFacade {
         export.addAttribute(CsvView.DELIMITER, "|");
         export.setFileName("caaers_participants.txt");
         model.addExport(export);
+*/
 
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);
