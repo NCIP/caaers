@@ -32,9 +32,8 @@
         <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <c:forEach begin="0" end="3" items="${taskgroups}" var="taskGroup" varStatus="index">
+                <c:forEach begin="0" end="2" items="${taskgroups}" var="taskGroup" varStatus="index">
                     <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
-                    <c:if test="${index.index != 2}">
                     <c:set var="_regularTasksVisible" value="${true}" />
                     <td align="center" valign="top">
 
@@ -49,7 +48,6 @@
 
                         </table>
                     </td>
-                    </c:if>
                     </csmauthz:accesscontrol>
                 </c:forEach>
             </tr>
@@ -70,7 +68,7 @@
         <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <c:forEach begin="4" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
+                <c:forEach begin="3" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
                     <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
                     <c:set var="_adminTasksVisible" value="${true}" />
                     <td align="center" valign="top">
