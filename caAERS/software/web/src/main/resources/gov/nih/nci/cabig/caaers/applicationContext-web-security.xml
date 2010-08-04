@@ -41,7 +41,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/dwr/call/plaincall/search.getOrganizationTable.dwr" value="person_and_organization_information_manager,data_reader"/>
 		<entry key="/pages/admin/createOrganization" value="person_and_organization_information_manager,data_reader"/>
         <entry key="/pages/admin/editOrganization" value="person_and_organization_information_manager,data_reader"/>
-		<entry key="/pages/admin/configure" value="system_administrator,data_reader"/>
+		<entry key="/pages/admin/configure" value="system_administrator,data_reader, business_administrator"/>
 		<entry key="/pages/admin/passwordPolicyConfigure" value="system_administrator,data_reader"/>
 		<entry key="/pages/admin/mandatoryFields" value="business_administrator,data_reader"/>        
 		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>		
