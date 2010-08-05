@@ -33,8 +33,10 @@ public class InvestigatorTabTest extends WebTestCase {
 	 
 	 Errors errors;
 	 BeanWrapper commandWrapper;
-	 
-	 Investigator command;
+
+     InvestigatorCommand command;
+	 Investigator investigator;
+
 	 InvestigatorTab tab ;
 	 
 	protected void setUp() throws Exception {
@@ -46,7 +48,9 @@ public class InvestigatorTabTest extends WebTestCase {
 		organizationDao = registerDaoMockFor(OrganizationDao.class);
 		investigatorRepository = registerMockFor(InvestigatorRepository.class);
 		
-		command = new LocalInvestigator();
+		investigator = new LocalInvestigator();
+        command = new InvestigatorCommand();
+        command.setInvestigator(investigator);
 		errors = new BindException(command, "command");
 		commandWrapper = new BeanWrapperImpl(command);
 
@@ -60,9 +64,9 @@ public class InvestigatorTabTest extends WebTestCase {
 	}
 
 	public void testValidate() {
-		command.setEmailAddress("hello@ab.com");
-		command.setLoginId("abcd");
-		command.setNciIdentifier("abcd");
+		investigator.setEmailAddress("hello@ab.com");
+		investigator.setLoginId("abcd");
+		investigator.setNciIdentifier("abcd");
 		
 		EasyMock.expect(csmUserRepository.getUserByName("abcd")).andReturn(null).anyTimes();
 		EasyMock.expect(investigatorRepository.searchInvestigator((InvestigatorQuery) EasyMock.anyObject())).andReturn(new ArrayList<Investigator>());
