@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
@@ -117,12 +117,12 @@ public interface CaaersSecurityFacade {
      * Will provision studies for ResearchStaff in CSM.
      * @param researchStaff
      */
-    void provisionStudiesForResearchStaff(ResearchStaff researchStaff);
+    void provisionStudies(StudyPersonnel studyPersonnel);
     
     /**
      * Will provision studies for Investigator in CSM.
      * @param investigator
      */
-    void provisionStudiesForInvestigator(Investigator investigator);
+    void provisionStudies(StudyInvestigator studyInvestigator);
 
 }

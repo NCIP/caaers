@@ -58,7 +58,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         } catch (MailException e) {
             mailException = e;
         }
-        createCSMUserGroups(csmUser, researchStaff, null);
+        //createCSMUserGroups(csmUser, researchStaff, null);
         if (mailException != null) throw mailException;
     }
 
@@ -83,7 +83,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 		} catch (MailException e) {
 			mailException = e;
 		}
-        createCSMUserGroups(csmUser, investigator, null);
+        //createCSMUserGroups(csmUser, investigator, null);
         if(mailException != null) throw mailException;
     }
     

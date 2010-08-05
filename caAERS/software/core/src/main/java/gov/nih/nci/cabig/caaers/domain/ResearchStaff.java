@@ -240,6 +240,19 @@ public abstract class ResearchStaff extends User {
         }
         return srsList;
     }
+    
+    /**
+     * Will return all the SiteResearchStaff  which are currently active. 
+     * @return
+     */
+    @Transient
+    public List<SiteResearchStaff> getInActiveSiteResearchStaff(){
+        List<SiteResearchStaff> srsList = new ArrayList<SiteResearchStaff>();
+        for(SiteResearchStaff  srs : getSiteResearchStaffs()){
+            if(!srs.isActive()) srsList.add(srs);
+        }
+        return srsList;
+    }
 
     /**
      * Will return SiteResearchStaff having at least one active role provided in roleCodes parameter

@@ -60,6 +60,21 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
         return srsRoleList;
     }
     
+    /**
+     * Will return all the SiteResearchStaffRoles  which are currently Inactive. 
+     * @return
+     */
+    @Transient
+    public List<SiteResearchStaffRole> getInActiveSiteResearchStaffRoles(){
+        List<SiteResearchStaffRole> srsRoleList = new ArrayList<SiteResearchStaffRole>();
+        List<SiteResearchStaffRole> roles = getSiteResearchStaffRoles();
+        if (roles == null) return  srsRoleList;
+        for(SiteResearchStaffRole  srsRole : roles){
+            if(srsRole.isInActive()) srsRoleList.add(srsRole);
+        }
+        return srsRoleList;
+    }
+    
     @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<SiteResearchStaffRole> getSiteResearchStaffRoles() {

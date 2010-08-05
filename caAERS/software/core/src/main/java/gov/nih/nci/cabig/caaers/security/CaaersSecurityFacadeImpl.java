@@ -15,7 +15,9 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
@@ -24,6 +26,7 @@ import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.utils.el.EL;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteAuthorizationAccessException;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
@@ -316,6 +319,58 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		}
     }
     
+    
+    /**
+     * Will only populate the role associations and protection group association for ResearchStaff
+     * @param researchStaff
+     */
+    private void provisionSitesForResearchStaff(ResearchStaff researchStaff,ProvisioningSession provisioningSession){
+
+    	for(SiteResearchStaff eachSrs : researchStaff.getInActiveSiteResearchStaff()){
+    		SuiteRoleMembership suiteRoleMembership = null;
+    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
+    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+    			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
+    			if(srsList == null || srsList.isEmpty()){
+    				provisioningSession.deleteRole(suiteRole);
+    			}else{
+    				suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+    				if(!suiteRoleMembership.isAllSites()){
+    					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
+    					provisioningSession.replaceRole(suiteRoleMembership);
+    				}
+    			}
+    		}
+    	}
+    	for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
+    		SuiteRoleMembership suiteRoleMembership = null;
+    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getInActiveSiteResearchStaffRoles()){
+    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+    			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
+    			if(srsList.isEmpty()){
+    				provisioningSession.deleteRole(suiteRole);
+    			}else{
+   					suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+    				if(!suiteRoleMembership.isAllSites()){
+    					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
+    					provisioningSession.replaceRole(suiteRoleMembership);
+    				}
+    			}
+    		}
+    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
+    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+    			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+    			if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
+    				suiteRoleMembership.forAllSites();
+    			}
+    			if(!suiteRoleMembership.isAllSites()){
+    				suiteRoleMembership.addSite(eachSrs.getOrganization().getNciInstituteCode());
+    			}
+        		provisioningSession.replaceRole(suiteRoleMembership);
+    		}
+    	}
+    }
+    
     /**
      * Will only populate the role associations and protection group association for ResearchStaff
      * @param researchStaff
@@ -323,51 +378,13 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     public void provisionResearchStaff(ResearchStaff researchStaff){
     	
     	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
-       	
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
     	if(csmUser == null) return;
     	
+    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
 		try {
-			String groupId;
-	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-	    	for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
-	    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
-	    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-	    			provisioningSession.deleteRole(suiteRole);
-	    			groupId = csmUserRepository.getGroupIdByName(eachSrsRole.getRoleCode());
-	    			csmUserRepository.getUserProvisioningManager().removeUserFromGroup(groupId,String.valueOf(csmUser.getUserId()));
-	    		}
-	    	}
-	   		for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
-				for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
-					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-					if(suiteRole.isScoped()){
-						SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-							String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
-				    		suiteRoleMembership.addSite(orgIdentifier);
-							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
-				    		for(String studyIdentifier : studyIndetifiers){
-				    			suiteRoleMembership.addStudy(studyIdentifier);
-				    		}
-						}else if(suiteRole.isSiteScoped()){
-							if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
-								suiteRoleMembership.forAllSites();
-							}else{
-								String orgIdentifier = eachSrsRole.getSiteResearchStaff().getOrganization().getNciInstituteCode();
-	    			    		suiteRoleMembership.addSite(orgIdentifier);
-							}
-						}
-						provisioningSession.replaceRole(suiteRoleMembership);
-					}
-					groupId = csmUserRepository.getGroupIdByName(eachSrsRole.getRoleCode());
-					csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
-				}
-			}
-		} catch (CSObjectNotFoundException e) {
-			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
-		} catch (CSTransactionException e) {
-			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+			provisionSitesForResearchStaff(researchStaff, provisioningSession);
+			provisionStudies(researchStaff, provisioningSession);
 		} catch (Exception e){
 			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
 		}
@@ -375,35 +392,74 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     
     
     /**
+     * Will provision studies for StudyPersonnel in CSM.
+     * @param researchStaff
+     */
+    public void provisionStudies(StudyPersonnel studyPersonnel){
+
+    	if (studyPersonnel == null) return;
+    	String loginId =  studyPersonnel.getSiteResearchStaff().getResearchStaff().getLoginId();
+    	
+    	if(StringUtils.isEmpty(loginId)) return;
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
+    	
+    	try {
+        	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+        	SuiteRole suiteRole = SuiteRole.getByCsmName(studyPersonnel.getRoleCode());
+        	if(suiteRole.isStudyScoped()){
+        		SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+            	String studyIdentifier = studyPersonnel.getStudyOrganization().getStudy().getCoordinatingCenterIdentifier().getValue();
+            	if(!suiteRoleMembership.isAllStudies()){
+                	if(studyPersonnel.isActive()){
+                		suiteRoleMembership.addStudy(studyIdentifier);
+                	}else if(studyPersonnel.isInActive()){
+                		suiteRoleMembership.removeStudy(studyIdentifier);
+                	}
+            	}
+            	provisioningSession.replaceRole(suiteRoleMembership);
+        	}
+
+		}catch (Exception e){
+			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+loginId ,e);
+		}
+    }
+    
+    /**
      * Will provision studies for ResearchStaff in CSM.
      * @param researchStaff
      */
-    public void provisionStudiesForResearchStaff(ResearchStaff researchStaff){
-    	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
-       	
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
-    	if(csmUser == null) return;
-    	
+    private void provisionStudies(ResearchStaff researchStaff,ProvisioningSession provisioningSession){
 		try {
-			ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-	   		for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
-				for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
+	   		for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
+				for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
 					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-					if(suiteRole.isScoped()){
+					if(suiteRole.isStudyScoped()){
 						SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
-							suiteRoleMembership.getStudyIdentifiers().clear();
-							List<String> studyIndetifiers = getAllResearchStaffStudies(researchStaff.getLoginId());
-				    		for(String studyIdentifier : studyIndetifiers){
-				    			suiteRoleMembership.addStudy(studyIdentifier);
-				    		}
-						}
-						provisioningSession.replaceRole(suiteRoleMembership);
+	    				List<String> studiesToRemove = getAllRSStudiesToRemove(researchStaff.getLoginId());
+	    				for(String studyIdentifier : studiesToRemove){
+	    					if(!suiteRoleMembership.isAllStudies()){
+	    						suiteRoleMembership.removeStudy(studyIdentifier);
+	    					}
+	    				}
+	    				List<String> studiesToAdd = getAllRSStudiesToAdd(researchStaff.getLoginId());
+	    				for(String studyIdentifier : studiesToAdd){
+	    					if(!suiteRoleMembership.isAllStudies()){
+	    						suiteRoleMembership.addStudy(studyIdentifier);
+	    					}
+	    				}
+	    				try{
+	    					if(suiteRoleMembership.getSiteIdentifiers() != null && suiteRoleMembership.getSiteIdentifiers().size() > 0){
+	    						provisioningSession.replaceRole(suiteRoleMembership);
+	    					}
+	    				}catch(SuiteAuthorizationAccessException siteE){
+	    					//allSite = true;
+	    					provisioningSession.replaceRole(suiteRoleMembership);
+	    				}
 					}
 				}
 			}
 		}catch (Exception e){
-			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+csmUser.getLoginName() ,e);
+			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+researchStaff.getLoginId() ,e);
 		}
     }
     
@@ -411,22 +467,28 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * Will provision studies for Investigator in CSM.
      * @param researchStaff
      */
-    public void provisionStudiesForInvestigator(Investigator investigator){
-    	if(StringUtils.isEmpty(investigator.getLoginId())) return;
+    public void provisionStudies(StudyInvestigator studyInvestigator){
     	
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(investigator.getLoginId());
+    	if(studyInvestigator == null) return;
+    	
+    	String loginId =  studyInvestigator.getSiteInvestigator().getInvestigator().getLoginId();
+    	if(StringUtils.isEmpty(loginId)) return;
+
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
     	if(csmUser == null) return;
     	
     	try {
 	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
 			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
-			
 			SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-			suiteRoleMembership.getStudyIdentifiers().clear();
-			List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
-			for(String studyIdentifier : studyIndetifiers){
-				suiteRoleMembership.addStudy(studyIdentifier);
-			}
+			String studyIdentifier = studyInvestigator.getStudyOrganization().getStudy().getCoordinatingCenterIdentifier().getValue();
+        	if(!suiteRoleMembership.isAllStudies()){
+            	if(studyInvestigator.isActive()){
+            		suiteRoleMembership.addStudy(studyIdentifier);
+            	}else if(studyInvestigator.isInActive()){
+            		suiteRoleMembership.removeStudy(studyIdentifier);
+            	}
+        	}
 			provisioningSession.replaceRole(suiteRoleMembership);
     	}catch (Exception e){
 			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+csmUser.getLoginName() ,e);
@@ -468,7 +530,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	private List<String> getAllResearchStaffStudies(String loginId){
+	private List<String> getAllRSStudiesToAdd(String loginId){
     	Date d = new Date();
         StringBuilder hql = new StringBuilder("select distinct ids.value from StudyPersonnel sp ")
 								        .append("join sp.studyOrganization so ")
@@ -489,6 +551,35 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         List<String> studyIdentifiers = (List<String>)search(query);
     	return studyIdentifiers;
     }
+    
+    
+    /**
+     * This method will return a list if co-ordinating center assigned identifiers for studies which the research staff has access to. 
+     * @param loginId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	private List<String> getAllRSStudiesToRemove(String loginId){
+    	Date d = new Date();
+        StringBuilder hql = new StringBuilder("select distinct ids.value from StudyPersonnel sp ")
+								        .append("join sp.studyOrganization so ")
+								        .append("join so.study s ")
+								        .append("join s.identifiers ids ")
+								        .append("join sp.siteResearchStaff srs ")
+								        .append("join srs.researchStaff rs ")
+								        .append("where rs.loginId = :loginId ")
+								        .append("and (sp.startDate > :stDate or (sp.startDate <= :stDate and sp.endDate <= :enDate))")
+								        .append("and sp.retiredIndicator <> true and ")
+								        .append("ids.type = 'Coordinating Center Identifier'");
+    	
+    	HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("loginId", loginId);
+        query.getParameterMap().put("stDate", d);
+        query.getParameterMap().put("enDate", d);
+        List<String> studyIdentifiers = (List<String>)search(query);
+    	return studyIdentifiers;
+    }
+    
     
     /**
      * Will create or update a csm user.

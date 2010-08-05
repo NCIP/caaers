@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
@@ -27,7 +26,6 @@ import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
 import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
@@ -41,13 +39,11 @@ import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -374,21 +370,6 @@ public class StudyRepository {
         so.getStudyInvestigators().clear();
     }
 
-    @Transactional(readOnly = false)
-    public void synchronizeStudyPersonnel(Study study) {
-        //Identify newly added StudyOrganizations to associate ResearchStaff
-        //whose associateAllStudies flag is set to true.
-        List<SiteResearchStaff> siteResearchStaffs = null;
-        for(StudyOrganization studyOrganization : study.getStudyOrganizations()) {
-        	siteResearchStaffs = siteResearchStaffDao.getOrganizationResearchStaffs(studyOrganization.getOrganization());
-        	for(SiteResearchStaff siteResearchStaff : siteResearchStaffs){
-        		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
-        			studyOrganization.syncStudyPersonnel(siteResearchStaff);
-        		}
-        	}
-        }
-    }
-    
     /**
      * Will merge the study and return the merged study back. 
      * @param study
@@ -410,7 +391,7 @@ public class StudyRepository {
     @Transactional(readOnly = false)
     public void save(Study study){
     	associateSiteToWorkflowConfig(study.getStudySites());
-    	//Provision instances an Investigator or ResearchStaff has acces to in CSM
+    	//Provision instances an Investigator or ResearchStaff has access to in CSM
     	provisionStudyTeam(study);
     	//Save the study
         studyDao.save(study);
@@ -422,8 +403,6 @@ public class StudyRepository {
      */
     public  void provisionStudyTeam(Study study){
     	try{
-    		List<Integer> processedInvList = new ArrayList<Integer>();
-    		List<Integer> processedRsList = new ArrayList<Integer>();
     		List<StudyOrganization> studyOrgs = study.getActiveStudyOrganizations();
     		List<StudyInvestigator> studyInvs = null;
     		List<StudyPersonnel> studyPersonnel = null;
@@ -432,22 +411,14 @@ public class StudyRepository {
     			studyInvs = studyOrg.getStudyInvestigators();
     			if(studyInvs != null){
         			for(StudyInvestigator studyInv : studyInvs){
-    					if(!processedInvList.contains(studyInv.getSiteInvestigator().getInvestigator().getId())){
-    						Investigator investigator = investigatorDao.getById(studyInv.getSiteInvestigator().getInvestigator().getId());
-    						processedInvList.add(studyInv.getSiteInvestigator().getInvestigator().getId());
-        					caaersSecurityFacade.provisionStudiesForInvestigator(investigator);
-    					}
+    					caaersSecurityFacade.provisionStudies(studyInv);
         			}
     			}
     			//Remove, add or update what instances an ResearchStaff is entitled to.
     			studyPersonnel = studyOrg.getStudyPersonnels();
     			if(studyPersonnel != null){
     				for(StudyPersonnel studyPer : studyPersonnel){
-						if(!processedRsList.contains(studyPer.getSiteResearchStaff().getResearchStaff().getId())){
-							processedRsList.add(studyPer.getSiteResearchStaff().getResearchStaff().getId());
-							ResearchStaff researchStaff = researchStaffDao.getById(studyPer.getSiteResearchStaff().getResearchStaff().getId());
-    						caaersSecurityFacade.provisionStudiesForResearchStaff(researchStaff);
-						}
+						caaersSecurityFacade.provisionStudies(studyPer);
     				}
     			}
     		}
@@ -476,6 +447,8 @@ public class StudyRepository {
     
     //Associate the ResearchStaff to all the Studies 
     public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
+    	//Associate to All Studies feature is discontinued hence commenting the below code.
+    	/*
     	List<StudyOrganization> studyOrganizations = null;
     	StudyOrganizationsQuery studyOrgsQuery = null;
     	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
@@ -490,7 +463,29 @@ public class StudyRepository {
     			}
     		}
     	}
+    	*/
     }
+    
+    @Transactional(readOnly = false)
+    public void synchronizeStudyPersonnel(Study study) {
+    	
+    	//Associate to All Studies feature is discontinued hence commenting the below code.
+    	/*
+    	
+        //Identify newly added StudyOrganizations to associate ResearchStaff
+        //whose associateAllStudies flag is set to true.
+        List<SiteResearchStaff> siteResearchStaffs = null;
+        for(StudyOrganization studyOrganization : study.getStudyOrganizations()) {
+        	siteResearchStaffs = siteResearchStaffDao.getOrganizationResearchStaffs(studyOrganization.getOrganization());
+        	for(SiteResearchStaff siteResearchStaff : siteResearchStaffs){
+        		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+        			studyOrganization.syncStudyPersonnel(siteResearchStaff);
+        		}
+        	}
+        }
+        */
+    }
+    
     
     /**
      * This method will associate StudySites to the {@link AdverseEventReportingPeriod} and {@link ExpeditedAdverseEventReport} workflow.
