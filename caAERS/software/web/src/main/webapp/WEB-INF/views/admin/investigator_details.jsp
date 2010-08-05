@@ -237,9 +237,10 @@ function toggelUserName(checkBoxChecked) {
                     closable:false,
                     minimizable:false,
                     maximizable:false});
-                syncWin.setContent('rs-exist-popup');
+                syncWin.setContent('inv-exist-popup');
                 syncWin.showCenter(true);
                 syncWin.show(false);
+                alert(syncWin)
             }
 
             function syncUserDetails(){
@@ -345,6 +346,9 @@ function toggelUserName(checkBoxChecked) {
 	<input type="hidden" name="_action" value="">
     <input type="hidden" name="_selected" value="">
 	<input type="hidden" name="_finish" value="true"/>
+
+    <input type="hidden" name="canSync" id="canSyncInput" value="${command.canSync}"/>
+    <input type="hidden" name="shouldSync" id="shouldSyncInput" value="${command.shouldSync}"/>    
 	</div>
 
     </jsp:attribute>
