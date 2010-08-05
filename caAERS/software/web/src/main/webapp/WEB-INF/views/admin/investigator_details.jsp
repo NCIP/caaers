@@ -123,18 +123,18 @@ Object.extend(jsInvestigator.prototype, {
 	  
 Event.observe(window, "load", function() {
 		
-	  	<c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
+	  	<c:forEach varStatus="status" items="${command.investigator.siteInvestigators}" var="si">
 	  		new jsInvestigator(${status.index}, "${si.organization.fullName}");
 	  	</c:forEach>
 
 	  	associatedSite = new associatedSiteClass();
 		
-		if(${fn:length(command.externalInvestigators) gt 0}){
+		if(${fn:length(command.investigator.externalInvestigators) gt 0}){
 				 displayRemoteInvestigator();
 		}
 
 
-		toggelUserName(${command.allowedToLogin});
+		toggelUserName(${command.investigator.allowedToLogin});
 
 		$$('input#allowedToLogin').each(function(allowedLoginChkBox) {
 			allowedLoginChkBox.observe('click',function(evt){
@@ -280,7 +280,7 @@ function toggelUserName(checkBoxChecked) {
                 <td class="tableHeader">Email Address</td>
               </tr>
             </thead>
-            <c:forEach items="${command.externalInvestigators}"  var="remInv" varStatus="rdStatus">
+            <c:forEach items="${command.investigator.externalInvestigators}"  var="remInv" varStatus="rdStatus">
               <tr>
               	<td><input type="radio" name="remotersradio" value=${rdStatus.index} id="remoters-radio" onClick="javascript:selectInvestigator('${rdStatus.index}');"/></td>
                 <td align="left">${remInv.firstName}</td>
@@ -340,7 +340,7 @@ function toggelUserName(checkBoxChecked) {
 
 	<jsp:attribute name="singleFields">
 	<div>
-	<c:if test="${(command.externalId != null)}"> <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/> </c:if>
+	<c:if test="${(command.investigator.externalId != null)}"> <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/> </c:if>
 	
 	<input type="hidden" name="_action" value="">
     <input type="hidden" name="_selected" value="">
