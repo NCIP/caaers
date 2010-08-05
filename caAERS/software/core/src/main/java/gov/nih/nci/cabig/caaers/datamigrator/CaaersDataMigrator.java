@@ -397,8 +397,8 @@ public class CaaersDataMigrator {
     			
             	ps.setString(1, groups.get(index).toString());
             	if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-            		int siteResearchStaffId = ((BigDecimal)map.get("site_research_staffs_id")).intValue();
-            		ps.setInt(2, siteResearchStaffId);
+            		BigDecimal siteResearchStaffId = (BigDecimal)map.get("site_research_staffs_id");
+            		ps.setBigDecimal(2, siteResearchStaffId);
             	} else {
             		int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
             		ps.setInt(2, siteResearchStaffId);
@@ -503,26 +503,33 @@ public class CaaersDataMigrator {
 
             public void setValues(PreparedStatement ps, int index) throws SQLException {
     			
-    			Boolean retiredIndicator = (Boolean)map.get("retired_indicator");
+    			
     			
             	java.sql.Timestamp startDate = (java.sql.Timestamp)map.get("start_date");
             	java.sql.Timestamp endDate = (java.sql.Timestamp)map.get("end_date");
     			
     			if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-    				int studySiteId = ((BigDecimal)map.get("study_sites_id")).intValue();
-    				ps.setInt(1, studySiteId);    				
+    				BigDecimal studySiteId = (BigDecimal)map.get("study_sites_id");
+    				ps.setBigDecimal(1, studySiteId);    				
     			} else {
     				int studySiteId = ((Integer)map.get("study_sites_id")).intValue();
     				ps.setInt(1, studySiteId);
     			}    			
     			ps.setString(2, groups.get(index).toString());
-    			ps.setBoolean(3, retiredIndicator);
+    			if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
+    				BigDecimal retiredIndicator = (BigDecimal)map.get("retired_indicator");
+        			ps.setBigDecimal(3, retiredIndicator);    				
+    			} else {
+        			Boolean retiredIndicator = (Boolean)map.get("retired_indicator");
+        			ps.setBoolean(3, retiredIndicator);   				
+    			}
+
     			ps.setTimestamp(4, startDate);
     			ps.setTimestamp(5, endDate);
     			
     			if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
-    				int siteResearchStaffId = ((BigDecimal)map.get("site_research_staffs_id")).intValue();
-    				ps.setInt(6, siteResearchStaffId);    				
+    				BigDecimal siteResearchStaffId = (BigDecimal)map.get("site_research_staffs_id");
+    				ps.setBigDecimal(6, siteResearchStaffId);
     			} else {
     				int siteResearchStaffId = ((Integer)map.get("site_research_staffs_id")).intValue();
     				ps.setInt(6, siteResearchStaffId);
