@@ -5,6 +5,7 @@ import org.acegisecurity.ui.logout.LogoutHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -35,16 +36,12 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler {
             HttpSession session = request.getSession(false);
             
 		    if (session != null) {
-
-                if(logger.isDebugEnabled()) logger.debug("Explicitly going to remove session attributes");
-
-			    for(Enumeration<Object> e = session.getAttributeNames(); e.hasMoreElements(); ){
-                    String aName = String.valueOf(e.nextElement());
-                    session.setAttribute(aName , null);
-                    session.removeAttribute(aName);
-                }
 			    session.invalidate();
 		    }
+
+
+            response.addCookie(new Cookie("JSESSIONID", "iaminvalid"));
+            response.addCookie(new Cookie("jsessionid", "iaminvalid"));
 
         }catch(Exception e){
             //ignore
