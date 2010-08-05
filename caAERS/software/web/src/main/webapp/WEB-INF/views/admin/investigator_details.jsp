@@ -243,7 +243,7 @@ function toggelUserName(checkBoxChecked) {
             }
 
             function syncUserDetails(){
-               $('shouldSyncInput').value = 'true';
+               $('canSyncInput').value = 'true';
                $('researchStaff.firstName').value =  '${command.csmUser.firstName}';
                $('researchStaff.lastName').value = '${command.csmUser.lastName}';
                $('researchStaff.loginId').value =  '${command.csmUser.loginName}';
@@ -251,7 +251,7 @@ function toggelUserName(checkBoxChecked) {
             }
 
             function cancelSync(){
-               $('shouldSyncInput').value = 'false';
+               $('canSyncInput').value = 'false';
                Windows.closeAll();
             }
 
