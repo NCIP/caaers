@@ -213,7 +213,7 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
         if(command.getInvestigator().getAllowedToLogin()) {
         	
         	if(StringUtils.isEmpty(command.getInvestigator().getLoginId())){
-        		errors.rejectValue("loginId", "USR_014", "User name must not be empty, while allowed to login.");
+        		errors.rejectValue("investigator.loginId", "USR_014", "User name must not be empty, while allowed to login.");
         	}else{
 
 
@@ -231,7 +231,7 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
 					//login id should be unique. 
 					User anotherUser = csmUserRepository.getUserByName(command.getInvestigator().getLoginId());
 					if(anotherUser != null && !ObjectUtils.equals(command.getInvestigator().getId(), anotherUser.getId())){
-						errors.rejectValue("loginId","USR_001", new Object[]{command.getInvestigator().getLoginId()},"The loginId is in use.");
+						errors.rejectValue("investigator.loginId","USR_001", new Object[]{command.getInvestigator().getLoginId()},"The loginId is in use.");
 					}
 				} catch (CaaersNoSuchUserException e) {
 				}
@@ -243,10 +243,10 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
             List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
             
             if(investigatorList.size() > 1)
-            	errors.rejectValue("emailAddress", "USR_010");
+            	errors.rejectValue("investigator.emailAddress", "USR_010");
             
             if(investigatorList.size() == 1 && command.getInvestigator().getId() == null){
-            	errors.rejectValue("emailAddress", "USR_010");
+            	errors.rejectValue("investigator.emailAddress", "USR_010");
             }
         	
         }
@@ -281,20 +281,20 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
             	//startdate cannot be less than today's date
                 if(siteInvestigator.getStartDate() != null){
                 	if(DateUtils.compareDate(siteInvestigator.getStartDate(),now) < 0){
-                		errors.rejectValue("siteInvestigators["+i+"].startDate","INV_001","Start date cannot be before today's date.");
+                		errors.rejectValue("investigator.siteInvestigators["+i+"].startDate","INV_001","Start date cannot be before today's date.");
                 	}
                 }
                 
                 if(siteInvestigator.getEndDate() != null){
                 	if(DateUtils.compareDate(siteInvestigator.getEndDate(),now) < 0){
-                    	errors.rejectValue("siteInvestigators["+i+"].endDate","INV_003","End date cannot be before today's date.");
+                    	errors.rejectValue("investigator.siteInvestigators["+i+"].endDate","INV_003","End date cannot be before today's date.");
                     }
                 }
             }
             
             if(siteInvestigator.getStartDate() != null && siteInvestigator.getEndDate() != null){
             	if(DateUtils.compareDate(siteInvestigator.getEndDate(), siteInvestigator.getStartDate()) < 0){
-            		errors.rejectValue("siteInvestigators["+i+"].endDate","INV_004","End date cannot be before Start date.");
+            		errors.rejectValue("investigator.siteInvestigators["+i+"].endDate","INV_004","End date cannot be before Start date.");
             	}
             }
         }
