@@ -89,7 +89,7 @@ Object.extend(jsInvestigator.prototype, {
 		
 	initialize: function(index, orgName) {
 	 this.index = index;
-	 this.orgField = 'siteInvestigators['+ index + '].organization';
+	 this.orgField = 'investigator.siteInvestigators['+ index + '].organization';
 	 this.orgInputField = this.orgField + '-input';
 		
 	 //initialze the date fields.	
