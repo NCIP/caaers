@@ -42,78 +42,78 @@ function submitPage(s){
 <caaers:message code="investigator.review.detailsSection" var="detailsSectionTitle"/>
 <chrome:division title="${detailsSectionTitle}">
  <div class="leftpanel">
-	       <ui:row path="firstName">
+	       <ui:row path="investigator.firstName">
     			<jsp:attribute name="value">
     				${investigator.firstName}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="firstName" text="First name"></ui:label>
+    				<ui:label path="investigator.firstName" text="First name"></ui:label>
     			</jsp:attribute>
     		</ui:row>
     		
-	       <ui:row path="middleName">
+	       <ui:row path="investigator.middleName">
     			<jsp:attribute name="value">
     				${investigator.middleName}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="middleName" text="Middle name"></ui:label>
+    				<ui:label path="investigator.middleName" text="Middle name"></ui:label>
     			</jsp:attribute>
 			</ui:row>
 
-	       <ui:row path="lastName">
+	       <ui:row path="investigator.lastName">
     			<jsp:attribute name="value">
     				${investigator.lastName}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="lastName" text="Last name"></ui:label>
+    				<ui:label path="investigator.lastName" text="Last name"></ui:label>
     			</jsp:attribute>
 			</ui:row>
 
-	       <ui:row path="nciIdentifier">
+	       <ui:row path="investigator.nciIdentifier">
     			<jsp:attribute name="value">
     				${investigator.nciIdentifier}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="nciIdentifier" labelProperty="investigator.nciIdentifier" text="Investigator number"></ui:label>
+    				<ui:label path="investigator.nciIdentifier" labelProperty="investigator.nciIdentifier" text="Investigator number"></ui:label>
     			</jsp:attribute>
 			</ui:row>
  </div>
 
  <div class="rightpanel">
    
-	        <ui:row path="emailAddress">
+	        <ui:row path="investigator.emailAddress">
     			<jsp:attribute name="value">
     				${investigator.emailAddress}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="emailAddress" text="Email address"></ui:label>
+    				<ui:label path="investigator.emailAddress" text="Email address"></ui:label>
     			</jsp:attribute>
 			</ui:row>
 			
-	        <ui:row path="phoneNumber">
+	        <ui:row path="investigator.phoneNumber">
     			<jsp:attribute name="value">
     				${investigator.phoneNumber}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="phoneNumber" text="Phone"></ui:label>
+    				<ui:label path="investigator.phoneNumber" text="Phone"></ui:label>
     			</jsp:attribute>
 			</ui:row>
 			
-	        <ui:row path="faxNumber">
+	        <ui:row path="investigator.faxNumber">
     			<jsp:attribute name="value">
     				${investigator.faxNumber}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="faxNumber" text="Fax"></ui:label>
+    				<ui:label path="investigator.faxNumber" text="Fax"></ui:label>
     			</jsp:attribute>
 			</ui:row>
 			<c:if test="${command.allowedToLogin}">
-	        <ui:row path="loginId">
+	        <ui:row path="investigator.loginId">
     			<jsp:attribute name="value">
     				${investigator.loginId}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="loginId" text="Username"></ui:label>
+    				<ui:label path="investigator.loginId" text="Username"></ui:label>
     			</jsp:attribute>
 			</ui:row>
 			</c:if>
