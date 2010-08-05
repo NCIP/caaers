@@ -244,9 +244,9 @@ function toggelUserName(checkBoxChecked) {
 
             function syncUserDetails(){
                $('shouldSyncInput').value = 'true';
-               $('researchStaff.firstName') =  '${command.csmUser.firstName}';
-               $('researchStaff.lastName') = '${command.csmUser.lastName}';
-               $('researchStaff.loginId') =  '${command.csmUser.loginName}';
+               $('researchStaff.firstName').value =  '${command.csmUser.firstName}';
+               $('researchStaff.lastName').value = '${command.csmUser.lastName}';
+               $('researchStaff.loginId').value =  '${command.csmUser.loginName}';
                Windows.closeAll();
             }
 
@@ -434,7 +434,7 @@ function toggelUserName(checkBoxChecked) {
                     <div style="display:none;">
                         <div id="inv-exist-popup" style="display:none;">
 
-                            <tags:instructions code="user.exist.csm" />
+                            <tags:instructions code="user.exist.csm" heading="Alert" />
 
                             <ui:row path="csmUser.firstName">
                                 <jsp:attribute name="label">
