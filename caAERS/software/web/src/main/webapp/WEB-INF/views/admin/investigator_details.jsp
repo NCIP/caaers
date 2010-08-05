@@ -136,13 +136,13 @@ Event.observe(window, "load", function() {
 
 		toggelUserName(${command.investigator.allowedToLogin});
 
-		$$('input#investigator.allowedToLogin').each(function(allowedLoginChkBox) {
-			allowedLoginChkBox.observe('click',function(evt){
-				var element = Event.element(evt);
+        if($('investigator.allowedToLogin')) {
+            $('investigator.allowedToLogin').observe('click', function (evt){
+                var element = Event.element(evt);
 				toggelUserName(element.checked);
-			});			
-		});
-
+            });
+        }
+    
 		/*
 		var allowedLoginChkBox = $('investigator.allowedToLogin');
 		if(allowedLoginChkBox){
