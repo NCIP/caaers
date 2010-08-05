@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.security.authorization.domainobjects.User;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -25,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Saurbah Agrawal
  */
-public class EditInvestigatorController extends InvestigatorController<Investigator> {
+public class EditInvestigatorController extends InvestigatorController<InvestigatorCommand> {
 
     private static final Log log = LogFactory.getLog(EditInvestigatorController.class);
 
@@ -38,27 +39,31 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
 
         request.getSession().removeAttribute(InvestigatorAjaxFacade.CREATE_INVESTIGATOR_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+
         Investigator investigator = investigatorDao.getInvestigatorById(Integer.parseInt(request.getParameter("investigatorId")));
         investigator.setWasLoginDisallowed(BooleanUtils.isFalse(investigator.getAllowedToLogin()));
         investigator.setWasLoginIdNull(investigator.getLoginId() == null);
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Investigator :" + String.valueOf(investigator));
         }
-
-        return investigator;
+        InvestigatorCommand command = new InvestigatorCommand();
+        command.setInvestigator(investigator);
+        command.setCsmUser(new User());
+        return command;
 
     }
 
     @Override
-    protected Investigator save(final Investigator investigator, final Errors errors) {
+    protected InvestigatorCommand save(final InvestigatorCommand investigatorCommand, final Errors errors) {
 
-        if (errors.hasErrors()) {
-            return investigator;
+        if(!errors.hasErrors()){
+            Investigator mergedInvestigator = getDao().merge(investigatorCommand.getInvestigator());
+            getDao().initialize(mergedInvestigator);
+            //getDao().save(mergedInvestigator);
+            investigatorCommand.setInvestigator(mergedInvestigator);
         }
-        Investigator mergedInvestigator = getDao().merge(investigator);
-        getDao().initialize(mergedInvestigator);
-        getDao().save(mergedInvestigator);
-        return mergedInvestigator;
+        
+        return investigatorCommand;
     }
 
     @Override
@@ -67,13 +72,13 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     }
 
     @Override
-    protected void layoutTabs(final Flow<Investigator> flow) {
+    protected void layoutTabs(final Flow<InvestigatorCommand> flow) {
         flow.addTab(new InvestigatorTab());
 
     }
 
     @Override
-    protected boolean shouldSave(final HttpServletRequest request, final Investigator command, final Tab<Investigator> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final InvestigatorCommand command, final Tab<InvestigatorCommand> tab) {
     	
     	if(isAjaxRequest(request)) return false;
         String action = (String) super.findInRequest(request, "_action");
@@ -91,7 +96,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
                                          final HttpServletResponse response, final Object command,
                                          final BindException errors) throws Exception {
 
-    	Investigator investigator = (Investigator) command;
+    	Investigator investigator = ((InvestigatorCommand) command).getInvestigator();
         ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
         String emailSendingErrorMessage = "";
         String statusMessage = "";
@@ -131,7 +136,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command,BindException errors, int page) throws Exception {
     	super.onBindAndValidate(request, command, errors, page);
-        Investigator investigator = (Investigator) command;
+        Investigator investigator = ((InvestigatorCommand) command).getInvestigator();
         if("syncInvestigator".equals(request.getParameter("_action"))){
         	Investigator remoteInvestigator = new RemoteInvestigator();   
         	List<Investigator> remoteInvs = null;

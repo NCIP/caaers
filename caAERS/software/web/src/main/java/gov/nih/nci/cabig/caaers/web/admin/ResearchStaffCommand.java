@@ -9,11 +9,17 @@ import java.util.ArrayList;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import gov.nih.nci.security.authorization.domainobjects.User;
 
 public class ResearchStaffCommand {
     protected final Log log = LogFactory.getLog(getClass());
     protected ResearchStaff researchStaff;
     protected List<ConfigProperty> allRoles;
+    protected User csmUser;
+    
+    protected boolean shouldSync;
+    private boolean oldShouldSync;
+    protected boolean canSync;
 
     protected List<SiteResearchStaffCommandHelper> siteResearchStaffCommandHelper;
     protected Date activeDate;
@@ -110,5 +116,41 @@ public class ResearchStaffCommand {
 
     public boolean getUA() {
         return isUA;
+    }
+
+    public boolean isCreateFlow(){
+       return researchStaff == null || researchStaff.getId() == null;
+    }
+
+    public User getCsmUser() {
+        return csmUser;
+    }
+
+    public void setCsmUser(User csmUser) {
+        this.csmUser = csmUser;
+    }
+
+    public boolean isShouldSync() {
+        return shouldSync;
+    }
+
+    public void setShouldSync(boolean shouldSync) {
+        this.oldShouldSync = this.shouldSync;
+        this.shouldSync = shouldSync;
+    }
+
+    public boolean isCanSync() {
+        return canSync;
+    }
+
+    public void setCanSync(boolean canSync) {
+        this.canSync = canSync;
+    }
+
+    /**
+     * If true, in create mode we could continue the CSM operation. 
+     */
+    public boolean canProceedCSMOperation(){
+        return oldShouldSync && shouldSync  && canSync;
     }
 }

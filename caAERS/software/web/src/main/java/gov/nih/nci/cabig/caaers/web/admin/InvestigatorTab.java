@@ -43,7 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Saurabh Agrawal
  */
-public class InvestigatorTab extends TabWithFields<Investigator> {
+public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
 
     protected static final Log log = LogFactory.getLog(InvestigatorTab.class);
 
@@ -72,11 +72,11 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     @Override
-    public void postProcess(final HttpServletRequest request, final Investigator command, final Errors errors) {
+    public void postProcess(final HttpServletRequest request, final InvestigatorCommand command, final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeInvestigator".equals(action)) {
-            command.getSiteInvestigators().remove(Integer.parseInt(selected));
+            command.getInvestigator().getSiteInvestigators().remove(Integer.parseInt(selected));
         }
     }
 
@@ -92,7 +92,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     @Override
-    public Map<String, Object> referenceData(HttpServletRequest request, Investigator command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, InvestigatorCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
 
@@ -102,9 +102,9 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(final Investigator command) {
+    public Map<String, InputFieldGroup> createFieldGroups(final InvestigatorCommand command) {
     	boolean remoteEntity = false;
-    	if (command instanceof RemoteInvestigator) {
+    	if (command.getInvestigator() instanceof RemoteInvestigator) {
     		remoteEntity = true;
     	}
 
@@ -185,7 +185,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         investigatorFieldGroup.getFields().add(faxNumberField);
         
         InputField loginIdField = null;
-        if(command.getWasLoginIdNull()){
+        if(command.getInvestigator().getWasLoginIdNull()){
         	loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
             InputFieldAttributes.setSize(loginIdField, 30);
         }else{
@@ -195,7 +195,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(investigatorFieldGroup);
-        map.addRepeatingFieldGroupFactory(rfgFactory, command.getSiteInvestigators().size());
+        map.addRepeatingFieldGroupFactory(rfgFactory, command.getInvestigator().getSiteInvestigators().size());
 
         return map;
     }
@@ -206,20 +206,32 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
      *  3. Start and End date validation
      */
     @Override
-    protected void validate(final Investigator command, final BeanWrapper commandBean,
+    protected void validate(final InvestigatorCommand command, final BeanWrapper commandBean,
                             final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         
         //Allowed to login checked
-        if(command.getAllowedToLogin()) {
+        if(command.getInvestigator().getAllowedToLogin()) {
         	
-        	if(StringUtils.isEmpty(command.getLoginId())){
+        	if(StringUtils.isEmpty(command.getInvestigator().getLoginId())){
         		errors.rejectValue("loginId", "USR_014", "User name must not be empty, while allowed to login.");
         	}else{
+
+
+                if(!command.isCanSync()){
+                  gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(command.getInvestigator().getLoginId());
+                  if(csmUser != null){
+                      command.setCsmUser(csmUser);
+                      command.setShouldSync(true);
+                  }
+                }
+
+
+                
         		try {
 					//login id should be unique. 
-					User anotherUser = csmUserRepository.getUserByName(command.getLoginId());
-					if(anotherUser != null && !ObjectUtils.equals(command.getId(), anotherUser.getId())){
-						errors.rejectValue("loginId","USR_001", new Object[]{command.getLoginId()},"The loginId is in use.");
+					User anotherUser = csmUserRepository.getUserByName(command.getInvestigator().getLoginId());
+					if(anotherUser != null && !ObjectUtils.equals(command.getInvestigator().getId(), anotherUser.getId())){
+						errors.rejectValue("loginId","USR_001", new Object[]{command.getInvestigator().getLoginId()},"The loginId is in use.");
 					}
 				} catch (CaaersNoSuchUserException e) {
 				}
@@ -227,13 +239,13 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         	
         	// Check if there is another investigator with same primary email-address.
             InvestigatorQuery investigatorQuery = new InvestigatorQuery();
-            investigatorQuery.filterByEmailAddress(command.getEmailAddress());
+            investigatorQuery.filterByEmailAddress(command.getInvestigator().getEmailAddress());
             List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
             
             if(investigatorList.size() > 1)
             	errors.rejectValue("emailAddress", "USR_010");
             
-            if(investigatorList.size() == 1 && command.getId() == null){
+            if(investigatorList.size() == 1 && command.getInvestigator().getId() == null){
             	errors.rejectValue("emailAddress", "USR_010");
             }
         	
@@ -260,7 +272,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
      
        */
         
-        List<SiteInvestigator> investigators = command.getSiteInvestigators();
+        List<SiteInvestigator> investigators = command.getInvestigator().getSiteInvestigators();
         Date now = new Date();
         for (int i = 0; i < investigators.size(); i++) {
             SiteInvestigator siteInvestigator = investigators.get(i);
@@ -289,8 +301,8 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
     
     public ModelAndView addSiteInvestigator(HttpServletRequest request , Object cmd, Errors errors){
-    	Investigator command =(Investigator)cmd;
-    	List<SiteInvestigator> siteInvestigators = command.getSiteInvestigators();
+    	Investigator investigator =((InvestigatorCommand)cmd).getInvestigator();
+    	List<SiteInvestigator> siteInvestigators = investigator.getSiteInvestigators();
     	
     	ModelAndView modelAndView = new ModelAndView("par/ajax/addSiteInvestigatorSection");
     	//SiteInvestigator siteInvestigator = new SiteInvestigator();
@@ -303,8 +315,8 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
     
     public ModelAndView removeSiteInvestigator(HttpServletRequest request , Object cmd, Errors errors){
-    	Investigator command =(Investigator)cmd;
-    	List<SiteInvestigator> siteInvestigators = command.getSiteInvestigators();
+    	InvestigatorCommand command =(InvestigatorCommand)cmd;
+    	List<SiteInvestigator> siteInvestigators = command.getInvestigator().getSiteInvestigators();
     	siteInvestigators.remove(siteInvestigators.get(Integer.parseInt(request.getParameter("index")))); //remove the element
     	
     	ModelAndView modelAndView = new ModelAndView("par/ajax/removeSiteInvestigatorSection");

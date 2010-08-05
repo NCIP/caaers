@@ -223,6 +223,43 @@ function toggelUserName(checkBoxChecked) {
 
 </script>
 
+<script type="text/javascript">
+
+            var syncWin = null;
+            function showPickCSMUserWindow(){
+                //will show the pick existing CSM user window.
+                 syncWin = new Window({className: "alphacube",
+                    width:680, height:390, zIndex: 100,
+                    resizable: true,
+                    destroyOnClose:true,
+                    recenterAuto:true,
+                    draggable:false,
+                    closable:false,
+                    minimizable:false,
+                    maximizable:false});
+                syncWin.setContent('rs-exist-popup');
+                syncWin.showCenter(true);
+                syncWin.show(false);
+            }
+
+            function syncUserDetails(){
+               $('shouldSyncInput').value = 'true';
+               $('researchStaff.firstName') =  '${command.csmUser.firstName}';
+               $('researchStaff.lastName') = '${command.csmUser.lastName}';
+               $('researchStaff.loginId') =  '${command.csmUser.loginName}';
+               Windows.closeAll();
+            }
+
+            function cancelSync(){
+               $('shouldSyncInput').value = 'false';
+               Windows.closeAll();
+            }
+
+            Event.observe(document, "dom:loaded", function(){
+                if(${command.shouldSync})   showPickCSMUserWindow();
+            });
+</script>
+
 </head>
 <body>
 
@@ -324,10 +361,10 @@ function toggelUserName(checkBoxChecked) {
                <tags:renderRow readOnly="${!investigatorCreate}" field="${field}"/>
             </c:forEach>
             
-            <c:if test="${command.wasLoginDisallowed}">
+            <c:if test="${command.investigator.wasLoginDisallowed}">
             	<tags:renderRow readOnly="${!siteInvestigatorUpdate}" field="${fieldGroups.investigator.fields[4]}"/>
             </c:if>
-            <c:if test="${!command.wasLoginDisallowed}">
+            <c:if test="${!command.investigator.wasLoginDisallowed}">
            	 <tags:renderRow field="${fieldGroups.investigator.fields[4]}">
            	 	<jsp:attribute name="value">Yes</jsp:attribute>
            	 </tags:renderRow>
@@ -362,7 +399,7 @@ function toggelUserName(checkBoxChecked) {
   				<th class="tableHeader" >Action</th>
   			</tr>
     				
-		            	<c:forEach var="siteInvestigator" varStatus="status" items="${command.siteInvestigators}">
+		            	<c:forEach var="siteInvestigator" varStatus="status" items="${command.investigator.siteInvestigators}">
 							<investigator:siteInvestigator 	
 								title="Associated Sites ${status.index + 1}" 
 								enableDelete="${empty siteInvestigator.id}"
@@ -375,7 +412,7 @@ function toggelUserName(checkBoxChecked) {
 								orgName="${siteInvestigator.organization.name}"/>
 						</c:forEach>
 				
-            	<c:if test="${empty command.siteInvestigators}">
+            	<c:if test="${empty command.investigator.siteInvestigators}">
             		<tr id="empty-inv-row">
             			<td colspan="2" align="center">The investigator is not assigned to any organization</td>
             		</tr>
@@ -390,6 +427,54 @@ function toggelUserName(checkBoxChecked) {
     <c:if test="${investigatorCreate}">
     	<tags:button cssClass="foo" id="addSiteInvestigator_btn" color="blue" value="Add Organization" icon="Add" type="button" onclick="addSiteInvestigator();" size="small"/>
 	</c:if>
+
+
+
+                    <%-- Box showing CSM sync details--%>
+                    <div style="display:none;">
+                        <div id="inv-exist-popup" style="display:none;">
+
+                            <tags:instructions code="user.exist.csm" />
+
+                            <ui:row path="csmUser.firstName">
+                                <jsp:attribute name="label">
+                                   <ui:label path="csmUser.firstName" text="" labelProperty="firstName" />
+                                </jsp:attribute>
+                                <jsp:attribute name="value">${command.csmUser.firstName}</jsp:attribute>
+                            </ui:row>
+                            <ui:row path="csmUser.lastName">
+                                <jsp:attribute name="label">
+                                   <ui:label path="csmUser.lastName" text="" labelProperty="lastName" />
+                                </jsp:attribute>
+                                <jsp:attribute name="value">${command.csmUser.lastName}</jsp:attribute>
+                            </ui:row>
+                            <ui:row path="csmUser.loginName">
+                                <jsp:attribute name="label">
+                                   <ui:label path="csmUser.loginName" text="" labelProperty="loginId" />
+                                </jsp:attribute>
+                                <jsp:attribute name="value">${command.csmUser.loginName}</jsp:attribute>
+                            </ui:row>
+                             <ui:row path="csmUser.emailId">
+                                <jsp:attribute name="label">
+                                   <ui:label path="csmUser.emailId" text="" labelProperty="emailAddress" />
+                                </jsp:attribute>
+                                <jsp:attribute name="value">${command.csmUser.emailId}</jsp:attribute>
+                            </ui:row>
+                            <div class="standard-nav-buttons">
+				                <div class="content buttons autoclear">
+    	                            <div>
+                                      <span>
+                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()"  value="Cancel" />
+                                      </span>
+                                      <span>
+                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"  value="Sync" icon="check"/>
+                                      </span>
+                                    </div>
+			                    </div>
+                            </div>
+                        </div>
+                  </div>
+
      </jsp:attribute>
      
 	<jsp:attribute name="tabControls">

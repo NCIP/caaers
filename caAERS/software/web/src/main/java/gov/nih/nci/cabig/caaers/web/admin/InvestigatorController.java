@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author Saurabh
  */
-public abstract class InvestigatorController<C extends Investigator> extends AutomaticSaveAjaxableFormController<C, Investigator, InvestigatorDao> {
+public abstract class InvestigatorController<C extends InvestigatorCommand> extends AutomaticSaveAjaxableFormController<C, Investigator, InvestigatorDao> {
 
     private static final Log log = LogFactory.getLog(InvestigatorController.class);
 
@@ -54,7 +54,7 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
     private EventFactory eventFactory;
 
     public InvestigatorController() {
-        setCommandClass(Investigator.class);
+        setCommandClass(InvestigatorCommand.class);
         Flow<C> flow = new Flow<C>("Create Investigator");
         layoutTabs(flow);
         setFlow(flow);
@@ -140,7 +140,7 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
                     final HttpServletResponse response, final Object command,
                     final BindException errors) throws Exception {
 
-    	Investigator investigator = (Investigator) command;
+    	Investigator investigator =( (InvestigatorCommand) command).getInvestigator();
         ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
         String emailSendingErrorMessage = "";
         try {
@@ -178,7 +178,7 @@ public abstract class InvestigatorController<C extends Investigator> extends Aut
 
     @Override
     protected Investigator getPrimaryDomainObject(final C command) {
-        return command;
+        return command.getInvestigator();
     }
 
     public OrganizationDao getOrganizationDao() {

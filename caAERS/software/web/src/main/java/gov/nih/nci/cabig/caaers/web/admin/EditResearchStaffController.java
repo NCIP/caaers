@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.security.authorization.domainobjects.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,6 +43,7 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
         command.setResearchStaff(researchStaff);
         command.setAllRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));
         command.buildResearchStaffCommandHelpers();
+        command.setCsmUser(new User());
         return command;
     }
     

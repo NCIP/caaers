@@ -5,10 +5,17 @@ import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.security.authorization.domainobjects.User;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @author Saurabh Agrawal
@@ -34,6 +41,8 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
         command.getResearchStaff().addSiteResearchStaff(srs);
         srs.setResearchStaff(command.getResearchStaff());
         command.addSiteResearchStaffCommandHelper();
+
+        command.setCsmUser(new User());
         
         return command;
     }
@@ -42,5 +51,29 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         if (isAjaxRequest(request)) return true;
         return super.suppressValidation(request, command); 
+    }
+
+    /**
+     * In addition to the normal functionality, will check and store the information about proceeding with CSM operation.
+     */
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, command, errors, page);
+        request.setAttribute("_csmProceed", ((ResearchStaffCommand)command).canProceedCSMOperation() );
+    }
+
+    /**
+     *  In addition to the normal functionality, will check whether the user can proceed with the CSM operation.
+     */
+    @Override
+    protected boolean isFinishRequest(HttpServletRequest request) {
+        Boolean _csmProceed = (Boolean)request.getAttribute("_csmProceed");
+        boolean canFinish = _csmProceed == null ? true :  _csmProceed.booleanValue() ;
+        return canFinish && super.isFinishRequest(request);   
+    }
+
+    public void populateSaveConfirmationMessage( Map refdata, HttpServletRequest request, Object oCommand, Errors errors, int page){
+        Boolean _csmProceed = (Boolean)request.getAttribute("_csmProceed");
+        if(_csmProceed == null || _csmProceed) super.populateSaveConfirmationMessage(refdata, request, oCommand, errors, page);
     }
 }
