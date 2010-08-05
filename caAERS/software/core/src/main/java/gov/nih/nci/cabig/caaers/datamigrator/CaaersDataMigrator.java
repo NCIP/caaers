@@ -476,7 +476,7 @@ public class CaaersDataMigrator {
 
     	String oracleInsertSql = "INSERT INTO study_personnel (id, study_sites_id, " +
 																"role_code, retired_indicator, start_date, end_date, site_research_staffs_id) " +
-																"VALUES (seq_study_personnel_id_seq.nextval,?, ?, ?, ?, ?, ?)";
+																"VALUES (seq_study_personnel_id.nextval,?, ?, ?, ?, ?, ?)";
 
 		if(StringUtils.equals(ORACLE_DB, properties.getProperty(DB_NAME))){
 			return oracleInsertSql;
