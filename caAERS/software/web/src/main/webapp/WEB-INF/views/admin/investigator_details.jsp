@@ -240,7 +240,6 @@ function toggelUserName(checkBoxChecked) {
                 syncWin.setContent('inv-exist-popup');
                 syncWin.showCenter(true);
                 syncWin.show(false);
-                alert(syncWin)
             }
 
             function syncUserDetails(){
