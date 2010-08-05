@@ -136,7 +136,7 @@ Event.observe(window, "load", function() {
 
 		toggelUserName(${command.investigator.allowedToLogin});
 
-		$$('input#allowedToLogin').each(function(allowedLoginChkBox) {
+		$$('input#investigator.allowedToLogin').each(function(allowedLoginChkBox) {
 			allowedLoginChkBox.observe('click',function(evt){
 				var element = Event.element(evt);
 				toggelUserName(element.checked);
@@ -144,7 +144,7 @@ Event.observe(window, "load", function() {
 		});
 
 		/*
-		var allowedLoginChkBox = $('allowedToLogin');
+		var allowedLoginChkBox = $('investigator.allowedToLogin');
 		if(allowedLoginChkBox){
 			allowedLoginChkBox.observe('click',function(evt){
 				var element = Event.element(evt);
@@ -196,27 +196,27 @@ Event.observe(window, "load", function() {
 		if(action == 'Deactivate'){
 			var dConfirmation = confirm("Do you really want to Deactivate?");
 			if(!dConfirmation) return; //return if not agreed.
-			$('siteInvestigators['+ selected + '].endDate').value=today;
+			$('investigator.siteInvestigators['+ selected + '].endDate').value=today;
 		}
 		if(action == 'Activate'){
 			var aConfirmation = confirm("Do you really want to Activate?");
 			if(!aConfirmation) return; //return if not agreed.
-			$('siteInvestigators['+ selected + '].startDate').value=today;
-			$('siteInvestigators['+ selected + '].endDate').value="";
+			$('investigator.siteInvestigators['+ selected + '].startDate').value=today;
+			$('investigator.siteInvestigators['+ selected + '].endDate').value="";
 		}
 	}
 
 function toggelUserName(checkBoxChecked) {
     if (checkBoxChecked) {
-        $('loginId-row').show();
-        $('loginId').addClassName("required");
-        $('loginId').addClassName("validate-NOTEMPTY&&MAXLENGTH2000");
+        $('investigator.loginId-row').show();
+        $('investigator.loginId').addClassName("required");
+        $('investigator.loginId').addClassName("validate-NOTEMPTY&&MAXLENGTH2000");
     } else {    	
-        $('loginId-row').hide();
-        if ($('loginId')!=null) {
-        	$('loginId').value="";
-        	$('loginId').removeClassName("required");
-        	$('loginId').removeClassName("validate-NOTEMPTY&&MAXLENGTH2000");
+        $('investigator.loginId-row').hide();
+        if ($('investigator.loginId')!=null) {
+        	$('investigator.loginId').value="";
+        	$('investigator.loginId').removeClassName("required");
+        	$('investigator.loginId').removeClassName("validate-NOTEMPTY&&MAXLENGTH2000");
         }
     }
 }
@@ -244,9 +244,9 @@ function toggelUserName(checkBoxChecked) {
 
             function syncUserDetails(){
                $('canSyncInput').value = 'true';
-               $('researchStaff.firstName').value =  '${command.csmUser.firstName}';
-               $('researchStaff.lastName').value = '${command.csmUser.lastName}';
-               $('researchStaff.loginId').value =  '${command.csmUser.loginName}';
+               $('investigator.firstName').value =  '${command.csmUser.firstName}';
+               $('investigator.lastName').value = '${command.csmUser.lastName}';
+               $('investigator.loginId').value =  '${command.csmUser.loginName}';
                Windows.closeAll();
             }
 
