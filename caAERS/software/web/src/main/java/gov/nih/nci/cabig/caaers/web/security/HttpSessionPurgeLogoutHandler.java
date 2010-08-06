@@ -40,6 +40,11 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler {
 		    }
 
 
+            for(Cookie c : request.getCookies()){
+                c.setMaxAge(0);
+                response.addCookie(c);
+            }
+
             response.addCookie(new Cookie("JSESSIONID", "iaminvalid"));
             response.addCookie(new Cookie("jsessionid", "iaminvalid"));
 
