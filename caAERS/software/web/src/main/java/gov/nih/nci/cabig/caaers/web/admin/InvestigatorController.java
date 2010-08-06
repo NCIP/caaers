@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -45,6 +46,7 @@ public abstract class InvestigatorController<C extends InvestigatorCommand> exte
 
     protected InvestigatorDao investigatorDao;
     protected InvestigatorRepository investigatorRepository;
+    protected CSMUserRepository csmUserRepository;
 
     protected OrganizationDao organizationDao;
 
@@ -233,5 +235,13 @@ public abstract class InvestigatorController<C extends InvestigatorCommand> exte
 
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
+    }
+
+    public CSMUserRepository getCsmUserRepository() {
+        return csmUserRepository;
+    }
+
+    public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
+        this.csmUserRepository = csmUserRepository;
     }
 }

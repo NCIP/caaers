@@ -216,17 +216,8 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
         		errors.rejectValue("investigator.loginId", "USR_014", "User name must not be empty, while allowed to login.");
         	}else{
 
-
-              gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(command.getInvestigator().getLoginId());
-              command.setShouldSync(csmUser != null);
-              if(csmUser != null){
-                 command.setCsmUser(csmUser);
-              }
-
-
-                
         		try {
-					//login id should be unique. 
+					//login id should be unique.
 					User anotherUser = csmUserRepository.getUserByName(command.getInvestigator().getLoginId());
 					if(anotherUser != null && !ObjectUtils.equals(command.getInvestigator().getId(), anotherUser.getId())){
 						errors.rejectValue("investigator.loginId","USR_001", new Object[]{command.getInvestigator().getLoginId()},"The loginId is in use.");

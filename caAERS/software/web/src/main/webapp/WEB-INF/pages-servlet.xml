@@ -436,6 +436,7 @@
     <property name="sessionForm"><value>true</value></property>
     <property name="authenticationMode" ref="authenticationMode"/>
     <property name="investigatorRepository" ref="investigatorRepository" />
+    <property name="csmUserRepository" ref="csmUserRepository" />
   </bean>
   
   <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
@@ -472,7 +473,8 @@
   <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
     <property name="sessionForm"><value>true</value></property>
     <property name="webControllerValidator" ref="webControllerValidator"/>
-    <property name="authenticationMode" ref="authenticationMode"/>         
+    <property name="authenticationMode" ref="authenticationMode"/>
+    <property name="csmUserRepository" ref="csmUserRepository" />
   </bean>
 
   <bean name="/admin/createIND" id="createINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>

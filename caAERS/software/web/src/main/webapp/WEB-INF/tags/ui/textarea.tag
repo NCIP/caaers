@@ -28,6 +28,6 @@
 
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
     <jsp:attribute name="field">
-        <form:textarea path="${path}" id="${path}" disabled="${disabled}" cols="${not empty cols ? cols : ''}" rows="${not empty rows ? rows : ''}" title="${title}" cssClass="${cssValue} ${validationCss} ${cssClass}" />
+        <form:textarea path="${path}" id="${path}" disabled="${disabled}" cols="${not empty cols ? cols : ''}" rows="${not empty rows ? rows : ''}" title="${title}" cssClass="${cssValue} ${validationCss} ${cssClass}" htmlEscape="true" />
     </jsp:attribute>
 </ui:fieldWrapper>

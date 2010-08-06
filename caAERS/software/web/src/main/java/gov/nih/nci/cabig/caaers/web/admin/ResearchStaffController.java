@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
@@ -57,6 +58,8 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     protected WebControllerValidator webControllerValidator;
     private String authenticationMode;
     private EventFactory eventFactory;
+    protected CSMUserRepository csmUserRepository;
+
 
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
@@ -250,5 +253,13 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
+    }
+
+    public CSMUserRepository getCsmUserRepository() {
+        return csmUserRepository;
+    }
+
+    public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
+        this.csmUserRepository = csmUserRepository;
     }
 }

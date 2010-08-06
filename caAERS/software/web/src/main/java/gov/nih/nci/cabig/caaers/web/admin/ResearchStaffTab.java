@@ -158,14 +158,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             boolean loginIdExists =  false;
             if(StringUtils.isNotBlank(loginId)){
 
-
-               gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(loginId);
-               command.setShouldSync(csmUser != null);
-               if(csmUser != null){
-                 command.setCsmUser(csmUser);
-               }
-
-
                 try{
                     User user = csmUserRepository.getUserByName(loginId);
                     loginIdExists = user != null;

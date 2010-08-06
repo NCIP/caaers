@@ -23,9 +23,9 @@
 <c:set scope="request" var="cntRF" value="${requestScope.cntRF + 1}" />
 <c:choose>
     <c:when test="${field.categoryName == 'text'}">
-        <c:if test="${readonly}"><caaers:value path="${field.propertyName}" /></c:if>
+        <c:if test="${readonly}"><caaers:value path="${field.propertyName}" htmlEscape="true" /></c:if>
         <c:if test="${!readonly}">
-            <form:input path="${field.propertyName}" id="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${cssValue} ${field.validatorClassName}"/>
+            <form:input path="${field.propertyName}" id="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${cssValue} ${field.validatorClassName}" htmlEscape="true"/>
         </c:if>
     </c:when>
 
@@ -53,7 +53,9 @@
                        cols="${not empty field.attributes.cols ? field.attributes.cols : ''}"
                        rows="${not empty field.attributes.rows ? field.attributes.rows : ''}"
                        title="${field.displayName}"
-                       cssClass="${cssValue} ${field.validatorClassName}" />
+                       cssClass="${cssValue} ${field.validatorClassName}"
+                       htmlEscape="true"
+                />
     </c:when>
 
     <c:when test="${field.categoryName == 'checkbox'}">

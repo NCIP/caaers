@@ -107,7 +107,7 @@ function submitPage(s){
     				<ui:label path="investigator.faxNumber" text="Fax"></ui:label>
     			</jsp:attribute>
 			</ui:row>
-			<c:if test="${command.allowedToLogin}">
+			<c:if test="${investigator.allowedToLogin}">
 	        <ui:row path="investigator.loginId">
     			<jsp:attribute name="value">
     				${investigator.loginId}

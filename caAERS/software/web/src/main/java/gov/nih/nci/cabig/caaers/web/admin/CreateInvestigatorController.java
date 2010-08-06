@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
@@ -88,9 +89,19 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
      * In addition to the normal functionality, will check and store the information about proceeding with CSM operation.
      */
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
-        super.onBindAndValidate(request, command, errors, page);
-        request.setAttribute("_csmProceed", ((InvestigatorCommand)command).canProceedCSMOperation() );
+    protected void onBindAndValidate(HttpServletRequest request, Object ocommand, BindException errors, int page) throws Exception {
+       InvestigatorCommand command = (InvestigatorCommand) ocommand;
+       super.onBindAndValidate(request, command, errors, page);
+      if(StringUtils.isNotBlank(command.getInvestigator().getLoginId())){
+          gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(command.getInvestigator().getLoginId());
+          command.setShouldSync(csmUser != null);
+          if(csmUser != null){
+            command.setCsmUser(csmUser);
+          }
+          request.setAttribute("_csmProceed", ((InvestigatorCommand)command).canProceedCSMOperation() );
+      }
+
+
     }
 
     /**
