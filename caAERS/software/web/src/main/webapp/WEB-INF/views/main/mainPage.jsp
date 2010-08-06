@@ -18,7 +18,7 @@
 </head>
 <body>
 
-
+<!-- CURTIME : <%=new java.util.Date().getTime()%>  -->
 
 <c:set var="_regularTasksVisible" value="${false}" />
 <c:set var="_regularTasks">
