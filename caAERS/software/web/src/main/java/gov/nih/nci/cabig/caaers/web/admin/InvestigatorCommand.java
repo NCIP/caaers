@@ -13,7 +13,6 @@ public class InvestigatorCommand {
     protected User csmUser;
 
     protected boolean shouldSync;
-    private boolean oldShouldSync;
     protected boolean canSync;
 
     public Investigator getInvestigator() {
@@ -43,7 +42,6 @@ public class InvestigatorCommand {
     }
 
     public void setShouldSync(boolean shouldSync) {
-        this.oldShouldSync = this.shouldSync;
         this.shouldSync = shouldSync;
     }
 

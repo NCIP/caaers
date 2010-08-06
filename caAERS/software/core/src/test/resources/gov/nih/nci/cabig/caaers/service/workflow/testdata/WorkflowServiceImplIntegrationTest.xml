@@ -17,7 +17,32 @@
 		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
 		EMAIL_ID="system_admin@caaers.org" 
 		UPDATE_DATE="2007-01-27" />
-	
+
+    <CSM_GROUP  group_id="2" group_name="system_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="3" group_name="business_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="4" group_name="person_and_organization_information_manager" application_id="-1" />
+    <CSM_GROUP  group_id="5" group_name="data_importer" application_id="-1" />
+    <CSM_GROUP  group_id="6" group_name="user_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="7" group_name="study_qa_manager" application_id="-1" />
+    <CSM_GROUP  group_id="8" group_name="study_creator" application_id="-1" />
+    <CSM_GROUP  group_id="9" group_name="supplemental_study_information_manager"  application_id="-1" />
+    <CSM_GROUP  group_id="10" group_name="study_team_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="11" group_name="study_site_participation_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="12" group_name="ae_rule_and_report_manager" application_id="-1" />
+    <CSM_GROUP  group_id="13" group_name="study_calendar_template_builder" application_id="-1" />
+    <CSM_GROUP  group_id="14" group_name="registration_qa_manager" application_id="-1" />
+    <CSM_GROUP  group_id="15" group_name="subject_manager" application_id="-1" />
+    <CSM_GROUP  group_id="16" group_name="study_subject_calendar_manager" application_id="-1" />
+    <CSM_GROUP  group_id="17" group_name="registrar" application_id="-1" />
+    <CSM_GROUP  group_id="18" group_name="ae_reporter" application_id="-1" />
+    <CSM_GROUP  group_id="19" group_name="ae_expedited_report_reviewer" application_id="-1" />
+    <CSM_GROUP  group_id="20" group_name="ae_study_data_reviewer" application_id="-1" />
+    <CSM_GROUP  group_id="21" group_name="lab_impact_calendar_notifier" application_id="-1" />
+    <CSM_GROUP  group_id="22" group_name="lab_data_user" application_id="-1" />
+    <CSM_GROUP  group_id="23" group_name="data_reader" application_id="-1" />
+    <CSM_GROUP  group_id="24" group_name="data_analyst" application_id="-1" />
+
+
 	<CSM_USER_GROUP USER_GROUP_ID="-1" USER_ID="-1" GROUP_ID="2" />
 	<CSM_USER_GROUP USER_GROUP_ID="-2" USER_ID="-1" GROUP_ID="3" />
 	<CSM_USER_GROUP USER_GROUP_ID="-3" USER_ID="-1" GROUP_ID="4" />
@@ -114,7 +139,7 @@
             id="-4004"
             site_id="-1000"
             investigator_id="-902"/>
-      <CSM_USER_GROUP USER_GROUP_ID="-27" USER_ID="-2" GROUP_ID="18" />
+      <CSM_USER_GROUP USER_GROUP_ID="-27" USER_ID="-3" GROUP_ID="18" />
 <!-- =========================================== -->
 
 

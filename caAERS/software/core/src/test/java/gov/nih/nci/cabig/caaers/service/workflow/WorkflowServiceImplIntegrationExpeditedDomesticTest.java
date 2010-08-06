@@ -26,7 +26,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 	
 	public void testNextTransitions() {
 		Integer id = null;
-		String loginId = "SYSTEM_ADMIN";
+		String loginId = "pc@def.com";
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);
 			Long l = pInstance.getId();
@@ -36,6 +36,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
+            System.out.println(nextTransitions);
 			assertFalse(nextTransitions.isEmpty());
 			assertEquals(2, nextTransitions.size());
 			assertEquals("Send to Physician for Review", nextTransitions.get(1).getName());

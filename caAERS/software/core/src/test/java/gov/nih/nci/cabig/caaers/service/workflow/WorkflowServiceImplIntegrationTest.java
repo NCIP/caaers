@@ -96,7 +96,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 		interruptSession();
 		{
-			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
+ 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
             System.out.println(nextTransitions);
 			assertTrue(nextTransitions.isEmpty());

@@ -18,7 +18,6 @@ public class ResearchStaffCommand {
     protected User csmUser;
     
     protected boolean shouldSync;
-    private boolean oldShouldSync;
     protected boolean canSync;
 
     protected List<SiteResearchStaffCommandHelper> siteResearchStaffCommandHelper;
@@ -135,7 +134,6 @@ public class ResearchStaffCommand {
     }
 
     public void setShouldSync(boolean shouldSync) {
-        this.oldShouldSync = this.shouldSync;
         this.shouldSync = shouldSync;
     }
 
