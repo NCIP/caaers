@@ -158,13 +158,12 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             boolean loginIdExists =  false;
             if(StringUtils.isNotBlank(loginId)){
 
-               if(!command.isCanSync()){
-                 gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(loginId);
-                 if(csmUser != null){
-                     command.setCsmUser(csmUser);
-                     command.setShouldSync(true);
-                 }
-               }
+
+               gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(loginId);
+               if(csmUser != null){
+                 command.setCsmUser(csmUser);
+                 command.setShouldSync(true);
+                }
 
 
                 try{
@@ -176,6 +175,8 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             }
 
             if(loginIdExists) {
+                 command.setCanSync(false);
+                 command.setShouldSync(false);
             	 errors.reject("USR_001", new Object[]{loginId},  "Username already in use..!");
             }
         }

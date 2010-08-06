@@ -217,13 +217,11 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
         	}else{
 
 
-                if(!command.isCanSync()){
-                  gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(command.getInvestigator().getLoginId());
-                  if(csmUser != null){
-                      command.setCsmUser(csmUser);
-                      command.setShouldSync(true);
-                  }
-                }
+              gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(command.getInvestigator().getLoginId());
+              if(csmUser != null){
+                  command.setCsmUser(csmUser);
+                  command.setShouldSync(true);
+              }
 
 
                 
@@ -232,6 +230,8 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
 					User anotherUser = csmUserRepository.getUserByName(command.getInvestigator().getLoginId());
 					if(anotherUser != null && !ObjectUtils.equals(command.getInvestigator().getId(), anotherUser.getId())){
 						errors.rejectValue("investigator.loginId","USR_001", new Object[]{command.getInvestigator().getLoginId()},"The loginId is in use.");
+                        command.setCanSync(false);
+                        command.setShouldSync(false);
 					}
 				} catch (CaaersNoSuchUserException e) {
 				}

@@ -151,6 +151,7 @@ public class ResearchStaffCommand {
      * If true, in create mode we could continue the CSM operation. 
      */
     public boolean canProceedCSMOperation(){
-        return (oldShouldSync && shouldSync  && canSync )  || !shouldSync;
+       if(csmUser == null) return true;
+       return canSync;
     }
 }
