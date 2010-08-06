@@ -331,7 +331,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     		SuiteRoleMembership suiteRoleMembership = null;
     		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
     			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			if(suiteRole.isSiteScoped()){
+    			if(suiteRole.isScoped()){
         			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
         			if(srsList == null || srsList.isEmpty()){
         				provisioningSession.deleteRole(suiteRole);
@@ -342,6 +342,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         					provisioningSession.replaceRole(suiteRoleMembership);
         				}
         			}
+    			}else{
+    				provisioningSession.deleteRole(suiteRole);
     			}
     		}
     	}
@@ -349,7 +351,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     		SuiteRoleMembership suiteRoleMembership = null;
     		for(SiteResearchStaffRole eachSrsRole : eachSrs.getInActiveSiteResearchStaffRoles()){
     			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			if(suiteRole.isSiteScoped()){
+    			if(suiteRole.isScoped()){
         			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
         			if(srsList.isEmpty()){
         				provisioningSession.deleteRole(suiteRole);
@@ -360,12 +362,14 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         					provisioningSession.replaceRole(suiteRoleMembership);
         				}
         			}
+    			}else{
+    				provisioningSession.deleteRole(suiteRole);
     			}
     		}
     		for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
     			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			if(suiteRole.isSiteScoped()){
-        			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+    			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+    			if(suiteRole.isScoped()){
         			if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
         				suiteRoleMembership.forAllSites();
         			}
@@ -373,6 +377,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         				suiteRoleMembership.addSite(eachSrs.getOrganization().getNciInstituteCode());
         			}
             		provisioningSession.replaceRole(suiteRoleMembership);
+    			}else{
+    				provisioningSession.replaceRole(suiteRoleMembership);
     			}
     		}
     	}
