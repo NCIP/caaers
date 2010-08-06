@@ -1,15 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.web.tags.csm.AuthorizationDecisionCache;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.ui.logout.LogoutHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  *
@@ -19,9 +23,10 @@ import java.util.Enumeration;
  * @author Biju Joseph
  *
  */
-public class HttpSessionPurgeLogoutHandler implements LogoutHandler {
+public class HttpSessionPurgeLogoutHandler implements LogoutHandler, ApplicationContextAware {
 
     private static final Log logger = LogFactory.getLog(HttpSessionPurgeLogoutHandler.class);
+    private ApplicationContext applicationContext;
 
     /**
      * This method will obtain the session and will explicitly set all the attributes to NULL and then remove it from session.
@@ -36,6 +41,14 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler {
             HttpSession session = request.getSession(false);
             
 		    if (session != null) {
+
+                String sessionId = session.getId();
+                Map map = applicationContext.getBeansOfType(AuthorizationDecisionCache.class,true,false);
+                if(map != null){
+                    for(Object cacheBean : map.values()){
+                        ((AuthorizationDecisionCache)cacheBean).clear(sessionId);
+                    }
+                }
 			    session.invalidate();
 		    }
 
@@ -53,5 +66,14 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler {
            if(logger.isDebugEnabled()) logger.debug("Ignore this error",e);
         }
 
+    }
+
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 }

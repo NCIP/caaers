@@ -7,7 +7,11 @@ import net.sf.ehcache.Element;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * This class caches the result of authorization calls made in the current session. 
  * This is to avoid call to CSM, repeatedly about the same domainObject,privilege combination.
@@ -94,6 +98,24 @@ public class AuthorizationDecisionCache implements Serializable{
 		decisionCache.removeAll();
 	}
 
+
+    public void clear(String scopeDiscriminator){
+        List keys = decisionCache.getKeys();
+        List keysToRemove =  new ArrayList();
+        if(keys != null){
+            for(Iterator it = keys.iterator(); it.hasNext(); ){
+                if(StringUtils.startsWith(String.valueOf(it), scopeDiscriminator)){
+                    keysToRemove.add(it);
+                }
+            }
+
+            for(Object o : keysToRemove){
+                decisionCache.remove(o);
+            }
+
+        }
+    }
+
     /**
      * Will return the cache key to use.
      * http://jira.semanticbits.com/browse/CAAERS-4098
@@ -140,5 +162,5 @@ public class AuthorizationDecisionCache implements Serializable{
 	public void setDecisionCache(Ehcache decisionCache) {
 		this.decisionCache = decisionCache;
 	}
-	
+
 }
