@@ -59,7 +59,7 @@ public class InvestigatorCommand {
      * If true, in create mode we could continue the CSM operation.
      */
     public boolean canProceedCSMOperation(){
-        if(csmUser == null) return true;
+        if(csmUser == null || csmUser.getUserId() == null) return true;
         return canSync;
     }
 }

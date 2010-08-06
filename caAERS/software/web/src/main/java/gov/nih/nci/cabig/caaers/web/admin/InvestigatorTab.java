@@ -218,9 +218,9 @@ public class InvestigatorTab extends TabWithFields<InvestigatorCommand> {
 
 
               gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(command.getInvestigator().getLoginId());
+              command.setShouldSync(csmUser != null);
               if(csmUser != null){
-                  command.setCsmUser(csmUser);
-                  command.setShouldSync(true);
+                 command.setCsmUser(csmUser);
               }
 
 

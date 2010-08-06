@@ -160,10 +160,10 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
 
                gov.nih.nci.security.authorization.domainobjects.User csmUser =  csmUserRepository.getCSMUserByName(loginId);
+               command.setShouldSync(csmUser != null);
                if(csmUser != null){
                  command.setCsmUser(csmUser);
-                 command.setShouldSync(true);
-                }
+               }
 
 
                 try{
