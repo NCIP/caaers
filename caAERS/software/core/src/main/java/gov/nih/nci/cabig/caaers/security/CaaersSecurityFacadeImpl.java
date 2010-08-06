@@ -330,15 +330,17 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     		SuiteRoleMembership suiteRoleMembership = null;
     		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
     			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
-    			if(srsList == null || srsList.isEmpty()){
-    				provisioningSession.deleteRole(suiteRole);
-    			}else{
-    				suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-    				if(!suiteRoleMembership.isAllSites()){
-    					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
-    					provisioningSession.replaceRole(suiteRoleMembership);
-    				}
+    			if(suiteRole.isSiteScoped()){
+        			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
+        			if(srsList == null || srsList.isEmpty()){
+        				provisioningSession.deleteRole(suiteRole);
+        			}else{
+        				suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+        				if(!suiteRoleMembership.isAllSites()){
+        					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
+        					provisioningSession.replaceRole(suiteRoleMembership);
+        				}
+        			}
     			}
     		}
     	}
@@ -346,27 +348,31 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     		SuiteRoleMembership suiteRoleMembership = null;
     		for(SiteResearchStaffRole eachSrsRole : eachSrs.getInActiveSiteResearchStaffRoles()){
     			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
-    			if(srsList.isEmpty()){
-    				provisioningSession.deleteRole(suiteRole);
-    			}else{
-   					suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-    				if(!suiteRoleMembership.isAllSites()){
-    					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
-    					provisioningSession.replaceRole(suiteRoleMembership);
-    				}
+    			if(suiteRole.isSiteScoped()){
+        			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
+        			if(srsList.isEmpty()){
+        				provisioningSession.deleteRole(suiteRole);
+        			}else{
+       					suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+        				if(!suiteRoleMembership.isAllSites()){
+        					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
+        					provisioningSession.replaceRole(suiteRoleMembership);
+        				}
+        			}
     			}
     		}
     		for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
     			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-    			if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
-    				suiteRoleMembership.forAllSites();
+    			if(suiteRole.isSiteScoped()){
+        			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+        			if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
+        				suiteRoleMembership.forAllSites();
+        			}
+        			if(!suiteRoleMembership.isAllSites()){
+        				suiteRoleMembership.addSite(eachSrs.getOrganization().getNciInstituteCode());
+        			}
+            		provisioningSession.replaceRole(suiteRoleMembership);
     			}
-    			if(!suiteRoleMembership.isAllSites()){
-    				suiteRoleMembership.addSite(eachSrs.getOrganization().getNciInstituteCode());
-    			}
-        		provisioningSession.replaceRole(suiteRoleMembership);
     		}
     	}
     }
