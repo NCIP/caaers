@@ -36,6 +36,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleConte
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -934,16 +935,26 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     }
 
 	public void clearUserCache(String userName) {
-		String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
-		//loginId is cacheKey , remove the cache for that user .. 
-		CacheManager cacheManager = CSMCacheManager.getCacheManager() ;
-		
-		Cache cache = cacheManager.getCache(loginId);
-		if (cache == null) {
+		if (StringUtilities.isBlank(userName)) {
 			return;
-		} else {
-			cacheManager.removeCache(loginId);
-		}	
+		}
+		
+		Long id = csmUserRepository.getCSMUserByName(userName).getUserId();
+		if (id != null ) {
+			String loginId = id.toString();
+
+			//loginId is cacheKey , remove the cache for that user .. 
+			CacheManager cacheManager = CSMCacheManager.getCacheManager() ;
+			
+			Cache cache = cacheManager.getCache(loginId);
+			if (cache == null) {
+				return;
+			} else {
+				cacheManager.removeCache(loginId);
+			}
+		}
+		return;
+			
 	}
 	
 	private List<?> search(final AbstractQuery query){
