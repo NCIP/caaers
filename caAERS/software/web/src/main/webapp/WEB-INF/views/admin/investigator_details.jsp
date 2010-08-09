@@ -248,6 +248,7 @@ function toggelUserName(checkBoxChecked) {
                $('investigator.lastName').value = '${command.csmUser.lastName}';
                $('investigator.loginId').value =  '${command.csmUser.loginName}';
                Windows.closeAll();
+               $('command').submit()
             }
 
             function cancelSync(){

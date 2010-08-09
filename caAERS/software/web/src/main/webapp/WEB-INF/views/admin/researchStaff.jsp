@@ -143,8 +143,9 @@
 
             function cancelSync(){
                $('canSyncInput').value = 'false';
-                if($('researchStaff.loginId')) $('researchStaff.loginId').value = '';
+               if($('researchStaff.loginId')) $('researchStaff.loginId').value = '';
                Windows.closeAll();
+               $('command').submit()
             }
 
             Event.observe(document, "dom:loaded", function(){
@@ -303,10 +304,10 @@
                                       <span>
                                         <caaers:message code="LBL_csm_user_sync" var="_syncBTN" text="Sync" />
                                         <caaers:message code="LBL_csm_user_cancel" var="_cancelBTN" text="Cancel" />
-                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()"  value="${_syncBTN}" />
+                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()"  value="${_cancelBTN}" />
                                       </span>
                                       <span>
-                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"  value="${_cancelBTN}" icon="check"/>
+                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"  value="${_syncBTN}" icon="check"/>
                                       </span>
                                     </div>
 			                    </div>
