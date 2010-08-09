@@ -252,6 +252,7 @@ function toggelUserName(checkBoxChecked) {
 
             function cancelSync(){
                $('canSyncInput').value = 'false';
+               if($('investigator.loginId')) $('investigator.loginId').value = '';
                Windows.closeAll();
             }
 
@@ -467,10 +468,13 @@ function toggelUserName(checkBoxChecked) {
 				                <div class="content buttons autoclear">
     	                            <div>
                                       <span>
-                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()"  value="Cancel" />
+                                        <caaers:message code="LBL_csm_user_sync" var="_syncBTN" text="Sync" />
+                                        <caaers:message code="LBL_csm_user_cancel" var="_cancelBTN" text="Cancel" />
+                                          
+                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()" value="${_cancelBTN}" />
                                       </span>
                                       <span>
-                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"  value="Sync" icon="check"/>
+                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"   value="${_syncBTN}" icon="check"/>
                                       </span>
                                     </div>
 			                    </div>

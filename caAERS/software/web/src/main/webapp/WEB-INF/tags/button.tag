@@ -5,7 +5,7 @@
 <%@ attribute name="id" required="false" %>
 <%@ attribute name="onclick" required="false" %>
 <%@ attribute name="icon" required="false" %>
-<%@ attribute name="value" required="true" %>
+<%@ attribute name="value" required="true" rtexprvalue="true" %>
 <%@ attribute name="hoverTitle" required="false" %>
 <%@ attribute name="href" required="false" %>
 <%@ attribute name="cssClass" required="false" %>

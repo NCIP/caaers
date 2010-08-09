@@ -143,6 +143,7 @@
 
             function cancelSync(){
                $('canSyncInput').value = 'false';
+                if($('researchStaff.loginId')) $('researchStaff.loginId').value = '';
                Windows.closeAll();
             }
 
@@ -300,10 +301,12 @@
 				                <div class="content buttons autoclear">
     	                            <div>
                                       <span>
-                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()"  value="Cancel" />
+                                        <caaers:message code="LBL_csm_user_sync" var="_syncBTN" text="Sync" />
+                                        <caaers:message code="LBL_csm_user_cancel" var="_cancelBTN" text="Cancel" />
+                                        <tags:button color="blue" type="button" onclick="javascript:cancelSync()"  value="${_syncBTN}" />
                                       </span>
                                       <span>
-                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"  value="Sync" icon="check"/>
+                                        <tags:button color="green" type="button"  onclick="javascript:syncUserDetails()"  value="${_cancelBTN}" icon="check"/>
                                       </span>
                                     </div>
 			                    </div>
