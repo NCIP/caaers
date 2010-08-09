@@ -58,9 +58,6 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler, Application
                 response.addCookie(c);
             }
 
-            response.addCookie(new Cookie("JSESSIONID", "iaminvalid"));
-            response.addCookie(new Cookie("jsessionid", "iaminvalid"));
-
         }catch(Exception e){
             //ignore
            if(logger.isDebugEnabled()) logger.debug("Ignore this error",e);
