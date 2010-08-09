@@ -7,8 +7,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <page:applyDecorator name="standard">
 <h1><caaers:message code="access.denied.header" text="Sorry! you cannot access the page... " /></h1>
-
-
 <p>
   <caaers:message code="access.denied.content" text="The page is secured, the roles you have is not sufficient to access the page that is requested" />
 <!--
