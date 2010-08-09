@@ -1,9 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.tags.csm.AuthorizationDecisionCache;
+import org.easymock.classextension.EasyMock;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Biju Joseph
@@ -12,27 +18,48 @@ public class HttpSessionPurgeLogoutHandlerTest extends WebTestCase {
 
 
     HttpSessionPurgeLogoutHandler handler;
+    AuthorizationDecisionCache cache;
+    ApplicationContext  applicationContext;
+    Map map = new HashMap();
 
     @Override
     protected void setUp() throws Exception {
+
         super.setUp();
+
         handler = new HttpSessionPurgeLogoutHandler();
+
+
+        applicationContext = EasyMock.createMock(ApplicationContext.class);
+        cache = EasyMock.createMock(AuthorizationDecisionCache.class);
+        handler.setApplicationContext(applicationContext);
+
+        map.put("x", cache);
+
+
+        
     }
 
     public void testLogout() throws Exception{
+        String sessionId = session.getId();
+        EasyMock.expect(applicationContext.getBeansOfType(AuthorizationDecisionCache.class,true,false)).andReturn(map);
+        cache.clear(sessionId);
+        EasyMock.expectLastCall().times(1);
 
-        session.setAttribute("test", "hello");
+        replayMocks();
 
-        assertNotNull(session.getAttribute("test"));
+        handler.logout(request, response, SecurityUtils.getAuthentication() );
 
-        handler.logout(request, response, null);
-
-        assertNull(session.getAttribute("hello"));
-
-         for(Enumeration<Object> e = session.getAttributeNames(); e.hasMoreElements(); ){
-            fail("session must not have " + e.nextElement().toString() );
-         }
+        verifyMocks();
+    }
 
 
+
+    public void testLogoutWhenSessionAlreadyInvalidated() throws Exception{
+
+        request.setSession(null);
+        replayMocks();
+        handler.logout(request, response, SecurityUtils.getAuthentication() );
+        verifyMocks();
     }
 }

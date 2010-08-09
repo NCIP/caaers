@@ -47,4 +47,13 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
       assertFalse(cache.isAuthorized("","hi", "man"));
       assertNull(cache.isAuthorized("","hi","boy"));
     }
+
+
+    public void testClear(){
+      cache.addDecision("","hi", "hello", true);
+      cache.addDecision("","hi","man", false);
+      cache.clear();
+
+      assertTrue(cache.getDecisionCache().getKeys().isEmpty());  
+    }
 }

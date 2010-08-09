@@ -104,7 +104,7 @@ public class AuthorizationDecisionCache implements Serializable{
         List keysToRemove =  new ArrayList();
         if(keys != null){
             for(Iterator it = keys.iterator(); it.hasNext(); ){
-                if(StringUtils.startsWith(String.valueOf(it), scopeDiscriminator)){
+                if(StringUtils.startsWith(String.valueOf(it.next()), scopeDiscriminator)){
                     keysToRemove.add(it);
                 }
             }

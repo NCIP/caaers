@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * This class is added to address the following:-
  *  <li>Tomcat is not properly invalidating the HttpSession.</li>
- *  <li>Log out and re-login to the application shows the incorrect tabs due to incorrect Authentication object in session</li>
+ *  <li>Log out and re-login to the application shows the incorrect tabs due to incorrect Authentication object in cache</li>
  * @author Biju Joseph
  *
  */
@@ -29,7 +29,7 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler, Application
     private ApplicationContext applicationContext;
 
     /**
-     * This method will obtain the session and will explicitly set all the attributes to NULL and then remove it from session.
+     * This method will obtain the session clear the cache for that session.
      *
      * @param request
      * @param response
@@ -49,14 +49,8 @@ public class HttpSessionPurgeLogoutHandler implements LogoutHandler, Application
                         ((AuthorizationDecisionCache)cacheBean).clear(sessionId);
                     }
                 }
-			    session.invalidate();
 		    }
 
-
-            for(Cookie c : request.getCookies()){
-                c.setMaxAge(0);
-                response.addCookie(c);
-            }
 
         }catch(Exception e){
             //ignore
