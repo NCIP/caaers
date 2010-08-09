@@ -34,8 +34,8 @@
         <!-- URL redirected to after logout -->
         <constructor-arg>
             <list>
-                <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
                 <bean class="gov.nih.nci.cabig.caaers.web.security.HttpSessionPurgeLogoutHandler" />
+                <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
             </list>
         </constructor-arg>
     </bean>
@@ -195,8 +195,9 @@
         <constructor-arg value="s[webSSO.server.baseUrl]/logout"/>
         <constructor-arg>
             <list>
-                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
                 <bean class="gov.nih.nci.cabig.caaers.web.security.HttpSessionPurgeLogoutHandler" />
+                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+
             </list>
         </constructor-arg>
     </bean>
