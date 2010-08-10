@@ -6,12 +6,14 @@ import gov.nih.nci.cabig.caaers.api.ParticipantService;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -59,6 +61,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
     private DomainObjectValidator domainObjectValidator;
+    private EventFactory eventFactory;
 
     
 	/**
@@ -192,6 +195,8 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
     		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
         	if(participantImportOutcome.isSavable() && errors.size() == 0){
         		participantDao.save(participantImportOutcome.getImportedDomainObject());
+        		// fire event to rebuild CSM index ..
+        		eventFactory.publishEntityModifiedEvent(new Participant(), false);
         		participantServiceResponse.setResponsecode("0");
         		sb.append("  Created in caAERS");
         		participantServiceResponse.setDescription(sb.toString());
@@ -374,4 +379,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
 	}
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }
