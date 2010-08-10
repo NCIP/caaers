@@ -54,7 +54,7 @@
 
         Event.observe(window, "load", function() {
             $$(".attribution tr.fields select").each(function(sel) {
-                updateCodeClass({ target: sel })
+                updateCodeClass({ target: sel, srcElement: sel })
                 sel.observe("change", updateCodeClass)
             })
             

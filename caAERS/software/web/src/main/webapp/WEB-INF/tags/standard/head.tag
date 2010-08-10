@@ -4,7 +4,16 @@
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
 <tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />
+<%-- 
+<tags:js name="prototype"/>
+<tags:js name="jquery/jquery-1.3.2.min"/>
+<tags:js name="jquery/jquery-ui-1.7.2.custom.min"/>
+<tags:js name="jquery/prototype_compatibility_mode"/>
+<tags:js name="compressed/co_scriptaculous_files"/>
+<tags:js name="compressed/co_accordion"/>
+--%>
 <tags:js name="fg.menu"/>
 <jwr:style src="/csslib/caaers.zcss" />
 <tags:js name="compressed/co_calendar" />
