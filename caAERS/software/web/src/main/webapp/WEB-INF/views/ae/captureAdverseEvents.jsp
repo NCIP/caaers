@@ -97,7 +97,7 @@
 
  		//Check if reportingPeriod is selected and enable the slider.
  		if(${command.workflowEnabled}){
-            routingHelper.retrieveReviewCommentsAndActions('${command.adverseEventReportingPeriod.id}').bind(routingHelper)();
+            routingHelper.retrieveReviewCommentsAndActions('${command.adverseEventReportingPeriod.id}');//.bind(routingHelper)();
  		}
 
 
