@@ -51,7 +51,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<property name="log.dir" location="${basedir}/logs" />
 	<property name="working.dir" location="${basedir}/working" />
 	<property name="temp.dir" location="${working.dir}/temp" />
-
+	
+	<basename file="${tomcat.grid.secure.cert.location}" property="tomcat.grid.secure.cert.file" />
+	<basename file="${tomcat.grid.secure.key.location}" property="tomcat.grid.secure.key.file" />
 
 	<!-- Install Time properties -->
 	<!-- Source and target directories -->
@@ -711,8 +713,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ACEGI_URL@" value="${webSSO.cas.acegi.security.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@STUDY_CONSUMER_URL@" value="${grid.studyconsumer.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@REGISTRATION_CONSUMER_URL@" value="${grid.registrationconsumer.url}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${tomcat.home}/conf/${hostCertificate}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${tomcat.home}/conf/${hostKey}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${tomcat.home}/conf/${tomcat.grid.secure.cert.file}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${tomcat.home}/conf/${tomcat.grid.secure.key.file}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_CACHE@" value="${enable.coppa.cache}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_MODE@" value="${enable.coppa.mode}" />
 	</target>
