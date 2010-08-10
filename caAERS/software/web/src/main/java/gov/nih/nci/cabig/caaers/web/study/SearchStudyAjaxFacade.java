@@ -38,6 +38,7 @@ public class SearchStudyAjaxFacade {
     private Class<?>[] CONTROLLERS = {AssignParticipantController.class};
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
     private StudyRepository studyRepository;
+    private boolean coppaMode;
     private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
     public Object build(TableModel model, Collection studySearchableAjaxableDomainObjects) throws Exception {
@@ -132,8 +133,8 @@ public class SearchStudyAjaxFacade {
                 sq.filterByShortTitle(sText);
             }
         }
-
-        List<Study> studies = studyRepository.search(sq, type, text, true);
+        
+        List<Study> studies = studyRepository.search(sq, type, text, coppaMode);
 
         // BUILD EC TABLE
         // 
@@ -283,7 +284,7 @@ public class SearchStudyAjaxFacade {
             }
         }
 
-        List<StudySite> studySites = studyRepository.search(studySitesQuery, type, text, true);
+        List<StudySite> studySites = studyRepository.search(studySitesQuery, type, text, coppaMode);
         return studySites;
     }
 
@@ -328,4 +329,8 @@ public class SearchStudyAjaxFacade {
     public void setStudyRepository(StudyRepository studyRepository) {
         this.studyRepository = studyRepository;
     }
+
+	public void setCoppaMode(boolean coppaMode) {
+		this.coppaMode = coppaMode;
+	}
 }
