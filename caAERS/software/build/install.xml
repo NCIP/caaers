@@ -711,8 +711,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ACEGI_URL@" value="${webSSO.cas.acegi.security.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@STUDY_CONSUMER_URL@" value="${grid.studyconsumer.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@REGISTRATION_CONSUMER_URL@" value="${grid.registrationconsumer.url}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${hostCertificate}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${hostKey}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${tomcat.home}/conf/${hostCertificate}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${tomcat.home}/conf/${hostKey}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_CACHE@" value="${enable.coppa.cache}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_MODE@" value="${enable.coppa.mode}" />
 	</target>
@@ -721,7 +721,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="caaers:csm_jass:config">
 		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_USER@" value="${database.csm.user}" />
 		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_PASSWORD@" value="${database.csm.password}" />
-		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_HOST@" value="${ddatabase.csm.host}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_HOST@" value="${database.csm.host}" />
 		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_PORT@" value="${database.csm.port}" />
 		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@CSM_DB_NAME@" value="${database.csm.name}" />	
 		
