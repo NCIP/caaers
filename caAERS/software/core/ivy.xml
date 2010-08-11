@@ -98,7 +98,7 @@
 			<dependency org="commons-validator" name="commons-validator" rev="1.1.4"  />
 
         	<!--  Hibernate/Supporting Jars -->
-        	<dependency org="org.hibernate" name="hibernate" rev="3.2.6.ga" force="true" >
+        	<dependency org="org.hibernate" name="hibernate" rev="3.2.7.ga" force="true" >
         		<exclude org="cglib" />
                 <exclude org="asm" />
         	</dependency>
