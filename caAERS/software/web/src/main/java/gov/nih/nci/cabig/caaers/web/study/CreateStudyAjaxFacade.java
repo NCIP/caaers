@@ -75,7 +75,7 @@ public class CreateStudyAjaxFacade {
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
         String[] arr = new String[] { text };
         StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
-        int siteId = studyCommand.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
+        int siteId = studyCommand.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteInvestigator> siteInvestigators = investigatorRepository.getBySubnames(arr, siteId);
         return ObjectTools.reduceAll(siteInvestigators,
                         new ObjectTools.Initializer<SiteInvestigator>() {
@@ -94,7 +94,7 @@ public class CreateStudyAjaxFacade {
 
     public List<SiteResearchStaff> matchSiteResearchStaff(final String text, final int indexId) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
-        int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
+        int siteId = command.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteResearchStaff> siteResearchStaffs =  researchStaffRepository.getSiteResearchStaffBySubnames(new String[] { text }, siteId);
         return ObjectTools.reduceAll(siteResearchStaffs,
                         new ObjectTools.Initializer<SiteResearchStaff>() {
