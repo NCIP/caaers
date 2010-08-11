@@ -5,6 +5,7 @@ package gov.nih.nci.cabig.caaers.event;
  */
 public enum EventType {
     STUDY,
+    ORGANIZATION,
     RESEARCH_STAFF,
     INVESTIGATOR,
     SUBJECT,
