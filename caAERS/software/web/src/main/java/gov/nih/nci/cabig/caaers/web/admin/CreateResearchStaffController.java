@@ -66,6 +66,8 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
          command.setShouldSync(csmUser != null);
          if(csmUser != null){
            command.setCsmUser(csmUser);
+         } else {
+        	 command.setCsmUser(new User());
          }
          request.setAttribute("_csmProceed", ((ResearchStaffCommand)command).canProceedCSMOperation() );
       }
