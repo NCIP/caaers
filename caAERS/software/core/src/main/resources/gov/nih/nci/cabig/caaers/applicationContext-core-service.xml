@@ -29,6 +29,7 @@ default-lazy-init="true">
 	<bean id="passwordPolicyService" class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 	<bean id="organizationRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl" autowire="byType">
 		<property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
+		<property name="eventFactory" ref="eventFactory"/>
 	</bean>
 	<bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
 	
