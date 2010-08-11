@@ -120,6 +120,34 @@
         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
     </bean>
 
+
+    <bean id="organizationIndexDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
+        <property name="idFetchers">
+            <list>
+                <ref bean="organizationIdFetcher"/>
+            </list>
+        </property>
+        <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
+    </bean>
+    
+    <bean id="organizationIndexDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyTargetClass">
+            <value>true</value>
+        </property>
+        <property name="target">
+            <ref local="organizationIndexDataLoaderTarget"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>runAsAutenticationProviderInterceptor</value>
+                <value>auditInfoPopulatorInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+
+
     <bean id="subjectIndexDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="proxyTargetClass">
             <value>true</value>
