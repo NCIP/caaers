@@ -60,6 +60,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         if (searchtext != null && type != null && !searchtext.equals("")) {
             participantCommand.setStudies(new ArrayList<Study>());
             StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
+            query.joinStudyOrganization();
             query.filterByDataEntryStatus(true);
             //query.filterByStudySiteName(participantCommand.getOrganization().getName());
             query.filterByStudySiteNciInstituteCode(participantCommand.getOrganization().getNciInstituteCode());
@@ -68,7 +69,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
             } else if ("idtf".equals(type)) {
                 query.filterByIdentifierValue(searchtext);
             }
-
+            query.filterBySST();
             List<Study> studies = studyRepository.find(query);
             
         //    if (command.getLoggedinResearchStaff() != null) {
