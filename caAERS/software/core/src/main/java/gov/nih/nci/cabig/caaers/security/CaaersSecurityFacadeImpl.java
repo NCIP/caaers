@@ -415,7 +415,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	
     	if(StringUtils.isEmpty(loginId)) return;
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
-    	
+    	if(csmUser == null) return;
     	try {
         	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
         	SuiteRole suiteRole = SuiteRole.getByCsmName(studyPersonnel.getRoleCode());
