@@ -18,6 +18,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="filteredDataLoader" ref="fullIndexDataLoader"/>
 	</bean>
 
+    <bean id="organizationModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.OrganizationModificationEventListener">
+        <property name="filteredDataLoader" ref="organizationIndexDataLoader" />
+        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+    </bean>
+    
     <bean id="studyModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener">
         <property name="filteredDataLoader" ref="studyIndexDataLoader" />
         <property name="studyRepository" ref="studyRepository" />
