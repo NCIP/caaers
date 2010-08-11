@@ -944,22 +944,25 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		if (StringUtilities.isBlank(userName)) {
 			return;
 		}
-		
-		Long id = csmUserRepository.getCSMUserByName(userName).getUserId();
-		if (id != null ) {
-			String loginId = id.toString();
 
-			//loginId is cacheKey , remove the cache for that user .. 
-			CacheManager cacheManager = CSMCacheManager.getCacheManager() ;
-			
-			Cache cache = cacheManager.getCache(loginId);
-			if (cache == null) {
-				return;
-			} else {
-				cacheManager.removeCache(loginId);
+		final gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository
+				.getCSMUserByName(userName);
+		if (csmUser != null) {
+			Long id = csmUser.getUserId();
+			if (id != null) {
+				String loginId = id.toString();
+
+				// loginId is cacheKey , remove the cache for that user ..
+				CacheManager cacheManager = CSMCacheManager.getCacheManager();
+
+				Cache cache = cacheManager.getCache(loginId);
+				if (cache == null) {
+					return;
+				} else {
+					cacheManager.removeCache(loginId);
+				}
 			}
 		}
-		return;
 			
 	}
 	
