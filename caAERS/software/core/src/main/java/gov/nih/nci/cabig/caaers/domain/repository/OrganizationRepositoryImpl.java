@@ -7,13 +7,15 @@ import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 
 import java.util.List;
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     private OrganizationDao organizationDao;
     private OrganizationConverterDao organizationConverterDao;
     private boolean coppaModeForAutoCompleters;
+    private EventFactory eventFactory;
 
     public void createOrUpdate(Organization organization) {
         if (organization.getId() == null) {
@@ -51,6 +54,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
      */
     public void create(Organization site) throws CaaersSystemException {
     	organizationDao.save(site);
+    	eventFactory.publishEntityModifiedEvent(new LocalOrganization(), false);
     }
     
     /**
@@ -230,5 +234,9 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	 */
 	public void evict(Organization org) {
 		organizationDao.evict(org);		
+	}
+
+	public void setEventFactory(EventFactory eventFactory) {
+		this.eventFactory = eventFactory;
 	}
 }
