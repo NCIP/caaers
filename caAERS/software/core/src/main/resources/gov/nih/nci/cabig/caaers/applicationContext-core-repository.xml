@@ -94,6 +94,7 @@
 		<property name="reportWithdrawalService" ref="reportWithdrawalService" />
 		<property name="configuration" ref="configuration" />
 		<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository" />
+		
     </bean>
 
     <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
