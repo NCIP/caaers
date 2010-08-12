@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -61,6 +62,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private ApplicationContext applicationContext;
 	private DomainObjectValidator domainObjectValidator;
 	private MessageSource messageSource;
+	private EventFactory eventFactory;
 	
 	public StudyProcessorImpl(){
 		
@@ -214,6 +216,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 						studyServiceResponse.setResponsecode("0");
 						studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
 						logger.info("Study Created");
+						eventFactory.publishEntityModifiedEvent(new LocalStudy(), false);
 					} catch (Exception e) {
 						studyServiceResponse.setResponsecode("1");
 						studyServiceResponse.setDescription("Study Creation Failed " +  e.getMessage());
@@ -391,5 +394,9 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
+	}
+
+	public void setEventFactory(EventFactory eventFactory) {
+		this.eventFactory = eventFactory;
 	}
 }
