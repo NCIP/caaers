@@ -211,13 +211,15 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					try {
 						studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
 						studyRepository.save(studyImportOutcome.getImportedDomainObject());
+						studyServiceResponse.setResponsecode("0");
+						studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
+						logger.info("Study Created");
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						studyServiceResponse.setResponsecode("1");
+						studyServiceResponse.setDescription("Study Creation Failed " +  e.getMessage());
 						e.printStackTrace();
 					}
-					studyServiceResponse.setResponsecode("0");
-					studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
-					logger.info("Study Created");
+					
 				}else{
 					for(String errMsg : errors){
 		        		studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
