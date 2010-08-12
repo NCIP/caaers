@@ -63,6 +63,7 @@
 		<property name="domainObjectValidator" ref="domainObjectValidator" />
 		<property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />  
 		<property name="organizationRepository" ref="organizationRepository" />  
+		<property name="eventFactory" ref="eventFactory" />  
   </bean>
   	
    <bean id="participantServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">

@@ -205,7 +205,10 @@ default-lazy-init="true">
 		</property>
 	</bean>
 	
-	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>	
+	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter">
+		<property name="ctcTermDao" ref="ctcTermDao"/>
+		<property name="lowLevelTermDao" ref="lowLevelTermDao"/>
+	</bean>	
 	
 	<bean id="identifierSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.IdentifierSynchronizer"/>
 	<bean id="treatmentAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.TreatmentAssignmentSynchronizer"/>
