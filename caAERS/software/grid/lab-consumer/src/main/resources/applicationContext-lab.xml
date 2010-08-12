@@ -2,7 +2,49 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
     "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="true">
+	
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-auditing.xml" />
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-remote.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
 
-    <!-- All beans defined here are moved to applicationContext-labConsumer-grid-client.xml -->
-    <!-- DO NOT DEFINE ANY BEAN IN THIS FILE -->
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-repository.xml"/>
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-labConsumer.xml"/>
+	
+	<bean id="coppaCache" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
+	<bean id="coppaMode" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
+	
+<!--	<bean id="labConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" autowire="byType"/> -->
+	
+  <bean id="labConsumerTarget" autowire="byType" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer">
+  	<property name="gridServicesAuthorizationHelper" ref="gridServicesAuthorizationHelper"/>
+  </bean>
+   
+ 	<bean id="labConsumerAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" value="/wsrf-caaers/services/cagrid/LabConsumer" />
+	</bean> 
+   
+  <bean id="labConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="labConsumerTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>labConsumerAuditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value>
+			</list> 
+		</property> 
+	</bean>
+	
+	
+	 
 </beans>
