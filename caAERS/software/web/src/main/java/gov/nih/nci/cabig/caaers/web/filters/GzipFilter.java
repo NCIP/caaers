@@ -42,7 +42,8 @@ import java.util.zip.GZIPOutputStream;
  */
 public class GzipFilter extends net.sf.ehcache.constructs.web.filter.GzipFilter {
 
-    private static final Log LOG = LogFactory.getLog(GzipFilter.class.getName());
+    private static final String VARY = "Vary";
+	private static final Log LOG = LogFactory.getLog(GzipFilter.class.getName());
 
     /**
      * Performs the filtering for a request.
@@ -83,6 +84,9 @@ public class GzipFilter extends net.sf.ehcache.constructs.web.filter.GzipFilter 
             try {
 				// Write the zipped body
 				ResponseUtil.addGzipHeader(response);
+				// see http://httpd.apache.org/docs/2.0/mod/mod_deflate.html or 'High Performance Web Sites' by Steve Souders.
+				response.addHeader(VARY, "Accept-Encoding");
+				response.addHeader(VARY, "User-Agent");
 				response.setContentLength(compressedBytes.length);
 			} catch (ResponseHeadersNotModifiableException e) {
 				return;
@@ -100,12 +104,15 @@ public class GzipFilter extends net.sf.ehcache.constructs.web.filter.GzipFilter 
         }
     }
 
-    @Override
-    protected boolean acceptsEncoding(HttpServletRequest request, String name) {
-    	boolean acceptsEncoding = super.acceptsEncoding(request, name);
-    	String userAgent = request.getHeader("User-Agent");
-    	return acceptsEncoding && (userAgent.contains("Firefox") || userAgent.contains("MSIE 7.0") || userAgent.contains("MSIE 8.0"));
-    }
+	@Override
+	protected boolean acceptsEncoding(HttpServletRequest request, String name) {
+		boolean acceptsEncoding = super.acceptsEncoding(request, name);
+		String userAgent = request.getHeader("User-Agent");
+		return acceptsEncoding
+				&& (userAgent.contains("Firefox") || userAgent.contains("MSIE 6.0")
+						|| userAgent.contains("MSIE 7.0") || userAgent
+						.contains("MSIE 8.0"));
+	}
     
     /**
      * Checks if the request uri is an include.
