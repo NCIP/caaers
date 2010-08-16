@@ -114,6 +114,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
             if (CollectionUtils.isNotEmpty(existingReportingPeriods)) {
                 TreatmentAssignment treatmentAssignment = existingReportingPeriods.get(0).getTreatmentAssignment();
                 command.getReportingPeriod().setTreatmentAssignment(treatmentAssignment);
+                command.getReportingPeriod().setTreatmentAssignmentDescription(existingReportingPeriods.get(0).getTreatmentAssignmentDescription());
             }
         }
 
