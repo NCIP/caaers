@@ -533,6 +533,7 @@
   <bean name="/rule/export" id="exportRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController"></bean>
   <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
   <bean name="/rule/create" id="createRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController"></bean>
+  <bean name="/rule/read" id="readRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController"></bean>
   <bean name="/rule/list" id="listRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController"></bean>
   <bean name="/rule/util" id="ruleUtilController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController"></bean>
   <bean name="/rule/addRule" id="addRuleController" autowire="byType" class="org.springframework.web.servlet.mvc.ParameterizableViewController">

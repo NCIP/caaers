@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
@@ -54,6 +56,30 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
         command.refreshGroupOptions();
         populateFieldRuleSet(command);
         return command;
+    }
+
+
+
+    @Override
+    public FlowFactory<ReportDefinitionCommand> getFlowFactory() {
+        return new FlowFactory<ReportDefinitionCommand>(){
+            public Flow<ReportDefinitionCommand> createFlow(ReportDefinitionCommand command) {
+                Flow<ReportDefinitionCommand> flow = new Flow<ReportDefinitionCommand>(getFlowName());
+                BasicsTab basicsTab = new BasicsTab();
+                ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
+                ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
+                NotificationsTab notificationsTab = new NotificationsTab();
+                ReviewTab reviewTab = new ReviewTab();
+
+                flow.addTab(basicsTab);
+                flow.addTab(deliveryDefTab);
+                flow.addTab(mandatoryFieldTab);
+                flow.addTab(notificationsTab);
+                flow.addTab(reviewTab);
+
+                return flow;
+            }
+        };
     }
 
     @Required

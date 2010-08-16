@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
+<csmauthz:accesscontrol var="hasRuleCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 <html>
 <head>
     <title>Manage rules</title>
@@ -78,17 +78,19 @@ YAHOO.example.Data = {
             rsOrganization: "${empty rs.organization ? 'NA' : rs.organization}",
             rsStudyID: "${rs.study}",
             rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>"
-            	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
+
             ,
             rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.name}', 'status-${rs.id}')\">" +
             			"<option value=\"\">Please select</option>" +
-            			"<option value=\"\">Edit</option>" +
+                        "<option value=\"\">View/Edit</option>" +
+                       <c:if test="${hasRuleCreate}">
             			"<option value=\"\">Enable</option>" +
             			"<option value=\"\">Disable</option>" +
             			"<option value=\"\">Export</option>" +
             			"<option value=\"\">Delete</option>" +
+                       </c:if>
             			"</select>"
-            </csmauthz:accesscontrol>			
+
 
         }
         <c:if test="${!status.last}">,</c:if>
@@ -108,11 +110,8 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"rsDescription",       label:"Rule Set",           sortable:true,      resizeable:true},
             {key:"rsOrganization",      label:"Organization",       sortable:true,      resizeable:true},
             {key:"rsStudyID",           label:"Study",              sortable:true,      resizeable:true},
-            {key:"rsStatus",            label:"Status",             sortable:true,      resizeable:true, formatter:"myCustom"}
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-            ,
+            {key:"rsStatus",            label:"Status",             sortable:true,      resizeable:true, formatter:"myCustom"},
             {key:"rsAction",            label:"Action",             sortable:false,     resizeable:true}
-            </csmauthz:accesscontrol>
         ];
 
         var myCustomFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -139,9 +138,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         myDataSource.responseSchema = {
             fields: ["rsLevel", "rsDescription", "rsOrganization", "rsStudyID", "rsStatus"
-                     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
                      , "rsAction"
-                     </csmauthz:accesscontrol>
                      ]
         };
 
@@ -167,7 +164,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
     	if(confirm('Are you sure you want to take the action - ' + action + ' ?')){
     		switch (action) {
     	    	case "Please select": break;
-        	    case "Edit"         : var url = '<c:url value="/pages/rule/create?from=list&_page=0&_target1=1" />' + '&ruleSetId=' + id;
+        	    case "View/Edit"         : var url = '<c:url value="/pages/rule/${hasRuleCreate ?'create' : 'read'}?from=list&_page=0&${hasRuleCreate ? '_target1=1' : '_target0=0'}" />' + '&ruleSetId=' + id;
                 			          window.location = url; 
 						              break;
             	case "Enable"       : deployRule(name, divId); break;

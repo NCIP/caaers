@@ -1733,18 +1733,7 @@ div#createNew h3, div.section h3 {
         
       </div>
     </jsp:attribute>
-    <jsp:attribute name="tabControls">
-      <div class="content buttons autoclear">
-          <div class="flow-buttons">
-              <span class="prev">
-              	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab0" value="Back"/>
-			  </span>
-				  <span class="next">
-					<tags:button type="submit" icon="Save & Continue" color="green" id="flow-next" value="Save & Continue"/>
-				  </span>
-          </div>
-      </div>
-  </jsp:attribute>
+    
   </tags:tabForm>
 </chrome:division>
 </body>

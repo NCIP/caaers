@@ -26,7 +26,7 @@
 </head>
 <body>
 
-    <tags:tabForm tab="${tab}" flow="${flow}" >
+    <tags:tabForm tab="${tab}" flow="${flow}"  hideTabControls="${not command.ruleManager}" >
     <jsp:attribute name="header">
     	<div class="summary">
     		<caaers:message code="header.reportdefinition.review" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />

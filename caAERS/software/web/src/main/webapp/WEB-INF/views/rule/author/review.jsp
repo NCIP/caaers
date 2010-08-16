@@ -3,10 +3,12 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
-    <title>Not implemented</title>
+    <title>Summary of Rules</title>
   
     <script language="javascript">
     	function deleteEntity(iots, entity){
@@ -28,7 +30,8 @@
     </script>
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
+
+    <tags:tabForm tab="${tab}" flow="${flow}"  saveButtonLabel="${command.mode eq 'create' ? 'Save &amp; Enable' : 'Save'}"  willSave="false" hideTabControls="${not command.ruleManager}">
     <jsp:attribute name="instructions">
     	<tags:instructions code="rulereview" />
     </jsp:attribute>
@@ -126,25 +129,7 @@
         <input id="markFinish" type="hidden" name="_finish"/>
 
 	</jsp:attribute>
-	<jsp:attribute name="tabControls">
-		<div class="content buttons autoclear">
-          <div class="flow-buttons">
-              <span class="prev">
-              	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab1" value="Back"/>
-			  </span>
-			  <c:if test="${command.mode == 'create'}">
-				  <span class="next">
-			  	  	<tags:button type="submit" color="green" icon="save" value="Save & Enable"></tags:button>
-			  	  </span>
-			  </c:if>
-			  <c:if test="${command.mode == 'edit'}">
-			  	  <span class="next">
-			  	  	<tags:button type="submit" color="green" icon="save" value="Save"></tags:button>
-			  	  </span>
-			  </c:if>
-          </div>
-      </div>
-	</jsp:attribute>
+	
 </tags:tabForm> 
 
 </body>

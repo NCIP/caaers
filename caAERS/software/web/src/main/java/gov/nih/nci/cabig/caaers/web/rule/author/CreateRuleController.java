@@ -8,11 +8,16 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
+import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.HashMap;
@@ -57,7 +62,6 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     public CreateRuleController() {
         super();
         setBindOnNewForm(false);
-        addTabs();
     }
 
     @Override
@@ -176,7 +180,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     @Override
     protected Object formBackingObject(HttpServletRequest request) {
     	CreateRuleCommand command = new CreateRuleCommand(caaersRulesEngineService,reportDefinitionDao, organizationDao);
-    	
+        command.setRuleManager(SecurityUtils.checkAuthorization(UserGroupType.ae_rule_and_report_manager));
     	String sourcePage = (String) findInRequest(request, "from");
         if(StringUtils.equals(sourcePage, "list")){
             String ruleSetId = (String) findInRequest(request, "ruleSetId");
@@ -205,6 +209,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
                     Study study = studyDao.getById(Integer.parseInt(stuId));
                     command.setStudy(study);
                 }
+
+                command.setRuleSet(rs);
                 
             }
 
@@ -225,10 +231,25 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         return "Create Rules";
     }
 
-    protected void addTabs() {
-        getFlow().addTab(new SelectRuleTypeTab());
-        getFlow().addTab(new RuleTab());
-        getFlow().addTab(new ReviewTab());
+    @Override
+    public FlowFactory<RuleInputCommand> getFlowFactory() {
+        return new FlowFactory<RuleInputCommand>(){
+            
+            public Flow<RuleInputCommand> createFlow(RuleInputCommand command) {
+                Flow<RuleInputCommand> flow = new Flow<RuleInputCommand>(getFlowName());
+
+                CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
+                boolean editMode = createRuleCommand.getRuleSet() == null ? false : createRuleCommand.getRuleSet().getId() != null;
+
+                if(SecurityUtils.checkAuthorization(UserGroupType.ae_rule_and_report_manager)){
+                    flow.addTab(new SelectRuleTypeTab());
+                    flow.addTab(new RuleTab()); 
+                }
+                flow.addTab(new ReviewTab());
+
+                return flow;
+            }
+        };
     }
     
     /**

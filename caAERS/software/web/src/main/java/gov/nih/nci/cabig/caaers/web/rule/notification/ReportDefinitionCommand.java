@@ -60,6 +60,7 @@ public class ReportDefinitionCommand {
     
     protected Map<Object, Object> recipientRoleOptions;
     private RuleSet ruleSet;
+    private boolean ruleManager;
 
     public ReportDefinitionCommand(){
     }
@@ -290,5 +291,13 @@ public class ReportDefinitionCommand {
     }
     public boolean isFieldRulesAvailable(){
         return (ruleSet != null && ruleSet.getRule().size() > 0 );
+    }
+
+    public boolean isRuleManager() {
+        return ruleManager;
+    }
+
+    public void setRuleManager(boolean ruleManager) {
+        this.ruleManager = ruleManager;
     }
 }

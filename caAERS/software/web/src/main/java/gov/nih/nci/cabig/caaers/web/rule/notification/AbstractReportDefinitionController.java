@@ -51,28 +51,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         super.setAllowDirtyForward(false);
     }
 
-    @Override
-    public FlowFactory<ReportDefinitionCommand> getFlowFactory() {
-        return new FlowFactory<ReportDefinitionCommand>(){
-            public Flow<ReportDefinitionCommand> createFlow(ReportDefinitionCommand command) {
-                Flow<ReportDefinitionCommand> flow = new Flow<ReportDefinitionCommand>(getFlowName());
-                BasicsTab basicsTab = new BasicsTab();
-                ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
-                ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
-                NotificationsTab notificationsTab = new NotificationsTab();
-                ReviewTab reviewTab = new ReviewTab();
-
-                flow.addTab(basicsTab);
-                flow.addTab(deliveryDefTab);
-                flow.addTab(mandatoryFieldTab);
-                flow.addTab(notificationsTab);
-                flow.addTab(reviewTab);
-
-                return flow;
-            }
-        };
-    }
-
+    
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);

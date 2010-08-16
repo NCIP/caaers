@@ -21,7 +21,7 @@ public class ReviewTab extends DefaultTab {
     }
 
     public ReviewTab() {
-        super("Review and Submit", "Review", "rule/author/review");
+        super("Review and Submit", "Summary", "rule/author/review");
     }
 
     @Override

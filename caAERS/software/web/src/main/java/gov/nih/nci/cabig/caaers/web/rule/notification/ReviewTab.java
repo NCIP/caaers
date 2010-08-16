@@ -123,12 +123,13 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         }
 
         // Mandatory Field Definition Tab
-        tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(2);
+        int tabIndexCorrection = command.isRuleManager() ? 0 : 1;
+        tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(2 + tabIndexCorrection);
         fieldGroupMap = tab.createFieldGroups(command);
         map.put("mandatoryFields", fieldGroupMap);
 
         // Notification details tab
-        tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(3);
+        tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(3 + tabIndexCorrection);
         fieldGroupMap = tab.createFieldGroups(command);
         Map<String, Object> pnfMap = new LinkedHashMap<String, Object>();
         int i = 0;

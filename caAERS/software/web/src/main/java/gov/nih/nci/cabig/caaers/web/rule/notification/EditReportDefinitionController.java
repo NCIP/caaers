@@ -1,10 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
@@ -64,6 +68,8 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         PlannedNotification pnf = (pnfList.size() > 0) ? pnfList.get(0) : null;
         if (pnf != null) command.setPointOnScale("" + pnf.getIndexOnTimeScale());
         populateFieldRuleSet(command);
+
+        command.setRuleManager(SecurityUtils.checkAuthorization(UserGroupType.ae_rule_and_report_manager));
         return command;
 
     }
@@ -105,6 +111,42 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
        }
     }
 
+
+    @Override
+    public FlowFactory<ReportDefinitionCommand> getFlowFactory() {
+        return new FlowFactory<ReportDefinitionCommand>(){
+            public Flow<ReportDefinitionCommand> createFlow(ReportDefinitionCommand command) {
+                Flow<ReportDefinitionCommand> flow = new Flow<ReportDefinitionCommand>(getFlowName());
+                BasicsTab basicsTab = new BasicsTab();
+                ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
+                ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
+                NotificationsTab notificationsTab = new NotificationsTab();
+                ReviewTab reviewTab = new ReviewTab();
+                
+
+                if(command.isRuleManager()) {
+                    flow.addTab(basicsTab);
+                    flow.addTab(deliveryDefTab);
+                    flow.addTab(mandatoryFieldTab);
+                    flow.addTab(notificationsTab);
+                    flow.addTab(reviewTab);
+
+                }else {
+                    flow.addTab(reviewTab);
+                    flow.addTab(basicsTab);
+                    flow.addTab(deliveryDefTab);
+                    flow.addTab(mandatoryFieldTab);
+                    flow.addTab(notificationsTab);
+
+                }
+
+
+                return flow;
+            }
+        };
+    }
+
+    
     @Required
     public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;

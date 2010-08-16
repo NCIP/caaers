@@ -82,7 +82,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/search/advancedSearch" value="data_reader,data_analyst"/>
         <entry key="/pages/search/listSearch" value="data_reader,data_analyst"/>   
         
-		<entry key="/pages/rule/create" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/create" value="ae_rule_and_report_manager"/>
+        <entry key="/pages/rule/read" value="ae_rule_and_report_manager,data_reader"/>
         <entry key="/pages/rule/createOptions" value="ae_rule_and_report_manager,data_reader"/>
 		<entry key="/pages/rule/list" value="ae_rule_and_report_manager,data_reader"/>
         <entry key="/pages/rule/util" value="ae_rule_and_report_manager,data_reader"/>
@@ -91,7 +92,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/export" value="ae_rule_and_report_manager,data_reader"/>
         <entry key="/pages/rule/deploy" value="ae_rule_and_report_manager,data_reader"/>
         
-		<entry key="/pages/rule/notification/create" value="ae_rule_and_report_manager,data_reader"/>
+		<entry key="/pages/rule/notification/create" value="ae_rule_and_report_manager"/>
         <entry key="/pages/rule/notification/edit" value="ae_rule_and_report_manager,data_reader"/>
 		<entry key="/pages/rule/notification/list" value="ae_rule_and_report_manager,data_reader"/>
 		<entry key="/pages/rule/notification/import" value="ae_rule_and_report_manager,data_reader"/>
@@ -176,6 +177,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
         <!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/read" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
         <entry key="/pages/rule/createOptions" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/list" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
         <entry key="/pages/rule/util" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
@@ -185,7 +187,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/rule/deploy" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
         
 		<entry key="/pages/rule/notification/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-        <entry key="/pages/rule/notification/edit" value="gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
+        <entry key="/pages/rule/notification/edit" value="gov.nih.nci.cabig.caaers.domain.Rule:UPDATE || gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="/pages/rule/notification/list" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="/pages/rule/notification/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
         <entry key="/pages/rule/notification/export" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
@@ -277,15 +279,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportResultTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 
           <!--========= RULES ========-->
-          <entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.rule.author.RuleTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.author.RuleTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.rule.author.ReviewTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 
           <!--========= REPORT DEFINITIONS ========-->
-          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.BasicsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDeliveryDefinitionTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportMandatoryFieldDefinitionTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.BasicsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDeliveryDefinitionTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportMandatoryFieldDefinitionTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReviewTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 
           <!--========= TODO ADMIN ========-->

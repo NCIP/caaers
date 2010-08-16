@@ -92,6 +92,8 @@ public class CreateRuleCommand implements RuleInputCommand {
 
     private List<CtcCategory> categories;
 
+    private boolean ruleManager;
+
 
     public List<ReportDefinition> getReportDefinitions() {
 
@@ -565,5 +567,13 @@ public class CreateRuleCommand implements RuleInputCommand {
         if(this.study != null){
             setTerminology(this.study.getAeTerminology().getTerm().getDisplayName());
         }
+    }
+
+    public boolean isRuleManager() {
+        return ruleManager;
+    }
+
+    public void setRuleManager(boolean ruleManager) {
+        this.ruleManager = ruleManager;
     }
 }

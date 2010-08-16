@@ -50,17 +50,16 @@ YAHOO.example.Data = {
             rdName: "${rd.name}",
             rdOrganization: "${rd.organization.fullName}",
             rdFinalReportDue: "${rd.duration} ${rd.timeScaleUnitType.displayName}(s)",
-            rdDescription: "${rd.description}"
-
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-                ,
+            rdDescription: "${rd.description}",
             rdAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rd.id}')\">" +
             			"<option value=\"\">Please select</option>" +
-            			"<option value=\"\">Edit</option>" +
+            			"<option value=\"\">View/Edit</option>" +
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
             			"<option value=\"\">Export</option>" +
             			"<option value=\"\">Disable</option>" +
+                    </csmauthz:accesscontrol>
             			"</select>"
-			</csmauthz:accesscontrol>
+
                         
          }
          <c:if test="${!status.last}">,</c:if>
@@ -74,17 +73,16 @@ YAHOO.example.Data = {
             rdName: "${rd.name}",
             rdOrganization: "${rd.organization.fullName}",
             rdFinalReportDue: "${rd.duration} ${rd.timeScaleUnitType.displayName}(s)",
-            rdDescription: "${rd.description}"
-
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-                ,
+            rdDescription: "${rd.description}",
             rdAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rd.id}')\">" +
             			"<option value=\"\">Please select</option>" +
-            			"<option value=\"\">Edit</option>" +
+            			"<option value=\"\">View/Edit</option>" +
+                     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
             			"<option value=\"\">Export</option>" +
             			"<option value=\"\">Enable</option>" +
+                    </csmauthz:accesscontrol>
             			"</select>"
-            </csmauthz:accesscontrol>
+
          }
          <c:if test="${!status.last}">,</c:if>
 </c:forEach>
@@ -102,20 +100,14 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"rdName",              label:"Name",               sortable:true,      resizeable:true},
             {key:"rdDescription",       label:"Description",        sortable:true,      resizeable:true},
             {key:"rdOrganization",      label:"Organization",       sortable:true,      resizeable:true},
-            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120}
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-            ,
+            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120},
             {key:"rdAction",            label:"Action",             sortable:false,     resizeable:true}
-            </csmauthz:accesscontrol>
         ];
 
         var activeDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.activeReportDefinitions.slice(0,50));
         activeDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         activeDataSource.responseSchema = {
-            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue"
-                 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-                     , "rdAction"
-				 </csmauthz:accesscontrol>
+            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue", "rdAction"
                  ]
         };
 
@@ -138,20 +130,14 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"rdName",              label:"Name",               sortable:true,      resizeable:true},
             {key:"rdDescription",       label:"Description",        sortable:true,      resizeable:true},
             {key:"rdOrganization",      label:"Organization",       sortable:true,      resizeable:true},
-            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120}
-            <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-            ,
+            {key:"rdFinalReportDue",    label:"Final Report Due",   sortable:true,      resizeable:true,    minWidth:120},
             {key:"rdAction",            label:"Action",             sortable:false,     resizeable:true}
-            </csmauthz:accesscontrol>
         ];
 
         var inactiveDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.inactiveReportDefinitions.slice(0,50));
         inactiveDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         inactiveDataSource.responseSchema = {
-            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue"
-                     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-                     , "rdAction"
-					</csmauthz:accesscontrol>
+            fields: ["rdName", "rdDescription", "rdOrganization", "rdFinalReportDue", "rdAction"
                      ]
         };
 
@@ -178,7 +164,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	    	if(confirm('Are you sure you want to take the action - ' + action + ' ?')){
     			switch (action) {
     		    	case "Please select": break;
-       		 	    case "Edit"         : var url = '<c:url value="/pages/rule/notification/edit?repDefId=" />' + id;
+       		 	    case "View/Edit"         : var url = '<c:url value="/pages/rule/notification/edit?repDefId=" />' + id;
                 				          window.location = url; 
 							              break;
               		case "Export"       : var url = '<c:url value="/pages/rule/notification/export?repDefId="/>' + id;
