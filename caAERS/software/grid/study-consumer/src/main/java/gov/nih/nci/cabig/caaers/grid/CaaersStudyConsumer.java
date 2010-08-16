@@ -754,7 +754,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	}
 	
     @SuppressWarnings("unused")
-	private static class StubWebRequest implements WebRequest {
+    private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
             return null;
         }
@@ -763,33 +763,12 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             return null;
         }
 
-        @SuppressWarnings("unchecked")
-		public Map getParameterMap() {
+        public Map getParameterMap() {
             return Collections.emptyMap();
         }
 
         public Locale getLocale() {
             return null;
-        }
-
-        public String getContextPath() {
-            return null;
-        }
-
-        public String getRemoteUser() {
-            return null;
-        }
-
-        public Principal getUserPrincipal() {
-            return null;
-        }
-
-        public boolean isUserInRole(String role) {
-            return false;
-        }
-
-        public boolean isSecure() {
-            return false; 
         }
 
         public Object getAttribute(final String name, final int scope) {
@@ -809,10 +788,45 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         public String getSessionId() {
             return null;
         }
+        public String getDescription(boolean b){
+            return null;
+        }
 
+        public boolean checkNotModified(long l){
+            return true;
+        }
+
+        public String[] getAttributeNames(int scope){
+            return null;
+        }
         public Object getSessionMutex() {
             return null;
         }
+
+		public String getContextPath() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public String getRemoteUser() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Principal getUserPrincipal() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public boolean isSecure() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean isUserInRole(String arg0) {
+			// TODO Auto-generated method stub
+			return false;
+		}
     }
 
 	public void setGridServicesAuthorizationHelper(
