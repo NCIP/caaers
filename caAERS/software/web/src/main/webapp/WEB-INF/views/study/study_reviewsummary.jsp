@@ -82,7 +82,11 @@
             	<div class="row">
                 	<div class="label">Status</div>
                 	<div class="value">${command.study.status} </div>
-            	</div>	
+            	</div>
+            	<div class="row">
+                	<div class="label">Study Design</div>
+                	<div class="value">${command.study.design!=null?command.study.design.displayName:'N/A'}</div>
+            	</div>
             	<div class="row">
                 	<div class="label">Terminology</div>
                 	<div class="value">${command.study.aeTerminology.term} </div>
