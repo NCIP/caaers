@@ -18,6 +18,7 @@ import gov.nih.nci.security.util.StringEncrypter;
 import java.sql.Timestamp;
 import java.util.*;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -259,7 +260,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(user.getLoginId());
         user.resetToken();
         user.setPasswordLastSet(new Timestamp(new Date().getTime()));
-        user.addPasswordToHistory(csmUser.getPassword(), maxHistorySize);
+        user.addPasswordToHistory(DigestUtils.shaHex(password), maxHistorySize);
         csmUser.setPassword((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + password);
         saveCSMUser(csmUser);
     }
@@ -270,7 +271,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     public boolean userHadPassword(String userName, String password) {
-        return getUserByName(userName).getPasswordHistory().contains(encryptString(password));
+        return getUserByName(userName).getPasswordHistory().contains(DigestUtils.shaHex(password));
     }
 
     public void sendUserEmail(String emailAddress, String subject, String text) {
