@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -80,15 +81,32 @@ public class ReviewEvaluationPeriodController extends SimpleFormController{
             InputFieldGroup treatmentAssignmentFieldGroup = new DefaultInputFieldGroup("treatmentAssignmentFG");
             InputFieldGroup reportingPeriodDetailsFieldGroup = new DefaultInputFieldGroup("reportingPeriodDetailsFG");
 
-            //TAC fields groups
-            InputField treatmentAssignmentField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.code", "Treatment assignment");
-            InputField treatmentAssignmentDescField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.description", "Treatment description");
-
             //startDateOfFirstCourse - TextField, if it is empty in assignment
             InputField firstCourseDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.assignment.startDateOfFirstCourse", "Start date of first course");
-
-            treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentField);
-            treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentDescField);
+            
+			if (reportingPeriod.getTreatmentAssignment() != null) {
+				// TAC fields groups
+				InputField treatmentAssignmentField = InputFieldFactory
+						.createLabelField(
+								"adverseEventReportingPeriod.treatmentAssignment.code",
+								"Treatment assignment");
+				InputField treatmentAssignmentDescField = InputFieldFactory
+						.createLabelField(
+								"adverseEventReportingPeriod.treatmentAssignment.description",
+								"Treatment description");
+				treatmentAssignmentFieldGroup.getFields().add(
+						treatmentAssignmentField);
+				treatmentAssignmentFieldGroup.getFields().add(
+						treatmentAssignmentDescField);
+			} else if (StringUtils.isNotBlank(reportingPeriod.getTreatmentAssignmentDescription())) {
+				InputField treatmentAssignmentDescField = InputFieldFactory
+						.createLabelField(
+								"adverseEventReportingPeriod.treatmentAssignmentDescription",
+								"Treatment assignment description");
+				treatmentAssignmentFieldGroup.getFields().add(
+						treatmentAssignmentDescField);
+				
+			}
             treatmentAssignmentFieldGroup.getFields().add(firstCourseDateField);
 
             // add reportingPeriod details group
