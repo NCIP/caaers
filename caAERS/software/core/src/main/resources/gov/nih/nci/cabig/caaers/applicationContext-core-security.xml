@@ -62,7 +62,8 @@
                 <property name="properties">
                     <props>
                         <prop key="hibernate.connection.release_mode">auto</prop>
-                    </props>
+                        <prop key="hibernate.dialect">s[csm.datasource.dialect]</prop>
+                    </props>                    
                 </property>
             </bean>
         </property>

@@ -403,7 +403,7 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="hibernateProperties" class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
         <property name="dialectName">
-            <value>s[hibernate.dialect]</value>
+            <value>s[datasource.dialect]</value>
         </property>
         <property name="properties">
             <props>
