@@ -275,29 +275,126 @@
         <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
-
-    <!-- BEGIN PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
-    <bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl"
-          parent="abstractIdFetcher"/>
-    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl"
-          parent="abstractIdFetcher"/>
+	
+	<!-- ORGANIZATION , STUDY  FETCHERS IMPLEMENTATIONS -->
     <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl"
           parent="abstractIdFetcher"/>
+
+    
+    <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl"
+          parent="abstractIdFetcher"/>
+
+          
+          
+                    	
+	
+    <!-- BEGIN PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+    <bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl"
+          parent="abstractIdFetcher">
+          <property name="applicableSiteScopedRoles">
+          	<list>
+				<value>subject_manager</value>
+				<value>registration_qa_manager</value>
+			</list>
+          </property>
+          <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>registrar</value>
+				<value>ae_reporter</value>
+				<value>ae_expedited_report_reviewer</value>
+				<value>ae_study_data_reviewer</value>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			</list>
+          </property>          
+    </bean>
+    
     <bean id="adverseEventIdFetcher"
           class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject"
-          parent="abstractIdFetcher"/>
+          parent="abstractIdFetcher">
+		  <property name="applicableSiteScopedRoles">
+          		<list/>
+          </property>           
+          <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>ae_reporter</value>
+				<value>ae_expedited_report_reviewer</value>
+				<value>ae_study_data_reviewer</value>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			 </list>
+			</property>
+    </bean>
+    
     <bean id="expeditedAdverseEventReportIdFetcher"
           class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject"
-          parent="abstractIdFetcher"/>
+          parent="abstractIdFetcher">
+		  <property name="applicableSiteScopedRoles">
+          		<list/>
+          </property>           
+           <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>ae_reporter</value>
+				<value>ae_expedited_report_reviewer</value>
+				<value>ae_study_data_reviewer</value>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			 </list>
+			</property>
+    </bean>    
+      
     <bean id="reportingPeriodIdFetcher"
           class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject"
-          parent="abstractIdFetcher"/>
+          parent="abstractIdFetcher">
+		  <property name="applicableSiteScopedRoles">
+          		<list/>
+          </property>           
+           <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>ae_reporter</value>
+				<value>ae_expedited_report_reviewer</value>
+				<value>ae_study_data_reviewer</value>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			 </list>
+			</property>
+    </bean>
+              
     <bean id="researchStaffIdFetcher"
           class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersResearchStaffIdFetcherImpl"
-          parent="abstractIdFetcher"/>
+          parent="abstractIdFetcher">
+          <property name="applicableSiteScopedRoles">
+          	<list>
+				<value>person_and_organization_information_manager</value>
+				<value>user_administrator</value>
+				<value>study_team_administrator</value>
+			</list>
+          </property>
+          <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			</list>
+          </property>          
+    </bean>
+              
     <bean id="investigatorIdFetcher"
           class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersInvestigatorIdFetcherImpl"
-          parent="abstractIdFetcher"/>
+          parent="abstractIdFetcher">
+          <property name="applicableSiteScopedRoles">
+          	<list>
+				<value>person_and_organization_information_manager</value>
+				<value>user_administrator</value>
+				<value>study_team_administrator</value>
+			</list>
+          </property>
+          <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			</list>
+          </property>          
+    </bean>          
     <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
 
     <!-- Pluggable Query Filterer implementation -->
