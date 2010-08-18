@@ -103,6 +103,12 @@
 	<condition property="run.test">
 		<isfalse value="${skip.test}" />
 	</condition>
+	
+	<!-- If present, Ivy will not be run to resolve dependencies. -->
+	<property name="skip.ivy" value="${env.skip.ivy}" />
+	<condition property="run.ivy">
+		<isfalse value="${skip.ivy}" />
+	</condition>	
 
 	<!-- For Cobertura and PMD report -->
 	<property name="run.review.reports" value="${env.run.review.reports}" />
@@ -259,7 +265,7 @@
     <!-- ======================================================== 
           target: resolve              
     	============================================================ -->
-    <target name="resolve" depends="clean-lib, init, load-ivy" unless="already.resolved"
+    <target name="resolve" depends="clean-lib, init, load-ivy" unless="already.resolved" 
     	description="--> resolve and retrieve dependencies with ivy">
     	<condition property="configs" value="${resolve.confs}" else="default">
     		<isset property="resolve.confs"/>
@@ -269,9 +275,15 @@
     	</condition>
     	
     	<echo message="Executing ${ant.project.name} : resolve with confs : ${configs}" />
-    	<ivyResolve confs="${configs}" libdir="${to.dir}" resolveid="[org]-[module]"/>
+    	<antcall target="run-ivy-resolve">	
+    	</antcall>
+    	
     	<property name="already.resolved" value="true"/>
     </target>
+	
+	<target name="run-ivy-resolve" if="run.ivy">
+		<ivyResolve confs="${configs}" libdir="${to.dir}" resolveid="[org]-[module]"/>
+	</target>
 
 	
     <!-- ======================================================== 
@@ -441,7 +453,7 @@
     <!-- ================================= 
           target: publish-local              
          ================================= -->
-    <target name="publish-local" depends="clean-dist, init, local-version, jar, jar-test, debug-info,test-report" 
+    <target name="publish-local" depends="clean-dist, init, local-version, jar, jar-test, debug-info,test-report"  
     	description="--> publish this project in the local ivy repository">
     	<echo message="Executing in ${ant.project.name}" />
     	<ivyPublish artifactspattern="${dist.dir}/[artifact].[ext]" 
@@ -642,6 +654,7 @@
 			<echo message="base.dir=${basedir}" />
 			<echo message="ant.file=${ant.file}" />
 			<echo message="ivy.available = ${ivy.available}" />
+		    <echo message="run.ivy = ${run.ivy}" />
 			<echo message="ant.project.name = ${ant.project.name}" />
 			<echo message="module.version.target = ${module.version.target}" />
 			<echo message="main.src = ${main.src}" />
