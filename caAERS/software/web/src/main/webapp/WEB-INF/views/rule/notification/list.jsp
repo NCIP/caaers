@@ -204,7 +204,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			</csmauthz:accesscontrol>
 		</chrome:division>
 		<chrome:division title="${manageInactiveReportDefinitionTitle }" id="rule-set-id-inactive" collapsable="true" collapsed="true">
-			<p><tags:instructions code="listreportdefinitions" /></p>
+			<p><tags:instructions code="listInactivereportdefinitions" /></p>
 			<div id="basic-inactive" class="yui-skin-sam"></div>
 		</chrome:division>
 		<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
