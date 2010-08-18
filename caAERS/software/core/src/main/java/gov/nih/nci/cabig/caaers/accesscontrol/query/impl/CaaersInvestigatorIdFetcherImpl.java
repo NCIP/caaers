@@ -71,23 +71,41 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
         long allOrgsCount = getAllOrgsCount();
         
         //for all site scoped roles
-        for(UserGroupType role : getApplicableSiteScopedRoles()){
-            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
+        if (getApplicableSiteScopedRoles() != null) {
+	        for(UserGroupType role : getApplicableSiteScopedRoles()){
+	            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
+	            if (allOrgsCount == orgsCount) {
+	            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
+	            } else {
+	            	list.add(fetch(loginId, role, getSiteScopedHQL()));
+	            }
+	        }
+        } else {
+            long orgsCount = getOrgCountForRoleAndLogin(loginId,0);
             if (allOrgsCount == orgsCount) {
-            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
+            	list.add(fetch(null, queryWithUserAccessToAllOrgs));
             } else {
-            	list.add(fetch(loginId, role, getSiteScopedHQL()));
-            }
+            	list.add(fetch(loginId, null, getSiteScopedHQL()));
+            }        	
         }
 
         //for all study scoped roles
-        for(UserGroupType role : getApplicableStudyScopedRoles()){
-            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
+        if (getApplicableStudyScopedRoles() != null) {
+	        for(UserGroupType role : getApplicableStudyScopedRoles()){
+	            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
+	            if (allOrgsCount == orgsCount) {
+	            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
+	            } else {
+	            	list.add(fetch(loginId, role, getStudyScopedHQL()));
+	            }            
+	        }
+        } else {
+            long orgsCount = getOrgCountForRoleAndLogin(loginId,0);
             if (allOrgsCount == orgsCount) {
-            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
+            	list.add(fetch(null, queryWithUserAccessToAllOrgs));
             } else {
-            	list.add(fetch(loginId, role, getStudyScopedHQL()));
-            }            
+            	list.add(fetch(loginId, null, getStudyScopedHQL()));
+            }         	
         }
 
         return list;
@@ -113,26 +131,5 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
         return studyScopedHQL;
     }
 
-    /**
-     * All the Site scoped roles that require subject indexing
-     * @return
-     */
-    public UserGroupType[] getApplicableSiteScopedRoles(){
-        return new UserGroupType[]{
-                UserGroupType.person_and_organization_information_manager,
-                UserGroupType.user_administrator,
-                UserGroupType.study_team_administrator};
-    }
-
-
-    /**
-     * All the Study scoped roles that require subject indexing
-     * @return
-     */
-    public UserGroupType[] getApplicableStudyScopedRoles(){
-        return new UserGroupType[]{
-                UserGroupType.data_reader,
-                UserGroupType.data_analyst};
-    }
 	    
 }

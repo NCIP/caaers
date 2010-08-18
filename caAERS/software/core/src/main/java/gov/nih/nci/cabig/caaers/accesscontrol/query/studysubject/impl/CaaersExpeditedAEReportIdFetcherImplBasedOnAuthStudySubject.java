@@ -63,27 +63,6 @@ public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends
 
     }
 
-    /**
-     * All the Site scoped roles that require subject indexing
-     * @return
-     */
-    public UserGroupType[] getApplicableSiteScopedRoles(){
-        return new UserGroupType[]{};
-    }
-
-
-    /**
-     * All the Study scoped roles that require subject indexing
-     * @return
-     */
-    public UserGroupType[] getApplicableStudyScopedRoles(){
-        return new UserGroupType[]{
-                UserGroupType.ae_reporter,
-                UserGroupType.ae_expedited_report_reviewer,
-                UserGroupType.ae_study_data_reviewer,
-                UserGroupType.data_reader,
-                UserGroupType.data_analyst};
-    }
 
     public String getSiteScopedHQL(){
         return siteScopedHQL;

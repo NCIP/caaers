@@ -43,33 +43,42 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     protected final String ORG_INDEX_BASE_QUERY = "select oi.organization.id from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
     protected final String STUDY_INDEX_BASE_QUERY = "select sti.study.id from StudyIndex sti where sti.roleCode = :ROLE_CODE and sti.loginId = :LOGIN_ID";
     
-    
+    private UserGroupType[] applicableSiteScopedRoles ; 
+    private UserGroupType[] applicableStudyScopedRoles ; 
     
     /**
      * Will return the Site scoped HQL query
      * @return
      */
-    public abstract String getSiteScopedHQL();
+    public String getSiteScopedHQL() {
+    	return null;
+    }
 
     /**
      * Will return the Study scoped HQL query
      * @return
      */
-    public abstract String getStudyScopedHQL();
+    public String getStudyScopedHQL() {
+    	return null;
+    }
 
 
     /**
      * All the Site scoped roles that require subject indexing
      * @return
      */
-    public abstract UserGroupType[] getApplicableSiteScopedRoles();
+    public  UserGroupType[] getApplicableSiteScopedRoles() {
+    	return this.applicableSiteScopedRoles;
+    }
 
 
     /**
      * All the Study scoped roles that require subject indexing
      * @return
      */
-    public abstract UserGroupType[] getApplicableStudyScopedRoles();
+    public UserGroupType[] getApplicableStudyScopedRoles() {
+    	return this.applicableStudyScopedRoles;
+    }
 
     /**
      * Will fetch all the accessible subjectIds per-role
@@ -79,15 +88,29 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 	public List fetch(String loginId){
 
         List<IndexEntry> list = new ArrayList<IndexEntry>();
-
+    
         //for all site scoped roles
-        for(UserGroupType role : getApplicableSiteScopedRoles()){
-            list.add(fetch(loginId, role, getSiteScopedHQL()));
+        String hql = getSiteScopedHQL();
+        if (hql != null) {
+	        if (getApplicableSiteScopedRoles() != null) {
+	        	for(UserGroupType role : getApplicableSiteScopedRoles()){
+	        		list.add(fetch(loginId, role, getSiteScopedHQL()));
+	        	}
+	        } else {
+	        	list.add(fetch(loginId, null , getSiteScopedHQL()));
+	        }
         }
 
         //for all study scoped roles
-        for(UserGroupType role : getApplicableStudyScopedRoles()){
-            list.add(fetch(loginId, role, getStudyScopedHQL()));
+        hql = getStudyScopedHQL();
+        if (hql != null) {
+	        if (getApplicableStudyScopedRoles() != null) {
+		        for(UserGroupType role : getApplicableStudyScopedRoles()){
+		            list.add(fetch(loginId, role, getStudyScopedHQL()));
+		        }
+	        } else {
+	        	 list.add(fetch(loginId, null , getStudyScopedHQL()));
+	        }
         }
 
         return list;
@@ -146,7 +169,11 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
        IndexEntry entry = new IndexEntry(role);
        HQLQuery query = new HQLQuery(hql);
        query.getParameterMap().put("LOGIN_ID", loginId);
-       query.getParameterMap().put("ROLE_CODE", role.getCode()) ;
+       if (role == null) {
+    	   query.getParameterMap().put("ROLE_CODE", 0) ;
+       } else {
+    	   query.getParameterMap().put("ROLE_CODE", role.getCode()) ;
+       }
 
        List<Integer> resultList = (List<Integer>) search(query);
        entry.setEntityIds(resultList);
@@ -306,6 +333,16 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
 	public CaaersSecurityFacade getCaaersSecurityFacade() {
 		return caaersSecurityFacade;
+	}
+
+	public void setApplicableSiteScopedRoles(
+			UserGroupType[] applicableSiteScopedRoles) {
+		this.applicableSiteScopedRoles = applicableSiteScopedRoles;
+	}
+
+	public void setApplicableStudyScopedRoles(
+			UserGroupType[] applicableStudyScopedRoles) {
+		this.applicableStudyScopedRoles = applicableStudyScopedRoles;
 	}
 
 }
