@@ -25,6 +25,7 @@ public class IndexEntry {
     }
    
     public Integer getRoleCode(){
+    	if (role == null) return 0;
         return role.getCode();
     }
 
