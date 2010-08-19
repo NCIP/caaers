@@ -287,7 +287,16 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
     @Override
     protected boolean shouldSave(HttpServletRequest request, ParticipantInputCommand command, Tab<ParticipantInputCommand> participantInputCommandTab) {
-        if (isAjaxRequest(request)) return false;
-        return (getCurrentPage(request) > 0 && getTargetPage(request, getCurrentPage(request)) > 0);
+        //if (isAjaxRequest(request)) return false;
+        //return (getCurrentPage(request) > 0 && getTargetPage(request, getCurrentPage(request)) > 0);
+    	return false;
     }
+
+	public EventFactory getEventFactory() {
+		return eventFactory;
+	}
+
+	public void setEventFactory(EventFactory eventFactory) {
+		this.eventFactory = eventFactory;
+	}
 }
