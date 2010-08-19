@@ -14,7 +14,7 @@
     </layout>
   </appender>
  
- <logger name="gov.nih.nci"><level value="debug"/></logger>	
+ 	<logger name="gov.nih.nci"><level value="debug"/></logger>	
  	
   <root>
     <priority value="error"/>

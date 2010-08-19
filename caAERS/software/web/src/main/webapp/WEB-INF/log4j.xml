@@ -3,38 +3,21 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   
-  <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="conversionPattern" value="caAERS-webapp-%d %-5p [%15t] %c %x: %m%n"/>
-    </layout>
-    <filter class="org.apache.log4j.varia.StringMatchFilter">
-      <param name="acceptOnMatch" value="false"/>
-      <param name="stringToMatch" value="Unable to proxy method"/>
-    </filter>
-    <!-- conceal expected authorization switch warnings when
-	 running tests -->
-    <filter class="org.apache.log4j.varia.StringMatchFilter">
-      <param name="acceptOnMatch" value="false"/>
-      <param name="stringToMatch" value="##### AuthorizationSwitch"/>
-    </filter>
-  </appender>
-  
-  
   <!-- for testing, purge the log on each run -->
-  <appender name="file" class="org.apache.log4j.RollingFileAppender">
-  
+  <appender name="caaers-webapp-log" class="org.apache.log4j.RollingFileAppender">
 	<param name="maxBackupIndex" value="20"/>
     <param name="file" value="${catalina.home}/logs/caaers.log"/>
 	<param name="threshold" value="ERROR"/>
     <param name="append" value="true"/>
     <layout class="org.apache.log4j.PatternLayout">
-      <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
+      <param name="conversionPattern" value="caAERS-webapp-%d [%15t] %-5p %c %x: %m%n"/>
     </layout>
   </appender>
-
+	 
+	<logger name="gov.nih.nci.cabig.caaers.resolver"><level value="debug"/></logger>	 
+	   	
   <root>
     <priority value="error"/>
-    <appender-ref ref="file"/>
-    <appender-ref ref="stdout"/>
+    <appender-ref ref="caaers-webapp-log"/>
   </root>
 </log4j:configuration>
