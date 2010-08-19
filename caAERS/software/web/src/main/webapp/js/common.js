@@ -686,7 +686,7 @@ function updateHelpLink(baseUrl, linkName){
     if(AE.PAGE_HELP_LINK) {
         _helpLink =  AE.PAGE_HELP_LINK;
     }
-	$('help').href= baseUrl + "#" + _helpLink;
+	$('help').href= baseUrl + _helpLink;
 }
 
 
