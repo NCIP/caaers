@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -45,6 +47,7 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
 
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "term_id")
+    @Cascade(value = {CascadeType.LOCK})
     @Override
     public LowLevelTerm getTerm() {
         return super.getTerm();

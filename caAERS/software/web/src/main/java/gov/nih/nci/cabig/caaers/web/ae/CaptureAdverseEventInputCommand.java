@@ -143,6 +143,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
 				ae.initailzeGradedDate();
 				ae.initializePostSubmissionUpdatedDate();
+
+                //increment the version of AETerm
+                if(ae.getAdverseEventTerm() != null){
+                    Integer version = ae.getAdverseEventTerm().getVersion();
+                    version = (version == null) ? 0 : version + 1;
+                    ae.getAdverseEventTerm().setVersion(version);
+
+                }
 			}
 			adverseEventReportingPeriodDao.save(this.getAdverseEventReportingPeriod());
 		}

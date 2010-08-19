@@ -108,7 +108,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         }
         
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
+    	//params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
     	params.put("index", Integer.toString(index));
     	 
     	ajaxOutput.setHtmlContent(renderAjaxView("observedAdverseEventSection", 0, params));
@@ -147,7 +147,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         command.getAdverseEvents().add(ae);
 
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
+//    	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
     	params.put("index", Integer.toString(index));
 
     	ajaxOutput.setHtmlContent(renderAjaxView("observedAdverseEventSection", 0, params));
