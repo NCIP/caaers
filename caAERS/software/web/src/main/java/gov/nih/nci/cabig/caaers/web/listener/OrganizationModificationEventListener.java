@@ -17,7 +17,8 @@ public class OrganizationModificationEventListener extends AbstractEventListener
 	
     @Override
     public void preProcess(ApplicationEvent event) {
-        caaersSecurityFacade.clearUserCache(SecurityUtils.getUserLoginName(getAuthentication(event)));
+    	String userName = SecurityUtils.getUserLoginName(getAuthentication(event));
+        caaersSecurityFacade.clearUserCache(userName);
     }
 
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
