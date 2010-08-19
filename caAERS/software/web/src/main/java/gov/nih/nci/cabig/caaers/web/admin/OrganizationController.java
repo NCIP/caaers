@@ -4,8 +4,10 @@ import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -39,6 +41,8 @@ public abstract class OrganizationController<C extends Organization> extends
     protected OrganizationRepository organizationRepository;
 
     protected WebControllerValidator webControllerValidator;
+    
+    private EventFactory eventFactory;
     
     public OrganizationController() {
         setCommandClass(Organization.class);
@@ -108,6 +112,7 @@ public abstract class OrganizationController<C extends Organization> extends
     			return modelAndView;
     		}
             organizationRepository.createOrUpdate(organization);
+            eventFactory.publishEntityModifiedEvent(new LocalOrganization(), false);
             modelAndView.getModel().put("flashMessage", "Successfully created the Organization");
             modelAndView.addAllObjects(errors.getModel());
     	}
@@ -148,4 +153,8 @@ public abstract class OrganizationController<C extends Organization> extends
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
     }
+    
+	public void setEventFactory(EventFactory eventFactory) {
+		this.eventFactory = eventFactory;
+	}
 }
