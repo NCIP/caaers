@@ -12,6 +12,7 @@ size:${fn:length(command.agentSpecificTerms)}
 ${command.agentSpecificTerms}
 --%>
 
+<c:if test="${param.firstIndex <= param.lastIndex}">
 <tags:noform>
 
                 <%-- ADD --%>
@@ -60,4 +61,4 @@ ${command.agentSpecificTerms}
                     <%--<tr id="observedBlankRow" style="display:none;"><td></td></tr>--%>
                 </c:if>
 </tags:noform>
-
+</c:if>
