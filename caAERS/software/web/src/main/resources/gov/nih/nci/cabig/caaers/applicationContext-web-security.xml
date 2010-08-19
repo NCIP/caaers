@@ -99,9 +99,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/rule/notification/export" value="ae_rule_and_report_manager,data_reader"/>
         <entry key="/pages/rule/notification/createConfigProperty" value="ae_rule_and_report_manager,data_reader"/>             	
 
-        <entry key="/dwr/call/plaincall/createAE.matchStudies.dwr" value="data_reader,ae_reporter,study_data_reviewer,expdited_report_reviewer" /> 
-        <entry key="/dwr/call/plaincall/createAE.matchParticipants.dwr" value="data_reader,ae_reporter" /> 
-        <entry key="/dwr/call/plaincall/routingAndReview.matchSites.dwr" value="data_reader,ae_reporter" /> 
+        <entry key="/dwr/call/plaincall/createAE.matchStudies.dwr" value="data_reader,ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer" /> 
+        <entry key="/dwr/call/plaincall/createAE.matchParticipants.dwr" value="data_reader,ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer" /> 
+        <entry key="/dwr/call/plaincall/routingAndReview.matchSites.dwr" value="data_reader,ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer" /> 
         <entry key="/dwr/call/plaincall/search.buildParticipantTable.dwr" value="subject_manager,data_reader,registrar,registration_qa_manager" /> 
         <entry key="/dwr/call/plaincall/createParticipant.getParticipantTable.dwr" value="registrar" /> 
         <entry key="/dwr/call/plaincall/searchStudy.getTableForAssignParticipant.dwr" value="registrar" /> 
