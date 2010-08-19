@@ -2,7 +2,7 @@ class UpdatecaAERSBaseHelpURL extends edu.northwestern.bioinformatics.bering.Mig
 	
     void up() {
 
-        execute("update configuration set value = 'https://cabig-kc.nci.nih.gov/CTMS/KC/index.php' where key = 'caaersBaseHelpUrl'");
+      execute("update configuration set value = 'https://cabig-kc.nci.nih.gov/CTMS/KC/index.php' where key = 'caaersBaseHelpUrl'");
 
     }
 
