@@ -370,17 +370,19 @@ public abstract class BaseResolver {
 				organizationIdXmlList.add(CoppaObjectFactory.getCoppaIIXml(dsetii));
 			}
 			
-			//Coppa-call for Identifier Organizations getByIds
-			String identifiedOrganizationsXml = broadcastIdentifiedOrganizationGetByPlayerIds(organizationIdXmlList);
-			List<String> identifiedOrganizations = XMLUtil.getObjectsFromCoppaResponse(identifiedOrganizationsXml);
-			
-			//Build a map with orgId as key and identifiedOrganization as value. Only get IdOrgs that have CTEP ID
-			if(identifiedOrganizations != null && identifiedOrganizations.size() > 0){
-				IdentifiedOrganization identifiedOrganization = null;
-				for(String identifiedOrganizationString : identifiedOrganizations){
-					identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationString);
-					if(identifiedOrganization != null && identifiedOrganization.getAssignedId().getIdentifierName().equals(CTEP_ID)){
-						identifiedOrganizationsMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
+			if(organizationIdXmlList.size() > 0){
+				//Coppa-call for Identifier Organizations getByIds
+				String identifiedOrganizationsXml = broadcastIdentifiedOrganizationGetByPlayerIds(organizationIdXmlList);
+				List<String> identifiedOrganizations = XMLUtil.getObjectsFromCoppaResponse(identifiedOrganizationsXml);
+				
+				//Build a map with orgId as key and identifiedOrganization as value. Only get IdOrgs that have CTEP ID
+				if(identifiedOrganizations != null && identifiedOrganizations.size() > 0){
+					IdentifiedOrganization identifiedOrganization = null;
+					for(String identifiedOrganizationString : identifiedOrganizations){
+						identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationString);
+						if(identifiedOrganization != null && identifiedOrganization.getAssignedId().getIdentifierName().equals(CTEP_ID)){
+							identifiedOrganizationsMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
+						}
 					}
 				}
 			}
@@ -408,24 +410,26 @@ public abstract class BaseResolver {
 				personIdXmlList.add(CoppaObjectFactory.getCoppaPersonIdXML(coppaPerson.getIdentifier().getExtension()));
 			}
 			//Coppa-call for Identifier Persons getByIds
-			String identifiedPersonsXml = broadcastIdentifiedPersonGetByPlayerIds(personIdXmlList);
-			List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(identifiedPersonsXml);
-			
-			//Build a map with personId as key and sRole as value
-			if(identifiedPersons != null && identifiedPersons.size() > 0){
-				IdentifiedPerson identifiedPerson = null;
-				for(String identifiedPersonString : identifiedPersons){
-					identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonString);
-					if(identifiedPerson != null){
-						//identifiedPersonMap.put(identifiedPerson.getPlayerIdentifier().getExtension(), identifiedPerson);
-						List<IdentifiedPerson> ipList = null;
-						if(identifiedPersonMap.containsKey(identifiedPerson.getPlayerIdentifier().getExtension())){
-							ipList  = identifiedPersonMap.get(identifiedPerson.getPlayerIdentifier().getExtension());
-							ipList.add(identifiedPerson);
-						} else {
-							ipList = new ArrayList<IdentifiedPerson>();
-							ipList.add(identifiedPerson);
-							identifiedPersonMap.put(identifiedPerson.getPlayerIdentifier().getExtension(), ipList);
+			if(personIdXmlList.size() > 0){
+				String identifiedPersonsXml = broadcastIdentifiedPersonGetByPlayerIds(personIdXmlList);
+				List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(identifiedPersonsXml);
+				
+				//Build a map with personId as key and sRole as value
+				if(identifiedPersons != null && identifiedPersons.size() > 0){
+					IdentifiedPerson identifiedPerson = null;
+					for(String identifiedPersonString : identifiedPersons){
+						identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonString);
+						if(identifiedPerson != null){
+							//identifiedPersonMap.put(identifiedPerson.getPlayerIdentifier().getExtension(), identifiedPerson);
+							List<IdentifiedPerson> ipList = null;
+							if(identifiedPersonMap.containsKey(identifiedPerson.getPlayerIdentifier().getExtension())){
+								ipList  = identifiedPersonMap.get(identifiedPerson.getPlayerIdentifier().getExtension());
+								ipList.add(identifiedPerson);
+							} else {
+								ipList = new ArrayList<IdentifiedPerson>();
+								ipList.add(identifiedPerson);
+								identifiedPersonMap.put(identifiedPerson.getPlayerIdentifier().getExtension(), ipList);
+							}
 						}
 					}
 				}
