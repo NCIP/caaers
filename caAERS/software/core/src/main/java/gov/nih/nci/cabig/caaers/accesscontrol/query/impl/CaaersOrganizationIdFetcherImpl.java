@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
-import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import java.util.List;
 
@@ -25,26 +23,7 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  *
  */
 public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implements IdFetcher{
-    /**
-     * All the Site scoped roles that require subject indexing
-     *
-     * @return
-     */
-    @Override
-    public UserGroupType[] getApplicableSiteScopedRoles() {
-        return new UserGroupType[0];  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
-    /**
-     * All the Study scoped roles that require subject indexing
-     *
-     * @return
-     */
-    @Override
-    public UserGroupType[] getApplicableStudyScopedRoles() {
-        return new UserGroupType[0];  //To change body of implemented methods use File | Settings | File Templates.
-    }
-	
 	@Override
 	public List fetch(String loginId) {
 		List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
