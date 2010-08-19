@@ -175,6 +175,9 @@
 						<tags:button color="green" type="button" id="nested-view" value="Nested View" onclick="javascript:renderNestedView();"/>
 					</div>
 				</c:if> --%>
+
+                <p><tags:instructions code="advancedSearch.results" /></p>
+
 				<div align="right">
 					<a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/search/exportSearchResults"/>" />&nbsp;Export search results...</a>
 				</div>

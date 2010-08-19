@@ -55,6 +55,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </script>
 </head>
 <body>
-	 <div id="basic" class="yui-skin-sam"></div>
+        <p><tags:instructions code="advancedSearch.manageSearch" /></p>
+	    <div id="basic" class="yui-skin-sam"></div>
 </body>
 </html>

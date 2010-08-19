@@ -243,7 +243,10 @@
 	<body>
 		<tags:tabForm tab="${tab}" flow="${flow}" formName="advancedSearchForm" saveButtonLabel="Save Search" hideBox="true">
 			<jsp:attribute name="singleFields">
-				<chrome:box title="Select view">
+
+                <p><tags:instructions code="advancedSearch.selectView" /></p>
+
+                <chrome:box title="Select view">
 		        <table width="100%" border="0" cellspacing="0" cellpadding="5">
 		        <tbody>
         <tr bgcolor="#E4E4E4">
