@@ -21,6 +21,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class StateInfoInterceptor  extends HandlerInterceptorAdapter{
 	
+	private static final String STUDY_SUBJECT_GRID_ID = "studySubjectGridId";
 	//state variables for keeping the study/subject/course infor in ae flow
 	private static final String SELECTED_STUDY_ID = "pre_selected_study_id";
 	private static final String SELECTED_PARTICIPANT_ID = "pre_selected_participant_id";
@@ -60,8 +61,8 @@ public class StateInfoInterceptor  extends HandlerInterceptorAdapter{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-        String requestUrl = request.getRequestURL().toString();
-        if (requestUrl.contains("studySubjectGridId")) {
+        String requestUrl = request.getRequestURL().toString()+request.getQueryString();
+        if (requestUrl.contains(STUDY_SUBJECT_GRID_ID)) {
             session.removeAttribute(SELECTED_COURSE_ID);
             session.removeAttribute(SELECTED_PARTICIPANT_ID);
             session.removeAttribute(SELECTED_STUDY_ID);
