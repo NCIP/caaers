@@ -112,6 +112,9 @@
 			<jsp:attribute name="singleFields">
 	      		<input type="hidden" name="_action" id="_action" value="">
 	      		<c:if test="${command.searchTargetObject == null}">
+
+                    <p><tags:instructions code="advancedSearch.criteria" /></p>
+
     				<div>
 					   	<b>Search for:</b> 
 					   		<SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:updateSearchTargetObject();">
