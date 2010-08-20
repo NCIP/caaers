@@ -146,5 +146,10 @@
             start_date="2006-10-10"
             study_id="-4"
             site_id="-1003"
-            type="SST"/>            
+            type="SST"/>
+
+    <ind_holders />
+    <site_investigators />
+    <site_research_staffs />
+
 </dataset>

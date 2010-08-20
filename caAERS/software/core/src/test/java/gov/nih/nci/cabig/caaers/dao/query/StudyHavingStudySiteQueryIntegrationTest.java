@@ -23,12 +23,14 @@ public class StudyHavingStudySiteQueryIntegrationTest extends
     protected void setUp() throws Exception {
     	super.setUp();
     	query = new StudyHavingStudySiteQuery();
+        query.joinStudyOrganization();
+        query.filterBySST();
     	studyDao = (StudyDao)getDeployedApplicationContext().getBean("studyDao");
     }
     
     
     public void testFindStudies(){
-    	List<Study> studies = studyDao.find(query);
+        List<Study> studies = studyDao.find(query);
     	assertEquals(3, studies.size());
     }
     
