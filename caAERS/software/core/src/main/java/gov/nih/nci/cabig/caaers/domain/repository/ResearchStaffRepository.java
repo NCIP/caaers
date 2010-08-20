@@ -255,11 +255,11 @@ public class ResearchStaffRepository {
         //save remote research staff and refresh index.
         if(CollectionUtils.isNotEmpty(remoteResearchStaffs)){
             saveRemoteResearchStaff(remoteResearchStaffs);
-            logger.info(remoteResearchStaffs.size() +"ResearchStaff fetched from PO");
+            logger.info(remoteResearchStaffs.size() + " :::: ResearchStaff fetched from PO");
         }
         List<SiteResearchStaff> sRsList = researchStaffDao.getSiteResearchStaff(query);
         if(sRsList != null){
-        	logger.info(sRsList.size() +"ResearchStaff is being displayed");
+        	logger.info(sRsList.size() +" :::: ResearchStaff is being displayed");
         }
         return sRsList;
     }

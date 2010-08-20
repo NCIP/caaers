@@ -142,11 +142,11 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			return investigatorDao.getLocalInvestigator(query);
 		}else{
 			saveRemoteInvestigators(remoteInvestigators);
-			logger.info(remoteInvestigators.size() +"Investigators fetched from PO");
+			logger.info(remoteInvestigators.size() +" :::: Investigators fetched from PO");
 		}
 		List<Investigator> invList = investigatorDao.getLocalInvestigator(query);
 		if(invList != null){
-			logger.info(invList.size() +"ResearchStaff is being displayed");
+			logger.info(invList.size() +" :::: Investigators is being displayed");
 		}
 		return invList;
 	}

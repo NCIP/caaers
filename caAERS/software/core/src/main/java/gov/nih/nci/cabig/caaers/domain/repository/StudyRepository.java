@@ -129,7 +129,7 @@ public class StudyRepository {
         //Perform normal search on caAERS DB & return results. 
     	List<Object[]> objectArray = (List<Object[]>) studyDao.search(query);
     	if(objectArray != null){
-    		log.info(objectArray.size() + "Studies is being displayed");
+    		log.info(objectArray.size() + " :::: Studies is being displayed");
     	}
         return objectArray;
     }
@@ -170,7 +170,7 @@ public class StudyRepository {
                     }
                     //Save the studies returned from COPPA
                     saveRemoteStudies(remoteStudies);
-                    log.info(remoteStudies.size() + "Studies fetched from PA");
+                    log.info(remoteStudies.size() + " :::: Studies fetched from PA");
                 }
             }
 
