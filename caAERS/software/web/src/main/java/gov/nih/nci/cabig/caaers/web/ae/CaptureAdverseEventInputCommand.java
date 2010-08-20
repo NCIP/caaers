@@ -138,14 +138,19 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 * This method will save the {@link AdverseEventReportingPeriod}.
 	 */
 	public void save() {
-		if(this.getAdverseEventReportingPeriod() != null){
-			//initialize the graded date. 
+        save(true);
+	}
+
+
+    public void save(boolean incrementAeTermVersion){
+        if(this.getAdverseEventReportingPeriod() != null){
+			//initialize the graded date.
 			for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
 				ae.initailzeGradedDate();
 				ae.initializePostSubmissionUpdatedDate();
 
                 //increment the version of AETerm
-                if(ae.getAdverseEventTerm() != null){
+                if(incrementAeTermVersion && ae.getAdverseEventTerm() != null){
                     Integer version = ae.getAdverseEventTerm().getVersion();
                     version = (version == null) ? 0 : version + 1;
                     ae.getAdverseEventTerm().setVersion(version);
@@ -154,7 +159,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			}
 			adverseEventReportingPeriodDao.save(this.getAdverseEventReportingPeriod());
 		}
-	}
+    }
 	
 	/**
 	 * This method returns the type of the command object (reportingPeriod)
@@ -164,9 +169,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		return "reportingPeriod";
 	}
 	
-	public void reassociate(ExpeditedAdverseEventReport aeReport){
-		aeReportDao.reassociate(aeReport);
-	}
+	
 	public void reassociate(){
 //		//reassociate all report definitions
 //		if(allReportDefinitions != null)
@@ -562,12 +565,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setOutcomeOtherDetails(List<String> outcomeOtherDetails) {
 		this.outcomeOtherDetails = outcomeOtherDetails;
 	}
-    
-    public ReportDefinition reassociateReportDefinition(ReportDefinition reportDefinition){
-    	return reportDefinitionDao.merge(reportDefinition);
-    }
-    
-
 	
     public HashMap<String, Boolean> getErrorsForFields() {
         return errorsForFields;
