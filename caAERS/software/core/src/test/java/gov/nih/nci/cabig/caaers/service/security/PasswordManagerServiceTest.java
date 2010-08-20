@@ -81,6 +81,7 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
        csmUserRepository.setUserDao(userDao);
        
        Group group = new Group();
+       group.setGroupName("ae_reporter");
        group.setGroupId( -2L);
        groups = new HashSet<Group>();
        groups.add(group);
