@@ -5,6 +5,7 @@ public class OrganizationFromStudySiteQuery extends AbstractQuery {
     //private static String queryString = "SELECT distinct ss.organization from StudySite ss";//order by ss.organization.name";
     private static String queryString = "SELECT distinct organization from Organization organization ";
     private static String ORGANIZATION_NAME = "name";
+    private static String ORGANIZATION_NAME_CODE = "nameOrCode";
     private static String STUDY_ID = "STUDY_ID";
 
     public OrganizationFromStudySiteQuery() {
@@ -19,6 +20,20 @@ public class OrganizationFromStudySiteQuery extends AbstractQuery {
         andWhere("lower(organization.name) LIKE :" + ORGANIZATION_NAME);
         setParameter(ORGANIZATION_NAME, searchString);
     }
+    
+	/**
+	 * Filters organizations by occurrence of the given text string in
+	 * organization name or NCI code.
+	 * 
+	 * @param text
+	 */
+	public void filterByOrganizationNameOrNciCode(String text) {
+		String searchString = "%" + text.toLowerCase() + "%";
+		andWhere("(lower(organization.name) LIKE :" + ORGANIZATION_NAME_CODE
+				+ " OR lower(organization.nciInstituteCode) LIKE :"
+				+ ORGANIZATION_NAME_CODE+")");
+		setParameter(ORGANIZATION_NAME_CODE, searchString);
+	}    
 
     public void filterByStudy(Integer studyId){
     	andWhere("ss.study.id = :" + STUDY_ID);

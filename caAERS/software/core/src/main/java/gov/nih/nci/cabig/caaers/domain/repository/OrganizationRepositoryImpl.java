@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.event.EventFactory;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,8 +118,8 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	@SuppressWarnings("unchecked")
  	public List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId){
  		OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
- 		if(text != null && !text.equals(""))
- 			query.filterByOrganizationName(text);
+ 		if(StringUtils.isNotBlank(text))
+ 			query.filterByOrganizationNameOrNciCode(text);
  		if(studyId != null)
  			query.filterByStudy(studyId);
  		List<Organization> organizations = organizationDao.getApplicableOrganizationsFromStudySites(query);
