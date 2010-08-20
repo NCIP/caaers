@@ -209,7 +209,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     public List<AdverseEvent> getNonExpeditedAdverseEvents(){
     	List<AdverseEvent> unReportedAes = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae : getPopulatedAdverseEvents()){
-    		if(ae.getReport() == null && ae.getAdverseEventTerm().getTerm() != null)
+    		if(ae.getReport() == null /*&& ae.getAdverseEventTerm().getTerm() != null*/)
     			unReportedAes.add(ae);
     	}
     	
