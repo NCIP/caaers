@@ -1,0 +1,61 @@
+<dataset>
+
+
+<!--  =============== CSM Data and User data ===================== -->
+	<!--  System Admin -->
+	<CSM_USER USER_ID="-11234" LOGIN_NAME="j_reporter"
+		FIRST_NAME="J" LAST_NAME="Reporter"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg=="
+		EMAIL_ID="j_reporter@caaers.org"
+		UPDATE_DATE="2007-01-27" />
+		UPDATE_DATE="2007-01-27" />
+
+    <CSM_GROUP  group_id="2" group_name="system_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="3" group_name="business_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="4" group_name="person_and_organization_information_manager" application_id="-1" />
+    <CSM_GROUP  group_id="5" group_name="data_importer" application_id="-1" />
+    <CSM_GROUP  group_id="6" group_name="user_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="7" group_name="study_qa_manager" application_id="-1" />
+    <CSM_GROUP  group_id="8" group_name="study_creator" application_id="-1" />
+    <CSM_GROUP  group_id="9" group_name="supplemental_study_information_manager"  application_id="-1" />
+    <CSM_GROUP  group_id="10" group_name="study_team_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="11" group_name="study_site_participation_administrator" application_id="-1" />
+    <CSM_GROUP  group_id="12" group_name="ae_rule_and_report_manager" application_id="-1" />
+    <CSM_GROUP  group_id="13" group_name="study_calendar_template_builder" application_id="-1" />
+    <CSM_GROUP  group_id="14" group_name="registration_qa_manager" application_id="-1" />
+    <CSM_GROUP  group_id="15" group_name="subject_manager" application_id="-1" />
+    <CSM_GROUP  group_id="16" group_name="study_subject_calendar_manager" application_id="-1" />
+    <CSM_GROUP  group_id="17" group_name="registrar" application_id="-1" />
+    <CSM_GROUP  group_id="18" group_name="ae_reporter" application_id="-1" />
+    <CSM_GROUP  group_id="19" group_name="ae_expedited_report_reviewer" application_id="-1" />
+    <CSM_GROUP  group_id="20" group_name="ae_study_data_reviewer" application_id="-1" />
+    <CSM_GROUP  group_id="21" group_name="lab_impact_calendar_notifier" application_id="-1" />
+    <CSM_GROUP  group_id="22" group_name="lab_data_user" application_id="-1" />
+    <CSM_GROUP  group_id="23" group_name="data_reader" application_id="-1" />
+    <CSM_GROUP  group_id="24" group_name="data_analyst" application_id="-1" />
+
+	<CSM_USER_GROUP USER_GROUP_ID="-1" USER_ID="-11234" GROUP_ID="2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-2" USER_ID="-11234" GROUP_ID="3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-3" USER_ID="-11234" GROUP_ID="4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-4" USER_ID="-11234" GROUP_ID="5" />
+	<CSM_USER_GROUP USER_GROUP_ID="-5" USER_ID="-11234" GROUP_ID="6" />
+    <CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-11234" GROUP_ID="7" />
+    <CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-11234" GROUP_ID="8" />
+    <CSM_USER_GROUP USER_GROUP_ID="-8" USER_ID="-11234" GROUP_ID="9" />
+    <CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-11234" GROUP_ID="10" />
+    <CSM_USER_GROUP USER_GROUP_ID="-10" USER_ID="-11234" GROUP_ID="11" />
+    <CSM_USER_GROUP USER_GROUP_ID="-11" USER_ID="-11234" GROUP_ID="12" />
+    <CSM_USER_GROUP USER_GROUP_ID="-12" USER_ID="-11234" GROUP_ID="13" />
+    <CSM_USER_GROUP USER_GROUP_ID="-13" USER_ID="-11234" GROUP_ID="14" />
+    <CSM_USER_GROUP USER_GROUP_ID="-14" USER_ID="-11234" GROUP_ID="15" />
+    <CSM_USER_GROUP USER_GROUP_ID="-15" USER_ID="-11234" GROUP_ID="16" />
+    <CSM_USER_GROUP USER_GROUP_ID="-16" USER_ID="-11234" GROUP_ID="17" />
+    <CSM_USER_GROUP USER_GROUP_ID="-17" USER_ID="-11234" GROUP_ID="18" />   <!-- ae_reporter -->
+    <CSM_USER_GROUP USER_GROUP_ID="-18" USER_ID="-11234" GROUP_ID="19" />
+    <CSM_USER_GROUP USER_GROUP_ID="-19" USER_ID="-11234" GROUP_ID="20" />   <!-- ae_study_data_reviewer -->
+    <CSM_USER_GROUP USER_GROUP_ID="-20" USER_ID="-11234" GROUP_ID="21" />
+    <CSM_USER_GROUP USER_GROUP_ID="-21" USER_ID="-11234" GROUP_ID="22" />
+    <CSM_USER_GROUP USER_GROUP_ID="-22" USER_ID="-11234" GROUP_ID="23" />
+    <CSM_USER_GROUP USER_GROUP_ID="-23" USER_ID="-11234" GROUP_ID="24" />
+
+</dataset>
