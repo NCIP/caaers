@@ -6,7 +6,8 @@
 <c:set var="aeReportPageURL"
 	value="/pages/ae/reviewResolver?aeReport=${aeReport.id}&viewOnly=true" />
 		<c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
-			<c:if test="${report.status ne 'REPLACED' and report.status ne 'AMENDED'}">
+			<%-- the following check has been moved to gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory.createReportDTOs(ExpeditedAdverseEventReport, String) --%>
+			<%-- <c:if test="${report.status ne 'REPLACED' and report.status ne 'AMENDED'}"> --%>
 				<tr class="report-row">
 					 <td align="left" width="36%">
 						<c:if test="${report.status ne 'COMPLETED'}">
@@ -35,5 +36,5 @@
 						<img id="report-${report.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 					</td>
 				</tr>
-			</c:if>
+			<%--</c:if> --%>
 		</c:forEach>

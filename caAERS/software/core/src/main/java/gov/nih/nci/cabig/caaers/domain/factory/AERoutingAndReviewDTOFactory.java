@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.factory;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDTO;
@@ -14,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 /**
  * The purpose of this class is to obtain an {@link AdverseEventReportingPeriodDTO} object from an {@link AdverseEventReportingPeriod}
@@ -83,10 +85,31 @@ public class AERoutingAndReviewDTOFactory {
 		return commentDtos;
 	}
 	
-	protected List<ReportDTO> createReportDTOs(ExpeditedAdverseEventReport aeReport, String userId){
+	/**
+	 * @param aeReport
+	 * @param userId
+	 * @return
+	 * @author dkrylov
+	 * @author Biju Joseph
+	 */
+	protected List<ReportDTO> createReportDTOs(
+			ExpeditedAdverseEventReport aeReport, String userId) {
 		ArrayList<ReportDTO> reportDTOs = new ArrayList<ReportDTO>();
-		for(Report report : aeReport.getReports()){
-			if(report.getWorkflowId() == null) continue;
+		for (Report report : aeReport.getReports()) {
+			if (report.getWorkflowId() == null) {
+				continue;
+			}
+			final List<String> possibleActions = adverseEventRoutingAndReviewRepository
+					.nextTransitionNamesForReportWorkflow(report, userId);
+			// the following two checks are related to http://jira.semanticbits.com/browse/CAAERS-4319
+			// essentially we are filtering out reports with no actions or with REPLACED/AMENDED status.
+			if (CollectionUtils.isEmpty(possibleActions)) {
+				continue;
+			}
+			if (ReportStatus.REPLACED.equals(report.getStatus())
+					|| ReportStatus.AMENDED.equals(report.getStatus())) {
+				continue;
+			}
 			ReportDTO dto = new ReportDTO();
 			dto.setId(report.getId());
 			dto.setName(report.getName());
@@ -97,8 +120,9 @@ public class AERoutingAndReviewDTOFactory {
 			dto.setNoOfAe(aeReport.getNumberOfAes());
 			dto.setReport(report);
 			dto.setReviewStatus(report.getReviewStatus());
-			dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNamesForReportWorkflow(report, userId));
-			dto.setReviewComments(createReviewComments(report.getReviewComments()));
+			dto.setPossibleActions(possibleActions);
+			dto.setReviewComments(createReviewComments(report
+					.getReviewComments()));
 			reportDTOs.add(dto);
 		}
 		return reportDTOs;
