@@ -73,7 +73,7 @@
 
 		function showDiseaseMeddraTerms(){
 			var row = document.getElementById('diseaseMeddraOption');
-			if ($('study.diseaseTerminology.diseaseCodeTerm').options[1].selected){
+			if ($('study.diseaseTerminology.diseaseCodeTerm').options[2].selected){
                 row.style.display = '';
 			} else{
                 row.style.display = 'none';
