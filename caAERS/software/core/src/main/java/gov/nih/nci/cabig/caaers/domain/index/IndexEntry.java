@@ -44,5 +44,10 @@ public class IndexEntry {
     public void setRole(UserGroupType role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "[" + String.valueOf(role) + ", " + String.valueOf(entityIds) + "]";
+    }
 }
 
