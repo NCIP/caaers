@@ -168,7 +168,7 @@ public class DetailsTab extends StudyTab {
         // Create fieldGroup for DiseaseTerminology
         InputFieldGroup studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
         List<InputField> sdFields = studyDiseaseCodeFieldGroup.getFields();
-        sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.diseaseCodeTerm", "Terminology", true, WebUtils.collectOptions(Arrays.asList(DiseaseCodeTerm.values()), null, "displayName")));
+        sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.diseaseCodeTerm", "Terminology", true, WebUtils.collectOptions(Arrays.asList(DiseaseCodeTerm.values(),"Please select"), null, "displayName")));
         sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));
 
         if (dcpCodeFieldGroup == null) {
