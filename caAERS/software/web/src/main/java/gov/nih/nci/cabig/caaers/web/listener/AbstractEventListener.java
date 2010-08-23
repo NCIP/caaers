@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.listener;
 
 import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
 import gov.nih.nci.cabig.caaers.event.EntityModificationEvent;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.event.authentication.AuthenticationSuccessEvent;
 import org.apache.commons.logging.Log;
@@ -17,7 +18,7 @@ import org.springframework.context.ApplicationListener;
 public abstract class AbstractEventListener   implements ApplicationListener {
     private FilteredDataLoader filteredDataLoader;
 
-    private static final Log log = LogFactory.getLog(AuthenticationSuccessListener.class);
+    private static final Log log = LogFactory.getLog(AbstractEventListener.class);
 
     public void preProcess(ApplicationEvent event){
         //dummy
@@ -31,11 +32,16 @@ public abstract class AbstractEventListener   implements ApplicationListener {
      * This data is basically domain object IDs to use in IN clause of Query .
      */
     public final void  onApplicationEvent(ApplicationEvent event) {
-
+        log.debug("Event recieved : " + String.valueOf(event)) ;
         if(isSupported(event)){
+          long start = System.currentTimeMillis();
+          log.info("Indexing started for " + SecurityUtils.getUserLoginName(getAuthentication(event)));
           preProcess(event);
+          log.info("pre processing finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
           filteredDataLoader.updateIndexByUserName(getAuthentication(event));
+          log.info("data loading finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
           postProcess(event);
+          log.info("Indexing finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
         }
 
     }
