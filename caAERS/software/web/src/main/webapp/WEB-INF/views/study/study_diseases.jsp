@@ -279,7 +279,10 @@ Event.observe(window, "load", function() {
      
 </head>
 <body>
-<p><tags:instructions code="study.study_disease.top" /></p>
+<p>
+    <tags:instructions code="study.study_disease.top" />
+    <tags:instructions code="study.study_disease.missing_terminology" heading="Note" />
+</p>
 <study:summary />
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
