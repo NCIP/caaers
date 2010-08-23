@@ -32,7 +32,7 @@ public abstract class AbstractEventListener   implements ApplicationListener {
      * This data is basically domain object IDs to use in IN clause of Query .
      */
     public final void  onApplicationEvent(ApplicationEvent event) {
-        log.debug("Event recieved : " + event.getClass().getName()) ;
+      //  log.debug("Event recieved : " + event.getClass().getName()) ;
         if(isSupported(event)){
           long start = System.currentTimeMillis();
           log.info("Indexing started for " + SecurityUtils.getUserLoginName(getAuthentication(event)));

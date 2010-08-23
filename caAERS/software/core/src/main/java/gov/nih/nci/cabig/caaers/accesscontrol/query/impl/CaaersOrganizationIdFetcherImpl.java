@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Will find the organizations that can be accessed by the user.
@@ -23,10 +25,11 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  *
  */
 public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implements IdFetcher{
-
+    protected final Log log = LogFactory.getLog(CaaersOrganizationIdFetcherImpl.class);
 	@Override
 	public List fetch(String loginId) {
 		List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
+        log.info("Organization Fetcher fetched : " + String.valueOf(resultList) );
 		return resultList;
 	}
 }

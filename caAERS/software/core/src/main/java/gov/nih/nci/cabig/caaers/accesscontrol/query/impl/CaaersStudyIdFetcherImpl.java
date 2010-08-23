@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -30,11 +32,13 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  *
  */
 public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
-
+    protected final Log log = LogFactory.getLog(CaaersStudyIdFetcherImpl.class);
     
 	@Override
 	public List fetch(String loginId) {
+
 		List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleStudyIds(loginId);
+        log.info("Study Fetcher fetched : " + String.valueOf(resultList) );
 		return resultList;
 	}
 }

@@ -112,7 +112,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 	        	 list.add(fetch(loginId, null , getStudyScopedHQL()));
 	        }
         }
-
+        log.info("Fetcher fetched " + String.valueOf(list));
         return list;
 	}
 
@@ -187,7 +187,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
     /**
      * Will execute the query and will return an IndexEntry
-     * @param loginId
      * @param role
      * @param hql
      * @return

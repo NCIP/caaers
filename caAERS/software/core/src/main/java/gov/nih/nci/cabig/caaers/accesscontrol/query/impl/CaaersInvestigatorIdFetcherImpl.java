@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Will find the investigators a logged-in person has access to.
@@ -33,7 +35,7 @@ import com.semanticbits.security.contentfilter.IdFetcher;
  *
  */
 public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
-
+     protected final Log log = LogFactory.getLog(CaaersInvestigatorIdFetcherImpl.class);
     //the query
     private final String siteScopedHQL;
     private final String studyScopedHQL;
@@ -108,6 +110,7 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
             }         	
         }
 
+        log.info("Investigator Fetcher fetched : " + String.valueOf(list) );
         return list;
 	}
     

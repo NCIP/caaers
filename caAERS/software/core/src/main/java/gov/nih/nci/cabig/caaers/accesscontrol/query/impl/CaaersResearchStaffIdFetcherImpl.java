@@ -110,7 +110,7 @@ public class CaaersResearchStaffIdFetcherImpl extends AbstractIdFetcher implemen
             	list.add(fetch(loginId, null, getStudyScopedHQL()));
             } 
         }
-
+        log.info("ResearchStaff Fetcher fetched : " + String.valueOf(list) );
         return list;
 	}
 	
