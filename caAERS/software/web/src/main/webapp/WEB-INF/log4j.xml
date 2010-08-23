@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-  
+
   <!-- for testing, purge the log on each run -->
   <appender name="file" class="org.apache.log4j.RollingFileAppender">
 	<param name="maxBackupIndex" value="20"/>
@@ -13,10 +13,12 @@
       <param name="conversionPattern" value="caAERS-webapp-%d [%15t] %-5p %c %x: %m%n"/>
     </layout>
   </appender>
-	 
+
 	<logger name="gov.nih.nci.cabig.caaers.resolver"><level value="debug"/></logger>
 	<logger name="gov.nih.nci.cabig.caaers.domain.repository"><level value="debug"/></logger>
-		 
+	<logger name="gov.nih.nci.cabig.caaers.web.listener"><level value="debug"/></logger>
+	<logger name="gov.nih.nci.cabig.caaers.accesscontrol"><level value="debug"/></logger>
+	<logger name="gov.nih.nci.cabig.caaers.security"><level value="debug"/></logger>
   <root>
     <priority value="error"/>
     <appender-ref ref="file"/>
