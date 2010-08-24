@@ -41,26 +41,36 @@
 				<column-title>Short title</column-title>
 				<column-attribute>shortTitle</column-attribute>
 				<table-title>short_title</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Long title</column-title>
 				<column-attribute>longTitle</column-attribute>
 				<table-title>long_title</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Phase code</column-title>
 				<column-attribute>phaseCode</column-attribute>
 				<table-title>phase_code</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Status</column-title>
 				<column-attribute>status</column-attribute>
 				<table-title>status</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Multi institution</column-title>
 				<column-attribute>multiInstitutionIndicator</column-attribute>
 				<table-title>multi_institution_indicator</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 		</dependent-object>
 		<dependent-object>
@@ -135,26 +145,36 @@
 				<column-title>First name</column-title>
 				<column-attribute>firstName</column-attribute>
 				<table-title>first_name</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Last name</column-title>
 				<column-attribute>lastName</column-attribute>
 				<table-title>last_name</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Gender</column-title>
 				<column-attribute>gender</column-attribute>
 				<table-title>gender</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Ethnicity</column-title>
 				<column-attribute>ethnicity</column-attribute>
 				<table-title>ethnicity</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Race</column-title>
 				<column-attribute>race</column-attribute>
 				<table-title>race</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
@@ -196,6 +216,8 @@
 			<view-column>
 				<column-attribute>term</column-attribute>
 				<column-title>Ae terminology</column-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.AeTerminology</name>
@@ -230,11 +252,15 @@
 			<view-column>
 				<column-attribute>code</column-attribute>
 				<column-title>Treatment assignment code</column-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
 				<lengthy>true</lengthy>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</name>
@@ -251,10 +277,14 @@
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Organization name</column-title>
+				<dependent-object-index>4</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>nciInstituteCode</column-attribute>
 				<column-title>Organization nci code</column-title>
+				<dependent-object-index>4</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
@@ -290,6 +320,8 @@
 			<view-column>
 				<column-attribute>studyTherapyType</column-attribute>
 				<column-title>Therapy type</column-title>
+				<dependent-object-index>5</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyTherapy</name>
@@ -315,6 +347,8 @@
 			<view-column>
 				<column-attribute>studySubjectIdentifier</column-attribute>
 				<column-title>Study subject identifier</column-title>
+				<dependent-object-index>6</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
@@ -348,6 +382,8 @@
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Agent name</column-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyAgent</name>
@@ -440,26 +476,36 @@
 				<column-title>First name</column-title>
 				<column-attribute>firstName</column-attribute>
 				<table-title>first_name</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Last name</column-title>
 				<column-attribute>lastName</column-attribute>
 				<table-title>last_name</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Gender</column-title>
 				<column-attribute>gender</column-attribute>
 				<table-title>gender</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Ethnicity</column-title>
 				<column-attribute>ethnicity</column-attribute>
 				<table-title>ethnicity</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Race</column-title>
 				<column-attribute>race</column-attribute>
 				<table-title>race</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 		</dependent-object>
 		<dependent-object>
@@ -498,26 +544,36 @@
 				<column-title>Short title</column-title>
 				<column-attribute>shortTitle</column-attribute>
 				<table-title>short_title</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Long title</column-title>
 				<column-attribute>longTitle</column-attribute>
 				<table-title>long_title</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Phase code</column-title>
 				<column-attribute>phaseCode</column-attribute>
 				<table-title>phase_code</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Status</column-title>
 				<column-attribute>status</column-attribute>
 				<table-title>status</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Multi institution</column-title>
 				<column-attribute>multiInstitutionIndicator</column-attribute>
 				<table-title>multi_institution_indicator</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
@@ -558,6 +614,8 @@
 			<view-column>
 				<column-attribute>studySubjectIdentifier</column-attribute>
 				<column-title>Study subject identifier</column-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
@@ -668,34 +726,50 @@
 			<view-column>
 				<column-title>Grade</column-title>
 				<column-attribute>grade</column-attribute>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>hospitalization</column-attribute>
 				<column-title>Hospitalization</column-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Solicited</column-title>
 				<column-attribute>solicited</column-attribute>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Expected</column-title>
 				<column-attribute>expected</column-attribute>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>attributionSummary</column-attribute>
 				<column-title>Attribution</column-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>detailsForOther</column-attribute>
 				<column-title>Verbatim</column-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>5</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>startDate</column-attribute>
 				<column-title>Start date</column-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>6</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>endDate</column-attribute>
 				<column-title>End date</column-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>7</view-column-index>
 			</view-column>
 		</dependent-object>
 		<dependent-object>
@@ -716,6 +790,8 @@
 			<view-column>
 				<column-attribute>term</column-attribute>
 				<column-title>CTCAE term</column-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</name>
@@ -766,26 +842,36 @@
 				<column-title>Short title</column-title>
 				<column-attribute>shortTitle</column-attribute>
 				<table-title>short_title</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Long title</column-title>
 				<column-attribute>longTitle</column-attribute>
 				<table-title>long_title</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Phase code</column-title>
 				<column-attribute>phaseCode</column-attribute>
 				<table-title>phase_code</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Status</column-title>
 				<column-attribute>status</column-attribute>
 				<table-title>status</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Multi institution</column-title>
 				<column-attribute>multiInstitutionIndicator</column-attribute>
 				<table-title>multi_institution_indicator</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
@@ -888,26 +974,36 @@
 				<column-title>First name</column-title>
 				<column-attribute>firstName</column-attribute>
 				<table-title>first_name</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Last name</column-title>
 				<column-attribute>lastName</column-attribute>
 				<table-title>last_name</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Gender</column-title>
 				<column-attribute>gender</column-attribute>
 				<table-title>gender</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Ethnicity</column-title>
 				<column-attribute>ethnicity</column-attribute>
 				<table-title>ethnicity</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Race</column-title>
 				<column-attribute>race</column-attribute>
 				<table-title>race</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
@@ -949,6 +1045,8 @@
 			<view-column>
 				<column-attribute>term</column-attribute>
 				<column-title>Ae terminology</column-title>
+				<dependent-object-index>4</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
@@ -1007,6 +1105,8 @@
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Course name</column-title>
+				<dependent-object-index>5</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
@@ -1064,26 +1164,36 @@
 				<column-title>Short title</column-title>
 				<column-attribute>shortTitle</column-attribute>
 				<table-title>short_title</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Long title</column-title>
 				<column-attribute>longTitle</column-attribute>
 				<table-title>long_title</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Phase code</column-title>
 				<column-attribute>phaseCode</column-attribute>
 				<table-title>phase_code</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Status</column-title>
 				<column-attribute>status</column-attribute>
 				<table-title>status</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Multi institution</column-title>
 				<column-attribute>multiInstitutionIndicator</column-attribute>
 				<table-title>multi_institution_indicator</table-title>
+				<dependent-object-index>1</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
@@ -1136,10 +1246,14 @@
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Name</column-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>organization.name</column-attribute>
 				<column-title>Organization</column-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<ui-association>
 					<name>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</name>
@@ -1209,22 +1323,32 @@
 			<view-column>
 				<column-attribute>createdOn</column-attribute>
 				<column-title>Created on</column-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>submittedOn</column-attribute>
 				<column-title>Submitted on</column-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>reportStatus</column-attribute>
 				<column-title>Report status</column-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>reportVersionId</column-attribute>
 				<column-title>Amendment#</column-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>assignedIdentifer</column-attribute>
 				<column-title>External ticket#</column-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.report.ReportVersion</name>
@@ -1259,6 +1383,8 @@
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Course name</column-title>
+				<dependent-object-index>4</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
@@ -1299,11 +1425,15 @@
 			<view-column>
 				<column-attribute>code</column-attribute>
 				<column-title>Treatment assignment code</column-title>
+				<dependent-object-index>5</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
 				<lengthy>true</lengthy>
+				<dependent-object-index>5</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
@@ -1424,26 +1554,36 @@
 				<column-title>First name</column-title>
 				<column-attribute>firstName</column-attribute>
 				<table-title>first_name</table-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Last name</column-title>
 				<column-attribute>lastName</column-attribute>
 				<table-title>last_name</table-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Gender</column-title>
 				<column-attribute>gender</column-attribute>
 				<table-title>gender</table-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>2</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Ethnicity</column-title>
 				<column-attribute>ethnicity</column-attribute>
 				<table-title>ethnicity</table-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>3</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Race</column-title>
 				<column-attribute>race</column-attribute>
 				<table-title>race</table-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>4</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
@@ -1479,10 +1619,14 @@
 				<column-attribute>eventDescription</column-attribute>
 				<column-title>Event description</column-title>
 				<lengthy>true</lengthy>
+				<dependent-object-index>8</dependent-object-index>
+				<view-column-index>0</view-column-index>
 			</view-column>
 			<view-column>
 				<column-title>Event present status</column-title>
 				<column-attribute>presentStatus</column-attribute>
+				<dependent-object-index>8</dependent-object-index>
+				<view-column-index>1</view-column-index>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
