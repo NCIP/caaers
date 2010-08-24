@@ -149,9 +149,9 @@
             $('ae-terms').innerHTML = "";
             catId = id; //$(el).getValue();
             advSearch.getViewColumnsForDependentObject(id, function(viewColumns) {
-            	var i = 0;
+            	//var i = 0;
             	viewColumns.each(function(viewColumn) {
-            		catSel.addLIToUL("ae-terms", viewColumn.columnAttribute, viewColumn.columnTitle, index, i++);
+            		catSel.addLIToUL("ae-terms", viewColumn.columnAttribute, viewColumn.columnTitle, viewColumn.dependentObjectIndex, viewColumn.viewColumnIndex);
             	})
             	
             });
@@ -243,10 +243,7 @@
 	<body>
 		<tags:tabForm tab="${tab}" flow="${flow}" formName="advancedSearchForm" saveButtonLabel="Save Search" hideBox="true">
 			<jsp:attribute name="singleFields">
-
-                <p><tags:instructions code="advancedSearch.selectView" /></p>
-
-                <chrome:box title="Select view">
+				<chrome:box title="Select view">
 		        <table width="100%" border="0" cellspacing="0" cellpadding="5">
 		        <tbody>
         <tr bgcolor="#E4E4E4">
