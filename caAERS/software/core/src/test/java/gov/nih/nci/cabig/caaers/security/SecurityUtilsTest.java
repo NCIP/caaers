@@ -79,4 +79,27 @@ public class SecurityUtilsTest extends AbstractTestCase {
         assertEquals(false, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_super_user));
     }
 
+    public void testSplitProtectionGroup(){
+        String[] s = SecurityUtils.splitProtectionGroup("x.y");
+        assertNotNull(s);
+        assertEquals(0, s.length);
+
+
+        s = SecurityUtils.splitProtectionGroup(" ");
+        assertNotNull(s);
+        assertEquals(0, s.length);
+
+
+         s = SecurityUtils.splitProtectionGroup("Study.NCCTG N06C6.1");
+        assertNotNull(s);
+        assertEquals(2, s.length);
+        assertEquals("NCCTG N06C6.1", s[1]);
+
+
+         s = SecurityUtils.splitProtectionGroup("HealthcareSite.MN026");
+        assertNotNull(s);
+        assertEquals(2, s.length);
+        assertEquals("MN026", s[1]);
+
+    }
 }

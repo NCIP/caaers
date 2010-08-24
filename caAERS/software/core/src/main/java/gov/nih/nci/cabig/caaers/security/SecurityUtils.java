@@ -7,6 +7,7 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.userdetails.User;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,10 @@ import java.util.List;
  *
  */
 public final class SecurityUtils {
-	
+
+    public static String ORGANIZATION_PE="HealthcareSite";
+	public static String STUDY_PE="Study";
+
 	private SecurityUtils() {
 	}
 	
@@ -233,5 +237,27 @@ public final class SecurityUtils {
     	}
     	SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
     	return suiteRole.isScoped();
+    }
+
+    /**
+     * Will split the protection group into 2 parts.
+     * Eg: Study.NCCTG N06C6.1 will result in {Study, NCCTG N06C6.1}
+     * @param pgName
+     * @return
+     */
+    public static String[] splitProtectionGroup(String pgName){
+        int index = StringUtils.indexOf(pgName, '.');
+        if(index > 0){
+            String part1 = pgName.substring(0, index);
+            String part2 = pgName.substring(index+1);
+
+            if(part1.equals(ORGANIZATION_PE) || part1.equals(STUDY_PE)){
+                return new String[]{part1, part2};
+            }
+
+        }
+        
+        return new String[0];
+
     }
 }

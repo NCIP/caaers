@@ -281,7 +281,7 @@ Event.observe(window, "load", function() {
 <body>
 <p>
     <tags:instructions code="study.study_disease.top" />
-    <c:if test="${diseaseTerminology eq 'MEDDRA' or diseaseTerminology eq 'CTEP' or diseaseTerminology eq 'OTHER'}">
+    <c:if test="${not (diseaseTerminology eq 'MEDDRA' or diseaseTerminology eq 'CTEP' or diseaseTerminology eq 'OTHER')}">
         <tags:instructions code="study.study_disease.missing_terminology" heading="Note" />
     </c:if>
 </p>

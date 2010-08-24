@@ -406,7 +406,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     
     /**
      * Will provision studies for StudyPersonnel in CSM.
-     * @param researchStaff
+     * @param studyPersonnel
      */
     public void provisionStudies(StudyPersonnel studyPersonnel){
 
@@ -478,7 +478,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     
     /**
      * Will provision studies for Investigator in CSM.
-     * @param researchStaff
+     * @param studyInvestigator
      */
     public void provisionStudies(StudyInvestigator studyInvestigator){
     	
@@ -713,7 +713,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 						// if user is study scoped 
 						if(suiteRole.isSiteScoped() && suiteRole.isStudyScoped()){
 							List identifiers = new ArrayList();
-							String[] tokens = caaersEquivalentName.split("\\.");
+							String[] tokens = SecurityUtils.splitProtectionGroup(caaersEquivalentName);
 							if (tokens.length == 2) {
 								if (tokens[0].equals(STUDY_PE)) {
 									identifiers.add(tokens[1]);
@@ -793,9 +793,17 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		return resultList;
 	}
 
+
+    /**
+     * This method will list out all the organizations that the user can access.
+     * 
+     * @param userName - The loginId of the user
+     * @return
+     */
 	public List<IndexEntry> getAccessibleOrganizationIds(String userName) {
-		//		get csm user DB id . 
+		//get csm user DB id .
     	String loginId = csmUserRepository.getCSMUserByName(userName).getUserId()+"";
+
     	Map<UserGroupType, List<Integer>> accessibleOrganizationIds = new HashMap<UserGroupType , List<Integer>>();
 
     	try {
@@ -820,7 +828,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 						accessibleOrganizationIds.put(userGroupType, getAllOrganizationIdsFromDB());
 					} else {
 						//parse name ..
-						String[] tokens = caaersEquivalentName.split("\\.");
+						String[] tokens = SecurityUtils.splitProtectionGroup(caaersEquivalentName);
 						List identifiers = new ArrayList();
 						if (tokens.length == 2) {
 							if (tokens[0].equals(ORGANIZATION_PE)) {
@@ -890,7 +898,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 						
 					} else {
 						//parse name ..
-						String[] tokens = caaersEquivalentName.split("\\.");
+						String[] tokens = SecurityUtils.splitProtectionGroup(caaersEquivalentName);
 						if (tokens.length == 2) {
 							// check if user has access to this org AS this role . 
 							if (tokens[0].equals(ORGANIZATION_PE) && roleName.equals(roleNameToCheck)) {
