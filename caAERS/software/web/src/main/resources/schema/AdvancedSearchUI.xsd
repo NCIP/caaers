@@ -38,6 +38,8 @@
 
 		<xs:complexType name="view-column">
 			<xs:sequence>
+				<xs:element name="dependent-object-index" type="xs:string"/>
+				<xs:element name="view-column-index" type="xs:string"/>
 				<xs:element name="column-title" type="xs:string"/>
 				<xs:element name="column-attribute" type="xs:string"/>
 				<xs:element name="lengthy" type="xs:boolean"/>
