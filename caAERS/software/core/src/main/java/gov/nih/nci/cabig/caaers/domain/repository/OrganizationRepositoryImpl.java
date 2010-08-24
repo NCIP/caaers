@@ -55,7 +55,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
      */
     public void create(Organization site) throws CaaersSystemException {
     	organizationDao.save(site);
-    	eventFactory.publishEntityModifiedEvent(new LocalOrganization(), true);
+    	eventFactory.publishEntityModifiedEvent(new LocalOrganization(), false);
     }
     
     /**
