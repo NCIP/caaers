@@ -66,14 +66,14 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	
 	public void testGetAccessibleStudyIds() {
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("ln2");
-		assertEquals(2,list.size());
+		assertEquals(1, list.size());
 	}
 	public void testGetAccessibleStudyIdsUserWithAllStudies() {
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("ln1");
-		assertEquals(0,list.size());
+		assertEquals(1, list.size());
 		
 		list = caaersSecurityFacade.getAccessibleStudyIds("ln");
-		assertEquals(1,list.size());
+		assertEquals(1, list.size());
 	}
 	
 	public void testCheckAuthorization() {

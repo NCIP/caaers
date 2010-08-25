@@ -143,8 +143,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
 		}
     	
     	//String qry = "Select participant.id,participant.firstName,participant.lastName, participant.gender,participant.race,participant.ethnicity, identifier.value, identifier.primaryIndicator, study.shortTitle as st, study.id as studyId, sIdentifier.value, sIdentifier.primaryIndicator, studyOrgs.organization.name, studyOrgs.id, studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id, ss.organization.id as assignedSiteId, ss.organization.name as assignedSite, ss.organization.nciInstituteCode as assignedSiteCode, spa.studySubjectIdentifier from Participant participant left join participant.identifiers as identifier left join participant.assignments as spa join spa.studySite as ss join ss.study as study join study.identifiers as sIdentifier join study.studyOrganizations as studyOrgs left join studyOrgs.studyPersonnelsInternal as stper left join stper.siteResearchStaff as siteResearchStaff WHERE lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :identifierValue AND lower(participant.firstName) LIKE :firstName AND lower(participant.lastName) LIKE :lastName AND participant.ethnicity = :ethnicity AND participant.gender = :race AND  participant.dateOfBirth.year = :year AND  participant.dateOfBirth.month = :month AND  participant.dateOfBirth.day = :day order by participant.firstName";
-    	String qry = baseQuery+"WHERE lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :identifierValue AND lower(participant.firstName) LIKE :firstName AND lower(participant.lastName) LIKE :lastName  order by participant.firstName";
-    	;
+    	String qry = baseQuery + "WHERE (lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :identifierValue) AND lower(participant.firstName) LIKE :firstName AND lower(participant.lastName) LIKE :lastName  order by participant.firstName";
+
     	assertEquals(qry.trim(),query.getQueryString());
     	
     	assertTrue("missing paramenter name", query.getParameterMap().containsKey("identifierValue"));
