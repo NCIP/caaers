@@ -39,9 +39,11 @@ public class ReportingPeriodCommand {
     	//initialize reporting period
     	if(reportingPeriod == null){
     		this.reportingPeriod = new AdverseEventReportingPeriod();
+/*
     		TreatmentAssignment treatmentAssignment = new TreatmentAssignment();
         	treatmentAssignment.setStudy(this.study);
         	this.reportingPeriod.setTreatmentAssignment(treatmentAssignment);
+*/
     	}else {
     		this.reportingPeriod = reportingPeriod;
     		this.editFlow = true;
