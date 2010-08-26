@@ -38,6 +38,7 @@ public class AgentSearchController extends SearchController {
         setCommandClass(AgentCommand.class);
     }
 
+/*
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
@@ -56,4 +57,5 @@ public class AgentSearchController extends SearchController {
         super.buildSearchResultTable(request, prop, value, SEARCH_AGENT);
 
     }
+*/
 }

@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import org.apache.commons.lang.StringUtils;
@@ -136,47 +137,6 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return model.assemble();
     }
 
-    /*
-    public Object buildOrganization(final TableModel model, final List<Organization> organization) throws Exception {
-        Table table = model.getTableInstance();
-        table.setTableId("ajaxTable");
-        table.setForm("assembler");
-        table.setItems(organization);
-        table.setAction(model.getContext().getContextPath() + "/pages/admin/editOrganization");
-        table.setTitle("");
-        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        table.setOnInvokeAction("buildTable('assembler')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        //only support filtering & sorting in local authentication mode. 
-        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
-        	table.setRowsDisplayed(100);
-        }
-
-        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
-
-        model.addTable(table);
-
-        Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);
-        model.addRow(row);
-
-        Column orgNameColumn = model.getColumnInstance();
-        orgNameColumn.setProperty("name");
-        orgNameColumn.setCell("gov.nih.nci.cabig.caaers.web.search.OrganizationLinkDisplayCell");
-
-        model.addColumn(orgNameColumn);
-
-        Column orgNCICodeColumn = model.getColumnInstance();
-        orgNCICodeColumn.setTitle("Assigned Identifier");
-        orgNCICodeColumn.setProperty("nciInstituteCode");
-        model.addColumn(orgNCICodeColumn);
-
-        return model.assemble();
-    }
-    */
-    
     public Object buildInvestigator(final TableModel model, final List<Investigator> investigators) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
@@ -635,6 +595,10 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return model.assemble();
     }
 
+    /**
+     * YUI result
+     * 
+     * */
     @SuppressWarnings("unchecked")
     public List<InvestigationalNewDrug> getINDTable(final Map parameterMap, final String type, final String text,final HttpServletRequest request) throws Exception {
         List<InvestigationalNewDrug> items = new ArrayList<InvestigationalNewDrug>();
@@ -647,7 +611,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
             }
             items = investigationalNewDrugDao.searchInvestigationalNewDrugs(map);
         }
-        return items;
+        return ObjectTools.reduceAll(items, "indNumber", "holderName");
     }
 
     @SuppressWarnings("finally")
@@ -1023,16 +987,18 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return "";
     }
 
-    /*
-      * Ajax Call hits this method to generate table
-      */
+    /**
+     *
+     * YUI 
+     * 
+     * */
     public List<Organization> getOrganizationTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
         WebContext webContext = WebContextFactory.get();
         List<Organization> organizations = new ArrayList<Organization>();
         if (type != null && text != null) {
             organizations = constructExecuteOrganizationQuery(type, text);
         }
-        return organizations;
+        return ObjectTools.reduceAll(organizations, "id", "name", "nciInstituteCode");
     }
 
     public String getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
@@ -1062,69 +1028,12 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return "";
     }
 
-    public String getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
+    public List<Agent> getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
         List<Agent> agents = new ArrayList<Agent>();
         if (text != null) {
             agents = agentRepository.getAgentsBySubnames(new String[] {text, nsc});
         }
-        log.debug("Agents :: " + agents.size());
-
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
-        }
-
-        TableModel model = new TableModelImpl(context);
-
-        try {
-            return buildAgentsTable(model, agents).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
-    public Object buildAgentsTable(final TableModel model, final List<Agent> agents) throws Exception {
-        Table table = model.getTableInstance();
-        table.setTableId("ajaxTable");
-        table.setForm("assembler");
-        table.setItems(agents);
-        table.setAction(model.getContext().getContextPath() + "/pages/admin/XYZ");
-        table.setTitle("");
-        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        table.setOnInvokeAction("buildTable('assembler')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-
-        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()) {
-        	table.setRowsDisplayed(100);
-        }
-
-        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
-
-        model.addTable(table);
-
-        Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);
-        model.addRow(row);
-
-        Column agentNameColumn = model.getColumnInstance();
-        agentNameColumn.setTitle("Name");
-        agentNameColumn.setProperty("name");
-        agentNameColumn.setCell("gov.nih.nci.cabig.caaers.web.search.AgentLinkDisplayCell");
-        model.addColumn(agentNameColumn);
-
-        Column agentNSCColumn = model.getColumnInstance();
-        agentNSCColumn.setTitle("NSC");
-        agentNSCColumn.setProperty("nscNumber");
-        model.addColumn(agentNSCColumn);
-
-        return model.assemble();
+        return ObjectTools.reduceAll(agents, "id", "name", "nscNumber");
     }
 
     public String getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {

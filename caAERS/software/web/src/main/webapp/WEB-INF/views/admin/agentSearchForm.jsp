@@ -1,6 +1,13 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <tags:dwrJavascriptLink objects="search"/>
 
+<style>
+.yui-pg-page { padding: 5pt; }
+.yui-dt-label .yui-dt-sortable { color: white; }
+.yui-dt table { width: 100%; }
+div.yui-dt-liner a {color : black;}
+</style>
+
 <script>
 function buildTable(form) {
 	$('indicator').className='';
@@ -21,9 +28,31 @@ function buildTable(form) {
     $('nsc').value = nsc;
 
 	var parameterMap = getParameterMap(form);
-	search.getAgentsTable(parameterMap, name, nsc, showTable);
+	search.getAgentsTable(parameterMap, name, nsc, test);
     $('bigSearch').show();
 }
+
+function test(jsonResult) {
+    $('indicator').className = 'indicator';
+    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+    hideCoppaSearchDisclaimer();
+}
+
+var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+        var orgId = oRecord.getData("id");
+        elCell.innerHTML = "<a href='asaelEdit?agentID=" + orgId + "'>" + oData + "</a>";
+};
+
+var myColumnDefs = [
+    {key:"name",             label:"Name",          sortable:true,      resizeable:true, formatter: linkFormatter},
+    {key:"nscNumber",        label:"NSC",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200}
+];
+
+var myFields = [
+    {key:'id',           parser:"integer"},
+    {key:'name',         parser:"string"},
+    {key:'nscNumber',    parser:"string"}
+];
 </script>
 
 <div class="tabpane">
