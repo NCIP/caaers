@@ -7,6 +7,13 @@
 <title>${tab.longTitle}</title>
 <tags:dwrJavascriptLink objects="search"/>
 
+<style>
+.yui-pg-page { padding: 5pt; }
+.yui-dt-label .yui-dt-sortable { color: white; }
+.yui-dt table { width: 100%; }
+div.yui-dt-liner a {color : black;}
+</style>
+
 <script>
 
 function buildTable(form) {
@@ -26,10 +33,25 @@ function buildTable(form) {
 	$('value').value=text
 	
 	var parameterMap = getParameterMap(form);		
-	search.getINDTable(parameterMap,type,text,showTable);
+	search.getINDTable(parameterMap, type, text, test);
     $('bigSearch').show();
 }
 
+function test(jsonResult) {
+    $('indicator').className = 'indicator';
+    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+    hideCoppaSearchDisclaimer();
+}
+
+var myColumnDefs = [
+    {key:"indNumber",               label:"IND #",                          sortable:true,      resizeable:true, minWidth:200, maxWidth:200},
+    {key:"holderName",              label:"Sponsor Name",                   sortable:true,      resizeable:true}
+];
+
+var myFields = [
+    {key:'indNumber',               parser:"string"},
+    {key:'holderName',              parser:"string"}
+];
 
 </script>
 </head>

@@ -31,9 +31,7 @@ import org.extremecomponents.table.core.TableModelImpl;
 import org.extremecomponents.table.view.CsvView;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -638,8 +636,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
     }
 
     @SuppressWarnings("unchecked")
-    public Object getINDTable(final Map parameterMap, final String type, final String text,final HttpServletRequest request) throws Exception {
-
+    public List<InvestigationalNewDrug> getINDTable(final Map parameterMap, final String type, final String text,final HttpServletRequest request) throws Exception {
         List<InvestigationalNewDrug> items = new ArrayList<InvestigationalNewDrug>();
         HashMap<String, String> map = new HashMap<String, String>();
         if (type != null && text != null) {
@@ -650,26 +647,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
             }
             items = investigationalNewDrugDao.searchInvestigationalNewDrugs(map);
         }
-
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
-        }
-
-        TableModel model = new TableModelImpl(context);
-        try {
-            return buildTable(model, items, "/pages/search_ind", "caaers_INDs.txt",
-                    ColumnValueObject.create("indNumber", "IND #", "indNumber"),
-                    ColumnValueObject.create("holderName", "Sponsor Name", "holderName")).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-
+        return items;
     }
 
     @SuppressWarnings("finally")
