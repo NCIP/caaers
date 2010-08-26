@@ -123,6 +123,7 @@
           </list>
         </property>
       </bean>
+<!--
       <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" p:displayName="Advanced Search" p:mainController="advancedSearchController">
               <property name="pathMapping"><value>/search/**</value></property>
               <property name="urlResolver" ref="urlResolver"/>
@@ -133,6 +134,7 @@
               </list>
             </property>
       </bean>
+-->
         </list>
       </property>
     </bean>
