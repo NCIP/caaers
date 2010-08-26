@@ -37,6 +37,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
     }
 	
 	public void postProcess(HttpServletRequest request, AdvancedSearchCommand command, Errors errors){
+
 		if (findInRequest(request, AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors())
 			return; //ignore if this is an ajax request
 		

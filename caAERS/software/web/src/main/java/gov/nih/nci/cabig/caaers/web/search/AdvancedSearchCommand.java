@@ -1,20 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class AdvancedSearchCommand{
@@ -29,8 +22,8 @@ public class AdvancedSearchCommand{
 	private List<ViewColumn> resultsViewColumnList;
 	private Integer numberOfResults;
 	private List<AdvancedSearchRow> advancedSearchRowList;
-	
-	public AdvancedSearchCommand(){
+    
+    public AdvancedSearchCommand(){
 		
 	}
 	

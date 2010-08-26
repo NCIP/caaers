@@ -1,17 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
+import gov.nih.nci.cabig.caaers.dao.SearchDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Search;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.search.ui.*;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -19,22 +17,15 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
-import gov.nih.nci.cabig.caaers.dao.SearchDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Search;
-import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
-import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
-import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
-import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
-import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.SelectedColumn;
-import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -46,22 +37,11 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 	private static final Log log = LogFactory.getLog(AdvancedSearchController.class);
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 	private SearchDao searchDao;
-	private AdvancedSearchUi advancedSearchUi;
-	
+
 	
 	public AdvancedSearchController(){
 		setBindOnNewForm(true);
 		setCommandClass(AdvancedSearchCommand.class);
-		
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
-        Unmarshaller unmarshaller;
-		try {
-			unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createUnmarshaller();
-			advancedSearchUi = (AdvancedSearchUi) unmarshaller.unmarshal(inputStream);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
@@ -111,7 +91,11 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
+
+        AdvancedSearchUi advancedSearchUi = AdvancedSearchUiUtil.loadAdvancedSearchUi();
+
 		AdvancedSearchCommand command = new AdvancedSearchCommand(advancedSearchUi);
+        
 		String searchName = request.getParameter("searchName");
 		if(searchName != null){
 			// This is when the user clicks on one of the saved searches.
@@ -148,8 +132,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 					}
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.warn(e);
 			}
 		}
 		return command;

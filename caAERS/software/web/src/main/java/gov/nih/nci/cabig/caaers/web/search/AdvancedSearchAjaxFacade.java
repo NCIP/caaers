@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.xml.sax.ContentHandler;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
@@ -53,10 +51,8 @@ public class AdvancedSearchAjaxFacade{
 	private static Class<?>[] CONTROLLERS = { AdvancedSearchController.class   };
 	
 	private static final Log log = LogFactory.getLog(AdvancedSearchAjaxFacade.class);
-	
-	private static AdvancedSearchUi advancedSearchUi;
-	
-	private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
+
+    private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
 	
 	private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 	
@@ -66,18 +62,6 @@ public class AdvancedSearchAjaxFacade{
 	
 	private AgentDao agentDao;
 	
-	static{
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
-
-		Unmarshaller unmarshaller;
-		try {
-			unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createUnmarshaller();
-			advancedSearchUi = (AdvancedSearchUi) unmarshaller.unmarshal(inputStream);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	
 	/**
@@ -100,7 +84,7 @@ public class AdvancedSearchAjaxFacade{
 			return ajaxOutput;
 		}
 		
-		SearchTargetObject targetObject = AdvancedSearchUiUtil.getSearchTargetObjectByName(advancedSearchUi, targetObjectClassName);
+		SearchTargetObject targetObject = AdvancedSearchUiUtil.getSearchTargetObjectByName(command.getAdvancedSearchUi(), targetObjectClassName);
 		command.setSearchTargetObject(targetObject);
 		
 		// Initialize the criteriaParameters with null.
