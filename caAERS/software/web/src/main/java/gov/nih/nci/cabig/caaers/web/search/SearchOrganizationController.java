@@ -17,9 +17,8 @@ public class SearchOrganizationController extends SearchController {
         setSuccessView("search/organization_search");
     }
 
-    @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+/*    @Override
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         log.debug(" In initBinder " + isFormSubmission(request));
         if (!isFormSubmission(request)) {
@@ -35,5 +34,5 @@ public class SearchOrganizationController extends SearchController {
         log.debug(prop + "||" + value);
         super.buildSearchResultTable(request, prop, value, 6);
 
-    }
+    }*/
 }

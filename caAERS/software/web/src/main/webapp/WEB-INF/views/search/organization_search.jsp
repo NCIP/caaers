@@ -4,6 +4,14 @@
 <head>
 <title>Search Organizations</title>
 <tags:dwrJavascriptLink objects="search"/>
+
+<style>
+.yui-pg-page { padding: 5pt; }
+.yui-dt-label .yui-dt-sortable { color: white; }
+.yui-dt table { width: 100%; }
+div.yui-dt-liner a {color : black;}
+</style>
+
 <script>
 
 function buildTable(form) {
@@ -24,10 +32,31 @@ function buildTable(form) {
 	$('value').value=text
 	
 	var parameterMap = getParameterMap(form);		
-	search.getOrganizationTable(parameterMap,type,text,showTable);
+	search.getOrganizationTable(parameterMap, type, text, test);
     $('bigSearch').show();
 }
 
+function test(jsonResult) {
+    $('indicator').className = 'indicator';
+    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+    hideCoppaSearchDisclaimer();
+}
+
+var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+        var orgId = oRecord.getData("id");
+        elCell.innerHTML = "<a href='editOrganization?organizationId=" + orgId + "'>" + oData + "</a>";
+};
+
+var myColumnDefs = [
+    {key:"name",                    label:"Name",                          sortable:true,      resizeable:true, formatter: linkFormatter},
+    {key:"nciInstituteCode",        label:"Assigned Identifier",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200}
+];
+
+var myFields = [
+    {key:'id',                  parser:"integer"},
+    {key:'name',                parser:"string"},
+    {key:'nciInstituteCode',    parser:"string"}
+];
 
 </script>
 </head>

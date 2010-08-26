@@ -1,17 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import static gov.nih.nci.cabig.caaers.domain.DateValue.stringToDateValue;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
@@ -22,20 +13,12 @@ import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import javax.servlet.http.HttpServletRequest;
-
+import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.bean.Export;
 import org.extremecomponents.table.bean.Row;
@@ -45,14 +28,18 @@ import org.extremecomponents.table.context.HttpServletRequestContext;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
-import org.extremecomponents.table.limit.Limit;
-import org.extremecomponents.table.limit.LimitFactory;
-import org.extremecomponents.table.limit.TableLimit;
-import org.extremecomponents.table.limit.TableLimitFactory;
 import org.extremecomponents.table.view.CsvView;
 import org.springframework.beans.factory.annotation.Required;
 
-public class SearchStudyAjaxFacade {
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.*;
+
+import static gov.nih.nci.cabig.caaers.domain.DateValue.stringToDateValue;
+
+public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
     private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
     private StudyRepository studyRepository;
@@ -70,6 +57,8 @@ public class SearchStudyAjaxFacade {
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private AgentRepository agentRepository;
+
+    private static Class<?>[] CONTROLLERS = {};
 
     public SearchStudyAjaxFacade() {
     }
@@ -149,6 +138,7 @@ public class SearchStudyAjaxFacade {
         return model.assemble();
     }
 
+    /*
     public Object buildOrganization(final TableModel model, final List<Organization> organization) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
@@ -187,7 +177,8 @@ public class SearchStudyAjaxFacade {
 
         return model.assemble();
     }
-
+    */
+    
     public Object buildInvestigator(final TableModel model, final List<Investigator> investigators) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
@@ -1057,36 +1048,13 @@ public class SearchStudyAjaxFacade {
     /*
       * Ajax Call hits this method to generate table
       */
-    public String getOrganizationTable(final Map parameterMap, final String type, final String text,
-                                       final HttpServletRequest request) {
-
-        List<Organization> organizationss = new ArrayList<Organization>();
+    public List<Organization> getOrganizationTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+        WebContext webContext = WebContextFactory.get();
+        List<Organization> organizations = new ArrayList<Organization>();
         if (type != null && text != null) {
-            organizationss = constructExecuteOrganizationQuery(type, text);
+            organizations = constructExecuteOrganizationQuery(type, text);
         }
-        log.debug("Organizations :: " + organizationss.size());
-
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
-        }
-
-        TableModel model = new TableModelImpl(context);
-        // LimitFactory limitFactory = new TableLimitFactory(context);
-        // Limit limit = new TableLimit(limitFactory);
-        // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
-        // model.setLimit(limit);
-
-        try {
-            return buildOrganization(model, organizationss).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
+        return organizations;
     }
 
     public String getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
@@ -1182,6 +1150,7 @@ public class SearchStudyAjaxFacade {
     }
 
     public String getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+        
         List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
         if (type != null && text != null) {
             siteResearchStaffs = constructExecuteSiteResearchStaffQuery(type, text);
@@ -1563,6 +1532,11 @@ public class SearchStudyAjaxFacade {
 
     public void setAgentRepository(AgentRepository agentRepository) {
         this.agentRepository = agentRepository;
+    }
+
+    @Override
+    public Class<?>[] controllers() {
+        return CONTROLLERS; 
     }
 }
 

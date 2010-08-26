@@ -567,7 +567,7 @@ Object.extend(ListEditor.prototype, {
 
 function showTable(table) {
 	$('indicator').className='indicator'
-	document.getElementById('tableDiv').innerHTML=table;
+	document.getElementById('tableDiv').innerHTML = table;
     hideCoppaSearchDisclaimer();
 }
 
