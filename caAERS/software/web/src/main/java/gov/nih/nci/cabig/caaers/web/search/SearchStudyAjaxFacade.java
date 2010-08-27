@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQu
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
@@ -137,6 +138,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return model.assemble();
     }
 
+/*
     public Object buildInvestigator(final TableModel model, final List<Investigator> investigators) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
@@ -146,7 +148,8 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         table.setTitle("");
         table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+        table.setImagePath(model.getContext().getContextPath() + "/images/table*/
+/*.gif");
         //only support filtering & sorting in local authentication mode. 
         table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
@@ -198,7 +201,9 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
         return model.assemble();
     }
+*/
 
+/*
     public Object buildResearchStaff(final TableModel model, final List<SiteResearchStaff> siteResearchStaffs) throws Exception {
     	
     	Map<Integer,ResearchStaff> rsMap = new HashMap<Integer,ResearchStaff>();
@@ -219,7 +224,8 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         table.setTitle("");
         table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+        table.setImagePath(model.getContext().getContextPath() + "/images/table*/
+/*.gif");
         //only support filtering & sorting in local authentication mode. 
         table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
@@ -266,6 +272,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         
         return model.assemble();
     }
+*/
 
     public Object buildParticipant(final TableModel model, final Collection participants) throws Exception {
         Table table = model.getTableInstance();
@@ -1001,31 +1008,34 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return ObjectTools.reduceAll(organizations, "id", "name", "nciInstituteCode");
     }
 
-    public String getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+    public List<UserAjaxableDomainObject> getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
         List<Investigator> investigators = new ArrayList<Investigator>();
         if (type != null && text != null) {
             investigators = constructExecuteInvestigatorQuery(type, text);
         }
-        log.debug("Investigators :: " + investigators.size());
 
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
+        List<UserAjaxableDomainObject> rs = new ArrayList<UserAjaxableDomainObject>();
+        for (Investigator i : investigators) {
+            UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
+            rsado.setFirstName(i.getFirstName());
+            rsado.setLastName(i.getLastName());
+            rsado.setMiddleName(i.getMiddleName());
+
+            StringBuffer sb = new StringBuffer();
+            for (SiteInvestigator si : i.getSiteInvestigators()) {
+                sb.append(si.getOrganization().getName() + "<br>");
+            }
+            rsado.setOrganization(sb.toString());
+
+            rsado.setId(i.getId());
+            rsado.setActive(i.isActive() ? "Active" : "Inactive");
+            rsado.setNumber(i.getNciIdentifier() != null ? i.getNciIdentifier() : "");
+            rs.add(rsado);
         }
 
-        TableModel model = new TableModelImpl(context);
-        
-        try {
-            return buildInvestigator(model, investigators).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return "";
+        return rs;
     }
 
     public List<Agent> getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
@@ -1036,30 +1046,27 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber");
     }
 
-    public String getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+    public List<UserAjaxableDomainObject> getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
         
         List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
         if (type != null && text != null) {
             siteResearchStaffs = constructExecuteSiteResearchStaffQuery(type, text);
         }
-        log.debug("ResearchStaffs :: " + siteResearchStaffs.size());
 
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
+        List<UserAjaxableDomainObject> rs = new ArrayList<UserAjaxableDomainObject>();
+        for (SiteResearchStaff srs : siteResearchStaffs) {
+            UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
+            rsado.setFirstName(srs.getResearchStaff().getFirstName());
+            rsado.setLastName(srs.getResearchStaff().getLastName());
+            rsado.setMiddleName(srs.getResearchStaff().getMiddleName());
+            rsado.setOrganization(srs.getOrganization().getName());
+            rsado.setId(srs.getResearchStaff().getId());
+            rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
+            rsado.setActive(srs.isActive() ? "Active" : "Inactive");
+            rs.add(rsado);
         }
 
-        TableModel model = new TableModelImpl(context);
-        try {
-            return buildResearchStaff(model, siteResearchStaffs).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
+        return rs;
     }
 
     /*

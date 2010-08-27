@@ -2,6 +2,13 @@
 
 <html>
 <head>
+    <style>
+        .yui-pg-page { padding: 5pt; }
+        .yui-dt-label .yui-dt-sortable { color: white; }
+        .yui-dt table { width: 100%; }
+        div.yui-dt-liner a {color : black;}
+    </style>
+
     <style type="text/css">
         /*div.row div.label { width: 9em; }
         div.row div.value { margin-left: 10em; }*/
@@ -33,9 +40,40 @@
             $('value').value = text
 
             var parameterMap = getParameterMap(form);
-            search.getInvestigatorTable(parameterMap, type, text, showTable);
+            search.getInvestigatorTable(parameterMap, type, text, test);
             $('bigSearch').show();
         }
+
+        function test(jsonResult) {
+            $('indicator').className = 'indicator';
+            initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+            hideCoppaSearchDisclaimer();
+        }
+
+        var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+                var _id = oRecord.getData("id");
+                elCell.innerHTML = "<a href='editInvestigator?investigatorId=" + _id + "'>" + oData + "</a>";
+        };
+
+        var myColumnDefs = [
+            {key:"firstName",        label:"First Name",    sortable:true,      resizeable:true, formatter: linkFormatter},
+            {key:"middleName",       label:"Middle Name",   sortable:true,      resizeable:true},
+            {key:"lastName",         label:"Last Name",     sortable:true,      resizeable:true, formatter: linkFormatter},
+            {key:"number",           label:"Investigator number",     sortable:true,      resizeable:true, formatter: linkFormatter},
+            {key:"organization",     label:"Organization",  sortable:true,      resizeable:true},
+            {key:"active",     label:"Status",  sortable:true,      resizeable:true}
+        ];
+
+        var myFields = [
+            {key:'id',                         parser:"integer"},
+            {key:'firstName',    parser:"string"},
+            {key:'middleName',   parser:"string"},
+            {key:'number',   parser:"string"},
+            {key:'lastName',     parser:"string"},
+            {key:'organization',               parser:"string"},
+            {key:'active',               parser:"string"}
+        ];
+
 
     </script>
 </head>

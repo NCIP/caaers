@@ -16,6 +16,7 @@ public class SearchInvestigatorController extends SearchController {
         setSuccessView("search/investigator_search");
     }
 
+/*
     @Override
     protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
@@ -34,4 +35,5 @@ public class SearchInvestigatorController extends SearchController {
         super.buildSearchResultTable(request, prop, value, SEARCH_INVESTIGATOR);
 
     }
+*/
 }
