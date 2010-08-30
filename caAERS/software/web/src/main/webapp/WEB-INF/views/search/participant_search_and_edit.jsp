@@ -8,6 +8,14 @@
        	div.row div.label { width: 9em; } 
         div.row div.value { margin-left: 10em; }
 </style>
+
+<style>
+    .yui-pg-page { padding: 5pt; }
+    .yui-dt-label .yui-dt-sortable { color: white; }
+    .yui-dt table { width: 100%; }
+    div.yui-dt-liner a {color : black;}
+</style>
+    
 <title>Search Subjects</title>
 <tags:dwrJavascriptLink objects="search"/>
 
@@ -17,7 +25,6 @@ function buildTable(form) {
 	$('indicator').className=''
 	var type = "";
 	var text = "";
-
 
 	for(var x=0; x < 3; x++) {
 	
@@ -31,8 +38,35 @@ function buildTable(form) {
 	$('value').value=text
 	
 	var parameterMap = getParameterMap(form);
-	search.buildParticipantTable(parameterMap, type, text, showTable);		
+	search.buildParticipantTable(parameterMap, type, text, test);		
 }
+
+function test(jsonResult) {
+    $('indicator').className = 'indicator';
+    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+    hideCoppaSearchDisclaimer();
+}
+
+var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+        var _id = oRecord.getData("id");
+        elCell.innerHTML = "<a href='edit?participantId=" + _id + "'>" + oData + "</a>";
+};
+
+var myColumnDefs = [
+    {key:"firstName", label:"First Name", sortable:true, resizeable:true, formatter: linkFormatter},
+    {key:"lastName", label:"Last Name", sortable:true, resizeable:true, formatter: linkFormatter},
+    {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true, formatter: linkFormatter},
+    {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true, formatter: linkFormatter}
+];
+
+var myFields = [
+    {key:'id', parser:"string"},
+    {key:'firstName', parser:"string"},
+    {key:'lastName', parser:"string"},
+    {key:'primaryIdentifierValue', parser:"string"},
+    {key:'studySubjectIdentifiersCSV', parser:"string"}
+];
+    
 </script>
 </head>
 <body>

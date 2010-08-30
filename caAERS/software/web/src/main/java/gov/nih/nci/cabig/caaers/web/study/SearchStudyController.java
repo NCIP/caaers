@@ -44,11 +44,10 @@ public class SearchStudyController extends SimpleFormController {
     protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("studySearchType", listValues.getStudySearchType());
-        // refdata.put("studySearchType",
-        // getConfigurationProperty().getMap().get("studySearchType"));
         return refdata;
     }
 
+/*
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         Enumeration en = request.getParameterNames();
@@ -70,6 +69,7 @@ public class SearchStudyController extends SimpleFormController {
         }
     }
 
+*/
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
         SearchStudyCommand sCommand = new SearchStudyCommand();

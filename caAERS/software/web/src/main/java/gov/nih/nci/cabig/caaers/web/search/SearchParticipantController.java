@@ -22,6 +22,7 @@ public class SearchParticipantController extends SearchController {
         setSuccessView("search/participant_search_and_edit");
     }
 
+/*
     @Override
     protected void onBind(final HttpServletRequest request, final Object command) throws Exception {
         String prop = request.getParameter("_prop");
@@ -39,5 +40,6 @@ public class SearchParticipantController extends SearchController {
             super.buildSearchResultTable(request, null, null, 8);
         }
     }
+*/
 
 }

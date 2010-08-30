@@ -6,10 +6,12 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObje
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
@@ -116,7 +118,7 @@ public class SearchStudyAjaxFacade {
         model.addRow(row);
     }
 
-    public String getStudiesTable(Map parameterMap, String type, String text, HttpServletRequest request) {
+    public List<StudyAjaxableDomainObject> getStudiesTable(Map parameterMap, String type, String text, HttpServletRequest request) {
         StudyQuery sq = new StudyQuery();
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
@@ -135,58 +137,19 @@ public class SearchStudyAjaxFacade {
         }
         
         List<Study> studies = studyRepository.search(sq, type, text, coppaMode);
-
-        // BUILD EC TABLE
-        // 
-
-        try {
-            Context context = null;
-            if (parameterMap == null) {
-                context = new HttpServletRequestContext(request);
-            } else {
-                context = new HttpServletRequestContext(request, parameterMap);
-            }
-
-            TableModel model = new TableModelImpl(context);
-            addTable(model, studies);
-
-            Column columnPrimaryIdentifier = model.getColumnInstance();
-            columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
-            columnPrimaryIdentifier.setTitle("Study ID");
-            columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
-            model.addColumn(columnPrimaryIdentifier);
-
-            Column columnShortTitle = model.getColumnInstance();
-            columnShortTitle.setTitle("Short Title");
-            columnShortTitle.setProperty("shortTitle");
-            columnShortTitle.setSortable(Boolean.TRUE);
-            model.addColumn(columnShortTitle);
-
-            Column columnStatusCode = model.getColumnInstance();
-            columnStatusCode.setTitle("Status");
-            columnStatusCode.setProperty("status");
-            model.addColumn(columnStatusCode);
-            columnStatusCode.setSortable(Boolean.TRUE);
-
-            Column columnPhaseCode = model.getColumnInstance();
-            columnPhaseCode.setTitle("Phase");
-            columnPhaseCode.setProperty("phaseCode");
-            model.addColumn(columnPhaseCode);
-            columnPhaseCode.setSortable(Boolean.TRUE);
-
-            Column columnSponsorCode = model.getColumnInstance();
-            columnSponsorCode.setTitle("Funding Sponsor");
-            columnSponsorCode.setProperty("primarySponsorCode");
-            columnSponsorCode.setSortable(Boolean.TRUE);
-            model.addColumn(columnSponsorCode);
-
-            return model.assemble().toString();
-            
-        } catch(Exception e) {
-            e.printStackTrace();
+        List<StudyAjaxableDomainObject> rs = new ArrayList<StudyAjaxableDomainObject>();
+        for (Study s : studies) {
+            StudyAjaxableDomainObject as = new StudyAjaxableDomainObject();
+            as.setId(s.getId());
+            as.setStatus(s.getStatus());
+            as.setShortTitle(s.getShortTitle());
+            as.setPrimaryIdentifierValue(s.getPrimaryIdentifierValue());
+            as.setPhaseCode(s.getPhaseCode());
+            as.setPrimarySponsorCode(s.getPrimarySponsorCode());
+            rs.add(as);
         }
-
-        return "";
+        return rs;
+        
     }
 
     // ASSIGN Study Search

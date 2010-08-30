@@ -1232,35 +1232,13 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         }
     }
 
-    public String buildParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+    public List<ParticipantAjaxableDomainObject> buildParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
             participants = getParticipants(type, text);
         }
-
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
-        }
-
-        TableModel model = new TableModelImpl(context);
-        // LimitFactory limitFactory = new TableLimitFactory(context);
-        // Limit limit = new TableLimit(limitFactory);
-        // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
-        // model.setLimit(limit);
-        
-        try {
-            return buildPartcipantTable(model, participants).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-
+        return participants;
     }
 
     public Object buildPartcipantTable(final TableModel model, final List<ParticipantAjaxableDomainObject> participants) throws Exception {

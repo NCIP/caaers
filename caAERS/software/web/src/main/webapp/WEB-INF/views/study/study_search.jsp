@@ -20,6 +20,14 @@
         div.row div.value { margin-left: 10em; }
         .endpanes {	clear: both; }
 </style>
+
+<style>
+    .yui-pg-page { padding: 5pt; }
+    .yui-dt-label .yui-dt-sortable { color: white; }
+    .yui-dt table { width: 100%; }
+    div.yui-dt-liner a {color : black;}
+</style>
+
 <script>
 
 function buildTable(form) {
@@ -31,24 +39,46 @@ function buildTable(form) {
 		$('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
 	}else{
 		$('error').innerHTML=""
-
-//		//showing indicator and hiding pervious results. (#10826)
 		$('indicator').className='';
 		showCoppaSearchDisclaimer();
-	//	$('assembler_table').hide();  //do not hide the results..becz filter string get disappear
         var parameterMap = getParameterMap(form);
-
-		searchStudy.getStudiesTable(parameterMap, type, text, showTable);
+		searchStudy.getStudiesTable(parameterMap, type, text, test);
 	}
 }
-
-
 
 function fireAction(action, selected){
 	document.getElementById("_action").value=action;
 	document.getElementById("_selected").value=selected;
 	document.searchForm.submit();
 }
+
+function test(jsonResult) {
+    $('indicator').className = 'indicator';
+    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+    hideCoppaSearchDisclaimer();
+}
+
+var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+        var _id = oRecord.getData("id");
+        elCell.innerHTML = "<a href='edit?studyId=" + _id + "'>" + oData + "</a>";
+};
+
+var myColumnDefs = [
+    {key:"primaryIdentifierValue", label:"Primary identifier", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
+    {key:"shortTitle", label:"Short title", sortable:true, resizeable:true, formatter: linkFormatter},
+    {key:"status", label:"Status", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
+    {key:"phaseCode", label:"Phase code", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
+    {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
+];
+
+var myFields = [
+    {key:'id', parser:"string"},
+    {key:'primaryIdentifierValue',  parser:"string"},
+    {key:'status',                  parser:"string"},
+    {key:'phaseCode',               parser:"string"},
+    {key:'primarySponsorCode',      parser:"string"},
+    {key:'shortTitle',              parser:"string"}
+];
 
 function onKey(e) {
     var keynum = getKeyNum(e);
@@ -60,6 +90,7 @@ function onKey(e) {
     } else return;
 }
 
+    
 
 </script>
 </head>
