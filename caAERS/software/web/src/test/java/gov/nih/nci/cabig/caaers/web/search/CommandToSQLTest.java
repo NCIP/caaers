@@ -35,17 +35,19 @@ public class CommandToSQLTest extends AbstractTestCase {
 	List<AdvancedSearchCriteriaParameter> criteriaParameters;
 	SearchTargetObject targetObject;
 	AdvancedSearchUi advancedSearchUi;
+	CommandToSQL commandToSQL;
 	
 	protected void setUp() throws Exception {
         super.setUp();
         setupCommand();
         criteriaParameters = new ArrayList<AdvancedSearchCriteriaParameter>();
+        commandToSQL = new CommandToSQL();
     }
 
 	public void testGetProjectionStringForQuery1() throws Exception{
 		createDataForQuery1();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String projectionString = CommandToSQL.getProjectionString(targetObject);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String projectionString = commandToSQL.getProjectionString(targetObject);
 		String expectedProjectionString = "select AdverseEvent_xx, Study_xx";
 		assertEquals("Projection String is created incorrectly", expectedProjectionString, projectionString);
 		assert(true);
@@ -53,8 +55,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetProjectionStringForQuery2() throws Exception{
 		createDataForQuery2();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String projectionString = CommandToSQL.getProjectionString(targetObject);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String projectionString = commandToSQL.getProjectionString(targetObject);
 		String expectedProjectionString = "select AdverseEvent_xx";
 		assertEquals("Projection String is created incorrectly", expectedProjectionString, projectionString);
 		assert(true);
@@ -62,8 +64,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetProjectionStringForQuery3() throws Exception{
 		createDataForQuery3();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String projectionString = CommandToSQL.getProjectionString(targetObject);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String projectionString = commandToSQL.getProjectionString(targetObject);
 		String expectedProjectionString = "select Participant_xx, Study_xx";
 		assertEquals("Projection String is created incorrectly", expectedProjectionString, projectionString);
 		assert(true);
@@ -71,8 +73,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetProjectionStringForQuery4() throws Exception{
 		createDataForQuery4();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String projectionString = CommandToSQL.getProjectionString(targetObject);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String projectionString = commandToSQL.getProjectionString(targetObject);
 		String expectedProjectionString = "select Study_xx, Organization_xx";
 		assertEquals("Projection String is created incorrectly", expectedProjectionString, projectionString);
 		assert(true);
@@ -80,8 +82,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetFromTablesStringForQuery1() throws Exception{
 		createDataForQuery1();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String fromTablesString = CommandToSQL.getFromTablesString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String fromTablesString = commandToSQL.getFromTablesString(targetObject, criteriaParameters);
 		String expectedFromTablesString = "from gov.nih.nci.cabig.caaers.domain.AdverseEvent AdverseEvent_xx, " +
 			"gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod AdverseEventReportingPeriod_xx, " +
 			"gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment StudyParticipantAssignment_xx, " +
@@ -92,8 +94,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetFromTablesStringForQuery2() throws Exception{
 		createDataForQuery2();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String fromTablesString = CommandToSQL.getFromTablesString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String fromTablesString = commandToSQL.getFromTablesString(targetObject, criteriaParameters);
 		String expectedFromTablesString = "from gov.nih.nci.cabig.caaers.domain.AdverseEvent AdverseEvent_xx";
 		assertEquals("From tables string is created incorrectly", expectedFromTablesString, fromTablesString);
 		assert(true);
@@ -101,8 +103,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetFromTablesStringForQuery3() throws Exception{
 		createDataForQuery3();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String fromTablesString = CommandToSQL.getFromTablesString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String fromTablesString = commandToSQL.getFromTablesString(targetObject, criteriaParameters);
 		String expectedFromTablesString = "from gov.nih.nci.cabig.caaers.domain.Participant Participant_xx, " +
 			"gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment StudyParticipantAssignment_xx, " +
 			"gov.nih.nci.cabig.caaers.domain.StudyOrganization StudyOrganization_xx, gov.nih.nci.cabig.caaers.domain.Study Study_xx";
@@ -112,8 +114,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetFromTablesStringForQuery4() throws Exception{
 		createDataForQuery4();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String fromTablesString = CommandToSQL.getFromTablesString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String fromTablesString = commandToSQL.getFromTablesString(targetObject, criteriaParameters);
 		String expectedFromTablesString = "from gov.nih.nci.cabig.caaers.domain.Study Study_xx, " +
 			"gov.nih.nci.cabig.caaers.domain.StudyOrganization StudyOrganization_xx, " + "" +
 			"gov.nih.nci.cabig.caaers.domain.Organization Organization_xx";
@@ -123,8 +125,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetJoiningConditionStringForQuery1() throws Exception{
 		createDataForQuery1();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String joiningString = CommandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String joiningString = commandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
 		String expectedJoiningString = "AdverseEvent_xx.reportingPeriod = AdverseEventReportingPeriod_xx and " +
 			"AdverseEventReportingPeriod_xx.assignment = StudyParticipantAssignment_xx and " +
 			"StudyParticipantAssignment_xx.studySite = StudyOrganization_xx and StudyOrganization_xx.study = Study_xx";
@@ -134,8 +136,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetJoiningConditionStringForQuery3() throws Exception{
 		createDataForQuery3();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String joiningString = CommandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String joiningString = commandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
 		String expectedJoiningString = "Participant_xx = StudyParticipantAssignment_xx.participant and " +
 			"StudyParticipantAssignment_xx.studySite = StudyOrganization_xx and StudyOrganization_xx.study = Study_xx"; 
 		assertEquals("Joining string is created incorrectly", expectedJoiningString, joiningString);
@@ -144,8 +146,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetJoiningConditionStringForQuery4() throws Exception{
 		createDataForQuery4();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String joiningString = CommandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String joiningString = commandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
 		String expectedJoiningString = "Study_xx = StudyOrganization_xx.study and " + 
 			"StudyOrganization_xx.organization = Organization_xx";
 		assertEquals("Joining string is created incorrectly", expectedJoiningString, joiningString);
@@ -154,8 +156,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 	
 	public void testGetCriteriaConditionStringForQuery1() throws Exception{
 		createDataForQuery1();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String criteriaConditionString = commandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
 		String expectedCriteriaConditionString = "Study_xx.multiInstitutionIndicator = true and AdverseEvent_xx.grade >= '2'";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
@@ -163,8 +165,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetCriteriaConditionStringForQuery2() throws Exception{
 		createDataForQuery2();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String criteriaConditionString = commandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
 		String expectedCriteriaConditionString = "AdverseEvent_xx.requiresReporting = true";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
@@ -172,8 +174,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetCriteriaConditionStringForQuery3() throws Exception{
 		createDataForQuery3();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String criteriaConditionString = commandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
 		String expectedCriteriaConditionString = "Study_xx.id = '5'";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
@@ -181,8 +183,8 @@ public class CommandToSQLTest extends AbstractTestCase {
 
 	public void testGetCriteriaConditionStringForQuery4() throws Exception{
 		createDataForQuery4();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
+		commandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
+		String criteriaConditionString = commandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
 		String expectedCriteriaConditionString = "Organization_xx.id = '2'";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
