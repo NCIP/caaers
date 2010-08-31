@@ -57,15 +57,16 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 					parameters.add(p);
 		}
 		String query = "";
+		CommandToSQL commandToSQL =  new CommandToSQL();
 		try{
-			query = CommandToSQL.transform(command.getSearchTargetObject(), parameters, true);
+			query = commandToSQL.transform(command.getSearchTargetObject(), parameters, true);
 		}catch(Exception e){
 			errors.reject("EXP", "There was an exception while generating the HQL :" + e.getMessage());
 		}
 		command.setHql(query);
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
-		if(CommandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
+		if(commandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
 			multipleObjectList = (List<Object[]>) participantDao.search(new HQLQuery(query));
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());
@@ -199,4 +200,5 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 	public void setParticipantDao(ParticipantDao participantDao) {
 		this.participantDao = participantDao;
 	}
+
 }
