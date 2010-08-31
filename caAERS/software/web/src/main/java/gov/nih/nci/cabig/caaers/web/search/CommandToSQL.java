@@ -19,10 +19,10 @@ import gov.nih.nci.cabig.caaers.web.search.ui.UiAssociation;
  * @author Sameer Sawant
  */
 public class CommandToSQL{
-	private static Map<String, String> classToAliasMap;
-	private static List<String> classList;
+	private  Map<String, String> classToAliasMap;
+	private  List<String> classList;
 	
-	public static String transform(SearchTargetObject targetObject, 
+	public  String transform(SearchTargetObject targetObject, 
 			List<AdvancedSearchCriteriaParameter> criteriaParameters, boolean caseInsensitive) throws Exception{
 		
 		// Initialize the tableToAliasMap
@@ -44,7 +44,7 @@ public class CommandToSQL{
 		return sqlString.toString();
 	}
 	
-	public static boolean isMultipleViewQuery(SearchTargetObject targetObject){
+	public boolean isMultipleViewQuery(SearchTargetObject targetObject){
 		int numberOfDependentObjectsInView = 0;
 		for(DependentObject dObject: targetObject.getDependentObject())
 			if(dObject.isInView())
@@ -64,7 +64,7 @@ public class CommandToSQL{
 	 * @param targetObject
 	 * @param criteriaParameters
 	 */
-	public static void initializeTableToAliasMap(SearchTargetObject targetObject,
+	public  void initializeTableToAliasMap(SearchTargetObject targetObject,
 			List<AdvancedSearchCriteriaParameter> criteriaParameters){
 		
 		classToAliasMap = new HashMap<String, String>();
@@ -107,7 +107,7 @@ public class CommandToSQL{
 	 * @param criteriaParameters
 	 * @return String - projection string 
 	 */
-	public static String getProjectionString(SearchTargetObject targetObject){ 
+	public String getProjectionString(SearchTargetObject targetObject){ 
 		StringBuffer projectionStringBuffer = new StringBuffer();
 		projectionStringBuffer.append("select ");
 		for(DependentObject dObject: targetObject.getDependentObject()){
@@ -128,7 +128,7 @@ public class CommandToSQL{
 	 * @param targetObject
 	 * @return String - orderby String.
 	 */
-	public static String getOrderByString(SearchTargetObject targetObject){
+	public String getOrderByString(SearchTargetObject targetObject){
 		StringBuffer orderByStringBuffer = new StringBuffer();
 		for(DependentObject dObject: targetObject.getDependentObject()){
 			if(dObject.isInView()){
@@ -148,7 +148,7 @@ public class CommandToSQL{
 	 * @param criteriaParameters
 	 * @return String fromTables string.
 	 */
-	public static String getFromTablesString(SearchTargetObject targetObject,
+	public String getFromTablesString(SearchTargetObject targetObject,
 			List<AdvancedSearchCriteriaParameter> criteriaParameters){
 		StringBuffer fromTablesStringBuffer = new StringBuffer();
 		fromTablesStringBuffer.append("from ");
@@ -171,7 +171,7 @@ public class CommandToSQL{
 	 * @param criteriaParameters
 	 * @return
 	 */
-	public static String getJoiningConditionString(SearchTargetObject targetObject,
+	public String getJoiningConditionString(SearchTargetObject targetObject,
 			List<AdvancedSearchCriteriaParameter> criteriaParameters){
 		// Create the joiningConditionAddedMap
 		Map<String, Boolean> joiningConditionAddedMap = new HashMap<String, Boolean>();
@@ -217,7 +217,7 @@ public class CommandToSQL{
 			return joiningConditionStringBuffer.toString();
 	}
 	
-	public static String getCriteriaConditionString(SearchTargetObject targetObject,
+	public String getCriteriaConditionString(SearchTargetObject targetObject,
 			List<AdvancedSearchCriteriaParameter> criteriaParameters, boolean caseInsensitive) throws Exception{
 		
 		// get the field for the attribute
@@ -322,7 +322,7 @@ public class CommandToSQL{
 	}
 	
 	
-	public static String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
+	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
 		Date dateValue = null;
 		try {
 			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
