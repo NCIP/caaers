@@ -2,12 +2,16 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
@@ -55,17 +59,44 @@ public class CreateParticipantAjaxFacade {
 
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
+    private StudyRepository studyRepository;
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
+
+
+
+/*
+    public List<StudyAjaxableDomainObject> getStudiesHasvingStudySites(final Map parameterMap, final String type, final String text, final String nciCode, final HttpServletRequest request) {
+        StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
+        query.joinStudyOrganization();
+        query.filterByDataEntryStatus(true);
+        query.filterByStudySiteNciInstituteCode(nciCode);
+        if ("st".equals(type)) {
+            query.filterByStudyShortTile(text);
+        } else if ("idtf".equals(type)) {
+            query.filterByIdentifierValue(text);
+        }
+        query.filterBySST();
+        List<Study> studies = studyRepository.find(query);
+
+        List rs = new ArrayList<StudyAjaxableDomainObject>();
+
+        return rs;
+    }
+*/
+
 
     /*
     * Ajax Call hits this method to generate table
     */
-    public String getParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+    public List<ParticipantAjaxableDomainObject> getParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
             participants = constructExecuteParticipantQuery(type, text);
         }
+
+        return participants;
+/*
         log.debug("Participants :: " + participants.size());
 
         Context context = null;
@@ -85,6 +116,7 @@ public class CreateParticipantAjaxFacade {
         }
 
         return "";
+*/
     }
 
     public Object buildParticipant(final TableModel model, final Collection participants) throws Exception {
@@ -184,12 +216,10 @@ public class CreateParticipantAjaxFacade {
     	
     	StringTokenizer typeToken = new StringTokenizer(searchType, ",");
         StringTokenizer textToken = new StringTokenizer(searchText, ",");
-        log.debug("type :: " + searchType);
-        log.debug("text :: " + searchText);
+
         String sType, sText;
         
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
-        
         
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
 
@@ -208,6 +238,7 @@ public class CreateParticipantAjaxFacade {
         
         try {
             participants = participantAjaxableDomainObjectRepository.findParticipants(query);
+            // System.out.println("Q2: " + query.getQueryString());
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);

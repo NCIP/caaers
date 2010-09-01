@@ -153,7 +153,7 @@ public class SearchStudyAjaxFacade {
     }
 
     // ASSIGN Study Search
-    public String getTableForAssignParticipant(Map parameterMap, String type, String text, HttpServletRequest request) {
+    public List<StudySiteAjaxableDomainObject> getTableForAssignParticipant(Map parameterMap, String type, String text, HttpServletRequest request) {
         int organizationID;
         try {
             organizationID = Integer.parseInt((String) parameterMap.get("organizationID"));
@@ -162,63 +162,21 @@ public class SearchStudyAjaxFacade {
         }
 
         List<StudySite> studySites = getStudySites(type, text, organizationID, true);
+        List<StudySiteAjaxableDomainObject> rs = new ArrayList<StudySiteAjaxableDomainObject>();
 
-        try {
-
-            Context context = null;
-            if (parameterMap == null) {
-                context = new HttpServletRequestContext(request);
-            } else {
-                context = new HttpServletRequestContext(request, parameterMap);
-            }
-
-            TableModel model = new TableModelImpl(context);
-            addTable(model, studySites);
-
-
-            Column columnPrimaryIdentifier = model.getColumnInstance();
-            columnPrimaryIdentifier.setProperty("study.primaryIdentifierValue");
-            columnPrimaryIdentifier.setSortable(true);
-            columnPrimaryIdentifier.setTitle("Study ID");
-            model.addColumn(columnPrimaryIdentifier);
-
-            Column columnShortTitle = model.getColumnInstance();
-            columnShortTitle.setTitle("Short Title");
-            columnShortTitle.setProperty("study.shortTitle");
-            columnShortTitle.setSortable(Boolean.TRUE);
-            model.addColumn(columnShortTitle);
-
-            Column columnStatusCode = model.getColumnInstance();
-            columnStatusCode.setTitle("Status");
-            columnStatusCode.setProperty("study.status");
-            model.addColumn(columnStatusCode);
-            columnStatusCode.setSortable(Boolean.TRUE);
-
-            Column columnPhaseCode = model.getColumnInstance();
-            columnPhaseCode.setTitle("Phase");
-            columnPhaseCode.setProperty("study.phaseCode");
-            model.addColumn(columnPhaseCode);
-            columnPhaseCode.setSortable(Boolean.TRUE);
-
-            Column columnSponsorCode = model.getColumnInstance();
-            columnSponsorCode.setTitle("Funding Sponsor");
-            columnSponsorCode.setProperty("study.primarySponsorCode");
-            columnSponsorCode.setSortable(Boolean.TRUE);
-            model.addColumn(columnSponsorCode);
-
-            Column columnStudySite = model.getColumnInstance();
-            columnStudySite.setTitle("Study Sites");
-            columnStudySite.setProperty("organization.name");
-            columnStudySite.setCell("gov.nih.nci.cabig.caaers.web.search.cell.SelectedStudySiteCell");
-            model.addColumn(columnStudySite);
-
-
-            return model.assemble().toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (StudySite ss : studySites) {
+            StudySiteAjaxableDomainObject ssado = new StudySiteAjaxableDomainObject();
+            ssado.setId(ss.getId());
+            ssado.setPrimaryId(ss.getStudy().getPrimaryIdentifierValue());
+            ssado.setStudyShortTitle(ss.getStudy().getShortTitle());
+            ssado.setStatus(ss.getStudy().getStatus());
+            ssado.setStudyPhase(ss.getStudy().getPhaseCode());
+            ssado.setNciInstituteCode(ss.getStudy().getPrimaryFundingSponsor().getOrganization().getNciInstituteCode());
+            ssado.setName(ss.getStudy().getPrimaryFundingSponsor().getOrganization().getName());
+            rs.add(ssado);
         }
 
-        return "";
+        return rs;
     }
 
     private List<StudySite> getObjects(String type, String text) {

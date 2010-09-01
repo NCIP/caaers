@@ -5,6 +5,17 @@
     <title>Search for a Subject</title>
     <tags:dwrJavascriptLink objects="createParticipant"/>
 
+    <style>
+        .yui-pg-page { padding: 5pt; }
+        .yui-dt-label .yui-dt-sortable { color: white; }
+        .yui-dt table { width: 100%; }
+        div.yui-dt-liner a {color : black;}
+
+        tr.yui-dt-even { background-color: #FFF;}
+        tr.yui-dt-odd { background-color: #EDF5FF;}
+               
+    </style>
+    
     <script type="text/javascript">
 
         function navRollOver(obj, state) {
@@ -33,7 +44,7 @@
                 var type = $('searchType').options[$('searchType').selectedIndex].value;
 
                 var parameterMap = getParameterMap(form);
-                createParticipant.getParticipantTable(parameterMap, type, text, showTable)
+                createParticipant.getParticipantTable(parameterMap, type, text, test)
 
                 $('bigSearch').show();
 
@@ -44,7 +55,58 @@
              $('command').participant.value = selectedParticipant;
         }
 
+        function test(jsonResult) {
+            $('indicator').className='indicator'
+            //document.getElementById('tableDiv').innerHTML = jsonResult;
+            initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+            hideCoppaSearchDisclaimer();
+        }
+
+        var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+                var orgId = oRecord.getData("id");
+                elCell.innerHTML = "<a href='asaelEdit?agentID=" + orgId + "'>" + oData + "</a>";
+        };
+
+        var radioFormatter = function(elCell, oRecord, oColumn, oData) {
+
+                var _ss = 0;
+                var _checked = "";
+                var _id = oRecord.getData("id");
+
+                <c:if test="${command.participant.id > 0}">
+                    _ss =  ${command.participant.id};
+                </c:if>
+
+                if (_ss == _id) {
+                    _checked = "checked";
+                }
+
+                elCell.innerHTML = "<input " + _checked + " type=\"radio\" onclick=\"selectParticipant(this.value)\" value=\"" + _id + "\" id=\"participant" + _id + "\" name=\"participant\">&nbsp;" + oData;
+        };
+
+        var myColumnDefs = [
+            {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true, formatter: radioFormatter},
+            {key:"firstName", label:"First Name", sortable:true, resizeable:true},
+            {key:"lastName", label:"Last Name", sortable:true, resizeable:true},
+            {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true},
+            {key:"gender", label:"Gender", sortable:true, resizeable:true},
+            {key:"race", label:"Race", sortable:true, resizeable:true},
+            {key:"ethnicity", label:"Ethnicity", sortable:true, resizeable:true}
+        ];
+
+        var myFields = [
+            {key:'id', parser:"string"},
+            {key:'firstName', parser:"string"},
+            {key:'lastName', parser:"string"},
+            {key:'primaryIdentifierValue', parser:"string"},
+            {key:'studySubjectIdentifiersCSV', parser:"string"},
+            {key:'gender', parser:"string"},
+            {key:'race', parser:"string"},
+            {key:'ethnicity', parser:"string"}
+        ];
+
     </script>
+
 
 </head>
 <body>
@@ -102,6 +164,12 @@
     </form:form>
 </div>
 
+  <script>
+      Event.observe(window, "load", function(){
+          buildTable('assembler', false);
+      })
+  </script>
+  
 
 <form:form  id="command">
 	<form:hidden path="participant"/>

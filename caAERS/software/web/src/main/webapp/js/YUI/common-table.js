@@ -16,7 +16,9 @@ function initializeYUITable(tableId, responseData, columnDefs, fields) {
         var tableFields = fields.clone();
 
         var activeDataSource = new YAHOO.util.DataSource(responseData);
-
+        var rowFormatter = function(elTr, oRecord) {
+	        return true;
+	    };
         activeDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         activeDataSource.responseSchema = {
             fields: tableFields
@@ -27,7 +29,8 @@ function initializeYUITable(tableId, responseData, columnDefs, fields) {
             paginator : new YAHOO.widget.Paginator({
                 rowsPerPage: 20
             }),
-            width: "100%"
+            width: "100%",
+            formatRow : rowFormatter
         };
 
         this.activeDataTable = new YAHOO.widget.DataTable(tableId, columDefs, activeDataSource, myConfigs);

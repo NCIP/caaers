@@ -12,6 +12,11 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
     private String nciInstituteCode;
     private Integer studyId;
     private String type;
+    private String primaryId;
+    private String studyShortTitle;
+    private String status;
+    private String studyPhase;
+
 
     public String getType() {
 		return type;
@@ -55,7 +60,31 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
     	}
     	return displayNameBuffer.toString();
     }
-    
+
+    public String getPrimaryId() {
+        return primaryId;
+    }
+
+    public void setPrimaryId(String primaryId) {
+        this.primaryId = primaryId;
+    }
+
+    public String getStudyShortTitle() {
+        return studyShortTitle;
+    }
+
+    public void setStudyShortTitle(String studyShortTitle) {
+        this.studyShortTitle = studyShortTitle;
+    }
+
+    public String getStudyPhase() {
+        return studyPhase;
+    }
+
+    public void setStudyPhase(String studyPhase) {
+        this.studyPhase = studyPhase;
+    }
+
     public boolean equals(Object arg0) {
         if (arg0 == null) {
             return false;
@@ -73,5 +102,12 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
 
         return false;
     }
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

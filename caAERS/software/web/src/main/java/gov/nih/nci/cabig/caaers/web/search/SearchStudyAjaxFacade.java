@@ -1223,6 +1223,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
         try {
             participants = participantAjaxableDomainObjectRepository.findParticipants(query);
+            // System.out.println("Q1: " + query.getQueryString());
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);

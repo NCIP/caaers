@@ -7,6 +7,17 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Search for a Study</title>
+    <style>
+        .yui-pg-page { padding: 5pt; }
+        .yui-dt-label .yui-dt-sortable { color: white; }
+        .yui-dt table { width: 100%; }
+        div.yui-dt-liner a {color : black;}
+
+        tr.yui-dt-even { background-color: #FFF; border-bottom: 1px gray solid;}
+        tr.yui-dt-odd { background-color: #EDF5FF; border-bottom: 2px blue dotted; padding: 2px; }
+
+    </style>
+
     <script>
         function submitPage(s) {
                 alert($('studySite').value);
@@ -67,7 +78,7 @@
 
                 var parameterMap = getParameterMap(form);
                 parameterMap["organizationID"] = "<c:out value="${command.participant.assignments[0].studySite.organization.id}" />";
-                searchStudy.getTableForAssignParticipant(parameterMap, type, text, showTable)
+                searchStudy.getTableForAssignParticipant(parameterMap, type, text, test);
                 $('indicator').hide();
                 $('bigSearch').show();
             }
@@ -92,6 +103,53 @@
             return flag;
         }
 
+        function test(jsonResult) {
+            $('indicator').className='indicator'
+            initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+            hideCoppaSearchDisclaimer();
+        }
+
+        var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+                var orgId = oRecord.getData("id");
+                elCell.innerHTML = "<a href='asaelEdit?agentID=" + orgId + "'>" + oData + "</a>";
+        };
+
+        var radioFormatter = function(elCell, oRecord, oColumn, oData) {
+
+                var _ss = 0;
+                var _checked = "";
+                var _id = oRecord.getData("id");
+            
+                <c:if test="${command.studySite.id > 0}">
+                    _ss =  ${command.studySite.id};
+                </c:if>
+
+                if (_ss == _id) {
+                    _checked = "checked";
+                }
+
+                elCell.innerHTML = "<input " + _checked + " type=\"radio\" class=\"sitesRadioBtn siteStudy_"+ _id +"\" onclick=\"resetStudyAndSites(this);\" value=\"" + _id + "\" id=\"studySite" + _id + "\" name=\"studySite\">" + oData;
+        };
+
+        var myColumnDefs = [
+            {key:"primaryId", label:"Study ID", sortable:true, resizeable:true},
+            {key:"studyShortTitle", label:"Short Title", sortable:true, resizeable:true},
+            {key:"status", label:"Status", sortable:true, resizeable:true},
+            {key:"studyPhase", label:"Phase", sortable:true, resizeable:true},
+            {key:"nciInstituteCode", label:"Funding Sponsor", sortable:true, resizeable:true},
+            {key:"name", label:"Study Site", sortable:true, resizeable:true, formatter: radioFormatter}
+        ];
+
+        var myFields = [
+            {key:'id', parser:"string"},
+            {key:'primaryId', parser:"string"},
+            {key:'studyShortTitle', parser:"string"},
+            {key:'status', parser:"string"},
+            {key:'studyPhase', parser:"string"},
+            {key:'nciInstituteCode', parser:"string"},
+            {key:'name', parser:"string"}
+        ];
+        
     </script>
 </head>
 <body>
@@ -194,10 +252,10 @@
 <script>
     Event.observe(window, "load", function(){
         buildTable('assembler', false);
-        var _ss =  ${command.studySite.id}0 / 10;
-        if (_ss > 0) {
+        <c:if test="${command.studySite.id > 0}">
+            var _ss =  ${command.studySite.id};
             resetStudyAndSitesById(_ss);
-        }
+        </c:if>
     })
 </script>
 
