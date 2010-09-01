@@ -303,7 +303,17 @@ public class CommandToSQL{
 				if (typeFlag != AttributeTypeDetector.BOOLEAN_TYPE && inClauseCheck){
 					criteriaConditionStringBuffer.append("(");
 				}
-				criteriaConditionStringBuffer.append(parameter.getValue());
+				
+				if (parameter.getPredicate().equals("like")) {
+					if (parameter.getValue().indexOf("%") != -1) {
+						criteriaConditionStringBuffer.append(parameter.getValue());
+					} else {
+						criteriaConditionStringBuffer.append("%"+parameter.getValue()+"%");
+					}					
+				} else {
+					criteriaConditionStringBuffer.append(parameter.getValue());
+				}
+				
 				if (typeFlag != AttributeTypeDetector.BOOLEAN_TYPE && inClauseCheck){
 					criteriaConditionStringBuffer.append(")");
 				}
