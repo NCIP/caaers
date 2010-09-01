@@ -51,7 +51,6 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	private ApplicationContext applicationContext;
 	protected ResearchStaffRepository researchStaffRepository;
 	
-	
 	/**
      * Fetches the research staff from the DB
      * 
@@ -308,7 +307,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 		dbResearchStaff.getAddress().setCity(xmlResearchStaff.getAddress().getCity());
 		dbResearchStaff.getAddress().setState(xmlResearchStaff.getAddress().getState());
 		dbResearchStaff.getAddress().setZip(xmlResearchStaff.getAddress().getZip());
-		
+		dbResearchStaff.getAddress().setCountry(xmlResearchStaff.getAddress().getCountry());
 		//do the site research staff sync
 		if(CollectionUtils.isEmpty(xmlResearchStaff.getSiteResearchStaffs())) return;  //nothing provided in xml input
 		List<SiteResearchStaff> existingSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
@@ -317,6 +316,15 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			SiteResearchStaff existing = dbResearchStaff.findSiteResearchStaff(xmlSiteResearchStaff);
 			if(existing != null){
 				existing.setAssociateAllStudies(xmlSiteResearchStaff.getAssociateAllStudies());
+				existing.setPhoneNumber(xmlSiteResearchStaff.getPhoneNumber());
+				existing.setFaxNumber(xmlSiteResearchStaff.getFaxNumber());
+				if(xmlSiteResearchStaff.getAddress() != null){
+					existing.getAddress().setCity(xmlSiteResearchStaff.getAddress().getCity());
+					existing.getAddress().setStreet(xmlSiteResearchStaff.getAddress().getStreet());
+					existing.getAddress().setState(xmlSiteResearchStaff.getAddress().getState());
+					existing.getAddress().setZip(xmlSiteResearchStaff.getAddress().getZip());
+					existing.getAddress().setCountry(xmlSiteResearchStaff.getAddress().getCountry());
+				}
 				//sync the roles
 				List<SiteResearchStaffRole> existingRoles = new ArrayList<SiteResearchStaffRole>();
 				List<SiteResearchStaffRole> newRoles = new ArrayList<SiteResearchStaffRole>();
