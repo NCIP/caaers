@@ -220,11 +220,13 @@ This applicationContext contains the definition of the DAOs
             <list>
                 <ref local="gridIdentifierInterceptor"/>
                 <ref local="auditInterceptor"/>
-                <ref local="remoteEntityInterceptor"/>
+<!--                <ref local="remoteEntityInterceptor"/>-->
             </list>
         </property>
     </bean>
-	<bean id="remoteEntityInterceptor" class="com.semanticbits.coppa.infrastructure.hibernate.RemoteEntityInterceptor" autowire="byName"/>
+	
+<!--	<bean id="remoteEntityInterceptor" class="com.semanticbits.coppa.infrastructure.hibernate.RemoteEntityInterceptor" autowire="byName"/>-->
+    
     <bean id="auditInterceptor" class="gov.nih.nci.cabig.ctms.audit.AuditInterceptorImpl" autowire="byType">
         <property name="dataAuditRepository" ref="dataAuditRepository"></property>
         <property name="auditableEntities">
