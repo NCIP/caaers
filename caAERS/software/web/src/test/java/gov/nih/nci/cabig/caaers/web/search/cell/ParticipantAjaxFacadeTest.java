@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Saurabh Agrawal
@@ -55,10 +56,7 @@ public class ParticipantAjaxFacadeTest extends DwrFacadeTestCase {
     	expect(webContext.getSession()).andReturn(session).anyTimes();
         expect(studySearchableAjaxableDomainObjectRepository.findStudies(isA(StudySearchableAjaxableDomainObjectQuery.class), eq(""), eq(""))).andReturn(Arrays.asList(study));
         replayMocks();
-        String table = searchStudyAjaxFacade.getTableForAssignParticipant(null, "", "", request);
-        System.out.println(table);
+        List table = searchStudyAjaxFacade.getTableForAssignParticipant(null, "", "", request);
         verifyMocks();
-       // assertEquals("", table);
-        
     }
 }
