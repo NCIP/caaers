@@ -208,7 +208,7 @@ public class StudyRepository {
     						log.info("Study with ID "+ remoteStudy.getNciAssignedIdentifier() + " was not created in caAERS. Missing Coordinating Center or Funding Sponsor");
     					}
     				}
-    				studyDao.getHibernateTemplate().flush();
+    				studyDao.flush();
     			} else {
     				log.error("Null Remote Study in the list");
     			}
