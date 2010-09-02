@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -55,6 +57,7 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
         command.refreshParentOptions(null);
         command.refreshGroupOptions();
         populateFieldRuleSet(command);
+        command.setRuleManager(SecurityUtils.checkAuthorization(UserGroupType.ae_rule_and_report_manager));
         return command;
     }
 

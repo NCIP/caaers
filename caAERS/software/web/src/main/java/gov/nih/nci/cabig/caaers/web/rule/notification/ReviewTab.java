@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -83,7 +85,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         BeanWrapper wrappedCommand = new BeanWrapperImpl(command);
 
         // basic details tab fields
-        TabWithFields<ReportDefinitionCommand> tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(0);
+        TabWithFields<ReportDefinitionCommand> tab = getTabFromFlow(getFlow(), BasicsTab.class);
         Map<String, InputFieldGroup> fieldGroupMap = tab.createFieldGroups(command);
         InputFieldGroup fieldGroup = fieldGroupMap.get("reportDefinitionOrganization");
         List<Pair> fieldList = fetchFieldValues(fieldGroup, wrappedCommand);
@@ -123,13 +125,12 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         }
 
         // Mandatory Field Definition Tab
-        int tabIndexCorrection = command.isRuleManager() ? 0 : 1;
-        tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(2 + tabIndexCorrection);
+        tab = getTabFromFlow(getFlow(), ReportMandatoryFieldDefinitionTab.class);
         fieldGroupMap = tab.createFieldGroups(command);
         map.put("mandatoryFields", fieldGroupMap);
 
         // Notification details tab
-        tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(3 + tabIndexCorrection);
+        tab = getTabFromFlow(getFlow(), NotificationsTab.class);
         fieldGroupMap = tab.createFieldGroups(command);
         Map<String, Object> pnfMap = new LinkedHashMap<String, Object>();
         int i = 0;
@@ -168,6 +169,15 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         refDataMap.put("FIELDS", map);
         return refDataMap;
 
+    }
+
+
+    private TabWithFields<ReportDefinitionCommand> getTabFromFlow(Flow<ReportDefinitionCommand> flow, Class<? extends TabWithFields<ReportDefinitionCommand>> tabClass){
+
+       for(Tab t : flow.getTabs()){
+           if(t.getClass().getName() == tabClass.getName()) return (TabWithFields<ReportDefinitionCommand>)t;
+       }
+       return null;
     }
 
 }

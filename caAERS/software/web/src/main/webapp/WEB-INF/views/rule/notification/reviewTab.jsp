@@ -25,7 +25,6 @@
     <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
 <body>
-
     <tags:tabForm tab="${tab}" flow="${flow}"  hideTabControls="${not command.ruleManager}" >
     <jsp:attribute name="header">
     	<div class="summary">
@@ -37,15 +36,13 @@
     </jsp:attribute>
 	<jsp:attribute name="repeatingFields">
 		  <tags:errors path="*"/>
-		  <%--
 		<!-- Basic Details -->
 		<chrome:division title="Basic Details">
 		 
-		  <c:forEach items="${FIELDS['Basic Details']}" var="pair">
+		  <c:forEach items="${FIELDS['Details']}" var="pair">
 		    <rd:renderPair pair="${pair}" />
 		  </c:forEach>
 		</chrome:division>
-		--%>
 		<!-- Delivery Details -->
 		<chrome:division title="Report Delivery Definitions">
 		  <table width="100%" class="tablecontent">
@@ -70,6 +67,7 @@
 				<th width="35%">Section</th>
 				<th width="65%">Field</th>
 			</tr>
+
             <tr>
                 <td><caaers:message code="LBL_captureAdverseEvents.heading.adverseEvents" /></td>
                 <td><rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" readOnly="true" /></td>
@@ -187,10 +185,10 @@
                     <rd:renderMandatoryFields key="ADDITIONAL_INFO_SECTION" readOnly="true"/>
                 </td>
             </tr>
-			
+
 		   </table>
-		</chrome:division> 
-		<!-- Notification Details -->	
+		</chrome:division>
+		<!-- Notification Details -->
 		<chrome:division title="Notifications">
 		 <c:forEach items="${FIELDS.PENF}" var="entry">
 		 	<chrome:division title="${entry.key}" >
