@@ -313,7 +313,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     void populateStudyDetails(gov.nih.nci.cabig.ccts.domain.Study studyDto,
                     gov.nih.nci.cabig.caaers.domain.Study study, String coppaIdentifier) throws StudyCreationException,
                     InvalidStudyException {
-    	System.out.println("Creating study..");
+    	logger.info("Populating study details..");
         study.setShortTitle(studyDto.getShortTitleText());
         study.setLongTitle(studyDto.getLongTitleText());
         study.setPrecis(studyDto.getPrecisText());
