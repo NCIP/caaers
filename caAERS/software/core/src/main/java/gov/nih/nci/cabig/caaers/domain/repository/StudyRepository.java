@@ -96,10 +96,15 @@ public class StudyRepository {
      * @param searchInCOPPA
      * @return
      */
-    @Transactional(readOnly = false)
+    @SuppressWarnings("unchecked")
+	@Transactional(readOnly = false)
     public List<Study> search(StudyQuery query,String type, String text, boolean searchInCOPPA){
         if(searchInCOPPA) searchAndSaveRemoteStudies(type,text);
-        return (List<Study>)studyDao.search(query);
+        List<Study> studyList = (List<Study>)studyDao.search(query);
+    	if(studyList != null){
+    		log.info(studyList.size() + " :::: Studies is being displayed");
+    	}
+        return studyList;
     }
 
     /**
