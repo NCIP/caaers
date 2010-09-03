@@ -36,7 +36,6 @@ public class ParticipantInputCommand {
     private String searchTypeText;
     private String searchType;
     private String searchText;
-
     private String studySubjectIdentifier;
     
     //fields for patient medical history

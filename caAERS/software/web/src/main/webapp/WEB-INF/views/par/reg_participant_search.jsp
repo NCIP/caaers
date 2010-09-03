@@ -34,11 +34,12 @@
         function buildTable(form) {
 
             var text = $F('searchText');
-            $('indicator').show();
 
             if (text == '') {
                 $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>";
             } else {
+                $('indicator').show();
+                
                 $('error').innerHTML = ""
                 $('indicator').className = ''
                 var type = $('searchType').options[$('searchType').selectedIndex].value;
@@ -147,8 +148,6 @@
 
 <div id="bigSearch" style="display:none;">
     <form:form id="assembler">
-
-
         <div>
             <input type="hidden" name="_prop" id="prop">
             <input type="hidden" name="_value" id="value">
@@ -171,11 +170,12 @@
   </script>
   
 
-<form:form  id="command">
-	<form:hidden path="participant"/>
+<form:form id="command">
+	    <form:hidden path="participant"/>
      <tags:tabFields tab="${tab}"/>
      <tags:tabControls tab="${tab}" flow="${flow}"/>
 </form:form>
+
 </body>
 </html>
 

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
@@ -22,6 +23,7 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.cabig.caaers.web.participant.ParticipantInputCommand;
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.bean.Row;
 import org.extremecomponents.table.bean.Table;
@@ -150,6 +152,40 @@ public class SearchStudyAjaxFacade {
         }
         return rs;
         
+    }
+
+    // Create Subject flow
+    public List<StudyAjaxableDomainObject> getStudiesForCreateParticipant(Map parameterMap, String type, String text, String nciCode, HttpServletRequest request) {
+
+        List<Study> studies; 
+        List<StudyAjaxableDomainObject> rs = new ArrayList<StudyAjaxableDomainObject>();
+        
+        if (text != null && type != null && !text.equals("")) {
+            StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
+            query.joinStudyOrganization();
+            query.filterByDataEntryStatus(true);
+            query.filterByStudySiteNciInstituteCode(nciCode);
+            if ("st".equals(type)) {
+                query.filterByStudyShortTile(text);
+            } else if ("idtf".equals(type)) {
+                query.filterByIdentifierValue(text);
+            }
+            query.filterBySST();
+            studies = studyRepository.find(query);
+
+            for (Study s : studies) {
+                StudyAjaxableDomainObject sado = new StudyAjaxableDomainObject();
+                sado.setId(s.getId());
+                sado.setShortTitle(s.getShortTitle());
+                sado.setStatus(s.getStatus());
+                sado.setPrimaryIdentifierValue(s.getPrimaryIdentifierValue());
+                sado.setPhaseCode(s.getPhaseCode());
+                sado.setPrimarySponsorCode(s.getPrimarySponsorCode());
+                rs.add(sado);
+            }
+        }
+
+        return rs;
     }
 
     // ASSIGN Study Search

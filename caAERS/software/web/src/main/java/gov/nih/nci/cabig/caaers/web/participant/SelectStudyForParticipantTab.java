@@ -51,36 +51,10 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 
         // get the StudySites to filterby 
 
+/*
         // Search START
-        ParticipantInputCommand participantCommand = (ParticipantInputCommand)command;
-        String searchtext = participantCommand.getSearchText();
-        String type = participantCommand.getSearchType();
-
-
-        if (searchtext != null && type != null && !searchtext.equals("")) {
-            participantCommand.setStudies(new ArrayList<Study>());
-            StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
-            query.joinStudyOrganization();
-            query.filterByDataEntryStatus(true);
-            //query.filterByStudySiteName(participantCommand.getOrganization().getName());
-            query.filterByStudySiteNciInstituteCode(participantCommand.getOrganization().getNciInstituteCode());
-            if ("st".equals(type)) {
-                query.filterByStudyShortTile(searchtext);
-            } else if ("idtf".equals(type)) {
-                query.filterByIdentifierValue(searchtext);
-            }
-            query.filterBySST();
-            List<Study> studies = studyRepository.find(query);
-            
-        //    if (command.getLoggedinResearchStaff() != null) {
-        //        studies = WebUtils.filterStudiesForResearchStaff(studies, command.getLoggedinResearchStaff(), command.getOrganization());
-        //    }
-
-            participantCommand.setStudies(studies);
-            participantCommand.setSearchText("");
-            participantCommand.setSearchType("");
-        }
         // Search END
+*/
 
         return refdata;
     }
@@ -138,7 +112,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public Map<String, InputFieldGroup> createFieldGroups(T command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup studySubjectIdentifierFieldGroup = new DefaultInputFieldGroup(STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP);
-        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", false));
+        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", true));
         map.addInputFieldGroup(studySubjectIdentifierFieldGroup);
         return map;
     }

@@ -3,184 +3,198 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>choose a Study</title>
+<title>Choose a Study</title>
+
+<tags:dwrJavascriptLink objects="searchStudy"/>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Search for a Study</title>
+<style>
+    .yui-pg-page { padding: 5pt; }
+    .yui-dt-label .yui-dt-sortable { color: white; }
+    .yui-dt table { width: 100%; }
+    div.yui-dt-liner a {color : black;}
+
+    tr.yui-dt-even { background-color: #FFF; border-bottom: 1px gray solid;}
+    tr.yui-dt-odd { background-color: #EDF5FF; border-bottom: 2px blue dotted; padding: 2px; }
+
+    body {font-size: 9pt;}
+</style>
+
 <script>
-    //studySelected = false;
-    Event.observe(window, "load", function() {
-        Event.observe($('flow-prev'), "click", function() {
-            ValidationManager.validate = false;
-        })
-/*
-        Event.observe($('flow-next'), "click", function() {
-            // if (!studySelected) $('assignment.studySubjectIdentifier').title = "study. Please select a study first...";
-        })
-*/
-    });
-function submitPage(s){
-	document.getElementById("command").submit();
-}
-function navRollOver(obj, state) {
-  document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-}
-function doNothing(){
-}
 
-function updateTargetPage(s){
-		document.checkEligibility.nextView.value=s;
-		document.checkEligibility.submit();
-}
+    function onKey(e) {
+        var keynum = getKeyNum(e);
 
-function onKey(e) {
-    var keynum = getKeyNum(e);
+        if (keynum == 13) {
+            Event.stop(e);
+            buildTable('assembler', true);
+        } else return;
+    }
 
-    if (keynum == 13) {
-        Event.stop(e);
-        ajaxStudySearch();
-    } else return;
-}
+    function buildTable(form, validate) {
+        var text = $F('searchText_');
 
-function onAjaxStudySearch() {
-    $('bigSearch').show(); 
-}
+        if (text == '') {
+            if (validate) $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
+        } else {
+            var type = $('searchType').options[$('searchType').selectedIndex].value;
+            $('indicator').show();
 
-function onAjaxStudySearchSuccess() {
-    $('searchIndicator').hide();
-}
+            var parameterMap = getParameterMap(form);
+            parameterMap["organizationID"] = "<c:out value="${command.participant.assignments[0].studySite.organization.id}" />";
+            searchStudy.getStudiesForCreateParticipant(parameterMap, type, text, "${command.organization.nciInstituteCode}", test);
+            $('indicator').hide();
+            $('bigSearch').show();
+        }
+    }
 
-function ajaxStudySearch(searchText, searchType) {
-    // START tags:tabMethod
-    $('searchIndicator').show();
+    ValidationManager.submitPostProcess = function(formElement, flag) {
+        flag = true;
+        $('searchText').value = $('searchText_').value;
+        $('_searchType').value = $('searchType').value;
+        
+        if (formElement.id != 'command') {
+            return true
+        } else {
+            $('assignment.studySubjectIdentifier').value = $('studySubjectIdentifierInput').value
+        }
+        return flag;
+    }
 
-<tags:tabMethod
-       method="searchStudies"
-       viewName="par/ajax/par_studySearchResult"
-       onComplete="onAjaxStudySearch"
-       onSuccess="onAjaxStudySearchSuccess"
-       divElement="'searchResults'"
-       formName="'searchForm'"
-       params="ggg" />
-    
-    // END tags:tabMethod
-}
+    function test(jsonResult) {
+        $('indicator').className='indicator'
+        initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+        hideCoppaSearchDisclaimer();
+    }
+
+    var linkFormatter = function(elCell, oRecord, oColumn, oData) {
+        elCell.innerHTML = oData;
+    };
+
+    var radioFormatter = function(elCell, oRecord, oColumn, oData) {
+        var _id = oRecord.getData("id");
+        var _checked = "";
+        <c:if test="${not empty command.study.id}">
+            if (${command.study.id} == _id) {
+                _checked = "checked";
+                if ($("ids")) $("ids").show();    
+            }
+        </c:if>
+        elCell.innerHTML = "<input type='radio' " + _checked + " value='" + _id + "' name='study' onclick='$(\"command\").study.value = " + _id + "; if ($(\"ids\")) $(\"ids\").show();'>&nbsp;&nbsp;" + oData;
+    };
+
+    var myColumnDefs = [
+        {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true, formatter : radioFormatter, minWidth:150, maxWidth:150},
+        {key:"shortTitle", label:"Short Title", sortable:true, resizeable:true},
+        {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true},
+        {key:"phaseCode", label:"Phase", sortable:true, resizeable:true},
+        {key:"status", label:"Status", sortable:true, resizeable:true}
+    ];
+
+    var myFields = [
+        {key:'id', parser:"string"},
+        {key:'primaryIdentifierValue', parser:"string"},
+        {key:'shortTitle', parser:"string"},
+        {key:'status', parser:"string"},
+        {key:'phaseCode', parser:"string"},
+        {key:'primarySponsorCode', parser:"string"}
+    ];
 
 </script>
-    <style>
-        div.row div.label {width:12em;}
-        div.row div.value {margin-left:13em;}
-    </style>
+
 </head>
 <body>
-<!-- TOP LOGOS END HERE -->
-<!-- TOP NAVIGATION STARTS HERE -->
 
-    <div class="row">
-        <div class="label">Subject</div>
-        <div class="value">${command.participant.fullName}</div>
-    </div>
-
+<div class="row">
+    <div class="summarylabel"><b>Subject</b></div>
+    <div class="summaryvalue">${command.participant.fullName}</div>
+</div>
+</p>
 
 <chrome:box autopad="true" title="Search Criteria">
-  	<p><tags:instructions code="instruction_subject_enter.choosestudy"/></p>
 
-    <form:form id="searchForm" method="post">
-    	<div><input type="hidden" name="_action" value="go"></div>
+    <form:form id="searchForm" method="post" cssClass="standard">
+        <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
+        <tags:jsErrorsMessage/>
 
+        <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
+        <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
+            <tr>
+                <td>
 
-        <table border="0" cellspacing="0" cellpadding="0" border=1 width="100%">
-        <tr>
-            <td valign="top">
-                    <table border="0" cellspacing="0" cellpadding="0" class="search">
-                    <tr>
-                        <td>
-                            <tags:requiredIndicator />&nbsp;
-                            <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
-                        </td>
-                        <td><form:input path="searchText" id="searchText" size="25" onkeydown="onKey(event);" /></td>
-                        <td><tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="ajaxStudySearch($('searchText').value, $('searchType').value);"/>&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
-                    </tr>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr></tr>
+                        <tr>
+                            <td class="searchType">Search for a study&nbsp;&nbsp;</td>
+                            <td><form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code"/></form:select></td>
+                            <td>
+                                <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
+                                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
+                                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
+                                <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="notation" colspan="2">
+                                <div id="error"></div>
+                            </td>
+
                     </table>
-            </td>
-            <td valign="top">
-            </td>
+
+                </td>
             </tr>
-            </table>
+        </table>
+
     </form:form>
 </chrome:box>
 
-<c:set var="display" value="none" />
-<c:if test="${fn:length(command.studies) > 0}">
-    <c:set var="display" value="''" />
-</c:if>
-<div id="bigSearch" style="border:0px green dotted; display:${display};">
-<tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false" title="Results">
-	<jsp:attribute name="instructions">
-	 <c:if test="${fn:length(command.studies) gt 0}">
-	 	Please choose one or more study from the below listing.
-	 </c:if>
-	</jsp:attribute>
 
-    <jsp:attribute name="singleFields">
+<div id="bigSearch" style="display:none;">
 
-        <div id="searchResults" style="width:100%; border: 0px red dotted;">
-            <c:if test="${fn:length(command.studies) > 0}">
+    <chrome:box title="Results">
+        <form:form id="assembler">
+            <div>
+                <input type="hidden" name="_prop" id="prop">
+                <input type="hidden" name="_value" id="value">
+            </div>
+            <p><tags:instructions code="instruction_subject_as2s.searchstudyresults"/></p>
 
-                <%--
-                    Display the previews results when the user hit BACK button either on the browser or in the page form.
-                --%>
-                    <ec:table items="command.studies" var="study"
-                                action="${pageContext.request.contextPath}/pages/participant/create"
-                                imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-                                filterable="false"
-                                showPagination="false"
-                                form="command"
-                                cellspacing="0" cellpadding="2" border="0" width="100%" style=""
-                                styleClass=""
-                                autoIncludeParameters="false"
-                                sortable="true">
-                        <ec:row highlightRow="true">
-                            <ec:column property="transient0" style="width:20px" filterable="false" sortable="true" title="&nbsp;">
-                                <form:radiobutton path="study" value="${study.id}" onclick="$('selectedStudyID').value = 123; if ($('ids')) $('ids').show(); "/>
-                            </ec:column>
-                            <ec:column property="primaryIdentifier" title="Primary ID" />
-                            <ec:column property="shortTitle" title="Short Title" />
-                            <ec:column property="primarySponsorCode" title="Funding Sponsor" >
-								<c:if test ="${study.primaryFundingSponsorOrganization.externalId != null}">
-									<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
-								</c:if>
-								${study.primarySponsorCode}
-                            </ec:column>
-                            <ec:column property="phaseCode" title="Phase" />
-                            <ec:column property="status" title="Status" />
-                        </ec:row>
-                    </ec:table>
-                    <input type="hidden" name="_action" value="" />
-            </c:if>
-        </div>
-
-        <div class='row' style="display:none;">
-            <div class='label'></div>
-            <div class='value'><input type="text" class="validate-NOTEMPTY" value="" id="selectedStudyID" name="selectedStudy" title="study" /></div>
-        </div>
-
-        <div id="ids" style="display: none;">
-            <br />
-            <chrome:division title="Study Subject Identifier">
-            <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
-<%--
-                <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
-                    <tags:renderRow field="${field}"/> 
-                </c:forEach>
---%>
-                <ui:row path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}">
-                    <jsp:attribute name="label"><ui:label required="true" path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" labelProperty="studySubjectIdentifier" text=""/></jsp:attribute>
-                    <jsp:attribute name="value"><ui:text path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" cssClass="validate-NOTEMPTY&&MAXLENGTH64 ${not empty command.studySubjectIdentifier ? 'valueOK' : 'required'}" title="study subject identifier"/></jsp:attribute>
-                </ui:row>
+            <chrome:division id="single-fields">
+                <div id="tableDiv"></div>
             </chrome:division>
-        </div>
 
-    </jsp:attribute>
-</tags:tabForm>
-</div>    
+            <div id="ids" style="display:none;">
+                <br/>
+                <chrome:division title="Study Subject Identifier">
+                    <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
+                    <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;Study subject identifier</label>
+                    <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="${command.assignment.studySubjectIdentifier}" name="studySubjectIdentifierInput" class="${not empty command.assignment.studySubjectIdentifier ? 'valueOK' : 'required'}"/>
+                </chrome:division>
+            </div>
+        </form:form>
+    </chrome:box>
+</div>
+<%--STANDARD FORM --%>
+
+<form:form  id="command">
+    <tags:tabFields tab="${tab}"/>
+    <tags:tabControls tab="${tab}" flow="${flow}"/>
+
+    <form:hidden path="searchText"/>
+    <form:hidden path="searchType" id="_searchType"/>
+    <form:hidden path="study"/>
+    <form:hidden path="assignment.studySubjectIdentifier"/>
+</form:form>
+
+<%--STANDARD FORM --%>
+
+<script>
+    Event.observe(window, "load", function() {
+        buildTable('assembler', false);
+    })
+</script>
+
 
 </body>
 </html>

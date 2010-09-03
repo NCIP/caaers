@@ -231,7 +231,6 @@
             </div>
             
         </form:form>
-
     </chrome:box>
         
 <%--STANDARD FORM --%>
