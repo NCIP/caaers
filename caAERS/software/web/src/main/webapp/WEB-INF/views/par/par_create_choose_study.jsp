@@ -23,6 +23,10 @@
 
 <script>
 
+    function sync() {
+       $('searchText').value = $F('searchText_');
+    }
+
     function onKey(e) {
         var keynum = getKeyNum(e);
 
@@ -42,25 +46,32 @@
             $('indicator').show();
 
             var parameterMap = getParameterMap(form);
-            parameterMap["organizationID"] = "<c:out value="${command.participant.assignments[0].studySite.organization.id}" />";
+            parameterMap["organizationID"] = "<c:out value="${command.organization.id}" />";
             searchStudy.getStudiesForCreateParticipant(parameterMap, type, text, "${command.organization.nciInstituteCode}", test);
             $('indicator').hide();
             $('bigSearch').show();
         }
     }
 
+/*
     ValidationManager.submitPostProcess = function(formElement, flag) {
-        flag = true;
+//        flag = true;
         $('searchText').value = $('searchText_').value;
         $('_searchType').value = $('searchType').value;
         
+*/
+/*
         if (formElement.id != 'command') {
             return true
         } else {
             $('assignment.studySubjectIdentifier').value = $('studySubjectIdentifierInput').value
         }
         return flag;
+*//*
+
+        return flag;
     }
+*/
 
     function test(jsonResult) {
         $('indicator').className='indicator'
@@ -130,7 +141,7 @@
                             <td><form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code"/></form:select></td>
                             <td>
                                 <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
-                                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
+                                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="sync(); buildTable('assembler', true);"/>
                                 <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
                                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
                         </tr>
@@ -169,7 +180,7 @@
                 <chrome:division title="Study Subject Identifier">
                     <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
                     <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;Study subject identifier</label>
-                    <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="${command.assignment.studySubjectIdentifier}" name="studySubjectIdentifierInput" class="${not empty command.assignment.studySubjectIdentifier ? 'valueOK' : 'required'}"/>
+                    <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="${command.assignment.studySubjectIdentifier}" name="studySubjectIdentifierInput" class="${not empty command.assignment.studySubjectIdentifier ? 'valueOK' : 'required'}" onkeyup="$('assignment.studySubjectIdentifier').value = this.value"/>
                 </chrome:division>
             </div>
         </form:form>
@@ -183,8 +194,10 @@
 
     <form:hidden path="searchText"/>
     <form:hidden path="searchType" id="_searchType"/>
-    <form:hidden path="study"/>
-    <form:hidden path="assignment.studySubjectIdentifier"/>
+    <div style="display:none;">
+        <form:input path="study" cssClass="validate-NOTEMPTY" title="Study"/>
+        <form:input path="assignment.studySubjectIdentifier" cssClass="validate-NOTEMPTY" title="Study Subject Identifier"/>
+    </div>
 </form:form>
 
 <%--STANDARD FORM --%>

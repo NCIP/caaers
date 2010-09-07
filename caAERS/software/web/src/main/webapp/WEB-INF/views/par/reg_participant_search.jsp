@@ -27,16 +27,16 @@
 
             if (keynum == 13) {
                 Event.stop(e);
-                buildTable('assembler');
+                buildTable('assembler', true);
             } else return;
         }
 
-        function buildTable(form) {
+        function buildTable(form, validate) {
 
             var text = $F('searchText');
 
             if (text == '') {
-                $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>";
+                if (validate) $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>";
             } else {
                 $('indicator').show();
                 
@@ -130,7 +130,7 @@
             <td><form:input path="searchText" id="searchText" size="30" onkeydown="onKey(event);"/></td>
             <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
             <td width="100%">
-                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler');"/>
+                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
                 <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
             </td>
         </tr>
