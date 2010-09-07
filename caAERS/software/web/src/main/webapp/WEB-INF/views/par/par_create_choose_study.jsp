@@ -17,8 +17,6 @@
 
     tr.yui-dt-even { background-color: #FFF; border-bottom: 1px gray solid;}
     tr.yui-dt-odd { background-color: #EDF5FF; border-bottom: 2px blue dotted; padding: 2px; }
-
-    body {font-size: 9pt;}
 </style>
 
 <script>

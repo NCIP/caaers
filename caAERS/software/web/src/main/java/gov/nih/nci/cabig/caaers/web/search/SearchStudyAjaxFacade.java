@@ -1053,20 +1053,28 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
             siteResearchStaffs = constructExecuteSiteResearchStaffQuery(type, text);
         }
 
-        List<UserAjaxableDomainObject> rs = new ArrayList<UserAjaxableDomainObject>();
+        // List<UserAjaxableDomainObject> rs = new ArrayList<UserAjaxableDomainObject>();
+        Set<UserAjaxableDomainObject> set = new HashSet<UserAjaxableDomainObject>();
+        
         for (SiteResearchStaff srs : siteResearchStaffs) {
             UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
             rsado.setFirstName(srs.getResearchStaff().getFirstName());
             rsado.setLastName(srs.getResearchStaff().getLastName());
             rsado.setMiddleName(srs.getResearchStaff().getMiddleName());
-            rsado.setOrganization(srs.getOrganization().getName());
+
+            StringBuffer sb = new StringBuffer("");
+            for (SiteResearchStaff site : srs.getResearchStaff().getSiteResearchStaffs()) {
+                sb.append(site.getOrganization().getName() + "<br>");
+            }
+            rsado.setOrganization(sb.toString());
+
             rsado.setId(srs.getResearchStaff().getId());
             rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
             rsado.setActive(srs.isActive() ? "Active" : "Inactive");
-            rs.add(rsado);
+            set.add(rsado);
         }
 
-        return rs;
+        return new ArrayList<UserAjaxableDomainObject>(set);
     }
 
     /*
