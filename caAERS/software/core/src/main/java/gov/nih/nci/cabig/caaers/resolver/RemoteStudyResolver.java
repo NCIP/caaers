@@ -90,7 +90,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		}
 		String paPayLoad = CoppaPAObjectFactory.getStudyProtocolSearchXML(remoteStudyExample.getShortTitle(), identifierValue, remoteStudyExample.getStatus());
 		Integer configuredPALimit = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.PA_SEARCH_LIMIT);
-		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML((configuredPALimit != null) ? configuredPALimit : 100 , 0);
+		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML((configuredPALimit != null) ? configuredPALimit : 10 , 0);
 		List<String> payLoads = new ArrayList<String>();
 		List<Object> remoteStudies = new ArrayList<Object>();
 		payLoads.add(paPayLoad);
