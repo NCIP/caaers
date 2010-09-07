@@ -14,6 +14,7 @@
     </layout>
   </appender>
 
+<!--	<logger name="gov.nih.nci"><level value="debug"/></logger>-->
 	<logger name="gov.nih.nci.cabig.caaers.resolver"><level value="debug"/></logger>
 	<logger name="gov.nih.nci.cabig.caaers.domain.repository"><level value="debug"/></logger>
 	<logger name="gov.nih.nci.cabig.caaers.web.listener"><level value="debug"/></logger>
