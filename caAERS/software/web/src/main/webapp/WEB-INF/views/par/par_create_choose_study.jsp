@@ -25,6 +25,7 @@
 
     function sync() {
        $('searchText').value = $F('searchText_');
+       $('_searchType').value = $F('searchType');
     }
 
     function onKey(e) {
