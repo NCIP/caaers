@@ -5,6 +5,7 @@ import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.Bl;
 import gov.nih.nci.coppa.po.CorrelationNode;
@@ -24,8 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.iso._21090.DSETII;
 import org.iso._21090.II;
 
-import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
-
 public abstract class BaseResolver {
 	
 	private MessageBroadcastService messageBroadcastService;
@@ -34,8 +33,6 @@ public abstract class BaseResolver {
 	private static final String CTEP_PERSON = "Cancer Therapy Evaluation Program Person Identifier";
 	public static final String PERSON_ROOT = "2.16.840.1.113883.3.26.4.1";
 	private static final String CTEP_ID = "CTEP ID";
-	//private static final String NCI_ID = "NCI Research Organization identifier";
-	//private static final String NCI_ROOT = "2.16.840.1.113883.3.26.4.4.5";
 
 	/**
 	 * 
@@ -266,6 +263,10 @@ public abstract class BaseResolver {
         
         cctsDomainObjectXMLList.add(playerBooleanXml);
         cctsDomainObjectXMLList.add(scoperBooleanXml);
+        
+    	Integer configuredPOLimit = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.PO_SEARCH_LIMIT);
+        String poLimitOffset = CoppaPAObjectFactory.getLimitOffsetXML((configuredPOLimit != null) ? configuredPOLimit : 50 , 0);
+        cctsDomainObjectXMLList.add(poLimitOffset);
         
         return broadcastCOPPA(cctsDomainObjectXMLList, mData);
     }
