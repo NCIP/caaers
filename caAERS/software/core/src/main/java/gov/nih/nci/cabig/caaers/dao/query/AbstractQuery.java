@@ -239,6 +239,15 @@ public abstract class AbstractQuery {
     public void setFiltered(boolean b){
         filtered = b;
     }
+    
+    
+    public String getLikeValue(String value) {
+    	if (value.indexOf("%") != -1) {
+			return value;
+		} else {
+			return "%"+value+"%";
+		}
+    }
 
     
 }

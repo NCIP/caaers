@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Term;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,37 +28,96 @@ public class StudyQuery extends AbstractQuery {
     private static final String IDENTIFIER_VALUE = "identifierValue";
 
     private static final String IDENTIFIER_TYPE = "type";
+    
+    public static final String STUDY_ALIAS = "s";
+    
+    public static final String STUDY_PARTICIPANT_ALIAS = "spa";
+    
+    public static final String PARTICIPANT_ALIAS = "p";
+    
+    public static final String TERMINOLOGY_ALIAS = "terminology";
+    
+    public static final String TREATMENT_ASSIGNMENT_ALIAS = "ta";
+    
+    public static final String ORGANIZATION_ALIAS = "org";
+    
+    public static final String STUDY_THERAPY_ALIAS = "sthe";
+    
+    public static final String AGENT_ALIAS = "agt";
 
     private SimpleDateFormat dateFormat;
 
     public StudyQuery() {
-        super("select distinct s from Study s");
+        super("select  distinct "+STUDY_ALIAS+" from Study "+STUDY_ALIAS);
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     }
 
-   
-
     public void joinIdentifier() {
-        join("s.identifiers as identifier");
+        join(STUDY_ALIAS+".identifiers as identifier");
     }
 
     public void joinStudyOrganization() {
         join("s.studyOrganizations as ss");
     }
 
+    public void outerjoinStudyOrganization() {
+    	leftOuterJoin("s.studyOrganizations as ss");
+    }
+    
+    public void joinOrganization() {
+    	joinStudyOrganization();
+        join("ss.organization as org");
+    }
+
+    public void outerjoinOrganization() {
+    	outerjoinStudyOrganization();
+    	leftOuterJoin("ss.organization as org");
+    }
+    
     public void joinStudyParticipantAssignment() {
         joinStudyOrganization();
         join("ss.studyParticipantAssignments as spa");
     }
-
+    
     public void joinParticipant() {
         joinStudyParticipantAssignment();
         join("spa.participant as p");
     }
+    // dont change naming convention .. (outer key word..)
+    public void outerjoinStudyParticipantAssignment() {
+        joinStudyOrganization();
+        leftOuterJoin("ss.studyParticipantAssignments as spa");
+    }
+    
+    public void outerjoinParticipant() {
+    	outerjoinStudyParticipantAssignment();
+    	leftOuterJoin("spa.participant as p");
+    }
+    
+    
+    public void joinAeTerminology() {
+        join("s.aeTerminology as terminology");
+    }
 
+    public void joinTreatmentAssignment() {
+        join("s.treatmentAssignmentsInternal as ta");
+    }
+    
+    public void joinStudyTherapy() {
+        join("s.studyTherapies as sthe");
+    }
+    
+    
     public void joinParticipantIdentifier() {
         joinParticipant();
         join("p.identifiers as pIdentifier");
+    }
+    public void joinStudyAgents(){
+    	join("s.studyAgentsInternal as sagents");
+    }
+    public void joinAgent() {
+    	joinStudyAgents();
+        join("sagents.agent as agt");
     }
     
     /**
@@ -68,7 +128,51 @@ public class StudyQuery extends AbstractQuery {
     	andWhere("s.id <> :" + STUDY_ID);
     	setParameter(STUDY_ID, id);
     }
+    
+    public void filterByTerminology(Integer code, String operator) {
+    	andWhere("terminology.term "+operator+" :term");
+        setParameter("term", Term.getByCode(code));
+    }
+    
+    public void filterByTreatmentCode(String code, String operator) {
+    	andWhere("lower(ta.code) "+operator+" :CODE");
+    	if (operator.equals("like")) {
+    		setParameter("CODE", getLikeValue(code.toLowerCase()));
+    	} else {
+    		setParameter("CODE", code.toLowerCase());
+    	}
+    }
+    
+    public void filterByTreatmentDescription(String description,String operator) {
+    	andWhere("lower(ta.description) "+operator+" :DESC");
+    	if (operator.equals("like")) {
+    		setParameter("DESC", getLikeValue(description.toLowerCase()));
+    	} else {
+    		setParameter("DESC", description.toLowerCase());
+    	}
+        
+    }
+ 
+    public void filterByStudyTherapy(Integer code,String operator) {
+    	andWhere("sthe.studyTherapyType "+operator+" '"+code+"'" );
+        //setParameter("therapy", StudyTherapyType.getByCode(code));
+    }
+    
+    public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
+    	andWhere("lower(spa.studySubjectIdentifier) "+operator+" :SSI");
+    	if (operator.equals("like")) {
+    		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
+    	} else {
+    		setParameter("SSI", studySubjectIdentifier.toLowerCase());
+    	}
+        
+    }
 
+    public void filterByAgent(Integer id ,String operator) {
+    	andWhere("agt.id "+ operator+" :ID");
+        setParameter("ID", id);
+    }
+    
     // s.status <> 'adminstratively complete'
     public void filterByNonAdministrativelyComplete() {
         andWhere("s.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE + "'");
@@ -124,32 +228,94 @@ public class StudyQuery extends AbstractQuery {
     }
 
     // shortTitle
+    public void filterByShortTitle(final String shortTitleText , String operator) {
+    	andWhere("lower(s.shortTitle) "+operator+" :" + STUDY_SHORT_TITLE);
+        
+    	if (operator.equals("like")) {
+    		setParameter(STUDY_SHORT_TITLE, getLikeValue(shortTitleText.toLowerCase()));
+    	} else {
+    		setParameter(STUDY_SHORT_TITLE, shortTitleText.toLowerCase());
+    	}
+    }
+
+    // longTitle
+    public void filterByLongTitle(final String longTitleText ,String operator) {
+    	andWhere("lower(s.longTitle) "+operator+" :" + STUDY_LONG_TITLE);
+        
+    	if (operator.equals("like")) {
+    		setParameter(STUDY_LONG_TITLE, getLikeValue(longTitleText.toLowerCase()));
+    	} else {
+    		setParameter(STUDY_LONG_TITLE, longTitleText.toLowerCase());
+    	}
+    }
+
+    // shortTitle
     public void filterByShortTitle(final String shortTitleText) {
         andWhere("lower(s.shortTitle) LIKE :" + STUDY_SHORT_TITLE);
         setParameter(STUDY_SHORT_TITLE, "%" + shortTitleText.toLowerCase() + "%");
     }
+
+    // longTitle
+    public void filterByLongTitle(final String longTitleText) {
+        andWhere("lower(s.shortTitle) LIKE :" + "LONG_SHORT_TITLE");
+        setParameter("LONG_SHORT_TITLE", "%" + longTitleText.toLowerCase() + "%");
+    }
     
+    // id
+    public void filterById(final Integer id) {
+        andWhere("s.id = :ID");
+        setParameter("ID", id);
+    }
+    // id
+    public void filterById(final Integer id,String operator) {
+        andWhere("s.id "+operator+" :ID");
+        setParameter("ID", id);
+    } 
+    // participant-id
+    public void filterByParticipantId(final Integer id) {
+        andWhere("p.id = :id");
+        setParameter("id", id);
+    }
+    // participant-id
+    public void filterByParticipantId(final Integer id,String operator) {
+        andWhere("p.id "+operator+" :id");
+        setParameter("id", id);
+    }    
     // participant-FirstName
-    public void filterByParticipantFirstName(final String fName) {
-        andWhere("lower(p.firstName) LIKE :pfName");
-        setParameter("pfName", "%" + fName.toLowerCase() + "%");
+    public void filterByParticipantFirstName(final String fName,String operator) {
+        andWhere("lower(p.firstName) "+operator+" :pfName");
+        if (operator.equals("like")) {
+        	setParameter("pfName", getLikeValue(fName.toLowerCase()));
+        } else {
+        	setParameter("pfName", fName.toLowerCase());
+        }
     }
 
     // participant - LastName
-    public void filterByParticipantLastName(final String lName) {
-        andWhere("lower(p.lastName) LIKE :plName");
-        setParameter("plName", "%" + lName.toLowerCase() + "%");
+    public void filterByParticipantLastName(final String lName,String operator) {
+        andWhere("lower(p.lastName) "+operator+" :plName");
+        if (operator.equals("like")) {
+        	setParameter("plName", getLikeValue(lName.toLowerCase()) );
+        } else {
+        	setParameter("plName", lName.toLowerCase() );
+        }
     }
 
     // participant - Ethnicity
-    public void filterByParticipantEthnicity(String ethenicity) {
-        andWhere("lower(p.ethnicity) LIKE :pEthenicity");
-        setParameter("pEthenicity", "%" + ethenicity.toLowerCase() + "%");
+    public void filterByParticipantEthnicity(String ethenicity,String operator) {
+        andWhere("lower(p.ethnicity) "+operator+" :pEthenicity");
+        setParameter("pEthenicity", ethenicity.toLowerCase() );
     }
 
+    // participant - Race
+    public void filterByParticipantRace(String race,String operator) {
+        andWhere("lower(p.race) "+operator+" :pRace");
+        setParameter("pRace", race.toLowerCase() );
+    }
+    
     // p.gender
-    public void filterByParticipantGender(final String gender) {
-        andWhere("lower(p.gender) LIKE :pGender");
+    public void filterByParticipantGender(final String gender,String operator) {
+        andWhere("lower(p.gender) "+operator+" :pGender");
         setParameter("pGender", gender.toLowerCase());
     }
 
