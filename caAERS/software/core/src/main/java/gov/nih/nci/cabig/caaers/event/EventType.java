@@ -10,5 +10,6 @@ public enum EventType {
     INVESTIGATOR,
     SUBJECT,
     REPORT,
-    COURSE;
+    COURSE,
+    AE;
 }
