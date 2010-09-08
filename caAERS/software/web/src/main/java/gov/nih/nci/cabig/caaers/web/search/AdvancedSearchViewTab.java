@@ -64,8 +64,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 			e.printStackTrace();
 			errors.reject("EXP", "There was an exception while generating the HQL :" + e.getMessage());
 		}
-		command.setHql(queryObj.getQueryString());
-		System.out.println(queryObj.getQueryString());
+		
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
 		
@@ -91,6 +90,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 							resultsViewColumnList.add(vColumn);
 				}
 		}
+		command.setHql(queryObj.getQueryString());
 		command.setResultsViewColumnList(resultsViewColumnList);
 		command.setNumberOfResults(command.getAdvancedSearchRowList().size());
 		
