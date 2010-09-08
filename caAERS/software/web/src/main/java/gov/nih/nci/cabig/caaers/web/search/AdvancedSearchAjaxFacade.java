@@ -122,6 +122,8 @@ public class AdvancedSearchAjaxFacade{
 		for(UiAttribute uiAttribute: dObject.getUiAttribute()){
 			if(uiAttribute.getName().equals(attributeName) && uiAttribute.getLabel().equals(attributeLabel)){
 				command.getCriteriaParameters().get(index).setObjectName(dObject.getClassName());
+				command.getCriteriaParameters().get(index).setFilterByMethodInQueryClass(uiAttribute.getFilterMethod());
+				command.getCriteriaParameters().get(index).setDataType(uiAttribute.getDataType());
 				ajaxOutput.setObjectContent(uiAttribute.getOperator());
 			}
 		}
@@ -131,6 +133,8 @@ public class AdvancedSearchAjaxFacade{
 					for(UiAttribute uiAttribute: dObj.getUiAttribute()){
 						if(uiAttribute.getName().equals(attributeName) && uiAttribute.getLabel().equals(attributeLabel)){
 							command.getCriteriaParameters().get(index).setObjectName(dObj.getClassName());
+							command.getCriteriaParameters().get(index).setFilterByMethodInQueryClass(uiAttribute.getFilterMethod());
+							command.getCriteriaParameters().get(index).setDataType(uiAttribute.getDataType());
 							ajaxOutput.setObjectContent(uiAttribute.getOperator());
 						}
 					}
