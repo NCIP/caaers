@@ -433,6 +433,7 @@
                 <entry key="gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery"
                        value-ref="investigatorQuerySecurityFilterer"/>
                 <entry key="gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery" value-ref="studySiteQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventQuery" value-ref="adverseEventQuerySecurityFilterer"/>
             </map>
         </property>
     </bean>
@@ -470,6 +471,9 @@
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="study.studySite" p:entityName="StudySite"
           p:indexName="StudyIndex" p:indexAlias="stuIndx"/>
+   <bean id="adverseEventQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="adverseEvent"
+          p:entityName="AdverseEvent" p:indexName="AdverseEventIndex" p:indexAlias="aeIndx"/>      
     <bean id="eventFactory" class="gov.nih.nci.cabig.caaers.event.EventFactory" />
 
 </beans>
