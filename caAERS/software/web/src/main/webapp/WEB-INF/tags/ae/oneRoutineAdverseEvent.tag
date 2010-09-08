@@ -80,8 +80,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].ctcTerm').value = selectedChoice.id; 
-                                    refreshGrades(${index});
-                                    updateExpected(${index}, selectedChoice.id, '-1', '${adverseEvent.detailsForOther}');
+                                    updateExpected(${index}, selectedChoice.id, '-1', '${adverseEvent.detailsForOther}', true);
 								}
 							}
 						</jsp:attribute>
@@ -106,7 +105,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
-                                    updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${adverseEvent.detailsForOther}');
+                                    updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${adverseEvent.detailsForOther}', false);
 								}
 							}
 						</jsp:attribute>
@@ -149,7 +148,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                                     $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
-                                    updateExpected(${index}, $('_ctcTermValue${index}').value, selectedChoice.id, ${_verbatimValueFrom});
+                                    updateExpected(${index}, $('_ctcTermValue${index}').value, selectedChoice.id, ${_verbatimValueFrom}, false);
                             // IOO
 								}
 							}
@@ -219,7 +218,7 @@
                 Event.observe('adverseEvents[${index}].detailsForOther', 'change', function() {
                     var _llt = 0;
                     if ($('adverseEvents[${index}].lowLevelTerm').value && $('adverseEvents[${index}].lowLevelTerm').value > 0) _llt = $('adverseEvents[${index}].lowLevelTerm').value;
-                    updateExpected(${index}, $('_ctcTermValue${index}').value, _llt, $('adverseEvents[${index}].detailsForOther').value);
+                    updateExpected(${index}, $('_ctcTermValue${index}').value, _llt, $('adverseEvents[${index}].detailsForOther').value, false);
                 });
             }
             // IOO2

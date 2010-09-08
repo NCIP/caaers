@@ -268,7 +268,13 @@ function refreshGrades(index) {
 
  }
 
- function updateExpected(index, ctcTermID, meddraTermID, verbatimText) {
+ /**
+  *
+  * doRefreshGrades should happend only if teh CTC term is changed
+  * somehow if is requried to have dorRefreshGrades called after the ajax call of updateExpected()
+  *
+  **/
+ function updateExpected(index, ctcTermID, meddraTermID, verbatimText, doRefreshGrades) {
      var _el = $('adverseEvents[' + index + '].expected');
 
      // $('_test' + index).innerHTML = index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText;
@@ -279,6 +285,8 @@ function refreshGrades(index) {
          if (ajaxOutput.objectContent) _el.selectedIndex = 1;
          else { if (_el.selectedIndex == 1) _el.selectedIndex = 0; } 
      });
+
+     if (doRefreshGrades) refreshGrades(index);
  }
  
  --></script>
