@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.resolver;
 
+import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
+import com.semanticbits.coppasimulator.util.CoppaPAObjectFactory;
 import edu.duke.cabig.c3pr.esb.Metadata;
 import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
