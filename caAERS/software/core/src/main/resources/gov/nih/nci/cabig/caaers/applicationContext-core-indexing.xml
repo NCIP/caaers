@@ -441,12 +441,11 @@
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="study"
           p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx"/>
     <bean id="participantQuerySecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="p"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="participant"
           p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
     <bean id="participantAjaxableQuerySecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
-          p:entityAssociation="participant" p:entityName="Participant" p:indexName="ParticipantIndex"
-          p:indexAlias="pIndx"/>
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="participant" 
+          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
     <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod"
