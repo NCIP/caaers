@@ -42,6 +42,8 @@ public class EventFactory implements ApplicationContextAware{
            event = new SubjectModificationEvent(SecurityUtils.getAuthentication(), entity);
         }else if (entity instanceof Organization) {
            event = new OrganizationModificationEvent(SecurityUtils.getAuthentication(), entity);
+        }else if (entity instanceof AdverseEvent) {
+        	event = new AdverseEventModificationEvent(SecurityUtils.getAuthentication(), entity);
         }
 
         if(async){
