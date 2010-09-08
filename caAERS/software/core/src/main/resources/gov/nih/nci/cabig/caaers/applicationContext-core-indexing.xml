@@ -44,7 +44,8 @@
                                 || execution(* gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao.search*(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
                                 || execution(* gov.nih.nci.cabig.caaers.dao.ResearchStaffDao.getSiteResearchStaff(gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery)) and args(qry)
                                 || execution(* gov.nih.nci.cabig.caaers.dao.InvestigatorDao.getLocalInvestigator(gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery)) and args(qry)
-                                "/>
+                                || execution(* gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao.search(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
+                               "/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>
         </aop:aspect>
     </aop:config>
