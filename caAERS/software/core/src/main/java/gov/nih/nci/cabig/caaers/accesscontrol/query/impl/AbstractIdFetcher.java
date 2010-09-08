@@ -116,23 +116,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         return list;
 	}
 
-
-    /**
-     * Will fetch the user identified by the loginId. 
-     * @param loginId - username
-     * @return   - A user
-     */
-    public User findUser(String loginId){
-    	User user = null;
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
-    	try{
-    		user = csmUserRepository.getUserByName(loginId);
-    	}catch(CaaersNoSuchUserException e){
-    		return null;
-    	}
-        return user;
-    }
-
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
     	String queryString = query.getQueryString();

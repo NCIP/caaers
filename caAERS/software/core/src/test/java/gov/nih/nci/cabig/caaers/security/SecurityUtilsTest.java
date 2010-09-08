@@ -79,6 +79,27 @@ public class SecurityUtilsTest extends AbstractTestCase {
         assertEquals(false, SecurityUtils.hasAuthorityOf(UserGroupType.caaers_super_user));
     }
 
+
+    public void testHasGlobalScopedRoles(){
+        SecurityTestUtils.switchToSuperuser();
+        assertTrue(SecurityUtils.hasGlobalScopedRoles());
+        SecurityTestUtils.switchUser("JOHN", UserGroupType.ae_expedited_report_reviewer.getCsmName(), UserGroupType.registrar.getCsmName());
+        assertFalse(SecurityUtils.hasGlobalScopedRoles());
+    }
+
+
+    public void testIsStudyScopedRole(){
+        assertTrue(SecurityUtils.isStudyScoped(UserGroupType.registrar.getCsmName()));
+        assertFalse(SecurityUtils.isStudyScoped(UserGroupType.study_creator.getCsmName()));
+    }
+
+
+    public void testIsSiteScopedRole(){
+        assertTrue(SecurityUtils.isSiteScoped(UserGroupType.study_creator.getCsmName()));
+        assertFalse(SecurityUtils.isSiteScoped(UserGroupType.registrar.getCsmName()));
+    }
+
+
     public void testSplitProtectionGroup(){
         String[] s = SecurityUtils.splitProtectionGroup("x.y");
         assertNotNull(s);

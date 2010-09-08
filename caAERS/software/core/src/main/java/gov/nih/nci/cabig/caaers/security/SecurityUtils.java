@@ -192,52 +192,51 @@ public final class SecurityUtils {
      * This method will return false if the logged in user has at least one globally scoped role. 
      * @return
      */
-    public static boolean isScoped(){
+    public static boolean hasGlobalScopedRoles(){
     	SuiteRole suiteRole;
     	Authentication authentication = getAuthentication();
+        
     	//caaers_super_user is globally scoped.
     	if(checkAuthorization(authentication, UserGroupType.caaers_super_user)){
-    		return false;
+    		return true;
     	}
+        
     	GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
     	for (int i = 0; i < authorities.length; i++) {
     		suiteRole = SuiteRole.getByCsmName(authorities[i].getAuthority());
-    		if(!suiteRole.isScoped()){
-    			return false; 
-    		}
+            if(!suiteRole.isScoped()) return true;
     	}
-    	return true;
+        
+    	return false;
     }
-    
-    public static boolean isScoped(Authentication authentication){
-    	//caaers_super_user is globally scoped.
-    	if(checkAuthorization(authentication, UserGroupType.caaers_super_user)){
-    		return false;
-    	}
-    	
-    	SuiteRole suiteRole;
-    	GrantedAuthority[] authorities = getGrantedAuthorities(authentication);
-    	for (int i = 0; i < authorities.length; i++) {
-    		suiteRole = SuiteRole.getByCsmName(authorities[i].getAuthority());
-    		if(!suiteRole.isScoped()){
-    			return false; 
-    		}
-    	}
-    	return true;
-    }
+
     /**
-     * checks if  a role is scoped or not 
+     * Will return true, if the roles is study scoped.
      * @param roleName
      * @return
      */
-    public static boolean isScoped(String roleName) {
-    	//caaers_super_user is globally scoped.
-    	if(UserGroupType.caaers_super_user.getSecurityRoleName().equals(roleName)){
-    		return false;
-    	}
-    	SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
-    	return suiteRole.isScoped();
+    public static boolean isStudyScoped(String roleName){
+        SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
+        if(suiteRole != null) return suiteRole.isStudyScoped();
+        return false;
     }
+
+
+
+    /**
+     * Will return true, if the roles is ONLY site scoped.
+     *
+     * Note : By default all study scoped roles are site scoped.
+     * 
+     * @param roleName
+     * @return
+     */
+    public static boolean isSiteScoped(String roleName){
+        SuiteRole suiteRole = SuiteRole.getByCsmName(roleName);
+        if(suiteRole != null) return suiteRole.isSiteScoped() && (!isStudyScoped(roleName));
+        return false;
+    }
+
 
     /**
      * Will split the protection group into 2 parts.

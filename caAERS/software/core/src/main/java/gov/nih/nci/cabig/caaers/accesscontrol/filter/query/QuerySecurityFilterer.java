@@ -52,7 +52,7 @@ public class QuerySecurityFilterer {
      */
     public boolean shouldFilter(){
     	//if global scoped user- ignore filtering.
-		if(!SecurityUtils.isScoped()) return false;
+		if(SecurityUtils.hasGlobalScopedRoles()) return false;
 		return true;
     	/*
         List<UserGroupType> rolesToExclude = new ArrayList<UserGroupType>();
