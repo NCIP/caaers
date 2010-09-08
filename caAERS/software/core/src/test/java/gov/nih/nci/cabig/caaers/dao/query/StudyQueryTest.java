@@ -128,9 +128,9 @@ public class StudyQueryTest extends TestCase{
 	
 	public void testFilterByParticipantFirstName(){
 		StudyQuery studyQuery = new StudyQuery();
-		studyQuery.filterByParticipantFirstName("fName");
+		studyQuery.filterByParticipantFirstName("fName","like");
 		assertEquals("wrong parsing for constructor",
-                "select distinct s from Study s WHERE lower(p.firstName) LIKE :pfName", studyQuery
+                "select distinct s from Study s WHERE lower(p.firstName) like :pfName", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
@@ -142,9 +142,9 @@ public class StudyQueryTest extends TestCase{
 	
 	public void testFilterByParticipantLastName(){
 		StudyQuery studyQuery = new StudyQuery();
-		studyQuery.filterByParticipantLastName("lName");
+		studyQuery.filterByParticipantLastName("lName","like");
 		assertEquals("wrong parsing for constructor",
-                "select distinct s from Study s WHERE lower(p.lastName) LIKE :plName", studyQuery
+                "select distinct s from Study s WHERE lower(p.lastName) like :plName", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
@@ -157,9 +157,9 @@ public class StudyQueryTest extends TestCase{
 	
 	public void testFilterByParticipantEthnicity(){
 		StudyQuery studyQuery = new StudyQuery();
-		studyQuery.filterByParticipantEthnicity("Ethnicity");
+		studyQuery.filterByParticipantEthnicity("Ethnicity","like");
 		assertEquals("wrong parsing for constructor",
-                "select distinct s from Study s WHERE lower(p.ethnicity) LIKE :pEthenicity", studyQuery
+                "select distinct s from Study s WHERE lower(p.ethnicity) like :pEthenicity", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
@@ -171,9 +171,9 @@ public class StudyQueryTest extends TestCase{
 	
 	public void testFilterByParticipantGender(){
 		StudyQuery studyQuery = new StudyQuery();
-		studyQuery.filterByParticipantGender("Gender");
+		studyQuery.filterByParticipantGender("Gender","like");
 		assertEquals("wrong parsing for constructor",
-                "select distinct s from Study s WHERE lower(p.gender) LIKE :pGender", studyQuery
+                "select distinct s from Study s WHERE lower(p.gender) like :pGender", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
