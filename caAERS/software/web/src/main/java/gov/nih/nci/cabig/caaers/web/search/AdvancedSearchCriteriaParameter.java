@@ -30,6 +30,19 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 	// This represents the boolean value which says whether the criteria parameters has been deleted.
 	private boolean deleted;
 	
+	
+	private String filterByMethodInQueryClass;
+	
+	private String dataType;
+	
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
+
 	public void setObjectName(String objectName){
 		this.objectName = objectName;
 	}
@@ -97,5 +110,13 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 		if(this.objectName == null || this.attributeName == null || this.predicate == null || this.value == null)
 			return false;
 		return true;
+	}
+
+	public String getFilterByMethodInQueryClass() {
+		return filterByMethodInQueryClass;
+	}
+
+	public void setFilterByMethodInQueryClass(String filterByMethodInQueryClass) {
+		this.filterByMethodInQueryClass = filterByMethodInQueryClass;
 	}
 }
