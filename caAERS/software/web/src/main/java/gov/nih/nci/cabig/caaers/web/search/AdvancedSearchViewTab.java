@@ -1,9 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
+import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +16,6 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
-import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController;
-import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
-
 /**
  * This is the advanced search criteria tab.
  * @author Sameer Sawant
@@ -26,7 +23,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends WorkFlowTab<T> {
 	
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	private ParticipantDao participantDao;
+	private AdvancedSearchDao advancedSearchDao;
 	
 	public AdvancedSearchViewTab() {
         super("Select view", "Select view", "search/advancedSearchView");
@@ -56,18 +53,24 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted())
 					parameters.add(p);
 		}
-		String query = "";
+		//String query = "";
+		AbstractQuery queryObj = null;
 		CommandToSQL commandToSQL =  new CommandToSQL();
 		try{
-			query = commandToSQL.transform(command.getSearchTargetObject(), parameters, true);
+			queryObj = commandToSQL.transform(command.getSearchTargetObject(), parameters);
+			
+			//query = commandToSQL.transform(command.getSearchTargetObject(), parameters, true);
 		}catch(Exception e){
+			e.printStackTrace();
 			errors.reject("EXP", "There was an exception while generating the HQL :" + e.getMessage());
 		}
-		command.setHql(query);
+		command.setHql(queryObj.getQueryString());
+		System.out.println(queryObj.getQueryString());
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
+		
 		if(commandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
-			multipleObjectList = (List<Object[]>) participantDao.search(new HQLQuery(query));
+			multipleObjectList = (List<Object[]>) advancedSearchDao.search(queryObj);
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -78,7 +81,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 				}
 		}
 		else{
-			singleObjectList = (List<Object>) participantDao.search(new HQLQuery(query));
+			singleObjectList = (List<Object>) advancedSearchDao.search(queryObj);
 			//command.setNumberOfResults(singleObjectList.size());
 			command.setAdvancedSearchRowList(processSingleObjectList(singleObjectList, command.getSearchTargetObject().getDependentObject().get(0)));
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -109,28 +112,35 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
 				if(dObject.isInView()){
 					Object obj = objectArr[i++];
-					BeanWrapper wrapper = new BeanWrapperImpl(obj);
+					BeanWrapper wrapper = null;
+					if (obj != null) {
+						wrapper = new BeanWrapperImpl(obj);
+					}
 					for(ViewColumn viewColumn: dObject.getViewColumn()){
 						if(viewColumn.isSelected()){
 							column = new AdvancedSearchColumn();
 							column.setColumnHeader(viewColumn.getColumnTitle());
-							if(!viewColumn.isLengthy()){
-								if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
-									column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
-								else
-									column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-							}else{
-								if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
-									String lengthyValue = wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString();
-									column.setLengthyValue(lengthyValue);
-									if(lengthyValue.length() < 20)
-										column.setValue(lengthyValue);
+							if (wrapper != null) {
+								if(!viewColumn.isLengthy()){
+									if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
+										column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
 									else
-										column.setValue(lengthyValue.substring(0, 19) + " ...");
+										column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
 								}else{
-									column.setValue(" ");
-									column.setLengthyValue(" ");
+									if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
+										String lengthyValue = wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString();
+										column.setLengthyValue(lengthyValue);
+										if(lengthyValue.length() < 20)
+											column.setValue(lengthyValue);
+										else
+											column.setValue(lengthyValue.substring(0, 19) + " ...");
+									}else{
+										column.setValue(" ");
+										column.setLengthyValue(" ");
+									}
 								}
+							} else {
+								column.setValue(" ");
 							}
 							row.getColumnList().add(column);
 						}
@@ -194,11 +204,9 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
         return attr;
     }
 
-	/**
-	 * @param participantDao the participantDao to set
-	 */
-	public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
+
+	public void setAdvancedSearchDao(AdvancedSearchDao advancedSearchDao) {
+		this.advancedSearchDao = advancedSearchDao;
 	}
 
 }
