@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
@@ -75,10 +76,11 @@ public class CommandToSQL{
 		AbstractQuery query = null;
 		if (targetObject.getClassName().equals("gov.nih.nci.cabig.caaers.domain.Study")) {
 			query = new StudyQuery();
-		}
-		if (targetObject.getClassName().equals("gov.nih.nci.cabig.caaers.domain.Participant")) {
+		} else if (targetObject.getClassName().equals("gov.nih.nci.cabig.caaers.domain.Participant")) {
 			query = new ParticipantQuery();
-		}		 
+		} else if (targetObject.getClassName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEvent")) {
+			query = new AdverseEventQuery();
+		}	 
 		List<String> objectsToJoin = new ArrayList<String>();
 		List<String> objectsInView = new ArrayList<String>();
 		
@@ -150,6 +152,9 @@ public class CommandToSQL{
 				} else if (parameter.getDataType().equals("Integer")) {
 					par[0]=Integer.class;
 					obj[0] = Integer.parseInt(parameter.getValue());					
+				} else if (parameter.getDataType().equals("boolean")) {
+					par[0]=Boolean.class;
+					obj[0] = Boolean.parseBoolean(parameter.getValue());					
 				} else {
 					continue;
 				}
