@@ -33,6 +33,7 @@
 				<xs:element name="ui-attribute" type="searchui:ui-attribute" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="view-column" type="searchui:view-column" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="join-by-method" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
 
@@ -68,6 +69,7 @@
 				<xs:element name="valid-value" type="searchui:valid-value" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="operator" type="searchui:operator" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="filter-method" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
 		
