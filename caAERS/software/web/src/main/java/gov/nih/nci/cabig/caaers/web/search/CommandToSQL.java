@@ -1,6 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
+import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.UiAssociation;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
+
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,9 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.UiAssociation;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -27,6 +35,10 @@ public class CommandToSQL{
 		
 		// Initialize the tableToAliasMap
 		initializeTableToAliasMap(targetObject, criteriaParameters);
+		
+		// build Abstract Query
+		
+		
 		StringBuffer sqlString = new StringBuffer();
 		sqlString.append(getProjectionString(targetObject));
 		sqlString.append(" ");
@@ -42,6 +54,114 @@ public class CommandToSQL{
 		sqlString.append(getOrderByString(targetObject));
 		
 		return sqlString.toString();
+	}
+	
+	public  AbstractQuery transform(SearchTargetObject targetObject, 
+			List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception{
+		initializeTableToAliasMap(targetObject, criteriaParameters);
+		return this.buildAbstractQuery(targetObject, criteriaParameters);
+	}
+	private String invokeField(Object query , String fieldName) throws Exception{
+		Field field = query.getClass().getField(fieldName);
+		Object aliasValue = field.get(query);
+		return aliasValue.toString();
+	}
+	
+	private void invokeMethod(Object query , String joinMethodName , Class[] par , Object[] obj) throws Exception {
+		Method mthd = query.getClass().getMethod(joinMethodName,par);
+		mthd.invoke(query,obj);
+	}
+	private AbstractQuery buildAbstractQuery(SearchTargetObject targetObject , List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception {
+		AbstractQuery query = null;
+		if (targetObject.getClassName().equals("gov.nih.nci.cabig.caaers.domain.Study")) {
+			query = new StudyQuery();
+		}
+		if (targetObject.getClassName().equals("gov.nih.nci.cabig.caaers.domain.Participant")) {
+			query = new ParticipantQuery();
+		}		 
+		List<String> objectsToJoin = new ArrayList<String>();
+		List<String> objectsInView = new ArrayList<String>();
+		
+		String[] hqlElements = StringUtils.split(query.getBaseQueryString());
+
+        int etIndex = ArrayUtils.indexOf(hqlElements, invokeField(query,targetObject.getTableAlias()));
+        hqlElements[etIndex] = invokeField(query,targetObject.getTableAlias());
+        String associtedObjectsInQueryString = "";
+			// check the objects selected in results , and add those objects to query .. 
+			for(DependentObject dObject: targetObject.getDependentObject()) {
+				List<ViewColumn> viewColumns = dObject.getViewColumn();
+				for (ViewColumn viewColumn:viewColumns) {
+					if (viewColumn.isSelected()) {
+						if (!dObject.getClassName().equals(targetObject.getClassName())) {
+							if (!objectsInView.contains(dObject.getClassName())) {
+								objectsInView.add(dObject.getClassName());
+								associtedObjectsInQueryString = associtedObjectsInQueryString + " , " + invokeField(query,dObject.getTableAlias());
+							}
+						}
+					}
+				}
+			}
+			
+			if (!associtedObjectsInQueryString.equals("")) {
+				associtedObjectsInQueryString = associtedObjectsInQueryString + " from ";
+				hqlElements[etIndex + 1] = associtedObjectsInQueryString;
+				String newQuery = StringUtils.join(hqlElements, " ");
+		        query.modifyQueryString(newQuery);
+			}
+		
+			// now we need to check which objects are in search criteria  , if objects are in search criteria they will be joined 
+			for(AdvancedSearchCriteriaParameter parameter: criteriaParameters){
+				if (parameter.getAttributeName() != null) {
+					DependentObject dobj = AdvancedSearchUiUtil.getDependentObjectByName(targetObject, parameter.getObjectName());
+					if (!dobj.getClassName().equals(targetObject.getClassName())) {
+						if (!objectsToJoin.contains(dobj.getClassName())) {
+							String joinMethodName = dobj.getJoinByMethod();
+							invokeMethod(query,joinMethodName,new Class[0],new Object[0]);
+							objectsToJoin.add(dobj.getClassName());
+						}
+					}
+				}
+				
+			}
+			
+			
+			//if objectsInView  are part of objectsToJoin we are fine ..
+			// if objectsInView are not part of objectsToJoin , means - we need to outer join on these objects .. 
+			for (String viewObj:objectsInView) {
+				if (!objectsToJoin.contains(viewObj)) {
+					DependentObject dobj = AdvancedSearchUiUtil.getDependentObjectByName(targetObject, viewObj);
+					String outerJoinMethodName = "outer"+dobj.getJoinByMethod();
+					invokeMethod(query,outerJoinMethodName,new Class[0],new Object[0]);
+				}
+			}
+			
+
+		
+		// add filters 
+		for(AdvancedSearchCriteriaParameter parameter: criteriaParameters){
+			if (parameter.getAttributeName() != null) {
+				String filterMethodName = parameter.getFilterByMethodInQueryClass();
+
+				Class[] par=new Class[2];
+				Object[] obj = new Object[2];
+				if (parameter.getDataType().equals("String")) {
+					par[0]=String.class;
+					obj[0] = parameter.getValue();
+				} else if (parameter.getDataType().equals("Integer")) {
+					par[0]=Integer.class;
+					obj[0] = Integer.parseInt(parameter.getValue());					
+				} else {
+					continue;
+				}
+				par[1] = String.class;
+				obj[1] = parameter.getPredicate();
+				//Method mthd = query.getClass().getMethod(filterMethodName,par);
+			    //mthd.invoke(query,obj);
+			    invokeMethod(query,filterMethodName,par,obj);
+			}
+		}
+		
+		return query;
 	}
 	
 	public boolean isMultipleViewQuery(SearchTargetObject targetObject){
@@ -109,6 +229,7 @@ public class CommandToSQL{
 	 */
 	public String getProjectionString(SearchTargetObject targetObject){ 
 		StringBuffer projectionStringBuffer = new StringBuffer();
+		
 		projectionStringBuffer.append("select ");
 		for(DependentObject dObject: targetObject.getDependentObject()){
 			if(dObject.isInView()){
