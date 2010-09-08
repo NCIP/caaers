@@ -573,6 +573,8 @@ This applicationContext contains the definition of the DAOs
     <bean id="reportTrackingDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao"/>
 
 	<bean id="reportVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao"/>
+	
+	<bean id="advancedSearchDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao"/>
     <!-- Factory beans end here-->
 
 </beans>
