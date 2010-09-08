@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <advancedSearch-ui xmlns="http://caaers.cabig.nci.nih.gov/web/search/ui">
 	<search-target-object>
+		<!-- StudyQuery.java -->
 		<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 		<display-name>Study</display-name>
 		<table-name>studies</table-name>
-		<table-alias>Study_xx</table-alias>
+		<table-alias>STUDY_ALIAS</table-alias>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
 			<table-name>studies</table-name>
-			<table-alias>Study_xx</table-alias>
+			<table-alias>STUDY_ALIAS</table-alias>
 			<ui-attribute>
 				<name>id</name>
 				<label>Study</label>
@@ -18,6 +19,7 @@
 				<ajax-method>matchStudies</ajax-method>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterById</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>shortTitle</name>
@@ -27,6 +29,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByShortTitle</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>longTitle</name>
@@ -36,6 +39,7 @@
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByLongTitle</filter-method>
 			</ui-attribute>
 			<view-column>
 				<column-title>Short title</column-title>
@@ -73,11 +77,13 @@
 				<view-column-index>4</view-column-index>
 			</view-column>
 		</dependent-object>
+		
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
 			<table-name>participants</table-name>
-			<table-alias>Participant_xx</table-alias>
+			<table-alias>PARTICIPANT_ALIAS</table-alias>
+			<join-by-method>joinParticipant</join-by-method>
 			<ui-attribute>
 				<name>id</name>
 				<label>Subject</label>
@@ -86,6 +92,7 @@
 				<ajax-method>matchParticipants</ajax-method>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByParticipantId</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>firstName</name>
@@ -95,6 +102,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByParticipantFirstName</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>lastName</name>
@@ -104,6 +112,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByParticipantLastName</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>gender</name>
@@ -114,6 +123,7 @@
 				<valid-value value="Female" display-uri="Female"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByParticipantGender</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>race</name>
@@ -128,6 +138,7 @@
 				<valid-value value="Not Reported" display-uri="Not Reported"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByParticipantRace</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>ethnicity</name>
@@ -140,7 +151,9 @@
 				<valid-value value="Unknown" display-uri="Unknown"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByParticipantEthnicity</filter-method>
 			</ui-attribute>
+			
 			<view-column>
 				<column-title>First name</column-title>
 				<column-attribute>firstName</column-attribute>
@@ -176,6 +189,7 @@
 				<dependent-object-index>1</dependent-object-index>
 				<view-column-index>4</view-column-index>
 			</view-column>
+			<!-- SRINI 
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
 				<role-name>studyOrganizations</role-name>
@@ -197,22 +211,26 @@
 				<table-alias>Participant_xx</table-alias>
 				<joining-condition>StudyParticipantAssignment_xx.participant = Participant_xx</joining-condition>
 			</ui-association>
+			-->
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.AeTerminology</class-name>
 			<display-name>Ae terminology</display-name>
-			<table-alias>AeTerminology_xx</table-alias>
+			<table-alias>TERMINOLOGY_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinAeTerminology</join-by-method>
 			<ui-attribute>
-				<name>term.code</name>
+				<name>code</name>
 				<label>Ae terminology</label>
-				<data-type>Term</data-type>
+				<data-type>Integer</data-type>
 				<field-type>drop-down</field-type>
 				<valid-value value="1" display-uri="CTC"/>
 				<valid-value value="2" display-uri="MedDRA"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByTerminology</filter-method>
 			</ui-attribute>
+			<!--
 			<view-column>
 				<column-attribute>term</column-attribute>
 				<column-title>Ae terminology</column-title>
@@ -224,13 +242,14 @@
 				<role-name>aeTerminology</role-name>
 				<table-alias>AeTerminology_xx</table-alias>
 				<joining-condition>Study_xx = AeTerminology_xx.study</joining-condition>
-			</ui-association>
+			</ui-association> -->
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</class-name>
 			<display-name>Treatment assignment</display-name>
-			<table-alias>TreatmentAssignment_xx</table-alias>
+			<table-alias>TREATMENT_ASSIGNMENT_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinTreatmentAssignment</join-by-method>
 			<ui-attribute>
 				<name>code</name>
 				<label>Treatment assignment code</label>
@@ -239,6 +258,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByTreatmentCode</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>description</name>
@@ -248,7 +268,9 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByTreatmentDescription</filter-method>
 			</ui-attribute>
+			<!--
 			<view-column>
 				<column-attribute>code</column-attribute>
 				<column-title>Treatment assignment code</column-title>
@@ -267,13 +289,15 @@
 				<role-name>study</role-name>
 				<table-alias>TreatmentAssignment_xx</table-alias>
 				<joining-condition>Study_xx = TreatmentAssignment_xx.study</joining-condition>
-			</ui-association>
+			</ui-association>-->
 		</dependent-object>
+		
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Organization</class-name>
 			<display-name>Organization</display-name>
-			<table-alias>Organization_xx</table-alias>
+			<table-alias>ORGANIZATION_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinOrganization</join-by-method>
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Organization name</column-title>
@@ -302,12 +326,13 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyTherapy</class-name>
 			<display-name>Study therapy</display-name>
-			<table-alias>StudyTherapy_xx</table-alias>
+			<table-alias>STUDY_THERAPY_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinStudyTherapy</join-by-method>
 			<ui-attribute>
 				<name>studyTherapyType.code</name>
 				<label>Therapy types</label>
-				<data-type>TherapyType</data-type>
+				<data-type>Integer</data-type>
 				<field-type>drop-down</field-type>
 				<valid-value value="1" display-uri="Drug Administration"/>
 				<valid-value value="2" display-uri="Radiation"/>
@@ -316,7 +341,9 @@
 				<valid-value value="5" display-uri="Behavioral"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByStudyTherapy</filter-method>
 			</ui-attribute>
+			<!--
 			<view-column>
 				<column-attribute>studyTherapyType</column-attribute>
 				<column-title>Therapy type</column-title>
@@ -328,13 +355,14 @@
 				<role-name>study</role-name>
 				<table-alias>StudyTherapy_xx</table-alias>
 				<joining-condition>Study_xx = StudyTherapy_xx.study</joining-condition>
-			</ui-association>
+			</ui-association> -->
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
 			<display-name>StudyParticipantAssignment</display-name>
-			<table-alias>StudyParticipantAssignment_xx</table-alias>
+			<table-alias>STUDY_PARTICIPANT_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinStudyParticipantAssignment</join-by-method>
 			<ui-attribute>
 				<name>studySubjectIdentifier</name>
 				<label>Study subject identifier</label>
@@ -343,13 +371,16 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByStudySubjectIdentifier</filter-method>
 			</ui-attribute>
+			
 			<view-column>
 				<column-attribute>studySubjectIdentifier</column-attribute>
 				<column-title>Study subject identifier</column-title>
 				<dependent-object-index>6</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
+			<!--
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
 				<role-name>studyOrganizations</role-name>
@@ -363,13 +394,14 @@
 				<table-name>participant_assignments</table-name>
 				<table-alias>StudyParticipantAssignment_xx</table-alias>
 				<joining-condition>StudyOrganization_xx = StudyParticipantAssignment_xx.studySite</joining-condition>
-			</ui-association>
+			</ui-association>-->
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Agent</class-name>
 			<display-name>Agent</display-name>
-			<table-alias>Agent_xx</table-alias>
+			<table-alias>AGENT_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinAgent</join-by-method>
 			<ui-attribute>
 				<name>id</name>
 				<label>Agent</label>
@@ -378,7 +410,9 @@
 				<ajax-method>matchAgents</ajax-method>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByAgent</filter-method>
 			</ui-attribute>
+			<!--
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Agent name</column-title>
@@ -396,19 +430,21 @@
 				<role-name>agent</role-name>
 				<table-alias>Agent_xx</table-alias>
 				<joining-condition>StudyAgent_xx.agent = Agent_xx</joining-condition>
-			</ui-association>
+			</ui-association>-->
 		</dependent-object>
 	</search-target-object>
+	
+	<!-- ParticipantQuery.java -->
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 		<display-name>Subject</display-name>
 		<table-name>participants</table-name>
-		<table-alias>Participant_xx</table-alias>
+		<table-alias>PARTICIPANT_ALIAS</table-alias>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
 			<table-name>participants</table-name>
-			<table-alias>Participant_xx</table-alias>
+			<table-alias>PARTICIPANT_ALIAS</table-alias>
 			<ui-attribute>
 				<name>id</name>
 				<label>Subject</label>
@@ -417,6 +453,7 @@
 				<ajax-method>matchParticipants</ajax-method>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterById</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>firstName</name>
@@ -426,6 +463,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByFirstName</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>lastName</name>
@@ -435,6 +473,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByLastName</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>gender</name>
@@ -445,6 +484,7 @@
 				<valid-value value="Female" display-uri="Female"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByGender</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>race</name>
@@ -459,6 +499,7 @@
 				<valid-value value="Not Reported" display-uri="Not Reported"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByRace</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>ethnicity</name>
@@ -471,6 +512,7 @@
 				<valid-value value="Unknown" display-uri="Unknown"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByEthnicity</filter-method>
 			</ui-attribute>
 			<view-column>
 				<column-title>First name</column-title>
@@ -512,7 +554,8 @@
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
 			<table-name>studies</table-name>
-			<table-alias>Study_xx</table-alias>
+			<table-alias>STUDY_ALIAS</table-alias>
+			<join-by-method>joinStudy</join-by-method>
 			<ui-attribute>
 				<name>id</name>
 				<label>Study</label>
@@ -521,6 +564,7 @@
 				<ajax-method>matchStudies</ajax-method>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByStudyId</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>shortTitle</name>
@@ -530,6 +574,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByStudyShortTitle</filter-method>
 			</ui-attribute>
 			<ui-attribute>
 				<name>longTitle</name>
@@ -539,6 +584,7 @@
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByStudyLongTitle</filter-method>
 			</ui-attribute>
 			<view-column>
 				<column-title>Short title</column-title>
@@ -600,8 +646,9 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
 			<display-name>StudyParticipantAssignment</display-name>
-			<table-alias>StudyParticipantAssignment_xx</table-alias>
+			<table-alias>ASSIGNMENT_ALIAS</table-alias>
 			<hidden>true</hidden>
+			<join-by-method>joinAssignment</join-by-method>
 			<ui-attribute>
 				<name>studySubjectIdentifier</name>
 				<label>Study subject identifier</label>
@@ -610,6 +657,7 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByStudySubjectIdentifier</filter-method>
 			</ui-attribute>
 			<view-column>
 				<column-attribute>studySubjectIdentifier</column-attribute>
@@ -626,6 +674,7 @@
 			</ui-association>
 		</dependent-object>
 	</search-target-object>
+	<!--
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
 		<display-name>Adverse Event</display-name>
@@ -1641,5 +1690,5 @@
 				<joining-condition>ExpeditedAdverseEventReport_xx = AdverseEventResponseDescription_xx.report</joining-condition>
 			</ui-association>
 		</dependent-object>
-	</search-target-object>
+	</search-target-object>-->
 </advancedSearch-ui>
