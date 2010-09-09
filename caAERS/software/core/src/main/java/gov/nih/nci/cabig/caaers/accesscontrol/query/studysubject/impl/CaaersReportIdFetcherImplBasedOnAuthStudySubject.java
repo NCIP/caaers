@@ -1,0 +1,42 @@
+package gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl;
+
+import gov.nih.nci.cabig.caaers.accesscontrol.query.impl.AbstractIdFetcher;
+
+import com.semanticbits.security.contentfilter.IdFetcher;
+
+public class CaaersReportIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
+
+
+    //the query
+    private final String siteScopedHQL;
+    private final String studyScopedHQL;
+
+    public CaaersReportIdFetcherImplBasedOnAuthStudySubject(){
+
+        //site query
+       siteScopedHQL = null;
+
+       StringBuilder query = new StringBuilder();
+
+        //study query
+       query.append("select distinct rep.id from  ReportingPeriodIndex ri ")
+       .append(" join ri.reportingPeriod rp  ")
+       .append(" join rp.aeReports r ")
+       .append(" join r.reports rep ")
+       .append(" where ri.roleCode = :ROLE_CODE ")
+       .append(" and ri.loginId = :LOGIN_ID");
+        
+        studyScopedHQL = query.toString();
+
+    }
+
+
+    public String getSiteScopedHQL(){
+        return siteScopedHQL;
+    }
+
+    public String getStudyScopedHQL(){
+        return studyScopedHQL;
+    }
+    
+}
