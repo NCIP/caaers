@@ -22,6 +22,7 @@ import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.drools.repository.PackageItem;
 
 /**
  * This is a unit TestCase for RulesEngineServiceImpl class.
@@ -241,89 +242,95 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	 * Tests deployRuleSet(ruleSet)
 	 */
 	public void testDeployRuleSet() throws Exception{
+        RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("todo");
-		
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.sponsor.ORG_" + orgId + ".sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||Sponsor||" +  nciCode + "|| || ";
+        caaersRulesEngineService.saveRuleSet(rs, SPONSOR_LEVEL, "SAE Reporting Rules", org, null,null);
+
+        caaersRulesEngineService.deployRuleSet(modifiedPackageName);
+
+        //make sure the rule is enabled.
+        PackageItem packageItem =  repositoryService.getRulesRepository().loadPackage(modifiedPackageName);
+        String coverage = packageItem.getCoverage();
+        assertEquals("Enabled", coverage);
+
 	}
 	
 	/**
 	 * Tests undeployRuleSet(ruleSet)
 	 */
 	public void testUnDeployRuleSet() throws Exception{
+      RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("todo");
-		
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.sponsor.ORG_" + orgId + ".sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||Sponsor||" +  nciCode + "|| || ";
+        caaersRulesEngineService.saveRuleSet(rs, SPONSOR_LEVEL, "SAE Reporting Rules", org, null,null);
+
+        caaersRulesEngineService.deployRuleSet(modifiedPackageName);
+
+        caaersRulesEngineService.unDeployRuleSet(modifiedPackageName);
+
+        //make sure the rule is enabled.
+        PackageItem packageItem =  repositoryService.getRulesRepository().loadPackage(modifiedPackageName);
+        String coverage = packageItem.getCoverage();
+        assertEquals("Not Enabled", coverage);
 	}
 	
     public void testCreateRuleSet() throws Exception{
+        long curTime = System.currentTimeMillis();
+        RuleSet ruleSet = caaersRulesEngineService.createRuleset("a" + curTime,"b", "c" , "d");
+        assertEquals("a" + curTime, ruleSet.getName());
+        assertEquals("b", ruleSet.getDescription());
+        assertEquals("c", ruleSet.getSubject());
+        assertEquals("d", ruleSet.getCoverage());
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("to do");
+
+        RuleSet ruleSet2 = caaersRulesEngineService.getRuleSetByPackageName("a");
+        assertNotNull(ruleSet2);
+
+       
     }
 
     public void testCreateOrUpdateRuleSet() throws Exception{
+        long curTime = System.currentTimeMillis();
+        RuleSet ruleSet = caaersRulesEngineService.createRuleset("a" + curTime,"b", "c" , "d");
+        assertEquals("a" + curTime, ruleSet.getName());
+        assertEquals("b", ruleSet.getDescription());
+        assertEquals("c", ruleSet.getSubject());
+        assertEquals("d", ruleSet.getCoverage());
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("to do");
-    }
+        caaersRulesEngineService.createOrUpdateRuleSet(ruleSet, "a" + curTime, "x", "k", "c", "d");
+        RuleSet ruleSet2 = caaersRulesEngineService.getRuleSetByPackageName("a"+curTime);
+        assertNotNull(ruleSet2);
+        assertEquals("b", ruleSet2.getDescription());  //update flow - rule set should not be modified.
 
-    public void testImportRules() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("to do");
-    }
-
-    public void testUndeployRuleset() throws Exception{
-
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("to do ");
-    }
-
-    public void testDeployRuleset() throws Exception{
-
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("to do");
-    }
-
-    public void testSaveRuleset() throws Exception{
-
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
-        }
-        fail("to do");
     }
 
     public void testGetAllRulesets() throws Exception{
 
-        if(DateUtils.compareDate(DateUtils.parseDate("05/28/2010"), DateUtils.today()) > 0){
-            assertTrue(true);
-            return;
+        RuleSet rs = loadRuleSetFromFile("test_sponsor_karnataka_rules.xml");
+
+        String nciCode = "NCI" + System.currentTimeMillis() % 100000;
+        Organization org = createAndSaveOrganziation(nciCode);
+        Integer orgId = org.getId().intValue();
+        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.institution.ORG_" + orgId + ".sae_reporting_rules";
+        String modifiedSubject = "SAE Reporting Rules||Institution|| ||" +  nciCode + "|| ";
+        caaersRulesEngineService.saveRuleSet(rs, INSTITUTIONAL_LEVEL, "SAE Reporting Rules", null, org,null);
+
+        List<RuleSet> ruleSets = caaersRulesEngineService.getAllRuleSets();
+        for(RuleSet ruleSet : ruleSets){
+           if(ruleSet.getName().equals(modifiedPackageName)) return;
         }
-        fail("to do");
+
+        fail("Unable to find the ruleset");
     }
 	
 }
