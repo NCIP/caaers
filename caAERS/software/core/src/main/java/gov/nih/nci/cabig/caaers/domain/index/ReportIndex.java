@@ -38,7 +38,7 @@ public class ReportIndex extends AbstractMutableDomainObject{
 
 	@ManyToOne
     @JoinColumn(name = "report_id")
-	public Report Report() {
+	public Report getReport() {
 		return report;
 	}
     
