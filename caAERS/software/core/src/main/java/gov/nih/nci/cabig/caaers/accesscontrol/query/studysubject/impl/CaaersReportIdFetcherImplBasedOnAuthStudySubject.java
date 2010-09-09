@@ -19,10 +19,9 @@ public class CaaersReportIdFetcherImplBasedOnAuthStudySubject extends AbstractId
        StringBuilder query = new StringBuilder();
 
         //study query
-       query.append("select distinct rep.id from  ReportingPeriodIndex ri ")
-       .append(" join ri.reportingPeriod rp  ")
-       .append(" join rp.aeReports r ")
-       .append(" join r.reports rep ")
+       query.append("select distinct rep.id from  ExpeditedAdverseEventReportIndex ei ")
+       .append(" join ei.expeditedAdverseEventReport aer ")
+       .append(" join aer.reports rep ")
        .append(" where ri.roleCode = :ROLE_CODE ")
        .append(" and ri.loginId = :LOGIN_ID");
         
