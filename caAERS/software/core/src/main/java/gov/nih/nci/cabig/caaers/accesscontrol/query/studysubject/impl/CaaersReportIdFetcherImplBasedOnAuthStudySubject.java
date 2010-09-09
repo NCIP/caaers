@@ -22,8 +22,8 @@ public class CaaersReportIdFetcherImplBasedOnAuthStudySubject extends AbstractId
        query.append("select distinct rep.id from  ExpeditedAdverseEventReportIndex ei ")
        .append(" join ei.expeditedAdverseEventReport aer ")
        .append(" join aer.reports rep ")
-       .append(" where ri.roleCode = :ROLE_CODE ")
-       .append(" and ri.loginId = :LOGIN_ID");
+       .append(" where ei.roleCode = :ROLE_CODE ")
+       .append(" and ei.loginId = :LOGIN_ID");
         
         studyScopedHQL = query.toString();
 
