@@ -15,6 +15,7 @@
 		<xs:complexType name="search-target-object">
 			<xs:sequence>
 				<xs:element name="class-name" type="xs:string"/>
+				<xs:element name="query-class-name" type="xs:string"/>
 				<xs:element name="display-name" type="xs:string"/>
 				<xs:element name="table-name" type="xs:string"/>
 				<xs:element name="table-alias" type="xs:string"/>
@@ -34,6 +35,7 @@
 				<xs:element name="view-column" type="searchui:view-column" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="join-by-method" type="xs:string"/>
+				<xs:element name="outer-join-required" type="xs:boolean" default="false"/>
 			</xs:sequence>
 		</xs:complexType>
 
