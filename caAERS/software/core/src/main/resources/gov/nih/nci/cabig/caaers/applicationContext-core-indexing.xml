@@ -45,7 +45,8 @@
                                 || execution(* gov.nih.nci.cabig.caaers.dao.ResearchStaffDao.getSiteResearchStaff(gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery)) and args(qry)
                                 || execution(* gov.nih.nci.cabig.caaers.dao.InvestigatorDao.getLocalInvestigator(gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery)) and args(qry)
                                 || execution(* gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao.search(gov.nih.nci.cabig.caaers.dao.query.AbstractQuery)) and args(qry)
-                               "/>
+ 
+                                "/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>
         </aop:aspect>
     </aop:config>
@@ -65,6 +66,7 @@
         <entry key-ref="reportingPeriodIdFetcher" value-ref="reportingPeriodIndexDao"/>
         <entry key-ref="researchStaffIdFetcher" value-ref="researchStaffIndexDao"/>
         <entry key-ref="investigatorIdFetcher" value-ref="investigatorIndexDao"/>
+        <entry key-ref="reportIdFetcher" value-ref="reportIndexDao"/>
     </util:map>
 
 
@@ -94,6 +96,7 @@
                 <ref bean="participantIdFetcher"/>
                 <ref bean="adverseEventIdFetcher"/>
                 <ref bean="expeditedAdverseEventReportIdFetcher"/>
+                <ref bean="reportIdFetcher"/>
             </list>
         </property>
         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
@@ -217,12 +220,36 @@
     <bean id="reportIndexDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
         <property name="idFetchers">
             <list>
-                <ref bean="expeditedAdverseEventReportIdFetcher"/>
+                <ref bean="reportIdFetcher"/>
             </list>
         </property>
         <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
     </bean>
 
+    <bean id="expeditedReportIndexDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyTargetClass">
+            <value>true</value>
+        </property>
+        <property name="target">
+            <ref local="expeditedReportIndexDataLoaderTarget"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>runAsAutenticationProviderInterceptor</value>
+                <value>auditInfoPopulatorInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="expeditedReportIndexDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
+        <property name="idFetchers">
+            <list>
+                <ref bean="expeditedAdverseEventReportIdFetcher"/>
+            </list>
+        </property>
+        <property name="idFetcherIndexDaoMap" ref="idFetcherIndexDaoMap"/>
+    </bean>
+    
     <bean id="researchStaffIndexDataLoader" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="proxyTargetClass">
             <value>true</value>
@@ -344,6 +371,23 @@
 				<value>data_analyst</value>
 			 </list>
 			</property>
+    </bean> 
+    
+    <bean id="reportIdFetcher"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl.CaaersReportIdFetcherImplBasedOnAuthStudySubject"
+          parent="abstractIdFetcher">
+		  <property name="applicableSiteScopedRoles">
+          		<list/>
+          </property>           
+           <property name="applicableStudyScopedRoles">
+          	<list>
+				<value>ae_reporter</value>
+				<value>ae_expedited_report_reviewer</value>
+				<value>ae_study_data_reviewer</value>
+				<value>data_reader</value>
+				<value>data_analyst</value>
+			 </list>
+			</property>
     </bean>    
       
     <bean id="reportingPeriodIdFetcher"
@@ -434,6 +478,7 @@
                        value-ref="investigatorQuerySecurityFilterer"/>
                 <entry key="gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery" value-ref="studySiteQuerySecurityFilterer"/>
                 <entry key="gov.nih.nci.cabig.caaers.dao.query.AdverseEventQuery" value-ref="adverseEventQuerySecurityFilterer"/>
+                <entry key="gov.nih.nci.cabig.caaers.dao.query.ReportQuery" value-ref="reportQuerySecurityFilterer"/>
             </map>
         </property>
     </bean>
@@ -473,7 +518,10 @@
           p:indexName="StudyIndex" p:indexAlias="stuIndx"/>
    <bean id="adverseEventQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="adverseEvent"
-          p:entityName="AdverseEvent" p:indexName="AdverseEventIndex" p:indexAlias="aeIndx"/>      
+          p:entityName="AdverseEvent" p:indexName="AdverseEventIndex" p:indexAlias="aeIndx"/>   
+   <bean id="reportQuerySecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="report"
+          p:entityName="Report" p:indexName="ReportIndex" p:indexAlias="repIndx"/>           
     <bean id="eventFactory" class="gov.nih.nci.cabig.caaers.event.EventFactory" />
 
 </beans>
