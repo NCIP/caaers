@@ -19,7 +19,7 @@ public class ParticipantQueryTest extends TestCase {
     public void testFilterByName() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.leftJoinFetch("p.identifiers identifier");
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         assertEquals(
                         "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :firstName  order by p.id",
                         participantQuery.getQueryString());
@@ -29,7 +29,7 @@ public class ParticipantQueryTest extends TestCase {
         assertEquals("wrong parameter value", participantQuery.getParameterMap().get("firstName"),
                         "%a%");
 
-        participantQuery.filterByLastName("b","like");
+        participantQuery.filterByParticipantFirstName("b","like");
         assertEquals(
                         "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :firstName AND lower(p.lastName) LIKE :lastName  order by p.id",
                         participantQuery.getQueryString());
@@ -89,7 +89,7 @@ public class ParticipantQueryTest extends TestCase {
 
     public void testFilterByNotMachingStudySiteId() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.filterByNotMachingStudySiteId(Integer.valueOf(1));
         assertEquals(
                         "SELECT distinct p from Participant p WHERE lower(p.firstName) like :firstName AND "
@@ -110,7 +110,7 @@ public class ParticipantQueryTest extends TestCase {
     public void testExcludeHavingGender() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.leftJoinFetch("p.identifiers identifier");
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingGender("Male");
         assertEquals(
                         "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :firstName AND p.gender != :gender  order by p.id",
@@ -127,7 +127,7 @@ public class ParticipantQueryTest extends TestCase {
     public void testExcludeHavingRace() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.leftJoinFetch("p.identifiers identifier");
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingRace("Asian");
         assertEquals(
                         "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :firstName AND p.race != :race  order by p.id",
@@ -145,7 +145,7 @@ public class ParticipantQueryTest extends TestCase {
     public void testExcludeHavingEthnicity() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.leftJoinFetch("p.identifiers identifier");
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingEthnicity("Ethnicity");
         assertEquals(
                         "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :firstName AND p.ethnicity != :ethnicity  order by p.id",
@@ -162,7 +162,7 @@ public class ParticipantQueryTest extends TestCase {
     public void testLeftJoinFetchOnIdentifiers() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.leftJoinFetchOnIdentifiers();
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingEthnicity("Ethnicity");
         assertEquals(
                         "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :firstName AND p.ethnicity != :ethnicity  order by p.id",
@@ -179,7 +179,7 @@ public class ParticipantQueryTest extends TestCase {
     public void testJoinOnIdentifiers() throws Exception {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.joinOnIdentifiers();
-        participantQuery.filterByFirstName("a","like");
+        participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingEthnicity("Ethnicity");
         assertEquals(
                         "SELECT distinct p from Participant p join p.identifiers identifier WHERE lower(p.firstName) like :firstName AND p.ethnicity != :ethnicity  order by p.id",
