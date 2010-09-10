@@ -29,11 +29,7 @@ public class StudyQuery extends AbstractQuery {
 
     private static final String IDENTIFIER_TYPE = "type";
     
-    public static final String STUDY_ALIAS = "s";
-    
     public static final String STUDY_PARTICIPANT_ALIAS = "spa";
-    
-    public static final String PARTICIPANT_ALIAS = "p";
     
     public static final String TERMINOLOGY_ALIAS = "terminology";
     
@@ -228,28 +224,6 @@ public class StudyQuery extends AbstractQuery {
     }
 
     // shortTitle
-    public void filterByShortTitle(final String shortTitleText , String operator) {
-    	andWhere("lower(s.shortTitle) "+operator+" :" + STUDY_SHORT_TITLE);
-        
-    	if (operator.equals("like")) {
-    		setParameter(STUDY_SHORT_TITLE, getLikeValue(shortTitleText.toLowerCase()));
-    	} else {
-    		setParameter(STUDY_SHORT_TITLE, shortTitleText.toLowerCase());
-    	}
-    }
-
-    // longTitle
-    public void filterByLongTitle(final String longTitleText ,String operator) {
-    	andWhere("lower(s.longTitle) "+operator+" :" + STUDY_LONG_TITLE);
-        
-    	if (operator.equals("like")) {
-    		setParameter(STUDY_LONG_TITLE, getLikeValue(longTitleText.toLowerCase()));
-    	} else {
-    		setParameter(STUDY_LONG_TITLE, longTitleText.toLowerCase());
-    	}
-    }
-
-    // shortTitle
     public void filterByShortTitle(final String shortTitleText) {
         andWhere("lower(s.shortTitle) LIKE :" + STUDY_SHORT_TITLE);
         setParameter(STUDY_SHORT_TITLE, "%" + shortTitleText.toLowerCase() + "%");
@@ -266,57 +240,11 @@ public class StudyQuery extends AbstractQuery {
         andWhere("s.id = :ID");
         setParameter("ID", id);
     }
-    // id
-    public void filterById(final Integer id,String operator) {
-        andWhere("s.id "+operator+" :ID");
-        setParameter("ID", id);
-    } 
+
     // participant-id
     public void filterByParticipantId(final Integer id) {
         andWhere("p.id = :id");
         setParameter("id", id);
-    }
-    // participant-id
-    public void filterByParticipantId(final Integer id,String operator) {
-        andWhere("p.id "+operator+" :id");
-        setParameter("id", id);
-    }    
-    // participant-FirstName
-    public void filterByParticipantFirstName(final String fName,String operator) {
-        andWhere("lower(p.firstName) "+operator+" :pfName");
-        if (operator.equals("like")) {
-        	setParameter("pfName", getLikeValue(fName.toLowerCase()));
-        } else {
-        	setParameter("pfName", fName.toLowerCase());
-        }
-    }
-
-    // participant - LastName
-    public void filterByParticipantLastName(final String lName,String operator) {
-        andWhere("lower(p.lastName) "+operator+" :plName");
-        if (operator.equals("like")) {
-        	setParameter("plName", getLikeValue(lName.toLowerCase()) );
-        } else {
-        	setParameter("plName", lName.toLowerCase() );
-        }
-    }
-
-    // participant - Ethnicity
-    public void filterByParticipantEthnicity(String ethenicity,String operator) {
-        andWhere("lower(p.ethnicity) "+operator+" :pEthenicity");
-        setParameter("pEthenicity", ethenicity.toLowerCase() );
-    }
-
-    // participant - Race
-    public void filterByParticipantRace(String race,String operator) {
-        andWhere("lower(p.race) "+operator+" :pRace");
-        setParameter("pRace", race.toLowerCase() );
-    }
-    
-    // p.gender
-    public void filterByParticipantGender(final String gender,String operator) {
-        andWhere("lower(p.gender) "+operator+" :pGender");
-        setParameter("pGender", gender.toLowerCase());
     }
 
     // participant DOB

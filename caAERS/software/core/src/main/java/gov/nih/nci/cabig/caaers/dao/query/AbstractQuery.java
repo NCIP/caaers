@@ -2,7 +2,11 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +40,11 @@ public abstract class AbstractQuery {
     private String orderByClause;
 
     private boolean filtered;
+    
+	public static final String STUDY_ALIAS = "s";
+	
+	public static final String PARTICIPANT_ALIAS = "p";
+	
 
     public AbstractQuery(final String queryString) {
         this.queryString = new StringBuffer(queryString);
@@ -248,6 +257,128 @@ public abstract class AbstractQuery {
 			return "%"+value+"%";
 		}
     }
+    // Advanced Search query methods 
+    // id
+    public void filterByStudyId(final Integer id,String operator) {
+        andWhere("s.id "+operator+" :ID");
+        setParameter("ID", id);
+    } 
+    
+    // shortTitle
+    public void filterByStudyShortTitle(final String shortTitleText , String operator) {
+    	andWhere("lower(s.shortTitle) "+operator+" :" + "shortTitleText");
+        
+    	if (operator.equals("like")) {
+    		setParameter("shortTitleText", getLikeValue(shortTitleText.toLowerCase()));
+    	} else {
+    		setParameter("shortTitleText", shortTitleText.toLowerCase());
+    	}
+    }
 
+    // longTitle
+    public void filterByStudyLongTitle(final String longTitleText ,String operator) {
+    	andWhere("lower(s.longTitle) "+operator+" :" + "longTitleText");
+        
+    	if (operator.equals("like")) {
+    		setParameter("longTitleText", getLikeValue(longTitleText.toLowerCase()));
+    	} else {
+    		setParameter("longTitleText", longTitleText.toLowerCase());
+    	}
+    }
+    
+    
+    // participant-id
+    public void filterByParticipantId(final Integer id,String operator) {
+        andWhere("p.id "+operator+" :id");
+        setParameter("id", id);
+    }  
+    
+    
+    
+    // participant-FirstName
+    public void filterByParticipantFirstName(final String fName,String operator) {
+        andWhere("lower(p.firstName) "+operator+" :pfName");
+        if (operator.equals("like")) {
+        	setParameter("pfName", getLikeValue(fName.toLowerCase()));
+        } else {
+        	setParameter("pfName", fName.toLowerCase());
+        }
+    }
+
+    // participant - LastName
+    public void filterByParticipantLastName(final String lName,String operator) {
+        andWhere("lower(p.lastName) "+operator+" :plName");
+        if (operator.equals("like")) {
+        	setParameter("plName", getLikeValue(lName.toLowerCase()) );
+        } else {
+        	setParameter("plName", lName.toLowerCase() );
+        }
+    }
+
+    // participant - Ethnicity
+    public void filterByParticipantEthnicity(String ethenicity,String operator) {
+        andWhere("lower(p.ethnicity) "+operator+" :pEthenicity");
+        setParameter("pEthenicity", ethenicity.toLowerCase() );
+    }
+
+    // participant - Race
+    public void filterByParticipantRace(String race,String operator) {
+        andWhere("lower(p.race) "+operator+" :pRace");
+        setParameter("pRace", race.toLowerCase() );
+    }
+    
+    // p.gender
+    public void filterByParticipantGender(final String gender,String operator) {
+        andWhere("lower(p.gender) "+operator+" :pGender");
+        setParameter("pGender", gender.toLowerCase());
+    }
+    
+    
+	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
+		Date dateValue = null;
+		try {
+			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
+			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	        dateValue = (Date)formatter.parse(dateString);
+	    
+		} catch (Exception ex) {
+			throw new Exception("Error parsing date " + dateString + ": " + ex.getMessage(), ex);
+		}
+		String yearPredicate = null;
+		String monthPredicate = null;
+		
+		if (predicate.equals(">") || predicate.equals(">=")) {
+			yearPredicate = ">";
+			monthPredicate = ">";
+		} else if (predicate.equals("<") || predicate.equals("<=")) {
+			yearPredicate = "<=";
+			monthPredicate = "<";
+		} 
+
+		StringBuilder dateQuery = new StringBuilder();
+		// parse the date value into a Java Date object
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateValue);
+		dateQuery.append("(");
+		
+		int month = cal.get(Calendar.MONTH) + 1;
+		if(!predicate.equals("=")){
+			String yearQuery = "year(" + fullAttributeName + ") " + yearPredicate + " '" + cal.get(Calendar.YEAR) + "'";
+			String monthQuery = "year(" + fullAttributeName + ") = '" + cal.get(Calendar.YEAR) + "' AND " +
+					"month(" + fullAttributeName + ") " + monthPredicate + " '" + month + "'";
+			String dayQuery = "year(" + fullAttributeName + ") = '" + cal.get(Calendar.YEAR) + "' AND " +
+				"month(" + fullAttributeName + ") = '" + month + "' AND " +
+				"day(" + fullAttributeName + ") " + predicate + " '" + cal.get(Calendar.DAY_OF_MONTH) + "'";
+			dateQuery.append(yearQuery).append(" OR (").append(monthQuery).append(") OR (").append(dayQuery).append(")");
+		}else{
+			dateQuery.append("year(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.YEAR)).append("' AND ")
+					.append("month(").append(fullAttributeName).append(") = '").append(month).append("' AND ")
+					.append("day(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.DAY_OF_MONTH)).append("'");
+		}
+		dateQuery.append(")");
+		return dateQuery.toString();
+	}
+
+    
     
 }

@@ -20,10 +20,6 @@ public class ParticipantQuery extends AbstractQuery {
 
     private static final String ETHNITICTY = "ethnicity";
     
-    public static final String PARTICIPANT_ALIAS = "p";
-    
-    public static final String STUDY_ALIAS = "s";
-    
     public static final String ASSIGNMENT_ALIAS = "assignment";
 
     public ParticipantQuery() {
@@ -50,12 +46,12 @@ public class ParticipantQuery extends AbstractQuery {
     }
     
     // participant shud have assignmengt and study , outerjoin method is only for naming convention in advanced search
-    public void outerjoinAssignment() {
-    	joinAssignment();
-    }
-    public void outerjoinStudy() {
-    	joinStudy();
-    }
+    //public void outerjoinAssignment() {
+    	//joinAssignment();
+    //}
+    //public void outerjoinStudy() {
+    	//joinStudy();
+    //}
     
     public void joinStudySite() {
     	joinAssignment();
@@ -67,40 +63,6 @@ public class ParticipantQuery extends AbstractQuery {
     	joinStudySite();
     	join ("studySite.study s");
     }
-
-
-    
-    public void filterById(final Integer id, String operator) {
-        andWhere("p.id "+operator+" :id");
-        setParameter("id", id);
-    }
- 
-    public void filterByStudyId(final Integer id, String operator) {
-        andWhere("s.id "+operator+" :id");
-        setParameter("id", id);
-    }
-    
-    // shortTitle
-    public void filterByStudyShortTitle(final String shortTitleText , String operator) {
-    	andWhere("lower(s.shortTitle) "+operator+" :" + "shortTitleText");
-        
-    	if (operator.equals("like")) {
-    		setParameter("shortTitleText", getLikeValue(shortTitleText.toLowerCase()));
-    	} else {
-    		setParameter("shortTitleText", shortTitleText.toLowerCase());
-    	}
-    }
-
-    // longTitle
-    public void filterByStudyLongTitle(final String longTitleText ,String operator) {
-    	andWhere("lower(s.longTitle) "+operator+" :" + "longTitleText");
-        
-    	if (operator.equals("like")) {
-    		setParameter("longTitleText", getLikeValue(longTitleText.toLowerCase()));
-    	} else {
-    		setParameter("longTitleText", longTitleText.toLowerCase());
-    	}
-    }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
     	andWhere("lower(assignment.studySubjectIdentifier) "+operator+" :SSI");
@@ -110,26 +72,6 @@ public class ParticipantQuery extends AbstractQuery {
     		setParameter("SSI", studySubjectIdentifier.toLowerCase());
     	}
         
-    }
-    
-    public void filterByFirstName(final String firstName, String operator) {
-        
-        andWhere("lower(p.firstName) "+operator+" :firstName");
-        if (operator.equals("like")) {
-        	setParameter("firstName", getLikeValue(firstName.toLowerCase()));
-        } else {
-        	setParameter("firstName", firstName.toLowerCase());
-        }
-        
-    }
-
-    public void filterByLastName(final String lastName ,String operator) {
-        andWhere("lower(p.lastName) "+operator+" :lastName");
-        if (operator.equals("like")) {
-        	setParameter("lastName", getLikeValue(lastName.toLowerCase()) );
-        } else {
-        	setParameter("lastName", lastName.toLowerCase() );
-        }
     }
 
     public void filterByIdentifierValue(final String value) {
@@ -174,25 +116,7 @@ public class ParticipantQuery extends AbstractQuery {
     	andWhere("p.id in (select assignments.participant.id from StudyParticipantAssignment assignments where assignments.studySite.organization.id=:orgId)");
     	setParameter("orgId", organizationId);
     }   
-    
-    
-    // participant - Ethnicity
-    public void filterByEthnicity(String ethenicity,String operator) {
-        andWhere("lower(p.ethnicity) "+operator+" :pEthenicity");
-        setParameter("pEthenicity", ethenicity.toLowerCase() );
-    }
 
-    // participant - Race
-    public void filterByRace(String race,String operator) {
-        andWhere("lower(p.race) "+operator+" :pRace");
-        setParameter("pRace", race.toLowerCase() );
-    }
-    
-    // p.gender
-    public void filterByGender(final String gender,String operator) {
-        andWhere("lower(p.gender) "+operator+" :pGender");
-        setParameter("pGender", gender.toLowerCase());
-    }
 
 
 }
