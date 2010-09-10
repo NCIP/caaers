@@ -44,8 +44,12 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
 			dObject.setInView(false);
 			for(ViewColumn viewColumn: dObject.getViewColumn()){
-				if(viewColumn.isSelected())
+				if(viewColumn.getColumnAttribute().equals("id") && !viewColumn.isSelected()) {
+					viewColumn.setSelected(true);
+				}
+				if(viewColumn.isSelected()) {
 					dObject.setInView(true);
+				}
 			}
 		}
 		List<AdvancedSearchCriteriaParameter> parameters = new ArrayList<AdvancedSearchCriteriaParameter>();

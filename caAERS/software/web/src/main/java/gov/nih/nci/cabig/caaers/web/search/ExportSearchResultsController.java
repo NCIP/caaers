@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.SearchDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -27,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -42,7 +43,7 @@ public class ExportSearchResultsController extends AbstractCommandController {
 	
 	private SearchDao searchDao;
 	private AdvancedSearchUi advancedSearchUi;
-	private ParticipantDao participantDao;
+	private AdvancedSearchDao advancedSearchDao;
 	private static final String XLS_SEARCH_RESULTS_FILENAME = "xlsSearchResults.xls";
 	public ExportSearchResultsController(){
 		setCommandClass(AdvancedSearchCommand.class);
@@ -193,15 +194,15 @@ public class ExportSearchResultsController extends AbstractCommandController {
 			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted())
 					parameters.add(p);
 		}
-		String query = "";
+
 		CommandToSQL commandToSQL = new CommandToSQL();
-		query = commandToSQL.transform(command.getSearchTargetObject(), parameters, true);
-		command.setHql(query);
+		AbstractQuery query = commandToSQL.transform(command.getSearchTargetObject(), parameters);
+		command.setHql(query.getQueryString());
 		
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
 		if(commandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
-			multipleObjectList = (List<Object[]>) participantDao.search(new HQLQuery(query));
+			multipleObjectList = (List<Object[]>) advancedSearchDao.search(query);
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -212,7 +213,7 @@ public class ExportSearchResultsController extends AbstractCommandController {
 				}
 		}
 		else{
-			singleObjectList = (List<Object>) participantDao.search(new HQLQuery(query));
+			singleObjectList = (List<Object>) advancedSearchDao.search(query);
 			//command.setNumberOfResults(singleObjectList.size());
 			command.setAdvancedSearchRowList(processSingleObjectList(singleObjectList, command.getSearchTargetObject().getDependentObject().get(0)));
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -284,11 +285,10 @@ public class ExportSearchResultsController extends AbstractCommandController {
 	public void setSearchDao(SearchDao searchDao){
     	this.searchDao = searchDao;
     }
-	
-	/**
-	 * @param participantDao the participantDao to set
-	 */
-	public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
+
+	public void setAdvancedSearchDao(AdvancedSearchDao advancedSearchDao) {
+		this.advancedSearchDao = advancedSearchDao;
 	}
+	
+
 }
