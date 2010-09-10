@@ -22,6 +22,8 @@
 			<xs:element name="predicate" type="xs:string"/>
 			<xs:element name="value" type="xs:string"/>
 			<xs:element name="displayValue" type="xs:string"/>
+			<xs:element name="dataType" type="xs:string"/>
+			<xs:element name="filterMethod" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 	
