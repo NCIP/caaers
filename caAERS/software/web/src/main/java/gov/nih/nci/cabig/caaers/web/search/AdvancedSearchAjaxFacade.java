@@ -248,11 +248,17 @@ public class AdvancedSearchAjaxFacade{
 				}
 			}
 		}
-		Search search = new Search();
-		search.setCreatedDate(new Date());
-		search.setDescription(searchDescription);
-		search.setLoginId(loginId);
-		search.setName(searchName);
+		Search search = null;
+		List<Search> searches = searchDao.getByLoginAndName(loginId, searchName);
+		if (searches.size() > 0 ){
+			search = searches.get(0);
+		} else {
+			search = new Search();
+			search.setCreatedDate(new Date());
+			search.setDescription(searchDescription);
+			search.setLoginId(loginId);
+			search.setName(searchName);
+		}
 		
 		// Marshall the saveSearch object into an xml string.
 		Marshaller marshaller;
