@@ -119,6 +119,8 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 					parameter.setPredicate(criteriaParameter.getPredicate());
 					parameter.setValue(criteriaParameter.getValue());
 					parameter.setDisplayValue(criteriaParameter.getDisplayValue());
+					parameter.setDataType(criteriaParameter.getDataType());
+					parameter.setFilterByMethodInQueryClass(criteriaParameter.getFilterMethod());
 					command.getCriteriaParameters().add(parameter);
 				}
 				// Setup the view selected.

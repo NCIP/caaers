@@ -229,6 +229,8 @@ public class AdvancedSearchAjaxFacade{
 			criteriaParameter.setAttributeName(parameter.getAttributeName());
 			criteriaParameter.setPredicate(parameter.getPredicate());
 			criteriaParameter.setValue(parameter.getValue());
+			criteriaParameter.setDataType(parameter.getDataType());
+			criteriaParameter.setFilterMethod(parameter.getFilterByMethodInQueryClass());
 			criteriaParameterList.add(criteriaParameter);
 		}
 		saveSearch.setCriteriaParameter(criteriaParameterList);
