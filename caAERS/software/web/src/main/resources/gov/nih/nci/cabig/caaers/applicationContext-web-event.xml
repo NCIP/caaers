@@ -47,6 +47,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="filteredDataLoader" ref="courseIndexDataLoader" />
     </bean>
 
+    <bean id="expeditedReportModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ExpeditedReportModificationEventListener">
+        <property name="filteredDataLoader" ref="expeditedReportIndexDataLoader" />
+    </bean>
+    
     <bean id="reportModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ReportModificationEventListener">
         <property name="filteredDataLoader" ref="reportIndexDataLoader" />
     </bean>
