@@ -260,7 +260,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
 
     public void testSearchParticipant() {
         ParticipantQuery pq = new ParticipantQuery();
-        pq.filterByFirstName("Dilbert","like");
+        pq.filterByParticipantFirstName("Dilbert","like");
         List all = getDao().searchParticipant(pq);
         assertNotNull(all);
         assertEquals(1, all.size());
