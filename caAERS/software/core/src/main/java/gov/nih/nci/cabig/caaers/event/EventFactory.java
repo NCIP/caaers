@@ -1,15 +1,24 @@
 package gov.nih.nci.cabig.caaers.event;
 
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
-
-import java.util.Collection;
 
 /**
  * @author: Biju Joseph
@@ -35,7 +44,7 @@ public class EventFactory implements ApplicationContextAware{
         }else if (entity instanceof Investigator){
            event = new InvestigatorModificationEvent(SecurityUtils.getAuthentication(), entity);
         }else if (entity instanceof ExpeditedAdverseEventReport){
-           event = new ReportModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new ExpeditedReportModificationEvent(SecurityUtils.getAuthentication(), entity);
         }else if (entity instanceof AdverseEventReportingPeriod){
            event = new CourseModificationEvent(SecurityUtils.getAuthentication(), entity);
         }else if (entity instanceof Participant){
@@ -44,6 +53,8 @@ public class EventFactory implements ApplicationContextAware{
            event = new OrganizationModificationEvent(SecurityUtils.getAuthentication(), entity);
         }else if (entity instanceof AdverseEvent) {
         	event = new AdverseEventModificationEvent(SecurityUtils.getAuthentication(), entity);
+        }else if (entity instanceof Report){
+           event = new ReportModificationEvent(SecurityUtils.getAuthentication(), entity);
         }
 
         if(async){
