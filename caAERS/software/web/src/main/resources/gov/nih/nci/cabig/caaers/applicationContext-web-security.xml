@@ -72,7 +72,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/reviewResolver" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/reviewEvaluationPeriod" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/reviewAeReport" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
-		<entry key="/pages/ae/submitReport" value="ae_reporter,data_reader" />		        
+		<entry key="/pages/ae/submitReport" value="ae_reporter,ae_expedited_report_reviewer,data_reader" />		        
 		<entry key="/pages/ae/edit" value="ae_reporter,data_reader" />        
 		<entry key="/pages/ae/routingAndReview" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/generateExpeditedfPdf" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
@@ -274,9 +274,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.ae.ViewReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 
           <!--  AE Flow, Submit -->
-          <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportResultTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportResultTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ"/>
 
           <!--========= RULES ========-->
           <entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
