@@ -146,7 +146,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
      */
     public static void createCustomPDFTest() {
 
-        String XMLFile = "/home/dell/Desktop/testAEReport.xml";
+        String XMLFile = "/home/dell/Downloads/expeditedAdverseEventReport-335.xml";
         String PDFFile = "/home/dell/Desktop/testAEReport.pdf";
 
         AdeersReportGenerator g = new AdeersReportGenerator();
@@ -169,18 +169,14 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     }
 
     public static void main(String[] args) {
-/*
-        ExpeditedReportTree t = new ExpeditedReportTree();
-        System.out.println(t.getPropertyName());
-*/
-        createCustomPDFTest();
+        createMedwatchPDFTest();
     }
 
-    public void createMedwatchPDFTest() {
+    public static void createMedwatchPDFTest() {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("/Users/sakkala/tech/adeers/new-schemas/expeditedAdverseEventReport-220.xml");
+            FileReader input = new FileReader("/home/dell/Downloads/expeditedAdverseEventReport-335.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -189,7 +185,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
                 line = bufRead.readLine();
             }
 
-            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
+            aeg.generateMedwatchPdf(str1, "/home/dell/Desktop/medwatch-2.pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }
