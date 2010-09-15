@@ -374,7 +374,7 @@ Event.observe(window, "load", function() {
             		</tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
-            	 	<td colspan="3"><div class="label"><i>No terms selected</i></div></td>
+            	 	<td colspan="3" bgcolor="#ffffff"><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
              </table>
             </tags:table>
@@ -402,7 +402,7 @@ Event.observe(window, "load", function() {
             	</c:forEach>
                 
                  <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
-                    <td colspan="3"><div class="label"><i>No terms selected</i></div></td>
+                    <td colspan="3" bgcolor="#ffffff"><div class="label"><i>No terms selected</i></div></td>
                  </c:if>
             	
              </table>
@@ -427,7 +427,7 @@ Event.observe(window, "load", function() {
                     </tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
-            	 	<tr><td colspan="2"><div class="label"><i>No terms selected</i></div></td></tr>
+            	 	<tr><td colspan="2" bgcolor="#ffffff"><div class="label"><i>No terms selected</i></div></td></tr>
             	 </c:if>
 
              </table>
