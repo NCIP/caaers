@@ -19,19 +19,14 @@
 				<div class="row">
 					<div class="leftpanel">
                         <div class="row">
-                            <div class="label">
-                                Status
-                            </div>
+                            <div class="label">Status</div>
                             <div class="value" id="report-status-${report.id}">
                                 <c:if test="${report.lastVersion.reportStatus == 'PENDING'}">
                                     <span class="dueOn">
                                         <c:if test="${not empty report.lastVersion.dueOn}">
-                                            <i>Due on</i>
-                                            <b><tags:formatDate value="${report.lastVersion.dueOn}" /></b>
+                                            <i>Due on</i>&nbsp;<b><tags:formatDate value="${report.lastVersion.dueOn}" /></b>
                                         </c:if>
-                                        <c:if test="${ empty report.lastVersion.dueOn}">
-                                            <i>Amendment Due</i>
-                                        </c:if>
+                                        <c:if test="${ empty report.lastVersion.dueOn}"><i>Amendment Due</i></c:if>
                                     </span>
                                 </c:if>
                                 <c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}">
@@ -98,7 +93,6 @@
                     </c:otherwise>
                 </c:choose>
 				<div style="text-align:right;">
-					
 					<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
@@ -146,12 +140,12 @@
 	                    	</c:if>
 	                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
 	                            <c:if test="${renderSubmitLink[report.id]}">
-	                            	<li><a class="submitter-green" href="#" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" >Submit <img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" /></a></li>
+	                            	<li><a class="submitter-green" href="#" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" ><img src="<chrome:imageUrl name="../blue/submit-small.png"/>" alt="" />&nbsp;Submit</a></li>
 	                            </c:if>
 	                        </c:if>
 	                    </c:if>
 						<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-	                        <li><a class="submitter-red" href="#" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};">Withdraw</a></li>
+	                        <li><a class="submitter-red" href="#" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png"/>">&nbsp;Withdraw</a></li>
 	                    </c:if>
 					</ul>
                 </div>

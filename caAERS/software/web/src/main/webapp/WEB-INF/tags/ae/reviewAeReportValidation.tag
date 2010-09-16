@@ -7,13 +7,9 @@
 <%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.report.Report" description="The report that is printed by this row." %>
 
 <tr>    				
-	<td>
-    	<div class="label" align="left">${report.reportDefinition.label}</div>
-	</td>
+	<td><div class="label" align="left">${report.reportDefinition.label}</div></td>
 	<c:if test="${report.reportDefinition.amendable == true}">
-		<td align="center">
-			<div class="label" align="center">${report.lastVersion.reportVersionId}</div>
-		</td>
+		<td align="center"><div class="label" align="center">${report.lastVersion.reportVersionId}</div></td>
 	</c:if>
 	<c:if test="${report.reportDefinition.amendable == false}">
 		<td/>

@@ -8,6 +8,44 @@
 <c:set var="lastVersion" value="${report.lastVersion}" />
 <c:set var="reportStatus" value="${lastVersion.reportStatus}" />
 
+<style>
+    .fg-menu a:link, .fg-menu a:visited, .fg-menu a:hover, .fg-menu a:active {
+        font-size:10pt;
+    }
+</style>
+
+<script>
+
+    jQuery(document).ready(function() {
+        initPage();
+    });
+
+    function initPage() {
+        createDropDowns();
+    }
+
+    function createDropDowns() {
+        jQuery(".fg-button").each(function() {
+            id = jQuery(this).attr("id");
+            options = "options-" + id;
+            jQuery("#"+id).menu({
+                content: jQuery("#" + options).html(),
+                maxHeight: 180,
+                width: 230,
+                positionOpts: {
+                    directionV: 'down',
+                    posX: 'right',
+                    posY: 'bottom',
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                showSpeed: 50
+            });
+        });
+    }
+
+</script>
+
 <c:if test="${reportStatus ne 'REPLACED' }">
 	<tr align="center" id="row${rpIndex}" class="${repcurrClass}">
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
@@ -35,51 +73,25 @@
 			<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/>
 		</td>
 		<td width="20%" id="action${report.id}" align="center">
-			
-			<SELECT id="actions-rp-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
-		     	<OPTION selected value="none">Please select</OPTION>
-		     	<c:if test="${command.study.caaersXMLType}">
-		     		<OPTION value="xml">Export caAERS XML</OPTION>
-		     	</c:if>
-		     	<c:if test="${command.study.adeersPDFType}">
-		     		<OPTION value="pdf">Export AdEERS PDF</OPTION>
-		     	</c:if>
-		     	<c:if test="${command.study.medwatchPDFType}">
-		     		<OPTION value="medwatchpdf">Export MedWatch 3500A PDF</OPTION>
-		     	</c:if>
-		     	<c:if test="${command.study.dcpSAEPDFType}">
-		     		<OPTION value="dcp">Export DCP SAE PDF</OPTION>
-		     	</c:if>
-                <c:if test="${command.study.ciomsPDFType}">
-                    <OPTION value="cioms">Export CIOMS PDF</OPTION>
-                </c:if>
-		     	<c:if test="${command.study.ciomsSaePDFType}">
-		     		<OPTION value="ciomssae">Export DCP Safety Report PDF</OPTION>
-		     	</c:if>
-		     	<c:if test="${report.aeReport.notificationMessagePossible and (not empty configuration.map.pscBaseUrl)}">
-		     			<OPTION value="notifyPSC">Notify PSC</OPTION>
-		     	</c:if>
-		     	
-				<c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED'}">
-					<OPTION value="withdraw">Withdraw</OPTION>
-				</c:if>
 
-                <c:if test="${command.reportsSubmittable[report.id]}">
-                         <OPTION value="submit">Submit</OPTION>
-                </c:if>
-				<c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}">
-                    <OPTION value="amend">Amend</OPTION>
-                </c:if>
-								
-				<c:if test="${( reportStatus eq 'COMPLETED' or reportStatus eq 'AMENDED' )and (not empty lastVersion.submissionUrl)}">
-                	<OPTION value="adeers">View in AdEERS</OPTION>
-                </c:if>
-				
-             </SELECT>
-           
-             <br>
-	 		<c:if test="${report.aeReport.notificationMessagePossible}"><span class="notify-unit" id="notify-unit-${report.aeReport.id}"><tags:indicator id="notify-indicator-${report.aeReport.id}"/></span></c:if>
-            
+            <div style="text-align:right;">
+                <a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span><span style="color:white">Actions</span></a>
+            </div>
+            <div id="options-actions-menu-${report.id}" style="display: none;">
+                <ul>
+                    <c:if test="${command.study.caaersXMLType}"><li><a href="#" onclick="doIt('xml', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>&nbsp;Export caAERS XML</a></li></c:if>
+                    <c:if test="${command.study.adeersPDFType}"><li><a href="#" onclick="doIt('pdf', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>&nbsp;Export AdEERS PDF</a></li></c:if>
+                    <c:if test="${command.study.medwatchPDFType}"><li><a href="#" onclick="doIt('medwatchpdf', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>&nbsp;Export MedWatch 3500A PDF</a></li></c:if>
+                    <c:if test="${command.study.dcpSAEPDFType}"><li><a href="#" onclick="doIt('dcpSAEPDFType', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>&nbsp;Export DCP SAE PDF</a></li></c:if>
+                    <c:if test="${command.study.ciomsPDFType}"><li><a href="#" onclick="doIt('ciomsPDFType', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>&nbsp;Export CIOMS PDF</a></li></c:if>
+                    <c:if test="${command.study.ciomsSaePDFType}"><li><a href="#" onclick="doIt('ciomsSaePDFType', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>&nbsp;Export DCP Safety Report PDF</a></li></c:if>
+                    <c:if test="${report.aeReport.notificationMessagePossible and (not empty configuration.map.pscBaseUrl)}"><li><a href="#" onclick="doIt('notifyPSC', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/notify.png"/>" alt=""/>&nbsp;Notify PSC</a></li></c:if>
+                    <c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED'}"><li id="WITHDRAW_${report.id}"><a href="#" onclick="doIt('withdraw', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')" class="submitter-red"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png" />" alt="" />&nbsp;Withdraw</a></li></c:if>
+                    <c:if test="${command.reportsSubmittable[report.id]}"><li id="SUBMIT_${report.id}"><a class="submitter-green" href="#" onclick="doIt('submit', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/submit-small.png"/>" alt="" />&nbsp;Submit</a></li></c:if>
+                    <c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}"><li><a href="#" onclick="doIt('amend', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/Amend-icon-small.png"/>" alt="" />&nbsp;Amend</a></li></c:if>
+                    <c:if test="${(reportStatus eq 'COMPLETED' or reportStatus eq 'AMENDED' )and (not empty lastVersion.submissionUrl)}"><li><a class="submitter-green" href="#" onclick="doIt('adeers', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt="" />&nbsp;View in AdEERS</a></li></c:if>
+                </ul>
+            </div>
 		</td>
 	</tr>
 	<tr id="reptable${report.id}" style="display:none;">

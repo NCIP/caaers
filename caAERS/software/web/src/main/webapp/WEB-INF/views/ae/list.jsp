@@ -195,15 +195,10 @@ color:#0033FF;
                     if (ajaxResult.error) {
                         caaersLog(ajaxResult.errorMessage);
                     } else {
-                        //AE.hideIndicator("notify-indicator-" + aeReportId)
                         var statusColumn = $("status" + reportId)
                         var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
-
-                        var optionColumn = $("action" + reportId)
-                        optionColumnData = $("action" + reportId).innerHTML;
-
-                        Element.update(statusColumn, statusColumnData)
-                        Element.update(optionColumn, optionColumnData)
+                        Element.update(statusColumn, statusColumnData);
+                        updateDropDownAfterWithdraw(reportId);
                     }
                 });
             } else if (action == 'submit') {
@@ -220,35 +215,28 @@ color:#0033FF;
     }  
 
     function updateDropDownAfterWithdraw(reportId) {
-        var select = $('actions-' + reportId);
-        
-        for (var i = (select.options.length-1); i>=0; i--) {
-            var o = select.options[i];
-            if ((select.options[i].value == 'submit') || (select.options[i].value == 'withdraw')) {
-            	select.options[i] = null;
-            }
-        }
+        jQuery('#SUBMIT_' + reportId).remove();
+        jQuery('#WITHDRAW_' + reportId).remove();
+        createDropDowns();
     }
 
-    function executeAction(reportId, url, aeReportId, submissionUrl){
-        var actions = $("actions-rp-" + reportId);
-        
-    	for ( i=0; i < actions.length; i++) {
-            if (actions.options[i].selected && actions.options[i].value != "none") {
-            	if(confirm('Are you sure you want to take the action - ' + actions.options[i].text + ' ?')){
-	                switch (actions.options[i].value) {
-    	                case "notifyPSC": notifyPsc(aeReportId); break;
-        	            case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;
-            	        case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  updateDropDownAfterWithdraw(reportId); break;
-                	    case "amend": doAction(actions.options[i].value, aeReportId, reportId);  break;
-                    	case "adeers": window.open(submissionUrl, "_blank");  break;
-                    	default: window.open(url + "&format="+ actions.options[i].value,"_self");
-                	}
-                }else{
-                	return false;
+    function doIt(type, reportId, aeReportId, submissionURL) {
+        executeAction(type, reportId, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport='/>' + aeReportId + '&reportId=' + reportId, aeReportId, submissionURL);
+    }
+
+    function executeAction(type, reportId, url, aeReportId, submissionUrl) {
+            if(confirm('Are you sure you want to take the action ?')) {
+                switch (type) {
+                    case "notifyPSC": notifyPsc(aeReportId); break;
+                    case "submit": doAction(type, aeReportId, reportId); break;
+                    case "withdraw": doAction(type, aeReportId, reportId); break;
+                    case "amend": doAction(type, aeReportId, reportId);  break;
+                    case "adeers": window.open(submissionUrl, "_blank");  break;
+                    default: window.open(url + "&format=" + type, "_self");
                 }
+            }else{
+                return false;
             }
-         }
      }
      
      function notifyPsc(aeReportId) {
