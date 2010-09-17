@@ -10,6 +10,8 @@ import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
+import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import org.springframework.beans.factory.annotation.Required;
 
 public class INDAjaxFacade {
@@ -43,6 +45,11 @@ public class INDAjaxFacade {
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
         List<Organization> orgs = organizationDao.getBySubnames(query);
+        orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
     /*
@@ -50,6 +57,11 @@ public class INDAjaxFacade {
      */
     public List<Organization> restrictOrganization(String text) {
         List<Organization> orgs = organizationRepository.restrictBySubnames(new String[] { text });
+        orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode","externalId");
     }
 

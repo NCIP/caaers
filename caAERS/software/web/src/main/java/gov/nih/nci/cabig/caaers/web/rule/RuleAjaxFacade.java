@@ -17,6 +17,8 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
+import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 import org.apache.axis.utils.StringUtils;
@@ -61,7 +63,16 @@ public class RuleAjaxFacade {
     	studyQuery.filterByDataEntryStatus(true);
     	studyQuery.filterByNonAdministrativelyComplete();
     	studyQuery.filterBySponsorOrganizationId(Integer.parseInt(sponsorId));
-    	return searchStudies(studyQuery);
+    	List<Study> studies = searchStudies(studyQuery);
+        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
+            public String serialize(Study object) {
+                if(object.getPrimaryIdentifierValue() != null) {
+                    return object.getPrimaryIdentifierValue() + " " + object.getShortTitle();
+                }
+                return object.getShortTitle();
+            }
+        });
+        return studies;
     }
 
   
@@ -82,7 +93,16 @@ public class RuleAjaxFacade {
     	studyQuery.filterByDataEntryStatus(true);
     	studyQuery.filterByNonAdministrativelyComplete();
     	studyQuery.filterByOrganizationId(Integer.parseInt(institutionId));
-        return searchStudies(studyQuery);
+        List<Study> studies = searchStudies(studyQuery);
+        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
+            public String serialize(Study object) {
+                if(object.getPrimaryIdentifierValue() != null) {
+                    return object.getPrimaryIdentifierValue() + " " + object.getShortTitle();
+                }
+                return object.getShortTitle();
+            }
+        });
+        return studies;
     	
     }
 
@@ -332,6 +352,11 @@ public class RuleAjaxFacade {
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
         List<Organization> orgs = organizationDao.getBySubnames(query);
+        orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
 
@@ -345,6 +370,11 @@ public class RuleAjaxFacade {
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
         List<Organization> sites = organizationDao.getBySubnames(query);
+        sites = RankBasedSorterUtils.sort(sites , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
 
         // cut down objects for serialization
         return ObjectTools.reduceAll(sites, "id", "name", "nciInstituteCode");

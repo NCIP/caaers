@@ -76,6 +76,8 @@ import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
+import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -159,7 +161,13 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
-        return anatomicSiteDao.getBySubnames(extractSubnames(text));
+        List<AnatomicSite> anatomicSites = anatomicSiteDao.getBySubnames(extractSubnames(text));
+        anatomicSites = RankBasedSorterUtils.sort(anatomicSites , text, new Serializer<AnatomicSite>(){
+            public String serialize(AnatomicSite object) {
+                return object.getName();
+            }
+        });
+        return  anatomicSites;
     }
 
     public AnatomicSite getAnatomicSiteById(String anatomicSiteId) throws Exception {
@@ -206,7 +214,8 @@ public class CreateAdverseEventAjaxFacade {
 
 
     public List<PriorTherapy> matchPriorTherapies(String text) {
-        return priorTherapyDao.getBySubnames(extractSubnames(text));
+        List<PriorTherapy> therapies = priorTherapyDao.getBySubnames(extractSubnames(text));
+        return therapies;
     }
 
     public List<PreExistingCondition> matchPreExistingConds(String text) {
@@ -215,17 +224,32 @@ public class CreateAdverseEventAjaxFacade {
 
     public List<LowLevelTerm> matchLowLevelTermsByCode(int version_id, String text) {
         List<LowLevelTerm> terms = lowLevelTermDao.getByVersionSubnames(version_id, extractSubnames(text));
+        terms = RankBasedSorterUtils.sort(terms , text, new Serializer<LowLevelTerm>(){
+            public String serialize(LowLevelTerm object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(terms, "id", "meddraCode", "meddraTerm");
     }
 
     public List<Condition> matchConditions(String text) {
         List<Condition> conditions = conditionDao.getAllByText(text);
+        conditions = RankBasedSorterUtils.sort(conditions , text, new Serializer<Condition>(){
+            public String serialize(Condition object) {
+                return object.getConditionName();
+            }
+        });
         return conditions;
     }
 
     public List<ChemoAgent> matchChemoAgents(String text) {
         String[] excerpts = {text};
         List<ChemoAgent> agents = chemoAgentDao.getBySubname(excerpts);
+        agents = RankBasedSorterUtils.sort(agents , text, new Serializer<ChemoAgent>(){
+            public String serialize(ChemoAgent object) {
+                return object.getFullName();
+            }
+        });
         return agents;
     }
 
@@ -267,11 +291,21 @@ public class CreateAdverseEventAjaxFacade {
     public List<InterventionSite> matchInterventionSites(String text) {
         String[] excerpts = {text};
         List<InterventionSite> sites = interventionSiteDao.getBySubname(excerpts);
+        sites = RankBasedSorterUtils.sort(sites , text, new Serializer<InterventionSite>(){
+            public String serialize(InterventionSite object) {
+                return object.getName();
+            }
+        });
         return sites;
     }
 
     public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
+        agents =  RankBasedSorterUtils.sort(agents , text, new Serializer<Agent>(){
+            public String serialize(Agent object) {
+                return object.getDisplayName();
+            }
+        });
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
 
@@ -334,6 +368,11 @@ public class CreateAdverseEventAjaxFacade {
         query.filterByStudy(studyId);
 
         List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
+        participantAjaxableDomainObjects = RankBasedSorterUtils.sort(participantAjaxableDomainObjects , text, new Serializer<ParticipantAjaxableDomainObject>(){
+            public String serialize(ParticipantAjaxableDomainObject object) {
+                return object.getDisplayName();
+            }
+        });
         // cut down objects for serialization
         for (ParticipantAjaxableDomainObject o : participantAjaxableDomainObjects) {
             o.setStudySubjectIdentifiersString(o.getStudySubjectIdentifiersCSV());
@@ -357,12 +396,22 @@ public class CreateAdverseEventAjaxFacade {
         domainObjectQuery.filterByStudyStatus(ignoreCompletedStudy);
         domainObjectQuery.filterByDataEntryStatus(true);
         List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
+        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<StudyAjaxableDomainObject>(){
+            public String serialize(StudyAjaxableDomainObject object) {
+                return object.getDisplayName();
+            }
+        });
         return reduceAll(studies, "primaryIdentifierValue", "shortTitle" , "id");
     }
 
 
     public List<CtcTerm> matchTerms(String text, Integer ctcVersionId, Integer ctcCategoryId, int limit) throws Exception {
         List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), ctcVersionId, ctcCategoryId);
+        terms = RankBasedSorterUtils.sort(terms , text, new Serializer<CtcTerm>(){
+            public String serialize(CtcTerm object) {
+                return object.getFullName();
+            }
+        });
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
@@ -384,7 +433,6 @@ public class CreateAdverseEventAjaxFacade {
         } else {
             terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
         }
-
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
@@ -473,6 +521,11 @@ public class CreateAdverseEventAjaxFacade {
 
     public List<LabTerm> matchLabTerms(String text, Integer labCategoryId) {
         List<LabTerm> terms = labTermDao.getBySubname(extractSubnames(text), labCategoryId);
+        terms = RankBasedSorterUtils.sort(terms , text, new Serializer<LabTerm>(){
+            public String serialize(LabTerm object) {
+                return object.getTerm();
+            }
+        });
         // cut down objects for serialization
         for (LabTerm term : terms) {
             term.getCategory().setTerms(null);

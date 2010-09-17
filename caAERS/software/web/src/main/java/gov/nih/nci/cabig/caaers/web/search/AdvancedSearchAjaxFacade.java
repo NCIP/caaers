@@ -1,26 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.acegisecurity.context.SecurityContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-import org.springframework.beans.factory.annotation.Required;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -36,15 +15,23 @@ import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomain
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
+import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
-import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
-import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
-import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
-import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.SelectedColumn;
-import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
-import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
+import gov.nih.nci.cabig.caaers.web.search.ui.*;
+import org.acegisecurity.context.SecurityContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Required;
+
+import javax.servlet.ServletException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.*;
 
 public class AdvancedSearchAjaxFacade{
 	
@@ -163,7 +150,7 @@ public class AdvancedSearchAjaxFacade{
 	/**
 	 * This method is called to add a new criteria to a dependent object. The class name of the dependent object is passed as a
 	 * parameter to this method.
-	 * @param dependentObjectClassName
+	 * @param dependentObjectDisplayName
 	 * @return
 	 */
 	public AjaxOutput addCriteria(String dependentObjectDisplayName){
@@ -309,16 +296,31 @@ public class AdvancedSearchAjaxFacade{
         domainObjectQuery.filterStudiesWithMatchingText(text);
         domainObjectQuery.filterByDataEntryStatus(true);
         List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
+        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<StudyAjaxableDomainObject>(){
+            public String serialize(StudyAjaxableDomainObject object) {
+                return object.getDisplayName();
+            }
+        });
         return studies;
     }
 	
 	public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
+        agents = RankBasedSorterUtils.sort(agents , text, new Serializer<Agent>(){
+            public String serialize(Agent object) {
+                return object.getDisplayName();
+            }
+        });
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description", "displayName");
     }
 	
 	public List<CtcTerm> matchTerms(String text){
 		List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), null, null);
+        terms = RankBasedSorterUtils.sort(terms , text, new Serializer<CtcTerm>(){
+            public String serialize(CtcTerm object) {
+                return object.getFullName();
+            }
+        });
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
@@ -340,6 +342,11 @@ public class AdvancedSearchAjaxFacade{
         query.filterParticipantsWithMatchingText(text);
 
         List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
+        participantAjaxableDomainObjects = RankBasedSorterUtils.sort(participantAjaxableDomainObjects , text, new Serializer<ParticipantAjaxableDomainObject>(){
+            public String serialize(ParticipantAjaxableDomainObject object) {
+                return object.getDisplayName();
+            }
+        });
         return participantAjaxableDomainObjects;
     }
 

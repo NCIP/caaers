@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
+import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import org.apache.commons.logging.Log;
@@ -77,6 +79,11 @@ public class CreateStudyAjaxFacade {
         StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
         int siteId = studyCommand.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteInvestigator> siteInvestigators = investigatorRepository.getBySubnames(arr, siteId);
+        siteInvestigators = RankBasedSorterUtils.sort(siteInvestigators, text, new Serializer<SiteInvestigator>(){
+            public String serialize(SiteInvestigator object) {
+                return object.getInvestigator().getFullName();  
+            }
+        });
         return ObjectTools.reduceAll(siteInvestigators,
                         new ObjectTools.Initializer<SiteInvestigator>() {
                             public void initialize(final SiteInvestigator instance) {
@@ -88,14 +95,25 @@ public class CreateStudyAjaxFacade {
     public List<ResearchStaff> matchResearch(final String text, final int indexId) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
-        List<ResearchStaff> researchStaff = researchStaffRepository.getBySubnames(new String[] { text }, siteId);
-        return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName", "externalId");
+        List<ResearchStaff> researchStaffs = researchStaffRepository.getBySubnames(new String[] { text }, siteId);
+        researchStaffs = RankBasedSorterUtils.sort(researchStaffs, text, new Serializer<ResearchStaff>(){
+            public String serialize(ResearchStaff object) {
+                return object.getFullName();  
+            }
+        });
+        return ObjectTools.reduceAll(researchStaffs, "id", "firstName", "lastName", "externalId");
     }
 
     public List<SiteResearchStaff> matchSiteResearchStaff(final String text, final int indexId) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteResearchStaff> siteResearchStaffs =  researchStaffRepository.getSiteResearchStaffBySubnames(new String[] { text }, siteId);
+        siteResearchStaffs = RankBasedSorterUtils.sort(siteResearchStaffs , text, new Serializer<SiteResearchStaff>(){
+            public String serialize(SiteResearchStaff object) {
+                return object.getResearchStaff().getFullName();
+            }
+        });
+
         return ObjectTools.reduceAll(siteResearchStaffs,
                         new ObjectTools.Initializer<SiteResearchStaff>() {
                             public void initialize(final SiteResearchStaff instance) {
@@ -137,17 +155,28 @@ public class CreateStudyAjaxFacade {
     	
     	StudySiteAjaxableDomainObjectQuery query = new StudySiteAjaxableDomainObjectQuery();
     	query.filterByStudy(studyId);
-    	return studySiteAjaxableDomainObjectRepository.findStudySites(query);
+        List<StudySiteAjaxableDomainObject> sites = studySiteAjaxableDomainObjectRepository.findStudySites(query);
+    	return sites;
     	
     }
     
     public List<Agent> matchAgents(final String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
+        agents = RankBasedSorterUtils.sort(agents , text, new Serializer<Agent>(){
+            public String serialize(Agent object) {
+                return object.getDisplayName();
+            }
+        });
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
 
     public List<InvestigationalNewDrug> matchINDs(final String text) {
         List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByIds(new String[] { text });
+        inds = RankBasedSorterUtils.sort(inds , text, new Serializer<InvestigationalNewDrug>(){
+            public String serialize(InvestigationalNewDrug object) {
+                return object.getNumberAndHolderName();
+            }
+        });
         return ObjectTools.reduceAll(inds, "id", "strINDNo", "holderName");
     }
     
@@ -168,6 +197,11 @@ public class CreateStudyAjaxFacade {
      */
     public List<Organization> restrictOrganizations(final String text, Boolean skipFiltering) {
         List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text), skipFiltering);
+        orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
 
@@ -178,6 +212,11 @@ public class CreateStudyAjaxFacade {
      * */
     public List<Organization> matchStudyOrganizations(final String text, final Integer studyId) {
         List<StudyOrganization> sos = organizationRepository.getApplicableOrganizationsFromStudyOrganizations(text, studyId);
+        sos = RankBasedSorterUtils.sort(sos , text, new Serializer<StudyOrganization>(){
+            public String serialize(StudyOrganization object) {
+                return object.getOrganization().getFullName();
+            }
+        });
         Set<Organization> organizations = new HashSet<Organization>();
         for (StudyOrganization so : sos) {
             organizations.add(ObjectTools.reduce(so.getOrganization(), "id", "name", "nciInstituteCode", "externalId"));
@@ -189,6 +228,11 @@ public class CreateStudyAjaxFacade {
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
         List<Organization> orgs = organizationDao.getBySubnames(query);
+        orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
 
@@ -198,12 +242,16 @@ public class CreateStudyAjaxFacade {
 
     public List<DiseaseCategory> matchDiseaseCategories(final String text, final Integer categoryId) {
         List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getBySubname(extractSubnames(text), categoryId);
+        diseaseCategories =  RankBasedSorterUtils.sort(diseaseCategories , text, new Serializer<DiseaseCategory>(){
+            public String serialize(DiseaseCategory object) {
+                return object.getName();
+            }
+        });
         return diseaseCategories;
     }
 
     public List<DiseaseCategory> matchDiseaseCategoriesByParentId(final Integer parentCategoryId) {
-        List<DiseaseCategory> diseaseCategories = diseaseCategoryDao
-                        .getByParentId(parentCategoryId);
+        List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getByParentId(parentCategoryId);
         return diseaseCategories;
     }
 

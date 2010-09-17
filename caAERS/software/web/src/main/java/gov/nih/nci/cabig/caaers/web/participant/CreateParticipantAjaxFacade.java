@@ -25,6 +25,8 @@ import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
+import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -270,6 +272,11 @@ public class CreateParticipantAjaxFacade {
     public List<Organization> matchOrganization(final String text) {
         //List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
     	List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text));
+        orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
+            public String serialize(Organization object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
 
