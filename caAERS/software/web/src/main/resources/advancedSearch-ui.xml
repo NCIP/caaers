@@ -352,6 +352,7 @@
 			<table-alias>AGENT_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinAgent</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>id</name>
 				<label>Agent</label>
