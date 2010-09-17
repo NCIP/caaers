@@ -37,6 +37,11 @@ public class INDAjaxFacade {
 
     public List<Investigator> matchInvestigators(String text) {
         List<Investigator> investigators = investigatorDao.getBySubnames(new String[] { text });
+        investigators = RankBasedSorterUtils.sort(investigators , text, new Serializer<Investigator>(){
+            public String serialize(Investigator object) {
+                return object.getFullName();
+            }
+        });
         return ObjectTools.reduceAll(investigators, "id", "firstName", "lastName");
     }
 
