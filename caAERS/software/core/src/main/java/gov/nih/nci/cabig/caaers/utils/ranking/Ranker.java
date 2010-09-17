@@ -37,15 +37,21 @@ public class Ranker {
 
         Pattern p = Pattern.compile(searchStr, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(str);
-        while(m.find()){
+        if(m.find()){
 
             int start = m.start();
             if(start == 0){
                 //begining of sentence
                 rankedObject.addToRank(BEGINING_OF_SENTENCE);
             } else {
+                int i = start - 1;
+                int j = start - 2;
+                char iChar = str.charAt(i);
+
+                //begining of sentence.
+                if((j == 0 && str.charAt(j) == '(') || (i == 0 && iChar == '(') ) rankedObject.addToRank(BEGINING_OF_SENTENCE);
                 //begining of word
-                if(str.charAt(start-1) == ' ' || str.charAt(start-1) == '(') rankedObject.addToRank(BEGINING_OF_WORD);
+                if(iChar == ' ' || iChar == '(') rankedObject.addToRank(BEGINING_OF_WORD);
             }
 
 
