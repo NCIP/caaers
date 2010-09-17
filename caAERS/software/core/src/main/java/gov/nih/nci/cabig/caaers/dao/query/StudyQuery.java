@@ -116,6 +116,14 @@ public class StudyQuery extends AbstractQuery {
         join("sagents.agent as agt");
     }
     
+    public void outerjoinStudyAgents(){
+    	leftOuterJoin("s.studyAgentsInternal as sagents");
+    }
+    public void outerjoinAgent() {
+    	outerjoinStudyAgents();
+    	leftOuterJoin("sagents.agent as agt");
+    }    
+    
     /**
      * Add a NOT condition on Study.id
      * @param id
