@@ -158,11 +158,12 @@ public abstract class InvestigatorController<C extends InvestigatorCommand> exte
         	}else{
         		investigatorRepository.save(investigator, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         	}
-            if(eventFactory != null) eventFactory.publishEntityModifiedEvent(investigator);
+
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
         }
+        if(eventFactory != null) eventFactory.publishEntityModifiedEvent(investigator);
         if (!errors.hasErrors()) {
             String statusMessage = "Successfully created Investigator.";
             

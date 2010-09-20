@@ -161,13 +161,14 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
                     // e.printStackTrace();  
                 }
             }
-            if(eventFactory != null)
-                eventFactory.publishEntityModifiedEvent(researchStaff);
+
             
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
         }
+        
+        if(eventFactory != null) eventFactory.publishEntityModifiedEvent(researchStaff);
 
         if (!errors.hasErrors()) {
             String statusMessage = getMessageSource().getMessage(isCreateMode ? "MSG_RS.created" : "MSG_RS.updated", null, Locale.getDefault());

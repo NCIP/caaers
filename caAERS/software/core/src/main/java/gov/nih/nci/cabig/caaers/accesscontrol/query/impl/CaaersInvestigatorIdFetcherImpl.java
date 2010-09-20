@@ -44,21 +44,13 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
 
     public CaaersInvestigatorIdFetcherImpl(){
         StringBuilder query = new StringBuilder();
-
-        //site query
-        query.append("select distinct si.investigator.id from SiteInvestigator si ")
-             .append(" where si.organization.id in ( " )
-             .append(   "select distinct ss.organization.id from StudyOrganization so , StudySite ss " )
-             .append(   "where so.study = ss.study and so.organization.id in (").append(ORG_INDEX_BASE_QUERY).append(" ) " )
-             .append(" ) ")
-             .append(" or si.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(" )");
-        siteScopedHQL = query.toString();
-
-        query.setLength(0);
-
-        //study query (direct access for now)
         query.append("select distinct si.investigator.id from SiteInvestigator si ")
              .append(" where si.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(" )");
+        
+        //site query
+        siteScopedHQL = query.toString();
+
+        //study query (direct access for now)
         studyScopedHQL = query.toString();
         
         queryWithUserAccessToAllOrgs = "select distinct si.investigator.id from SiteInvestigator si ";

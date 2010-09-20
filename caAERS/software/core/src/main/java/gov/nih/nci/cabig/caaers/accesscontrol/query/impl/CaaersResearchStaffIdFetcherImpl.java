@@ -45,20 +45,13 @@ public class CaaersResearchStaffIdFetcherImpl extends AbstractIdFetcher implemen
     public CaaersResearchStaffIdFetcherImpl(){
         StringBuilder query = new StringBuilder();
         
-        //site query
-        query.append("select distinct si.researchStaff.id from SiteResearchStaff si ")
-             .append(" where si.organization.id in ( " )
-             .append(   "select distinct ss.organization.id from StudyOrganization so , StudySite ss " )
-             .append(   "where so.study = ss.study and so.organization.id in (").append(ORG_INDEX_BASE_QUERY).append(" ) " )
-             .append(" ) ")
-             .append(" or si.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(" )");
-        siteScopedHQL = query.toString();
-
-        query.setLength(0);
-
-        //study query  (direct access)
+        //site query  (direct access)
         query.append("select distinct si.researchStaff.id from SiteResearchStaff si ")
              .append(" where si.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(" )");
+        
+        siteScopedHQL = query.toString();
+
+        //study query  (direct access)
         studyScopedHQL = query.toString();
         
         queryWithUserAccessToAllOrgs = "select distinct si.researchStaff.id from SiteResearchStaff si";
