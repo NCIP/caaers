@@ -233,7 +233,7 @@ public class AgentSpecificTermsImporter {
             ir.close();
         }
         
-        results.put(KEY_MISSING_TERMS, missingTerms);
+        results.put(KEY_MISSING_TERMS, missingTerms.size());
         results.put(KEY_PROCESSED_AGENTS, agents.size());
         results.put(KEY_PROCESSED_AGENTTERMS, asael);
         results.put(KEY_MISSING_AGENTS, missingAgents);

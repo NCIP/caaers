@@ -6,14 +6,11 @@
 
 <chrome:division id="asael-id">
 	<p id="instructions">
-        <c:set var="terms">
-            <jsp:attribute name="value">${results["missingTerms"]}</jsp:attribute>
-        </c:set>
 		<caaers:message code="asael.import.success" /><br><br>
         <caaers:message code="asael.import.success.agents" />: <b>${results["processedAgents"]}</b><br>
         <caaers:message code="asael.import.success.agent.terms" />: <b>${results["processedAgentTerms"]}</b><br>
         <caaers:message code="asael.import.success.agent.missing" />: <b>${results["missingAgents"]}</b><br>
         <caaers:message code="asael.import.success.agentTermsDuplicates" />: <b>${results["duplicateAgentTerms"]}</b><br>
-        <caaers:message code="asael.import.success.terms.missing" />: <b>${fn:length(terms)}</b><br>
+        <caaers:message code="asael.import.success.terms.missing" />: <b>${results["missingTerms"]}</b><br>
 	</p>
 </chrome:division>
