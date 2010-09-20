@@ -46,7 +46,6 @@
 	<xsl:attribute-set name="normal">
     	<xsl:attribute name="font-size">6.5pt</xsl:attribute>
     	<xsl:attribute name="font-weight">normal</xsl:attribute>
-    	<xsl:attribute name="padding-left">1mm</xsl:attribute>
   	</xsl:attribute-set>
 	
   
@@ -57,11 +56,10 @@
 		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
 			<fo:layout-master-set>
-				<fo:simple-page-master master-name="A4"
-					margin-left="10mm" margin-top="2mm" margin-right="6mm">
-					<fo:region-body margin-top="4mm" />
+				<fo:simple-page-master master-name="A4" margin-left="10mm" margin-top="2mm" margin-right="6mm" margin-bottom="0mm">
+					<fo:region-body margin-top="4mm" margin-bottom="20mm"/>
 					<fo:region-before extent="0.25in" />
-					<fo:region-after extent="0.25in" />
+					<fo:region-after extent="20mm" />
 				</fo:simple-page-master>
 
 
@@ -69,19 +67,49 @@
 
 			<fo:page-sequence master-reference="A4">
 
-				<fo:flow flow-name="xsl-region-body">
-					<fo:table >						
-						<fo:table-column column-width="100%" />
-						<fo:table-body>
-							<fo:table-row>
-								<fo:table-cell>	
-									<fo:block  font-size="6" text-align="right">
-										Form Approved: OMB No. 0910-0291, Expires: 10/31/08 <fo:block/>See OMB statement on reverse.
+                <!-- FOOTER START -->
+                <fo:static-content flow-name="xsl-region-after">
+                        <fo:block font-size="8pt" font-family="arial" text-align-last="center" >
+                                <fo:table>
+                                    <fo:table-column column-width="49%"/>
+                                    <fo:table-column column-width="2%"/>
+                                    <fo:table-column column-width="49%"/>
+                                    <fo:table-body>
+                                        <fo:table-row>
+                                            <fo:table-cell><fo:block xsl:use-attribute-sets="normal" text-align-last="left">
+													The public reporting burden for this collection of information has been estimated to average 66
+minutes per response, including the time for reviewing instructions, searching existing data
+sources, gathering and maintaining the data needed, and completing and reviewing the
+collection of information. Send comments regarding this burden estimate or any other aspect of
+this collection of information, including suggestions for reducing this burden to:
 									</fo:block>
-								</fo:table-cell>																
-							</fo:table-row>						
-						</fo:table-body>
-					</fo:table>											
+                                            </fo:table-cell>
+                                            <fo:table-cell><fo:block /></fo:table-cell>
+                                            <fo:table-cell>
+                                                <fo:table>
+                                                    <fo:table-column column-width="50%"/>
+                                                    <fo:table-column column-width="50%"/>
+                                                    <fo:table-body>
+                                                    <fo:table-row>
+                                                        <fo:table-cell><fo:block xsl:use-attribute-sets="normal" text-align-last="left">Department of Health and Human Services Food and Drug Administration - MedWatch 10903 New Hampshire Avenue Building 22, Mail Stop 4447 Silver Spring, MD 20993-0002</fo:block></fo:table-cell>
+                                                        <fo:table-cell><fo:block xsl:use-attribute-sets="normal" text-align-last="left"><fo:inline xsl:use-attribute-sets="label">OMB Statement:</fo:inline> "An agency may not conduct or sponsor, and a person is not required to respond to, a collection of information unless it displays a currently valid OMB control number."</fo:block></fo:table-cell>
+                                                    </fo:table-row>
+                                                    <fo:table-row>
+                                                        <fo:table-cell number-columns-spanned="2"><fo:block xsl:use-attribute-sets="label" text-align-last="left">Please DO NOT RETURN this form to this address.</fo:block></fo:table-cell>
+                                                    </fo:table-row>
+                                                    </fo:table-body>
+                                                </fo:table>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+
+
+                                    </fo:table-body>
+                                </fo:table>
+                        </fo:block>
+                </fo:static-content>
+                <!-- FOOTER END -->
+
+				<fo:flow flow-name="xsl-region-body">
 					<fo:table >						
 						<fo:table-column column-width="33%" />
 						<fo:table-column column-width="34%" />
@@ -93,7 +121,7 @@
 									<fo:block font-size="8">Food and Drug Administration</fo:block>
 									<fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
 									<fo:block font-size="12" font-weight="bold">MEDWATCH</fo:block>
-									<fo:block font-size="9" font-weight="bold">FORM FDA 3500A (10/05)</fo:block>
+									<fo:block font-size="9" font-weight="bold">FORM FDA 3500A</fo:block>
 								</fo:table-cell>
 								<fo:table-cell text-align="center">
 									<fo:block font-size="10" font-family="Goudy">For use by user-facilities,<fo:block/>importers, distributors and manufacturers<fo:block/>for MANDATORY reporting</fo:block>
@@ -175,32 +203,9 @@
 											  		</fo:block> 
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border">
-													<fo:block xsl:use-attribute-sets="label">3.Sex</fo:block>
-													<fo:block><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text> </fo:block>
-													<fo:block font-size="6.5pt"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-													<xsl:choose>
-														<xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Female'">
-															[x]
-														</xsl:when>
-														<xsl:otherwise>
-															[ ]
-														</xsl:otherwise>
-													</xsl:choose>
-													<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-													Female
-													</fo:block>
-													<fo:block font-size="6.5pt"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-													<xsl:choose>
-														<xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Male'">
-															[x]
-														</xsl:when>
-														<xsl:otherwise>
-															[ ]
-														</xsl:otherwise>
-													</xsl:choose>													
-													<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-													Male
-													</fo:block>
+													<fo:block xsl:use-attribute-sets="label">3. Sex</fo:block>
+													<fo:block font-size="6.5pt"><xsl:choose><xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Female'">[x]</xsl:when><xsl:otherwise>[<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>]</xsl:otherwise></xsl:choose> Female</fo:block>
+													<fo:block font-size="6.5pt"><xsl:choose><xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Male'">[x]</xsl:when><xsl:otherwise>[<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>]</xsl:otherwise></xsl:choose> Male</fo:block>
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border">
 													<fo:block xsl:use-attribute-sets="label">4. Weight	</fo:block>
@@ -437,7 +442,7 @@
 										                </fo:block>																								
 												</fo:table-cell>
 											</fo:table-row>	
-											<fo:table-row height="50mm">
+											<fo:table-row height="45mm">
 												<fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
 													<fo:block>
 														<fo:inline font-size="6.5">6. </fo:inline>
@@ -479,7 +484,7 @@
 													</xsl:for-each>
 												</fo:table-cell>
 											</fo:table-row>	
-											<fo:table-row height="48mm">
+											<fo:table-row height="30mm">
 												<fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
 													<fo:block font-size="6.5" font-style="italic">
 														<fo:inline font-size="6.5" font-style="normal">7. </fo:inline>
@@ -1073,7 +1078,7 @@
 															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
-														Returned to Manufacturer on: 
+														Returned to Manufacturer on: <fo:leader leader-length="40%" leader-pattern="rule" rule-thickness="0.5pt"/> 
 													<xsl:call-template name="standard_date">
 													        <xsl:with-param name="date" select="AdverseEventReport/MedicalDevice/returnedDate"/>
 							   						</xsl:call-template>														
@@ -1195,7 +1200,7 @@
                             <fo:table-row>
                                 <fo:table-cell>
                                     <fo:block font-size="12" font-weight="bold">MEDWATCH</fo:block>
-                                    <fo:block font-size="9" font-weight="bold">FORM FDA 3500A (10/05) <fo:inline font-style="italic" font-weight="normal">(continued)</fo:inline></fo:block>
+                                    <fo:block font-size="9" font-weight="bold">FORM FDA 3500A<fo:inline font-style="italic" font-weight="normal"> (continued)</fo:inline></fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell text-align="center">
                                     <fo:block xsl:use-attribute-sets="label">Page ____ of ____</fo:block>
@@ -1211,7 +1216,7 @@
                                                 </fo:table-row>
                                                 <fo:table-row height="30">
                                                     <fo:table-cell xsl:use-attribute-sets="full-border">
-                                                        <fo:block font-size="6.5" padding-top="1mm">abcc</fo:block>
+                                                        <fo:block font-size="6.5" padding-top="1mm"></fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                             </fo:table-body>
@@ -1231,11 +1236,11 @@
 							<fo:table-row>
 								<fo:table-cell>
 									<fo:table border="1pt solid black">
-										<fo:table-column column-width="17%" />
-										<fo:table-column column-width="17%" />
+										<fo:table-column column-width="19%" />
 										<fo:table-column column-width="16%" />
 										<fo:table-column column-width="16%" />
-										<fo:table-column column-width="17%" />
+										<fo:table-column column-width="16%" />
+										<fo:table-column column-width="16%" />
 										<fo:table-column column-width="17%" />
 										<fo:table-body>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1">
@@ -1245,12 +1250,8 @@
 											</fo:table-row>
 											<fo:table-row>
 												<fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
-													<fo:block xsl:use-attribute-sets="label">
-                                                        1. Check one
-                                                    </fo:block>
-                                                    <fo:block>
-													    <fo:inline xsl:use-attribute-sets="normal">[ ] User Facility<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>[ ] Importer</fo:inline>
-                                                    </fo:block>
+													<fo:block xsl:use-attribute-sets="label">1. Check one</fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal">[ ] User Facility<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>[ ] Importer</fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">2. UF/Importer Report Number</fo:block>
@@ -1275,8 +1276,8 @@
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">7. Type of Report</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ]Initial</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ]Follow-up # <fo:leader leader-length="40%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Initial</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Follow-up # <fo:leader leader-length="40%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">8. Date of This Report <fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy)</fo:inline></fo:block>
@@ -1287,46 +1288,53 @@
 													<fo:block xsl:use-attribute-sets="label">9. Approximate Age of Device</fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="5" xsl:use-attribute-sets="full-border">
-													<fo:block xsl:use-attribute-sets="label">10. Event problem Codes <fo:inline xsl:use-attribute-sets="normal">(Refer to coding manual)</fo:inline></fo:block>
-													<fo:block xsl:use-attribute-sets="label">
-                                                        Patient Code <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/>
-                                                    </fo:block>
-													<fo:block xsl:use-attribute-sets="label">
-                                                        Device Code <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/>
-													</fo:block>
+													<fo:block xsl:use-attribute-sets="label" padding-bottom="2px">10. Event problem Codes <fo:inline xsl:use-attribute-sets="normal">(Refer to coding manual)</fo:inline></fo:block>
+													<fo:table>
+                                                        <fo:table-column column-width="25%" />
+                                                        <fo:table-column column-width="5%" />
+                                                        <fo:table-column column-width="70%" />
+                                                        <fo:table-body>
+                                                            <fo:table-row>
+                                                                <fo:table-cell text-align="right"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Patient Code</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block /></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal"><fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell text-align="right"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Device Code</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block /></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal"><fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                        </fo:table-body>
+                                                    </fo:table>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">11. Report Sent to FDA?</fo:block>
-													<fo:block xsl:use-attribute-sets="label">[ ] Yes <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-													<fo:block xsl:use-attribute-sets="label"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text><fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy)</fo:inline></fo:block>
-													<fo:block xsl:use-attribute-sets="label">[ ] No</fo:block>
+													<fo:block xsl:use-attribute-sets="normal">[ ] Yes <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+													<fo:block xsl:use-attribute-sets="normal"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>(mm/dd/yyyy)</fo:block>
+													<fo:block xsl:use-attribute-sets="normal">[ ] No</fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="4" xsl:use-attribute-sets="full-border" number-rows-spanned="2">
                                                     <fo:block xsl:use-attribute-sets="label">12. Location Where Event Occured</fo:block>
                                                     <fo:table>
                                                         <fo:table-body>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Hospital</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Outpatient Diagnostic Facility</fo:block></fo:table-cell>
-                                                            </fo:table-row>
-                                                            <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Home</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block/></fo:table-cell>
-                                                            </fo:table-row>
-                                                            <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Nursing Home</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Ambulatory Surgical Facility</fo:block></fo:table-cell>
-                                                            </fo:table-row>
-                                                            <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Outpatient Tretament Facility</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block /></fo:table-cell>
+                                                                <fo:table-cell>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Hospital</fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Home</fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Nursing Home</fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Outpatient Tretament Facility</fo:block>
+                                                                </fo:table-cell>
+                                                                <fo:table-cell>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Outpatient Diagnostic Facility</fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Ambulatory Surgical Facility</fo:block>
+                                                                </fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
                                                                 <fo:table-cell number-columns-spanned="2">
-                                                                    <fo:block xsl:use-attribute-sets="normal">[ ] Other <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-                                                                    <fo:block xsl:use-attribute-sets="normal"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160; (Specify)</xsl:text></fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Other <fo:leader leader-length="70%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160; (Specify)</xsl:text></fo:block>
                                                                 </fo:table-cell>
                                                             </fo:table-row>
                                                         </fo:table-body>
@@ -1336,9 +1344,9 @@
 											<fo:table-row>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">13. Report Sent to Manufacturer?</fo:block>
-                                                    <fo:block xsl:use-attribute-sets="label">[ ] Yes <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-                                                    <fo:block xsl:use-attribute-sets="label"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text><fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy)</fo:inline></fo:block>
-                                                    <fo:block xsl:use-attribute-sets="label">[ ] No</fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal">[ ] Yes <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>(mm/dd/yyyy)</fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal">[ ] No</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row height="20mm">
@@ -1353,7 +1361,7 @@
 											</fo:table-row>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1">
 												<fo:table-cell number-columns-spanned="4" number-rows-spanned="2" xsl:use-attribute-sets="full-border">
-													<fo:block xsl:use-attribute-sets="label" padding-bottom="25mm">1. Contact Office - Name/Address (and manufacturing Site for Devices)</fo:block>
+													<fo:block xsl:use-attribute-sets="label" padding-bottom="15mm">1. Contact Office - Name/Address (and manufacturing Site for Devices)</fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label" padding-bottom="7mm">2. Phone number</fo:block>
@@ -1363,15 +1371,15 @@
 												<fo:table-cell number-columns-spanned="2" number-rows-spanned="4" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">3. Report Source</fo:block>
 													<fo:block xsl:use-attribute-sets="normal"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text><fo:inline font-style="italic" font-weight="normal">(Check all that apply)</fo:inline></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Foreign</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Study</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Literature</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Consumer</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Health Professional</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] User Facility</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Company Reprezentative</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Distributor</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Other:</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Foreign</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Study</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Literature</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Consumer</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Health Professional</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] User Facility</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Company Reprezentative</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Distributor</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Other:</fo:block>
 													<fo:block xsl:use-attribute-sets="normal" padding-top="10px"><fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
 													<fo:block xsl:use-attribute-sets="normal" padding-top="10px"><fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
 													<fo:block xsl:use-attribute-sets="normal" padding-top="10px"><fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
@@ -1385,19 +1393,33 @@
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="2" number-rows-spanned="3" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">5.</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">(A)NDA # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-													<fo:block padding-top="5mm"></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">IND # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-                                                    <fo:block padding-top="5mm"></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">STN # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-                                                    <fo:block padding-top="5mm"></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">PMA/510(k) # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-                                                    <fo:block padding-top="5mm"></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Combination Product [ ] Yes</fo:block>
-                                                    <fo:block padding-top="5mm"></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Pre-1938 [ ] Yes</fo:block>
-                                                    <fo:block padding-top="5mm"></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">OTC Product [ ] Yes</fo:block>
+													<fo:table>
+                                                        <fo:table-column column-width="75%"/>
+                                                        <fo:table-column column-width="25%"/>
+                                                        <fo:table-body>
+                                                            <fo:table-row>
+                                                                <fo:table-cell number-columns-spanned="2"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">(A)NDA # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell number-columns-spanned="2"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">IND # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell number-columns-spanned="2"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">STN # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell number-columns-spanned="2"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">PMA/510(k) # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Combination Product</fo:block></fo:table-cell><fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Yes</fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Pre-1938</fo:block></fo:table-cell><fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Yes</fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                            <fo:table-row>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">OTC Product</fo:block></fo:table-cell><fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Yes</fo:block></fo:table-cell>
+                                                            </fo:table-row>
+                                                        </fo:table-body>
+													</fo:table>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1" height="10mm">
@@ -1412,20 +1434,20 @@
                                                     <fo:table>
                                                         <fo:table-body>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] 5-day</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] 30-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 5-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 30-day</fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] 7-day</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Periodic</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 7-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Periodic</fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] 10-day</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Initial</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 10-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Initial</fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] 15-day</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Follow-up # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 15-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Follow-up # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                         </fo:table-body>
                                                     </fo:table>
@@ -1441,13 +1463,6 @@
 											</fo:table-row>
 										</fo:table-body>
 									</fo:table>
-									<fo:block xsl:use-attribute-sets="normal">
-													The public reporting burden for this collection of information has been estimated to average 66
-minutes per response, including the time for reviewing instructions, searching existing data
-sources, gathering and maintaining the data needed, and completing and reviewing the
-collection of information. Send comments regarding this burden estimate or any other aspect of
-this collection of information, including suggestions for reducing this burden to:
-									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell><fo:block/></fo:table-cell>
                                     <fo:table-cell>
@@ -1464,27 +1479,27 @@ this collection of information, including suggestions for reducing this burden t
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" >
                                                     <fo:table-cell xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">1. Type of Reportable Event</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Death</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Serious Injury</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Malfunction</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Other <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Death</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Serious Injury</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Malfunction</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Other <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">2. If Follow-up, What Type ?</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Correction</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Additional Information</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Response to FDA Request</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Device Evaluation</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Correction</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Additional Information</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Response to FDA Request</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Device Evaluation</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
 
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" >
                                                     <fo:table-cell xsl:use-attribute-sets="full-border" number-rows-spanned="2">
                                                         <fo:block xsl:use-attribute-sets="label">3. Device Evaluated By Manufacturer ?</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Not returned to Manufacturer</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Yes [ ] Evaluation Summary Attached</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] No <fo:inline font-style="italic">(Attach page to explain why not) or provide code:</fo:inline></fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal"><fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Not returned to Manufacturer</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Yes [ ] Evaluation Summary Attached</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] No <fo:inline font-style="italic">(Attach page to explain why not) or provide code:</fo:inline></fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">4. Device Manufacturer Date <fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy)</fo:inline></fo:block>
@@ -1494,22 +1509,35 @@ this collection of information, including suggestions for reducing this burden t
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" >
                                                     <fo:table-cell xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">5. Labeled For Single Use ?</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Yes [ ] No</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Yes<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>[ ] No</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
 
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" >
                                                     <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="2">
-                                                        <fo:block xsl:use-attribute-sets="label">6. Evaluation Codes <fo:inline xsl:use-attribute-sets="normal">(Refer to coding manual)</fo:inline></fo:block>
-                                                        <fo:block xsl:use-attribute-sets="label">
-                                                            Method <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/>
-                                                        </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="label">
-                                                            Results <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/>
-                                                        </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="label">
-                                                            Conclusions <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="15%" leader-pattern="rule" rule-thickness="0.5pt"/>
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="label" padding-bottom="2px" >6. Evaluation Codes <fo:inline xsl:use-attribute-sets="normal">(Refer to coding manual)</fo:inline></fo:block>
+                                                        <fo:table>
+                                                            <fo:table-column column-width="20%" />
+                                                            <fo:table-column column-width="5%" />
+                                                            <fo:table-column column-width="75%" />
+                                                            <fo:table-body>
+                                                                <fo:table-row>
+                                                                    <fo:table-cell text-align="right"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Method</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block /></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                                </fo:table-row>
+                                                                <fo:table-row>
+                                                                    <fo:table-cell text-align="right"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Results</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block /></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                                </fo:table-row>
+                                                                <fo:table-row>
+                                                                    <fo:table-cell text-align="right"><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">Conclusions</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block /></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/> - <fo:leader leader-length="22%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
+                                                                </fo:table-row>
+                                                            </fo:table-body>
+                                                        </fo:table>
                                                     </fo:table-cell>
                                                 </fo:table-row>
 
@@ -1519,25 +1547,24 @@ this collection of information, including suggestions for reducing this burden t
                                                         <fo:table>
                                                             <fo:table-body>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Recall</fo:block></fo:table-cell>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Notification</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Recall</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Notification</fo:block></fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Repair</fo:block></fo:table-cell>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Inspection</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Repair</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Inspection</fo:block></fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Replace</fo:block></fo:table-cell>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Patient Monitoring</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Replace</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Patient Monitoring</fo:block></fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Relabeling</fo:block></fo:table-cell>
-                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal">[ ] Modification / Adjustment</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Relabeling</fo:block></fo:table-cell>
+                                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Modification / Adjustment</fo:block></fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell number-columns-spanned="2">
-                                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Other <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
-                                                                        <fo:block xsl:use-attribute-sets="normal"><fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Other <fo:leader leader-length="80%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                             </fo:table-body>
@@ -1545,9 +1572,9 @@ this collection of information, including suggestions for reducing this burden t
                                                     </fo:table-cell>
                                                     <fo:table-cell xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">8. Usage of Device</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Initial Use of Device</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Refuse</fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Unknown</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Initial Use of Device</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Refuse</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Unknown</fo:block>
 
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -1559,28 +1586,15 @@ this collection of information, including suggestions for reducing this burden t
                                                 </fo:table-row>
 
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" height="100mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border">
+                                                    <fo:table-cell>
                                                         <fo:block xsl:use-attribute-sets="label">10. [ ] Additional Manufacturer Narrative</fo:block>
                                                     </fo:table-cell>
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border">
+                                                    <fo:table-cell>
                                                         <fo:block xsl:use-attribute-sets="normal">and / or <fo:inline xsl:use-attribute-sets="label">11. [ ] Corrected data</fo:inline></fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
 
 
-                                            </fo:table-body>
-                                        </fo:table>
-                                        <fo:table>
-                                            <fo:table-column column-width="50%"/>
-                                            <fo:table-column column-width="50%"/>
-                                            <fo:table-body>
-                                            <fo:table-row>
-                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal">Department of Health and Human Services Food and Drug Administration - MedWatch 10903 New Hampshire Avenue Building 22, Mail Stop 4447 Silver Spring, MD 20993-0002</fo:block></fo:table-cell>
-                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal"><fo:inline xsl:use-attribute-sets="label">OMB Statement:</fo:inline> "An agency may not conduct or sponsor, and a person is not required to respond to, a collection of information unless it displays a currently valid OMB control number."</fo:block></fo:table-cell>
-                                            </fo:table-row>
-                                            <fo:table-row>
-                                                <fo:table-cell number-columns-spanned="2"><fo:block xsl:use-attribute-sets="label">Please DO NOT RETURN this form to this address.</fo:block></fo:table-cell>
-                                            </fo:table-row>
                                             </fo:table-body>
                                         </fo:table>
                                     </fo:table-cell>
