@@ -73,6 +73,7 @@ public class AgentSpecificTermsImporter {
         int rowCount = 0;
         int columnsCount = 0;
         Map<String, Agent> agents = new HashMap<String, Agent>();
+        Map<String, Agent> missingAgents = new HashMap<String, Agent>();
         Set<String> missingTerms = new HashSet<String>();
         Map<String, String> asaelCache = new HashMap<String, String>();
         int asael;
@@ -144,8 +145,8 @@ public class AgentSpecificTermsImporter {
 
         agents.clear();
         missingTerms.clear();
+        missingAgents.clear();
         asael = 0;
-        int missingAgents = 0;
         int duplicateAgentTerms = 0;
 
         //
@@ -210,8 +211,8 @@ public class AgentSpecificTermsImporter {
 
                     List<CtcTerm> list = terminologyRepository.getCtcTerm(ctcae_category, ctcae_version, ae_term);
                     if (list.size() == 0) {
-                        System.out.println("<ERROR>: Term not found: " + ae_term + ", Category: " + ctcae_category + ", CTCAE Version: " + ctcae_version);
-                        missingTerms.add(ae_term);
+                        // System.out.println("<ERROR>: Term not found: " + ae_term + ", Category: " + ctcae_category + ", CTCAE Version: " + ctcae_version);
+                        missingTerms.add("Term not found: " + ae_term + ", Category: " + ctcae_category + ", CTCAE Version: " + ctcae_version);
                     } else {
                         t.setCtcTerm(list.get(0));
                         if (persistASAE(t)) asael++; else duplicateAgentTerms++;
@@ -220,8 +221,10 @@ public class AgentSpecificTermsImporter {
                     agentSpecificTermDao.evict(t);
 
                 } else {
-                    System.out.println("<ERROR>: The agent was not found by its NSC: " + nsc);
-                    missingAgents++;
+                    if (!missingAgents.containsKey(nsc)) {
+                        // System.out.println("<ERROR>: The agent was not found by its NSC: " + nsc);
+                        missingAgents.put(nsc, null);
+                    }
                 }
 
             i++;
@@ -233,8 +236,8 @@ public class AgentSpecificTermsImporter {
             ir.close();
         }
         
-        results.put(KEY_MISSING_TERMS, missingTerms.size());
-        results.put(KEY_PROCESSED_AGENTS, agents.size());
+        results.put(KEY_MISSING_TERMS, missingTerms);
+        results.put(KEY_PROCESSED_AGENTS, agents.size() - missingAgents.size());
         results.put(KEY_PROCESSED_AGENTTERMS, asael);
         results.put(KEY_MISSING_AGENTS, missingAgents);
         results.put(KEY_DUPLICATE_AGENT_TERMS, duplicateAgentTerms);
