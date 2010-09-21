@@ -49,6 +49,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
     protected boolean isFormSubmission(HttpServletRequest request) {
         Set<String> paramNames = request.getParameterMap().keySet();
         boolean fromSearchListPage = false;
+        
         fromSearchListPage = paramNames.contains("runSavedQuery");
         String action = (String) findInRequest(request, "_action");
         if(fromSearchListPage) 

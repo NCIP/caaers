@@ -91,7 +91,17 @@ public class CommandToSQL{
 						invokeMethod(query,dobj.getJoinByMethod(),new Class[0],new Object[0]);
 					}
 				}
+				// sometimes view attributes needs some default filtering also , like study identifiers ..
+				DependentObject dobj1 = AdvancedSearchUiUtil.getDependentObjectByName(targetObject, viewObj);
+				List<ViewColumn> vcs= dobj1.getViewColumn();
+				for (ViewColumn vc:vcs) {
+					if (vc.isSelected() && vc.getFilterMethod() !=null) {
+						invokeMethod(query,vc.getFilterMethod(),new Class[0],new Object[0]);
+					}
+				}
 			}
+			
+
 			
 
 		
