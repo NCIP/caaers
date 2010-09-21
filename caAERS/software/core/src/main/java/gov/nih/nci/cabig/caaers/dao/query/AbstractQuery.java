@@ -333,6 +333,10 @@ public abstract class AbstractQuery {
         setParameter("pGender", gender.toLowerCase());
     }
     
+    public void filterByParticipantDOB(String dateString , String operator) throws Exception {
+    	andWhere(createDateQuery("p.dateOfBirth", dateString, operator));
+    }
+    
     
 	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
 		Date dateValue = null;

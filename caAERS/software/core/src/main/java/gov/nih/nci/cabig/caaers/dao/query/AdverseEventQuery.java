@@ -15,12 +15,28 @@ public class AdverseEventQuery extends AbstractQuery {
 	
 	public static final String TERMINOLOGY_ALIAS = "terminology";
 	
+	public static final String STUDY_PARTICIPANT_ALIAS = "spa";
+	
+	public static final String OUTCOMES_ALIAS = "outcomes";
+	
+	public static final String TAC = "tac";
+	
+	public static final String LL_TERM_ALIAS = "llt";
+	
 	public AdverseEventQuery() {
 		super("select distinct "+AE_ALIAS+" from AdverseEvent "+ AE_ALIAS);
 	}
 	
 	public void joinAdverseEventTerm(){
 		join (AE_ALIAS +".adverseEventTerm "+AE_TERM_ALIAS);
+	}
+
+	public void joinLowLevelTerm(){
+		join (AE_ALIAS +".lowLevelTerm "+LL_TERM_ALIAS);
+	}
+
+	public void outerjoinLowLevelTerm(){
+		leftOuterJoin (AE_ALIAS +".lowLevelTerm "+LL_TERM_ALIAS);
 	}
 	
 	public void joinReportingPeriod() {
@@ -31,18 +47,60 @@ public class AdverseEventQuery extends AbstractQuery {
 		joinReportingPeriod();
 		join (AE_REPORTING_PERIOD_ALIAS +".assignment.studySite.study "+STUDY_ALIAS);
 	}
+	
+	public void joinStudyIdentifiers() {
+		join (STUDY_ALIAS +".identifiers sids");	
+	}
+	
+	public void joinParticipantIdentifiers() {
+		join (PARTICIPANT_ALIAS +".identifiers pids");	
+	}
 
 	public void joinParticipant() {
 		joinReportingPeriod();
 		join (AE_REPORTING_PERIOD_ALIAS +".assignment.participant "+PARTICIPANT_ALIAS);
 	}
 	
+    public void joinStudyParticipantAssignment() {
+    	joinReportingPeriod();
+    	join (AE_REPORTING_PERIOD_ALIAS +".assignment "+STUDY_PARTICIPANT_ALIAS);
+    }
+    
     public void joinAeTerminology() {
     	joinStudy();
         join(STUDY_ALIAS+".aeTerminology "+TERMINOLOGY_ALIAS);
     }
     
+    public void joinOutcomes() {
+    	join (AE_ALIAS +".outcomes "+OUTCOMES_ALIAS);
+    }
+    
+    public void outerjoinOutcomes() {
+    	leftOuterJoin (AE_ALIAS +".outcomes "+OUTCOMES_ALIAS);
+    }   
+    
+	public void joinTreatmentAssignment() {
+		joinReportingPeriod();
+		join (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);
+	}
+
+	public void outerjoinTreatmentAssignment() {
+		joinReportingPeriod();
+		leftOuterJoin (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);
+	}
+	/**
+	public void joinIdentifiers() {
+		joinStudy();
+		join (STUDY_ALIAS +".identifiers "+STUDY_IDS_ALIAS);		
+	}
+	public void filterBySCCIdentifier() {
+		orWhere(STUDY_IDS_ALIAS+".type = 'Coordinating Center Identifier'" );
+	}
 	
+	public void filterBySFSIdentifier() {
+		orWhere(STUDY_IDS_ALIAS+".type = 'Protocol Authority Identifier'" );
+	}
+	*/
 	public void filterByCtcTerm(String term , String operator) {
 		andWhere (AE_TERM_ALIAS+".term.term "+operator+" :term");
 		if (operator.equals("like")) {
@@ -104,6 +162,11 @@ public class AdverseEventQuery extends AbstractQuery {
 
     public void filterByCourseEndDate(String dateString , String operator) throws Exception {
     	andWhere(createDateQuery(AE_REPORTING_PERIOD_ALIAS+".endDate", dateString, operator));
+    }
+
+    public void filterByCourseNumber(Integer num , String operator) throws Exception {
+    	andWhere(AE_REPORTING_PERIOD_ALIAS+".cycleNumber "+operator+" :num");
+        setParameter("num", num);
     }
     
 }
