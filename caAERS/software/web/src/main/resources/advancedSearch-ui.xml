@@ -760,6 +760,12 @@
 				<dependent-object-index>0</dependent-object-index>
 				<view-column-index>8</view-column-index>
 			</view-column>
+			<view-column>
+				<column-attribute>reported</column-attribute>
+				<column-title>is Reported</column-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>9</view-column-index>
+			</view-column>
 		</dependent-object>
 		
 		<dependent-object>
