@@ -48,6 +48,7 @@
 				<xs:element name="lengthy" type="xs:boolean"/>
 				<xs:element name="table-title" type="xs:string"/>
 				<xs:element name="selected" type="xs:boolean"/>
+				<xs:element name="filter-method" type="xs:string" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>
 	
