@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 
 import java.util.List;
 
@@ -68,7 +69,13 @@ public class AdvancedSearchTest extends TestCase{
 
 					commandToSQL.invokeMethod(query,filterMethodName,par,obj);
 				}
-
+				
+				List<ViewColumn> vcs = dependentObject.getViewColumn();
+				for (ViewColumn vc:vcs) {
+					if (vc.getFilterMethod() != null) {
+						commandToSQL.invokeMethod(query, vc.getFilterMethod(), new Class[0], new Object[0]);
+					}
+				}
 			}
 			
 		}
