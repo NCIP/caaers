@@ -210,7 +210,7 @@ public class AgentSpecificTermsImporter {
 
                     List<CtcTerm> list = terminologyRepository.getCtcTerm(ctcae_category, ctcae_version, ae_term);
                     if (list.size() == 0) {
-                        // System.out.println("Err. Term not found: " + ae_term);
+                        System.out.println("<ERROR>: Term not found: " + ae_term + ", Category: " + ctcae_category + ", CTCAE Version: " + ctcae_version);
                         missingTerms.add(ae_term);
                     } else {
                         t.setCtcTerm(list.get(0));
@@ -220,7 +220,7 @@ public class AgentSpecificTermsImporter {
                     agentSpecificTermDao.evict(t);
 
                 } else {
-                    // System.out.println("Err. The agent was not found by its NSC: " + nsc);
+                    System.out.println("<ERROR>: The agent was not found by its NSC: " + nsc);
                     missingAgents++;
                 }
 
