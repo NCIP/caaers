@@ -331,6 +331,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return organizationAssignedIdentifier;
     }
     
+    @Transient
+    public String getFundingSponsorIdentifierValue() {
+        return getFundingSponsorIdentifier().getValue();
+    }
+    
+    @Transient
+    public String getCoordinatingCenterIdentifierValue() {
+        return getCoordinatingCenterIdentifier().getValue();
+    }
+    
 
     @Transient
     public void setOrganizationAssignedIdentifier(final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
