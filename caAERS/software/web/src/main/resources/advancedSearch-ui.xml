@@ -761,6 +761,7 @@
 				<view-column-index>8</view-column-index>
 			</view-column>
 		</dependent-object>
+		
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.CtcTerm</class-name>
 			<display-name>Ctc Term</display-name>
@@ -784,8 +785,8 @@
 				<dependent-object-index>1</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
-
 		</dependent-object>
+				
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
@@ -857,8 +858,25 @@
 				<dependent-object-index>2</dependent-object-index>
 				<view-column-index>4</view-column-index>
 			</view-column>
-
+			<view-column>
+				<column-title>Study Coordinating Center Identifier</column-title>
+				<column-attribute>coordinatingCenterIdentifierValue</column-attribute>
+				<table-title>dummy1</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>5</view-column-index>
+				<filter-method>joinStudyIdentifiers</filter-method>
+			</view-column>		
+			<view-column>
+				<column-title>Study Funding Sponsor Identifier</column-title>
+				<column-attribute>fundingSponsorIdentifierValue</column-attribute>
+				<table-title>dummy2</table-title>
+				<dependent-object-index>2</dependent-object-index>
+				<view-column-index>6</view-column-index>
+				<filter-method>joinStudyIdentifiers</filter-method>
+			</view-column>					
 		</dependent-object>
+		
+		
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
@@ -969,8 +987,39 @@
 				<dependent-object-index>3</dependent-object-index>
 				<view-column-index>4</view-column-index>
 			</view-column>
-
+			<view-column>
+				<column-title>Date Of Birth</column-title>
+				<column-attribute>dateOfBirth</column-attribute>
+				<table-title>dateOfBirth</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>5</view-column-index>
+			</view-column>
+			<view-column>
+				<column-title>Subject Primary ID</column-title>
+				<column-attribute>primaryIdentifierValue</column-attribute>
+				<table-title>dummy1</table-title>
+				<dependent-object-index>3</dependent-object-index>
+				<view-column-index>6</view-column-index>
+				<filter-method>joinParticipantIdentifiers</filter-method>
+			</view-column>	
 		</dependent-object>
+		
+	    <dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</class-name>
+			<display-name>Other MedDRA</display-name>
+			<table-name>dummy1</table-name>
+			<table-alias>LL_TERM_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinLowLevelTerm</join-by-method>
+			<outer-join-required>true</outer-join-required>
+			<view-column>
+				<column-attribute>fullName</column-attribute>
+				<column-title>Other MedDRA</column-title>
+				<dependent-object-index>4</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+		</dependent-object>
+		
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.AeTerminology</class-name>
 			<display-name>Ae terminology</display-name>
@@ -991,11 +1040,11 @@
 			<view-column>
 				<column-attribute>term</column-attribute>
 				<column-title>Ae terminology</column-title>
-				<dependent-object-index>4</dependent-object-index>
+				<dependent-object-index>5</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
-
 		</dependent-object>
+
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</class-name>
 			<display-name>Course</display-name>
@@ -1010,8 +1059,11 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+				<operator name="&lt;" display-uri="Less Than"/>
+				<operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseStartDate</filter-method>
 			</ui-attribute>
+	
 			<ui-attribute>
 				<name>courseEndDate</name>
 				<label>Course end date</label>
@@ -1020,17 +1072,96 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" filterByCourseEndDate-uri="Greater Than or Equal To"/>
+				<operator name="&lt;" display-uri="Less Than"/>
+				<operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseEndDate</filter-method>
 			</ui-attribute>
+			
+			<ui-attribute>
+				<name>cycleNumber</name>
+				<label>Course/Cycle number</label>
+				<data-type>Integer</data-type>
+				<field-type>text-field</field-type>
+				<operator name="=" display-uri="Equal To"/>				
+				<operator name=">" display-uri="Greater Than"/>
+				<operator name=">=" display-uri="Greater Than or Equal To"/>
+				<operator name="&lt;" display-uri="Less Than"/>
+				<operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<filter-method>filterByCourseNumber</filter-method>
+			</ui-attribute>	
+						
 			<view-column>
 				<column-attribute>name</column-attribute>
 				<column-title>Course name</column-title>
-				<dependent-object-index>5</dependent-object-index>
+				<dependent-object-index>6</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
-
+			<view-column>
+				<column-attribute>treatmentAssignmentDescription</column-attribute>
+				<column-title>Other Treatment Assignment Description</column-title>
+				<dependent-object-index>6</dependent-object-index>
+				<view-column-index>1</view-column-index>
+			</view-column>
+			<view-column>
+				<column-attribute>cycleNumber</column-attribute>
+				<column-title>Course/Cycle number</column-title>
+				<dependent-object-index>6</dependent-object-index>
+				<view-column-index>2</view-column-index>
+			</view-column>			
 		</dependent-object>
+
+	    <dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</class-name>
+			<display-name>TreatmentAssignment</display-name>
+			<table-alias>TAC</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinTreatmentAssignment</join-by-method>
+			<outer-join-required>true</outer-join-required>
+			<view-column>
+				<column-attribute>code</column-attribute>
+				<column-title>Treatment Assignment Code</column-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+			<view-column>
+				<column-attribute>description</column-attribute>
+				<column-title>Treatment Assignment Description</column-title>
+				<dependent-object-index>7</dependent-object-index>
+				<view-column-index>1</view-column-index>
+			</view-column>			
+		</dependent-object>
+				
+	    <dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
+			<display-name>StudyParticipantAssignment</display-name>
+			<table-alias>STUDY_PARTICIPANT_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinStudyParticipantAssignment</join-by-method>
+			<view-column>
+				<column-attribute>studySubjectIdentifier</column-attribute>
+				<column-title>Study subject identifier</column-title>
+				<dependent-object-index>8</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+		</dependent-object>
+		
+	    <dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.Outcome</class-name>
+			<display-name>Outcome</display-name>
+			<table-alias>OUTCOMES_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinOutcomes</join-by-method>
+			<outer-join-required>true</outer-join-required>
+			<view-column>
+				<column-attribute>outcomeType.displayName</column-attribute>
+				<column-title>Outcome</column-title>
+				<dependent-object-index>9</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+		</dependent-object>	
+									
 	</search-target-object>
+	
 	<!-- ReportQuery.java -->
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.report.Report</class-name>
