@@ -357,6 +357,11 @@ public class Participant extends Person {
 		}
         return null;
     }
+    
+    @Transient
+    public String getPrimaryIdentifierValue() {
+    	return getPrimaryIdentifier().getValue();
+    }
 
     @Transient
     @UniqueObjectInCollection(message = "Duplicate SystemAssignedIdentifier found in Identifiers list")
