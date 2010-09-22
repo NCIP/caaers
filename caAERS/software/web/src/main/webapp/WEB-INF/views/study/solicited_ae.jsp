@@ -274,6 +274,9 @@
     }
     function checkForm(event)
     {
+      if($('err-section').innerHTML != ""){
+        AE.SUBMISSION_INPROGRESS = false;  
+      }
       $('err-section').innerHTML = "";
       var listOfTermIds = $$('.eachRowTermID');
       
