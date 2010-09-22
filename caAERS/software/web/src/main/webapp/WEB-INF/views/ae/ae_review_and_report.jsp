@@ -331,7 +331,8 @@
 	 AE.recommendedOptions.get(aeReportId).each(function(rdId){
 		 rpHash.get(rdId).select();
 	 });
-
+     
+     checkIfAnyReportSelected(aeReportId);
  }
 //=================================================================================
  //deselect reports of the same group.
@@ -346,6 +347,7 @@
 //=================================================================================
  /*This function handles, when someone clicks on  a report definition */	
  function handleReportSelection(aeReportId, rdId){
+     checkIfAnyReportSelected(aeReportId);
 	 var curRdObject = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
 	 
 	 //check if there is at least one ae. 
@@ -817,7 +819,29 @@ function validate(aeReportId){
 	    
 	  </c:forEach>
    });
-   
+
+
+       function checkIfAnyReportSelected(aeReportId) {
+           var _true = false;
+           var rpHash = AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj) {
+               if (rdObj.isChecked()) {
+                   _true = true;
+               }
+           });
+
+           // change the SUBMIT button and the message
+           if (_true) {
+               jQuery('#report-btn-' + aeReportId).removeAttr('disabled');
+               if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).show();
+               if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).hide();
+
+           } else {
+               jQuery('#report-btn-' + aeReportId).attr('disabled', 'false');
+               if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).hide();
+               if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).show();
+           }
+       }
+
    </script>
 
 
