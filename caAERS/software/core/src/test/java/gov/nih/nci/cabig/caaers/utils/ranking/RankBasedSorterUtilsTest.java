@@ -60,4 +60,31 @@ public class RankBasedSorterUtilsTest extends TestCase {
         assertEquals("( MD5 ) hello biju", sortedList.get(2));
         assertEquals("hello ( MD5 )", sortedList.get(3));
     }
+
+    public void testSort3() throws Exception {
+        List<String> l = new ArrayList<String>();
+        l.add("Some one name Biju Joseph has it");
+        l.add("james said ( MD5 ) hello biju");
+        l.add("Hello (MD53) hello biju");
+        l.add("Oh my god");
+        l.add("There is a problem with MD5 checksum");
+        l.add("checksum (MD5)");
+        l.add("do you see what i see");
+        l.add("hello ( MD5 )");
+        l.add("The (MD54) cannot be empty");
+        l.add("comeon lets go");
+
+        List<String> sortedList = RankBasedSorterUtils.sort(l, "md5", new Serializer<String>(){
+            public String serialize(String object) {
+                return object;
+            }
+        });
+        assertEquals("hello ( MD5 )", sortedList.get(0));
+        assertEquals("checksum (MD5)", sortedList.get(1));
+        assertEquals("james said ( MD5 ) hello biju", sortedList.get(2));
+        assertEquals("There is a problem with MD5 checksum",sortedList.get(3));
+        assertEquals("The (MD54) cannot be empty",sortedList.get(4));
+        assertEquals("Hello (MD53) hello biju",sortedList.get(5));
+
+    }
 }

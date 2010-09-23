@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.utils.ranking;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * @author: Biju Joseph
  */
 public class RankBasedSorterUtils {
-
+    private static final Log log = LogFactory.getLog(RankBasedSorterUtils.class);
     /**
      * Will sort the input list based on the rank.
      * 
@@ -19,18 +21,23 @@ public class RankBasedSorterUtils {
      * @return  The rank based sorted list is returned. 
      */
     public static <T extends Object> List<T> sort(List<T> orginalList, String searchString , Serializer<T> seralizer){
-        if(CollectionUtils.isEmpty(orginalList)) return orginalList;
+        try{
+            if(CollectionUtils.isEmpty(orginalList)) return orginalList;
 
-        List<RankedObject<T>> rankedList = new ArrayList(orginalList.size());
-        Ranker ranker = new Ranker();
-        RankSorter rankSorter = new RankSorter();
-        
-        for(T o : orginalList){
-            RankedObject<T> rankedObject =  ranker.rank(o , searchString, seralizer);
-            rankedList.add(rankedObject);
+            List<RankedObject<T>> rankedList = new ArrayList(orginalList.size());
+            Ranker ranker = new Ranker(searchString);
+            RankSorter rankSorter = new RankSorter();
+
+            for(T o : orginalList){
+                RankedObject<T> rankedObject =  ranker.rank(o , seralizer);
+                rankedList.add(rankedObject);
+            }
+            rankSorter.sort(rankedList);
+            return toList(rankedList);
+        }catch(Exception e){
+            log.warn("unable to compile the pattern", e);
+            return orginalList;
         }
-        rankSorter.sort(rankedList);
-        return toList(rankedList);
     }
 
 
