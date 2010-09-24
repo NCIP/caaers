@@ -8,6 +8,49 @@
 <script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
 <script language="JavaScript" type="text/JavaScript">
 
+    jQuery(document).ready(function() {
+
+        initTextBox();
+        jQuery('#otherTAC').change(function() {
+            if (jQuery('#otherTAC').is(':checked')) {
+                enableTextBox();
+            } else {
+                disableTextBox();
+            }
+        })
+
+        Event.observe($('study.otherTreatmentAssignment.visible'), "keyup", function() {
+            $('study.otherTreatmentAssignment').value = $('study.otherTreatmentAssignment.visible').value;
+        });
+/*
+        jQuery('#study.otherTreatmentAssignment.visible').change(function() {
+            alert(1);
+            // jQuery('study.otherTreatmentAssignment').val(jQuery('study.otherTreatmentAssignment.visible').val());
+        })
+*/
+    });
+
+    function enableTextBox() {
+        $('study.otherTreatmentAssignment.visible').enable();
+        $('study.otherTreatmentAssignment.visible').value = "${command.study.otherTreatmentAssignment}";
+        $('study.otherTreatmentAssignment').value = "${command.study.otherTreatmentAssignment}";
+    }
+
+    function disableTextBox() {
+        $('study.otherTreatmentAssignment.visible').disable();
+        $('study.otherTreatmentAssignment.visible').value = "";
+        $('study.otherTreatmentAssignment').value = "";
+    }
+
+    function initTextBox() {
+        <c:if test="${not empty command.study.otherTreatmentAssignment}">
+        $('otherTAC').checked = true;
+        </c:if>
+        <c:if test="${empty command.study.otherTreatmentAssignment}">
+        disableTextBox();
+        </c:if>
+    }
+
     ajaxCRUD = new AJAX_CRUD_HELPER();
     function addTA() {
         ajaxCRUD._addItem('TA', null, null, '_TA', null, ${tab.number});
@@ -44,6 +87,17 @@
                 </c:forEach>
             </div>
         </div>
+
+        <div style="padding-left:15pt;">
+        <chrome:division collapsable="false" collapsed="false" title="Other Treatment Assignment">
+            <div class="row">
+                <div class="label"><input type="checkbox" name="otherTAC" id="otherTAC"></div>
+                <div class="value"><textarea cols="50" rows="3" name="study.otherTreatmentAssignment.visible" id="study.otherTreatmentAssignment.visible">${command.study.otherTreatmentAssignment}</textarea></div>
+            </div>
+            <input type="hidden" name="study.otherTreatmentAssignment" id="study.otherTreatmentAssignment" value="${command.study.otherTreatmentAssignment}">
+        </chrome:division>
+        </div>
+
 
     </jsp:attribute>
 

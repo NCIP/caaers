@@ -23,11 +23,10 @@
             if ($('reportingPeriod.treatmentAssignmentDescription').value != '' || countTA == 0)
                 $('otherTA').checked = true;
 
-/*
-            Event.observe($('assignment.startDateOfFirstCourse'), "change", function() {
-                alert('Change.');
+            Event.observe($('reportingPeriod.treatmentAssignment'), "change", function() {
+                if (!$('otherTA').checked) $('reportingPeriod.treatmentAssignmentDescription').value = '';
             });
-*/
+             
          });
 
          function editFirstCourseDate() {

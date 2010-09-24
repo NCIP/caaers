@@ -67,6 +67,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected AeTerminology aeTerminology;
     protected DiseaseTerminology diseaseTerminology;
     protected String status;
+    protected String otherTreatmentAssignment;
 
     // TODO: Remove
     protected Boolean blindedIndicator;
@@ -1280,5 +1281,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     public void setVerbatimFirst(Boolean verbatimFirst) {
         this.verbatimFirst = verbatimFirst;
+    }
+
+    public String getOtherTreatmentAssignment() {
+        return otherTreatmentAssignment;
+    }
+
+    public void setOtherTreatmentAssignment(String otherTreatmentAssignment) {
+        this.otherTreatmentAssignment = otherTreatmentAssignment;
     }
 }

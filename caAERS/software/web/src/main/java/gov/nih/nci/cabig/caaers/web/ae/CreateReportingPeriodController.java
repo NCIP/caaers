@@ -108,13 +108,17 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod, mode);
         command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+
         //set the last selected treatment assignment in create mode.
         if (command.getReportingPeriod().getId() == null) {
             List<AdverseEventReportingPeriod> existingReportingPeriods = assignment.getActiveReportingPeriods();
             if (CollectionUtils.isNotEmpty(existingReportingPeriods)) {
                 TreatmentAssignment treatmentAssignment = existingReportingPeriods.get(0).getTreatmentAssignment();
                 command.getReportingPeriod().setTreatmentAssignment(treatmentAssignment);
-                command.getReportingPeriod().setTreatmentAssignmentDescription(existingReportingPeriods.get(0).getTreatmentAssignmentDescription());
+                if (!StringUtils.isEmpty(existingReportingPeriods.get(0).getTreatmentAssignmentDescription()))
+                    command.getReportingPeriod().setTreatmentAssignmentDescription(existingReportingPeriods.get(0).getTreatmentAssignmentDescription());
+            } else {
+                command.getReportingPeriod().setTreatmentAssignmentDescription(assignment.getStudySite().getStudy().getOtherTreatmentAssignment());
             }
         }
 
@@ -342,7 +346,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
      * Before its done a check is made to see if the AE being converted is retired or not. This is needed because the soft delete
      * can eventually lead to the possibility of 2 or more adverse events with the same term in the reporting period.
      * @param reportingPeriod
-     * @param adverseEventId
+     * @param termd
      * @param term
      */
     protected void convertAeFromObservedToSolicited(AdverseEventReportingPeriod reportingPeriod, Integer termId, Term term){
