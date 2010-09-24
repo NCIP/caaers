@@ -11,7 +11,7 @@
     jQuery(document).ready(function() {
 
         initTextBox();
-        jQuery('#otherTAC').change(function() {
+        jQuery('#otherTAC').click(function() {
             if (jQuery('#otherTAC').is(':checked')) {
                 enableTextBox();
             } else {

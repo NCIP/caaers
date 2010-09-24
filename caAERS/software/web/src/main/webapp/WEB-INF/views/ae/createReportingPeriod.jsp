@@ -22,12 +22,11 @@
          Event.observe(window, "load", function() {
             if ($('reportingPeriod.treatmentAssignmentDescription').value != '' || countTA == 0)
                 $('otherTA').checked = true;
-
-            Event.observe($('reportingPeriod.treatmentAssignment'), "change", function() {
-                if (!$('otherTA').checked) $('reportingPeriod.treatmentAssignmentDescription').value = '';
-            });
-             
          });
+
+         function clearOtherTAC() {
+             $('reportingPeriod.treatmentAssignmentDescription').value = '';
+         }
 
          function editFirstCourseDate() {
              if (confirm("<caaers:message code="LBL_change1tCourseDate" />")) {
@@ -101,7 +100,7 @@
                 </tr>
                 <c:forEach items="${command.study.activeTreatmentAssignments}" var="ta">
                     <tr bgcolor="white">
-                        <td><ui:radio path="reportingPeriod.treatmentAssignment" value="${ta.id}" />&nbsp;${ta.code}
+                        <td><ui:radio path="reportingPeriod.treatmentAssignment" value="${ta.id}" onclick="clearOtherTAC();"/>&nbsp;${ta.code}
                         <td>${ta.htmlEscapedDescription}
                     </tr>
                 </c:forEach>
