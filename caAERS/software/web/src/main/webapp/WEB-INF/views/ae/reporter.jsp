@@ -116,7 +116,7 @@
 
         function updateFieldValue(uiField, value){
 			var f = $(uiField);
-			if(f){
+			if (f){
 				f.value = value;
 			}
         }
@@ -188,7 +188,7 @@
             <div class="row">
                 <div class="label">Reporter</div>
                 <div class="value">
-                    <select id="staff" name="aeReport.reporter.user">
+                    <select id="staff" name="aeReport.reporter.user" class="required">
                         <option value="">Please select</option>
                         <optgroup label="Reporter">
                         <c:forEach var="researchStaff" items="${researchStaffList }">
@@ -200,6 +200,7 @@
                         	<option value="${investigator.id }" ${investigator.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                         </optgroup>
+                        <option value="">Enter manually</option>
                     </select>
                 </div>
             </div>
@@ -218,11 +219,12 @@
         <div class="row">
                 <div class="label">Physician</div>
                 <div class="value">
-                    <select id="physician" name="aeReport.physician.user">
+                    <select id="physician" name="aeReport.physician.user" class="required">
                         <option value="">Please select</option>
                         <c:forEach var="investigator" items="${investigatorList }">
                         	<option value="${investigator.id }" ${investigator.id eq command.aeReport.physician.user.id ? 'SELECTED' : '' }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
+                        <option value="">Enter manually</option>
                     </select>
                 </div>
             </div>

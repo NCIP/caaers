@@ -149,3 +149,16 @@ function exist(_fieldPath){
     if($(_fieldPath)) return true;
     return false;
 }
+
+//
+function setReadonly(_fieldPath) {
+    $(_fieldPath).addClassName('disabled');
+    $(_fieldPath).setAttribute("readonly", "true");
+}
+
+// 
+function removeReadonly(_fieldPath) {
+    $(_fieldPath).removeClassName('disabled');
+    $(_fieldPath).removeAttribute("readonly");
+}
+
