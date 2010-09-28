@@ -70,7 +70,7 @@ var myColumnDefs = [
     {key:"shortTitle", label:"Short title", sortable:true, resizeable:true, formatter: linkFormatter},
     {key:"status", label:"Status", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
     {key:"phaseCode", label:"Phase code", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
-    {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
+    {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true, minWidth:150, maxWidth:150}
 ];
 
 var myFields = [
