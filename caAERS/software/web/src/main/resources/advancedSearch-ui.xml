@@ -365,7 +365,7 @@
 			</ui-attribute>
 			
 			<view-column>
-				<column-attribute>name</column-attribute>
+				<column-attribute>displayName</column-attribute>
 				<column-title>Agent name</column-title>
 				<dependent-object-index>7</dependent-object-index>
 				<view-column-index>0</view-column-index>
