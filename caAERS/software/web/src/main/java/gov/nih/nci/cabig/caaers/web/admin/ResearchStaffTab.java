@@ -41,6 +41,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         super("Research Staff Details", "Research Staff Details", "admin/researchStaff");
         setAutoPopulateHelpKey(true);
         methodNameMap.put("addsiteResearchStaff", "addSiteResearchStaff");
+        methodNameMap.put("removesiteResearchStaff", "removeSiteResearchStaff");
         methodNameMap.put("UnlockUser", "unlockUser");
     }
 
@@ -310,6 +311,36 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         return modelAndView;
     }
     
+    //
+    public ModelAndView removeSiteResearchStaff(HttpServletRequest request, Object object, Errors errors) {
+        ResearchStaffCommand  command = (ResearchStaffCommand)object;
+        ModelAndView modelAndView = new ModelAndView("admin/ajax/researchStaffFormSection");
+
+        // DELETE
+        int index;
+        try {
+            index = Integer.parseInt(request.getParameter("index"));
+        } catch (NumberFormatException e) {
+            index = -1;
+            log.debug("Wrong <index> for <ResearchStaff.SiteResearchStaff> list: " + e.getMessage());
+        }
+
+        if (index >= 0) {
+            command.getResearchStaff().getSiteResearchStaffs().remove(index);
+            command.getSiteResearchStaffCommandHelper().remove(index);
+        }
+        // DELETE
+
+        int size = command.getResearchStaff().getSiteResearchStaffs().size();
+        Integer[] indexes = new Integer[size];
+        for(int i = 0 ; i < size ; i++) {
+            indexes[i] = size - (i + 1);
+        }
+        
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
+
     /**
      * This method unlocks the user and saves the status of the user when UNLOCK button is clicked in the ReseachStaff edit mode
      * @param request

@@ -23,7 +23,7 @@
 
 <%--<c:set var="hasSRSRUpdate" value="false" />--%>
 
-<chrome:division id="siteResearchStaff_${index}" collapsable="true" collapsed="false" enableDelete="true" title="&nbsp;${orgName}">
+<chrome:division id="siteResearchStaff_${index}" collapsable="true" collapsed="false" enableDelete="${command.researchStaff.siteResearchStaffs[index].id== null && !readOnly}" title="&nbsp;${orgName}" deleteParams="'removeSiteResearchStaff', ${index}">
     <jsp:attribute name="titleFragment">
         <c:if test="${not empty orgName}">
             <c:if test="${editMode}">

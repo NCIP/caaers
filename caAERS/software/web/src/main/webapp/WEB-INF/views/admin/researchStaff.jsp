@@ -23,6 +23,13 @@
 			.rightpanel { width:54% }
         </style>
         <script language="JavaScript">
+
+            function fireAction(_action, _index) {
+                // alert(_action);
+                if (_action == "removeSiteResearchStaff") {
+                    removeSiteResearchStaff(_index);
+                }
+            }
             
             AE.PAGE_HELP_LINK = 'researchStaffDetails';
 
@@ -53,6 +60,10 @@
                                 ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0, 'Bottom');
                             }
                         
+                 			function removeSiteResearchStaff(_index) {
+                                ajaxCRUD._deleteItem('siteResearchStaff', _index, '_organizationsDIV', 0);
+                            }
+
                             function postSiteSelected(siteResearchStaffIndex, organizationID) {
                                 return 0;
                             }
