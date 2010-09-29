@@ -160,7 +160,7 @@
          			create="true" />
         
         </page>
-        
+ <!--       
         <page type="input" 
            	  name="P10" 
            	  displayText="Configuration for web sso" 	
@@ -238,7 +238,8 @@
 					    		  defaultValue="/wsrf/services/cagrid/RegistrationConsumer" 
 					    	          explanatoryText="Give the url for Registration consumer service" />
         </page>
-       
+ -->  
+     
     <page type="input" name="selector" displayText="Components to Install">
         <comment displayText="The following components will be installed" bold="true" />
         <target displayText="caAERS Installation and Setup" target="caaers" defaultValue="true" force="true" />
