@@ -332,7 +332,7 @@
 		 rpHash.get(rdId).select();
 	 });
      
-     checkIfAnyReportSelected(aeReportId);
+     toggleReportingButton(aeReportId);
  }
 //=================================================================================
  //deselect reports of the same group.
@@ -347,7 +347,7 @@
 //=================================================================================
  /*This function handles, when someone clicks on  a report definition */	
  function handleReportSelection(aeReportId, rdId){
-     checkIfAnyReportSelected(aeReportId);
+     toggleReportingButton(aeReportId);
 	 var curRdObject = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
 	 
 	 //check if there is at least one ae. 
@@ -560,6 +560,14 @@ function handlePrimaryAdverseEvent(aeReportId, aeId, aeTerm, grade){
 		htmlMsg = htmlMsg + "<li>" + msg + "</li>";
 	});
 	$('rulesMessageList-' + aeReportId).innerHTML = htmlMsg;
+
+    var onlyWithdraw = isOnlyActionWithdraw(aeReportId);
+    if(onlyWithdraw){
+        jQuery('#report-btn-' + aeReportId).attr('value' , 'Withdraw');
+    }else{
+        jQuery('#report-btn-' + aeReportId).attr('value' , 'Report');
+    }
+
  }
 //=================================================================================
 function showNewDataCollection(){
@@ -697,6 +705,45 @@ function forwardToReport(aeReportId, frm){
 	
 }
 
+
+//=================================================================================
+// will check if the report is selected or not.
+function hasActualActionOnReports(aeReportId){
+    var hasActualAction = false;
+	//check for actual action.
+	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+		if(rdObj.getActualAction()){
+			hasActualAction = true;
+		}
+	});
+
+    return hasActualAction;
+}
+
+
+
+//==================================================================================
+// will check if the report is selected or not, then will enable disable the report.
+ 
+ function toggleReportingButton(aeReportId) {
+     var hasActualAction = hasActualActionOnReports(aeReportId);
+
+     // change the SUBMIT button and the message
+     if (hasActualAction) {
+         jQuery('#report-btn-' + aeReportId).removeAttr('disabled');
+         if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).show();
+         if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).hide();
+
+     } else {
+         jQuery('#report-btn-' + aeReportId).attr('disabled', 'false');
+         if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).hide();
+         if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).show();
+     }
+ }
+
+
+//=================================================================================
+// will validate the input
 function validate(aeReportId){
 	//determine if there is a create-edit action?
 	var createOrEditAction = false;
@@ -704,13 +751,8 @@ function validate(aeReportId){
 	var onlyWithdrawAction = true;
 	var noPrimaryAE = true;
 
-
-	//check for actual action.
-	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
-		if(rdObj.getActualAction()){
-			noActualAction = false;
-		}
-	});
+    //no actual action
+    noActualAction = !hasActualActionOnReports(aeReportId);
 
     //onlyWithdraw?
 	onlyWithdrawAction = isOnlyActionWithdraw(aeReportId);
@@ -819,28 +861,6 @@ function validate(aeReportId){
 	    
 	  </c:forEach>
    });
-
-
-       function checkIfAnyReportSelected(aeReportId) {
-           var _true = false;
-           var rpHash = AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj) {
-               if (rdObj.isChecked()) {
-                   _true = true;
-               }
-           });
-
-           // change the SUBMIT button and the message
-           if (_true) {
-               jQuery('#report-btn-' + aeReportId).removeAttr('disabled');
-               if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).show();
-               if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).hide();
-
-           } else {
-               jQuery('#report-btn-' + aeReportId).attr('disabled', 'false');
-               if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).hide();
-               if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).show();
-           }
-       }
 
    </script>
 
