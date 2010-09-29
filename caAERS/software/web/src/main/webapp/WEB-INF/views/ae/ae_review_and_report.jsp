@@ -332,7 +332,6 @@
 		 rpHash.get(rdId).select();
 	 });
      
-     toggleReportingButton(aeReportId);
  }
 //=================================================================================
  //deselect reports of the same group.
@@ -347,7 +346,6 @@
 //=================================================================================
  /*This function handles, when someone clicks on  a report definition */	
  function handleReportSelection(aeReportId, rdId){
-     toggleReportingButton(aeReportId);
 	 var curRdObject = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
 	 
 	 //check if there is at least one ae. 
@@ -544,7 +542,7 @@ function handlePrimaryAdverseEvent(aeReportId, aeId, aeTerm, grade){
 //=================================================================================
  //function will change the status , recommended display & due dates of report definitions.
  function updateDisplayTexts(aeReportId){
-	 
+
 	 //remove the recomended display options. 
 	 clearRecommendedReportsDisplay(aeReportId);
 	 
@@ -561,12 +559,7 @@ function handlePrimaryAdverseEvent(aeReportId, aeId, aeTerm, grade){
 	});
 	$('rulesMessageList-' + aeReportId).innerHTML = htmlMsg;
 
-    var onlyWithdraw = isOnlyActionWithdraw(aeReportId);
-    if(onlyWithdraw){
-        jQuery('#report-btn-' + aeReportId).attr('value' , 'Withdraw');
-    }else{
-        jQuery('#report-btn-' + aeReportId).attr('value' , 'Report');
-    }
+     toggleReportingButton(aeReportId);
 
  }
 //=================================================================================
@@ -712,11 +705,11 @@ function hasActualActionOnReports(aeReportId){
     var hasActualAction = false;
 	//check for actual action.
 	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+
 		if(rdObj.getActualAction()){
 			hasActualAction = true;
 		}
 	});
-
     return hasActualAction;
 }
 
@@ -739,8 +732,15 @@ function hasActualActionOnReports(aeReportId){
          if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).hide();
          if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).show();
      }
- }
 
+
+    var onlyWithdraw = isOnlyActionWithdraw(aeReportId);
+    if(onlyWithdraw){
+        jQuery('#report-btn-' + aeReportId + '-value').text('Withdraw');
+    }else{
+        jQuery('#report-btn-' + aeReportId + '-value').text('Report');
+    }
+ }
 
 //=================================================================================
 // will validate the input

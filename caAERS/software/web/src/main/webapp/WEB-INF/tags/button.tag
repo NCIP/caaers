@@ -169,7 +169,7 @@
 					</c:choose>
 				</c:if>
 				
-				${value}
+				<span id="${id}-value">${value}</span>
 				
 				<c:if test="${fn:toLowerCase(icon) == 'save &amp; continue' || fn:toLowerCase(icon) =='save & continue'}">
 					<c:choose>
