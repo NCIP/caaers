@@ -19,13 +19,24 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
     private StudyDao studyDao;
     private AgentDao agentDao;
 
+    /**
+     * Get the list of Terms associated with the given agent
+     * @param agentID - ID of the agent to get the terms for
+     * @return List
+     * 
+     * */
     public List<AgentSpecificTerm> getListByAgent(Integer agentID) {
         return agentSpecificTermDao.getByAgentID(agentID);
     }
 
-    /*
-    *
-    * */
+    /**
+     * Synchronize Expected AE terms list from the study with the expected AE Terms list associated with the agent
+     * Get all the terms associated with the agent and add these to the list of
+     * the Expected AE Terms of the Study when Study has this agent
+     * @param s - Study
+     * @param a - Agent
+     * @param deleted - if true, synchronization is being done for a just deleted agent, otherwise for addition
+     */
     public void synchronizeStudyWithAgent(Study s, Agent a, boolean deleted) {
         List<AgentSpecificTerm> l = getListByAgent(a.getId());
         for (AgentSpecificTerm at : l) {
@@ -33,24 +44,36 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
         }
     }
 
-    /*
-    * Get all the terms associated with the agent and add these to the list of
-    * the Expected AE Terms of the Study when Study has this agent
-    *
-    * */
+    /**
+     * Synchronize Expected AE terms list from the study with the expected AE Terms list associated with the agent
+     * Get all the terms associated with the agent and add these to the list of
+     * the Expected AE Terms of the Study when Study has this agent
+     * @param s - Study
+     * @param a - Agent
+     */
     public void synchronizeStudyWithAgent(Study s, Agent a) {
         synchronizeStudyWithAgent(s, a, false);
     }
 
+    /**
+     * Synchronize this ASAE term with the Study Expected AE list
+     * @param s - Study
+     * @param at - Agent Specific AE Term
+     * 
+     * */
     public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at) {
         synchronizeStudyWithAgentTerm(s, at, false);
     }
     
-    /*
-    * Get the term associated with the agent and add this to the list of
-    * the Expected AE Terms of the Study when Study has this agent
-    *
-    * */
+    /**
+     * Synchronize this ASAE term with the Study Expected AE list
+     * Get the term associated with the agent and add this to the list of
+     * the Expected AE Terms of the Study when Study has this agent
+     * @param s - Study
+     * @param at - Agent Specific AE Term
+     * @partam deleted - if true, synchronization is being done for a just deleted ASAE term, otherwise for addition 
+     *
+     */
     public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at, boolean deleted) {
         if (at instanceof AgentSpecificCtcTerm) {
             CtcTerm t = ((AgentSpecificCtcTerm)at).getTerm();
@@ -92,14 +115,6 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
             aeT.setLowLevelTerm(t);
             l.add(aeT);
         }
-    }
-
-    /*
-    * Delete the Term from the studies having this agent.
-    * 
-    * */
-    public void postDeleteAgentSpecificTerm(AgentSpecificTerm at) {
-        
     }
 
     public AgentSpecificTermDao getAgentSpecificTermDao() {

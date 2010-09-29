@@ -46,7 +46,7 @@ public class AgentSpecificTermsImporter {
         put("OTHER_TOXICITY", -1);
     }};
 
-    public static File file = new File("/home/dell/Desktop/asael.xls");
+    public static File file; //new File("/home/dell/Desktop/asael.xls"); 
 
     public AgentSpecificTermsImporter() {
     }
