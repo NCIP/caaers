@@ -22,7 +22,25 @@ class CreateIndexes extends edu.northwestern.bioinformatics.bering.Migration {
     }
     
     void down() {
-
+		if (databaseMatches('oracle')) {
+            execute('DROP INDEX "org-index-login-id-idx1"')
+            execute('DROP INDEX "ae-index-login-id-idx1"')
+            execute('DROP INDEX "eae-index-login-id-idx1"')
+            execute('DROP INDEX "inv-index-login-id-idx1"')
+            execute('DROP INDEX "par-index-login-id-idx1"')
+            execute('DROP INDEX "rs-index-login-id-idx1"')
+            execute('DROP INDEX "rp-index-login-id-idx1"')
+            execute('DROP INDEX "study-index-login-id-idx1"')
+        } else if (databaseMatches('postgresql')){
+            execute('DROP INDEX "org-index-org-id-idx1"')
+            execute('DROP INDEX "ae-index-ae-id-idx1"')
+            execute('DROP INDEX "eae-index-eae-id-idx1"')
+            execute('DROP INDEX "inv-index-inv-id-idx1"')
+            execute('DROP INDEX "par-index-par-id-idx1"')
+            execute('DROP INDEX "rs-index-rs-id-idx1"')
+            execute('DROP INDEX "rp-index-rp-id-idx1"')
+            execute('DROP INDEX "study-index-study-id-idx1"')
+        } 
     }
 }
 
