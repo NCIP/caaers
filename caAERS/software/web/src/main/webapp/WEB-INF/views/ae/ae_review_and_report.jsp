@@ -643,6 +643,23 @@ function isOnlyActionWithdraw(aeReportId){
 	return _onlyWithdrawAction;
 }
 
+ //=================================================================================
+//function will return true if the only action is withdraw.
+function isOnlyActionAmend(aeReportId){
+
+    var _amendCnt = 0;
+    var _createCnt = 0;
+    
+	//check for actual action.
+	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+        var actualAction   = rdObj.getActualAction();
+        if(actualAction == 'Amend') _amendCnt = _amendCnt + 1;
+        if(actualAction == 'Create') _createCnt = _createCnt + 1;
+	});
+    
+	return (_amendCnt > 0) && (_amendCnt == _createCnt) ;
+}
+
 //=================================================================================
 //function will return the ids, of the report definitions checked from the same group.
 function selectedReportDefinitionsFromGroup(aeReportId, groupName){
@@ -733,13 +750,15 @@ function hasActualActionOnReports(aeReportId){
          if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).show();
      }
 
+     //update the report button
+     var onlyWithdraw = isOnlyActionWithdraw(aeReportId);
+     var onlyAmend = isOnlyActionAmend(aeReportId);
+     var _reportButtonText = "Report";
+     if(onlyWithdraw && hasActualAction) _reportButtonText = 'Withdraw';
+     if(onlyAmend) _reportButtonText = 'Amend';
 
-    var onlyWithdraw = isOnlyActionWithdraw(aeReportId);
-    if(onlyWithdraw){
-        jQuery('#report-btn-' + aeReportId + '-value').text('Withdraw');
-    }else{
-        jQuery('#report-btn-' + aeReportId + '-value').text('Report');
-    }
+     jQuery('#report-btn-' + aeReportId + '-value').text(_reportButtonText);
+    
  }
 
 //=================================================================================
