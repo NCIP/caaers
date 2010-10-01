@@ -126,7 +126,7 @@ this collection of information, including suggestions for reducing this burden t
 								<fo:table-cell text-align="center">
 									<fo:block font-size="10" font-family="Goudy">For use by user-facilities,<fo:block/>importers, distributors and manufacturers<fo:block/>for MANDATORY reporting</fo:block>
 									<fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
-									<fo:block xsl:use-attribute-sets="label">Page ____ of ____</fo:block>
+									<fo:block xsl:use-attribute-sets="label">Page __1__ of __2__</fo:block>
 								</fo:table-cell>
 								<fo:table-cell  >
 										<fo:table border="1pt solid black">						
@@ -401,28 +401,46 @@ this collection of information, including suggestions for reducing this burden t
 														
 														
 														<xsl:for-each select="AdverseEventReport/AdverseEvent">
-																
-																<xsl:choose>
-																	<xsl:when test="substring(gridId,1,3) = 'PRY'">
-																	 <fo:block xsl:use-attribute-sets="normal">
-																		Primary AE:<fo:block/>
-																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
-																		<xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/><fo:block/>
-																		<xsl:value-of select="grade"/><fo:block/>
-																		<xsl:value-of select="comments"/><fo:block/>
-																	 </fo:block>
-																	</xsl:when>	
-																	<xsl:otherwise>
-																	 <fo:block xsl:use-attribute-sets="normal">
-																		AE <xsl:number format="1 "/>:<fo:block/>
-																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
-                                                                        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/><fo:block/>
-																		<xsl:value-of select="grade"/><fo:block/>
-																		<xsl:value-of select="comments"/><fo:block/>																		
-																	 </fo:block>
-																	</xsl:otherwise>	
-																</xsl:choose>
-																<fo:block/>
+
+                                                            <xsl:choose>
+                                                                <xsl:when test="substring(gridId,1,3) = 'PRY'">
+                                                                    <fo:block xsl:use-attribute-sets="normal">Primary AE:
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                                                                        <xsl:if test="LowLevelTerm/fullName"> (<xsl:value-of select="LowLevelTerm/fullName"/>)</xsl:if>
+                                                                        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+                                                                        <xsl:if test="detailsForOther">
+                                                                            <fo:block/>
+                                                                            Verbatim: <xsl:value-of select="detailsForOther"/>
+                                                                        </xsl:if>
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="grade"/>
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="comments"/>
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="comments"/>
+                                                                        <fo:block/>
+                                                                    </fo:block>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <fo:block xsl:use-attribute-sets="normal">AE<xsl:number format="1 "/>:
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                                                                        <xsl:if test="LowLevelTerm/fullName"> (<xsl:value-of select="LowLevelTerm/fullName"/>)</xsl:if>
+                                                                        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+                                                                        <xsl:if test="detailsForOther">
+                                                                            <fo:block/>
+                                                                            Verbatim: <xsl:value-of select="detailsForOther"/>
+                                                                        </xsl:if>
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="grade"/>
+                                                                        <fo:block/>
+                                                                        <xsl:value-of select="comments"/>
+                                                                        <fo:block/>
+                                                                    </fo:block>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
+                                                            <fo:block/>
 																
 																<fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
 														</xsl:for-each>
@@ -438,7 +456,9 @@ this collection of information, including suggestions for reducing this burden t
 											                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
 											                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
 											                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
-											                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>		
+											                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                            <xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/></xsl:call-template>
 										                </fo:block>																								
 												</fo:table-cell>
 											</fo:table-row>	
@@ -457,27 +477,21 @@ this collection of information, including suggestions for reducing this burden t
 															
 															<xsl:value-of select="baseline/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
 															<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-															(<xsl:call-template name="standard_date">
-																        <xsl:with-param name="date" select="baseline/date"/>
-										   						</xsl:call-template>)
+                                                            <xsl:if test="baseline/date">(<xsl:call-template name="standard_date"><xsl:with-param name="date" select="baseline/date"/></xsl:call-template>)</xsl:if>
 															<fo:block/>
 														</fo:block>
 														<fo:block xsl:use-attribute-sets="normal">
 															Worst value :
 															<xsl:value-of select="nadir/value"/>  <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
 															<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-															(<xsl:call-template name="standard_date">
-																        <xsl:with-param name="date" select="nadir/date"/>
-										   						</xsl:call-template>)
+															<xsl:if test="nadir/date">(<xsl:call-template name="standard_date"><xsl:with-param name="date" select="nadir/date"/></xsl:call-template>)</xsl:if>
 															<fo:block/>
 														</fo:block>
 														<fo:block xsl:use-attribute-sets="normal">
 															Recovery value :
 															<xsl:value-of select="recovery/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
 															<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-															(<xsl:call-template name="standard_date">
-																        <xsl:with-param name="date" select="recovery/date"/>
-										   						</xsl:call-template>)
+															<xsl:if test="recovery/date">(<xsl:call-template name="standard_date"><xsl:with-param name="date" select="recovery/date"/></xsl:call-template>)</xsl:if>
 															<fo:block/>
 														</fo:block>
 														<fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>														
@@ -601,7 +615,7 @@ this collection of information, including suggestions for reducing this burden t
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 													<fo:block>
 														<xsl:variable name="iter" select="$iter+1"/>
-														<fo:inline font-size="6.5pt" ># <xsl:number format="1 "/> </fo:inline>
+														<fo:inline font-size="6.5pt" >#<xsl:number format="1 "/> </fo:inline>
 														<fo:inline font-size="6.5pt" >  
 															<xsl:value-of select="StudyAgent/Agent/name"/>
 															<xsl:value-of select="StudyAgent/otherAgent"/>
@@ -632,7 +646,7 @@ this collection of information, including suggestions for reducing this burden t
 													</fo:block>
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 														<fo:block>
-															<fo:inline font-size="6.5pt" ># <xsl:number format="1 "/></fo:inline>
+															<fo:inline font-size="6.5pt" >#<xsl:number format="1 "/></fo:inline>
 															<fo:inline font-size="6.5pt" >  
 																	<xsl:call-template name="standard_date">
 																	        <xsl:with-param name="date" select="../firstCourseDate"/>
@@ -746,7 +760,7 @@ this collection of information, including suggestions for reducing this burden t
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">										
 														<fo:block>
 															<xsl:if test="lotNumber">
-																<fo:inline font-size="6.5pt" ># <xsl:number format="1 "/> <xsl:value-of select="lotNumber"/></fo:inline>
+																<fo:inline font-size="6.5pt" >#<xsl:number format="1 "/> <xsl:value-of select="lotNumber"/></fo:inline>
 																<fo:inline width="10mm" font-size="6.5pt" >  </fo:inline>
 															</xsl:if>
 														</fo:block>
@@ -810,7 +824,12 @@ this collection of information, including suggestions for reducing this burden t
 														<fo:inline font-size="6.5pt">9. </fo:inline>
 														<fo:inline xsl:use-attribute-sets="label">NDC# or Unique ID </fo:inline>
 													</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">n/a</fo:block>	
+													<fo:block xsl:use-attribute-sets="normal">
+                                                        <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/StudyAgent">
+                                                            <xsl:value-of select="Agent/nscNumber"/>
+                                                            <fo:block />
+                                                        </xsl:for-each>
+													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row height="20mm">
@@ -1100,7 +1119,6 @@ this collection of information, including suggestions for reducing this burden t
 												  				<xsl:if test="startDate/monthString">
 												  					(<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
 												  				</xsl:if>
-												  				
 												  			<fo:block/>
 												  		</xsl:for-each>													
 													</fo:block>
@@ -1203,7 +1221,7 @@ this collection of information, including suggestions for reducing this burden t
                                     <fo:block font-size="9" font-weight="bold">FORM FDA 3500A<fo:inline font-style="italic" font-weight="normal"> (continued)</fo:inline></fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell text-align="center">
-                                    <fo:block xsl:use-attribute-sets="label">Page ____ of ____</fo:block>
+                                    <fo:block xsl:use-attribute-sets="label">Page __2__ of __2__</fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell  >
                                         <fo:table border="1pt solid black">

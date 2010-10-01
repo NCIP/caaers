@@ -104,7 +104,7 @@
                         <jsp:attribute name="optionsJS">
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    $('adverseEvents[${index}].lowLevelTerm').value = selectedChoice.id;
+                                    $('adverseEvents[${index}].meddraTerm').value = selectedChoice.id;
                                     updateExpected(${index}, $('adverseEvents[${index}].ctcTerm').value, selectedChoice.id, '${adverseEvent.detailsForOther}', false);
 								}
 							}
