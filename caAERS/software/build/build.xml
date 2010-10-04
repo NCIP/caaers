@@ -298,7 +298,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			<property name="skip.test" value="true"/>
 			<property name="cctsWAR" value="${ccts.war}"/>
 			<property name="ccts.grid-services.location" value="${ccts.common.grid.src.dir}"/>
-			<property name="tomcat.hostname" value="${tomcat.hostname}"/>
+<!--			<property name="tomcat.hostname" value="${tomcat.hostname}"/>-->
 		</ant>
 		
 		<!-- Copy caaers.war to dist.exploded.dir -->
