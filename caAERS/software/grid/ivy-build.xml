@@ -144,20 +144,6 @@
 			    </insert>
 		  </xmltask>
 		  
-		  
-	  	  <xmltask source="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd"
-             dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd"
-             failWithoutMatch="true">
-
-				  <insert  path="/:deployment/:globalConfiguration" position="under">
-		
-		            <![CDATA[
-							<parameter name="disableDNS" value="true"/>
-							<parameter name="logicalHost" value="${tomcat.hostname}"/>			
-		            ]]>
-				  </insert>
-		  </xmltask>
-		  
 	</target>
 
 	<!-- ==============================================================
