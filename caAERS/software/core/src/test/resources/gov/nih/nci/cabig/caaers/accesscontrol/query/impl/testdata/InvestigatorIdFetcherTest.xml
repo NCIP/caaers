@@ -41,12 +41,14 @@
      	id="-1"
      	login_id = "test-user"
      	organization_id = "-1000"
+         role_code="-103"
      />     
 
      <organization_index
      	id="-2"
      	login_id = "test-user2"
      	organization_id = "-1001"
+          role_code="-103"
      /> 
      
      <studies
@@ -97,7 +99,7 @@
         />
 
      <site_investigators
-    	id="-9001"
+       	id="-9001"
     	site_id="-1000"
     	investigator_id="-1000"/> 
         
@@ -121,7 +123,8 @@
         last_name="Franklin"
         email_address="abc3@def.com"
 	/>
-        
+
+    
     <site_investigators
     	id="-9003"
     	site_id="-1002"
@@ -142,7 +145,8 @@
         
         
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
-    <investigational_new_drugs />    
-    <ind_holders />		
+    <investigational_new_drugs />
+    <ind_holders />
+    <study_agent_inds />
         
 </dataset>
