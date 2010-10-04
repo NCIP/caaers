@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
+<!--
+ AdverseEventReport/AdverseEvent/gridId
+ The field gridId is used to store both the primary and the gridId value
+ since gridId is not used in any of the XMLs nor XSLTs files to generate exports.
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="yes"/>
     <xsl:template match="/">

@@ -728,7 +728,11 @@ public class AdverseEventReportSerializer {
 		    	adverseEvent.setGrade(ae.getGrade());
 		    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
 		    	adverseEvent.setExpected(ae.getExpected());
-		    	
+
+                /**
+                 *  The field gridId is used to store both the primary and the gridId value
+                 *  since gridId is not used in any of the XMLs nor XSLTs files to generate exports.
+                 * */
 		    	if (seq == 0 ) {
 		    		adverseEvent.setGridId("PRY"+ae.getGridId());
 		    	} else {

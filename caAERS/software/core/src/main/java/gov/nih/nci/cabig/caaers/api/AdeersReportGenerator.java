@@ -13,7 +13,10 @@ import java.io.FileReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
+/**
+ * @author Ion C. Olaru
+ *
+ * */
 public class AdeersReportGenerator extends BasePDFGenerator {
 
     
@@ -176,7 +179,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("/home/dell/Downloads/expeditedAdverseEventReport-335.xml");
+            FileReader input = new FileReader("C:\\Users\\IO\\Desktop\\expeditedAdverseEventReport-339.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -185,7 +188,8 @@ public class AdeersReportGenerator extends BasePDFGenerator {
                 line = bufRead.readLine();
             }
 
-            aeg.generateMedwatchPdf(str1, "/home/dell/Desktop/medwatch-2.pdf");
+            aeg.generateMedwatchPdf(str1, "C:\\Users\\IO\\Desktop\\MedWatch-99.pdf");
+            // aeg.generateMedwatchPdf(str1, "C:\\medwatch-2.pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }
