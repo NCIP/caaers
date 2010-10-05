@@ -1,4 +1,4 @@
-class CREATE OR REPLACEIndexes extends edu.northwestern.bioinformatics.bering.Migration {
+class CreateIndexes extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
         if (databaseMatches('oracle')) {
             execute('CREATE INDEX "org-index-login-id-idx1" ON organization_index(login_id)')
@@ -43,6 +43,3 @@ class CREATE OR REPLACEIndexes extends edu.northwestern.bioinformatics.bering.Mi
         } 
     }
 }
-
-
-
