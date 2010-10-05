@@ -10,6 +10,17 @@ class CreateIndexes extends edu.northwestern.bioinformatics.bering.Migration {
             execute('CREATE INDEX "rp-index-login-id-idx1" ON reportingperiod_index(login_id)')
             execute('CREATE INDEX "study-index-login-id-idx1" ON study_index(login_id)')
         } else if (databaseMatches('postgresql')){
+
+            //droping indexes if they exist   (only supported in 8.2 and up)
+            execute('DROP INDEX IF EXISTS "org-index-org-id-idx1"')
+            execute('DROP INDEX  IF EXISTS "ae-index-ae-id-idx1"')
+            execute('DROP INDEX  IF EXISTS "eae-index-eae-id-idx1"')
+            execute('DROP INDEX  IF EXISTS "inv-index-inv-id-idx1"')
+            execute('DROP INDEX  IF EXISTS "par-index-par-id-idx1"')
+            execute('DROP INDEX  IF EXISTS "rs-index-rs-id-idx1"')
+            execute('DROP INDEX IF EXISTS  "rp-index-rp-id-idx1"')
+            execute('DROP INDEX IF EXISTS  "study-index-study-id-idx1"')
+
             execute('CREATE INDEX "org-index-org-id-idx1" ON organization_index(organization_id)')
             execute('CREATE INDEX "ae-index-ae-id-idx1" ON adverseevent_index(adverseevent_id)')
             execute('CREATE INDEX "eae-index-eae-id-idx1" ON expedited_ae_index(expedited_ae_id)')
