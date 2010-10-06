@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.acegisecurity.AuthenticationCredentialsNotFoundException;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.providers.cas.CasAuthoritiesPopulator;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
+import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.client.CredentialDelegationServiceClient;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
@@ -82,9 +84,12 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
         	log.error(CAGRID_SSO_GRID_IDENTITY + " is null");
         }
         
-        
-        WebSSOUser user = new WebSSOUser(userDetailsService.loadUserByUsername(userName));        
-        
+        WebSSOUser user = null;
+        try{
+        	user = new WebSSOUser(userDetailsService.loadUserByUsername(userName));
+        }catch(UsernameNotFoundException ex){
+        	throw new AuthenticationCredentialsNotFoundException(ex.getMessage(),ex);
+        }
         
         //WebSSOUser user = new WebSSOUser(userDetailsService.loadUserByUsername(gridIdentity));
         user.setGridId(gridIdentity);
