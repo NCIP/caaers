@@ -16,35 +16,35 @@
             	this.index = index;
             	si[index] = this;            	
             	
-            	
             	if($('study.identifiersLazy['  + index + '].organization'))
             	{
-            	this.organizationName = "study.identifiersLazy["  + index + "].organization";
-                this.organizationInputId = this.organizationName + "-input";
-            	this.orgName = orgName;
-            	if(orgName) $(this.organizationInputId).value = orgName;
-                
-         
-                     	
-            	AE.createStandardAutocompleter(this.organizationName, 
-            		this.sitePopulator.bind(this),
-            		this.siteSelector.bind(this)
-            	);
+                    this.organizationName = "study.identifiersLazy["  + index + "].organization";
+                    this.organizationInputId = this.organizationName + "-input";
+                    this.orgName = orgName;
+                    if(orgName) $(this.organizationInputId).value = orgName;
+
+                    AE.createStandardAutocompleter(this.organizationName,
+                        this.sitePopulator.bind(this),
+                        this.siteSelector.bind(this)
+                    );
+            	}
             	
-            	}        	
-            	
+/*
             	 //only one primary indicator is possible, by default Coordinating center identifier is primary
             	 this.indicator = "study.identifiersLazy["  + index + "].primaryIndicator";
             	 Event.observe(this.indicator, "click", function() {
-            	 	for(i = 0; i < si.length; i++){
+            	 	for(i = 0; i < si.length; i++) {
             	 		if(i == this.index){
             	 			$(si[i].indicator).checked = true; 
+            	 			$(si[i].indicator).value = "true";
             	 			continue;
             	 		}
             	 		$(si[i].indicator).checked = false;
+            	 		$(si[i].indicator).value = "false";
             	 	}
             	 }.bind(this));
-               
+*/
+
             
             },
 
@@ -161,13 +161,15 @@ margin:5px;
 			<input type="hidden" name="_selected" value="">
 			</div>
 			<chrome:division  title="Study ID Assigned by Organization"  >
-        	<table id="test" class="tablecontent">
-    			<tr id="organization-section">
-    				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>
-    				<th class="tableHeader" ><tags:requiredIndicator />Identifier type </th>
-    				<th class="tableHeader" ><tags:requiredIndicator />Organization name </th>
-    				 <th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
-    				<th class="tableHeader" >&nbsp;</th>
+
+            <tags:table bgColor="#cccccc" contentID="ID_si">
+        	<table id="test" cellpadding="3" cellspacing="1" border="0" width="100%">
+    			<tr id="organization-section" bgcolor="#eeeeee">
+    				<th class="tableHeader" width="140px"><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" width="200px"><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader"><tags:requiredIndicator />Organization name </th>
+    				<th class="tableHeader" width="120px"><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" width="60px"><caaers:message code="LBL_captureAdverseEvents.tableHeader.action" /></th>
     			</tr>
     			<c:set var="cntOrg">0</c:set>
             	<c:forEach items="${command.study.identifiersLazy}" varStatus="status">
@@ -177,19 +179,21 @@ margin:5px;
 				  </c:if>
 				</c:forEach>
             </table>
+            </tags:table>
             </chrome:division>
  
            <chrome:division title="Study ID Assigned by a System">
-        	<table id="test1" class="tablecontent" >
-    			<tr id="system-section">
-    				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>
-    				<th class="tableHeader" ><tags:requiredIndicator />Identifier type </th>
-    				<th class="tableHeader" ><tags:requiredIndicator />System name </th>
-    				<th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
-    				<th class="tableHeader" >&nbsp;</th>
+            <tags:table bgColor="#cccccc" contentID="test1">
+        	<table id="test1"  width="100%" cellpadding="3" cellspacing="1">
+    			<tr bgcolor="#eeeeee" id="system-section">
+    				<th class="tableHeader" width="140px"><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" width="200px"><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader"><tags:requiredIndicator />System name </th>
+    				<th class="tableHeader" width="120px"><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" width="60px"><caaers:message code="LBL_captureAdverseEvents.tableHeader.action" /></th>
     			</tr>
 				<c:if  test="${fn:length(command.study.systemAssignedIdentifiers) lt 1}">
-	   			 <tr id="si-empty-row" class="si-empty-row"><td colspan="4">No system assigned an ID available to this study</td></tr>
+	   			 <tr id="si-empty-row" class="si-empty-row" bgcolor="#ffffff"><td colspan="5">No system assigned an ID available to this study</td></tr>
 	  			</c:if>    			
     			<c:set var="cntSys">0</c:set>
             	<c:forEach items="${command.study.identifiersLazy}" varStatus="status" >
@@ -200,6 +204,7 @@ margin:5px;
 			     </c:if>
 			    </c:forEach>
              </table>
+             </tags:table>
            	</chrome:division>
 
 <br/>

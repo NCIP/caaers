@@ -35,10 +35,33 @@ public class IdentifiersTab extends StudyTab {
     }
 
     @Override
+    public void onBind(HttpServletRequest request, StudyCommand command, Errors errors) {
+        super.onBind(request, command, errors);
+        if (command.getPrimaryStudyIdenifier() == null) return;
+
+        List<? extends Identifier> ls = command.getStudy().getIdentifiers();
+        if (ls != null && ls.size() > 0) {
+            for (byte i=0; i< ls.size(); i++) {
+                Identifier d = ls.get(i);
+                d.setPrimaryIndicator(i == command.getPrimaryStudyIdenifier().intValue());
+            }
+        }
+    }
+
+    @Override
     public Map<String, Object> referenceData(final HttpServletRequest request, final StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
         refdata.put("identifiersTypeRefData", configMap.get("identifiersType"));
+
+        List<? extends Identifier> ls = command.getStudy().getIdentifiers();
+        if (ls != null && ls.size() > 0) {
+            for (byte i=0; i< ls.size(); i++) {
+                Identifier d = ls.get(i);
+                if (d.getPrimaryIndicator() != null && d.getPrimaryIndicator()) command.setPrimaryStudyIdenifier(new Integer(i));
+            }
+        }
+
         return refdata;
     }
 
@@ -57,20 +80,21 @@ public class IdentifiersTab extends StudyTab {
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final StudyCommand command) {
         RepeatingFieldGroupFactory rfgFactory  = new RepeatingFieldGroupFactory("main", "study.identifiersLazy");
+
         InputField idField = InputFieldFactory.createTextField("value", "Identifier", true);
         InputFieldAttributes.setSize(idField, 20);
         rfgFactory.addField(idField);
 
         rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, collectOptionsFromConfig("identifiersType", "desc", "desc")));
+
         InputField sysNameField = InputFieldFactory.createTextField("systemName", "System Name", false);
         InputFieldAttributes.setSize(sysNameField, 40);
         rfgFactory.addField(sysNameField);
+
         InputField orgNameField = InputFieldFactory.createAutocompleterField("organization", "Organization", false);
         InputFieldAttributes.setSize(orgNameField, 40);
         orgNameField.getAttributes().put(InputField.ENABLE_CLEAR, true);
         rfgFactory.addField(orgNameField);
-
-        rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 
         Study study = command.getStudy();
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -127,10 +151,6 @@ public class IdentifiersTab extends StudyTab {
         				"The primary identifier you choose for this study is present in another study");
         	}
         }
-        
-       
-        
-
     }
 
 }

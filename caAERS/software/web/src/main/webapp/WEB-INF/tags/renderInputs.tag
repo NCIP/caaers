@@ -115,6 +115,7 @@
             </c:forEach>
         </div>
     </c:when>
+    
     <c:when test="${field.categoryName == 'hidden'}">
         <form:hidden path="${field.propertyName}" id="${field.propertyName}" />
     </c:when>

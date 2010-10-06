@@ -46,7 +46,8 @@ public class StudyCommand {
     private StudyRepository studyRepository;
 
     private Integer primaryStudyDisease;
-    
+    private Integer primaryStudyIdenifier;
+
     // ----------------------------------------------------------------------------------------------------------------
     
     public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
@@ -695,5 +696,13 @@ public class StudyCommand {
 
     public void setMustFireEvent(boolean mustFireEvent) {
         this.mustFireEvent = mustFireEvent;
+    }
+
+    public Integer getPrimaryStudyIdenifier() {
+        return primaryStudyIdenifier;
+    }
+
+    public void setPrimaryStudyIdenifier(Integer primaryStudyIdenifier) {
+        this.primaryStudyIdenifier = primaryStudyIdenifier;
     }
 }

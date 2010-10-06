@@ -26,7 +26,7 @@
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">${mainGroupName}${index}</c:set>
 
-<tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}">
+<tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}" bgcolor="#ffffff">
 
     <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="x">
         <c:set var="_align" value="left" />
@@ -36,11 +36,9 @@
         <td align="${_align}">
             <tags:renderInputs field="${field}"/>
             <c:if test="${field.categoryName == 'autocompleter'}">
-
                 <c:set var="x">
                     <jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute>
                 </c:set>
-
                 <c:if test="${not empty x}">
                     <c:set var="initValue" scope="page">
                         <jsp:attribute name="value"><caaers:value path="${field.propertyName}.fullName" /></jsp:attribute>
@@ -60,7 +58,7 @@
     </c:forEach>
     
     <c:if test="${not disableDelete}">
-        <td align="left">
+        <td align="center">
             <a href="javascript:${removeAction}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete" ></a>
         </td>
     </c:if>
