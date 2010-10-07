@@ -8,7 +8,7 @@
     <b><caaers:message code="capture.ae.flow.please.select" /></b>
 </div>
 <div id="rulesMessage-${aeReportId}">
-	<b><b><caaers:message code="capture.ae.flow.actions" /></b>
+	<b><caaers:message code="capture.ae.flow.actions" /></b>
     <ul id="rulesMessageList-${aeReportId}">
         <c:if test="${not empty rulesMessages}">
             <c:forEach var="msg" items="${rulesMessages}">
