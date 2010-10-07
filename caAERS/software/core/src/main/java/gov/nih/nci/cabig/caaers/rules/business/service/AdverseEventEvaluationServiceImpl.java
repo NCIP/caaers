@@ -595,22 +595,27 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         String result = "OPTIONAL";
         String bindUrl = mandatoryFieldDefinition.getRuleBindURL();
         String ruleNames = mandatoryFieldDefinition.getRuleName();
+        try{
 
-        if(StringUtils.isNotEmpty(bindUrl) && StringUtils.isNotEmpty(ruleNames)) {
-            List<Object> inputObjects = generateInput(aeReport, report.getReportDefinition(), null,aeReport.getStudy(), null);
-            //add the rule name agenda.
-            inputObjects.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
-            List<Object> outputObjects = businessRulesExecutionService.fireRules(bindUrl, inputObjects);
-            if(outputObjects != null){
-               //populate the correct message.
-               for(Object o : outputObjects) {
-                  if (o instanceof RuleEvaluationResult){
-            	      result = ((RuleEvaluationResult)o).getMessage();
-            	      break;
-                 }
-              }
+            if(StringUtils.isNotEmpty(bindUrl) && StringUtils.isNotEmpty(ruleNames)) {
+                List<Object> inputObjects = generateInput(aeReport, report.getReportDefinition(), null,aeReport.getStudy(), null);
+                //add the rule name agenda.
+                inputObjects.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
+                List<Object> outputObjects = businessRulesExecutionService.fireRules(bindUrl, inputObjects);
+                if(outputObjects != null){
+                   //populate the correct message.
+                   for(Object o : outputObjects) {
+                      if (o instanceof RuleEvaluationResult){
+                          result = ((RuleEvaluationResult)o).getMessage();
+                          break;
+                     }
+                  }
+                }
+
             }
-
+        }catch (Exception e){
+              log.warn("Error while evaluating field rules", e);
+              log.warn("Due to error evaluating fields rules setting the return value as  : OPTIONAL");
         }
 
         return result;

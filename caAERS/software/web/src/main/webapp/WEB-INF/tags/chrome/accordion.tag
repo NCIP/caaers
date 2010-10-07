@@ -7,8 +7,5 @@
 <%@attribute name="id" required="true" description="The ID to be given to the title control of the accordion"%>
 <%@attribute name="cssClass" description="Any additional CSS class, that has to be used on the title aswell as the content"%>
 <caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
-<div id="${id}" class="accordion-toggle ${cssClass}">${title}</div>
-  <div id="accordionContent-${id}" class="accordion-content ${cssClass}">
-   <jsp:doBody/>
-  </div>
+<div id="${id}" class="accordion-toggle ${cssClass}">${title}</div><div id="accordionContent-${id}" class="accordion-content ${cssClass}"><jsp:doBody/></div>
 </caaers:renderFilter>
