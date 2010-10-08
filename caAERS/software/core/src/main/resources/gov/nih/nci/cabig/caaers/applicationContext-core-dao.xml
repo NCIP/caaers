@@ -131,6 +131,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Device</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyDevice</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
@@ -309,6 +312,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Device</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyDevice</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
@@ -578,6 +584,8 @@ This applicationContext contains the definition of the DAOs
 	<bean id="reportVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao"/>
 	
 	<bean id="advancedSearchDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao"/>
+	<bean id="deviceDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DeviceDao"/>
+
     <!-- Factory beans end here-->
 
 </beans>

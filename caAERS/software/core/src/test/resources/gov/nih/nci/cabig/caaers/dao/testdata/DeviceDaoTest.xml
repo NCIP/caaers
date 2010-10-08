@@ -1,0 +1,10 @@
+<dataset>
+
+    <devices
+            id="-1"
+            common_name="Device-01 common name"
+            brand_name="Device-01 brand name"
+            device_type="Device-01 type A"
+            />
+
+</dataset>
