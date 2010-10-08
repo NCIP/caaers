@@ -6,7 +6,6 @@ class CreateDevices extends edu.northwestern.bioinformatics.bering.Migration {
           t.addColumn("common_name", "string", nullable:true)
           t.addColumn("type", "string", nullable:true)
       }
-
     }
 
     void down() {
