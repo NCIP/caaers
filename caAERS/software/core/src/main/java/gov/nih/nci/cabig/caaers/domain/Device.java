@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -60,6 +61,7 @@ public class Device extends AbstractIdentifiableDomainObject implements Serializ
         this.commonName = commonName;
     }
 
+    @Column(name = "device_type")
     public String getType() {
         return type;
     }
