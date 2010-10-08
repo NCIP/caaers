@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
+ * Class to hold application wide defined devices
  * @author Ion C. Olaru
  *
  * */
