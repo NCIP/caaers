@@ -5,6 +5,7 @@ class CreateDevices extends edu.northwestern.bioinformatics.bering.Migration {
           t.addColumn("brand_name", "string", nullable:false)
           t.addColumn("common_name", "string", nullable:true)
           t.addColumn("type", "string", nullable:true)
+          t.addColumn('grid_id' , 'string' , nullable:true);
       }
     }
 
