@@ -139,6 +139,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         lazyListHelper.add(StudyFundingSponsor.class, new StudyChildInstantiateFactory<StudyFundingSponsor>(this, StudyFundingSponsor.class));
         lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
         lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
+        lazyListHelper.add(StudyDevice.class, new StudyChildInstantiateFactory<StudyDevice>(this, StudyDevice.class));
         lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(TreatmentAssignment.class));
 
         // mandatory, so that the lazy-projected list is created/managed properly.
@@ -358,7 +359,20 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public void setStudyAgents(final List<StudyAgent> studyAgents) {
         setStudyAgentsInternal(studyAgents);
     }
-    
+
+    @Transient
+    @UniqueObjectInCollection(message = "Duplicates found in Study Devices list")
+    public List<StudyDevice> getStudyDevices() {
+        return lazyListHelper.getLazyList(StudyDevice.class);
+    }
+
+    @Transient
+    public void setStudyDevices(final List<StudyDevice> studyDevices) {
+        setStudyDevicesInternal(studyDevices);
+    }
+
+
+
     /**
      * Will return the {@link StudyAgent}s that are not retired
      * @return
@@ -577,6 +591,18 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     public void setStudyAgentsInternal(final List<StudyAgent> studyAgents) {
         lazyListHelper.setInternalList(StudyAgent.class, studyAgents);
+    }
+
+
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy
+    public List<StudyDevice> getStudyDevicesInternal() {
+        return lazyListHelper.getInternalList(StudyDevice.class);
+    }
+
+    public void setStudyDevicesInternal(final List<StudyDevice> studyDevices) {
+        lazyListHelper.setInternalList(StudyDevice.class, studyDevices);
     }
 
     @OneToMany

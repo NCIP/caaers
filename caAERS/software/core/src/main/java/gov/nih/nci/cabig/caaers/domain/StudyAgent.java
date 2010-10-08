@@ -29,10 +29,9 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "study_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_agents_id") })
-public class StudyAgent extends AbstractMutableRetireableDomainObject implements StudyChild {
+public class StudyAgent extends StudyIntervention{
 
     private LazyListHelper lazyListHelper;
-    private Study study;
     private Agent agent;
     private String agentAsString;
     private String otherAgent;
@@ -55,17 +54,6 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
         this();
         this.agent = agent;
         
-    }
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")
-    @Cascade(value = {CascadeType.EVICT})
-    public Study getStudy() {
-        return study;
-    }
-
-    public void setStudy(Study study) {
-        this.study = study;
     }
 
     @ManyToOne
