@@ -20,6 +20,30 @@ public class Device extends AbstractIdentifiableDomainObject implements Serializ
     String commonName;
     String type;
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (brandName == null ? 0 : brandName.hashCode());
+        result = prime * result + (commonName == null ? 0 : commonName.hashCode());
+        result = prime * result + (type == null ? 0 : type.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	boolean found = false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        final Device other = (Device) obj;
+
+        if (!this.getBrandName().equals(other.getBrandName())) return false;
+        if (!this.getCommonName().equals(other.getCommonName())) return false;
+        if (!this.getType().equals(other.getType())) return false;
+
+        return true;
+    }
+    
     public String getBrandName() {
         return brandName;
     }

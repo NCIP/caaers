@@ -1183,9 +1183,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
         final Study other = (Study) obj;
         if (getIdentifiers() == null) {
             if (other.getIdentifiers() != null) {
