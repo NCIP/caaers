@@ -12,13 +12,12 @@ public class DeviceTest extends TestCase {
     protected void setUp() throws Exception {
 		super.setUp();
 		device = new Device();
-	}
-
-    public void testEqualsAll() {
         device.setBrandName("Init brand name");
         device.setCommonName("Init common name");
         device.setType("Init type");
+	}
 
+    public void testEqualsAll() {
         Device other = new Device();
         other.setBrandName("Init brand name");
         other.setCommonName("Init common name");
@@ -29,10 +28,6 @@ public class DeviceTest extends TestCase {
     }
 
     public void testBrandNameDiff() {
-        device.setBrandName("Init brand name");
-        device.setCommonName("Init common name");
-        device.setType("Init type");
-
         Device other = new Device();
         other.setBrandName("Other brand name");
         other.setCommonName("Init common name");
@@ -43,10 +38,6 @@ public class DeviceTest extends TestCase {
     }
 
     public void testCommonNameDiff() {
-        device.setBrandName("Init brand name");
-        device.setCommonName("Init common name");
-        device.setType("Init type");
-
         Device other = new Device();
         other.setBrandName("Init brand name");
         other.setCommonName("Other common name");
