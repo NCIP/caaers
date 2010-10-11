@@ -4,10 +4,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Represents the Study Device Intervention.
@@ -21,9 +18,9 @@ public class StudyDevice extends StudyIntervention {
 
     private Device device;
 
-    private String brandName;
+    private String otherBrandName;
 
-    private String commonName;
+    private String otherCommonName;
 
     private String catalogNumber;
 
@@ -35,15 +32,22 @@ public class StudyDevice extends StudyIntervention {
 
     private String modelNumber;
 
-    private String deviceType;
+    private String otherDeviceType;
 
+    @Transient
+    public boolean isOtherDevice(){
+        //need to change this
+       return getDevice() == null;
+    }
 
+    @Transient
     public String getBrandName() {
-        return brandName;
+        if(isOtherDevice()) return otherBrandName;
+        return getDevice().getBrandName();
     }
 
     public void setBrandName(String brandName) {
-        this.brandName = brandName;
+        throw new UnsupportedOperationException("Use the equivalent method in Device");
     }
 
     public String getCatalogNumber() {
@@ -53,21 +57,23 @@ public class StudyDevice extends StudyIntervention {
     public void setCatalogNumber(String catalogNumber) {
         this.catalogNumber = catalogNumber;
     }
-
+    @Transient
     public String getCommonName() {
-        return commonName;
+        if(isOtherDevice()) return getOtherCommonName();
+        return getDevice().getCommonName();
     }
 
     public void setCommonName(String commonName) {
-        this.commonName = commonName;
+         throw new UnsupportedOperationException("Use the equivalent method in Device");
     }
-
+    @Transient
     public String getDeviceType() {
-        return deviceType;
+        if(isOtherDevice()) return getOtherDeviceType();
+        return getDevice().getType();
     }
 
     public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
+         throw new UnsupportedOperationException("Use the equivalent method in Device");
     }
 
     public String getManufacturerCity() {
@@ -101,7 +107,30 @@ public class StudyDevice extends StudyIntervention {
     public void setModelNumber(String modelNumber) {
         this.modelNumber = modelNumber;
     }
+    @Column(name = "brand_name")
+    public String getOtherBrandName() {
+        return otherBrandName;
+    }
 
+    public void setOtherBrandName(String otherBrandName) {
+        this.otherBrandName = otherBrandName;
+    }
+    @Column(name = "common_name")
+    public String getOtherCommonName() {
+        return otherCommonName;
+    }
+
+    public void setOtherCommonName(String otherCommonName) {
+        this.otherCommonName = otherCommonName;
+    }
+    @Column(name = "device_type")
+    public String getOtherDeviceType() {
+        return otherDeviceType;
+    }
+
+    public void setOtherDeviceType(String otherDeviceType) {
+        this.otherDeviceType = otherDeviceType;
+    }
 
     @ManyToOne
     @JoinColumn(name = "device_id")

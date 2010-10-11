@@ -737,4 +737,26 @@ public class Fixtures {
       fc.setLiteralRestriction(Arrays.asList(lr));
       return fc;
   }
+
+
+  public static Device createDevice(){
+      Device d = new Device();
+      d.setBrandName("Brand");
+      d.setCommonName("CName");
+      d.setType("type");
+      return d;
+  }
+
+  public static StudyDevice createStudyDevice(){
+      Device d = createDevice();
+      StudyDevice sd = new StudyDevice();
+      sd.setCatalogNumber("c1");
+      sd.setManufacturerCity("mc");
+      sd.setManufacturerName("ma");
+      sd.setManufacturerState("va");
+      sd.setModelNumber("999");
+      
+      sd.setDevice(d);
+      return sd;
+  }
 }

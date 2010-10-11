@@ -2,9 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,29 +14,16 @@ import org.springframework.beans.BeanUtils;
  * This class represents the MedicalDevice domain object associated with the Adverse event report.
  *
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "ae_medical_devices")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_medical_devices_id")})
 public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild {
 
-    private String brandName;
-
-    private String commonName;
-
-    private String deviceType;
-
-    private String manufacturerName;
-
-    private String manufacturerCity;
-
-    private String manufacturerState;
-
-    private String modelNumber;
+    private StudyDevice studyDevice;
 
     private String lotNumber;
-
-    private String catalogNumber;
 
     private Date expirationDate;
 
@@ -67,29 +52,74 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
     // //// LOGIC
 
     // //// BEAN PROPERTIES
+    @ManyToOne
+    @JoinColumn(name = "study_device_id")
+    public StudyDevice getStudyDevice() {
+        return studyDevice;
+    }
 
+    public void setStudyDevice(StudyDevice studyDevice) {
+        this.studyDevice = studyDevice;
+    }
+
+    @Transient
     public String getBrandName() {
-        return brandName;
+       return getStudyDevice().getBrandName();
     }
 
     public void setBrandName(String brandName) {
-        this.brandName = brandName;
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
     }
-
+    @Transient
     public String getCatalogNumber() {
-        return catalogNumber;
+        return getStudyDevice().getCatalogNumber();
     }
 
     public void setCatalogNumber(String catalogNumber) {
-        this.catalogNumber = catalogNumber;
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
     }
-
+    
+    @Transient
     public String getCommonName() {
-        return commonName;
+        return getStudyDevice().getCommonName();
     }
 
     public void setCommonName(String commonName) {
-        this.commonName = commonName;
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
+    }
+
+    @Transient
+    public String getDeviceType() {
+        return getStudyDevice().getDeviceType();
+    }
+
+    public void setDeviceType(String deviceType) {
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
+    }
+
+    @Transient
+    public String getManufacturerName() {
+        return getStudyDevice().getManufacturerName();
+    }
+
+    public void setManufacturerName(String manufacturerName) {
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
+    }
+    @Transient
+    public String getManufacturerState() {
+        return getStudyDevice().getManufacturerState();
+    }
+
+    public void setManufacturerState(String manufacturerState) {
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
+    }
+    @Transient
+    public String getModelNumber() {
+        return getStudyDevice().getModelNumber();
+    }
+
+    public void setModelNumber(String modelNumber) {
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
     }
 
     @Column(name = "device_reprocessed_code")
@@ -110,14 +140,6 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
 
     public void setDeviceOperator(DeviceOperator deviceOperator) {
         this.deviceOperator = deviceOperator;
-    }
-
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
     }
 
     @Column(name = "evaluation_availability_code")
@@ -161,37 +183,14 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
     public void setLotNumber(String lotNumber) {
         this.lotNumber = lotNumber;
     }
-
+    
+    @Transient
     public String getManufacturerCity() {
-        return manufacturerCity;
+        return getStudyDevice().getManufacturerCity();
     }
 
     public void setManufacturerCity(String manufacturerCity) {
-        this.manufacturerCity = manufacturerCity;
-    }
-
-    public String getManufacturerName() {
-        return manufacturerName;
-    }
-
-    public void setManufacturerName(String manufacturerName) {
-        this.manufacturerName = manufacturerName;
-    }
-
-    public String getManufacturerState() {
-        return manufacturerState;
-    }
-
-    public void setManufacturerState(String manufacturerState) {
-        this.manufacturerState = manufacturerState;
-    }
-
-    public String getModelNumber() {
-        return modelNumber;
-    }
-
-    public void setModelNumber(String modelNumber) {
-        this.modelNumber = modelNumber;
+        throw new UnsupportedOperationException("Need to make equivalent call in StudyDevice");
     }
 
     public String getOtherNumber() {
