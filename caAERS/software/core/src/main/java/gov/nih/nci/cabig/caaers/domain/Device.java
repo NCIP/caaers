@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "devices")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_devices_id")})
-public class Device extends AbstractIdentifiableDomainObject implements Serializable {
+public class Device extends AbstractMutableDomainObject implements Serializable {
     String brandName;
     String commonName;
     String type;
