@@ -6,6 +6,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_STUDIES;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -26,7 +27,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.StatementCallback;
 
 /**
- * @author Ion C. Olaru
+     * @author Ion C. Olaru
  */
 public class DeviceDaoTest extends DaoNoSecurityTestCase<DeviceDao> {
     private DeviceDao deviceDao = (DeviceDao) getApplicationContext().getBean("deviceDao");
@@ -37,7 +38,7 @@ public class DeviceDaoTest extends DaoNoSecurityTestCase<DeviceDao> {
 
     public void testGetAll() {
         List all = deviceDao.getAllDevices();
-        assertEquals(1, all.size()); 
+        assertEquals(3, all.size()); 
     }
 
     public void testGetById() {
@@ -45,7 +46,15 @@ public class DeviceDaoTest extends DaoNoSecurityTestCase<DeviceDao> {
         assertNotNull(d); 
         assertEquals("Device-01 common name", d.getCommonName());
         assertEquals("Device-01 brand name", d.getBrandName());
-        assertEquals("Device-01 type A", d.getType()); 
+        assertEquals("Type A", d.getType()); 
+    }
+
+    public void testGetALLFilterByType() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByType("Type A");
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(2, l.size());
     }
 
 }
