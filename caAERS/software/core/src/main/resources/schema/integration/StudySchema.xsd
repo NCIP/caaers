@@ -76,7 +76,7 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
-                    
+
                     <xs:element name="identifiers" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
@@ -129,6 +129,14 @@
                         </xs:complexType>
                     </xs:element>
 					
+                    <xs:element name="studyDevices">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="studyDevice" minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
                     <xs:choice minOccurs="0">
 	                    <xs:element name="expectedAECtcTerms">
 	                        <xs:complexType>
@@ -849,5 +857,52 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <!-- START - DEVICE RELATED CHANGES -->
+
+    <xs:element name="device" type="DeviceType" />
+    <xs:complexType name="DeviceType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="commonName"/>
+                    <xs:element name="brandName"/>
+                    <xs:element name="type"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="studyDevice" type="StudyDeviceType"/>
+    <xs:complexType name="StudyDeviceType">
+        <xs:complexContent>
+            <xs:extension base="StudyInterventionType">
+                <xs:sequence>
+                    <xs:element ref="device"/>
+                    <xs:element name="otherBrandName" type="xs:string" />
+                    <xs:element name="otherCommonName" type="xs:string" />
+                    <xs:element name="otherCatalogNumber" type="xs:string" />
+                    <xs:element name="otherDeviceType" type="xs:string" />
+                    <xs:element name="manufacturerName" type="xs:string" />
+                    <xs:element name="manufacturerCity" type="xs:string" />
+                    <xs:element name="manufacturerState" type="xs:string" />
+                    <xs:element name="modelNumber" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
     
+    <xs:element name="studyIntervention" type="StudyInterventionType"/>
+    <xs:complexType name="StudyInterventionType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="studyTherapyType" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- END - DEVICE RELATED CHANGES -->
+
 </xs:schema>
