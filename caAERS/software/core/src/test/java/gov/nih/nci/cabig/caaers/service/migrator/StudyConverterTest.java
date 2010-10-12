@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import com.semanticbits.rules.utils.RuleUtil;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -9,16 +11,14 @@ import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyInvestigators;
 import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyPersonnels;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-import java.io.*;
-
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import com.semanticbits.rules.utils.RuleUtil;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -222,7 +222,7 @@ public class StudyConverterTest extends AbstractTestCase {
         StudyPersonnel sp1 = new StudyPersonnel();
         sp1.setStartDate(new Date());
         sp1.setEndDate(new Date());
-        sp1.setRoleCode("caaers_ae_cd");
+        sp1.setRoleCode(PersonnelRoleCodeType.AE_REPORTER.value());
         sp1.setSiteResearchStaff(new SiteResearchStaff());
         sp1.getSiteResearchStaff().setResearchStaff(r1);
 
@@ -295,7 +295,7 @@ public class StudyConverterTest extends AbstractTestCase {
         StudyPersonnel sp11 = new StudyPersonnel();
         sp11.setStartDate(new Date());
         sp11.setEndDate(new Date());
-        sp11.setRoleCode("caaers_ae_cd");
+        sp11.setRoleCode(PersonnelRoleCodeType.AE_REPORTER.value());
         sp11.setSiteResearchStaff(new SiteResearchStaff());
         sp11.getSiteResearchStaff().setResearchStaff(r11);
 
@@ -352,7 +352,7 @@ public class StudyConverterTest extends AbstractTestCase {
         StudyPersonnel sp32 = new StudyPersonnel();
         sp32.setStartDate(new Date());
         sp32.setEndDate(new Date());
-        sp32.setRoleCode("caaers_ae_cd");
+        sp32.setRoleCode(PersonnelRoleCodeType.AE_REPORTER.value());
         sp32.setSiteResearchStaff(new SiteResearchStaff());
         sp32.getSiteResearchStaff().setResearchStaff(r32);
 
@@ -438,6 +438,40 @@ public class StudyConverterTest extends AbstractTestCase {
         ExpectedAECtcTerm term = new ExpectedAECtcTerm();
         term.setCtcTerm(new CtcTerm()); term.getCtcTerm().setCtepCode("ctcTerm - 5001");
         study.getExpectedAECtcTerms().add(term);
+
+        study.setStudyDevices(new ArrayList<StudyDevice>());
+        StudyDevice sd = new StudyDevice();
+        sd.setDevice(new Device()); sd.getDevice().setBrandName("One brand name"); sd.getDevice().setCommonName("One common name"); sd.getDevice().setType("Type A");
+        study.getStudyDevices().add(sd);
+
+        sd = new StudyDevice();
+        sd.setDevice(new Device()); sd.getDevice().setBrandName("Two brand name"); sd.getDevice().setCommonName("Two common name"); sd.getDevice().setType("Type A");
+        sd.setCatalogNumber("Caatalog number ak822409");
+        sd.setManufacturerCity("San Francisco");
+        sd.setManufacturerName("Kodak");
+        sd.setManufacturerState("CA");
+        sd.setModelNumber("MN-a93673");
+        study.getStudyDevices().add(sd);
+
+        sd = new StudyDevice();
+        sd.setDevice(new Device()); sd.getDevice().setBrandName("Three brand name"); sd.getDevice().setCommonName("Three common name"); sd.getDevice().setType("Type B");
+        sd.setCatalogNumber("Caatalog number ak822409");
+        sd.setManufacturerCity("Seattle");
+        sd.setManufacturerName("Volvo");
+        sd.setManufacturerState("WA");
+        sd.setModelNumber("MN-jsl23");
+        study.getStudyDevices().add(sd);
+
+        sd = new StudyDevice();
+        sd.setOtherBrandName("Other brand name");
+        sd.setOtherCommonName("Other common name");
+        sd.setOtherDeviceType("Other device type");
+        sd.setCatalogNumber("Caatalog number ak822409");
+        sd.setManufacturerCity("New York City");
+        sd.setManufacturerName("Canon");
+        sd.setManufacturerState("NY");
+        sd.setModelNumber("MN-jsl23");
+        study.getStudyDevices().add(sd);
 
         gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
 

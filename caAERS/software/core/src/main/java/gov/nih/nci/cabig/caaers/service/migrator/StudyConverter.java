@@ -3,108 +3,19 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.AeTerminology;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.Arm;
-import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Design;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.INDType;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.webservice.AeTerminologyType;
-import gov.nih.nci.cabig.caaers.webservice.AgentType;
-import gov.nih.nci.cabig.caaers.webservice.CoordinatingCenterType;
-import gov.nih.nci.cabig.caaers.webservice.CtcVersionType;
-import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
-import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
-import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
-import gov.nih.nci.cabig.caaers.webservice.DiseaseTermType;
-import gov.nih.nci.cabig.caaers.webservice.DiseaseTerminologyType;
-import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
-import gov.nih.nci.cabig.caaers.webservice.ExpectedAECtcTermType;
-import gov.nih.nci.cabig.caaers.webservice.ExpectedAEMeddraTermType;
-import gov.nih.nci.cabig.caaers.webservice.FundingSponsorType;
-import gov.nih.nci.cabig.caaers.webservice.IndType;
-import gov.nih.nci.cabig.caaers.webservice.InvestigationalNewDrugType;
-import gov.nih.nci.cabig.caaers.webservice.InvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.MeddraStudyDiseaseType;
-import gov.nih.nci.cabig.caaers.webservice.MeddraVersionType;
-import gov.nih.nci.cabig.caaers.webservice.ObjectFactory;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
-import gov.nih.nci.cabig.caaers.webservice.PersonnelRoleCodeType;
-import gov.nih.nci.cabig.caaers.webservice.ReducedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.ResearchStaffType;
-import gov.nih.nci.cabig.caaers.webservice.RoleCodeType;
-import gov.nih.nci.cabig.caaers.webservice.SiteInvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
-import gov.nih.nci.cabig.caaers.webservice.StatusType;
-import gov.nih.nci.cabig.caaers.webservice.StudyAgentINDAssociationType;
-import gov.nih.nci.cabig.caaers.webservice.StudyAgentType;
-import gov.nih.nci.cabig.caaers.webservice.StudyCoordinatingCenterType;
-import gov.nih.nci.cabig.caaers.webservice.StudyFundingSponsorType;
-import gov.nih.nci.cabig.caaers.webservice.StudyIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.StudyInvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.StudyPersonnelType;
-import gov.nih.nci.cabig.caaers.webservice.StudyPhaseType;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
-import gov.nih.nci.cabig.caaers.webservice.SystemAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.TreatmentAssignmentType;
-import gov.nih.nci.cabig.caaers.webservice.Study.CtepStudyDiseases;
-import gov.nih.nci.cabig.caaers.webservice.Study.EvaluationPeriods;
-import gov.nih.nci.cabig.caaers.webservice.Study.ExpectedAECtcTerms;
-import gov.nih.nci.cabig.caaers.webservice.Study.ExpectedAEMeddraTerms;
-import gov.nih.nci.cabig.caaers.webservice.Study.Identifiers;
-import gov.nih.nci.cabig.caaers.webservice.Study.MeddraStudyDiseases;
-import gov.nih.nci.cabig.caaers.webservice.Study.StudyAgents;
-import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
-import gov.nih.nci.cabig.caaers.webservice.Study.TreatmentAssignments;
+import gov.nih.nci.cabig.caaers.webservice.*;
+import gov.nih.nci.cabig.caaers.webservice.Study.*;
 import gov.nih.nci.cabig.caaers.webservice.StudyAgentType.StudyAgentINDAssociations;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * This class has one public method which Converts a JAXB generated Study Type object
@@ -117,12 +28,11 @@ public class StudyConverter {
 
 	private CtcTermDao ctcTermDao;
 	private LowLevelTermDao lowLevelTermDao;
-	
+
     public gov.nih.nci.cabig.caaers.webservice.Studies convertStudyDomainToStudyDto(Study study) throws Exception {
         ObjectFactory objectFactory = new ObjectFactory();
         gov.nih.nci.cabig.caaers.webservice.Study studyDto = objectFactory.createStudy();
 
-//        try {
             studyDto.setShortTitle(study.getShortTitle());
             studyDto.setLongTitle(study.getLongTitle());
             studyDto.setPrecis(study.getPrecis());
@@ -137,7 +47,7 @@ public class StudyConverter {
                 otherMeddra.setName(study.getOtherMeddra().getName());
                 studyDto.setOtherMeddra(otherMeddra.getName());
             }
-            
+
             populateDesignCodeDomain2Dto(studyDto, study);
             populateStudyTherapyDomain2Dto(studyDto, study);
             populateStudyReportTypesDomain2Dto(studyDto, study);
@@ -155,34 +65,25 @@ public class StudyConverter {
             populateStudyEvaluationPeriodsDomain2Dto(studyDto, study);
             populateStudyExpectedAEsDomain2Dto(studyDto, study);
 
-/*
-*/
+            populateStudyDevicesDomain2Dto(studyDto, study);
 
-/*
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new CaaersSystemException("Exception while StudyDto Conversion", e);
-        }
-*/
+            gov.nih.nci.cabig.caaers.webservice.Studies studies = objectFactory.createStudies();
+            studies.getStudy().add(studyDto);
 
-
-        gov.nih.nci.cabig.caaers.webservice.Studies studies = objectFactory.createStudies();
-        studies.getStudy().add(studyDto);
-
-        return studies;
+            return studies;
     }
 
 	/**
 	 * This method accepts a studyDto which is a JAXB generated Study Object
-	 * and a Study domain object. 
-	 * It walks through the studyDto object and prepares a Study object 
+	 * and a Study domain object.
+	 * It walks through the studyDto object and prepares a Study object
 	 * which is StudyMigrator Complaint.
 	 * @param studyDto
-	 * @param study 
+	 * @param study
 	 */
 	public void convertStudyDtoToStudyDomain(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws CaaersSystemException{
 		assert study != null : "Domain study should not be null";
-		
+
 		try{
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
@@ -193,15 +94,15 @@ public class StudyConverter {
 			study.setStatus(studyDto.getStatus().value());
 			study.setMultiInstitutionIndicator(studyDto.isMultiInstitutionIndicator());
 			study.setAdeersReporting(studyDto.isAdeersReporting());
-			
-			
+
+
 			if(! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null){
 				MeddraVersion otherMeddra = null;
 				otherMeddra = new MeddraVersion();
 				otherMeddra.setName(studyDto.getOtherMeddra());
 				study.setOtherMeddra(otherMeddra);
 			}
-			
+
 			//Populate DesignCode
 			populateDesignCode(studyDto, study);
 			//populate study therapy
@@ -232,17 +133,17 @@ public class StudyConverter {
 			populateStudyEvaluationPeriods(studyDto, study);
 			//populate Expected AE's
 			populateStudyExpectedAEs(studyDto, study);
-			
+
 		}catch(Exception e){
 			throw new CaaersSystemException("Exception while StudyDto Conversion",e);
 		}
 	}
-	
 
-	
+
+
 	//Populate StudyInvestigators for a StudyOrganization
 	private void populateStudyInvestigators(List<StudyInvestigatorType> studyInvestigatorList,StudyOrganization studyOrganization) throws Exception{
-		
+
 		if(studyInvestigatorList != null && !studyInvestigatorList.isEmpty()){
 			StudyInvestigator studyInvestigator = null;
 			SiteInvestigator siteInvestigator;
@@ -264,7 +165,7 @@ public class StudyConverter {
 				studyInvestigator.setSiteInvestigator(siteInvestigator);
 				studyOrganization.addStudyInvestigators(studyInvestigator);
 			}
-			
+
 		}
 	}
 
@@ -409,7 +310,7 @@ public class StudyConverter {
 			}
 		}
 	}
-	
+
 	private void populateStudyPersonnelDomain2Dto(List<StudyPersonnel> studyPersonnelList, StudyFundingSponsorType sf) throws Exception{
         if (studyPersonnelList != null && !studyPersonnelList.isEmpty()) {
 
@@ -417,7 +318,7 @@ public class StudyConverter {
             sf.getStudyPersonnels().setStudyPersonnel((new ArrayList<StudyPersonnelType>()));
 
             StudyPersonnelType p;
-            
+
             for (StudyPersonnel personnel : studyPersonnelList) {
                 p = new StudyPersonnelType();
                 p.setRoleCode(PersonnelRoleCodeType.fromValue(personnel.getRoleCode()));
@@ -511,7 +412,7 @@ public class StudyConverter {
 
 	//Populate DesignCode
 	private void populateDesignCode(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		DesignCodeType designCodeType = studyDto.getDesign();
 		if(DesignCodeType.BLIND.equals(designCodeType)){
 			study.setDesign(Design.BLIND);
@@ -523,14 +424,14 @@ public class StudyConverter {
 			study.setDesign(Design.PARTIAL);
 		}
 	}
-	
+
 	// Populate DesignCode
 	private void populateDesignCodeDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
         if (study.getDesign() == null) return;
         Design d = study.getDesign();
         studyDto.setDesign(DesignCodeType.fromValue(d.name()));
 	}
-	
+
 	private void populateStudyTherapy(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		if(studyDto.isBehavioralTherapyType() != null && studyDto.isBehavioralTherapyType()) study.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
 		if(studyDto.isBiologicalTherapyType() != null && studyDto.isBiologicalTherapyType()) study.addStudyTherapy(StudyTherapyType.BIOLOGICAL_VACCINE);
@@ -541,9 +442,9 @@ public class StudyConverter {
 		if(studyDto.isOtherTherapyType() != null && studyDto.isOtherTherapyType()) study.addStudyTherapy(StudyTherapyType.OTHER);
 		if(studyDto.isRadiationTherapyType() != null && studyDto.isRadiationTherapyType()) study.addStudyTherapy(StudyTherapyType.RADIATION);
 		if(studyDto.isSurgeryTherapyType() != null && studyDto.isSurgeryTherapyType()) study.addStudyTherapy(StudyTherapyType.SURGERY);
-		
+
 	}
-	
+
 	private void populateStudyReportTypes(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		if (studyDto.isReportTypeAdeersPDF() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.ADEERSPDF);
 		if (studyDto.isReportTypeCaaersXML() != null && studyDto.isReportTypeCaaersXML()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CAAERSXML);
@@ -554,10 +455,10 @@ public class StudyConverter {
 	}
 
 	private void populateAeTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		if(studyDto.getAeTerminology() != null){
 			AeTerminology aeTerminology = null;
-			
+
 			if(studyDto.getAeTerminology().getCtcVersion() != null){
 				aeTerminology = new AeTerminology();
 				Ctc ctcVersion = new Ctc();
@@ -573,9 +474,9 @@ public class StudyConverter {
             	study.setAeTerminology(aeTerminology);
             }
 		}
-		
+
 	}
-	
+
 	private void populateStudyTherapyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
 		studyDto.setBehavioralTherapyType(study.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
 		studyDto.setBiologicalTherapyType(study.hasTherapyOfType(StudyTherapyType.BIOLOGICAL_VACCINE));
@@ -587,7 +488,7 @@ public class StudyConverter {
 		studyDto.setRadiationTherapyType(study.hasTherapyOfType(StudyTherapyType.RADIATION));
 		studyDto.setSurgeryTherapyType(study.hasTherapyOfType(StudyTherapyType.SURGERY));
 	}
-	
+
 	private void populateStudyReportTypesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
         studyDto.setReportTypeMedwatchPDF(study.getMedwatchPDFType());
         studyDto.setReportTypeAdeersPDF(study.getAdeersPDFType());
@@ -608,7 +509,7 @@ public class StudyConverter {
                 aeTerminology.setCtcVersion(ctc);
 
             }
-            
+
             if (study.getAeTerminology().getMeddraVersion() != null) {
                 MeddraVersionType meddra = new MeddraVersionType();
                 meddra.setName(study.getAeTerminology().getMeddraVersion().getId().toString());
@@ -621,10 +522,10 @@ public class StudyConverter {
     }
 
 	private void populateDiseaseTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		if(studyDto.getDiseaseTerminology() != null){
 			DiseaseTerminology diseaseTerminology = study.getDiseaseTerminology();
-			
+
 			if(DiseaseCodeType.CTEP.equals(studyDto.getDiseaseTerminology().getDiseaseCodeTerm())){
 				diseaseTerminology.setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			}
@@ -632,9 +533,9 @@ public class StudyConverter {
 				diseaseTerminology.setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
 			}
 		}
-		
+
 	}
-	
+
 	private void populateDiseaseTerminologyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
 		if(study.getDiseaseTerminology() != null){
@@ -658,7 +559,7 @@ public class StudyConverter {
 	}
 
 	private void populateFundingSponsor(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		if(studyDto.getFundingSponsor() != null){
 			FundingSponsor fundingSponsor = null;
 			StudyFundingSponsor studyFundingSponsor = null;
@@ -678,7 +579,7 @@ public class StudyConverter {
 					fundingSponsor.setStudyFundingSponsor(studyFundingSponsor);
 				}
 			}
-			
+
 			if(studyDto.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators() != null){
 				populateStudyInvestigators(studyDto.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators().getStudyInvestigator(),fundingSponsor.getStudyFundingSponsor());
 			}
@@ -687,9 +588,9 @@ public class StudyConverter {
 			}
 			study.setFundingSponsor(fundingSponsor);
 		}
-		
+
 	}
-	
+
 	private void populateFundingSponsorDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
 
         if (study.getFundingSponsor() != null) {
@@ -716,7 +617,7 @@ public class StudyConverter {
             if (study.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators() != null) {
                 populateStudyInvestigatorsDomain2Dto(study.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators(), fs.getStudyFundingSponsor());
             }
-            
+
             if (study.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels() != null) {
                 populateStudyPersonnelDomain2Dto(study.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels(), fs.getStudyFundingSponsor());
             }
@@ -727,7 +628,7 @@ public class StudyConverter {
     }
 
 	private void populateCoordinatingCenter(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		if(studyDto.getCoordinatingCenter() != null){
 			CoordinatingCenter coordinatingCenter = null;
 			StudyCoordinatingCenter studyCoordinatingCenter = null;
@@ -755,9 +656,9 @@ public class StudyConverter {
 			}
 			study.setCoordinatingCenter(coordinatingCenter);
 		}
-		
+
 	}
-	
+
 	private void populateCoordinatingCenterDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
         if (study.getCoordinatingCenter() != null) {
@@ -784,7 +685,7 @@ public class StudyConverter {
 				if(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyInvestigators() != null){
 					populateStudyInvestigatorsDomain2DtoForCoordinatingSite(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyInvestigators(), coordinatingCenterType.getStudyCoordinatingCenter());
 				}
-                
+
 				if(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyPersonnels() != null){
 					populateStudyPersonnelDomain2DtoForCoordinatingSite(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyPersonnels(), coordinatingCenterType.getStudyCoordinatingCenter());
 				}
@@ -796,7 +697,7 @@ public class StudyConverter {
     }
 
 	private void populateStudySites(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		StudyOrganizations studySites = studyDto.getStudyOrganizations();
 		if(studySites != null){
 			List<StudyOrganization> studyOrganizations = study.getStudyOrganizations();
@@ -826,13 +727,13 @@ public class StudyConverter {
 				study.setStudyOrganizations(studyOrganizations);
 			}
 		}
-		
+
 	}
-	
+
 	private void populateStudySitesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
 
         List<StudySite> studySites = study.getStudySites();
-            
+
         if (studySites != null && !studySites.isEmpty()) {
             StudyOrganizations studyOrganizations = new StudyOrganizations();
             studyOrganizations.setStudySite(new ArrayList<StudySiteType>());
@@ -878,7 +779,7 @@ public class StudyConverter {
     }
 
 	private void populateIdentifiers(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		Identifiers identifiers = studyDto.getIdentifiers();
 		if(identifiers != null){
 			List<Identifier> identifierList = study.getIdentifiers();
@@ -898,13 +799,13 @@ public class StudyConverter {
 				study.setIdentifiers(identifierList);
 			}
 		}
-		
+
 	}
-	
+
 	private void populateIdentifiersDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
 		List<Identifier> ids = study.getIdentifiers();
-        
+
 		if(ids != null && ids.size() > 0){
 
             Identifiers identifiers = new Identifiers();
@@ -946,7 +847,7 @@ public class StudyConverter {
 	}
 
 	private void populateTreatmentAssignments(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		TreatmentAssignments treatmentAssignments = studyDto.getTreatmentAssignments();
 		if(treatmentAssignments!=null){
 			List<TreatmentAssignmentType> treatmentAssignmentsTypeList = treatmentAssignments.getTreatmentAssignment();
@@ -966,9 +867,9 @@ public class StudyConverter {
 				study.setTreatmentAssignments(treatmentAssignmentList);
 			}
 		}
-		
+
 	}
-	
+
 	private void populateTreatmentAssignmentsDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
 		List<TreatmentAssignment> list = study.getTreatmentAssignments();
@@ -995,7 +896,7 @@ public class StudyConverter {
     }
 
 	private void populateStudyAgents(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		StudyAgents studyAgents = studyDto.getStudyAgents();
 		if(studyAgents != null){
 			List<StudyAgentType> studyAgentTypeList = studyAgents.getStudyAgent();
@@ -1010,23 +911,23 @@ public class StudyConverter {
 					if(studyAgentType.getOtherAgent() != null){
 						studyAgent.setOtherAgent(studyAgentType.getOtherAgent());
 					}else{
-						
+
 						if(studyAgentType.getAgent().getNscNumber() != null){
-							
+
 							studyAgent.getAgent().setNscNumber(studyAgentType.getAgent().getNscNumber());
 						}
-						
+
 						if(studyAgentType.getAgent().getName() != null){
 							studyAgent.getAgent().setName(studyAgentType.getAgent().getName());
 						}
-						
+
 					}
-					
+
 					if(IndType.CTEP_IND.equals(studyAgentType.getIndType())){
 						studyAgent.setIndType(INDType.CTEP_IND);
 					}
 					if(IndType.DCP_IND.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.DCP_IND);	
+						studyAgent.setIndType(INDType.DCP_IND);
 					}
 					if(IndType.IND_EXEMPT.equals(studyAgentType.getIndType())){
 						studyAgent.setIndType(INDType.IND_EXEMPT);
@@ -1041,7 +942,7 @@ public class StudyConverter {
 						studyAgent.setIndType(INDType.OTHER);
 					}
 					studyAgent.setPartOfLeadIND(studyAgentType.isPartOfLeadIND());
-					
+
 					StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
 					InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
 					StudyAgentINDAssociations studyAgentINDAssociations = studyAgentType.getStudyAgentINDAssociations();
@@ -1061,7 +962,7 @@ public class StudyConverter {
 				study.setStudyAgents(studyAgentList);
 			}
 		}
-		
+
 	}
 
 	private void populateStudyAgentsDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
@@ -1090,7 +991,7 @@ public class StudyConverter {
                 if (sa.getIndType() != null) sat.setIndType(IndType.fromValue(sa.getIndType().name()));
                 if (sa.getPartOfLeadIND() != null) sat.setPartOfLeadIND(sa.getPartOfLeadIND());
 
-                
+
                 List<StudyAgentINDAssociation> as = sa.getStudyAgentINDAssociations();
 
                 if (as != null && as.size() > 0) {
@@ -1113,7 +1014,7 @@ public class StudyConverter {
     }
 
 	private void populateStudyDiseases(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		
+
 		CtepStudyDiseases ctepStudyDiseases = studyDto.getCtepStudyDiseases();
 		if(ctepStudyDiseases != null){
 			List<CtepStudyDiseaseType> ctepStudyDiseaseTypeList = ctepStudyDiseases.getCtepStudyDisease();
@@ -1155,7 +1056,7 @@ public class StudyConverter {
 			}
 		}
 	}
-	
+
 	private void populateStudyDiseasesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
         List<CtepStudyDisease> ctep = study.getCtepStudyDiseases();
@@ -1180,7 +1081,7 @@ public class StudyConverter {
             if (cteps.getCtepStudyDisease().size() > 0) studyDto.setCtepStudyDiseases(cteps);
 
         } else if (meddra != null && meddra.size() > 0) {
-            
+
             MeddraStudyDiseases meddras = new MeddraStudyDiseases();
             meddras.setMeddraStudyDisease(new ArrayList<MeddraStudyDiseaseType>());
 
@@ -1223,7 +1124,7 @@ public class StudyConverter {
 									solicitedAdverseEvent.setCtcterm(terms.get(0));
 								}
 								if(solicitedAdverseEventType.getMeddraCode() != null && !"".equals(solicitedAdverseEventType.getMeddraCode()) ){
-									
+
 									List<LowLevelTerm> terms = lowLevelTermDao.getByMeddraCode(solicitedAdverseEventType.getMeddraCode());
 									if (terms.size() == 0) {
 										break;
@@ -1283,7 +1184,7 @@ public class StudyConverter {
                     if (sae.getOtherTerm() != null) {
                         saet.setOtherMeddraCode(sae.getOtherTerm().getMeddraCode());
                     }
-                    
+
                     saes.getSolicitedAdverseEvent().add(saet);
                 }
 
@@ -1341,6 +1242,35 @@ public class StudyConverter {
 		}
 	}
 
+    private void populateStudyDevicesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
+        List<StudyDevice> d = study.getStudyDevices();
+        gov.nih.nci.cabig.caaers.webservice.Study.StudyDevices studyDevices = new gov.nih.nci.cabig.caaers.webservice.Study.StudyDevices();
+        studyDevices.setStudyDevice(new ArrayList<StudyDeviceType>());
+
+        for (StudyDevice sd : d) {
+            StudyDeviceType sdt = new StudyDeviceType();
+            if (sd.getDevice() != null) {
+                sdt.setDevice(new DeviceType());
+                sdt.getDevice().setBrandName(sd.getDevice().getBrandName());
+                sdt.getDevice().setCommonName(sd.getDevice().getCommonName());
+                sdt.getDevice().setType(sd.getDevice().getType());
+            } else {
+                sdt.setOtherBrandName(sd.getOtherBrandName());
+                sdt.setOtherCommonName(sd.getOtherCommonName());
+                sdt.setOtherDeviceType(sd.getOtherDeviceType());
+            }
+            sdt.setCatalogNumber(sd.getCatalogNumber());
+            sdt.setManufacturerCity(sd.getManufacturerCity());
+            sdt.setManufacturerName(sd.getManufacturerName());
+            sdt.setManufacturerState(sd.getManufacturerState());
+            sdt.setModelNumber(sd.getModelNumber());
+
+            studyDevices.getStudyDevice().add(sdt);
+        }
+
+        studyDto.setStudyDevices(studyDevices);
+    }
+
     private void populateStudyExpectedAEsDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
 
         List<ExpectedAEMeddraLowLevelTerm> meddraTerms = study.getExpectedAEMeddraLowLevelTerms();
@@ -1373,7 +1303,7 @@ public class StudyConverter {
                 terms.getExpectedAEMeddraTerm().add(tt);
             }
             if (terms.getExpectedAEMeddraTerm().size() > 0) studyDto.setExpectedAEMeddraTerms(terms);
-            
+
         }
     }
 

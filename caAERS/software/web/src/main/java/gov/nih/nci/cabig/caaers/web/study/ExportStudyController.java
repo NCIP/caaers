@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import com.semanticbits.rules.utils.RuleUtil;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
@@ -7,29 +8,23 @@ import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionCommand;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.OutputStream;
-import java.io.StringWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
-import com.semanticbits.rules.utils.RuleUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.*;
 
-
-public class ExportStudyController extends AbstractCommandController{
+/**
+ * @author Ion C. Olaru
+ * 
+ * */
+public class ExportStudyController extends AbstractCommandController {
 
     protected final Log log = LogFactory.getLog(getClass());
     
@@ -39,8 +34,6 @@ public class ExportStudyController extends AbstractCommandController{
 	public ExportStudyController(){
 		setCommandClass(ReportDefinitionCommand.class);
 	}
-
-    
 
 	@Override
 	protected ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object o, BindException e) throws Exception {
