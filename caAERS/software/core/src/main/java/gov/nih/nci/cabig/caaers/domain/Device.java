@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -26,12 +27,15 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (brandName == null ? 0 : brandName.hashCode());
-        result = prime * result + (commonName == null ? 0 : commonName.hashCode());
-        result = prime * result + (type == null ? 0 : type.hashCode());
+        result = prime * result + (brandName == null || brandName.trim().equals("") ? 0 : brandName.trim().hashCode());
+        result = prime * result + (commonName == null || commonName.trim().equals("") ? 0 : commonName.trim().hashCode());
+        result = prime * result + (type == null || type.trim().equals("") ? 0 : type.trim().hashCode());
         return result;
     }
 
+    /**
+     * A null value of a String field is considered to be equal to an empty String value of the same field
+     * */
     @Override
     public boolean equals(Object obj) {
     	boolean found = false;
@@ -39,9 +43,9 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
         if (obj == null) return false;
         final Device other = (Device) obj;
 
-        if (!this.getBrandName().equals(other.getBrandName())) return false;
-        if (!this.getCommonName().equals(other.getCommonName())) return false;
-        if (!this.getType().equals(other.getType())) return false;
+        if (!(this.getBrandName() != null ? this.getBrandName().trim() : "").equals(other.getBrandName() != null ? other.getBrandName().trim() : "")) return false;
+        if (!(this.getCommonName() != null ? this.getCommonName().trim() : "").equals(other.getCommonName() != null ? other.getCommonName().trim() : "")) return false;
+        if (!(this.getType() != null ? this.getType().trim() : "").equals(other.getType() != null ? other.getType().trim() : "")) return false;
 
         return true;
     }

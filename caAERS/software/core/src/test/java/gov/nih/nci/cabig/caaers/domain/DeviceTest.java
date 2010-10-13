@@ -46,4 +46,33 @@ public class DeviceTest extends TestCase {
         assertFalse(device.equals(other));
         assertFalse(device.hashCode() == other.hashCode());
     }
+
+    public void testCommonNameNotEmpty() {
+        Device other = new Device();
+        other.setBrandName("Init brand name");
+        assertFalse(device.equals(other));
+        assertFalse(device.hashCode() == other.hashCode());
+    }
+
+    /**
+     * A null value of a String field is considered to be equal to an empty String value of the same field
+     * */
+    public void testCommonNameNotEmptyOtherEmptyOrNull() {
+        device.setBrandName("Init brand name   ");
+        device.setCommonName("");
+        device.setType(null);
+        Device other = new Device();
+        other.setBrandName("Init brand name");
+        assertTrue(device.equals(other));
+        assertTrue(device.hashCode() == other.hashCode());
+    }
+
+    public void testAllFieldNullOrEmpty() {
+        device.setBrandName("");
+        device.setCommonName("");
+        device.setType(null);
+        Device other = new Device();
+        assertTrue(device.equals(other));
+        assertTrue(device.hashCode() == other.hashCode());
+    }
 }
