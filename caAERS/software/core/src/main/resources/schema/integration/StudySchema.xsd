@@ -613,7 +613,7 @@
         <xs:complexContent>
             <xs:extension base="StudyInterventionType">
                 <xs:sequence>
-                    <xs:element ref="device"/>
+                    <xs:element ref="device" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="otherBrandName" type="xs:string" minOccurs="0"/>
                     <xs:element name="otherCommonName" type="xs:string" minOccurs="0"/>
                     <xs:element name="otherDeviceType" type="xs:string" minOccurs="0"/>

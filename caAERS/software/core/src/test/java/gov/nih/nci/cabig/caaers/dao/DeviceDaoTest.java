@@ -38,7 +38,7 @@ public class DeviceDaoTest extends DaoNoSecurityTestCase<DeviceDao> {
 
     public void testGetAll() {
         List all = deviceDao.getAllDevices();
-        assertEquals(3, all.size()); 
+        assertEquals(5, all.size()); 
     }
 
     public void testGetById() {
@@ -49,7 +49,81 @@ public class DeviceDaoTest extends DaoNoSecurityTestCase<DeviceDao> {
         assertEquals("Type A", d.getType()); 
     }
 
+    public void testGetByAllFields() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName("Device-01 common name");
+        dq.filterByBrandName("Device-01 brand name");
+        dq.filterByType("Type A");
+
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertEquals(-1, ((Device)l.get(0)).getId().intValue());
+    }
+
     public void testGetALLFilterByType() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByType("Type A");
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(2, l.size());
+    }
+
+    public void testGetALLFilterByNullField() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByType(null);
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(2, l.size());
+        assertTrue(((Device)l.get(0)).getCommonName().equals("NULL VALUES"));
+        assertTrue(((Device)l.get(1)).getCommonName().equals("NULL VALUES"));
+    }
+
+    public void testGetALLFilterByAlLFieldsWithNull() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName("NULL VALUES");
+        dq.filterByBrandName(null);
+        dq.filterByType(null);
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertEquals(-4, ((Device)l.get(0)).getId().intValue());
+    }
+
+    public void testGetALLFilterByAlLFieldsWithEmpty() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName("NULL VALUES");
+        dq.filterByBrandName("");
+        dq.filterByType("");
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertEquals(-4, ((Device)l.get(0)).getId().intValue());
+    }
+
+    public void testGetALLFilterByAlLFieldsWith2ValuesWithNull() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName("NULL VALUES");
+        dq.filterByBrandName("Device-05 brand name");
+        dq.filterByType(null);
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertEquals(-5, ((Device)l.get(0)).getId().intValue());
+    }
+
+    public void testGetALLFilterByAlLFieldsWith2ValuesWithEmpty() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName("NULL VALUES");
+        dq.filterByBrandName("Device-05 brand name");
+        dq.filterByType("");
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+        assertEquals(-5, ((Device)l.get(0)).getId().intValue());
+    }
+
+    public void testGetByNames() {
         DeviceQuery dq = new DeviceQuery();
         dq.filterByType("Type A");
         List l = deviceDao.search(dq);

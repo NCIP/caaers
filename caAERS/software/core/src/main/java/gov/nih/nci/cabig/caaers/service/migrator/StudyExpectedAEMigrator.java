@@ -11,14 +11,16 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.util.List;
 
+/**
+ * @author Ion C. Olaru
+ *
+ * */
 public class StudyExpectedAEMigrator implements Migrator<Study> {
 	
 	private CtcTermDao ctcTermDao;
 	private LowLevelTermDao lowLevelTermDao;
 	
-	public void migrate(Study src, Study dest,
-			DomainObjectImportOutcome<Study> outcome) {
-
+	public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
 		List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms = src.getExpectedAEMeddraLowLevelTerms();
 		if(expectedAEMeddraTerms != null && !expectedAEMeddraTerms.isEmpty()){
 			ExpectedAEMeddraLowLevelTerm domainExpectedAEMeddraLowLevelTerm = null;

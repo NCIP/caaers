@@ -113,6 +113,9 @@
 
     <bean id="terminologyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepositoryImpl" autowire="byType"/>
 
-    <bean id="deviceRepository" class="gov.nih.nci.cabig.caaers.domain.repository.DeviceRepository" autowire="byType"/>
+    <bean id="deviceRepository" class="gov.nih.nci.cabig.caaers.domain.repository.DeviceRepository">
+        <property name="deviceDao" ref="deviceDao"></property>
+    </bean>
+
 
  </beans>

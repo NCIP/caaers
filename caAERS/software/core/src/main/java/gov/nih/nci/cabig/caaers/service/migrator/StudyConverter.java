@@ -56,17 +56,13 @@ public class StudyConverter {
             populateFundingSponsorDomain2Dto(studyDto, study);
             populateCoordinatingCenterDomain2Dto(studyDto, study);
             populateStudySitesDomain2Dto(studyDto, study);
-
             populateIdentifiersDomain2Dto(studyDto, study);
             populateTreatmentAssignmentsDomain2Dto(studyDto, study);
             populateStudyAgentsDomain2Dto(studyDto, study);
             populateStudyDiseasesDomain2Dto(studyDto, study);
-
             populateStudyEvaluationPeriodsDomain2Dto(studyDto, study);
             populateStudyExpectedAEsDomain2Dto(studyDto, study);
-
             populateStudyDevicesDomain2Dto(studyDto, study);
-
             gov.nih.nci.cabig.caaers.webservice.Studies studies = objectFactory.createStudies();
             studies.getStudy().add(studyDto);
 
@@ -84,7 +80,7 @@ public class StudyConverter {
 	public void convertStudyDtoToStudyDomain(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws CaaersSystemException{
 		assert study != null : "Domain study should not be null";
 
-		try{
+		try {
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
 			study.setLongTitle(studyDto.getLongTitle());
@@ -95,44 +91,28 @@ public class StudyConverter {
 			study.setMultiInstitutionIndicator(studyDto.isMultiInstitutionIndicator());
 			study.setAdeersReporting(studyDto.isAdeersReporting());
 
-
-			if(! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null){
+			if (! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null) {
 				MeddraVersion otherMeddra = null;
 				otherMeddra = new MeddraVersion();
 				otherMeddra.setName(studyDto.getOtherMeddra());
 				study.setOtherMeddra(otherMeddra);
 			}
 
-			//Populate DesignCode
 			populateDesignCode(studyDto, study);
-			//populate study therapy
 			populateStudyTherapy(studyDto, study);
-
-            // populate Report Format Types
 			populateStudyReportTypes(studyDto, study);
-
-			//populate AeTerminology
 			populateAeTerminology(studyDto, study);
-			//Populate DiseaseTerminology
 			populateDiseaseTerminology(studyDto,study);
-			//Populate Funding Sponsor
 			populateFundingSponsor(studyDto, study);
-			//Populate CoordinatingCenter
 			populateCoordinatingCenter(studyDto, study);
-			//Populate StudySites
 			populateStudySites(studyDto, study);
-			//Populate Identifiers
 			populateIdentifiers(studyDto, study);
-			//Populate TreatmentAssignments
 			populateTreatmentAssignments(studyDto, study);
-			//Populate StudyAgents
 			populateStudyAgents(studyDto, study);
-			//Populate StudyDiseases
 			populateStudyDiseases(studyDto, study);
-			//Populate EvaluationPeriods
 			populateStudyEvaluationPeriods(studyDto, study);
-			//populate Expected AE's
 			populateStudyExpectedAEs(studyDto, study);
+            populateStudyDevices(studyDto, study);
 
 		}catch(Exception e){
 			throw new CaaersSystemException("Exception while StudyDto Conversion",e);
@@ -1197,6 +1177,33 @@ public class StudyConverter {
 
     }
 
+    private void populateStudyDevices(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
+        List<StudyDevice> l = new ArrayList<StudyDevice>();
+
+        for (StudyDeviceType sdt : studyDto.getStudyDevices().getStudyDevice()) {
+            StudyDevice sd  = new StudyDevice();
+            
+            if (sdt.getDevice() != null) {
+                sd.setDevice(new Device());
+                sd.getDevice().setBrandName(sdt.getDevice().getBrandName());
+                sd.getDevice().setCommonName(sdt.getDevice().getCommonName());
+                sd.getDevice().setType(sdt.getDevice().getType());
+            } else {
+                sd.setOtherBrandName(sdt.getOtherBrandName());
+                sd.setOtherCommonName(sdt.getOtherCommonName());
+                sd.setOtherDeviceType(sdt.getOtherDeviceType());
+            }
+            sd.setCatalogNumber(sdt.getCatalogNumber());
+            sd.setManufacturerCity(sdt.getManufacturerCity());
+            sd.setManufacturerName(sdt.getManufacturerName());
+            sd.setManufacturerState(sdt.getManufacturerState());
+            sd.setModelNumber(sdt.getModelNumber());
+
+            l.add(sd);
+        }
+
+        study.setStudyDevices(l);
+	}
 
     private void populateStudyExpectedAEs(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 

@@ -29,12 +29,10 @@ public class StudyImportServiceImpl{
      */
     public DomainObjectImportOutcome<Study> importStudy(Study xstreamStudy) {
     	Study study = new LocalStudy();
-        
         DomainObjectImportOutcome<Study> studyImportOutcome = new DomainObjectImportOutcome<Study>();
         studyMigrator.migrate(xstreamStudy, study, studyImportOutcome);
         studyImportOutcome.setImportedDomainObject(study);
         //studyUniquenessCheck(study, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
-
         return studyImportOutcome;
     }
     /**

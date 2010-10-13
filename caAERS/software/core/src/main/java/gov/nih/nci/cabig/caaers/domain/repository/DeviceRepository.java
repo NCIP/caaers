@@ -37,5 +37,13 @@ public class DeviceRepository {
     public List<Device> getAllDevices() {
         return deviceDao.getAllDevices();
     }
-    
+
+    public List<Device> getByNames(String commonName, String brandName, String type) {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName(commonName);
+        dq.filterByBrandName(brandName);
+        dq.filterByType(type);
+        return (List<Device>)deviceDao.search(dq);
+    }
+
 }

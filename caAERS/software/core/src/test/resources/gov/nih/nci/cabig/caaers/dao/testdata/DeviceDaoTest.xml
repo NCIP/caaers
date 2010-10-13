@@ -21,4 +21,15 @@
             device_type="Device-03 type C"
             />
 
+    <devices
+            id="-4"
+            common_name="NULL VALUES"
+            />
+
+    <devices
+            id="-5"
+            common_name="NULL VALUES"
+            brand_name="Device-05 brand name"
+            />
+
 </dataset>

@@ -170,7 +170,10 @@ default-lazy-init="true">
 		<property name="ctcTermDao" ref="ctcTermDao" />
 		<property name="lowLevelTermDao" ref="lowLevelTermDao" />
 	</bean>
-	
+	<bean id="studyDeviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDeviceMigrator">
+		<property name="deviceRepository" ref="deviceRepository" />
+	</bean>
+
 	<bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator">
 		<property name="children">
 			<list>
@@ -185,6 +188,7 @@ default-lazy-init="true">
 				<ref bean="studyTreatmentMigrator" />
 				<ref bean="studyEvaluationPeriodsMigrator" />
 				<ref bean="studyExpectedAEMigrator" />
+				<ref bean="studyDeviceMigrator" />
 			</list>
 		</property>
 	</bean>

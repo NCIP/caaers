@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 
 /**
  * @author Sameer Sawant
+ * @author Ion C. Olaru
+ * 
  */
 public class StudyImporter extends Importer{
 
@@ -29,46 +31,27 @@ public class StudyImporter extends Importer{
 	private StudyProcessorImpl studyProcessorImpl;
 	private StudyRepository studyRepository;
 	
-	public void setStudyRepository(StudyRepository studyRepository){
-		this.studyRepository = studyRepository;
-	}
-	
-	public DomainObjectValidator getDomainObjectValidator(){
-		return domainObjectValidator;
-	}
-	
-	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator){
-		this.domainObjectValidator = domainObjectValidator;
-	}
-	
-	public StudyProcessorImpl getStudyProcessorImpl(){
-		return studyProcessorImpl;
-	}
-	
-	public void setStudyProcessorImpl(StudyProcessorImpl studyProcessorImpl){
-		this.studyProcessorImpl = studyProcessorImpl;
-	}
-	
 	public void processEntities(File xmlFile,ImportCommand command){
 		boolean valid = validateAgainstSchema(xmlFile , command, getXSDLocation(STUDY_IMPORT));
         if (!valid) {
         	return;
         }
+
 		gov.nih.nci.cabig.caaers.webservice.Studies studies;
-    	try {
+
+        try {
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 				
 			Object importObject = unmarshaller.unmarshal(xmlFile);
-			if(!validRootElement(importObject, STUDY_IMPORT, command))
-				return;
+			if (!validRootElement(importObject, STUDY_IMPORT, command)) return;
 			
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies) importObject;
-			if(studies != null){
-				for(gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()){
+			if (studies != null) {
+				for (gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()) {
 					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.processStudy(studyDto);
 					List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
-					if (studyImportOutcome.isSavable() && errors.size() == 0) {
+                    if (studyImportOutcome.isSavable() && errors.size() == 0) {
 			            command.addImportableStudy(studyImportOutcome);
 			        } else {
 			        	for(String errMsg : errors){
@@ -77,6 +60,7 @@ public class StudyImporter extends Importer{
 			            command.addNonImportableStudy(studyImportOutcome);
 			        }
 				}
+                
 				//Remove Duplicate Studies in the List.
 				List<DomainObjectImportOutcome<Study>> dupList = new ArrayList<DomainObjectImportOutcome<Study>>();
 				for(int i=0 ; i < command.getImportableStudies().size()-1 ; i++){
@@ -107,4 +91,25 @@ public class StudyImporter extends Importer{
         	studyRepository.save(importOutcome.getImportedDomainObject());
         }
 	}
+
+    public void setStudyRepository(StudyRepository studyRepository){
+        this.studyRepository = studyRepository;
+    }
+
+    public DomainObjectValidator getDomainObjectValidator(){
+        return domainObjectValidator;
+    }
+
+    public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator){
+        this.domainObjectValidator = domainObjectValidator;
+    }
+
+    public StudyProcessorImpl getStudyProcessorImpl(){
+        return studyProcessorImpl;
+    }
+
+    public void setStudyProcessorImpl(StudyProcessorImpl studyProcessorImpl){
+        this.studyProcessorImpl = studyProcessorImpl;
+    }
+	    
 }
