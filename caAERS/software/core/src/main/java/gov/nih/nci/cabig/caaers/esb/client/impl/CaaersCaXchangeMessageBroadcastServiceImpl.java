@@ -32,7 +32,6 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
 	private static final Log log = LogFactory.getLog(CaaersCaXchangeMessageBroadcastServiceImpl.class);
     private Map<String, String> messageTypesMapping;
     private SecurityContextCredentialProvider delegatedCredentialProvider;
-   // private String authenticationMode;
 
     /**
      * Will route the request to the C3PR CaXchangeMessageBroadCaster
@@ -41,8 +40,10 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
 
         try {
             CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-            log.info("ca exchage URL + " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL(Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
+            String iHubURL =  Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL);
+            log.info("ca exchage URL + " + iHubURL);
+            iHubURL = StringUtils.trim(iHubURL);
+            broadCaster.setCaXchangeURL(iHubURL);
             broadCaster.setMessageTypesMapping(messageTypesMapping);
             broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
             broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
@@ -61,13 +62,12 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
         String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-        	log.info("ca exchage URL + " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL(Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
-            //if (StringUtils.equals(authenticationMode, "webSSO")) {
-            	broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
-            	broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
-            //}
-             
+            String iHubURL =  Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL);
+            log.info("ca exchage URL + " + iHubURL);
+            iHubURL = StringUtils.trim(iHubURL);
+            broadCaster.setCaXchangeURL(iHubURL);
+        	broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
+        	broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
         	result = broadCaster.broadcastCoppaMessage(messages, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
 			log.error("Error while broadcasting the message to COPPA", e);
@@ -94,9 +94,4 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
     public void setDelegatedCredentialProvider(SecurityContextCredentialProvider delegatedCredentialProvider) {
         this.delegatedCredentialProvider = delegatedCredentialProvider;
     }
-    /*
-	public void setAuthenticationMode(String authenticationMode) {
-		this.authenticationMode = authenticationMode;
-	}*/
-
 }
