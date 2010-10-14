@@ -1180,6 +1180,8 @@ public class StudyConverter {
     private void populateStudyDevices(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
         List<StudyDevice> l = new ArrayList<StudyDevice>();
 
+        if (studyDto.getStudyDevices() == null) return;
+
         for (StudyDeviceType sdt : studyDto.getStudyDevices().getStudyDevice()) {
             StudyDevice sd  = new StudyDevice();
             
