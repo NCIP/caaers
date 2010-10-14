@@ -44,12 +44,20 @@ function test(jsonResult) {
     hideCoppaSearchDisclaimer();
 }
 
+var linkFormatterWithNCI = function(elCell, oRecord, oColumn, oData) {
+        var _nr = oRecord.getData("externalId");
+        var _s = "";
+        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />">';
+        elCell.innerHTML = _s;
+};
+
 var linkFormatter = function(elCell, oRecord, oColumn, oData) {
         var orgId = oRecord.getData("id");
         elCell.innerHTML = "<a href='editOrganization?organizationId=" + orgId + "'>" + oData + "</a>";
 };
 
 var myColumnDefs = [
+    {key:"externalId",        label:"",              sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
     {key:"name",                    label:"Name",                          sortable:true,      resizeable:true, formatter: linkFormatter},
     {key:"nciInstituteCode",        label:"Assigned Identifier",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200}
 ];
@@ -57,7 +65,8 @@ var myColumnDefs = [
 var myFields = [
     {key:'id',                  parser:"integer"},
     {key:'name',                parser:"string"},
-    {key:'nciInstituteCode',    parser:"string"}
+    {key:'nciInstituteCode',    parser:"string"},
+    {key:'externalId',    parser:"string"}
 ];
 
 </script>

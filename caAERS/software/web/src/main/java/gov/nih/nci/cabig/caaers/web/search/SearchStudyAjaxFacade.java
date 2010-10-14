@@ -1000,12 +1000,22 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
      * 
      * */
     public List<Organization> getOrganizationTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
-        WebContext webContext = WebContextFactory.get();
         List<Organization> organizations = new ArrayList<Organization>();
         if (type != null && text != null) {
             organizations = constructExecuteOrganizationQuery(type, text);
         }
-        return ObjectTools.reduceAll(organizations, "id", "name", "nciInstituteCode");
+
+        List<Organization> rs = new ArrayList<Organization>();
+        for (Organization o : organizations) {
+            LocalOrganization lo = new LocalOrganization();
+            lo.setId(o.getId());
+            lo.setName(o.getName());
+            lo.setNciInstituteCode(o.getNciInstituteCode());
+            lo.setExternalId(o.getExternalId() != null ? o.getExternalId().trim() : "");
+            rs.add(lo);
+        }
+        return rs;
+        //return ObjectTools.reduceAll(organizations, "id", "name", "nciInstituteCode", "externalId");
     }
 
     public List<UserAjaxableDomainObject> getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
@@ -1031,6 +1041,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
             rsado.setId(i.getId());
             rsado.setActive(i.isActive() ? "Active" : "Inactive");
             rsado.setNumber(i.getNciIdentifier() != null ? i.getNciIdentifier() : "");
+            rsado.setExternalId(i.getExternalId() != null ? i.getExternalId().trim() : "");
             rs.add(rsado);
         }
 
@@ -1070,6 +1081,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
             rsado.setId(srs.getResearchStaff().getId());
             rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
+            rsado.setExternalId(srs.getResearchStaff().getExternalId() != null ? srs.getResearchStaff().getExternalId().trim() : "");
             rsado.setActive(srs.isActive() ? "Active" : "Inactive");
             set.add(rsado);
         }

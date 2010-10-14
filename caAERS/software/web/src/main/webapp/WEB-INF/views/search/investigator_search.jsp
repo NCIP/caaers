@@ -52,12 +52,20 @@
             hideCoppaSearchDisclaimer();
         }
 
+        var linkFormatterWithNCI = function(elCell, oRecord, oColumn, oData) {
+                var _nr = oRecord.getData("externalId");
+                var _s = "";
+                if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />">';
+                elCell.innerHTML = _s;
+        };
+
         var linkFormatter = function(elCell, oRecord, oColumn, oData) {
                 var _id = oRecord.getData("id");
                 elCell.innerHTML = "<a href='editInvestigator?investigatorId=" + _id + "'>" + oData + "</a>";
         };
 
         var myColumnDefs = [
+            {key:"externalId",        label:"",              sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
             {key:"firstName",        label:"First Name",    sortable:true,      resizeable:true, formatter: linkFormatter},
             {key:"middleName",       label:"Middle Name",   sortable:true,      resizeable:true},
             {key:"lastName",         label:"Last Name",     sortable:true,      resizeable:true, formatter: linkFormatter},
@@ -73,7 +81,8 @@
             {key:'number',   parser:"string"},
             {key:'lastName',     parser:"string"},
             {key:'organization',               parser:"string"},
-            {key:'active',               parser:"string"}
+            {key:'active',               parser:"string"},
+            {key:'externalId',               parser:"string"}
         ];
 
 
