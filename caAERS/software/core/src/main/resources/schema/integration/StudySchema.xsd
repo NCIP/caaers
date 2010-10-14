@@ -129,7 +129,7 @@
                         </xs:complexType>
                     </xs:element>
 					
-                    <xs:element name="studyDevices">
+                    <xs:element name="studyDevices" minOccurs="0" maxOccurs="1">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="studyDevice" minOccurs="0" maxOccurs="unbounded"/>
