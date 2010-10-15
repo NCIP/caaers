@@ -65,24 +65,24 @@
         };
 
         var myColumnDefs = [
-            {key:"externalId",        label:"",              sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
-            {key:"firstName",        label:"First Name",    sortable:true,      resizeable:true, formatter: linkFormatter},
-            {key:"middleName",       label:"Middle Name",   sortable:true,      resizeable:true},
-            {key:"lastName",         label:"Last Name",     sortable:true,      resizeable:true, formatter: linkFormatter},
-            {key:"number",           label:"Investigator number",     sortable:true,      resizeable:true, formatter: linkFormatter},
-            {key:"organization",     label:"Organization",  sortable:true,      resizeable:true},
-            {key:"active",     label:"Status",  sortable:true,      resizeable:true}
+            {key:"externalId",       label:"",              		sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
+            {key:"firstName",        label:"First Name",    		sortable:true,      resizeable:true, formatter: linkFormatter},
+            {key:"middleName",       label:"Middle Name",   		sortable:true,      resizeable:true},
+            {key:"lastName",         label:"Last Name",     		sortable:true,      resizeable:true, formatter: linkFormatter},
+            {key:"number",           label:"Investigator number",   sortable:true,      resizeable:true, formatter: linkFormatter},
+            {key:"organization",     label:"Organization(s)",  		sortable:true,      resizeable:true},
+            {key:"active",     		 label:"Status",  				sortable:true,      resizeable:true}
         ];
 
         var myFields = [
-            {key:'id',                         parser:"integer"},
+            {key:'id',           parser:"integer"},
             {key:'firstName',    parser:"string"},
             {key:'middleName',   parser:"string"},
-            {key:'number',   parser:"string"},
+            {key:'number',   	 parser:"string"},
             {key:'lastName',     parser:"string"},
-            {key:'organization',               parser:"string"},
-            {key:'active',               parser:"string"},
-            {key:'externalId',               parser:"string"}
+            {key:'organization', parser:"string"},
+            {key:'active',       parser:"string"},
+            {key:'externalId',   parser:"string"}
         ];
 
 
