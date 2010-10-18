@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -37,5 +38,25 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
     @Transient
     public void setStudyTherapyType(String studyTherapyType) {
         this.studyTherapyType = studyTherapyType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if(o == this) return true;
+        if(!(o instanceof StudyIntervention)) return false;
+
+        StudyIntervention that = (StudyIntervention) o;
+        if(getId() != null && ObjectUtils.equals(getId(), that.getId())) return true;
+
+        if(getStudy() != null && that.getStudy() != null && !getStudy().equals(that.getStudy())) return false;
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getStudy() != null ? getStudy().hashCode() : 0;
+        return result;
     }
 }

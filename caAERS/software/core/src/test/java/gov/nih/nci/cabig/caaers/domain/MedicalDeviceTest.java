@@ -35,21 +35,21 @@ public class MedicalDeviceTest extends AbstractTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        medicalDevice = new MedicalDevice();
+        medicalDevice = new MedicalDevice(Fixtures.createStudyDevice());
 
         brandName = "brand name";
-        medicalDevice.setBrandName(brandName);
+        medicalDevice.getStudyDevice().getDevice().setBrandName(brandName);
         catalogNumber = "catalong number";
-        medicalDevice.setCatalogNumber(catalogNumber);
+        medicalDevice.getStudyDevice().setCatalogNumber(catalogNumber);
         commonName = "common name";
-        medicalDevice.setCommonName(commonName);
+        medicalDevice.getStudyDevice().getDevice().setCommonName(commonName);
         other = DeviceOperator.OTHER;
         medicalDevice.setDeviceOperator(other);
         returned = Availability.RETURNED;
 
         medicalDevice.setDeviceReprocessed(ReprocessedDevice.YES);
         deviceType = "device type";
-        medicalDevice.setDeviceType(deviceType);
+        medicalDevice.getStudyDevice().getDevice().setType(deviceType);
         evaluationAvailability = Availability.YES;
         medicalDevice.setEvaluationAvailability(evaluationAvailability);
         expirationDate = new Date();
@@ -64,13 +64,13 @@ public class MedicalDeviceTest extends AbstractTestCase {
         lotNumber = "lot number";
         medicalDevice.setLotNumber(lotNumber);
         manufacturerCity = "Herndon";
-        medicalDevice.setManufacturerCity(manufacturerCity);
+        medicalDevice.getStudyDevice().setManufacturerCity(manufacturerCity);
         manufacturerName = "test";
-        medicalDevice.setManufacturerName(manufacturerName);
+        medicalDevice.getStudyDevice().setManufacturerName(manufacturerName);
         manufacturerState = "VA";
-        medicalDevice.setManufacturerState(manufacturerState);
+        medicalDevice.getStudyDevice().setManufacturerState(manufacturerState);
         modelNumber = "mode number";
-        medicalDevice.setModelNumber(modelNumber);
+        medicalDevice.getStudyDevice().setModelNumber(modelNumber);
         serialNumber = "serial number";
         medicalDevice.setSerialNumber(serialNumber);
         otherNumber = "other number";

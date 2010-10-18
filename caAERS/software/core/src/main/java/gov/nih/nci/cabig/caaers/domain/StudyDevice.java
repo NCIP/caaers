@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -33,6 +35,14 @@ public class StudyDevice extends StudyIntervention {
     private String modelNumber;
 
     private String otherDeviceType;
+
+    public StudyDevice(){
+       this(null);
+    }
+
+    public StudyDevice(Device device){
+        this.device = device;
+    }
 
     @Transient
     public boolean isOtherDevice(){
@@ -140,5 +150,40 @@ public class StudyDevice extends StudyIntervention {
 
     public void setDevice(Device device) {
         this.device = device;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if (this == o) return true;
+
+        StudyDevice that = (StudyDevice) o;
+
+        if(!StringUtils.equals(getCatalogNumber(), that.getCatalogNumber())) return false;
+        if(!StringUtils.equals(getBrandName(), that.getBrandName())) return false;
+        if(!StringUtils.equals(getCommonName(), that.getCommonName())) return false;
+        if(!StringUtils.equals(getDeviceType(), that.getDeviceType())) return false;
+        if(!StringUtils.equals(getManufacturerCity(), that.getManufacturerCity())) return false;
+        if(!StringUtils.equals(getManufacturerName(), that.getManufacturerName())) return false;
+        if(!StringUtils.equals(getManufacturerState(), that.getManufacturerState())) return false;
+        if(!StringUtils.equals(getModelNumber(), that.getModelNumber())) return false;
+        if(!ObjectUtils.equals(isOtherDevice(), that.isOtherDevice())) return false;
+
+        return super.equals(that);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = device != null ? device.hashCode() : 0;
+        result = 31 * result + (getBrandName() != null ? getBrandName().hashCode() : 0);
+        result = 31 * result + (getCommonName() != null ? getCommonName().hashCode() : 0);
+        result = 31 * result + (getCatalogNumber() != null ? getCatalogNumber().hashCode() : 0);
+        result = 31 * result + (getManufacturerName() != null ? getManufacturerName().hashCode() : 0);
+        result = 31 * result + (getManufacturerCity() != null ? getManufacturerCity().hashCode() : 0);
+        result = 31 * result + (getManufacturerState() != null ? getManufacturerState().hashCode() : 0);
+        result = 31 * result + (getModelNumber() != null ? getModelNumber().hashCode() : 0);
+        result = 31 * result + (getDeviceType() != null ? getDeviceType().hashCode() : 0);
+        return result;
     }
 }

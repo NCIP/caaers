@@ -497,7 +497,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     public void testSaveNewMedicalDevice() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-                report.getMedicalDevices().get(0).setBrandName("IBM");
+                report.getMedicalDevices().get(0).getStudyDevice().getDevice().setBrandName("IBM");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {

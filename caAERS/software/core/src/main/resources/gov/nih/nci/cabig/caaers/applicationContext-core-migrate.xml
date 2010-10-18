@@ -14,19 +14,18 @@
         default-lazy-init="true">
 
 
-    <bean id="caaersDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigrator">
+    <bean id="userDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.UserDataMigrator">
 		<property name="jdbcTemplate">
             <ref bean="jdbcTemplate"/>
         </property>
-        <property name="properties" ref="caaersDatasourceFactoryBean"/>
         <property name="userDao" ref="userDao"/>
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
         <property name="authenticationMode" ref="authenticationMode"/>
     </bean>
 
- 	<bean id="caaersDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+ 	<bean id="userDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="caaersDataMigratorTarget"/></property>
+		<property name="target"><ref local="userDataMigratorTarget"/></property>
 		<property name="interceptorNames">
 			<list>
 				<value>hibernateInterceptor</value>
@@ -34,10 +33,30 @@
 		</property>
 	</bean>
 
+
+    <bean id="medicalDeviceMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.MedicalDeviceDataMigrator">
+		<property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+    </bean>
+
+ 	<bean id="medicalDeviceDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="medicalDeviceMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+
+
 	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
 		<property name="migrators">
 			<list>
-				<ref bean="caaersDataMigrator"/>
+				<ref bean="userDataMigrator"/>
+                <ref bean="medicalDeviceDataMigrator"/>
 			</list>
 		</property>
     </bean>

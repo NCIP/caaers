@@ -386,17 +386,33 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private MedicalDevice getMedicalDevice(MedicalDevice medicalDevice) throws Exception {
-		   MedicalDevice m = new MedicalDevice();
-		   m.setId(medicalDevice.getId());
-		   m.setBrandName(medicalDevice.getBrandName());
-		   m.setCommonName(medicalDevice.getCommonName());
-		   m.setDeviceType(medicalDevice.getDeviceType());
-		   m.setManufacturerName(medicalDevice.getManufacturerName());
-		   m.setManufacturerCity(medicalDevice.getManufacturerCity());
-		   m.setManufacturerState(medicalDevice.getManufacturerState());
-		   m.setModelNumber(medicalDevice.getModelNumber());
-		   m.setLotNumber(medicalDevice.getLotNumber());
-		   m.setCatalogNumber(medicalDevice.getCatalogNumber());
+
+
+           StudyDevice studyDevice = new StudyDevice();
+           if(!medicalDevice.getStudyDevice().isOtherDevice()){
+              Device device = new Device();
+              device.setBrandName(medicalDevice.getBrandName());
+		      device.setCommonName(medicalDevice.getCommonName());
+		      device.setType(medicalDevice.getDeviceType()); 
+              studyDevice.setDevice(device);
+           }else{
+              studyDevice.setOtherBrandName(medicalDevice.getBrandName());
+		      studyDevice.setOtherCommonName(medicalDevice.getCommonName());
+		      studyDevice.setOtherDeviceType(medicalDevice.getDeviceType());
+           }
+
+
+
+
+		   MedicalDevice m = new MedicalDevice(studyDevice);
+
+		   studyDevice.setManufacturerName(medicalDevice.getManufacturerName());
+		   studyDevice.setManufacturerCity(medicalDevice.getManufacturerCity());
+		   studyDevice.setManufacturerState(medicalDevice.getManufacturerState());
+		   studyDevice.setModelNumber(medicalDevice.getModelNumber());
+		   studyDevice.setCatalogNumber(medicalDevice.getCatalogNumber());
+           m.setId(medicalDevice.getId());
+           m.setLotNumber(medicalDevice.getLotNumber());
 		   m.setExpirationDate(medicalDevice.getExpirationDate());
 		   m.setSerialNumber(medicalDevice.getSerialNumber());
 		   m.setOtherNumber(medicalDevice.getOtherNumber());

@@ -49,6 +49,14 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
 
     private Date returnedDate;
 
+    public MedicalDevice(){
+        this(null);
+    }
+    
+    public MedicalDevice(StudyDevice sd){
+        this.studyDevice = sd;
+    }
+
     // //// LOGIC
 
     // //// BEAN PROPERTIES

@@ -3,19 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.sql.Date;
@@ -297,9 +285,10 @@ public class AttributionTabTest extends AeTabTestCase {
 
     private void ensureMedicalDeviceCount(int count) {
         while (command.getAeReport().getMedicalDevices().size() < count) {
-            MedicalDevice md = new MedicalDevice();
-            md.setBrandName("BrandName " + command.getAeReport().getMedicalDevices().size());
-            md.setCommonName("CommonName " + command.getAeReport().getMedicalDevices().size());
+            StudyDevice sd = Fixtures.createStudyDevice();
+            MedicalDevice md = new MedicalDevice(sd);
+            sd.getDevice().setBrandName("BrandName " + command.getAeReport().getMedicalDevices().size());
+            sd.getDevice().setCommonName("CommonName " + command.getAeReport().getMedicalDevices().size());
             command.getAeReport().addMedicalDevice(md);
         }
     }

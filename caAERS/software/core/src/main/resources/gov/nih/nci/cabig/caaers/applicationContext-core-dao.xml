@@ -419,8 +419,14 @@ This applicationContext contains the definition of the DAOs
             <props>
                 <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
                 <prop key="hibernate.jdbc.batch_size">30</prop>
+                <prop key="hibernate.jdbc.fetch_size">10</prop>
+
+                <!-- make sure the below properties are set to false in production -->
                 <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.use_sql_comments">false</prop>
                 <prop key="hibernate.generate_statistics">false</prop>
+                
             </props>
         </property>
     </bean>
