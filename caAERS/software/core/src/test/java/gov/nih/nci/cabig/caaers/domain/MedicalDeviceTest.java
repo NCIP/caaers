@@ -85,37 +85,71 @@ public class MedicalDeviceTest extends AbstractTestCase {
         medicalDevice.setReturnedDate(returnedDate);
     }
 
-    public void testCopy() {
 
-        MedicalDevice device = medicalDevice.copy();
+    public void testSetBrandName(){
+        try{
+            medicalDevice.setBrandName("a");
+            fail("must throw exception");
+        }catch(UnsupportedOperationException e){
 
-        assertNull("must not coy id", device.getId());
-
-        assertNull("must not coy grid id", device.getGridId());
-        assertNull("must not coy version number", device.getVersion());
-        assertNull("must not coy report", device.getReport());
-        assertEquals(brandName, device.getBrandName());
-        assertEquals(catalogNumber, device.getCatalogNumber());
-        assertEquals(commonName, device.getCommonName());
-        assertEquals(other, device.getDeviceOperator());
-        assertEquals(ReprocessedDevice.YES, device.getDeviceReprocessed());
-        assertEquals(deviceType, device.getDeviceType());
-        assertEquals(evaluationAvailability, device.getEvaluationAvailability());
-        assertEquals(expirationDate, device.getExpirationDate());
-        assertEquals(explantedDate, device.getExplantedDate());
-        assertEquals(implantedDate, device.getImplantedDate());
-        assertEquals(lotNumber, device.getLotNumber());
-        assertEquals(manufacturerCity, device.getManufacturerCity());
-        assertEquals(manufacturerName, device.getManufacturerName());
-        assertEquals(manufacturerState, device.getManufacturerState());
-        assertEquals(modelNumber, device.getModelNumber());
-        assertEquals(otherDeviceOperator, device.getOtherDeviceOperator());
-        assertEquals(otherNumber, device.getOtherNumber());
-        assertEquals(reprocessorAddress, device.getReprocessorAddress());
-        assertEquals(reprocessorName, device.getReprocessorName());
-        assertEquals(returnedDate, device.getReturnedDate());
-        assertEquals(serialNumber, device.getSerialNumber());
+        }
     }
 
 
+
+    public void testSetCommonName(){
+        try{
+            medicalDevice.setCommonName("x");
+            fail("must throw exception");
+        }catch(UnsupportedOperationException e){
+
+        }
+    }
+
+
+    public void testSetDeviceType(){
+        try{
+            medicalDevice.setDeviceType("t");
+            fail("must throw exception");
+        }catch(UnsupportedOperationException e){
+
+        }
+    }
+
+
+    public void testSetManufactureCity(){
+        try{
+            medicalDevice.setManufacturerCity("m");
+            fail("must throw exception");
+        }catch(UnsupportedOperationException e){
+
+        }
+    }
+
+
+    public void testSetManufactureState(){
+        try{
+            medicalDevice.setManufacturerState("m");
+            fail("must throw exception");
+        }catch(UnsupportedOperationException e){
+
+        }
+    }
+
+
+    public void testSetManufactureName(){
+        try{
+            medicalDevice.setManufacturerName("m");
+            fail("must throw exception");
+        }catch(UnsupportedOperationException e){
+
+        }
+    }
+
+
+    public void testSetDeviceOperator(){
+        DeviceOperator deviceOperator = DeviceOperator.HEALTH_PROFESSIONAL;
+        medicalDevice.setDeviceOperator(deviceOperator );
+        assertSame(deviceOperator, medicalDevice.getDeviceOperator()); 
+    }
 }
