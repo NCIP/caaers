@@ -105,27 +105,6 @@ public class CreateRuleCommandTest extends AbstractTestCase {
 
     }
 
-    public void testRetriveRuleSet(){
-        fail("todo bj");
-    }
-
-    public void testGetOrganization(){
-        fail("to do bj");
-    }
-
-
-    public void testIsSponsorbased(){
-       fail("todo");
-
-    }
-
-    public void testIsInstitutionBased(){
-       fail("todo");
-    }
-
-    public void testIsStudyBased(){
-        fail("todo");
-    }
 
     public static ReportDefinitionQuery matcher(IArgumentMatcher matcher){
         EasyMock.reportMatcher(matcher);
