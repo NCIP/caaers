@@ -576,6 +576,7 @@ public class Fixtures {
         def.setAmendable(true);
         def.setTimeScaleUnitType(timeScale);
         def.setDuration(duration);
+        def.setEnabled(true);
         return def;
     }
     
