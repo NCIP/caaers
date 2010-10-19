@@ -24,6 +24,10 @@
     <agents id="-101" name="agent1"/>
     <agents id="-102" name="agent2"/>
 
+    <!-- ================ Devices ================ -->
+    <devices id="-1" brand_name="X" />
+    <devices id="-2" brand_name="Y" />
+
     <!-- ========================= Study related information ================================= -->
     <STUDIES id="-999" short_title="dummy" load_status="0"/>
     <STUDIES id="-1" short_title="That one" load_status="1" design_code="1"/>
@@ -44,6 +48,8 @@
                            study_id="-1"/>
     <STUDY_AGENTS id="-11" study_id="-1" agent_id="-101"/>
     <STUDY_AGENTS id="-12" study_id="-1" agent_id="-102"/>
+    <study_devices id="-1" study_id="-1" device_id="-1" />
+    <study_devices id="-2" study_id="-999" device_id="-2" />
 
     <!--============================================  Participant Information ================================-->
     <PARTICIPANTS id="-101" instituitional_patient_number="P002"

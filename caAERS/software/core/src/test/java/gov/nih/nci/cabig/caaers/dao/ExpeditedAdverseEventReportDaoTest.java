@@ -9,30 +9,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Lab;
-import gov.nih.nci.cabig.caaers.domain.LabValue;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
@@ -495,13 +472,25 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     }
 
     public void testSaveNewMedicalDevice() throws Exception {
+
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-                report.getMedicalDevices().get(0).getStudyDevice().getDevice().setBrandName("IBM");
+                Device d = new Device();
+                d.setVersion(0);
+                d.setId(-1);
+                StudyDevice sd = new StudyDevice();
+                sd.setId(-1);
+                sd.setDevice(d);
+                sd.setVersion(0);
+
+                report.getMedicalDevices().get(0).setStudyDevice(sd);
+                report.getMedicalDevices().get(0).setReprocessorName("IBM");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals("IBM", loaded.getMedicalDevices().get(0).getBrandName());
+                assertEquals("IBM", loaded.getMedicalDevices().get(0).getReprocessorName());
+                assertNotNull(loaded.getMedicalDevices().get(0).getStudyDevice());
+                assertEquals(-1, loaded.getMedicalDevices().get(0).getStudyDevice().getId().intValue());
             }
         });
     }

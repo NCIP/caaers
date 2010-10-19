@@ -250,12 +250,4 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
     }
 
 
-    public MedicalDevice copy() {
-        MedicalDevice medicalDevice = new MedicalDevice();
-        BeanUtils.copyProperties(this, medicalDevice, new String[]{"id", "gridId",
-                "version", "report"});
-
-        return medicalDevice;
-
-    }
 }
