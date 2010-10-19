@@ -177,5 +177,6 @@
             study_id="-4"
             site_id="-1001"
             type="SFS"
-            />       
+            />
+    <study_devices />
 </dataset>
