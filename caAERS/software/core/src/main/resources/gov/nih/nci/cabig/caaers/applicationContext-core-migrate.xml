@@ -52,11 +52,52 @@
 
 
 
+    <bean id="radiationDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.RadiationMigrator">
+		<property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+    </bean>
+
+ 	<bean id="radiationDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="radiationDataMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+
+
+
+    <bean id="surgeryDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.SurgeryMigrator">
+		<property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+    </bean>
+
+ 	<bean id="surgeryDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="surgeryDataMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+
+
+
 	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
 		<property name="migrators">
 			<list>
 				<ref bean="userDataMigrator"/>
                 <ref bean="medicalDeviceDataMigrator"/>
+                <ref bean="radiationDataMigrator"/>
+                <ref bean="surgeryDataMigrator"/>
+
 			</list>
 		</property>
     </bean>

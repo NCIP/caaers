@@ -85,6 +85,9 @@ public class MedicalDeviceDataMigrator extends CaaersDataMigratorTemplate{
                 }
                 return studyDeviceMap; 
             }
+
+            //some PostgresSQL driver will throw NPE when column is SQL NULL
+            // so this workaround....
             public String getString(ResultSet rs , int index) throws SQLException{                                              
                 Object o = rs.getObject(index);
                 if(o == null) return null;

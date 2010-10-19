@@ -1,0 +1,94 @@
+<dataset>
+
+
+     <STUDIES id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title"
+            long_title="Long Title"
+            description="Description"
+            grid_id=""
+            load_status="1" />
+
+        <ORGANIZATIONS
+            id="-1003"
+            version="1"
+            name="CALGB"
+            description_text="CALGB"
+            nci_institute_code="DEFAULT"
+            />
+
+    <STUDY_ORGANIZATIONS
+            id="-1000"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1003"
+            type="SST" />
+
+
+
+	<PARTICIPANTS
+        id="-4"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+
+
+    <participant_assignments
+            id="-6"
+            participant_id="-4"
+            study_site_id="-1000"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+
+
+
+    <TREATMENT_ASSIGNMENT
+            id="1001"
+            code="adverseEventReportingPeriodCode"
+            study_id="-2"
+            />
+
+    <AE_REPORTING_PERIODS
+            id="1001"
+            start_date="2008-05-23"
+            end_date="2008-05-25"
+            description="test object 1001"
+            treatment_assignment_id="1001"
+            assignment_id="-6"
+            />
+
+    <AE_REPORTS
+            id="-19"
+            reporting_period_id="1001"
+            created_at="2007-04-04 13:22:32.055"
+            />
+
+
+    <AE_REPORTS
+            id="-17"
+            reporting_period_id="1001"
+            created_at="2007-04-04 13:22:32.055"
+            />
+
+    <ae_surgery_interventions
+            id="-22"
+            report_id="-17"
+            list_index="0"
+            />
+
+    <study_devices />
+    <ind_holders />
+    <site_investigators />
+
+</dataset>
+        

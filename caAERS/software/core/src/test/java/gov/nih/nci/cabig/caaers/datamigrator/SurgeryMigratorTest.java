@@ -5,23 +5,22 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestCase;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
- * MedicalDeviceDataMigrator Tester.
+ * SurgeryMigrator Tester.
  *
  * @author Biju Joseph
- * @since <pre>10/18/2010</pre>
+ * @since <pre>10/19/2010</pre>
  * 
  */
-public class MedicalDeviceDataMigratorTest extends CaaersDbTestCase {
+public class SurgeryMigratorTest extends CaaersDbTestCase {
 
-    MedicalDeviceDataMigrator migrator;
+    SurgeryMigrator migrator;
     JdbcTemplate jdbcTemplate;
 
     public void setUp() throws Exception {
         super.setUp();
-        migrator = (MedicalDeviceDataMigrator) getDeployedApplicationContext().getBean("medicalDeviceDataMigrator");
+        migrator = (SurgeryMigrator) getDeployedApplicationContext().getBean("surgeryDataMigrator");
         jdbcTemplate = (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
     }
 
@@ -29,19 +28,17 @@ public class MedicalDeviceDataMigratorTest extends CaaersDbTestCase {
         super.tearDown();
     }
 
+
     public void testGetCode() throws Exception {
-        assertSame(2, migrator.migratorType().getCode());
+        assertSame(4, migrator.migratorType().getCode());
     }
+
 
     public void testMigrate(){
         //assumed migrator ran when the context loaded.
-       SqlRowSet rowSet = jdbcTemplate.queryForRowSet("select * from ae_medical_devices");
-       int i = rowSet.getMetaData().getColumnCount();
-
-       assertEquals(19, i);
-
-       int j = jdbcTemplate.queryForInt("select status_code from caaers_bootstrap_log where operation_code = 2");
+       int j = jdbcTemplate.queryForInt("select status_code from caaers_bootstrap_log where operation_code = 4");
        assertEquals(1, j);
     }
+
 
 }
