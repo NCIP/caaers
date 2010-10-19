@@ -289,5 +289,6 @@
 	<ae_reports/>
 	<ae_labs/>
 	<treatments/>
-	<study_site_wf_cfgs />	   	
+	<study_site_wf_cfgs />
+    <study_devices />
 </dataset>

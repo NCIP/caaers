@@ -353,5 +353,6 @@
 	<ae_labs/>
 	<treatments/>
 	<terminologies/>
-	<study_site_wf_cfgs />	
+	<study_site_wf_cfgs />
+    <study_devices />
 </dataset>
