@@ -5,14 +5,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.List;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
@@ -29,7 +22,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "study_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_agents_id") })
-public class StudyAgent extends StudyIntervention{
+public class StudyAgent extends StudyIntervention {
 
     private LazyListHelper lazyListHelper;
     private Agent agent;
@@ -68,13 +61,12 @@ public class StudyAgent extends StudyIntervention{
     }
 
     @OneToMany(mappedBy = "studyAgent", fetch = FetchType.LAZY)
-    @Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
         return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
     }
 
-    public void setStudyAgentINDAssociationsInternal(
-                    List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+    public void setStudyAgentINDAssociationsInternal(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
         lazyListHelper.setInternalList(StudyAgentINDAssociation.class, studyAgentINDAssociations);
     }
 

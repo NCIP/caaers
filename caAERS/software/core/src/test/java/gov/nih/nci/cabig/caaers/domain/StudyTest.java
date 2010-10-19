@@ -17,7 +17,6 @@ public class StudyTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		study = new LocalStudy();
-		
 	}
 	
 	/**

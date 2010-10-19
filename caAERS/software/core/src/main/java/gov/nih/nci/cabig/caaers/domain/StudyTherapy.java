@@ -22,10 +22,10 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "study_therapy")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_study_therapy_id")})
+@Deprecated
 public class StudyTherapy extends AbstractMutableDomainObject implements StudyChild {
 
     private Study study;
-
     private StudyTherapyType studyTherapyType;
 
     @ManyToOne

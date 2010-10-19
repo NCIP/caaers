@@ -31,7 +31,6 @@ public class CreateStudyController extends StudyController<StudyCommand> {
                     flow.addTab(new DetailsTab());
 
                 if(cmd.getSupplementalInfoManager()){
-                    flow.addTab(new StudyTherapiesTab());
                     flow.addTab(new AgentsTab());
                     flow.addTab(new TreatmentAssignmentTab());
                     flow.addTab(new DiseaseTab());

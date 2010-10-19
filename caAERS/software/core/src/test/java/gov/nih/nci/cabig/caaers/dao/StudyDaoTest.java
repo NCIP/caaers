@@ -37,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.integration.schema.common.TherapyType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -50,6 +51,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.dbunit.operation.DatabaseOperation;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.StatementCallback;
 
@@ -924,5 +926,30 @@ assertTrue(true);
     	}
     	getDao().reassociateStudyOrganizations(studyOrgs);
     	study.getStudyOrganizations().get(0).getStudyInvestigators();
+    }
+
+    public void testLoadAllOtherIntervention() {
+        Study study = getDao().getById(-2);
+        assertEquals(2, study.getOtherInterventions().size());
+        assertEquals(-2, study.getOtherInterventions().get(0).getId().intValue());
+        assertEquals("Other Intervention Two of Type Surgery", study.getOtherInterventions().get(0).getName());
+    }
+
+    public void testActiveDevices() {
+        Study study = getDao().getById(-2);
+        assertEquals(3, study.getStudyDevices().size());
+        assertEquals(2, study.getActiveStudyDevices().size());
+    }
+
+    public void testTherapyTypes() {
+        Study study = getDao().getById(-2);
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.DEVICE));
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.SURGERY));
+        assertFalse(study.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
+    }
+
+    @Override
+    protected DatabaseOperation getTearDownOperation() throws Exception {
+        return DatabaseOperation.REFRESH;
     }
 }

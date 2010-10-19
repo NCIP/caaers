@@ -432,4 +432,11 @@
     <study_therapy id="-4" study_id="-3" study_therapy_type="4" />
     <study_therapy id="-5" study_id="-3" study_therapy_type="5" />
 
+    <other_interventions id="-1" name="Other Intervention One of Type Surgery" description="Desc" study_id="-2" study_therapy_type="3" />
+    <other_interventions id="-2" name="Other Intervention Two of Type Surgery" description="Desc" study_id="-2" study_therapy_type="3" />
+    <other_interventions id="-4" name="Other Intervention Two of Type Behavioral" description="Desc" study_id="-2" study_therapy_type="5" />
+
+    <study_devices id="-1" study_id="-2" retired_indicator="1" study_therapy_type="4"/>
+    <study_devices id="-2" study_id="-2"  retired_indicator="0" study_therapy_type="4"/>
+    <study_devices id="-3" study_id="-2"  retired_indicator="0" study_therapy_type="4"/>
 </dataset>

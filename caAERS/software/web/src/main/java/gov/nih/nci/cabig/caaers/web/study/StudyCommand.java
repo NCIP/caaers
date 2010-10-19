@@ -162,72 +162,97 @@ public class StudyCommand {
         this.loadStatus = loadStatus;
     }
 
+    @Deprecated
     public Boolean getDrugAdministrationTherapyType() {
-        return drugAdministrationTherapyType;
+        return false;
     }
 
+    @Deprecated
     public void setDrugAdministrationTherapyType(final Boolean drugAdministrationTherapyType) {
         this.drugAdministrationTherapyType = drugAdministrationTherapyType;
     }
 
+    @Deprecated
     public Boolean getRadiationTherapyType() {
         return radiationTherapyType;
     }
 
+    @Deprecated
     public void setRadiationTherapyType(final Boolean radiationTherapyType) {
         this.radiationTherapyType = radiationTherapyType;
     }
 
+    @Deprecated
     public Boolean getDeviceTherapyType() {
         return deviceTherapyType;
     }
 
+    @Deprecated
     public void setDeviceTherapyType(final Boolean deviceTherapyType) {
         this.deviceTherapyType = deviceTherapyType;
     }
 
+    @Deprecated
     public Boolean getSurgeryTherapyType() {
         return surgeryTherapyType;
     }
 
+    @Deprecated
     public void setSurgeryTherapyType(final Boolean surgeryTherapyType) {
         this.surgeryTherapyType = surgeryTherapyType;
     }
 
+    @Deprecated
     public Boolean getBehavioralTherapyType() {
         return behavioralTherapyType;
     }
 
+    @Deprecated
     public void setBehavioralTherapyType(final Boolean behavioralTherapyType) {
         this.behavioralTherapyType = behavioralTherapyType;
     }
     
+    @Deprecated
     public Boolean getBiologicalTherapyType() {
 		return biologicalTherapyType;
 	}
+
+    @Deprecated
     public void setBiologicalTherapyType(Boolean biologicalTherapyType) {
 		this.biologicalTherapyType = biologicalTherapyType;
 	}
+
+    @Deprecated
     public Boolean getGeneticTherapyType() {
 		return geneticTherapyType;
 	}
+
+    @Deprecated
     public void setGeneticTherapyType(Boolean geneticTherapyType) {
 		this.geneticTherapyType = geneticTherapyType;
 	}
+
+    @Deprecated
     public Boolean getDiaterySupplementTherapyType() {
 		return diaterySupplementTherapyType;
 	}
+
+    @Deprecated
     public void setDiaterySupplementTherapyType(Boolean diaterySupplementTherapyType) {
 		this.diaterySupplementTherapyType = diaterySupplementTherapyType;
 	}
     
+    @Deprecated
     public Boolean getOtherTherapyType() {
 		return otherTherapyType;
 	}
+
+    @Deprecated
     public void setOtherTherapyType(Boolean otherTherapyType) {
 		this.otherTherapyType = otherTherapyType;
 	}
     
+    @Deprecated
     public boolean isTherapyTypeSelected(StudyTherapyType therapyType){
     	switch (therapyType) {
 		case DRUG_ADMINISTRATION:
@@ -256,6 +281,7 @@ public class StudyCommand {
     /**
      * This method will update the study therapies.
      */
+    @Deprecated
     public void updateStudyTherapies() {
     	for(StudyTherapyType therapyType : StudyTherapyType.values()){
     		if(this.isTherapyTypeSelected(therapyType)){

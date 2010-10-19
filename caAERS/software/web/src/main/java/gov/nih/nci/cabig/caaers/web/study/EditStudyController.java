@@ -62,16 +62,6 @@ public class EditStudyController extends StudyController<StudyCommand> {
         command.populateRoleNamesMap();
         command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
         command.setStudyRepository(this.getStudyRepository());
-        //initialize the therapies
-        command.setBehavioralTherapyType(study.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
-        command.setBiologicalTherapyType(study.hasTherapyOfType(StudyTherapyType.BIOLOGICAL_VACCINE));
-        command.setDeviceTherapyType(study.hasTherapyOfType(StudyTherapyType.DEVICE));
-        command.setDiaterySupplementTherapyType(study.hasTherapyOfType(StudyTherapyType.DIETARY_SUPPLEMENT));
-        command.setDrugAdministrationTherapyType(study.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
-        command.setGeneticTherapyType(study.hasTherapyOfType(StudyTherapyType.GENETIC));
-        command.setOtherTherapyType(study.hasTherapyOfType(StudyTherapyType.OTHER));
-        command.setRadiationTherapyType(study.hasTherapyOfType(StudyTherapyType.RADIATION));
-        command.setSurgeryTherapyType(study.hasTherapyOfType(StudyTherapyType.SURGERY));
 
         command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
         command.setPrevCC(command.getStudy().getStudyCoordinatingCenter());
@@ -84,18 +74,14 @@ public class EditStudyController extends StudyController<StudyCommand> {
         return new FlowFactory<StudyCommand>() {
             public Flow<StudyCommand> createFlow(StudyCommand cmd) {
                 Flow<StudyCommand> flow = new Flow<StudyCommand>("Edit Study");
+                
                 flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
 
-
-				if (cmd.getSupplementalInfoManager()
-						|| (cmd.isDataEntryComplete() && cmd
-								.getStudyQAManager())
-						|| (!cmd.isDataEntryComplete() && cmd.getStudyCreator())) {
+				if (cmd.getSupplementalInfoManager() || (cmd.isDataEntryComplete() && cmd.getStudyQAManager()) || (!cmd.isDataEntryComplete() && cmd.getStudyCreator())) {
 					flow.addTab(new DetailsTab());
 				}
 
-                if(cmd.getSupplementalInfoManager()){
-                    flow.addTab(new StudyTherapiesTab());
+                if(cmd.getSupplementalInfoManager()) {
                     flow.addTab(new AgentsTab());
                     flow.addTab(new TreatmentAssignmentTab());
                     flow.addTab(new DiseaseTab());

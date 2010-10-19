@@ -81,7 +81,6 @@ public class StudyTherapiesTab extends StudyTab {
     @Override
     public void onBind(HttpServletRequest request, StudyCommand cmd, Errors errors) {
         super.onBind(request, cmd, errors);
-        cmd.updateStudyTherapies();
     }
 
     

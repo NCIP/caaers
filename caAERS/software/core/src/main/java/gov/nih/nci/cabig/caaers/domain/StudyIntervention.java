@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ import javax.persistence.*;
 public abstract class StudyIntervention extends AbstractMutableRetireableDomainObject implements StudyChild {
 
     private Study study;
-    private String studyTherapyType;
+    private StudyTherapyType studyTherapyType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
@@ -28,15 +29,13 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
         this.study = study;
     }
 
-    // ToDo @Transient should be removed later when the app will have all the needed changes related to this class
-    @Transient
-    public String getStudyTherapyType() {
+    @Type(type = "studyTherapyType")
+    @Column(name = "study_therapy_type")
+    public StudyTherapyType getStudyTherapyType() {
         return studyTherapyType;
     }
 
-    // ToDo @Transient should be removed later when the app will have all the needed changes related to this class
-    @Transient
-    public void setStudyTherapyType(String studyTherapyType) {
+    public void setStudyTherapyType(StudyTherapyType studyTherapyType) {
         this.studyTherapyType = studyTherapyType;
     }
 

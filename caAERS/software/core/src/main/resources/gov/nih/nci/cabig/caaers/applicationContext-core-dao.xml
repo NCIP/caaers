@@ -134,6 +134,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Device</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
@@ -315,6 +316,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Device</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>

@@ -19,21 +19,13 @@ import javax.persistence.*;
 public class StudyDevice extends StudyIntervention {
 
     private Device device;
-
     private String otherBrandName;
-
     private String otherCommonName;
-
     private String catalogNumber;
-
     private String manufacturerName;
-
     private String manufacturerCity;
-
     private String manufacturerState;
-
     private String modelNumber;
-
     private String otherDeviceType;
 
     public StudyDevice(){

@@ -140,12 +140,14 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
         lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
         lazyListHelper.add(StudyDevice.class, new StudyChildInstantiateFactory<StudyDevice>(this, StudyDevice.class));
+        lazyListHelper.add(OtherIntervention.class, new StudyChildInstantiateFactory<OtherIntervention>(this, OtherIntervention.class));
         lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(TreatmentAssignment.class));
 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());
         setStudyAgentsInternal(new ArrayList<StudyAgent>());
-
+        setStudyDevicesInternal(new ArrayList<StudyDevice>());
+        setOtherInterventionsInternal(new ArrayList<OtherIntervention>());
     }
 
     // / LOGIC
@@ -371,7 +373,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         setStudyDevicesInternal(studyDevices);
     }
 
+    @Transient
+    @UniqueObjectInCollection(message = "Duplicates found in Study Devices list")
+    public List<OtherIntervention> getOtherInterventions() {
+        return lazyListHelper.getLazyList(OtherIntervention.class);
+    }
 
+    @Transient
+    public void setOtherInterventions(final List<OtherIntervention> otherInterventions) {
+        setOtherInterventionsInternal(otherInterventions);
+    }
 
     /**
      * Will return the {@link StudyAgent}s that are not retired
@@ -386,6 +397,19 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	return agents;
     }
     
+    /**
+     * Will return the {@link StudyDevice}s that are not retired
+     * @return
+     */
+    @Transient
+    public List<StudyDevice> getActiveStudyDevices() {
+    	List<StudyDevice> devices = new ArrayList<StudyDevice>();
+    	for(StudyDevice sd : getStudyDevices()){
+    		if(!sd.isRetired()) devices.add(sd);
+    	}
+    	return devices;
+    }
+
     /**
      * Will return the {@link StudySite}s that are not retired
      * @return
@@ -465,12 +489,15 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
 
     }
-    
+
     public boolean hasTherapyOfType(StudyTherapyType therapyType) {
-        if (getStudyTherapies() != null) {
-            for (StudyTherapy therapy : getStudyTherapies()) {
-                if (therapy.getStudyTherapyType().equals(therapyType)) return true;
-            }
+        switch (therapyType.getCode().intValue()) {
+            case 1: return getActiveStudyAgents().size() > 0;  
+            case 4: return getActiveStudyDevices().size() > 0;
+            default:
+                for (OtherIntervention oi : getOtherInterventions()) {
+                    if (oi.getStudyTherapyType().equals(therapyType)) return true;
+                }
         }
         return false;
     }
@@ -479,6 +506,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      * Will remove all the {@link StudyTherapy} of the specific {@link StudyTherapyType}
      * @param therapyType
      */
+    @Deprecated
     public void removeTherapiesOfType(StudyTherapyType therapyType){
     	ArrayList<StudyTherapy> therapies = new ArrayList<StudyTherapy>(getStudyTherapies());
     	for(StudyTherapy therapy : therapies){
@@ -593,6 +621,17 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         lazyListHelper.setInternalList(StudyAgent.class, studyAgents);
     }
 
+
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy
+    public List<OtherIntervention> getOtherInterventionsInternal() {
+        return lazyListHelper.getInternalList(OtherIntervention.class);
+    }
+
+    public void setOtherInterventionsInternal(final List<OtherIntervention> otherInterventions) {
+        lazyListHelper.setInternalList(OtherIntervention.class, otherInterventions);
+    }
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -823,17 +862,20 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
                 "'setPrimarySponsorCode', one should not access this method!");
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    // ToDo - this should be removed
+    @Transient
+    @Deprecated
     public List<StudyTherapy> getStudyTherapies() {
         return studyTherapies;
     }
 
+    @Deprecated
     public void setStudyTherapies(final List<StudyTherapy> studyTherapies) {
         this.studyTherapies = studyTherapies;
     }
 
     @Transient
+    @Deprecated
     public void addStudyTherapy(final StudyTherapy studyTherapy) {
         studyTherapies.add(studyTherapy);
     }
@@ -843,6 +885,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @Transient
+    @Deprecated
     public StudyTherapy getStudyTherapy(final StudyTherapyType studyTherapyType) {
 
         for (StudyTherapy studyTherapy : studyTherapies) {

@@ -136,25 +136,7 @@
 		</c:if>																		
 
     </chrome:division>       
-    <chrome:division title="Therapies">
-    	<!--[if lte IE 6]>
-		<br>
-		<br>
-		<![endif]-->
-		<ul>
-		<c:forEach items="${command.study.studyTherapies}" var="therapy">
-		<li class="results">
-			${therapy.studyTherapyType.displayName}
-		</li>
-		</c:forEach>
-		</ul>
-		<c:if test="${empty command.study.studyTherapies}">
-
-			No therapy is selected for this study
-
-		</c:if>																		
-
-    </chrome:division>
+    
     <chrome:division title="Agents">
     	<br/>
     	<!--[if lte IE 6]>
@@ -460,7 +442,43 @@
     </chrome:division>
     <%-- STOP EXPECTED AEs --%>
 
-    <chrome:division title="Identifiers">
+    <chrome:division title="Study Devices">
+        <br/>
+        <table class="tablecontent" width="100%">
+        <tr>
+            <th scope="col">Brand name</th>
+            <th scope="col">Common name</th>
+            <th scope="col">Device type</th>
+        </tr>
+        <c:forEach items="${command.study.activeStudyDevices}" var="sd">
+        <tr class="results">
+            <td>${sd.brandName}
+            <td>${sd.commonName}
+            <td>${sd.deviceType}
+        </tr>
+        </c:forEach>
+        </table>
+    </chrome:division>
+
+    <chrome:division title="Other interventions">
+        <br/>
+        <table class="tablecontent" width="100%">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Intervention Type</th>
+        </tr>
+        <c:forEach items="${command.study.otherInterventions}" var="oi">
+        <tr class="results">
+            <td>${oi.name}
+            <td>${oi.description}
+            <td>${oi.studyTherapyType}
+        </tr>
+        </c:forEach>
+        </table>
+    </chrome:division>
+
+        <chrome:division title="Identifiers">
     	<br/>
     	<!--[if lte IE 6]>
 		<br>

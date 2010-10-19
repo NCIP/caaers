@@ -26,16 +26,14 @@
             </c:forEach>
         </tr>
         <tr class="head">
-            <th class="term">
-                Evaluation Period Type
-            </th>
+            <th class="term">Evaluation Period Type</th>
             <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.study.activeEpochs}">
                 <th id="th-table1-${statusVar.index}" class="reportingperiod">
                     <c:if test="${!displayOnly}">
                         <input type="hidden" name="epoch_id" value="${eachEpoch.epochOrder}"/>
                     </c:if>
                     <c:if test="${command.study.id != null}">
-                        <a title="Download AE Worksheet..." href="<c:url value='/pages/ae/blankForm?st=${command.study.id}&sb=0&cs=0&ep=${eachEpoch.id}' ></c:url>"><img src="<c:url value='/images/pdf.gif' ></c:url>"></a>
+                        <a title="Download AE Worksheet..." href="<c:url value='/pages/ae/blankForm?st=${command.study.id}&sb=0&cs=0&ep=${eachEpoch.id}' ></c:url>"><img src="<c:url value='/images/blue/pdf.png' ></c:url>"></a>
                     </c:if>
                     <div class="index">
                         <c:choose>
