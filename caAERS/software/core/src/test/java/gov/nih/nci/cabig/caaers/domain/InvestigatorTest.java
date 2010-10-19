@@ -36,8 +36,6 @@ public class InvestigatorTest extends TestCase {
 	}
 
 
-    public void testGetActiveSiteInvestigators(){
-        fail("to implement");
-    }
+
 
 }
