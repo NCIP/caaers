@@ -432,5 +432,6 @@
     <study_therapy id="-4" study_id="-3" study_therapy_type="4" />
     <study_therapy id="-5" study_id="-3" study_therapy_type="5" />
     <study_index/>
+    <study_devices />
 
 </dataset>
