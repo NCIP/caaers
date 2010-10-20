@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -34,12 +36,24 @@ public class OtherIntervention extends StudyIntervention {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if (this == o) return true;
+
+        OtherIntervention that = (OtherIntervention) o;
+        if (!this.getStudyTherapyType().equals(((StudyIntervention) o).getStudyTherapyType())) return false;
+        if (!StringUtils.equals(getName(), that.getName())) return false;
+        if (!StringUtils.equals(getDescription(), that.getDescription())) return false;
+
+        return super.equals(that);
     }
 
     @Override
     public int hashCode() {
+        int result = 0;
+        result = 31 * result + getStudyTherapyType().hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return super.hashCode();
     }
 }

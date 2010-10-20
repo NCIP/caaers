@@ -103,6 +103,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
     protected List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
     protected List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
+    protected List<OtherIntervention> otherInterventions = new ArrayList<OtherIntervention>();
+    protected List<StudyDevice> studyDevices = new ArrayList<StudyDevice>();
 
     // TODO move into Command Object
     // Investigators page)
@@ -146,8 +148,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());
         setStudyAgentsInternal(new ArrayList<StudyAgent>());
-        setStudyDevicesInternal(new ArrayList<StudyDevice>());
-        setOtherInterventionsInternal(new ArrayList<OtherIntervention>());
     }
 
     // / LOGIC
@@ -362,26 +362,36 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         setStudyAgentsInternal(studyAgents);
     }
 
-    @Transient
-    @UniqueObjectInCollection(message = "Duplicates found in Study Devices list")
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy
     public List<StudyDevice> getStudyDevices() {
-        return lazyListHelper.getLazyList(StudyDevice.class);
+        return this.studyDevices;
     }
 
-    @Transient
     public void setStudyDevices(final List<StudyDevice> studyDevices) {
-        setStudyDevicesInternal(studyDevices);
+        this.studyDevices = studyDevices;
     }
 
-    @Transient
-    @UniqueObjectInCollection(message = "Duplicates found in Study Devices list")
+    public void addStudyDevice(StudyDevice sd) {
+        this.getStudyDevices().add(sd);
+        sd.setStudy(this);
+    }
+
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy
     public List<OtherIntervention> getOtherInterventions() {
-        return lazyListHelper.getLazyList(OtherIntervention.class);
+        return this.otherInterventions;
     }
 
-    @Transient
+    public void addOtherIntervention(OtherIntervention oi) {
+        this.getOtherInterventions().add(oi);
+        oi.setStudy(this);
+    }
+
     public void setOtherInterventions(final List<OtherIntervention> otherInterventions) {
-        setOtherInterventionsInternal(otherInterventions);
+        this.otherInterventions = otherInterventions;
     }
 
     /**
@@ -619,29 +629,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     public void setStudyAgentsInternal(final List<StudyAgent> studyAgents) {
         lazyListHelper.setInternalList(StudyAgent.class, studyAgents);
-    }
-
-
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy
-    public List<OtherIntervention> getOtherInterventionsInternal() {
-        return lazyListHelper.getInternalList(OtherIntervention.class);
-    }
-
-    public void setOtherInterventionsInternal(final List<OtherIntervention> otherInterventions) {
-        lazyListHelper.setInternalList(OtherIntervention.class, otherInterventions);
-    }
-
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy
-    public List<StudyDevice> getStudyDevicesInternal() {
-        return lazyListHelper.getInternalList(StudyDevice.class);
-    }
-
-    public void setStudyDevicesInternal(final List<StudyDevice> studyDevices) {
-        lazyListHelper.setInternalList(StudyDevice.class, studyDevices);
     }
 
     @OneToMany

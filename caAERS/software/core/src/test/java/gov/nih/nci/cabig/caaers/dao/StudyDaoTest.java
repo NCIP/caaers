@@ -7,35 +7,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.Arm;
-import gov.nih.nci.cabig.caaers.domain.Condition;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.LoadStatus;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.StudyCondition;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.common.TherapyType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -582,6 +554,7 @@ assertTrue(true);
             assertNotNull(agent);
             StudyAgent sa = new StudyAgent();
             sa.setAgent(agent);
+            sa.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
             newStudy.addStudyAgent(sa);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             sa.setStudy(newStudy);
@@ -930,9 +903,7 @@ assertTrue(true);
 
     public void testLoadAllOtherIntervention() {
         Study study = getDao().getById(-2);
-        assertEquals(2, study.getOtherInterventions().size());
-        assertEquals(-2, study.getOtherInterventions().get(0).getId().intValue());
-        assertEquals("Other Intervention Two of Type Surgery", study.getOtherInterventions().get(0).getName());
+        assertEquals(3, study.getOtherInterventions().size());
     }
 
     public void testActiveDevices() {
@@ -946,6 +917,32 @@ assertTrue(true);
         assertTrue(study.hasTherapyOfType(StudyTherapyType.DEVICE));
         assertTrue(study.hasTherapyOfType(StudyTherapyType.SURGERY));
         assertFalse(study.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
+    }
+
+    public void testSaveOtherInetrventions() {
+        Study study = getDao().getById(-2);
+        assertEquals(3, study.getOtherInterventions().size());
+        OtherIntervention oi = new OtherIntervention();
+        oi.setStudyTherapyType(StudyTherapyType.SURGERY);
+        oi.setName("Some Name");
+        oi.setDescription("Some Description");
+        study.addOtherIntervention(oi);
+        getDao().save(study);
+        interruptSession();
+        study = getDao().getById(-2);
+        assertEquals(4, study.getOtherInterventions().size());
+    }
+
+    public void testSaveStudyDevices() {
+        Study study = getDao().getById(-2);
+        assertEquals(3, study.getStudyDevices().size());
+        StudyDevice sd = new StudyDevice();
+        sd.setCatalogNumber("Some Catalog Number");
+        study.addStudyDevice(sd);
+        getDao().save(study);
+        interruptSession();
+        study = getDao().getById(-2);
+        assertEquals(4, study.getStudyDevices().size());
     }
 
     @Override

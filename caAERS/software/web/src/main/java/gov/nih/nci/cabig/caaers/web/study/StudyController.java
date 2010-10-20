@@ -55,7 +55,8 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     protected ConfigPropertyRepositoryImpl configPropertyRepository;
     private StudyRepository studyRepository;
     private LowLevelTermDao lowLevelTermDao;
-    
+    private DeviceDao deviceDao;
+
     private Configuration configuration;
 
     private EventFactory eventFactory;
@@ -94,9 +95,11 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
         ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, deviceDao);
         ControllerTools.registerEnumEditor(binder, Term.class);
         ControllerTools.registerEnumEditor(binder, Design.class);
         ControllerTools.registerEnumEditor(binder, INDType.class);
+        ControllerTools.registerEnumEditor(binder, StudyTherapyType.class);
     }
 
     /**
@@ -381,5 +384,13 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
+    }
+
+    public DeviceDao getDeviceDao() {
+        return deviceDao;
+    }
+
+    public void setDeviceDao(DeviceDao deviceDao) {
+        this.deviceDao = deviceDao;
     }
 }

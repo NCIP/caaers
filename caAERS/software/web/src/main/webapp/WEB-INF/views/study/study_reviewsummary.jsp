@@ -451,11 +451,13 @@
             <th scope="col">Device type</th>
         </tr>
         <c:forEach items="${command.study.activeStudyDevices}" var="sd">
-        <tr class="results">
-            <td>${sd.brandName}
-            <td>${sd.commonName}
-            <td>${sd.deviceType}
-        </tr>
+            <c:if test="${!sd.retiredIndicator}">
+                <tr class="results">
+                    <td>${sd.brandName}
+                    <td>${sd.commonName}
+                    <td>${sd.deviceType}
+                </tr>
+            </c:if>
         </c:forEach>
         </table>
     </chrome:division>
@@ -469,11 +471,13 @@
             <th scope="col">Intervention Type</th>
         </tr>
         <c:forEach items="${command.study.otherInterventions}" var="oi">
-        <tr class="results">
-            <td>${oi.name}
-            <td>${oi.description}
-            <td>${oi.studyTherapyType}
-        </tr>
+            <c:if test="${!oi.retiredIndicator}">
+                <tr class="results">
+                    <td>${oi.name}
+                    <td>${oi.description}
+                    <td>${oi.studyTherapyType}
+                </tr>
+            </c:if>
         </c:forEach>
         </table>
     </chrome:division>

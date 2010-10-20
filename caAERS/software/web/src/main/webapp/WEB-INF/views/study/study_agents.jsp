@@ -26,9 +26,11 @@ td#linkPosition a img {
 <script type="text/javascript">
 ajaxCRUD = new AJAX_CRUD_HELPER();
 
-
+// ----------------------------------------------------------------------------------------------------------------
 function fireAction(action, index) {
-    if (action == 'removeStudyAgent') {
+    if (action == 'deleteOtherIntervention') {
+        ajaxCRUD._deleteItem('OtherIntervention', index, '_otherInterventions', ${tab.number});
+    } else if (action == 'removeStudyAgent') {
         ajaxCRUD._deleteItem('StudyAgent', index, '_SA', ${tab.number});
     } else if (action == 'addStudyAgent') {
         ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Bottom');
@@ -42,9 +44,12 @@ function fireAction(action, index) {
         $A(children).each(function(el) {
             el.remove();
         });
+    } else if (action == 'removeStudyDevice') {
+        alert('removeStudyDevice');
     }
 }
 
+// ----------------------------------------------------------------------------------------------------------------
 function toggleAgentOrOther(index){
 	var agentRadioSelected = $("select-agent-" + index).checked
 	var idPrefix = 'study.studyAgents[' + index + '].';
@@ -65,22 +70,69 @@ function toggleAgentOrOther(index){
 	}
 	
 }
+
+// ----------------------------------------------------------------------------------------------------------------
+function addDevice() {
+    ajaxCRUD._addItem('StudyDevice', null, null, '_devices', null, ${tab.number}, 'Top');
+}
+
+function addOtherIntervention() {
+    ajaxCRUD._addItem('OtherIntervention', null, null, '_otherInterventions', null, ${tab.number}, 'Top');
+}
+
 </script>
 </head>
 <body>
 
 <study:summary />
 
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">
-    <jsp:attribute name="instructions">Click  "Add Study Agent" to add one or more agents to this study.</jsp:attribute>
-	<jsp:attribute name="singleFields">
+<form:form id="command" name="command">
+
+    <chrome:box title="Devices" collapsable="true">
+        <jsp:attribute name="additionalTitle" />
+        <jsp:body>
+            <div style="padding-left:20px;">
+               <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add" icon="Add" type="button" onclick="addDevice();" size="small"/>
+                <tags:indicator id="device_AjaxIndicator" />
+            <div id="_devices">
+            <c:set var="size" value="${fn:length(command.study.studyDevices)}" />
+            <c:forEach items="${command.study.studyDevices}" varStatus="status" var="sd">
+                <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                <c:if test="${!command.study.studyDevices[newIndex].retiredIndicator}">
+                    <study:oneStudyDevice index="${newIndex}" sd="${sd}" collapsed="true"/>
+                </c:if>
+            </c:forEach>
+        </div>
+        </div>
+        </jsp:body>
+    </chrome:box>
+
+    <chrome:box title="Other interventions">
+        <jsp:attribute name="additionalTitle" />
+        <jsp:body>
+            <div style="padding-left:20px;">
+               <tags:button cssClass="foo" id="btn-add-otherIntervention" color="blue" value="Add" icon="Add" type="button" onclick="addOtherIntervention();" size="small"/>
+                <tags:indicator id="otherIntervention_AjaxIndicator" />
+            <div id="_otherInterventions">
+            <c:set var="size" value="${fn:length(command.study.otherInterventions)}" />
+            <c:forEach items="${command.study.otherInterventions}" varStatus="status" var="oi">
+                <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                <c:if test="${!command.study.otherInterventions[newIndex].retiredIndicator}">
+                    <study:oneOtherIntervention index="${newIndex}" otherIntervention="${command.study.otherInterventions[newIndex]}" collapsed="true"/>
+                </c:if>
+            </c:forEach>
+        </div>
+        </div>
+        </jsp:body>
+    </chrome:box>
+    
+    <chrome:box  title="Agents">
+<%--<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">--%>
+    <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studyAgents)}">
+
+    <%--<jsp:attribute name="instructions">Click  "Add Study Agent" to add one or more agents to this study.</jsp:attribute>--%>
 		<div>		
-			<input type="hidden" name="_action" value="">
-			<input type="hidden" name="_selected" value="">
-			<input type="hidden" name="_selectedInd" value="">
-			<input type="hidden" name="_selectedOther" value="">
-			<input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studyAgents)}">
-		</div>	
+		</div>
 		<p id="instructions"></p>
 
 		<div id="_SA">
@@ -95,9 +147,12 @@ function toggleAgentOrOther(index){
             <tags:indicator id="_SA_indicator" />
             <tags:button color="blue" type="button" value="Add Study Agent" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
         </div>
-        
-    </jsp:attribute>
-    
-</tags:tabForm>
+    </chrome:box>    
+
+    <tags:tabControls flow="${flow}" tab="${tab}" />
+    <tags:tabFields tab="${tab}" />
+
+</form:form>
+<%--</tags:tabForm>--%>
 </body>
 </html>

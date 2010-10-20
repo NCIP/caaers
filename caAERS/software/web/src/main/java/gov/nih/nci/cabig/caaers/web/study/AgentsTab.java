@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.INDType;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.integration.schema.common.TherapyType;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
+import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -12,12 +12,11 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Biju Joseph
  */
 public class AgentsTab extends StudyTab {
+
     @Deprecated
     public static int IND_TYPE_NOT_USED = 0;
 
@@ -52,13 +52,23 @@ public class AgentsTab extends StudyTab {
     private AgentSpecificAdverseEventListService agentSpecificAdverseEventListService;
 
     public AgentsTab() {
-        super("Agents", "Agents", "study/study_agents");
-        // setAutoPopulateHelpKey(true);
+        super("Interventions", "Interventions", "study/study_agents");
         indTypeMap.put("", "Please select");
         for (INDType indType : INDType.values()) {
             indTypeMap.put(indType.name(), indType.getDisplayName());
         }
+    }
 
+    @Override
+    public Map<String, Object> referenceData(StudyCommand command) {
+        Map<String, Object> rd = super.referenceData(command);
+        Map tt = new TreeMap<Integer, String>();
+        for (StudyTherapyType stt : StudyTherapyType.values()) {
+            if (stt.equals(StudyTherapyType.DRUG_ADMINISTRATION) || stt.equals(StudyTherapyType.DEVICE)) continue;
+            tt.put(stt, EnumHelper.titleCasedName(stt));
+        }
+        rd.put("studyTherapyTypes", tt);
+        return rd; 
     }
 
     @Override
@@ -252,11 +262,9 @@ public class AgentsTab extends StudyTab {
      * @return
      */
     public ModelAndView addStudyAgentIND(HttpServletRequest request, Object object, Errors errors) {
-
         StudyCommand command = (StudyCommand)object;
         Integer studyAgentIndex = WebUtils.getIntParameter(request, "index");
         InputFieldGroupMap map = new InputFieldGroupMap();
-        
         ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentINDSection");
         modelAndView.getModel().put("indfields", createINDFieldGroup(command, studyAgentIndex));
         modelAndView.getModel().put("index", studyAgentIndex);
@@ -270,5 +278,69 @@ public class AgentsTab extends StudyTab {
 
     public void setAgentSpecificAdverseEventListService(AgentSpecificAdverseEventListService agentSpecificAdverseEventListService) {
         this.agentSpecificAdverseEventListService = agentSpecificAdverseEventListService;
+    }
+
+    public ModelAndView addStudyDevice(HttpServletRequest request, Object object, Errors errors) {
+        StudyCommand command = (StudyCommand)object;
+        List<StudyDevice> studyDevices = command.getStudy().getStudyDevices();
+
+        // add new StudyDevice
+        StudyDevice sd = new StudyDevice();
+        command.getStudy().addStudyDevice(sd);
+        //
+
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyDeviceSection");
+        modelAndView.getModel().put("studyDevices", studyDevices);
+        modelAndView.getModel().put("indexes", new Integer[]{studyDevices.size() - 1});
+        return modelAndView;
+    }
+
+    public ModelAndView addOtherIntervention(HttpServletRequest request, Object object, Errors errors) {
+        StudyCommand command = (StudyCommand)object;
+        List<OtherIntervention> list = command.getStudy().getOtherInterventions();
+
+        // add 
+        OtherIntervention sd = new OtherIntervention();
+        command.getStudy().addOtherIntervention(sd);
+        //
+
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyOtherInterventionSection");
+        modelAndView.getModel().put("otherInterventions", list);
+        modelAndView.getModel().put("indexes", new Integer[]{list.size() - 1});
+        return modelAndView;
+    }
+
+    public ModelAndView removeOtherIntervention(HttpServletRequest request, Object object, Errors errors) {
+        StudyCommand command = (StudyCommand)object;
+        List<OtherIntervention> list = command.getStudy().getOtherInterventions();
+
+        // remove
+        int index;
+        try {
+            index = Integer.parseInt(request.getParameter("index"));
+        } catch (NumberFormatException e) {
+            index = -1;
+            log.debug("Wrong <index> for <otherInterventions> list: " + e.getMessage());
+        }
+
+        if (list.size() - 1 < index) {
+            log.debug("Wrong <index> for <otherInterventions> list.");
+        } else if (index >=0) {
+            OtherIntervention o = (OtherIntervention)list.get(index);
+            o.setRetiredIndicator(true);
+            // list.remove(o);
+        }
+        //
+
+        int size = list.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyOtherInterventionSection");
+        modelAndView.getModel().put("otherInterventions", list);
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
     }
 }

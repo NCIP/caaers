@@ -38,6 +38,7 @@ public class StudyAgent extends StudyIntervention {
      * Constructor -- Initializes participation at create time
      */
     public StudyAgent() {
+        this.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
         participation = new Participation();
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(StudyAgentINDAssociation.class, new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,StudyAgentINDAssociation.class));

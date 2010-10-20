@@ -158,13 +158,15 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         ht.initialize(study.getMeddraStudyDiseases());
         ht.initialize(study.getCtepStudyDiseases());
         ht.initialize(study.getStudyAgentsInternal());
-        ht.initialize(study.getStudyTherapies());
         ht.initialize(study.getTreatmentAssignmentsInternal());
         ht.initialize(study.getReportFormats());
         ht.initialize(study.getEpochs());
         ht.initialize(study.getExpectedAEMeddraLowLevelTerms());
         ht.initialize(study.getExpectedAECtcTerms());
         ht.initialize(study.getCtcCategories());
+        ht.initialize(study.getOtherInterventions());
+        ht.initialize(study.getStudyDevices());
+        
         for (ExpectedAECtcTerm sctct: study.getExpectedAECtcTerms()) {
             if (sctct.isOtherRequired()) {
                 if (sctct.getOtherMeddraTerm() != null)
@@ -186,7 +188,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     /**
      * Save or update the study in the db.
      *
-     * @param The study.
+     * @param study.
      */
     @Transactional(readOnly = false)
     public void save(final Study study) {
@@ -198,7 +200,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
      * This method is called by StudyParticipantAssignmentMigrator , this method is create for securtuty policy.
      * subject coordinator should be able to add study site while creating the subject. This method is called and grated permissions on to subject cordinator.
      *
-     * @param The study.
+     * @param study.
      */
     @Transactional(readOnly = false)
     public void updateStudyForServiceUseOnly(final Study study) {

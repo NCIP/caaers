@@ -30,6 +30,7 @@ public class StudyDevice extends StudyIntervention {
 
     public StudyDevice(){
        this(null);
+       this.setStudyTherapyType(StudyTherapyType.DEVICE);
     }
 
     public StudyDevice(Device device){
