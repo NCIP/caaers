@@ -29,20 +29,16 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      * 
      * @throws Exception
      */
-    public void testSurgeryStudyHavingSurgeryInterviention() throws Exception {
+    public void testSurgeryStudyHavingSurgeryIntervention() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
 
         SurgeryIntervention surgeryIntervention = new SurgeryIntervention();
         aeReport.addSurgeryIntervention(surgeryIntervention);
-
         Study s = aeReport.getStudy();
-        StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.SURGERY };
-        for (int i = 0; i < therapies.length; i++) {
-            StudyTherapy st = new StudyTherapy();
-            st.setId(i + 1);
-            st.setStudyTherapyType(therapies[i]);
-            s.addStudyTherapy(st);
-        }
+
+        OtherIntervention oi = new OtherIntervention();
+        oi.setStudyTherapyType(StudyTherapyType.SURGERY);
+        s.addOtherIntervention(oi);
 
         ValidationErrors errors = fireRules(aeReport);
         assertNoErrors(errors, "When surgery is present on a surgery study");
