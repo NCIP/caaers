@@ -72,6 +72,15 @@
             />
 
     <STUDIES
+            id="-333"
+            multi_institution_indicator="0"
+            short_title="Shooter"
+            long_title="Lengthy Title" description="Different description"
+            grid_id="f2321"
+            load_status="1"
+            />
+
+    <STUDIES
             grid_id="gridStudy"
             id="-4"
             multi_institution_indicator="0"
@@ -425,12 +434,6 @@
     <SPA_PRIOR_THERAPIES/>
     <SPA_CONCOMITANT_MEDICATIONS/>
     <SPA_PRE_EXISTING_CONDS/>
-
-    <study_therapy id="-1" study_id="-3" study_therapy_type="1" />
-    <study_therapy id="-2" study_id="-3" study_therapy_type="2" />
-    <study_therapy id="-3" study_id="-3" study_therapy_type="3" />
-    <study_therapy id="-4" study_id="-3" study_therapy_type="4" />
-    <study_therapy id="-5" study_id="-3" study_therapy_type="5" />
 
     <other_interventions id="-1" name="Other Intervention One of Type Surgery" description="Desc" study_id="-2" study_therapy_type="3" />
     <other_interventions id="-2" name="Other Intervention Two of Type Surgery" description="Desc" study_id="-2" study_therapy_type="3" />

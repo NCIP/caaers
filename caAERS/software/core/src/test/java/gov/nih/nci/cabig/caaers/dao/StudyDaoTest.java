@@ -244,7 +244,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             ids.add(study.getId());
         }
         assertTrue(ids.contains(-3));
-    	assertTrue(true);
     }
 
     public void testGetByIdentifierByTypeAndValue() throws Exception {
@@ -554,7 +553,6 @@ assertTrue(true);
             assertNotNull(agent);
             StudyAgent sa = new StudyAgent();
             sa.setAgent(agent);
-            sa.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
             newStudy.addStudyAgent(sa);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             sa.setStudy(newStudy);
@@ -712,11 +710,11 @@ assertTrue(true);
 
 
     public void testDeleteStudy() {
-        Study study = getDao().getById(-3);
+        Study study = getDao().getById(-333);
         getDao().delete(study);
         interruptSession();
-        study = getDao().getById(-3);
-        assertNull("Study identified by id -3 must be null", study);
+        study = getDao().getById(-333);
+        assertNull("Study identified by id -333 must be null", study);
     }
 
     public void testSaveSolicitedAdverseEvents() {
@@ -865,16 +863,6 @@ assertTrue(true);
         assertEquals("Wrong Meddra Id", -11, loaded.getExpectedAEMeddraLowLevelTerms().get(0).getTerm().getId().intValue());
     }
 
-    public void testGetStudyDesignById() throws Exception {
-        Study study = getDao().getStudyDesignById(-3);
-        assertNotNull(study);
-        assertTrue(study.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
-        assertTrue(study.hasTherapyOfType(StudyTherapyType.RADIATION));
-        assertTrue(study.hasTherapyOfType(StudyTherapyType.DEVICE));
-        assertTrue(study.hasTherapyOfType(StudyTherapyType.SURGERY));
-        assertTrue(study.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
-    }
-
     public void testGetStudyDesignByIdentifier() throws Exception {
         Identifier identifier = new Identifier();
         identifier.setId(-15);
@@ -945,8 +933,10 @@ assertTrue(true);
         assertEquals(4, study.getStudyDevices().size());
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.REFRESH;
     }
+*/
 }
