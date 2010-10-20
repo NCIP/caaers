@@ -483,6 +483,10 @@
     <field name="interventionSite" type="gov.nih.nci.cabig.caaers.domain.InterventionSite">
       <bind-xml name="InterventionSite"/>
     </field>
+    <field name="studySurgery" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.InterventionSite">
@@ -527,6 +531,10 @@
     <field name="administration" type="gov.nih.nci.cabig.caaers.domain.RadiationAdministration">
       <bind-xml name="administration"/>
     </field>
+    <field name="studyRadiation" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.RadiationAdministration" verify-constructable="false">
@@ -610,7 +618,61 @@
     <field name="evaluationAvailability" type="gov.nih.nci.cabig.caaers.domain.Availability">
       <bind-xml name="EvaluationAvailability"/>
     </field>
+    <field name="studyDevice" type="gov.nih.nci.cabig.caaers.domain.StudyDevice">
+      <bind-xml name="StudyDevice"/>
+    </field>
   </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Device" verify-constructable="false">
+    <map-to xml="Device"/>
+    <field name="id" type="integer">
+        <bind-xml name="id" node="element"/>
+    </field>
+    <field name="brandName" type="string">
+        <bind-xml name="brandName"/>
+    </field>
+    <field name="commonName" type="string">
+        <bind-xml name="commonName"/>
+    </field>
+    <field name="type" type="string">
+        <bind-xml name="type"/>
+    </field>
+  </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyDevice">
+    <map-to xml="StudyDevice"/>
+    <field name="Device" type="gov.nih.nci.cabig.caaers.domain.Device">
+      <bind-xml name="Device"/>
+    </field>
+    <field name="otherBrandName" type="string" >
+      <bind-xml name="otherBrandName"/>
+    </field>
+    <field name="otherCommonName" type="string" >
+      <bind-xml name="otherCommonName"/>
+    </field>
+    <field name="catalogNumber" type="string" >
+      <bind-xml name="catalogNumber"/>
+    </field>
+    <field name="manufacturerName" type="string" >
+      <bind-xml name="manufacturerName"/>
+    </field>
+    <field name="manufacturerCity" type="string" >
+      <bind-xml name="manufacturerCity"/>
+    </field>
+    <field name="manufacturerState" type="string" >
+      <bind-xml name="manufacturerState"/>
+    </field>
+    <field name="modelNumber" type="string" >
+      <bind-xml name="modelNumber"/>
+    </field>
+    <field name="otherDeviceType" type="string" >
+      <bind-xml name="otherDeviceType"/>
+    </field>
+    <field name="studyTherapyType" type="gov.nih.nci.cabig.caaers.domain.StudyTherapyType">
+        <bind-xml name="studyTherapyType"/>
+    </field>
+   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.DeviceOperator" verify-constructable="false">
     <map-to xml="DeviceOperator"/>
@@ -1030,6 +1092,9 @@
     </field>
     <field name="otherAgent" type="string" >
       <bind-xml name="otherAgent"/>
+    </field>
+    <field name="studyTherapyType" type="gov.nih.nci.cabig.caaers.domain.StudyTherapyType">
+        <bind-xml name="studyTherapyType"/>
     </field>
    </class>
 
@@ -1619,6 +1684,29 @@
     </field>
     <field name="displayName" type="string">
       <bind-xml name="displayName" node="attribute"/>
+    </field>
+  </class>
+
+   <class name="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+       <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+       <field name="name" type="string"><bind-xml name="name" node="element"/></field>
+       <field name="description" type="string"><bind-xml name="description" node="element"/></field>
+       <field name="studyTherapyType" type="gov.nih.nci.cabig.caaers.domain.StudyTherapyType">
+        <bind-xml name="studyTherapyType"/>
+       </field>
+   </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyTherapyType" verify-constructable="false">
+    <map-to xml="StudyTherapyType" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element"/>
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="element"/>
+    </field>
+    <field name="coppaName" type="string">
+      <bind-xml name="coppaName" node="element"/>
     </field>
   </class>
 
