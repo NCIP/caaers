@@ -374,7 +374,11 @@ public class AdverseEventReportSerializer {
 	   
 	   private SurgeryIntervention getSurgeryIntervention(SurgeryIntervention surgeryIntervention) throws Exception{
 		   SurgeryIntervention s = new SurgeryIntervention();
-		   
+		   OtherIntervention oi = new OtherIntervention();
+           oi.setId(surgeryIntervention.getStudySurgery().getId());
+           oi.setName(surgeryIntervention.getStudySurgery().getName());
+           oi.setDescription(surgeryIntervention.getStudySurgery().getDescription());
+           s.setStudySurgery(oi);
 		   s.setId(surgeryIntervention.getId());
 		   s.setTreatmentArm(surgeryIntervention.getTreatmentArm());
 		   s.setDescription(surgeryIntervention.getDescription());
@@ -429,7 +433,13 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private RadiationIntervention getRadiationIntervention(RadiationIntervention ri) throws Exception {
+           OtherIntervention oi = new OtherIntervention();
+           oi.setId(ri.getStudyRadiation().getId());
+           oi.setName(ri.getStudyRadiation().getName());
+           oi.setDescription(ri.getStudyRadiation().getDescription());
 		   RadiationIntervention radiationIntervention = new RadiationIntervention();
+           radiationIntervention.setStudyRadiation(oi);
+           
 		   try {
 			   radiationIntervention.setId(ri.getId());
 			   radiationIntervention.setDosage(ri.getDosage());

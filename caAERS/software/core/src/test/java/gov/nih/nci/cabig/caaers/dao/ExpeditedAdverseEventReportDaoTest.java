@@ -498,11 +498,17 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     public void testSaveNewRadiationIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
+                OtherIntervention rad1 = new OtherIntervention();
+                rad1.setId(-1);
+                rad1.setVersion(0);
+                report.getRadiationInterventions().get(0).setStudyRadiation(rad1);
                 report.getRadiationInterventions().get(0).setDaysElapsed("120");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals("120", loaded.getRadiationInterventions().get(0).getDaysElapsed());
+                assertEquals(-1, loaded.getRadiationInterventions().get(0).getStudyRadiation().getId().intValue());
+                assertEquals("rad1", loaded.getRadiationInterventions().get(0).getStudyRadiation().getName());
             }
         });
     }
@@ -510,6 +516,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     public void testSaveNewSurgeryIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
+                OtherIntervention s1 = new OtherIntervention();
+                s1.setId(-3);
+                s1.setVersion(0);
+                report.getSurgeryInterventions().get(0).setStudySurgery(s1);
                 report.getSurgeryInterventions().get(0).setInterventionSite(
                                 interventionSiteDao.getById(-33));
             }
@@ -517,6 +527,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals(-33, (int) loaded.getSurgeryInterventions().get(0)
                                 .getInterventionSite().getId());
+                assertEquals(-3, loaded.getSurgeryInterventions().get(0).getStudySurgery().getId().intValue());
+                assertEquals("s1", loaded.getSurgeryInterventions().get(0).getStudySurgery().getName());
             }
         });
     }

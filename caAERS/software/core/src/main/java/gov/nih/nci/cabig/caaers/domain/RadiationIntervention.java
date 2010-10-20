@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -41,6 +38,8 @@ public class RadiationIntervention extends AbstractExpeditedReportCollectionElem
     private String daysElapsed;
 
     private String adjustment; // TODO : figure out if this is a drop down or not ?
+
+    private OtherIntervention studyRadiation;
 
     // //// LOGIC
 
@@ -121,16 +120,17 @@ public class RadiationIntervention extends AbstractExpeditedReportCollectionElem
     public void setAdministration(RadiationAdministration administration) {
         this.administration = administration;
     }
-
-
-    public RadiationIntervention copy() {
-        RadiationIntervention radiationIntervention = new RadiationIntervention();
-        BeanUtils.copyProperties(this, radiationIntervention, new String[]{"id", "gridId",
-                "version", "report"});
-
-        return radiationIntervention;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "study_intervention_id")
+    public OtherIntervention getStudyRadiation() {
+        return studyRadiation;
     }
+
+    public void setStudyRadiation(OtherIntervention studyRadiation) {
+        this.studyRadiation = studyRadiation;
+    }
+
 
 
 }

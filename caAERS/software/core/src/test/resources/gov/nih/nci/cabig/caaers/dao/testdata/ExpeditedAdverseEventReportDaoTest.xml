@@ -50,6 +50,10 @@
     <STUDY_AGENTS id="-12" study_id="-1" agent_id="-102"/>
     <study_devices id="-1" study_id="-1" device_id="-1" />
     <study_devices id="-2" study_id="-999" device_id="-2" />
+    <other_interventions id="-1" study_id = "-1" name="rad1" description="rad1" study_therapy_type="2" />
+    <other_interventions id="-2" study_id = "-999" name="rad2" description="rad2" study_therapy_type="2" />
+    <other_interventions id="-3" study_id = "-1" name="s1" description="s1" study_therapy_type="3" />
+    <other_interventions id="-4" study_id = "-999" name="s2" description="s2" study_therapy_type="3" />
 
     <!--============================================  Participant Information ================================-->
     <PARTICIPANTS id="-101" instituitional_patient_number="P002"
@@ -219,6 +223,7 @@
     <study_therapy/>
     <ae_medical_devices/>
     <ae_radiation_interventions/>
+    <ae_surgery_interventions />
     <ae_reporting_periods/>
     <wf_review_comments />
     

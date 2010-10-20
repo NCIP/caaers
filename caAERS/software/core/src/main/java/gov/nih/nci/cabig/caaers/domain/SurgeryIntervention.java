@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -26,6 +23,8 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
     private String description;
     private InterventionSite interventionSite;
     private Date interventionDate;
+
+    private OtherIntervention studySurgery;
 
     // //// LOGIC
 
@@ -66,9 +65,14 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
         this.interventionSite = interventionSite;
     }
 
-    public SurgeryIntervention copy() {
-        SurgeryIntervention surgeryIntervention = new SurgeryIntervention();
-        BeanUtils.copyProperties(this, surgeryIntervention, new String[]{"id", "gridId", "version", "report"});
-        return surgeryIntervention;
+    @ManyToOne
+    @JoinColumn(name = "study_intervention_id")
+    public OtherIntervention getStudySurgery() {
+        return studySurgery;
     }
+
+    public void setStudySurgery(OtherIntervention studySurgery) {
+        this.studySurgery = studySurgery;
+    }
+
 }
