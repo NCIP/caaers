@@ -59,13 +59,9 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         aeReport.addSurgeryIntervention(surgeryIntervention);
 
         Study s = aeReport.getStudy();
-        StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.RADIATION };
-        for (int i = 0; i < therapies.length; i++) {
-            StudyTherapy st = new StudyTherapy();
-            st.setId(i + 1);
-            st.setStudyTherapyType(therapies[i]);
-            s.addStudyTherapy(st);
-        }
+        OtherIntervention oi = new OtherIntervention();
+        oi.setStudyTherapyType(StudyTherapyType.RADIATION);
+        s.addOtherIntervention(oi);
 
         ValidationErrors errors = fireRules(aeReport);
         assertSameErrorCount(errors, 1, "when surgery is present on a non surgery study");
@@ -528,9 +524,8 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReprocessorNameProvided() throws Exception{
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        StudyDevice sd1 = new StudyDevice();
+        aeReport.getStudy().addStudyDevice(sd1);
         StudyDevice sd = Fixtures.createStudyDevice();
         MedicalDevice device = new MedicalDevice(sd);
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
@@ -544,8 +539,6 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         assertNoErrors(errors);
     }
 
-
-
     /**
      * RuleName : SME_BR4_CHK, SME_BR5_CHK
      * Rule : "Name of Reprocessor" cannot be given if IS_SINGLE_USE_DEVICE is not YES.
@@ -553,9 +546,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReprocessorNameMissing() throws Exception{
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         StudyDevice sd = Fixtures.createStudyDevice();
         MedicalDevice device = new MedicalDevice(sd);
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
@@ -580,9 +571,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReprocessorNameMustNotBeProvided() throws Exception{
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().getDevice().setCommonName(null);
@@ -606,9 +595,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReprocessorAddressProvided() throws Exception{
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().getDevice().setCommonName(null);
@@ -630,9 +617,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReprocessorAddressMissing() throws Exception{
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -655,9 +640,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReprocessorAddressMustNotBeProvided() throws Exception{
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -681,9 +664,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReturnedDateMissing() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -717,9 +698,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testReturnedDateMustNotBeProvided() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -729,7 +708,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         aeReport.addMedicalDevice(device);
 
         device = new MedicalDevice(Fixtures.createStudyDevice());
-        device.getStudyDevice().setBrandName("Brand Name");
+        device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
         device.setReprocessorAddress("test");
         device.setReprocessorName("test");
@@ -750,9 +729,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testDeviceOperatorNoOther() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -778,9 +755,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testDeviceOperatorOther() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -806,9 +781,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testDeviceOperatorOtherOK() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
@@ -828,9 +801,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      */
     public void testDeviceOperatorOtherOK2() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
-        StudyTherapy deviceTherapy = new StudyTherapy();
-        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        aeReport.getStudy().addStudyDevice(new StudyDevice());
         MedicalDevice device = new MedicalDevice(Fixtures.createStudyDevice());
         device.getStudyDevice().getDevice().setBrandName("Brand Name");
         device.getStudyDevice().setModelNumber("123");
