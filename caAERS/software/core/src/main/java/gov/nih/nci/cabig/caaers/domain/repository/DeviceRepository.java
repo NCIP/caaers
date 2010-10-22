@@ -46,4 +46,10 @@ public class DeviceRepository {
         return (List<Device>)deviceDao.search(dq);
     }
 
+    public List<Device> getByMatchText(String text) {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByMatchText(text);
+        return (List<Device>)deviceDao.search(dq);
+    }
+
 }

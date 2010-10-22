@@ -64,7 +64,7 @@ public class StudyDeviceTest extends AbstractTestCase {
        studyDevice.setOtherBrandName("x");
        assertEquals("x", studyDevice.getBrandName());
        assertEquals("x", studyDevice.getOtherBrandName());
-
+        assertTrue(studyDevice.isOtherDevice());
     }
 
     public void testSetGetOtherCommonName() throws Exception {
@@ -72,14 +72,13 @@ public class StudyDeviceTest extends AbstractTestCase {
        studyDevice.setOtherCommonName("x");
        assertEquals("x", studyDevice.getCommonName());
        assertEquals("x", studyDevice.getOtherCommonName());
+        assertTrue(studyDevice.isOtherDevice());
     }
 
     public void testSetGetOtherDeviceType() throws Exception {
          studyDevice.setDevice(null);
          studyDevice.setOtherDeviceType("x");
          assertEquals("x", studyDevice.getOtherDeviceType());
-         assertEquals("x", studyDevice.getOtherDeviceType());
+         assertTrue(studyDevice.isOtherDevice());
     }
-
-
 }

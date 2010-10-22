@@ -28,24 +28,60 @@ ajaxCRUD = new AJAX_CRUD_HELPER();
 
 // ----------------------------------------------------------------------------------------------------------------
 function fireAction(action, index) {
-    if (action == 'deleteOtherIntervention') {
-        ajaxCRUD._deleteItem('OtherIntervention', index, '_otherInterventions', ${tab.number});
-    } else if (action == 'removeStudyAgent') {
-        ajaxCRUD._deleteItem('StudyAgent', index, '_SA', ${tab.number});
-    } else if (action == 'addStudyAgent') {
-        ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Bottom');
-    } else if (action == 'addIND') {
-        var containerID = '_SA-IND-' + index;
-        var opts = new Hash();
-        opts.set("index", index);
-        ajaxCRUD._addItem('StudyAgentIND', null, null, containerID, opts, ${tab.number}, 'Bottom');
-    } else if (action = 'removeIND') {
-        var children = $('_SA-IND-' + index).childElements();
-        $A(children).each(function(el) {
-            el.remove();
-        });
-    } else if (action == 'removeStudyDevice') {
-        alert('removeStudyDevice');
+    switch (action) {
+        case "addOtherIntervention":
+            ajaxCRUD._addItem('OtherIntervention', null, null, '_otherInterventions', null, ${tab.number}, 'Top');
+            break;
+        case "removeOtherIntervention":
+            ajaxCRUD._deleteItem('OtherIntervention', index, '_otherInterventions', ${tab.number});
+            break;
+        case "addStudyDevice":
+            ajaxCRUD._addItem('StudyDevice', null, null, '_devices', null, ${tab.number}, 'Top');
+            break;
+        case "removeStudyDevice":
+            ajaxCRUD._deleteItem('StudyDevice', index, '_devices', ${tab.number});
+            break;
+        case "removeStudyAgent":
+            ajaxCRUD._deleteItem('StudyAgent', index, '_SA', ${tab.number});
+            break;
+        case "addStudyAgent":
+            ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Bottom');
+            break;
+        case "addIND":
+            var containerID = '_SA-IND-' + index;
+            var opts = new Hash();
+            opts.set("index", index);
+            ajaxCRUD._addItem('StudyAgentIND', null, null, containerID, opts, ${tab.number}, 'Bottom');
+            break;
+        case "removeIND":
+            var children = $('_SA-IND-' + index).childElements();
+            $A(children).each(function(el) {
+                el.remove();
+            });
+            break;
+    }
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+function toggleDeviceOrOther(index) {
+    var deviceRadioSelected = $("radioDevice" + index).checked
+    var idPrefix = 'study.studyDevices[' + index + '].';
+
+    var _field = $(idPrefix + 'device');
+    var _field_input = $(idPrefix + 'device-input');
+    var _otherField= $(idPrefix + 'otherDevice');
+
+    if (deviceRadioSelected) {
+        if (_field_input) _field_input.enable();
+        if (_otherField) _otherField.hide();
+    } else {
+        if (_field_input) {
+            _field_input.clear();
+            _field_input.value = 'Begin typing here...';
+            _field_input.disable();
+        }
+        if (_otherField) _otherField.show();
     }
 }
 
@@ -66,18 +102,7 @@ function toggleAgentOrOther(index){
 			agentField_Input.disable();
 		}
 		if(otherField) otherField.enable();
-		
 	}
-	
-}
-
-// ----------------------------------------------------------------------------------------------------------------
-function addDevice() {
-    ajaxCRUD._addItem('StudyDevice', null, null, '_devices', null, ${tab.number}, 'Top');
-}
-
-function addOtherIntervention() {
-    ajaxCRUD._addItem('OtherIntervention', null, null, '_otherInterventions', null, ${tab.number}, 'Top');
 }
 
 </script>
@@ -88,18 +113,40 @@ function addOtherIntervention() {
 
 <form:form id="command" name="command">
 
+    <chrome:box  title="Agents">
+<%--<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">--%>
+    <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studyAgents)}">
+
+    <div style="padding-left:20px;">
+    <p id="instructions"></p>
+
+		<div id="_SA">
+        <c:forEach var="sa" varStatus="status" items="${command.study.studyAgents}">
+          <c:if test="${not sa.retired}">
+        	<study:oneStudyAgent studyAgent="${sa}" index="${status.index}" />
+		  </c:if>
+		</c:forEach>
+		</div>
+    </div>
+
+        <div align="left">
+            <tags:indicator id="_SA_indicator" />
+            <tags:button color="blue" type="button" value="Add" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
+        </div>
+    </chrome:box>
+
     <chrome:box title="Devices" collapsable="true">
         <jsp:attribute name="additionalTitle" />
         <jsp:body>
             <div style="padding-left:20px;">
-               <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add" icon="Add" type="button" onclick="addDevice();" size="small"/>
+               <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add" icon="Add" type="button" onclick="fireAction('addStudyDevice');" size="small"/>
                 <tags:indicator id="device_AjaxIndicator" />
             <div id="_devices">
             <c:set var="size" value="${fn:length(command.study.studyDevices)}" />
             <c:forEach items="${command.study.studyDevices}" varStatus="status" var="sd">
                 <c:set var="newIndex" value="${size - (status.index + 1)}" />
                 <c:if test="${!command.study.studyDevices[newIndex].retiredIndicator}">
-                    <study:oneStudyDevice index="${newIndex}" sd="${sd}" collapsed="true"/>
+                    <study:oneStudyDevice index="${newIndex}" studyDevice="${command.study.studyDevices[newIndex]}" collapsed="true"/>
                 </c:if>
             </c:forEach>
         </div>
@@ -107,11 +154,11 @@ function addOtherIntervention() {
         </jsp:body>
     </chrome:box>
 
-    <chrome:box title="Other interventions">
+    <chrome:box title="Other Interventions">
         <jsp:attribute name="additionalTitle" />
         <jsp:body>
             <div style="padding-left:20px;">
-               <tags:button cssClass="foo" id="btn-add-otherIntervention" color="blue" value="Add" icon="Add" type="button" onclick="addOtherIntervention();" size="small"/>
+               <tags:button cssClass="foo" id="btn-add-otherIntervention" color="blue" value="Add" icon="Add" type="button" onclick="fireAction('addOtherIntervention');" size="small"/>
                 <tags:indicator id="otherIntervention_AjaxIndicator" />
             <div id="_otherInterventions">
             <c:set var="size" value="${fn:length(command.study.otherInterventions)}" />
@@ -126,29 +173,6 @@ function addOtherIntervention() {
         </jsp:body>
     </chrome:box>
     
-    <chrome:box  title="Agents">
-<%--<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">--%>
-    <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studyAgents)}">
-
-    <%--<jsp:attribute name="instructions">Click  "Add Study Agent" to add one or more agents to this study.</jsp:attribute>--%>
-		<div>		
-		</div>
-		<p id="instructions"></p>
-
-		<div id="_SA">
-        <c:forEach var="sa" varStatus="status" items="${command.study.studyAgents}">
-          <c:if test="${not sa.retired}">
-        	<study:oneStudyAgent studyAgent="${sa}" index="${status.index}" />
-		  </c:if>
-		</c:forEach>
-		</div>
-
-        <div align="left">
-            <tags:indicator id="_SA_indicator" />
-            <tags:button color="blue" type="button" value="Add Study Agent" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
-        </div>
-    </chrome:box>    
-
     <tags:tabControls flow="${flow}" tab="${tab}" />
     <tags:tabFields tab="${tab}" />
 

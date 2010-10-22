@@ -38,15 +38,23 @@ public class StudyDevice extends StudyIntervention {
     }
 
     @Transient
-    public boolean isOtherDevice(){
-        //need to change this
-       return getDevice() == null;
+    public String getDisplayName() {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.isNotBlank(otherCommonName)) sb.append(otherCommonName).append(", ");
+        if (StringUtils.isNotBlank(otherBrandName)) sb.append(otherBrandName).append(", ");
+        if (StringUtils.isNotBlank(otherDeviceType)) sb.append(otherDeviceType).append(", ");
+        if (sb.length() > 2) return sb.substring(0, sb.length() -2).toString(); else return sb.toString().trim();
+    }
+
+    @Transient
+    public boolean isOtherDevice() {
+       return (getDevice() == null && (StringUtils.isNotEmpty(getOtherCommonName()) || StringUtils.isNotEmpty(getOtherBrandName()) || StringUtils.isNotEmpty(getOtherDeviceType())));
     }
 
     @Transient
     public String getBrandName() {
         if(isOtherDevice()) return otherBrandName;
-        return getDevice().getBrandName();
+        if (getDevice() != null) return getDevice().getBrandName(); else return null;
     }
 
     public void setBrandName(String brandName) {
@@ -62,8 +70,8 @@ public class StudyDevice extends StudyIntervention {
     }
     @Transient
     public String getCommonName() {
-        if(isOtherDevice()) return getOtherCommonName();
-        return getDevice().getCommonName();
+        if (isOtherDevice()) return getOtherCommonName();
+        if (getDevice() != null) return getDevice().getCommonName(); else return null;
     }
 
     public void setCommonName(String commonName) {
@@ -71,8 +79,8 @@ public class StudyDevice extends StudyIntervention {
     }
     @Transient
     public String getDeviceType() {
-        if(isOtherDevice()) return getOtherDeviceType();
-        return getDevice().getType();
+        if (isOtherDevice()) return getOtherDeviceType();
+        if (getDevice() != null) return getDevice().getType(); else return null;
     }
 
     public void setDeviceType(String deviceType) {

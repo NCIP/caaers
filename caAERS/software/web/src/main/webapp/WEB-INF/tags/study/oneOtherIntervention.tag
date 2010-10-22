@@ -11,7 +11,7 @@
     <c:set var="title">${otherIntervention.name}&nbsp;${otherIntervention.description}</c:set>
 </c:if>
 
-<chrome:division collapsable="true" collapsed="${collapsed}" id="oi_${index}" title="Other intervention #${index} ${title}" enableDelete="true" deleteParams="'deleteOtherIntervention', '${index}'">
+<chrome:division collapsable="true" collapsed="${collapsed}" id="oi_${index}" title="&nbsp;${title}" enableDelete="true" deleteParams="'removeOtherIntervention', '${index}'">
     <div class="row">
         <div class="label">Intervention type</div>
         <div class="value"><ui:select options="${studyTherapyTypes}" path="study.otherInterventions[${index}].studyTherapyType" /></div>

@@ -8,10 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuer
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -56,6 +53,7 @@ public class CreateStudyAjaxFacade {
     }
     
     private AgentDao agentDao;
+    private DeviceRepository deviceRepository;
     private DiseaseCategoryDao diseaseCategoryDao;
     private DiseaseTermDao diseaseTermDao;
     private SiteInvestigatorDao siteInvestigatorDao;
@@ -759,11 +757,29 @@ public class CreateStudyAjaxFacade {
     	return out;
     }
 
+    public List<Device> fetchDevicesByText(String text) {
+        List<Device> l = deviceRepository.getByMatchText(text);
+        l = RankBasedSorterUtils.sort(l , text, new Serializer<Device>(){
+            public String serialize(Device object) {
+                return object.getDisplayName();
+            }
+        });
+        return ObjectTools.reduceAll(l, "id", "commonName", "brandName", "type");
+    }
+
     public SiteResearchStaffDao getSiteResearchStaffDao() {
         return siteResearchStaffDao;
     }
 
     public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
         this.siteResearchStaffDao = siteResearchStaffDao;
+    }
+
+    public DeviceRepository getDeviceRepository() {
+        return deviceRepository;
+    }
+
+    public void setDeviceRepository(DeviceRepository deviceRepository) {
+        this.deviceRepository = deviceRepository;
     }
 }

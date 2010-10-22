@@ -420,6 +420,15 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	return devices;
     }
 
+    @Transient
+    public List<OtherIntervention> getActiveOtherInterventions() {
+    	List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
+    	for(OtherIntervention oi : getOtherInterventions()){
+    		if(!oi.isRetired()) ois.add(oi);
+    	}
+    	return ois;
+    }
+
     /**
      * Will return the {@link StudySite}s that are not retired
      * @return
@@ -505,7 +514,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
             case 1: return getActiveStudyAgents().size() > 0;  
             case 4: return getActiveStudyDevices().size() > 0;
             default:
-                for (OtherIntervention oi : getOtherInterventions()) {
+                for (OtherIntervention oi : getActiveOtherInterventions()) {
                     if (oi.getStudyTherapyType().equals(therapyType)) return true;
                 }
         }

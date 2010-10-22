@@ -2,12 +2,14 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -22,6 +24,15 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
     String brandName;
     String commonName;
     String type;
+
+    @Transient
+    public String getDisplayName() {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.isNotBlank(commonName)) sb.append(commonName).append(", ");
+        if (StringUtils.isNotBlank(brandName)) sb.append(brandName).append(", ");
+        if (StringUtils.isNotBlank(type)) sb.append(type).append(", ");
+        if (sb.length() > 2) return sb.substring(0, sb.length() -2).toString(); else return sb.toString().trim();
+    }
 
     @Override
     public int hashCode() {

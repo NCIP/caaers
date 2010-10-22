@@ -343,4 +343,37 @@ public class AgentsTab extends StudyTab {
         modelAndView.getModel().put("indexes", indexes);
         return modelAndView;
     }
+
+    public ModelAndView removeStudyDevice(HttpServletRequest request, Object object, Errors errors) {
+        StudyCommand command = (StudyCommand)object;
+        List<StudyDevice> list = command.getStudy().getStudyDevices();
+
+        // remove
+        int index;
+        try {
+            index = Integer.parseInt(request.getParameter("index"));
+        } catch (NumberFormatException e) {
+            index = -1;
+            log.debug("Wrong <index> for <StudyDevice> list: " + e.getMessage());
+        }
+
+        if (list.size() - 1 < index) {
+            log.debug("Wrong <index> for <StudyDevice> list.");
+        } else if (index >=0) {
+            StudyDevice o = (StudyDevice)list.get(index);
+            o.setRetiredIndicator(true);
+        }
+        //
+
+        int size = list.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyDeviceSection");
+        modelAndView.getModel().put("studyDevices", list);
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
 }

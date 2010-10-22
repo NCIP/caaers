@@ -131,4 +131,12 @@ public class DeviceDaoTest extends DaoNoSecurityTestCase<DeviceDao> {
         assertEquals(2, l.size());
     }
 
+    public void testSearchByText() {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByMatchText("type");
+        List l = deviceDao.search(dq);
+        assertNotNull(l);
+        assertEquals(3, l.size());
+    }
+
 }

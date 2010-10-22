@@ -30,6 +30,16 @@ public class DeviceQuery extends AbstractQuery {
         }
     }
 
+    public void filterByMatchText(String text) {
+        if (!StringUtils.isBlank(text)) {
+            andWhere("lower(d.commonName) LIKE :" + COMMON_NAME + " OR lower(d.brandName) LIKE :" + BRAND_NAME + " OR lower(d.type) LIKE :" + DEVICE_TYPE);
+            String _t = "%" + text.toLowerCase() + "%";
+            setParameter(COMMON_NAME, _t);
+            setParameter(BRAND_NAME, _t);
+            setParameter(DEVICE_TYPE, _t);
+        }
+    }
+
     public void filterByBrandName(String brandName) {
         if (StringUtils.isBlank(brandName)) {
             andWhere("d.brandName IS NULL OR d.brandName = ''");

@@ -75,4 +75,11 @@ public class DeviceTest extends TestCase {
         assertTrue(device.equals(other));
         assertTrue(device.hashCode() == other.hashCode());
     }
+
+    public void testDisplayName() {
+        device.setBrandName("A");
+        device.setCommonName("");
+        device.setType("C");
+        assertEquals("A, C", device.getDisplayName());
+    }
 }
