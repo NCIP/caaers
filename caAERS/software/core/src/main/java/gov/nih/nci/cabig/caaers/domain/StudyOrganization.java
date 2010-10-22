@@ -22,7 +22,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -239,12 +238,13 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     	for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
     		StudyPersonnel studyPersonnel =  findStudyPersonnel(siteResearchStaffRole);
     		if(studyPersonnel == null){
-    			studyPersonnel = new StudyPersonnel();
-    			if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
-    				addStudyPersonnel(studyPersonnel);
-    			}
+//    			studyPersonnel = new StudyPersonnel();
+//    			if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+//    				addStudyPersonnel(studyPersonnel);
+//    			}
+    		}else{
+    			studyPersonnel.syncRole(siteResearchStaffRole);
     		}
-    		studyPersonnel.syncRole(siteResearchStaffRole);
     	}
     }
     

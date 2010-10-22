@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
@@ -26,6 +27,7 @@ import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
 import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
@@ -44,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -453,14 +456,12 @@ public class StudyRepository {
     	return studyDao.getById(id);
     }
     
-    //Associate the ResearchStaff to all the Studies 
+    //Activating / De-Activating StudyPersonnel 
     public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
-    	//Associate to All Studies feature is discontinued hence commenting the below code.
-    	/*
     	List<StudyOrganization> studyOrganizations = null;
     	StudyOrganizationsQuery studyOrgsQuery = null;
     	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
-    		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+//    		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
     			studyOrgsQuery = new StudyOrganizationsQuery();
     			studyOrgsQuery.filterByOrganizationId(siteResearchStaff.getOrganization().getId());
     			studyOrganizations = studyDao.getStudyOrganizations(studyOrgsQuery);
@@ -469,29 +470,24 @@ public class StudyRepository {
     				studyDao.save(studyOrg.getStudy());
     				studyDao.flush();
     			}
-    		}
+//    		}
     	}
-    	*/
     }
     
+    
+    
+    //Activating / De-Activating StudyPersonnel 
     @Transactional(readOnly = false)
     public void synchronizeStudyPersonnel(Study study) {
-    	
-    	//Associate to All Studies feature is discontinued hence commenting the below code.
-    	/*
-    	
-        //Identify newly added StudyOrganizations to associate ResearchStaff
-        //whose associateAllStudies flag is set to true.
         List<SiteResearchStaff> siteResearchStaffs = null;
         for(StudyOrganization studyOrganization : study.getStudyOrganizations()) {
         	siteResearchStaffs = siteResearchStaffDao.getOrganizationResearchStaffs(studyOrganization.getOrganization());
         	for(SiteResearchStaff siteResearchStaff : siteResearchStaffs){
-        		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+//        		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
         			studyOrganization.syncStudyPersonnel(siteResearchStaff);
-        		}
+//        		}
         	}
         }
-        */
     }
     
     
