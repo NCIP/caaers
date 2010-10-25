@@ -51,7 +51,7 @@ public class OtherIntervention extends StudyIntervention {
     @Override
     public int hashCode() {
         int result = 0;
-        result = 31 * result + getStudyTherapyType().hashCode();
+        result = 31 * result + (getStudyTherapyType() != null ? getStudyTherapyType().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return super.hashCode();
