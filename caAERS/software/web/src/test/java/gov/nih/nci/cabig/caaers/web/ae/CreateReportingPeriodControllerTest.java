@@ -145,36 +145,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		assertTrue(command.isEditFlow());
 		verifyMocks();
 	}
-	/**
-	 * Tests the {@link CreateReportingPeriodController#formBackingObject(javax.servlet.http.HttpServletRequest)}, with workflow disabled and create mode
-	 * @throws Exception
-	 */
-	public void testFormBackingObjectHttpServletRequest_CreateModeAndWorkflowDisabled() throws Exception {
-		
-		request.setParameter("id", "0");
-		request.setParameter("studyId", "5");
-		request.setParameter("participantId","5");
-		
-		expect(studyDao.getById(5)).andReturn(study);
-		expect(assignmentDao.getAssignment(participant, study)).andReturn(assignment);
-		expect(participantDao.getById(5)).andReturn(participant);
-		expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
-		expect(assignment.getStudySite()).andReturn(studySite);
-		expect(studySite.getStudy()).andReturn(study);
-		expect(assignment.getParticipant()).andReturn(participant);
-		expect(assignment.getActiveReportingPeriods()).andReturn(null);
-		
-		replayMocks();
-		
-		ReportingPeriodCommand command  = (ReportingPeriodCommand)controller.formBackingObject(request);
-		assertEquals("create", command.getMode());
-		assertFalse(command.isWorkflowEnabled());
-		assertNotNull(command.getReportingPeriod());
-		assertNotNull(command.getReportingPeriod().getTreatmentAssignment());
-		
-		verifyMocks();
-		
-	}
+	
 
 	/**
 	 * Tests the {@link CreateReportingPeriodController#createFieldGroups(Object)}
@@ -252,7 +223,6 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		command.getReportingPeriod().setEpoch(e3);
 		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2011").toDate());
 		command.getReportingPeriod().setEndDate(null);
-		command.getReportingPeriod().getTreatmentAssignment().setId(6);
 		
 		controller.onBindAndValidate(request, command, errors);
 		assertTrue(errors.hasErrors());
@@ -337,10 +307,9 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		command.getReportingPeriod().setEpoch(null);
 		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2011").toDate());
 		command.getReportingPeriod().setEndDate(null);
-		command.getReportingPeriod().getTreatmentAssignment().setId(5);
 		
 		controller.onBindAndValidate(request, command, errors);
-		assertEquals(3, errors.getErrorCount());
+		assertEquals(4, errors.getErrorCount());
 	}
 	
 	
@@ -381,7 +350,6 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2009").toDate());
 		command.getReportingPeriod().setEndDate(null);
 		command.getReportingPeriod().setEpoch(e1);
-		command.getReportingPeriod().getTreatmentAssignment().setId(5);
 		
 		controller.onBindAndValidate(request, command, errors);
 		assertTrue(errors.hasErrors());

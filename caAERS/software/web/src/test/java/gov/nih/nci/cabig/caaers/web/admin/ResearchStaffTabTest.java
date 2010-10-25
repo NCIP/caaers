@@ -61,6 +61,7 @@ public class ResearchStaffTabTest extends WebTestCase {
 		
 		EasyMock.expect(repository.searchResearchStaff((ResearchStaffQuery) EasyMock.anyObject())).andReturn(new ArrayList<ResearchStaff>());
 		EasyMock.expect(csmUserRepository.loginIDInUse("abcd")).andReturn(false).anyTimes();
+        EasyMock.expect(csmUserRepository.getUserByName("abcd")).andReturn(null).anyTimes();
 		replayMocks();
 		tab.validate(command, commandWrapper, tab.createFieldGroups(command), errors);
 		assertEquals(1, errors.getGlobalErrorCount());
@@ -76,9 +77,11 @@ public class ResearchStaffTabTest extends WebTestCase {
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setOrganization(Fixtures.createOrganization("test", "test"));
 		staff.addSiteResearchStaff(siteResearchStaff);
-		
+
 		EasyMock.expect(repository.searchResearchStaff((ResearchStaffQuery) EasyMock.anyObject())).andReturn(new ArrayList<ResearchStaff>());
 		EasyMock.expect(csmUserRepository.loginIDInUse("abcd")).andReturn(false).anyTimes();
+		EasyMock.expect(csmUserRepository.getUserByName("abcd")).andReturn(null).anyTimes();
+
 		replayMocks();
 		tab.validate(command, commandWrapper, tab.createFieldGroups(command), errors);
 		System.out.println(errors);
