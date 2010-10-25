@@ -23,6 +23,7 @@ public class ParticipantRepositoryTest extends AbstractTestCase {
         participantDao = registerDaoMockFor(ParticipantDao.class);
         participantRepository.setParticipantDao(participantDao);
         participant = Fixtures.createParticipant("first", "last");
+        participant.getIdentifiersLazy().remove(0);
         systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("value");
     }
 

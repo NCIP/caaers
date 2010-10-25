@@ -61,6 +61,7 @@ public class ParticipantSynchronizerIntegrationTest extends AbstractNoSecurityTe
 		orgIdentifier1 = Fixtures.createOrganizationAssignedIdentifier("1", organization1);
 		orgIdentifier1.setId(1);
 		dbParticipant = Fixtures.createParticipant("first", "last");
+        dbParticipant.getIdentifiersLazy().remove(0);
 		dbParticipant.setId(1);
 		dbParticipant.addIdentifier(orgIdentifier1);
 		studyParticipantAssignment1 = new StudyParticipantAssignment();
@@ -81,6 +82,7 @@ public class ParticipantSynchronizerIntegrationTest extends AbstractNoSecurityTe
 		orgIdentifier1a = Fixtures.createOrganizationAssignedIdentifier("1", organization1);
 		orgIdentifier2a = Fixtures.createOrganizationAssignedIdentifier("2", organization2a);
 		xmlParticipant = Fixtures.createParticipant("first", "last");
+        xmlParticipant.getIdentifiersLazy().remove(0);
 		xmlParticipant.addIdentifier(orgIdentifier1a);
 		xmlParticipant.addIdentifier(orgIdentifier2a);
 		studyParticipantAssignment1a = new StudyParticipantAssignment();

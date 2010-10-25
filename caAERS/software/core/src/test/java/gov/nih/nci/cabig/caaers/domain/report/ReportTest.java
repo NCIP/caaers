@@ -201,7 +201,7 @@ public class ReportTest extends AbstractNoSecurityTestCase {
 		Map<Object, Object> map = r.getContextVariables();
 		
 		assertEquals("/pages/ae/edit?aeReport=44&report=55", map.get("reportURL"));
-		assertEquals("xxxx", map.get("patientId"));
+		assertEquals("x", map.get("patientId"));
 		assertEquals(44, map.get("reportId"));
 		assertSame(r, map.get("report"));
 	}

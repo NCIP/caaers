@@ -78,6 +78,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         participantImportService.setParticipantMigrator(migrator);
 
         xstreamParticipant = Fixtures.createParticipant("first", "last");
+        xstreamParticipant.getIdentifiersLazy().remove(0);
         systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("value");
         organization = Fixtures.createOrganization("org name",null);
         organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier("org value", organization);

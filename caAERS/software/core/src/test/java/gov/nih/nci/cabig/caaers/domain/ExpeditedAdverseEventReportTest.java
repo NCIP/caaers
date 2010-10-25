@@ -445,6 +445,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
 
     public void testSummaryIncludesParticipant() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
+        participant.getIdentifiersLazy().remove(0);
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
@@ -453,6 +454,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
 
     public void testSummaryParticipantIncludesPrimaryIdentifier() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
+        participant.getIdentifiersLazy().remove(0);
         participant.addIdentifier(Identifier.createTemplate("MRN1138"));
         participant.getIdentifiers().get(0).setPrimaryIndicator(true);
         Study study = Fixtures.createStudy("El Study");

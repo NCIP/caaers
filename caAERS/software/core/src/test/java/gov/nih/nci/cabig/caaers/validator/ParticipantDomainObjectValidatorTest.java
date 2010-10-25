@@ -20,6 +20,7 @@ public class ParticipantDomainObjectValidatorTest extends CaaersTestCase{
 	protected void setUp() throws Exception {
 		super.setUp();
 		participant = Fixtures.createParticipant("John", "Doe");
+        participant.getIdentifiersLazy().remove(0);
 		errors = new ArrayList<String>();
 		domainObjectValidator = (DomainObjectValidator)getDeployedApplicationContext().getBean("domainObjectValidator");
 	}
@@ -108,7 +109,9 @@ public class ParticipantDomainObjectValidatorTest extends CaaersTestCase{
 	public void testDuplicateParticipants(){
 		
 		Participant p1 = Fixtures.createParticipant("first", "last");
+        p1.getIdentifiersLazy().remove(0);
 		Participant p2 = Fixtures.createParticipant("JO", "Sa");
+        p2.getIdentifiersLazy().remove(0);
 		Organization org1 = Fixtures.createOrganization("NICE");
 		Identifier id1 = Fixtures.createOrganizationAssignedIdentifier("NICE-1", org1);
 		Identifier id2 = Fixtures.createOrganizationAssignedIdentifier("NICE-1", org1);
@@ -123,7 +126,9 @@ public class ParticipantDomainObjectValidatorTest extends CaaersTestCase{
 	public void testUniqueParticipants(){
 		
 		Participant p1 = Fixtures.createParticipant("first", "last");
+        p1.getIdentifiersLazy().remove(0);
 		Participant p2 = Fixtures.createParticipant("JO", "Sa");
+        p2.getIdentifiersLazy().remove(0);
 		Organization org1 = Fixtures.createOrganization("NICE");
 		Organization org2 = Fixtures.createOrganization("PICE");
 		Identifier id1 = Fixtures.createOrganizationAssignedIdentifier("NICE-1", org1);
