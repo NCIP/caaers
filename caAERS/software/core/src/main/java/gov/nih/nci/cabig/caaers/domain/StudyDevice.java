@@ -39,23 +39,26 @@ public class StudyDevice extends StudyIntervention {
 
     @Transient
     public String getDisplayName() {
+        if (!isOtherDevice()) {
+            if (getDevice() != null) return getDevice().getDisplayName();
+            else return "";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            if (StringUtils.isNotBlank(getCommonName())) {
+                sb.append(getCommonName());
+            }
 
-        if(!isOtherDevice()) return getDevice().getDisplayName();
+            if (StringUtils.isNotBlank(getBrandName())) {
+                if(sb.length() > 0) sb.append(", ");
+                sb.append(getBrandName());
+            }
 
-        StringBuilder sb = new StringBuilder();
-        if(StringUtils.isNotBlank(getCommonName())){
-            sb.append(getCommonName());
+            if (StringUtils.isNotBlank(getDeviceType())) {
+                if(sb.length() > 0) sb.append(", ");
+                sb.append(getDeviceType());
+            }
+            return sb.toString();
         }
-        if(StringUtils.isNotBlank(getBrandName())){
-            if(sb.length() > 0) sb.append(", ");
-            sb.append(getBrandName());
-        }
-
-        if(StringUtils.isNotBlank(getDeviceType())){
-            if(sb.length() > 0) sb.append(", ");
-            sb.append(getDeviceType());
-        }
-        return sb.toString();
     }
 
     @Transient
