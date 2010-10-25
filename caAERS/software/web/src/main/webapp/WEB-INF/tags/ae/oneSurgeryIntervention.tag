@@ -4,6 +4,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@ taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
@@ -13,6 +14,22 @@
 <c:set var="v" value="aeReport.surgeryInterventions[${index}]" />
 <ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.surgeryInterventions[${index}]"/>
+
+    <ui:row path="aeReport.surgeryInterventions[${index}].studySurgery">
+         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[4].propertyName}" text="${fieldGroup.fields[4].displayName}" required="true"/></jsp:attribute>
+         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[4].propertyName}" options="${fieldGroup.fields[4].attributes.options}" field="${fieldGroup.fields[4]}"/></jsp:attribute>
+    </ui:row>
+
+    <ui:row path="aeReport.surgeryInterventions[${index}].studySurgery.description">
+        <jsp:attribute name="label">
+            <caaers:message code="LBL_aeReport.surgeryInterventions.studySurgery.description" text="Study surgery description" />
+        </jsp:attribute>
+        <jsp:attribute name="value"><span id="aeReport.surgeryInterventions[${index}].studySurgery.description_content">
+           ${surgery.studySurgery.description}
+           </span>
+        </jsp:attribute>
+    </ui:row>
+
     <ui:row path="aeReport.surgeryInterventions[${index}].interventionSite">
          <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[2]}"/></jsp:attribute>
          <jsp:attribute name="value">
@@ -66,4 +83,9 @@
     Event.observe($("aeReport.surgeryInterventions[${index}].interventionDate"), "change", function() {
         setTitleSurgery_${index}();
     });
+
+    Event.observe($("aeReport.surgeryInterventions[${index}].studySurgery"), "change", function(event) {
+        updateOtherInterventionDescription(Event.element(event), "aeReport.surgeryInterventions[${index}].studySurgery.description_content" );
+    });
+
 </script>

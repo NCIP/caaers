@@ -497,6 +497,8 @@ This applicationContext contains the definition of the DAOs
     	<property name="remoteSession" ref="remoteSession"/>
     </bean>
     <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
+    <bean id="studyDeviceDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDeviceDao"/>
+    <bean id="otherInterventionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OtherInterventionDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
     <bean id="agentSpecificTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>

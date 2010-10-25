@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,14 +18,14 @@ import javax.persistence.*;
 public class StudyDevice extends StudyIntervention {
 
     private Device device;
-    private String otherBrandName;
-    private String otherCommonName;
+    private String brandName;
+    private String commonName;
     private String catalogNumber;
     private String manufacturerName;
     private String manufacturerCity;
     private String manufacturerState;
     private String modelNumber;
-    private String otherDeviceType;
+    private String deviceType;
 
     public StudyDevice(){
        this(null);
@@ -37,13 +36,26 @@ public class StudyDevice extends StudyIntervention {
         this.device = device;
     }
 
+
     @Transient
     public String getDisplayName() {
+
+        if(!isOtherDevice()) return getDevice().getDisplayName();
+
         StringBuilder sb = new StringBuilder();
-        if (StringUtils.isNotBlank(otherCommonName)) sb.append(otherCommonName).append(", ");
-        if (StringUtils.isNotBlank(otherBrandName)) sb.append(otherBrandName).append(", ");
-        if (StringUtils.isNotBlank(otherDeviceType)) sb.append(otherDeviceType).append(", ");
-        if (sb.length() > 2) return sb.substring(0, sb.length() -2).toString(); else return sb.toString().trim();
+        if(StringUtils.isNotBlank(getCommonName())){
+            sb.append(getCommonName());
+        }
+        if(StringUtils.isNotBlank(getBrandName())){
+            if(sb.length() > 0) sb.append(", ");
+            sb.append(getBrandName());
+        }
+
+        if(StringUtils.isNotBlank(getDeviceType())){
+            if(sb.length() > 0) sb.append(", ");
+            sb.append(getDeviceType());
+        }
+        return sb.toString();
     }
 
     @Transient
@@ -53,7 +65,7 @@ public class StudyDevice extends StudyIntervention {
 
     @Transient
     public String getBrandName() {
-        if(isOtherDevice()) return otherBrandName;
+        if(isOtherDevice()) return brandName;
         if (getDevice() != null) return getDevice().getBrandName(); else return null;
     }
 
@@ -120,27 +132,27 @@ public class StudyDevice extends StudyIntervention {
     }
     @Column(name = "brand_name")
     public String getOtherBrandName() {
-        return otherBrandName;
+        return brandName;
     }
 
     public void setOtherBrandName(String otherBrandName) {
-        this.otherBrandName = otherBrandName;
+        this.brandName = otherBrandName;
     }
     @Column(name = "common_name")
     public String getOtherCommonName() {
-        return otherCommonName;
+        return commonName;
     }
 
     public void setOtherCommonName(String otherCommonName) {
-        this.otherCommonName = otherCommonName;
+        this.commonName = otherCommonName;
     }
     @Column(name = "device_type")
     public String getOtherDeviceType() {
-        return otherDeviceType;
+        return deviceType;
     }
 
     public void setOtherDeviceType(String otherDeviceType) {
-        this.otherDeviceType = otherDeviceType;
+        this.deviceType = otherDeviceType;
     }
 
     @ManyToOne

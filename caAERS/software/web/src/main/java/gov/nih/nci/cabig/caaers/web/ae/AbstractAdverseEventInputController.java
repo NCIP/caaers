@@ -1,28 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.ConditionDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
-import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.LabTermDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
-import gov.nih.nci.cabig.caaers.dao.StudyConditionDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
@@ -145,6 +123,10 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     private Configuration configuration;
     
     protected SiteResearchStaffDao siteResearchStaffDao;
+
+    protected StudyDeviceDao studyDeviceDao;
+
+    protected OtherInterventionDao otherInterventionDao;
     
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
@@ -200,7 +182,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, interventionSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, userDao);
-        
+        ControllerTools.registerDomainObjectEditor(binder, studyDeviceDao);
+        ControllerTools.registerDomainObjectEditor(binder, otherInterventionDao);
+
         
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -550,4 +534,20 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 	public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository){
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
+
+    public StudyDeviceDao getStudyDeviceDao() {
+        return studyDeviceDao;
+    }
+
+    public void setStudyDeviceDao(StudyDeviceDao studyDeviceDao) {
+        this.studyDeviceDao = studyDeviceDao;
+    }
+
+    public OtherInterventionDao getOtherInterventionDao() {
+        return otherInterventionDao;
+    }
+
+    public void setOtherInterventionDao(OtherInterventionDao otherInterventionDao) {
+        this.otherInterventionDao = otherInterventionDao;
+    }
 }

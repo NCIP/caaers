@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -12,6 +13,20 @@
 <c:set var="v" value="aeReport.radiationInterventions[${index}]" />
 <ae:fieldGroupDivision fieldGroupFactoryName="radiationIntervention" index="${index}" style="${style}" enableDelete="true" deleteParams="'radiation', ${index}, '_radiations'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.radiationInterventions[${index}]"/>
+
+    <ui:row path="aeReport.radiationInterventions[${index}].studyRadiation">
+         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[7].propertyName}" text="${fieldGroup.fields[7].displayName}" required="true"/></jsp:attribute>
+         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[7].propertyName}" options="${fieldGroup.fields[7].attributes.options}" field="${fieldGroup.fields[7]}" /></jsp:attribute>
+    </ui:row>
+    <ui:row path="aeReport.radiationInterventions[${index}].studyRadiation.description">
+        <jsp:attribute name="label">
+            <caaers:message code="LBL_aeReport.radiationInterventions.studyRadiation.description" text="Study radiation description" />
+        </jsp:attribute>
+        <jsp:attribute name="value"><span id="aeReport.radiationInterventions[${index}].studyRadiation.description_content">
+           ${radiation.studyRadiation.description}
+           </span>
+        </jsp:attribute>
+    </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].administration">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" required="true" /></jsp:attribute>
@@ -78,5 +93,9 @@
     });
     Event.observe($("aeReport.radiationInterventions[${index}].dosageUnit"), "change", function() {
         setTitleRadiation_${index}();
+    });
+
+    Event.observe($("aeReport.radiationInterventions[${index}].studyRadiation"), "change", function(event) {
+        updateOtherInterventionDescription(Event.element(event), "aeReport.radiationInterventions[${index}].studyRadiation.description_content" );
     });
 </script>

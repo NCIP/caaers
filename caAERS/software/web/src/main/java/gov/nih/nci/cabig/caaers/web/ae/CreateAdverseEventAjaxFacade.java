@@ -3,63 +3,13 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.ConditionDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.LabLoadDao;
-import gov.nih.nci.cabig.caaers.dao.LabTermDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
-import gov.nih.nci.cabig.caaers.domain.Condition;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LabCategory;
-import gov.nih.nci.cabig.caaers.domain.LabLoad;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -154,6 +104,7 @@ public class CreateAdverseEventAjaxFacade {
 	private SiteResearchStaffDao siteResearchStaffDao;
 	private ResearchStaffDao researchStaffDao;
 	private InvestigatorDao investigatorDao;
+    private OtherInterventionDao otherInterventionDao;
 
 
     public Class<?>[] controllers() {
@@ -1245,6 +1196,13 @@ public class CreateAdverseEventAjaxFacade {
             throw new CaaersSystemException(e);
         }
     }
+
+    public AjaxOutput retrieveOtherInterventionDescription(int otherInterventionId){
+        AjaxOutput output = new AjaxOutput();
+        OtherIntervention oi = otherInterventionDao.getById(otherInterventionId);
+        if(oi != null) output.setHtmlContent(oi.getDescription());
+        return output;
+    }
     
     protected String getUserId(){
 		WebContext webContext = getWebContext();
@@ -1492,5 +1450,14 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setReportDao(ReportDao reportDao){
     	this.reportDao = reportDao;
+    }
+    
+    @Required
+    public OtherInterventionDao getOtherInterventionDao() {
+        return otherInterventionDao;
+    }
+
+    public void setOtherInterventionDao(OtherInterventionDao otherInterventionDao) {
+        this.otherInterventionDao = otherInterventionDao;
     }
 }

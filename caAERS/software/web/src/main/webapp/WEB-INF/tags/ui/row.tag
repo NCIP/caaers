@@ -13,7 +13,7 @@
 <div class="row ${cssClass}" id="${path}-row" <tags:attribute name="style" value="${style}" />>
 	<c:if test="${not empty label}">
 		<div class="label">
-			<jsp:invoke fragment="label"/>
+			<jsp:invoke fragment="label" />
 		</div>
 	</c:if>
     <c:if test="${not empty value}">

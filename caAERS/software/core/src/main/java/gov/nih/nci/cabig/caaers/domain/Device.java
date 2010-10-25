@@ -28,10 +28,19 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
     @Transient
     public String getDisplayName() {
         StringBuilder sb = new StringBuilder();
-        if (StringUtils.isNotBlank(commonName)) sb.append(commonName).append(", ");
-        if (StringUtils.isNotBlank(brandName)) sb.append(brandName).append(", ");
-        if (StringUtils.isNotBlank(type)) sb.append(type).append(", ");
-        if (sb.length() > 2) return sb.substring(0, sb.length() -2).toString(); else return sb.toString().trim();
+        if(StringUtils.isNotBlank(getCommonName())){
+            sb.append(getCommonName());
+        }
+        if(StringUtils.isNotBlank(getBrandName())){
+            if(sb.length() > 0) sb.append(", ");
+            sb.append(getBrandName());
+        }
+
+        if(StringUtils.isNotBlank(getType())){
+            if(sb.length() > 0) sb.append(", ");
+            sb.append(getType());
+        }
+        return sb.toString();
     }
 
     @Override

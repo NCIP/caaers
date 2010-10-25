@@ -81,4 +81,21 @@ public class StudyDeviceTest extends AbstractTestCase {
          assertEquals("x", studyDevice.getOtherDeviceType());
          assertTrue(studyDevice.isOtherDevice());
     }
+
+    public void testGetDisplayName(){
+        studyDevice.setDevice(null);
+
+        assertEquals("", studyDevice.getDisplayName());
+        studyDevice.setOtherCommonName("z");
+        assertEquals("z", studyDevice.getDisplayName());
+        studyDevice.setOtherBrandName("x");
+        assertEquals("z, y", studyDevice.getDisplayName());
+        studyDevice.setOtherDeviceType("j");
+        assertEquals("z, y, j", studyDevice.getDisplayName());
+
+        studyDevice.setDevice(new Device());
+        studyDevice.getDevice().setBrandName("a");
+        assertEquals("a", studyDevice.getDisplayName());
+
+    }
 }

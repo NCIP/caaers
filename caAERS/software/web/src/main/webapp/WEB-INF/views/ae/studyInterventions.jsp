@@ -55,6 +55,17 @@ function closeAll() {
     });
 }
 
+//==================== Will get the description of other intervention ================
+function updateOtherInterventionDescription(selbox, dSpanId){
+    var v = selbox.getValue();
+    if(v){
+        createAE.retrieveOtherInterventionDescription(v, function(ajaxOutput){
+            $(dSpanId).innerHTML = ajaxOutput.htmlContent;
+        });
+    }
+}
+//====================================================================================
+
     Event.observe(window, "load", setupPage);
     divisions = new Hash(); 
 
