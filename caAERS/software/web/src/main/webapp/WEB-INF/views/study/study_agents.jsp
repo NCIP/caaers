@@ -69,12 +69,14 @@ function toggleDeviceOrOther(index) {
     var idPrefix = 'study.studyDevices[' + index + '].';
 
     var _field = $(idPrefix + 'device');
+    var _fieldHelper = $(idPrefix + 'device.autocompleter');
     var _field_input = $(idPrefix + 'device-input');
     var _otherField= $(idPrefix + 'otherDevice');
 
     if (deviceRadioSelected) {
         if (_field_input) _field_input.enable();
         if (_otherField) _otherField.hide();
+        if (_fieldHelper) _fieldHelper.show();
     } else {
         if (_field_input) {
             _field_input.clear();
@@ -82,6 +84,7 @@ function toggleDeviceOrOther(index) {
             _field_input.disable();
         }
         if (_otherField) _otherField.show();
+        if (_fieldHelper) _fieldHelper.hide();
     }
 }
 

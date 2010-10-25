@@ -39,11 +39,14 @@
                               }
                           </jsp:attribute>
                           <jsp:attribute name="optionsJS"> {
-<%--
                                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    alert(selectedChoice);
+                                    var propertyName = "study.studyDevices[${index}].device";
+                                    $(propertyName).value = selectedChoice.id;
+                                    var _fieldHelper = 'study.studyDevices[' + ${index} + '].device.autocompleter';
+                                    if (_fieldHelper + '.commonName') $(_fieldHelper + '.commonName').innerHTML = selectedChoice.commonName; 
+                                    if (_fieldHelper + '.brandName') $(_fieldHelper + '.brandName').innerHTML = selectedChoice.brandName;
+                                    if (_fieldHelper + '.type') $(_fieldHelper + '.type').innerHTML = selectedChoice.type; 
                                 }
---%>
                             }
                          </jsp:attribute>
                       </ui:autocompleter>
@@ -56,33 +59,33 @@
     </div>
     </c:if>
 
-    <c:if test="${_device}">
+    <div id="study.studyDevices[${index}].device.autocompleter" style="display:${command.study.studyDevices[index].otherDevice ? 'none' : 'inline'};">
         <div class="row">
             <div class="label">Common name</div>
-            <div class="value">${command.study.studyDevices[index].device.commonName}</div>
+            <div class="value" id="study.studyDevices[${index}].device.autocompleter.commonName">${command.study.studyDevices[index].device.commonName}</div>
         </div>
         <div class="row">
             <div class="label">Brand name</div>
-            <div class="value">${command.study.studyDevices[index].device.brandName}</div>
+            <div class="value" id="study.studyDevices[${index}].device.autocompleter.brandName">${command.study.studyDevices[index].device.brandName}</div>
         </div>
         <div class="row">
             <div class="label">Device type</div>
-            <div class="value">${command.study.studyDevices[index].device.type}</div>
+            <div class="value" id="study.studyDevices[${index}].device.autocompleter.type">${command.study.studyDevices[index].device.type}</div>
         </div>
-    </c:if>
-    
+    </div>
+
     <div id="study.studyDevices[${index}].otherDevice" style="display:${command.study.studyDevices[index].otherDevice ? 'inline' : 'none'};">
         <div class="row">
-            <div class="label">Other common name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="40"/></div>
+            <div class="label">Common name</div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="40" readonly="${!empty command.study.studyDevices[index].id}"/></div>
         </div>
         <div class="row">
-            <div class="label">Other brand name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherBrandName" size="40"/></div>
+            <div class="label">Brand name</div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherBrandName" size="40" readonly="${!empty command.study.studyDevices[index].id}"/></div>
         </div>
         <div class="row">
-            <div class="label">Other device type</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherDeviceType" size="40"/></div>
+            <div class="label">Device type</div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherDeviceType" size="40" readonly="${!empty command.study.studyDevices[index].id}"/></div>
         </div>
     </div>
 </td>    
