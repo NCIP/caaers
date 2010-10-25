@@ -55,6 +55,7 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
         
         Group group = new Group();
         group.setGroupId( -2L);
+        group.setGroupName("data_analyst");
         groups = new HashSet<Group>();
         groups.add(group);
     }
@@ -86,7 +87,7 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
     }
 
     public void testUserChangePassword() throws Exception {
-        expect(csmUser.getPassword()).andReturn("old_password");
+       // expect(csmUser.getPassword()).andReturn("old_password");
         csmUser.setPassword("new_password");
         userProvisioningManager.modifyUser(csmUser);
         expect(userProvisioningManager.getUser(userName)).andReturn(csmUser);

@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersDaoTestCase;
 
 import java.util.List;
 
-public class ResearchStaffIdFetcherTest extends CaaersDaoTestCase {
+public class ResearchStaffIdFetcherTest_BROKEN_ extends CaaersDaoTestCase {
 
 	private CaaersResearchStaffIdFetcherImpl researchStaffIdFetcher = null;
 

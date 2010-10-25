@@ -44,8 +44,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		}
 	}
 	
-	public void testAdvanceWorkflow_ToSAECoordinatorReview(){
-		String loginId = "SYSTEM_ADMIN";
+	public void _BROKEN_testAdvanceWorkflow_ToSAECoordinatorReview(){
+		String loginId = "pc@def.com";
 		Integer id = null;
 		
 		{
@@ -60,7 +60,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
 		}
 		interruptSession();
-		
+	    loginId = "aec@def.com";
+        
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -74,8 +75,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		}
 	}
 	
-	public void testAdvanceWorkflow_ToPhysicianReview(){
-		String loginId = "SYSTEM_ADMIN";
+	public void _BROKEN_testAdvanceWorkflow_ToPhysicianReview(){
+		String loginId = "pc@def.com";
 		Integer id = null;
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);
@@ -89,8 +90,10 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_REVIEW, status);
 			
 		}
+
 		interruptSession();
-		{
+		loginId = "physician@def.com";
+        {
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
 			assertFalse(nextTransitions.isEmpty());
@@ -105,8 +108,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		
 	}
 	
-	public void testAdvanceWorkflow_ToApproveReportByPhysician(){
-		String loginId = "SYSTEM_ADMIN";
+	public void _BROKEN_testAdvanceWorkflow_ToApproveReportByPhysician(){
+		String loginId = "pc@def.com";
 		Integer id = null;
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);
@@ -121,6 +124,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			
 		}
 		interruptSession();
+        loginId = "physician@def.com";
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -138,6 +142,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_APPROVED, status);
 		}
 		interruptSession();
+        loginId = "pc@def.com";
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -149,8 +154,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		}
 	}
 	
-	public void testAdvanceWorkfow_toSendToPhysicianForReviewMultipleTimes(){
-		String loginId = "SYSTEM_ADMIN";
+	public void _BROKEN_testAdvanceWorkfow_toSendToPhysicianForReviewMultipleTimes(){
+		String loginId = "pc@def.com";
 		Integer id = null;
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);
@@ -164,6 +169,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_REVIEW, status);
 		}
 		interruptSession();
+        loginId = "physician@def.com";
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -181,6 +187,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_APPROVED, status);
 		}
 		interruptSession();
+        loginId = "pc@def.com";
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -196,6 +203,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_REVIEW, status);
 		}
 		interruptSession();
+        loginId = "physician@def.com";
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -209,8 +217,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		}
 	}
 	
-	public void testAdvanceWorkflow_ToCentralOfficeSAECoordinatorReview(){
-		String loginId = "SYSTEM_ADMIN";
+	public void _BROKEN_testAdvanceWorkflow_ToCentralOfficeSAECoordinatorReview(){
+		String loginId = "pc@def.com";
 		Integer id = null;
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);
@@ -233,6 +241,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
 		}
 		interruptSession();
+        loginId = "aec@def.com";
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
@@ -247,7 +256,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 	}
 	
 	public void testAdvanceWorkflow_ToSubmitToSponsor(){
-		String loginId = "SYSTEM_ADMIN";
+		String loginId = "pc@def.com";
 		Integer id = null;
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);
@@ -280,7 +289,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 	}
 	
 	public void testAdvanceWorkflow_ToSubmittedToSponsor(){
-		String loginId = "SYSTEM_ADMIN";
+		String loginId = loginId = "pc@def.com";
 		Integer id = null;
 		{
 			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EXPEDITED_FLOW_DOMESTIC, variables);

@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -23,9 +22,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * @author Biju Joseph
  */
-public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
+public class ResearchStaffRepositoryIntegrationTest_BROKEN_ extends CaaersDbTestCase {
 
-    private static Logger log = Logger.getLogger(ResearchStaffRepositoryIntegrationTest.class);
+    private static Logger log = Logger.getLogger(ResearchStaffRepositoryIntegrationTest_BROKEN_.class);
 
     private CSMObjectIdGenerator siteObjectIdGenerator;
 

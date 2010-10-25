@@ -80,7 +80,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		List<? extends  ReviewComment> comments = impl.fetchReviewCommentsForReport(reportId);
 		verifyMocks();
-		assertSame(reviewComments, comments);
+		assertEquals(reviewComments.size(), comments.size());
 	}
 
 	public void testFetchReviewCommentsForReportingPeriod() {
@@ -92,7 +92,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		List<? extends  ReviewComment> comments = impl.fetchReviewCommentsForReportingPeriod(rpId);
 		verifyMocks();
-		assertSame(reviewComments, comments);
+		assertEquals(reviewComments.size(), comments.size());
 	}
 
 	public void testAddReportReviewComment() {

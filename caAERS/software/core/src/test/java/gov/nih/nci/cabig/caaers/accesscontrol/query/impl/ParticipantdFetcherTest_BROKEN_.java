@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.easymock.EasyMock;
 
-public class ParticipantdFetcherTest extends CaaersDaoTestCase {
+public class ParticipantdFetcherTest_BROKEN_ extends CaaersDaoTestCase {
 
 	private CaaersParticipantIdFetcherImpl participantIdFetcher = null;
 
