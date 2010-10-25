@@ -82,7 +82,7 @@ public class StudyDeviceTest extends AbstractTestCase {
          assertTrue(studyDevice.isOtherDevice());
     }
 
-    public void testGetDisplayName(){
+    public void testGetDisplayName() {
         studyDevice.setDevice(null);
         assertEquals("", studyDevice.getDisplayName());
         studyDevice.setOtherCommonName("z");
