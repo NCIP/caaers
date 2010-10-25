@@ -198,7 +198,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		}
 		populateStudyOrganizationsForStudyProtocol(studyProtocol,remoteStudy);
 		populatePrincipalInvestigator(remoteStudy);
-		populateStudyTherapies(studyProtocol, remoteStudy);
+		// populateStudyTherapies(studyProtocol, remoteStudy);
 		reArrangeStudyIdentifers(remoteStudy);
 		populateArms(remoteStudy);
 		populateIND(studyProtocol, remoteStudy);
@@ -230,12 +230,16 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		}
 	}
 	
-	/**
+/*
+	*/
+/**
 	 * This method will copy the {@link StudyTherapy}s.  
 	 * @param studyProtocol - Study from PA
 	 * @param remoteStudy - A caAERS Study, marked as Remote. 
-	 */
-	public void populateStudyTherapies(StudyProtocol studyProtocol,RemoteStudy remoteStudy){
+	 *//*
+
+    @Deprecated
+	public void populateStudyTherapies(StudyProtocol studyProtocol, RemoteStudy remoteStudy) {
 		String payLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
 		Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.PLANNED_ACTIVITY.getName());
 		String resultXml  = "";
@@ -268,7 +272,8 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			log.error(e);
 		}
 	}
-	
+*/
+
 	/**
 	 * Gets the study organizations for interventional study protocol.
 	 * 
