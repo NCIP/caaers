@@ -108,7 +108,8 @@ public class InterventionsTabTest extends AeTabTestCase {
                         "aeReport.radiationInterventions[6].lastTreatmentDate",
                         "aeReport.radiationInterventions[6].fractionNumber",
                         "aeReport.radiationInterventions[6].daysElapsed",
-                        "aeReport.radiationInterventions[6].adjustment");
+                        "aeReport.radiationInterventions[6].adjustment",
+                        "aeReport.radiationInterventions[6].studyRadiation");
     }
 
     public void testSurgeryFieldProperties() throws Exception {
@@ -116,7 +117,8 @@ public class InterventionsTabTest extends AeTabTestCase {
                         "aeReport.surgeryInterventions[7].treatmentArm",
                         "aeReport.surgeryInterventions[7].description",
                         "aeReport.surgeryInterventions[7].interventionSite",
-                        "aeReport.surgeryInterventions[7].interventionDate");
+                        "aeReport.surgeryInterventions[7].interventionDate",
+                        "aeReport.surgeryInterventions[7].studySurgery");
     }
 
     public void testSections() {

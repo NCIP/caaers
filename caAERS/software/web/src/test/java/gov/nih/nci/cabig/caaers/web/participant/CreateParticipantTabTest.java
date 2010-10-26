@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 import org.springframework.validation.FieldError;
 
@@ -26,6 +27,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         super.setUp();
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
         newParticipantCommand.setStudy(new LocalStudy());
+        new CaaersSecurityFacadeImpl();
     }
 
     @Override

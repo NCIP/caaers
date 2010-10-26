@@ -71,8 +71,12 @@ public class RoutingAndReviewResolverControllerTest extends WebTestCase{
 	 */
 	public void testHandleRequestInternalForAeReportSystemAdmin() throws Exception{
 		request.setParameter("aeReport", "1");
+        AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
+		reportingPeriod.getStudy().setId(1);
+		reportingPeriod.getParticipant().setId(1);
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		
+        aeReport.setReportingPeriod(reportingPeriod);
+		expect(expeditedAdverseEventReportDao.getById(1)).andReturn(aeReport).anyTimes();
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();
