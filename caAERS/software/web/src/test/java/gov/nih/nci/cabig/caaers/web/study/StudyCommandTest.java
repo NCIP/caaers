@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -32,7 +33,7 @@ import org.easymock.classextension.EasyMock;
  * @author Biju Joseph
  *
  */
-public class StudyCommandTest extends AbstractTestCase {
+public class StudyCommandTest extends AbstractNoSecurityTestCase {
 	StudyCommand command;
 	StudyDao studyDao;
 	StudyRepository studyRepository;
@@ -236,22 +237,6 @@ public class StudyCommandTest extends AbstractTestCase {
 		assertSame(s2, command.checkForDuplicateStudyByIdentifier(id));
 		verifyMocks();
 		
-	}
-	
-	public void testUpdateStudyTherapies(){
-		//empty case
-		assertTrue(command.getStudy().getStudyTherapies().isEmpty());
-		command.updateStudyTherapies();
-		assertTrue(command.getStudy().getStudyTherapies().isEmpty());
-		
-		//having study therapy case
-		command.getStudy().addStudyTherapy(StudyTherapyType.DEVICE);
-		command.setBehavioralTherapyType(true);
-		command.updateStudyTherapies();
-		assertTrue(command.getBehavioralTherapyType());
-		command.updateStudyTherapies();
-		assertFalse(command.getStudy().hasTherapyOfType(StudyTherapyType.DEVICE));
-		assertTrue(command.getStudy().hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
 	}
 
     //new study save.

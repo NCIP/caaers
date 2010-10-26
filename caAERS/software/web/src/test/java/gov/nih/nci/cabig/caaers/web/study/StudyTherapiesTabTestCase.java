@@ -49,20 +49,5 @@ public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
         assertNull(study.getStudyTherapy(StudyTherapyType.BEHAVIORAL));
         assertNull(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
     }
-
-    public void testUpdateStudyTherapies() {
-    	command.setDeviceTherapyType(true);
-    	command.setSurgeryTherapyType(true);
-
-    	command.updateStudyTherapies();
-
-        assertEquals(2, study.getStudyTherapies().size());
-        assertNotNull(study.getStudyTherapy(StudyTherapyType.DEVICE));
-        assertNotNull(study.getStudyTherapy(StudyTherapyType.SURGERY));
-        assertNull(study.getStudyTherapy(StudyTherapyType.RADIATION));
-        assertNull(study.getStudyTherapy(StudyTherapyType.BEHAVIORAL));
-        assertNull(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
-    }
-
    
 }

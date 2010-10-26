@@ -278,21 +278,6 @@ public class StudyCommand {
 		}
     }
     
-    /**
-     * This method will update the study therapies.
-     */
-    @Deprecated
-    public void updateStudyTherapies() {
-    	for(StudyTherapyType therapyType : StudyTherapyType.values()){
-    		if(this.isTherapyTypeSelected(therapyType)){
-    			StudyTherapy therapy = this.getStudy().getStudyTherapy(therapyType);
-    			if(therapy == null) this.getStudy().addStudyTherapy(therapyType);
-    		}else{
-    			this.getStudy().removeTherapiesOfType(therapyType);
-    		}
-    	}
-    }
-    
     public CoordinatingCenter getCoordinatingCenter() {
         return coordinatingCenter;
     }
