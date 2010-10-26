@@ -74,12 +74,15 @@ function toggleDeviceOrOther(index) {
     var _otherField= $(idPrefix + 'otherDevice');
 
     if (deviceRadioSelected) {
-        if (_field_input) _field_input.enable();
+        if (_field_input) {
+            _field_input.enable();
+            _field_input.addClassName('pending-search');
+            AE.hash.set(_field.id , '1');
+        }
         if (_otherField) _otherField.hide();
         if (_fieldHelper) _fieldHelper.show();
     } else {
         if (_field_input) {
-            _field_input.clear();
             _field_input.value = 'Begin typing here...';
             _field_input.disable();
             _field.clear();
