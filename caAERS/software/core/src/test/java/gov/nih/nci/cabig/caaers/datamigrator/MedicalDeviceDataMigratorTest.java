@@ -38,7 +38,7 @@ public class MedicalDeviceDataMigratorTest extends CaaersDbTestCase {
        SqlRowSet rowSet = jdbcTemplate.queryForRowSet("select * from ae_medical_devices");
        int i = rowSet.getMetaData().getColumnCount();
 
-       assertEquals(19, i);
+       assertEquals(27, i);
 
        int j = jdbcTemplate.queryForInt("select status_code from caaers_bootstrap_log where operation_code = 2");
        assertEquals(1, j);
