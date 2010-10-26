@@ -39,6 +39,7 @@ public class OtherIntervention extends StudyIntervention {
     public boolean equals(Object o) {
         if(o == null) return false;
         if (this == o) return true;
+        if(!(o instanceof OtherIntervention)) return false;
 
         OtherIntervention that = (OtherIntervention) o;
         if (!this.getStudyTherapyType().equals(((StudyIntervention) o).getStudyTherapyType())) return false;

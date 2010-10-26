@@ -167,22 +167,6 @@ public class MedicalDeviceDataMigrator extends CaaersDataMigratorTemplate{
         return  " = '" + s + "'";
     }
 
-    /**
-     * Once the migration is done, we need to drop the columns of the table.
-     * 
-     * @param ctx
-     */
-    @Override
-    public void afterMigrate(CaaersDataMigrationContext ctx) {
-        String[] columnNames = new String[]{"brand_name","common_name", "device_type", "manufacturer_name",
-                "manufacturer_city" , "manufacturer_state" , "model_number", "catalog_number"};
-        for(String columnName : columnNames){
-            getJdbcTemplate().update("ALTER TABLE ae_medical_devices DROP COLUMN " + columnName);
-        }
-
-
-    }
-
     private static class StudyDeviceWrapper{
         public String studyId;
         public StudyDevice sd;

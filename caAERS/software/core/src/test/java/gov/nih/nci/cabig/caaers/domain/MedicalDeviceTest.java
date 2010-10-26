@@ -85,68 +85,6 @@ public class MedicalDeviceTest extends AbstractTestCase {
         medicalDevice.setReturnedDate(returnedDate);
     }
 
-
-    public void testSetBrandName(){
-        try{
-            medicalDevice.setBrandName("a");
-            fail("must throw exception");
-        }catch(UnsupportedOperationException e){
-
-        }
-    }
-
-
-
-    public void testSetCommonName(){
-        try{
-            medicalDevice.setCommonName("x");
-            fail("must throw exception");
-        }catch(UnsupportedOperationException e){
-
-        }
-    }
-
-
-    public void testSetDeviceType(){
-        try{
-            medicalDevice.setDeviceType("t");
-            fail("must throw exception");
-        }catch(UnsupportedOperationException e){
-
-        }
-    }
-
-
-    public void testSetManufactureCity(){
-        try{
-            medicalDevice.setManufacturerCity("m");
-            fail("must throw exception");
-        }catch(UnsupportedOperationException e){
-
-        }
-    }
-
-
-    public void testSetManufactureState(){
-        try{
-            medicalDevice.setManufacturerState("m");
-            fail("must throw exception");
-        }catch(UnsupportedOperationException e){
-
-        }
-    }
-
-
-    public void testSetManufactureName(){
-        try{
-            medicalDevice.setManufacturerName("m");
-            fail("must throw exception");
-        }catch(UnsupportedOperationException e){
-
-        }
-    }
-
-
     public void testSetDeviceOperator(){
         DeviceOperator deviceOperator = DeviceOperator.HEALTH_PROFESSIONAL;
         medicalDevice.setDeviceOperator(deviceOperator );

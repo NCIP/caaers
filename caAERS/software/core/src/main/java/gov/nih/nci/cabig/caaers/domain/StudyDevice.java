@@ -172,7 +172,8 @@ public class StudyDevice extends StudyIntervention {
     public boolean equals(Object o) {
         if(o == null) return false;
         if (this == o) return true;
-
+        if(!(o instanceof StudyDevice)) return false;
+        
         StudyDevice that = (StudyDevice) o;
 
         if(!StringUtils.equals(getCatalogNumber(), that.getCatalogNumber())) return false;

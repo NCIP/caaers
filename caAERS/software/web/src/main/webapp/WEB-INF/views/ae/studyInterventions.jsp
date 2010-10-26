@@ -66,6 +66,31 @@ function updateOtherInterventionDescription(selbox, dSpanId){
 }
 //====================================================================================
 
+//==================== Will get the study device ================
+function updateMedicalDevice(i, studyDeviceId){
+   var baseName = 'aeReport.medicalDevices[' + i + '].';
+    alert(i);
+    alert(studyDeviceId)
+   createAE.retrieveStudyDevice(studyDeviceId, function(ajaxOutput){
+      var d = ajaxOutput.objectContent;
+
+      ["brandName",
+       "commonName",
+       "deviceType",
+       "manufacturerName" ,
+       "manufacturerCity",
+       "manufacturerState",
+       "catalogNumber",
+       "modelNumber"
+      ].each(function(n){
+         var e = $(baseName + n);
+         if(e)e.value = d[n];
+      });
+      
+   });
+}
+//====================================================================================
+
     Event.observe(window, "load", setupPage);
     divisions = new Hash(); 
 

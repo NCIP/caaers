@@ -148,6 +148,19 @@ public class StudyInterventionsTab extends AeTab {
         //fields for study device
         InputField studyDeviceField = InputFieldFactory.createSelectField("studyDevice", "Study device", true, WebUtils.collectOptions(command.getStudy().getActiveStudyDevices(), "id", "displayName", "Please select"));
         //fields for medical device
+        InputField brandName = InputFieldFactory.createTextField("brandName", "Brand name", false);
+        InputFieldAttributes.setSize(brandName, 45);
+        InputField commonName = InputFieldFactory.createTextField("commonName", "Common name", false);
+        InputFieldAttributes.setSize(commonName, 45);
+        InputField deviceType = InputFieldFactory.createTextField("deviceType", "Device type", false);
+        InputFieldAttributes.setSize(deviceType, 45);
+        InputField manName = InputFieldFactory.createTextField("manufacturerName", "Manufacturer name", false);
+        InputFieldAttributes.setSize(manName, 45);
+        InputField manCity = InputFieldFactory.createTextField("manufacturerCity", "Manufacturer city", false);
+        InputFieldAttributes.setSize(manCity, 45);
+        InputField manState = InputFieldFactory.createSelectField("manufacturerState", "Manufacturer state", false, WebUtils.collectOptions(configurationProperty.getMap().get("stateRefData"), "code", "desc", "Please select"));
+        InputFieldAttributes.setSize(manState, 45);
+        InputField modelNumber = InputFieldFactory.createTextField("modelNumber", "Model number", false);
         InputField otherDeviceOperator = InputFieldFactory.createTextField("otherDeviceOperator", "Other device operator", false);
         InputFieldAttributes.setSize(otherDeviceOperator, 45);
         InputField reprocessorName = InputFieldFactory.createTextField("reprocessorName", " Reprocessor name", false);
@@ -161,8 +174,15 @@ public class StudyInterventionsTab extends AeTab {
         evaluationAvailabilityField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.evaluationAvailability");
 
         creator.createRepeatingFieldGroup("medicalDevice", "medicalDevices", new SimpleNumericDisplayNameCreator("Medical device"),
-                        studyDeviceField,
+                        brandName,
+                        commonName,
+                        deviceType,
+                        manName,
+                        manCity,
+                        manState,
+                        modelNumber,
                         InputFieldFactory.createTextField("lotNumber", "Lot number", false),
+                        InputFieldFactory.createTextField("catalogNumber", "Catalog number", false),
                         InputFieldFactory.createDateField("expirationDate", "Expiration date", false),
                         InputFieldFactory.createTextField("serialNumber", "Serial number", false),
                         InputFieldFactory.createTextField("otherNumber", "Other number", false),
@@ -174,7 +194,10 @@ public class StudyInterventionsTab extends AeTab {
                         reprocessorName,
                         reprocessorAddress,
                         evaluationAvailabilityField,
-                        InputFieldFactory.createPastDateField("returnedDate", "Returned date", false));
+                        InputFieldFactory.createPastDateField("returnedDate", "Returned date", false),
+                        studyDeviceField
+        );
+
     }
 
     @Override

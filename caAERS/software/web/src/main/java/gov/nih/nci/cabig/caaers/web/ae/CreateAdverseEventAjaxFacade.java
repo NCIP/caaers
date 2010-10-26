@@ -105,6 +105,7 @@ public class CreateAdverseEventAjaxFacade {
 	private ResearchStaffDao researchStaffDao;
 	private InvestigatorDao investigatorDao;
     private OtherInterventionDao otherInterventionDao;
+    private StudyDeviceDao studyDeviceDao;
 
 
     public Class<?>[] controllers() {
@@ -1203,6 +1204,25 @@ public class CreateAdverseEventAjaxFacade {
         if(oi != null) output.setHtmlContent(oi.getDescription());
         return output;
     }
+
+
+    public AjaxOutput retrieveStudyDevice(int studyDeviceId){
+        StudyDevice sd  = studyDeviceDao.getById(studyDeviceId);
+        AjaxOutput output = new AjaxOutput();
+        if(sd != null){
+            StudyDevice d = new StudyDevice();
+            d.setOtherBrandName(sd.getBrandName());
+            d.setOtherCommonName(sd.getOtherCommonName());
+            d.setOtherDeviceType(sd.getDeviceType());
+            d.setCatalogNumber(sd.getCatalogNumber());
+            d.setManufacturerCity(sd.getManufacturerCity());
+            d.setManufacturerName(sd.getManufacturerName());
+            d.setManufacturerState(sd.getManufacturerState());
+            d.setModelNumber(sd.getModelNumber());
+            output.setObjectContent(d);
+        }
+        return output;
+    }
     
     protected String getUserId(){
 		WebContext webContext = getWebContext();
@@ -1459,5 +1479,14 @@ public class CreateAdverseEventAjaxFacade {
 
     public void setOtherInterventionDao(OtherInterventionDao otherInterventionDao) {
         this.otherInterventionDao = otherInterventionDao;
+    }
+    
+    @Required
+    public StudyDeviceDao getStudyDeviceDao() {
+        return studyDeviceDao;
+    }
+
+    public void setStudyDeviceDao(StudyDeviceDao studyDeviceDao) {
+        this.studyDeviceDao = studyDeviceDao;
     }
 }
