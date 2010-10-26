@@ -50,7 +50,7 @@ public class AdverseEventReportingPeriodValidatorTest extends AbstractNoSecurity
 		adverseEventReportingPeriod.setEndDate(new Timestamp(200));
 		adverseEventReportingPeriod.addAdverseEvent(new AdverseEvent());
 		adverseEventReportingPeriod.addAdverseEvent(new AdverseEvent());
-		
+		adverseEventReportingPeriod.setTreatmentAssignment(new TreatmentAssignment());
 		AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
 		aeCtcTerm.setCtcTerm(Fixtures.createCtcTerm("testTerm", "testCode"));
 		adverseEventReportingPeriod.getAdverseEvents().get(0).setAdverseEventCtcTerm(aeCtcTerm);
