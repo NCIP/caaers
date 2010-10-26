@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import static org.easymock.EasyMock.expect;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -25,7 +26,7 @@ import java.util.*;
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
-@CaaersUseCases( { CREATE_STUDY })
+@CaaersUseCases({CREATE_STUDY})
 public class CreateStudyControllerTest extends WebTestCase {
 
     private CreateStudyController controller;
@@ -43,6 +44,7 @@ public class CreateStudyControllerTest extends WebTestCase {
     private ConditionDao conditionDao;
     private StudyRepository studyRepository;
     private LowLevelTermDao lowLevelTermDao;
+    private DeviceDao deviceDao;
 
     private Configuration configuration;
     protected ConfigPropertyRepositoryImpl configPropertyRepository;
@@ -67,6 +69,7 @@ public class CreateStudyControllerTest extends WebTestCase {
         conditionDao = registerDaoMockFor(ConditionDao.class);
         studyRepository = registerMockFor(StudyRepository.class);
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
+        deviceDao = registerDaoMockFor(DeviceDao.class);
         configProperty = registerMockFor(ConfigProperty.class);
         map = registerMockFor(Map.class);
         webControllerValidator = registerMockFor(WebControllerValidator.class);
@@ -77,7 +80,7 @@ public class CreateStudyControllerTest extends WebTestCase {
         study.setDataEntryStatus(false);
         command.setStudy(study);
         command.setStudyRepository(studyRepository);
-        
+
         controller = new CreateStudyController();
         controller.setConfiguration(configuration);
         controller.setConfigPropertyRepository(configPropertyRepository);
@@ -92,44 +95,41 @@ public class CreateStudyControllerTest extends WebTestCase {
         controller.setLowLevelTermDao(lowLevelTermDao);
         controller.setStudyRepository(studyRepository);
         controller.setStudyDao(studyDao);
+        controller.setDeviceDao(deviceDao);
         controller.setInvestigationalNewDrugDao(investigationalNewDrugDao);
         controller.setWebControllerValidator(webControllerValidator);
 
-
-
-        StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(ctcDao, organizationDao,
-                        studyDao, agentDao, researchStaffDao, siteInvestigatorDao, meddraVersionDao);
+        StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(ctcDao, organizationDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao, meddraVersionDao);
         tabConfigurer.addBean("configurationProperty", configProperty);
 
         controller.setTabConfigurer(tabConfigurer);
 
         expect(configProperty.getMap()).andReturn(map).anyTimes();
         expect(map.get(EasyMock.anyObject())).andReturn(new ArrayList<Lov>()).anyTimes();
-
     }
-    
 
     /*
      * Will test the first request to create flow.
      * - invoke form backing
      * - command should be kept in session.
      */
-    public void testCreateFlow_GET() throws Exception{
-       request.setMethod("GET");
-       expect(ctcDao.getAll()).andReturn(new ArrayList<Ctc>()).anyTimes();
-       expect(meddraVersionDao.getAll()).andReturn(new ArrayList<MeddraVersion>()).anyTimes();
-       expect(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE)).andReturn(new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>());
-       expect(configPropertyRepository.getByType(ConfigPropertyType.INVESTIGATOR_ROLE_TYPE)).andReturn(new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>());
-       expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
-       
-       replayMocks();
 
-       ModelAndView mv  = controller.handleRequest(request, response);
-       assertEquals("study/study_details", mv.getViewName());
-       assertNotNull(mv.getModel().get("fieldGroups"));
-       assertNotNull(mv.getModel().get("command"));
-       assertNotNull(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
-       assertTrue(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command") instanceof StudyCommand);
+    public void testCreateFlow_GET() throws Exception {
+        request.setMethod("GET");
+        expect(ctcDao.getAll()).andReturn(new ArrayList<Ctc>()).anyTimes();
+        expect(meddraVersionDao.getAll()).andReturn(new ArrayList<MeddraVersion>()).anyTimes();
+        expect(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE)).andReturn(new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>());
+        expect(configPropertyRepository.getByType(ConfigPropertyType.INVESTIGATOR_ROLE_TYPE)).andReturn(new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>());
+        expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
+
+        replayMocks();
+
+        ModelAndView mv = controller.handleRequest(request, response);
+        assertEquals("study/study_reviewsummary", mv.getViewName());
+        assertNotNull(mv.getModel().get("fieldGroups"));
+        assertNotNull(mv.getModel().get("command"));
+        assertNotNull(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
+        assertTrue(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command") instanceof StudyCommand);
 
         verifyMocks();
     }
@@ -141,40 +141,33 @@ public class CreateStudyControllerTest extends WebTestCase {
      *
      */
     public void testSaveInCreateFlow() throws Exception {
+        Study newStudy = new LocalStudy();
+        newStudy.addStudyOrganization(Fixtures.createStudyCoordinatingCenter(null));
 
-      Study newStudy = new LocalStudy();
+        assertNull(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
+        session.setAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command", command);
+        session.setAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.PAGE.command", command);
 
-      newStudy.addStudyOrganization(Fixtures.createStudyCoordinatingCenter(null));
+        request.addParameter("_page", "0");
+        request.setAttribute("_page", "0");
 
-      assertNull(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
-      session.setAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command", command);
-      session.setAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.PAGE.command", command);
+        request.addParameter("_target0", "1");
+        request.setAttribute("_target0", "1");
+        request.setMethod("POST");
 
-      request.addParameter("_page", "1");
-      request.setAttribute("_page", "1");
+        expect(studyRepository.merge(command.getStudy())).andReturn(newStudy);
+        webControllerValidator.validate(EasyMock.eq(request), EasyMock.eq(command), (BindException) EasyMock.anyObject());
+        EasyMock.expectLastCall().anyTimes();
+        expect(studyDao.initialize(newStudy)).andReturn(newStudy);
 
-      request.addParameter("_target1","1");
-      request.setAttribute("_target1","1");
-      request.setMethod("POST");
+        replayMocks();
 
+        ModelAndView mv = controller.handleRequest(request, response);
+        assertSame(command, session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
+        assertSame(newStudy, command.getStudy());
+        assertEquals("study/study_reviewsummary", mv.getViewName());
+        assertEquals("Information saved successfully", mv.getModel().get("flashMessage"));
 
-      expect(studyRepository.merge(command.getStudy())).andReturn(newStudy);
-      webControllerValidator.validate(EasyMock.eq(request), EasyMock.eq(command), (BindException)EasyMock.anyObject());
-      EasyMock.expectLastCall().anyTimes();
-      expect(studyDao.initialize(newStudy)).andReturn(newStudy);
-
-      replayMocks();
-
-      ModelAndView mv  = controller.handleRequest(request, response);
-      assertSame(command, session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
-      assertSame(newStudy, command.getStudy());
-      assertEquals("study/study_therapies", mv.getViewName());
-      assertEquals("Information saved successfully", mv.getModel().get("flashMessage"));
-
-      verifyMocks();
-        
+        verifyMocks();
     }
-
-
-
 }
