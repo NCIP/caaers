@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 import org.easymock.EasyMock;
 
@@ -27,8 +28,15 @@ public class EditParticipantTabTest extends AbstractTabTestCase<EditParticipantT
         // studySiteDao = (StudySiteDao)getDeployedApplicationContext().getBean("studySiteDao");
         studySiteDao = registerMockFor(StudySiteDao.class);
         tab = createTab();
-        new CaaersSecurityFacadeImpl();
+        SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
     }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        SecurityTestUtils.switchToCaaersSecurityFacade();
+    }
+
 
     @Override
     protected EditParticipantTab createTab() {

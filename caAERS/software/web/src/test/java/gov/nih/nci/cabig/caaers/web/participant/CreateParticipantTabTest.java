@@ -5,7 +5,10 @@ import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.security.SecurityUtilsTest;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 import org.springframework.validation.FieldError;
 
@@ -21,13 +24,20 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 
     private CreateParticipantTab createParticipantTab;
     private ParticipantInputCommand newParticipantCommand;
+    private CaaersSecurityFacade facade;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
         newParticipantCommand.setStudy(new LocalStudy());
-        new CaaersSecurityFacadeImpl();
+        SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        SecurityTestUtils.switchToCaaersSecurityFacade();
     }
 
     @Override

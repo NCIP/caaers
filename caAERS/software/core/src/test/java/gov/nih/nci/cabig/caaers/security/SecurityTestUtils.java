@@ -3,10 +3,18 @@ package gov.nih.nci.cabig.caaers.security;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.ctms.acegi.csm.authorization.AuthorizationSwitch;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -82,4 +90,96 @@ public class SecurityTestUtils {
         }
     }
 
+    public static CaaersSecurityFacade switchToCaaersSecurityFacadeMock(final CaaersSecurityFacade facade){
+        return new CaaersSecurityFacadeImplMock(facade);
+    }
+
+    public static void switchToCaaersSecurityFacade(){
+          CaaersSecurityFacade f = CaaersSecurityFacadeImpl.getInstance();
+        if(f instanceof CaaersSecurityFacadeImplMock) ((CaaersSecurityFacadeImplMock) f).reset();
+    }
+
+    static class CaaersSecurityFacadeImplMock extends CaaersSecurityFacadeImpl{
+
+       private CaaersSecurityFacade _old;
+       private CaaersSecurityFacade _new;
+
+       public CaaersSecurityFacadeImplMock(CaaersSecurityFacade facade){
+
+           if(instance instanceof CaaersSecurityFacadeImplMock){
+             _old =  ((CaaersSecurityFacadeImplMock)instance)._old;
+           } else{
+             _old = instance;
+           }
+
+           _new = facade;
+           if(facade == null) {
+               instance = this;
+           }else{
+               instance = facade;
+           }
+
+       }
+
+        public void provisionUser(User user){
+           if(_new != null) _new.provisionUser(user);
+        }
+        public void createOrUpdateCSMUser(User user, String changeURL ){
+            if(_new != null) _new.createOrUpdateCSMUser(user, changeURL);
+        }
+        public boolean checkAuthorization(Authentication auth, String objectId, String privilege){
+            if(_new != null) return _new.checkAuthorization(auth, objectId, privilege);
+            return true;
+        }
+        public boolean checkAuthorization(Authentication auth, String objectPrivilege){
+           if(_new != null) return _new.checkAuthorization(auth, objectPrivilege);
+            return true;
+        }
+        public List<String> getAccessibleProtectionElements(String loginId){
+          if(_new != null) return _new.getAccessibleProtectionElements(loginId);
+          return null;
+        }
+        public List<IndexEntry> getAccessibleStudyIds(String loginId){
+          if(_new != null) return _new.getAccessibleStudyIds(loginId);
+          return null;
+        }
+        public  List<IndexEntry> getAccessibleOrganizationIds(String loginId){
+            if(_new != null) return _new.getAccessibleOrganizationIds(loginId);
+          return null;
+        }
+        public Collection<String> getRoles(String userLoginName, Organization org){
+          if(_new != null) return _new.getRoles(userLoginName, org);
+          return null;
+        }
+        public Collection<String> getRoles(String userLoginName, Study study){
+          if(_new != null) return _new.getRoles(userLoginName, study);
+          return null;
+        }
+        public Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException{
+            if(_new != null) return _new.getProtectionGroupRoleContextForUser(loginId);
+          return null;
+        }
+        public Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException{
+          if(_new != null) return _new.getProtectionElementPrivilegeContextForUser(loginId);
+          return null;
+        }
+        public void clearUserCache(String userName){
+             if(_new != null) _new.clearUserCache(userName);
+        }
+        public void provisionStudies(StudyPersonnel studyPersonnel){
+            if(_new != null) _new.provisionStudies(studyPersonnel);
+        }
+        public void provisionStudies(StudyInvestigator studyInvestigator){
+            if(_new != null) _new.provisionStudies(studyInvestigator);       
+        }
+
+        public void reset(){
+            instance = _old;
+        }
+
+
+    }
+
 }
+
+

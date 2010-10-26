@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.fields;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -34,9 +35,16 @@ public class ReadonlyFieldDecoratorTest extends AbstractTestCase {
         f2.setPrivilegeToRead("y");
 
         facadeImpl = registerMockFor(CaaersSecurityFacadeImpl.class);
-        new MockCaaersSecurityFacadeImpl(facadeImpl);
+        SecurityTestUtils.switchToCaaersSecurityFacadeMock(facadeImpl);
         
     }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        SecurityTestUtils.switchToCaaersSecurityFacade();
+    }
+    
 
     public void testDecorate(){
         assertNotNull(CaaersSecurityFacadeImpl.getInstance());
@@ -89,10 +97,4 @@ public class ReadonlyFieldDecoratorTest extends AbstractTestCase {
     }
 
 
-}
-
-class MockCaaersSecurityFacadeImpl extends CaaersSecurityFacadeImpl{
-    public MockCaaersSecurityFacadeImpl(CaaersSecurityFacade facade){
-        instance = facade; //trick
-    }
 }
