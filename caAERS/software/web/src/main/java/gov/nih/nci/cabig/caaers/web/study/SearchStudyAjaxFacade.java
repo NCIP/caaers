@@ -148,6 +148,7 @@ public class SearchStudyAjaxFacade {
             as.setPrimaryIdentifierValue(s.getPrimaryIdentifierValue());
             as.setPhaseCode(s.getPhaseCode());
             as.setPrimarySponsorCode(s.getPrimarySponsorCode());
+            as.setExternalId(s.getExternalId() != null ? s.getExternalId().trim() : "");
             rs.add(as);
         }
         return rs;
