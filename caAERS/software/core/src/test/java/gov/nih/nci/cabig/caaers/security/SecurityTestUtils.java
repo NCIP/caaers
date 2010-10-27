@@ -91,35 +91,40 @@ public class SecurityTestUtils {
     }
 
     public static CaaersSecurityFacade switchToCaaersSecurityFacadeMock(final CaaersSecurityFacade facade){
-        return new CaaersSecurityFacadeImplMock(facade);
+        return  SecurityTestUtils.CaaersSecurityFacadeImplMock.getInstance(facade);
     }
 
     public static void switchToCaaersSecurityFacade(){
           CaaersSecurityFacade f = CaaersSecurityFacadeImpl.getInstance();
-        if(f instanceof CaaersSecurityFacadeImplMock) ((CaaersSecurityFacadeImplMock) f).reset();
+        if(f instanceof SecurityTestUtils.CaaersSecurityFacadeImplMock) ((CaaersSecurityFacadeImplMock) f).reset();
     }
 
     static class CaaersSecurityFacadeImplMock extends CaaersSecurityFacadeImpl{
 
-       private CaaersSecurityFacade _old;
-       private CaaersSecurityFacade _new;
+       private static CaaersSecurityFacadeImplMock _lastMock;
+        
+       private static CaaersSecurityFacade _old;
+       private static CaaersSecurityFacade _new;
 
-       public CaaersSecurityFacadeImplMock(CaaersSecurityFacade facade){
+       public static CaaersSecurityFacade getInstance(CaaersSecurityFacade facade){
 
-           if(instance instanceof CaaersSecurityFacadeImplMock){
-             _old =  ((CaaersSecurityFacadeImplMock)instance)._old;
-           } else{
+         if(_lastMock == null){
+             _lastMock = new CaaersSecurityFacadeImplMock();
              _old = instance;
-           }
+             instance = _lastMock;
+             _new = facade == null ? _lastMock : facade;
 
-           _new = facade;
-           if(facade == null) {
-               instance = this;
-           }else{
-               instance = facade;
-           }
+         } else {
+             _new = facade == null ? _lastMock : facade;
+         }
+
+         return _lastMock;
+       }
+
+       private CaaersSecurityFacadeImplMock(){
 
        }
+
 
         public void provisionUser(User user){
            if(_new != null) _new.provisionUser(user);

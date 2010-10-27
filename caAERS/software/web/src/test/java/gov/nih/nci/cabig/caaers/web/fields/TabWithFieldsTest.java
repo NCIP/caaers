@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import java.util.Map;
 
 import org.easymock.IArgumentMatcher;
+import org.easymock.classextension.EasyMock;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -40,6 +41,8 @@ public class TabWithFieldsTest extends AbstractTestCase {
 
     public void testValidateValidatesEachField() throws Exception {
         Errors errors = new BindException(command, "command");
+        EasyMock.expect(group.getFields().get(0).isValidateable()).andReturn(true).anyTimes();
+        EasyMock.expect(group.getFields().get(1).isValidateable()).andReturn(true).anyTimes();
         group.getFields().get(0).validate(wrapperOf(command), eq(errors));
         group.getFields().get(1).validate(wrapperOf(command), eq(errors));
         replayMocks();

@@ -1,3 +1,4 @@
+
 package gov.nih.nci.cabig.caaers.web;
 
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
@@ -458,7 +459,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         verifyMocks();
         assertEquals(1, actual.size());
         assertEquals(3, (int) actual.get(0).getCode());
-        assertEquals("Severe[ or medically significant but not immediately life-threatening; " +
+        assertEquals("Severe or medically significant but not immediately life-threatening; " +
                 "hospitalization or prolongation of hospitalization indicated; disabling; " +
                 "limiting self care ADL.", actual.get(0).getDisplayName());
     }
