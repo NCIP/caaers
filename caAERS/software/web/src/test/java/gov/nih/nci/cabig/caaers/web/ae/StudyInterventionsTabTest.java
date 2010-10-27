@@ -28,8 +28,6 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 	HashMap<String, List<Lov>> map;
 	protected void setUp() throws Exception {
 		super.setUp();
-		
-		
 	}
 	
 	@Override
@@ -107,7 +105,8 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 
     public void testDeviceFields(){
         replayMocks();
-        assertFieldProperties("medicalDevice0", "aeReport.medicalDevices[0].brandName",
+        assertFieldProperties("medicalDevice0",
+                "aeReport.medicalDevices[0].brandName",
                 "aeReport.medicalDevices[0].commonName",
                 "aeReport.medicalDevices[0].deviceType",
                 "aeReport.medicalDevices[0].manufacturerName",
@@ -127,12 +126,8 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
                 "aeReport.medicalDevices[0].reprocessorName" ,
                 "aeReport.medicalDevices[0].reprocessorAddress" ,
                 "aeReport.medicalDevices[0].evaluationAvailability" ,
-                "aeReport.medicalDevices[0].returnedDate" 
-
-
-
+                "aeReport.medicalDevices[0].returnedDate",
+                "aeReport.medicalDevices[0].studyDevice"
                 );
     }
-	
-
 }
