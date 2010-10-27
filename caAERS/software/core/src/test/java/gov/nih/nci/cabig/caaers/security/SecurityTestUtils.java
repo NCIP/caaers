@@ -112,10 +112,10 @@ public class SecurityTestUtils {
              _lastMock = new CaaersSecurityFacadeImplMock();
              _old = instance;
              instance = _lastMock;
-             _new = facade == null ? _lastMock : facade;
+             _new = facade ;
 
          } else {
-             _new = facade == null ? _lastMock : facade;
+             _new = facade;
          }
 
          return _lastMock;
