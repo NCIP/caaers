@@ -38,6 +38,7 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
      * @param deleted - if true, synchronization is being done for a just deleted agent, otherwise for addition
      */
     public void synchronizeStudyWithAgent(Study s, Agent a, boolean deleted) {
+        if (a == null || s == null) return;
         List<AgentSpecificTerm> l = getListByAgent(a.getId());
         for (AgentSpecificTerm at : l) {
             synchronizeStudyWithAgentTerm(s, at, deleted);
