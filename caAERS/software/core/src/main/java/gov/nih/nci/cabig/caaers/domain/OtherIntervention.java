@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "other_interventions")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_other_intervention_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_other_interventions_id") })
 public class OtherIntervention extends StudyIntervention {
 
     private String name;

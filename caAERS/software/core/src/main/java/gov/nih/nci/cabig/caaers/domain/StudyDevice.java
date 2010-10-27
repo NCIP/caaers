@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "study_devices")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_device_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_devices_id") })
 public class StudyDevice extends StudyIntervention {
 
     private Device device;
