@@ -416,7 +416,15 @@ public class AdverseEventReportSerializer {
 		   studyDevice.setModelNumber(medicalDevice.getModelNumber());
 		   studyDevice.setCatalogNumber(medicalDevice.getCatalogNumber());
            m.setId(medicalDevice.getId());
-           m.setLotNumber(medicalDevice.getLotNumber());
+           m.setBrandName(medicalDevice.getBrandName());
+		   m.setCommonName(medicalDevice.getCommonName());
+		   m.setDeviceType(medicalDevice.getDeviceType());
+		   m.setManufacturerName(medicalDevice.getManufacturerName());
+		   m.setManufacturerCity(medicalDevice.getManufacturerCity());
+		   m.setManufacturerState(medicalDevice.getManufacturerState());
+		   m.setModelNumber(medicalDevice.getModelNumber());
+		   m.setLotNumber(medicalDevice.getLotNumber());
+		   m.setCatalogNumber(medicalDevice.getCatalogNumber());
 		   m.setExpirationDate(medicalDevice.getExpirationDate());
 		   m.setSerialNumber(medicalDevice.getSerialNumber());
 		   m.setOtherNumber(medicalDevice.getOtherNumber());
