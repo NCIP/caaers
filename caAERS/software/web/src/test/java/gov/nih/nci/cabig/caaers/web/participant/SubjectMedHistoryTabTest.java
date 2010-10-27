@@ -26,10 +26,10 @@ public class SubjectMedHistoryTabTest extends SubjectFlowAbstractTabTestCase {
 
     public void testValidateDiseaseInformationInvalidDate() {
         getAssignment().setDiseaseHistory(new StudyParticipantDiseaseHistory());
-        getAssignment().getDiseaseHistory().setDiagnosisDate(new Date("17/17/2009"));
+        getAssignment().getDiseaseHistory().setDiagnosisDate(new DateValue(2010, 15, 12));
         tab.validate(command, errors);
         assertEquals(1, errors.getFieldErrorCount("assignment.diseaseHistory.diagnosisDate"));
-        assertEquals("SAE_035", errors.getFieldError("assignment.diseaseHistory.diagnosisDate").getCode());
+        assertEquals("SAE_036", errors.getFieldError("assignment.diseaseHistory.diagnosisDate").getCode());
     }
 
 }
