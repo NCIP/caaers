@@ -119,7 +119,7 @@ public class MedicalDeviceDataMigrator extends CaaersDataMigratorTemplate{
         sb.append(ctx.isOracle() ? "id, " : " " )
           .append("brand_name, common_name, catalog_number, manufacturer_name,manufacturer_city, manufacturer_state,")
           .append("model_number, device_type, study_id) VALUES (")
-          .append(ctx.isOracle() ? "seq_study_device_id.nextval" : " ")
+          .append(ctx.isOracle() ? "seq_study_device_id.nextval," : " ")
           .append(_sqlInsert(sd.getBrandName())).append(",")
           .append(_sqlInsert(sd.getCommonName())).append(",")
           .append(_sqlInsert(sd.getCatalogNumber())).append(",")
