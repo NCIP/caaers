@@ -69,8 +69,6 @@ function updateOtherInterventionDescription(selbox, dSpanId){
 //==================== Will get the study device ================
 function updateMedicalDevice(i, studyDeviceId){
    var baseName = 'aeReport.medicalDevices[' + i + '].';
-    alert(i);
-    alert(studyDeviceId)
    createAE.retrieveStudyDevice(studyDeviceId, function(ajaxOutput){
       var d = ajaxOutput.objectContent;
 
