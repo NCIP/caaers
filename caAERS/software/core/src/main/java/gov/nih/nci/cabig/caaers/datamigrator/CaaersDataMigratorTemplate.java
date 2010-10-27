@@ -83,7 +83,7 @@ public abstract class CaaersDataMigratorTemplate implements  CaaersDataMigrator{
 
         if(!noDataFound){
            Map map = l.get(0);
-           statusCode = (Integer) map.get("STATUS_CODE");
+           statusCode = ((Number) map.get("STATUS_CODE")).intValue();
            String ranDate = String.valueOf( map.get("RUNDATE") );
             
            //arleady ran this migration sucessfully ?
