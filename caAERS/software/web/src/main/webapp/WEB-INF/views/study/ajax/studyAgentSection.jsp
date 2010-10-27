@@ -4,7 +4,7 @@
 <tags:noform>
  <c:forEach items="${indexes}" var="_index" varStatus="i">
    <c:if test="${!command.study.studyAgents[_index].retired}">
- 	<study:oneStudyAgent index="${_index}" studyAgent="${command.study.studyAgents[_index]}" />
+ 	    <study:oneStudyAgent index="${_index}" studyAgent="${command.study.studyAgents[_index]}" />
    </c:if>
  </c:forEach>
 </tags:noform>

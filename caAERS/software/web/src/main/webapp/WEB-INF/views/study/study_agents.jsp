@@ -45,7 +45,7 @@ function fireAction(action, index) {
             ajaxCRUD._deleteItem('StudyAgent', index, '_SA', ${tab.number});
             break;
         case "addStudyAgent":
-            ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Bottom');
+            ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Top');
             break;
         case "addIND":
             var containerID = '_SA-IND-' + index;
@@ -129,20 +129,22 @@ function toggleAgentOrOther(index) {
 
     <div style="padding-left:20px;">
     <p id="instructions"></p>
-
-		<div id="_SA">
-        <c:forEach var="sa" varStatus="status" items="${command.study.studyAgents}">
-          <c:if test="${not sa.retired}">
-        	<study:oneStudyAgent studyAgent="${sa}" index="${status.index}" />
-		  </c:if>
-		</c:forEach>
-		</div>
-    </div>
-
         <div align="left">
             <tags:indicator id="_SA_indicator" />
             <tags:button color="blue" type="button" value="Add" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
         </div>
+
+		<div id="_SA">
+        <c:set var="size" value="${fn:length(command.study.studyAgents)}" />
+        <c:forEach var="sa" varStatus="status" items="${command.study.studyAgents}">
+            <c:set var="newIndex" value="${size - (status.index + 1)}" />
+            <c:if test="${!command.study.studyAgents[newIndex].retiredIndicator}">
+        	    <study:oneStudyAgent studyAgent="${command.study.studyAgents[newIndex]}" index="${newIndex}" />
+		    </c:if>
+        </c:forEach>
+		</div>
+    </div>
+
     </chrome:box>
 
     <chrome:box title="Devices" collapsable="true">

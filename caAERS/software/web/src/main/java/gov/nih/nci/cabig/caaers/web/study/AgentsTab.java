@@ -244,9 +244,9 @@ public class AgentsTab extends StudyTab {
         
         size = study.getStudyAgents().size(); //new size
     	Integer[] indexes = new Integer[size];
-    	for(int i = 0 ; i < size ; i++){
-    		indexes[i] = i;
-    	}
+        for(int i = 0 ; i < size ; i++){
+            indexes[i] = size - (i + 1);
+        }
 
         ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentSection");
         modelAndView.getModel().put("indexes", indexes);

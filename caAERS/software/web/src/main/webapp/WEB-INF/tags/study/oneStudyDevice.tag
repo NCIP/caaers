@@ -16,7 +16,7 @@
 
 <c:set var="_readOnly" value="${_deviceName ne ''}" />
 <c:set var="_device" value="${studyDevice.device != null}" />
-<chrome:division collapsable="true" collapsed="${collapsed}" id="StudyDevice_${index}" title="&nbsp;${_deviceName}" enableDelete="true" deleteParams="'removeStudyDevice', '${index}'">
+<chrome:division collapsable="true" collapsed="${collapsed}" id="StudyDevice_${index}" title="${index}&nbsp;${_deviceName}" enableDelete="true" deleteParams="'removeStudyDevice', '${index}'">
 
 <table width="100%">
 <tr>
