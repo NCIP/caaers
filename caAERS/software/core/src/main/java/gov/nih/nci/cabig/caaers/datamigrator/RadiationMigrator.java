@@ -82,7 +82,7 @@ public class RadiationMigrator extends CaaersDataMigratorTemplate{
         StringBuilder sb = new StringBuilder("insert into other_interventions (")
         .append(ctx.isOracle() ? "id, " : " ")
         .append("name, description, study_therapy_type, study_id ) values (")
-        .append(ctx.isOracle() ? "seq_other_intervention_id.nextval, " : " ")
+        .append(ctx.isOracle() ? "seq_other_interventions_id.nextval, " : " ")
         .append("'Radiation-1', 'Radiation 1', 2, ")
         .append("%s")
         .append(")");
