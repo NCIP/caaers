@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.web.WebTestCase;
 /**
  * This class is copied from ehcache web constructs, so no testcase for most of the methods.... 
  * 
- * The only method overriden is acceptsEncoding, for which testcases is provided. 
+ * The only method overridden is acceptsEncoding, for which testcases is provided. 
  * 
  * @author Biju Joseph
  *
@@ -20,7 +20,7 @@ public class GzipFilterTest extends WebTestCase {
 		request.addHeader("User-Agent", "MSIE 6.0");
 		request.addHeader("Accept-Encoding", "deflated,gzip");
 		boolean accepts = filter.acceptsEncoding(request, "gzip");
-		assertFalse(accepts);
+		assertTrue(accepts);
 		accepts = filter.acceptsEncoding(request, "crap");
 		assertFalse(accepts);
 	}
