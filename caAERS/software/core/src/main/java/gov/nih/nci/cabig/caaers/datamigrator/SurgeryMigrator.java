@@ -81,7 +81,7 @@ public class SurgeryMigrator extends CaaersDataMigratorTemplate {
         StringBuilder sb = new StringBuilder("insert into other_interventions (")
         .append(ctx.isOracle() ? "id, " : " ")
         .append("name, description, study_therapy_type, study_id ) values (")
-        .append(ctx.isOracle() ? "seq_other_intervention_id.nextval, " : " ")
+        .append(ctx.isOracle() ? "seq_other_interventions_id.nextval, " : " ")
         .append("'Surgery-1', 'Surgery 1', 3, ")
         .append("%s")
         .append(")");
