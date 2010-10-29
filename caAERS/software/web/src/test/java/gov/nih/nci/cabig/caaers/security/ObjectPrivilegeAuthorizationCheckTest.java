@@ -31,11 +31,16 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
         gen.setObjectPrivilegeMap(map);
 
         facade = registerMockFor(CaaersSecurityFacade.class);
+        SecurityTestUtils.switchToCaaersSecurityFacadeMock(facade);
         chk.setCaaersSecurityFacade(facade);
         chk.setObjectPrivilegeGenerator(gen);
 
     }
 
+
+    public void tearDown(){
+      SecurityTestUtils.switchToCaaersSecurityFacade();
+    }
 
     public void testCheckAuthorization() {
 
