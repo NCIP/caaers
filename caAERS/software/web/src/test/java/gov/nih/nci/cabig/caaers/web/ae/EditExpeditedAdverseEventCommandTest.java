@@ -42,6 +42,7 @@ import java.util.*;
 /**
  * @author Sameer Work
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTestCase {
 	protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
@@ -390,7 +391,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     /**
      * Test the scenario when associatedToWorkflow
      */
-    public void testIsAssociatedToWorkflowPositive(){
+    public void testIsAssociatedToWorkflowPositive() {
     	addReportsToAeReport();
     	command.setWorkflowEnabled(true);
     	
@@ -402,10 +403,11 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	
     	//set the workflow id for first report and test for association to workflow
     	command.getAeReport().getReports().get(0).setWorkflowId(2);
-    	
+    	command.getAeReport().getReports().get(0).getReportDefinition().setWorkflowEnabled(true);
+    	command.getAeReport().getReports().get(0).setEmailAddresses(Arrays.asList("io@"));
+
     	Boolean isAssociatedToWorkflow = command.isAssociatedToWorkflow();
-    	assertTrue("isAssociatedToWorkflow is returning incorrect value when the selected report is" +
-    			" assoicated to workflow", isAssociatedToWorkflow);
+    	assertTrue("isAssociatedToWorkflow is returning incorrect value when the selected report is" + " associated to workflow", isAssociatedToWorkflow);
     }
     
     /**

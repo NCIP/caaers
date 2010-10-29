@@ -54,6 +54,7 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Rhett Sutphin
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 
 public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
@@ -357,15 +358,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	 List<LabLoad> labs = getAssignment().getLabLoads();
     	 return (labs != null) && !labs.isEmpty();
     }
-    
-    public boolean isAssociatedToWorkflow(){
-    	for(Report report: aeReport.getActiveReports()){
-    		if(report.getReportDefinition().getWorkflowEnabled() && report.getWorkflowId() != null)
-    			return true;
-    	}
-    	return false;
+
+    public boolean isAssociatedToWorkflow() {
+        for (Report report : aeReport.getActiveReports()) {
+            if (report.getReportDefinition().getWorkflowEnabled() && report.getWorkflowId() != null) return true;
+        }
+        return false;
     }
-    
+
     /** By default addition of AEs is allowed in expedited flow */
     public boolean isAdditionAllowed() {
     	return true;
