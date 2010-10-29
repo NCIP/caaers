@@ -13,14 +13,14 @@ class CreateIndexes extends edu.northwestern.bioinformatics.bering.Migration {
           
         } else if (databaseMatches('postgresql')){
 
-           try { execute('DROP INDEX "org-index-org-id-idx1"')  }catch(Exception e){ }
-           try {  execute('DROP INDEX "ae-index-ae-id-idx1"')   }catch(Exception e){ }
-           try {  execute('DROP INDEX "eae-index-eae-id-idx1"') }catch(Exception e){ }
-           try {  execute('DROP INDEX "inv-index-inv-id-idx1"') }catch(Exception e){ }
-           try {  execute('DROP INDEX "par-index-par-id-idx1"') }catch(Exception e){ }
-           try {  execute('DROP INDEX "rs-index-rs-id-idx1"')  }catch(Exception e){ }
-           try {  execute('DROP INDEX "rp-index-rp-id-idx1"')    }catch(Exception e){ }
-           try {  execute('DROP INDEX "study-index-study-id-idx1"') }catch(Exception e){ }
+           try { execute('DROP INDEX IF EXISTS "org-index-org-id-idx1"')  }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "ae-index-ae-id-idx1"')   }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "eae-index-eae-id-idx1"') }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "inv-index-inv-id-idx1"') }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "par-index-par-id-idx1"') }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "rs-index-rs-id-idx1"')  }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "rp-index-rp-id-idx1"')    }catch(Exception e){ }
+           try {  execute('DROP INDEX IF EXISTS "study-index-study-id-idx1"') }catch(Exception e){ }
 
            try { execute('CREATE INDEX "org-index-org-id-idx1" ON organization_index(organization_id)') }catch(Exception e){ }
            try { execute('CREATE INDEX "ae-index-ae-id-idx1" ON adverseevent_index(adverseevent_id)') }catch(Exception e){ }
