@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.tools.logging;
 
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -35,7 +36,8 @@ public class CaaersLoggingAspect {
 			"|| execution(public * gov.nih.nci.cabig.caaers.tools.Excel*.*(..))")
 	
 	public Object log(ProceedingJoinPoint call) throws Throwable  {
-		
+		String userName = "[" + SecurityUtils.getUserLoginName() + "] - ";
+
 		long startTime = System.currentTimeMillis();
 		
         Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
@@ -48,7 +50,7 @@ public class CaaersLoggingAspect {
         long executionTime = (endTime - startTime);
         if(logger.isInfoEnabled()){
             if(executionTime > 500){
-            	logger.info("More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
+            	logger.info(userName + "More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
             }
         }
         
@@ -61,11 +63,12 @@ public class CaaersLoggingAspect {
 	
 	
 	public void trace(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
+        String userName = "[" + SecurityUtils.getUserLoginName() + "] - ";
 		try{
 			if(entry){
-				logger.trace(entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
+				logger.trace( userName + entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
 			}else{
-				logger.trace(exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "} [executionTime : " + time + "]");
+				logger.trace( userName + exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "} [executionTime : " + time + "]");
 			}
 			
 		}catch(Exception ignore){ 
