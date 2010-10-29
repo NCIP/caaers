@@ -19,12 +19,20 @@
 <%@attribute name="isSolicited" type="java.lang.Boolean" %>
 <%@attribute name="hasOtherMeddra" type="java.lang.Boolean" %>
 
+<c:set var="terminologyMatch" value="${(command.study.aeTerminology.term eq 'MEDDRA' and adverseEvent.adverseEventTerm.medDRA) or (command.study.aeTerminology.term eq 'CTC' and !adverseEvent.adverseEventTerm.medDRA)}" />
+<%--
+    terminologyMatch - sometimes the user can change the the AE-Terminology of the study while the study is already associated with some adverse events through the AE flow.
+                       changing the AE-ETrminology can cause JSP errors since this page is rendered considering the AE-Terminology on the study,
+                       and all AEs are expected to have the same AE-terminology. 
+--%>
 
+<c:set var="title_term">${adverseEvent.adverseEventTerm.medDRA ? adverseEvent.adverseEventTerm.term.meddraTerm : adverseEvent.adverseEventTerm.term.fullName}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired and hasOtherMeddra ? 1  : 0}" />
-<c:set var="title_term">${adverseEvent.adverseEventTerm.medDRA ? adverseEvent.adverseEventTerm.term.meddraTerm : adverseEvent.adverseEventTerm.term.fullName}</c:set>
 <c:set var="title_otherMedDRA_term">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
+
+<c:if test="${terminologyMatch}">
 
 <c:set var="v" value="adverseEvents[${index}]" />
 <c:set var="collapsedCheck" value="${!command.errorsForFields[v] && (isSolicited ? 'true' : adverseEvent.grade != null) && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true)}" />
@@ -227,3 +235,9 @@
     </jsp:body>
 </chrome:division>
 
+</c:if>
+<c:if test="${!terminologyMatch}">
+    <chrome:division title="&nbsp;${title_term}" collapsable="true" collapsed="false" id="WRONG-${index}">
+        <div style="color:red;">Wrong AE Terminology for this term, expected AE Terminology is: <b>${command.study.aeTerminology.term}</b></div>
+    </chrome:division>
+</c:if>

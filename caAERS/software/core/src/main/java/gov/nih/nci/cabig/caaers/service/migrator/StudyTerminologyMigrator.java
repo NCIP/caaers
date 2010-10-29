@@ -48,14 +48,10 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
             
             if (srcAeTerminology.getMeddraVersion() != null) {
             	AeTerminology aeTerminology = destination.getAeTerminology();
-            	List<MeddraVersion> mvs = meddraVersionDao.getMeddraByName(srcAeTerminology.getMeddraVersion().getName());
-            	MeddraVersion meddraVersion = null;
-            	if(mvs != null && !mvs.isEmpty()){
-            		meddraVersion = meddraVersionDao.getMeddraByName(srcAeTerminology.getMeddraVersion().getName()).get(0);
-            	}
+            	MeddraVersion mvs = meddraVersionDao.getById(Integer.parseInt(srcAeTerminology.getMeddraVersion().getName()));
                 aeTerminology.setTerm(Term.MEDDRA);
-                aeTerminology.setMeddraVersion(meddraVersion);
-                outcome.ifNullObject(meddraVersion, DomainObjectImportOutcome.Severity.ERROR, "MedDRA Version is either Empty or Not Valid");
+                aeTerminology.setMeddraVersion(mvs);
+                outcome.ifNullObject(mvs, DomainObjectImportOutcome.Severity.ERROR, "MedDRA Version is either Empty or Not Valid");
             }
         }
         
