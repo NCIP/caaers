@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.util.StringUtilities;
@@ -33,7 +34,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private InvestigatorDao investigatorDao;
 	private SiteInvestigatorDao siteInvestigatorDao;
 	private InvestigatorConverterDao investigatorConverterDao;
-	private CaaersSecurityFacadeImpl caaersSecurityFacade;
+	private CaaersSecurityFacade caaersSecurityFacade;
 	private String authenticationMode;
 	private OrganizationDao organizationDao;
 	private OrganizationRepository organizationRepository;
@@ -367,7 +368,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	}
 
 	public void setCaaersSecurityFacade(
-			CaaersSecurityFacadeImpl caaersSecurityFacade) {
+			CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 

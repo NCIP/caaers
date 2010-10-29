@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ResearchStaffRepository {
 
-    private CaaersSecurityFacadeImpl caaersSecurityFacade;
+    private CaaersSecurityFacade caaersSecurityFacade;
     private ResearchStaffDao researchStaffDao;
     private SiteResearchStaffDao siteResearchStaffDao;
     private ResearchStaffConverterDao researchStaffConverterDao;
@@ -129,7 +130,7 @@ public class ResearchStaffRepository {
      * @return
      */
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
-        researchStaff.setUserGroupTypes(caaersSecurityFacade.getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
+        researchStaff.setUserGroupTypes(((CaaersSecurityFacadeImpl)caaersSecurityFacade).getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
         return researchStaff;
     }
     
@@ -439,7 +440,7 @@ public class ResearchStaffRepository {
 	}
 
 	public void setCaaersSecurityFacade(
-			CaaersSecurityFacadeImpl caaersSecurityFacade) {
+			CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 

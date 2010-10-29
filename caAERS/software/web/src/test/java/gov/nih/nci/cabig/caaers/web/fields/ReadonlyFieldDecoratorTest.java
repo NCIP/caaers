@@ -22,7 +22,7 @@ public class ReadonlyFieldDecoratorTest extends AbstractTestCase {
     InputField f1;
     InputField f2;
 
-    CaaersSecurityFacadeImpl facadeImpl;
+    CaaersSecurityFacade facadeImpl;
 
     public void setUp() throws Exception {
         super.setUp();
@@ -34,7 +34,7 @@ public class ReadonlyFieldDecoratorTest extends AbstractTestCase {
         f2.setPrivilegeToModify("x");
         f2.setPrivilegeToRead("y");
 
-        facadeImpl = registerMockFor(CaaersSecurityFacadeImpl.class);
+        facadeImpl = registerMockFor(CaaersSecurityFacade.class);
         SecurityTestUtils.switchToCaaersSecurityFacadeMock(facadeImpl);
         
     }
