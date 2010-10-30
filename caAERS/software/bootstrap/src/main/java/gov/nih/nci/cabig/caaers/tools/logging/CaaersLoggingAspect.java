@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.tools.logging;
 
-import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.userdetails.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -36,7 +38,7 @@ public class CaaersLoggingAspect {
 			"|| execution(public * gov.nih.nci.cabig.caaers.tools.Excel*.*(..))")
 	
 	public Object log(ProceedingJoinPoint call) throws Throwable  {
-		String userName = "[" + SecurityUtils.getUserLoginName() + "] - ";
+		String userName = "[" + getUserLoginName() + "] - ";
 
 		long startTime = System.currentTimeMillis();
 		
@@ -63,7 +65,7 @@ public class CaaersLoggingAspect {
 	
 	
 	public void trace(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
-        String userName = "[" + SecurityUtils.getUserLoginName() + "] - ";
+        String userName = "[" + getUserLoginName() + "] - ";
 		try{
 			if(entry){
 				logger.trace( userName + entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
@@ -73,6 +75,19 @@ public class CaaersLoggingAspect {
 			
 		}catch(Exception ignore){ 
 		}
+	}
+
+    public static String getUserLoginName(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Object principal  =  authentication.getPrincipal();
+		String userName = "";
+		if (principal instanceof User) {
+			userName = ((User)principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+
+		return userName;
 	}
 
 }

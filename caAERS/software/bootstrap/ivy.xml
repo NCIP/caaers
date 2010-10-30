@@ -31,6 +31,18 @@
         <dependencies>
 
 			<!-- exclusions based on class loading -->
+            <exclude conf="*" name="logkit"  />
+			<exclude conf="*" name="spring-aop"  />
+            <exclude conf="*" name="spring-context"  />
+			<exclude conf="*" name="spring-beans"  />
+			<exclude conf="*" name="spring-core"  />
+			<exclude conf="*" name="spring-dao"  />
+			<exclude conf="*" name="spring-hibernate3"  />
+			<exclude conf="*" name="spring-jdbc"  />
+			<exclude conf="*" name="spring-remoting"  />
+			<exclude conf="*" name="spring-support"  />
+			<exclude conf="*" name="spring-web"  />
+			<exclude conf="*" name="spring-webmvc"  />
 			<exclude conf="runtime,dist,distGrid" module="avalon-framework"  />
 			<exclude conf="runtime,dist,distGrid" module="logkit"  />
 			<exclude conf="dist,distGrid" name="jsp-api" />
@@ -44,8 +56,10 @@
 
 			<!--  Spring framework -->
 			<dependency org="org.springframework" name="spring" rev="2.5.6" force="true"
-				conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-            
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+
         	<dependency org="commons-lang" name="commons-lang" rev="2.4" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
 
 
