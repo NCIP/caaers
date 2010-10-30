@@ -78,16 +78,20 @@ public class CaaersLoggingAspect {
 	}
 
     public static String getUserLoginName(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Object principal  =  authentication.getPrincipal();
-		String userName = "";
-		if (principal instanceof User) {
-			userName = ((User)principal).getUsername();
-		} else {
-			userName = principal.toString();
-		}
+       try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Object principal  =  authentication.getPrincipal();
+            String userName = "";
+            if (principal instanceof User) {
+                userName = ((User)principal).getUsername();
+            } else {
+                userName = principal.toString();
+            }
 
-		return userName;
+            return userName;
+       } catch(Exception e){
+          return ""; 
+       }
 	}
 
 }
