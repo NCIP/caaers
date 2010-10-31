@@ -23,7 +23,6 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	Study xstreamStudy;
 	DomainObjectImportOutcome<Study> outcome;
 	Study dest;
-	
     private CtcDao ctcDao;
     private MeddraVersionDao meddraVersionDao;
 	
@@ -78,36 +77,34 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
         Message msg = (Message) outcome.getMessages().get(0);
         assertEquals("Incorrect error message","CTC is either Empty or Not Valid", msg.getMessage());
 	}
-	
-	public void testMigrate_WithCorrectMeddraVersion() {
-		 AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
-	     List<MeddraVersion> mvs = new ArrayList<MeddraVersion>();
-	     mvs.add(medDRATerminology.getMeddraVersion());
-	     EasyMock.expect(meddraVersionDao.getMeddraByName(medDRATerminology.getMeddraVersion().getName())).andReturn(mvs).anyTimes();
-	     replayMocks();
-        
+
+    public void testMigrate_WithCorrectMeddraVersion() {
+        AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
+        List<MeddraVersion> mvs = new ArrayList<MeddraVersion>();
+        MeddraVersion mv = new MeddraVersion();
+        mv.setName("5");
+        EasyMock.expect(meddraVersionDao.getById(5)).andReturn(mv).anyTimes();
+        replayMocks();
         migrator.migrate(xstreamStudy, dest, outcome);
         verifyMocks();
         MeddraVersion meddraVersion = dest.getAeTerminology().getMeddraVersion();
         assertNotNull(meddraVersion);
-        assertEquals("Meddra Version Name should be same", meddraVersion.getName(), medDRATerminology.getMeddraVersion().getName());
+        assertEquals("Meddra Version Name should be same", mv.getName(), medDRATerminology.getMeddraVersion().getName());
         assertTrue(outcome.getMessages().isEmpty());
-	}
-	
-	public void testMigrate_WithIncorrectMeddraVersion() {
-		 AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
-	     EasyMock.expect(meddraVersionDao.getMeddraByName(medDRATerminology.getMeddraVersion().getName())).andReturn(null).anyTimes();
-	     replayMocks();
-        
+    }
+
+    public void testMigrate_WithIncorrectMeddraVersion() {
+        AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
+        EasyMock.expect(meddraVersionDao.getById(5)).andReturn(null).anyTimes();
+        replayMocks();
         migrator.migrate(xstreamStudy, dest, outcome);
         verifyMocks();
         MeddraVersion meddraVersion = dest.getAeTerminology().getMeddraVersion();
-        assertNull("Meddra Version should be null",meddraVersion);
+        assertNull("Meddra Version should be null", meddraVersion);
         assertEquals("Error when meddra version is not correct", 1, outcome.getMessages().size());
-		
-	}
-	
-	public void testMigrate_WithCorrectMeddraVersionName() {
+    }
+
+    public void testMigrate_WithCorrectMeddraVersionName() {
 		AeTerminology ctcV3Terminology = Fixtures.createCtcV3Terminology(xstreamStudy);
 		List<MeddraVersion> mvs = new ArrayList<MeddraVersion>();
 		MeddraVersion otherMeddraVersion = new MeddraVersion();
