@@ -101,16 +101,12 @@ public class StudyAgentMigratorTest extends AbstractTestCase {
 		ind.setHolderName("kkkk");
 		List<InvestigationalNewDrug> indList = new ArrayList<InvestigationalNewDrug>();
 		indList.add(ind);
-		
 		EasyMock.expect(agentDao.getByName("abcd")).andReturn(agent);
 		EasyMock.expect(investigationalNewDrugDao.findByIds((String[])EasyMock.anyObject())).andReturn(indList);
-		
 		replayMocks();
-		
 		migrator.migrate(xstreamStudy, dest, outcome);
 		verifyMocks();
-		System.out.println(outcome.getMessages());
-		assertEquals(1, outcome.getMessages().size());
+		assertEquals(0, outcome.getMessages().size());
 	}
 	
 	public void testMigrate_DcpIND() {
