@@ -33,27 +33,35 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 				agent = agentDao.getByName(studyAgent.getAgent().getName());
 				target.setAgent(agent);
 			}
+
+            if (studyAgent.getOtherAgent() != null) {
+                target.setOtherAgent(studyAgent.getOtherAgent());
+            }
+
 			if (studyAgent.getAgent().getNscNumber() != null && agent == null) {
-				agent = agentDao.getByNscNumber(studyAgent.getAgent()
-						.getNscNumber());
+				agent = agentDao.getByNscNumber(studyAgent.getAgent().getNscNumber());
 				target.setAgent(agent);
 			}
+
 			if (studyAgent.getOtherAgent() != null && agent == null) {
 				target.setOtherAgent(studyAgent.getOtherAgent());
 			}
-			outcome.ifNullObject(agent,
-					DomainObjectImportOutcome.Severity.ERROR,
-					" Provdided Agent is not Valid ");
-			target.setIndType(studyAgent.getIndType());
 
-			if (target.getIndType() == INDType.DCP_IND
-					|| target.getIndType() == INDType.CTEP_IND) {
-				outcome.ifNullObject(studyAgent.getPartOfLeadIND(),
-						DomainObjectImportOutcome.Severity.ERROR,
-						" Lead IND required ");
+            if (target.getOtherAgent() == null)
+			    outcome.ifNullObject(agent, DomainObjectImportOutcome.Severity.ERROR," Provided Agent is not Valid ");
+
+            target.setIndType(studyAgent.getIndType());
+            target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
+
+
+/*
+            // This has been relaxed as per StudySchema.xsd
+			if (target.getIndType() == INDType.DCP_IND || target.getIndType() == INDType.CTEP_IND) {
+				outcome.ifNullObject(studyAgent.getPartOfLeadIND(), DomainObjectImportOutcome.Severity.ERROR, " Lead IND required ");
 				target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
 			}
-			
+*/
+
 			if (target.getIndType() == INDType.DCP_IND) {
 				// Ok so we have to provide the id here , well i can't see a different way to do this , defenitly ugly
 				// TODO: see how to enhance.

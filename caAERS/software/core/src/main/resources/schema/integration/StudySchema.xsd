@@ -20,7 +20,6 @@
         <xs:attribute name="id" type="xs:integer"/>
     </xs:complexType>
 
-
     <xs:complexType name="MutableDomainObject">
         <xs:complexContent>
             <xs:extension base="DomainObject">
@@ -345,7 +344,7 @@
                         <xs:element ref="agent"/>
                         <xs:element name="otherAgent" type="CustomStringType"/>
                     </xs:choice>
-                    <xs:element type="IndType" name="indType"/>
+                    <xs:element type="IndType" name="indType" minOccurs="0"/>
                     <xs:element type="xs:boolean" name="partOfLeadIND" minOccurs="0" />
                     <xs:element name="studyAgentINDAssociations" minOccurs="0">
                         <xs:complexType>
