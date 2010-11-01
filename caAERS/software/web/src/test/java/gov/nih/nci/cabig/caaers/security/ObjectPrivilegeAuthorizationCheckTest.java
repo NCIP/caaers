@@ -45,7 +45,7 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
 
         final Authentication auth = SecurityUtils.getAuthentication();
 
-        EasyMock.expect(facade.checkAuthorization((Authentication)EasyMock.anyObject(), "y")).andReturn(true);
+        EasyMock.expect(facade.checkAuthorization(EasyMock.eq(auth), EasyMock.eq("y"))).andReturn(true).anyTimes();
         replayMocks();
 
         Object o = "/x";
@@ -61,7 +61,7 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
 
         Authentication auth = SecurityUtils.getAuthentication();
 
-        EasyMock.expect(facade.checkAuthorization((Authentication)EasyMock.anyObject(),"y", "READ")).andReturn(true);
+        EasyMock.expect(facade.checkAuthorization(EasyMock.eq(auth),EasyMock.eq("y"), EasyMock.eq("READ"))).andReturn(true).anyTimes();
         replayMocks();
 
 
@@ -75,7 +75,7 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
 
         Authentication auth = SecurityUtils.getAuthentication();
 
-        EasyMock.expect(facade.checkAuthorization((Authentication)EasyMock.anyObject(),"y", "READ")).andReturn(true);
+        EasyMock.expect(facade.checkAuthorization(EasyMock.eq(auth),EasyMock.eq("y"), EasyMock.eq("READ"))).andReturn(true).anyTimes();
         replayMocks();
 
 
