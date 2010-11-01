@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
 import java.sql.Timestamp;
@@ -49,6 +50,10 @@ public abstract class WebTestCase extends AbstractNoSecurityTestCase {
         nowFactory.setNowTimestamp(NOW);
         
         pageContext = new MockPageContext(servletContext, request, response);
+
+        getDeployedApplicationContext().getBean("caaersSecurityFacade");  //initialize the actual bean
+
+        SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
     }
     
     static class MockAspectJSecurityInterceptor extends AspectJSecurityInterceptor {
@@ -58,5 +63,11 @@ public abstract class WebTestCase extends AbstractNoSecurityTestCase {
 			return null;
 		}
     	
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        SecurityTestUtils.switchToCaaersSecurityFacade();
+        super.tearDown();
     }
 }

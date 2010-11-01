@@ -31,13 +31,11 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         super.setUp();
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
         newParticipantCommand.setStudy(new LocalStudy());
-        SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        SecurityTestUtils.switchToCaaersSecurityFacade();
     }
 
     @Override

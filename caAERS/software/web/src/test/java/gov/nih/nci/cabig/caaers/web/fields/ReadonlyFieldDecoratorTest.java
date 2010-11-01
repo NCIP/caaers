@@ -36,13 +36,14 @@ public class ReadonlyFieldDecoratorTest extends AbstractTestCase {
 
         facadeImpl = registerMockFor(CaaersSecurityFacade.class);
         SecurityTestUtils.switchToCaaersSecurityFacadeMock(facadeImpl);
-        
+
     }
 
     @Override
     protected void tearDown() throws Exception {
-        super.tearDown();
+
         SecurityTestUtils.switchToCaaersSecurityFacade();
+         super.tearDown();
     }
     
 

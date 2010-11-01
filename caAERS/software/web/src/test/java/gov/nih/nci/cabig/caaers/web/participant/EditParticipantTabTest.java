@@ -28,13 +28,11 @@ public class EditParticipantTabTest extends AbstractTabTestCase<EditParticipantT
         // studySiteDao = (StudySiteDao)getDeployedApplicationContext().getBean("studySiteDao");
         studySiteDao = registerMockFor(StudySiteDao.class);
         tab = createTab();
-        SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        SecurityTestUtils.switchToCaaersSecurityFacade();
     }
 
 

@@ -38,8 +38,9 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
     }
 
 
-    public void tearDown(){
+    public void tearDown() throws Exception {
       SecurityTestUtils.switchToCaaersSecurityFacade();
+      super.tearDown();
     }
 
     public void testCheckAuthorization() {
