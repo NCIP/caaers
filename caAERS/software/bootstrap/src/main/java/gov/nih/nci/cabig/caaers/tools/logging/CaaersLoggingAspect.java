@@ -17,8 +17,8 @@ import org.aspectj.lang.annotation.Aspect;
 public class CaaersLoggingAspect {
 	
 
-	private static String entryMsgPrefix = "CaaersLoggingAspect: entering method";
-	private static String exitMsgPrefix = "CaaersLoggingAspect: exiting method";
+	private static String entryMsgPrefix = "Entering Method ";
+	private static String exitMsgPrefix = "Exiting Method ";
 	
 	@Around("execution(public * gov.nih.nci.cabig.caaers.api.*.*(..))" +
 			"|| execution(public * gov.nih.nci.cabig.caaers.api.impl.*.*(..))" +
@@ -44,7 +44,7 @@ public class CaaersLoggingAspect {
 		
         Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
 
-		if(logger.isTraceEnabled()) trace(logger, true, call, null, 0);
+		if(logger.isTraceEnabled() || logger.isTraceEnabled()) log(logger, true, call, null, 0);
 		
         Object point =  call.proceed();
         
@@ -56,26 +56,41 @@ public class CaaersLoggingAspect {
             }
         }
         
-        if(logger.isTraceEnabled()){
-        	trace(logger, false, call, point, executionTime);
+        if(logger.isTraceEnabled() || logger.isTraceEnabled()){
+        	log(logger, false, call, point, executionTime);
         }
         
         return point;
     }
 	
-	
-	public void trace(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
-        String userName = "[" + getUserLoginName() + "] - ";
-		try{
-			if(entry){
-				logger.trace( userName + entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
-			}else{
-				logger.trace( userName + exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "} [executionTime : " + time + "]");
-			}
-			
-		}catch(Exception ignore){ 
-		}
+
+
+	public void log(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
+        if(logger.isDebugEnabled() || logger.isTraceEnabled()){
+              try{
+                StringBuilder sb = new StringBuilder("[").append(getUserLoginName()).append("] - ");
+                if(entry) {
+                    sb.append(entryMsgPrefix)
+                      .append(" [").append(call.toShortString()).append(" ] with params { ").append(call.getArgs()[0]).append("}");
+                }else {
+                    sb.append(exitMsgPrefix)
+                   .append(" [").append(call.toShortString()).append(" ] with return as: {").append( String.valueOf(retVal) ).append("} - executionTime : ")
+                   .append( time );
+
+                }
+                if(logger.isDebugEnabled()){
+                    logger.debug(sb.toString());
+                } else {
+                    logger.trace(sb.toString());
+                }
+
+           }catch(Exception e) {
+
+           }
+        }
+
 	}
+
 
     public static String getUserLoginName(){
        try{
