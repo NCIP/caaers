@@ -44,7 +44,7 @@ public class CaaersLoggingAspect {
 		
         Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
 
-		if(logger.isTraceEnabled() || logger.isTraceEnabled()) log(logger, true, call, null, 0);
+		if(logger.isDebugEnabled() || logger.isTraceEnabled()) log(logger, true, call, null, 0);
 		
         Object point =  call.proceed();
         
@@ -56,7 +56,7 @@ public class CaaersLoggingAspect {
             }
         }
         
-        if(logger.isTraceEnabled() || logger.isTraceEnabled()){
+        if(logger.isDebugEnabled() || logger.isTraceEnabled()){
         	log(logger, false, call, point, executionTime);
         }
         
@@ -66,12 +66,11 @@ public class CaaersLoggingAspect {
 
 
 	public void log(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
-        if(logger.isDebugEnabled() || logger.isTraceEnabled()){
               try{
                 StringBuilder sb = new StringBuilder("[").append(getUserLoginName()).append("] - ");
                 if(entry) {
                     sb.append(entryMsgPrefix)
-                      .append(" [").append(call.toShortString()).append(" ] with params { ").append(call.getArgs()[0]).append("}");
+                      .append(" [").append(call.toShortString()).append(" ] with params { ").append(String.valueOf(call.getArgs()[0])).append("}");
                 }else {
                     sb.append(exitMsgPrefix)
                    .append(" [").append(call.toShortString()).append(" ] with return as: {").append( String.valueOf(retVal) ).append("} - executionTime : ")
@@ -87,7 +86,6 @@ public class CaaersLoggingAspect {
            }catch(Exception e) {
 
            }
-        }
 
 	}
 
