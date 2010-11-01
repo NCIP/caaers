@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.security.authorization.ObjectPrivilegeAuthorizationCheck;
 import gov.nih.nci.cabig.caaers.web.security.DefaultObjectPrivilegeGenerator;
 import org.acegisecurity.Authentication;
+import org.easymock.IArgumentMatcher;
 import org.easymock.classextension.EasyMock;
 
 import java.util.HashMap;
@@ -38,16 +39,13 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
     }
 
 
-    public void tearDown() throws Exception {
-      SecurityTestUtils.switchToCaaersSecurityFacade();
-      super.tearDown();
-    }
+
 
     public void testCheckAuthorization() {
 
-        Authentication auth = SecurityUtils.getAuthentication();
+        final Authentication auth = SecurityUtils.getAuthentication();
 
-        EasyMock.expect(facade.checkAuthorization(auth, "y")).andReturn(true);
+        EasyMock.expect(facade.checkAuthorization((Authentication)EasyMock.anyObject(), "y")).andReturn(true);
         replayMocks();
 
         Object o = "/x";
@@ -63,7 +61,7 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
 
         Authentication auth = SecurityUtils.getAuthentication();
 
-        EasyMock.expect(facade.checkAuthorization(auth,"y", "READ")).andReturn(true);
+        EasyMock.expect(facade.checkAuthorization((Authentication)EasyMock.anyObject(),"y", "READ")).andReturn(true);
         replayMocks();
 
 
@@ -77,7 +75,7 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
 
         Authentication auth = SecurityUtils.getAuthentication();
 
-        EasyMock.expect(facade.checkAuthorization(auth,"y", "READ")).andReturn(true);
+        EasyMock.expect(facade.checkAuthorization((Authentication)EasyMock.anyObject(),"y", "READ")).andReturn(true);
         replayMocks();
 
 
@@ -85,4 +83,5 @@ public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
         assertTrue(b);
         verifyMocks();
     }
+
 }
