@@ -83,7 +83,7 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
             fail("Exception not propagated");
         } catch (Exception se) {
             se.printStackTrace();
-            assertSame(exception, se.getCause());
+            assertEquals(exception, se);
         }
     }
 
@@ -104,7 +104,7 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
             fail("Exception not propagated");
         } catch (Exception dae) {
             dae.printStackTrace();
-            assertSame(exception, dae.getCause());
+            assertSame(exception, dae);
         }
     }
 
