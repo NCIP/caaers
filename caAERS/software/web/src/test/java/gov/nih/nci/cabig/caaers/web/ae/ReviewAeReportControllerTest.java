@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.userdetails.User;
@@ -96,6 +98,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
+        expect(csmUserRepository.getUserByName("SYSTEM_ADMIN")).andReturn(new LocalResearchStaff());
 		replayMocks();
 		Map<String, Object> refdata = controller.referenceData(request, command, errors);
 		verifyMocks();
