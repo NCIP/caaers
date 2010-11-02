@@ -68,17 +68,6 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		controller.setCsmUserRepository(csmUserRepository);
 	}
 	
-	public void testFormBackingObject() throws Exception{
-		request.setParameter("aeReport", "1");
-		request.setParameter("report", "1");
-		ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
-		report.setId(1);
-		expect(expeditedAdverseEventReportDao.getById(1)).andReturn(report);
-		expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(true);
-		replayMocks();
-		command = (ReviewAeReportCommand) controller.formBackingObject(request);
-		verifyMocks();
-	}
 	
 	public void testReferenceData() throws Exception{
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
