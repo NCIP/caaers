@@ -26,6 +26,7 @@ public class ReadonlyFieldDecoratorTest extends AbstractTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
+        SecurityTestUtils.switchToSuperuser();
         f1 = InputFieldFactory.createTextField("a", "A", true);
         f1.setPrivilegeToModify("i:READ");
         f1.setPrivilegeToRead("m:READ");
