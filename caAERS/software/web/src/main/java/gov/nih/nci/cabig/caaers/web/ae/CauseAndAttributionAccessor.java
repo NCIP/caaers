@@ -250,12 +250,9 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         public String getDisplayName(SurgeryIntervention surgery) {
             StringBuffer s = new StringBuffer();
-            if (surgery.getInterventionSite() == null && surgery.getInterventionDate() == null) return DEFAULT_NAME;
-            
-            s.append(surgery.getInterventionSite().getName());
-            if (surgery.getInterventionDate() != null)
-                s.append(" (" + DateUtils.formatDate(surgery.getInterventionDate()) + ")");
-            
+            if (surgery.getInterventionSite() != null) s.append(surgery.getInterventionSite().getName());
+            if (surgery.getInterventionDate() != null) s.append(" (" + DateUtils.formatDate(surgery.getInterventionDate()) + ")");
+            if (s.toString().trim().length() == 0) return DEFAULT_NAME;
             return s.toString();
         }
     }
