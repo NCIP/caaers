@@ -30,6 +30,28 @@
 */
     });
 
+    function enableEdit(_index) {
+        var _message = "<caaers:message code="study.treatment_assignments.study.editMessage" />";
+        if (!confirm(_message)) return;
+        var _base = "study.treatmentAssignments[" + _index + "]";
+//        if ($(_base + '.code')) $(_base + '.code').enable();
+        if ($(_base + '.doseLevelOrder')) $(_base + '.doseLevelOrder').enable();
+        if ($(_base + '.description')) $(_base + '.description').enable();
+        if ($(_base + '.comments')) $(_base + '.comments').enable();
+        $('BTN' + _index + 'UPDATE').hide();
+        $('BTN' + _index + 'CANCEL').show();
+    }
+
+    function disableEdit(_index) {
+        var _base = "study.treatmentAssignments[" + _index + "]";
+//        if ($(_base + '.code')) $(_base + '.code').disable();
+        if ($(_base + '.doseLevelOrder')) $(_base + '.doseLevelOrder').disable();
+        if ($(_base + '.description')) $(_base + '.description').disable();
+        if ($(_base + '.comments')) $(_base + '.comments').disable();
+        $('BTN' + _index + 'CANCEL').hide();
+        $('BTN' + _index + 'UPDATE').show();
+    }
+
     function enableTextBox() {
         $('study.otherTreatmentAssignment.visible').enable();
         $('study.otherTreatmentAssignment.visible').value = "${command.study.otherTreatmentAssignment}";
@@ -81,9 +103,9 @@
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
                     <%--<c:set var="newIndex" value="${status.index}" />--%>
                     <c:set var="collapsed" value="false" />
-                    <%--<c:if test="${!command.study.treatmentAssignments[newIndex].retiredIndicator}">--%>
+                    <c:if test="${!command.study.treatmentAssignments[newIndex].retired}">
                         <study:treatmentAssignment title="${command.study.treatmentAssignments[newIndex].code}" index="${newIndex}" ta="${command.study.treatmentAssignments[newIndex]}" collapsed="false" collapsable="true" readOnly="true"/>
-                    <%--</c:if>--%>
+                    </c:if>
                 </c:forEach>
             </div>
         </div>

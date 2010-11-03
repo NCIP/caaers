@@ -127,7 +127,6 @@ public class TreatmentAssignmentTab extends StudyTab {
         int index;
         try {
             index = Integer.parseInt(request.getParameter("index"));
-            // System.out.println("index to be deleted=" + index);
         } catch (NumberFormatException e) {
             index = -1;
             log.debug("Wrong <index> for <treatment assignment> list: " + e.getMessage());
@@ -136,17 +135,14 @@ public class TreatmentAssignmentTab extends StudyTab {
         if (tas.size() - 1 < index) {
             log.debug("Wrong <index> for <treatment assignmen> list.");
         } else if (index >=0) {
-//            TreatmentAssignment ta = (TreatmentAssignment)tas.get(index);
-            tas.remove(index);
+            TreatmentAssignment ta = tas.get(index);
+            ta.retire();
         }
-
-        //System.out.println("Active TAs after deletion:" + command.getStudy().getTreatmentAssignments().size());
 
         int size = tas.size();
     	Integer[] indexes = new Integer[size];
     	for(int i = 0 ; i < size ; i++){
     		indexes[i] = size - (i + 1);
-//    		indexes[i] = i;
     	}
 
         ModelAndView modelAndView = new ModelAndView("study/ajax/treatmentAssignmentSection");
