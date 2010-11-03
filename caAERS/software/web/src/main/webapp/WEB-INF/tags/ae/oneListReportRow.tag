@@ -92,6 +92,8 @@
                     <c:if test="${(reportStatus eq 'COMPLETED' or reportStatus eq 'AMENDED' )and (not empty lastVersion.submissionUrl)}"><li><a class="submitter-green" href="#" onclick="doIt('adeers', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt="" />&nbsp;View in AdEERS</a></li></c:if>
                 </ul>
             </div>
+            <c:if test="${report.aeReport.notificationMessagePossible}"><span class="notify-unit" id="notify-unit-${report.aeReport.id}"><tags:indicator id="notify-indicator-${report.aeReport.id}"/></span></c:if>
+
 		</td>
 	</tr>
 	<tr id="reptable${report.id}" style="display:none;">
