@@ -592,25 +592,36 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @return
      */
     public String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition) {
-        String result = "OPTIONAL";
+        StringBuffer sb = new StringBuffer();
         String bindUrl = mandatoryFieldDefinition.getRuleBindURL();
         String ruleNames = mandatoryFieldDefinition.getRuleName();
+        
         try{
-
             if(StringUtils.isNotEmpty(bindUrl) && StringUtils.isNotEmpty(ruleNames)) {
-                List<Object> inputObjects = generateInput(aeReport, report.getReportDefinition(), null,aeReport.getStudy(), null);
-                //add the rule name agenda.
-                inputObjects.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
-                List<Object> outputObjects = businessRulesExecutionService.fireRules(bindUrl, inputObjects);
-                if(outputObjects != null){
-                   //populate the correct message.
-                   for(Object o : outputObjects) {
-                      if (o instanceof RuleEvaluationResult){
-                          result = ((RuleEvaluationResult)o).getMessage();
-                          break;
-                     }
-                  }
+
+                for(AdverseEvent ae : aeReport.getAdverseEvents()){
+                    String result = null;
+                    List<Object> inputObjects = generateInput(aeReport, report.getReportDefinition(), ae,aeReport.getStudy(), null);
+                    //add the rule name agenda.
+                    inputObjects.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
+                    List<Object> outputObjects = businessRulesExecutionService.fireRules(bindUrl, inputObjects);
+                    if(outputObjects != null){
+                       //populate the correct message.
+                       for(Object o : outputObjects) {
+                          if (o instanceof RuleEvaluationResult){
+                              result = ((RuleEvaluationResult)o).getMessage();
+                              break;
+                         }
+                      }
+                    }
+                    
+                    if(result != null && result.length() > 0){
+                        if(sb.length() > 0) sb.append("||");
+                        sb.append(result);
+                    }
+
                 }
+
 
             }
         }catch (Exception e){
@@ -618,7 +629,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
               log.warn("Due to error evaluating fields rules setting the return value as  : OPTIONAL");
         }
 
-        return result;
+        if(sb.length() > 0) return sb.toString();
+
+        return "OPTIONAL";
     }
 
     // /Object Methods

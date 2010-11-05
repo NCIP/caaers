@@ -1,21 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.domain.*;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 
 import com.semanticbits.rules.objectgraph.FactResolver;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.INDHolder;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import junit.framework.TestCase;
 /**
  * Test cover the following requirement. 
@@ -57,6 +47,15 @@ public class FactResolverTest extends TestCase {
 		boolean fact = resolver.assertFact(ae,"gov.nih.nci.cabig.caaers.domain.Attribution","name","DEFINITE","==");
 		assertTrue(fact);
 	}
+
+    public void testAssertFactOnOutcome() throws Exception {
+        Outcome o = Fixtures.createOutcome(2, OutcomeType.LIFE_THREATENING) ;
+        ae.addOutcome(o);
+        boolean fact = resolver.assertFact(ae, "gov.nih.nci.cabig.caaers.domain.OutcomeType", "code", "2" , "==" );
+        assertTrue(fact);
+        fact = resolver.assertFact(ae, "gov.nih.nci.cabig.caaers.domain.OutcomeType", "code", "3" , "==" );
+        assertFalse(fact);
+    }
 	
 
 	public void testAssertFact_Negative() throws Exception{

@@ -4,8 +4,7 @@ import com.semanticbits.rules.utils.RuleUtil;
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +20,10 @@ import com.semanticbits.rules.utils.RepositoryCleaner;
 import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.drools.repository.PackageItem;
+import org.springframework.util.FileCopyUtils;
 
 /**
  * This is a unit TestCase for RulesEngineServiceImpl class.
@@ -45,6 +46,18 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
     private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
         InputStream testDataStream = ResourceRetriever.getResource(getClass().getPackage(), testDataFileName);
         return testDataStream;
+    }
+
+    private File createTmpFileFromResource(String testDataFileName) throws FileNotFoundException {
+        try{
+                long l = System.currentTimeMillis();
+                File f = File.createTempFile("t_" + l , "_import.xml");
+                FileCopyUtils.copy(createInputStream(testDataFileName), new FileOutputStream(f));
+                return f;
+        }catch(IOException ioe){
+            throw new FileNotFoundException(ioe.getMessage());
+        }
+
     }
     
 	@Override
@@ -219,24 +232,6 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 
 	
 
-	
-	/**
-	 * Tests saveRuleSet method
-	 */
-	public void _BROKEN_testSaveRuleSetFieldLevelRules() throws Exception{
-
-        RuleSet rs = loadRuleSetFromFile("test_field_rules.xml");
-
-        String modifiedPackageName = "gov.nih.nci.cabig.caaers.rules.sae_reporting_rules";
-        String modifiedSubject = "Field Rules|| || || ";
-        caaersRulesEngineService.saveRuleSet(rs, INSTITUTION_DEFINED_STUDY_LEVEL, "Field Rules", null, null,null);
-
-        RuleSet loadedRs = caaersRulesEngineService.getRuleSetByPackageName(modifiedPackageName);
-        assertEquals(1, loadedRs.getRule().size());
-        assertEquals("karthik test report 1", loadedRs.getRule().get(0).getAction().get(0));
-        assertEquals(modifiedSubject,loadedRs.getSubject());
-
-	}
 	
 	/**
 	 * Tests deployRuleSet(ruleSet)
