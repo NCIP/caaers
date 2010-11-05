@@ -98,30 +98,40 @@
                 <div id="options-actions-menu-${report.id}" style="display:none;">
 					<ul>
 						<c:set var="exportOptionsCount" value="0"/>
-	                    <c:if test="${command.study.caaersXMLType}">
+	                    <%--<c:if test="${command.study.caaersXMLType}">--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+<%--
 						</c:if>
 	                    <c:if test="${command.study.adeersPDFType}">
+--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+<%--
 						</c:if>
 	                    <c:if test="${command.study.medwatchPDFType}">
+--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export MedWatch 3500A PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+<%--
 						</c:if>
 	                    <c:if test="${command.study.dcpSAEPDFType}">
+--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP SAE PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+<%--
 						</c:if>
 	                    <c:if test="${command.study.ciomsPDFType}">
+--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export CIOMS PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+<%--
 						</c:if>
 	                    <c:if test="${command.study.ciomsSaePDFType}">
+--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
-						</c:if>
+						<%--</c:if>--%>
 
                         <%--
                         DISPLAY ALL REPORTS Associated TO DATA COLLECTION
