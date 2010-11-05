@@ -24,23 +24,13 @@
 			</ui-attribute>
 			<ui-attribute>
 				<name>shortTitle</name>
-				<label>Short Title</label>
+				<label>Title</label>
 				<data-type>String</data-type>
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
 				<filter-method>filterByStudyShortTitle</filter-method>
-			</ui-attribute>
-			<ui-attribute>
-				<name>longTitle</name>
-				<label>Long Title</label>
-				<data-type>String</data-type>
-				<field-type>text-field</field-type>
-				<operator name="=" display-uri="Equal To"/>
-				<operator name="!=" display-uri="Not Equal To"/>
-				<operator name="like" display-uri="Like"/>
-				<filter-method>filterByStudyLongTitle</filter-method>
 			</ui-attribute>
 			<view-column>
 				<column-title>id</column-title>

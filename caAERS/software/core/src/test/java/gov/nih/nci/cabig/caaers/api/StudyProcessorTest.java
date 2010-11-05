@@ -66,36 +66,15 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      * BehavioralTherapyType
      */
     public void testStudyUpdateOfInstanceAtt() throws Exception {
-
         createStudy("studydata/CreateStudyTest.xml");
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfInstanceAtt.xml"));
-
         studyProcessor.updateStudy(studies);
-
         SecurityTestUtils.switchToSuperuser();
-
         updatedStudy = studyDao.getByShortTitle("Study_PCS_Updated");
         assertNotNull(updatedStudy);
-
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
-
         assertNotNull(updatedStudy);
-
-        assertEquals("Pancreatic Cancer Study ph 5 Updated", updatedStudy.getLongTitle());
-        assertEquals("Precis_Updated", updatedStudy.getPrecis());
-        assertEquals("Test Study_Updated", updatedStudy.getDescription());
-
         assertEquals("Phase III Trial", updatedStudy.getPhaseCode());
-        assertEquals("Temporarily Closed to Accrual", updatedStudy.getStatus());
-        assertEquals("BLIND", updatedStudy.getDesign().name());
-        assertFalse(updatedStudy.getMultiInstitutionIndicator());
-        //assertFalse(updatedStudy.getAdeersReporting());
-        //assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
-        //assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.RADIATION));
-        //assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.DEVICE));
-        //assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.SURGERY));
-        //assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
     }
 
 
