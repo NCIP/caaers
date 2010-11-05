@@ -99,11 +99,12 @@ public class StudyQuery extends AbstractQuery {
         join("s.treatmentAssignmentsInternal as ta");
     }
     
+/*
     public void joinStudyTherapy() {
         join("s.studyTherapies as sthe");
     }
-    
-    
+*/
+
     public void joinParticipantIdentifier() {
         joinParticipant();
         join("p.identifiers as pIdentifier");
