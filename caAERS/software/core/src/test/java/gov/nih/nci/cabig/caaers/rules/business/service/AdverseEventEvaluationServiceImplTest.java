@@ -168,6 +168,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
        });
        EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
        EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
+        EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
        replayMocks();
        ReportMandatoryFieldDefinition def1 = Fixtures.createMandatoryField("a", RequirednessIndicator.OPTIONAL);
        def1.setRuleBindURL("abc");
