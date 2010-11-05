@@ -60,19 +60,19 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 
     protected String shortTitle;
-    protected String longTitle;
-    protected String description;
-    protected String precis;
+    @Deprecated protected String longTitle;
+    @Deprecated protected String description;
+    @Deprecated protected String precis;
     protected String phaseCode;
     protected AeTerminology aeTerminology;
     protected DiseaseTerminology diseaseTerminology;
-    protected String status;
+    @Deprecated String status;
     protected String otherTreatmentAssignment;
 
     // TODO: Remove
     protected Boolean blindedIndicator;
-    protected Boolean multiInstitutionIndicator;
-    protected Boolean adeersReporting;
+    @Deprecated Boolean multiInstitutionIndicator;
+    @Deprecated protected Boolean adeersReporting;
 
     // TODO: Remove
     protected Boolean randomizedIndicator;
@@ -101,7 +101,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     protected OrganizationAssignedIdentifier organizationAssignedIdentifier;
     protected List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
-    protected List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
+    @Deprecated protected List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
     protected List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
     protected List<OtherIntervention> otherInterventions = new ArrayList<OtherIntervention>();
     protected List<StudyDevice> studyDevices = new ArrayList<StudyDevice>();
@@ -121,7 +121,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected CoordinatingCenter coordinatingCenter;
 
     // DCP specific properties
-    protected Design design;
+    @Deprecated protected Design design;
 
     protected List<Epoch> epochs=new ArrayList<Epoch>();
     
@@ -715,10 +715,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.blindedIndicator = blindedIndicator;
     }
 
+    @Deprecated
     public Boolean getMultiInstitutionIndicator() {
         return multiInstitutionIndicator;
     }
 
+    @Deprecated
     public void setMultiInstitutionIndicator(final Boolean multiInstitutionIndicator) {
         this.multiInstitutionIndicator = multiInstitutionIndicator;
     }
@@ -731,11 +733,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.randomizedIndicator = randomizedIndicator;
     }
 
-    @Transient
+    @Transient @Deprecated
     public String getDescription() {
         return description;
     }
 
+    @Deprecated
     public void setDescription(final String descriptionText) {
         description = descriptionText;
     }
@@ -748,11 +751,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.diseaseCode = diseaseCode;
     }
 
-    @Transient
+    @Transient @Deprecated
     public String getLongTitle() {
         return longTitle;
     }
 
+    @Deprecated
     public void setLongTitle(final String longTitleText) {
         longTitle = longTitleText;
     }
@@ -774,10 +778,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.phaseCode = phaseCode;
     }
 
+    @Deprecated
     public String getPrecis() {
         return precis;
     }
 
+    @Deprecated
     public void setPrecis(final String precisText) {
         precis = precisText;
     }
@@ -791,11 +797,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         shortTitle = shortTitleText;
     }
 
-    @Transient
+    @Transient @Deprecated
     public String getStatus() {
         return status;
     }
 
+    @Deprecated
     public void setStatus(final String status) {
         this.status = status;
     }
@@ -950,41 +957,49 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.fundingSponsor = fundingSponsor;
     }
 
+    @Deprecated
     public Boolean getAdeersReporting() {
         return adeersReporting;
     }
 
+    @Deprecated
     public void setAdeersReporting(Boolean adeersSubmission) {
         this.adeersReporting = adeersSubmission;
     }
 
     @Column(name = "design_code")
     @Type(type = "designCode")
+    @Deprecated
     public Design getDesign() {
         return design;
     }
 
+    @Deprecated
     public void setDesign(Design design) {
         this.design = design;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Deprecated
     public List<ReportFormat> getReportFormats() {
         return reportFormats;
     }
 
+    @Deprecated
     public void setReportFormats(final List<ReportFormat> reportFormats) {
         this.reportFormats = reportFormats;
     }
 
     @Transient
+    @Deprecated
     public void addReportFormat(final ReportFormat reportFormat) {
     	reportFormat.setStudy(this);
         reportFormats.add(reportFormat);
     }
 
     @Transient
+    @Deprecated
     public void addReportFormatType(ReportFormatType reportFormatType) {
         ReportFormat rf = new ReportFormat();
         rf.setReportFormatType(reportFormatType);
@@ -993,6 +1008,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @Transient
+    @Deprecated
     public ReportFormat getReportFormat(final ReportFormatType reportFormatType) {
         for (ReportFormat reportFormat : reportFormats) {
             if (reportFormat.getReportFormatType().equals(reportFormatType)) {
@@ -1003,6 +1019,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    @Deprecated
     public void updateReportFormats(Boolean selected, ReportFormatType type) {
         if (selected == null) return;
         ReportFormat reportFormat = getReportFormat(type);
@@ -1021,51 +1038,57 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return getReportFormat(ReportFormatType.ADEERSPDF) != null;
     }
 
+    @Deprecated
     public void setAdeersPDFType(final Boolean value) {
         updateReportFormats(value, ReportFormatType.ADEERSPDF);
     }
 
-    @Transient
+    @Transient @Deprecated
     public Boolean getCaaersXMLType() {
         return getReportFormat(ReportFormatType.CAAERSXML) != null;
     }
 
+    @Deprecated
     public void setCaaersXMLType(final Boolean value) {
     	updateReportFormats(value, ReportFormatType.CAAERSXML);
     }
 
-    @Transient
+    @Transient @Deprecated
     public Boolean getCiomsPDFType() {
         return getReportFormat(ReportFormatType.CIOMSFORM) != null;
     }
 
+    @Deprecated
     public void setCiomsPDFType(final Boolean value) {
         updateReportFormats(value, ReportFormatType.CIOMSFORM);
     }
 
-    @Transient
+    @Transient @Deprecated
     public Boolean getCiomsSaePDFType() {
         return getReportFormat(ReportFormatType.CIOMSSAEFORM) != null;
     }
 
+    @Deprecated
     public void setCiomsSaePDFType(final Boolean value) {
         updateReportFormats(value, ReportFormatType.CIOMSSAEFORM);
     }
 
-    @Transient
+    @Transient @Deprecated
     public Boolean getDcpSAEPDFType() {
         return getReportFormat(ReportFormatType.DCPSAEFORM) != null;
     }
 
+    @Deprecated
     public void setDcpSAEPDFType(final Boolean dcpSAEPDFType) {
         updateReportFormats(dcpSAEPDFType, ReportFormatType.DCPSAEFORM);
     }
 
-    @Transient
+    @Transient @Deprecated
     public Boolean getMedwatchPDFType() {
         return getReportFormat(ReportFormatType.MEDWATCHPDF) != null;
     }
 
+    @Deprecated
     public void setMedwatchPDFType(final Boolean medwatchPDFType) {
         updateReportFormats(medwatchPDFType, ReportFormatType.MEDWATCHPDF);
     }

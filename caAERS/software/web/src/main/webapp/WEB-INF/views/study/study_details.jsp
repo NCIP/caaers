@@ -167,36 +167,44 @@
           <%-- Short Title--%>
           <tags:renderRow field="${fieldGroups.studyDetails.fields[0]}"/>
 
-          <%-- Long Title--%>
+<%--
+          &lt;%&ndash; Long Title&ndash;%&gt;
           <tags:renderRow field="${fieldGroups.studyDetails.fields[1]}"/>
 
-          <%-- Precis --%>
+          &lt;%&ndash; Precis &ndash;%&gt;
           <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
 
-          <%-- Description --%>
+          &lt;%&ndash; Description &ndash;%&gt;
           <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
 
+--%>
           <%-- Phase --%>
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[4]}"/>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[1]}"/>
           
-          <%-- Status --%>
+<%--
+          &lt;%&ndash; Status &ndash;%&gt;
           <tags:renderRow field="${fieldGroups.studyDetails.fields[5]}"/>
+--%>
 
       </c:if>
 
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
 
-          <%-- MultiInstitutional --%>
+<%--
+          &lt;%&ndash; MultiInstitutional &ndash;%&gt;
           <tags:renderRow field="${fieldGroups.studyDetails.fields[6]}"/>
+--%>
 
-          <%-- Adeers reporting --%>
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[7]}"/>
+<%--
+          &lt;%&ndash; Adeers reporting &ndash;%&gt;
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
 
+--%>
           <%-- Verbatim first --%>
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[8]}"/>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
 
           <%-- Data Entry Status --%>
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[9]}"/>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
           
       </c:if>
 
@@ -234,6 +242,7 @@
           </chrome:division>
       </c:if>
 
+<%--
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager}">
           <chrome:division title="Study method details">
               <c:forEach items="${fieldGroups.dcpFieldGroup.fields}" var="field" varStatus="status">
@@ -242,6 +251,8 @@
           </chrome:division>
       </c:if>
 
+--%>
+<%--
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
           <chrome:division title="Expedited report formats">
               <c:forEach items="${fieldGroups.rfFieldGroup.fields}" var="field" varStatus="status">
@@ -249,6 +260,7 @@
               </c:forEach>
           </chrome:division>
       </c:if>
+--%>
 
     <c:set var="hasCC" value="${command.study.studyCoordinatingCenter.organization != null}" />
     <c:set var="hasFS" value="${command.study.primaryFundingSponsor.organization != null}" />

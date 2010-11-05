@@ -35,16 +35,16 @@
 
                 <xs:sequence>
                     <xs:element name="shortTitle" type="CustomStringType" />
-                    <xs:element name="longTitle" type="CustomStringType" />
+                    <xs:element name="longTitle" type="CustomStringType" minOccurs="0"/>
                     <xs:element name="precis" type="CustomStringType" minOccurs="0"/>
                     <xs:element name="description" type="CustomStringType" minOccurs="0"/>
                     <xs:element name="phaseCode" type="StudyPhaseType" />
-                    <xs:element name="status" type="StatusType" />
-                    <xs:element name="multiInstitutionIndicator" type="xs:boolean" />
-                    <xs:element name="adeersReporting" type="xs:boolean" />
+                    <xs:element name="status" type="StatusType" minOccurs="0"/>
+                    <xs:element name="multiInstitutionIndicator" type="xs:boolean" minOccurs="0"/>
+                    <xs:element name="adeersReporting" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
                     <xs:element ref="aeTerminology"/>
-                    
+
                     <xs:element ref="diseaseTerminology"/>
                     <xs:element name="design" type="DesignCodeType" minOccurs="0"/>
                     

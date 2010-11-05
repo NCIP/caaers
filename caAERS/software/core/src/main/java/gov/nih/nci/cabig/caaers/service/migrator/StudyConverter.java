@@ -32,25 +32,14 @@ public class StudyConverter {
     public gov.nih.nci.cabig.caaers.webservice.Studies convertStudyDomainToStudyDto(Study study) throws Exception {
         ObjectFactory objectFactory = new ObjectFactory();
         gov.nih.nci.cabig.caaers.webservice.Study studyDto = objectFactory.createStudy();
-
             studyDto.setShortTitle(study.getShortTitle());
-            studyDto.setLongTitle(study.getLongTitle());
-            studyDto.setPrecis(study.getPrecis());
-            studyDto.setDescription(study.getDescription());
             studyDto.setPhaseCode(StudyPhaseType.fromValue(study.getPhaseCode()));
-            studyDto.setStatus(StatusType.fromValue(study.getStatus()));
-            studyDto.setMultiInstitutionIndicator(study.getMultiInstitutionIndicator());
-            studyDto.setAdeersReporting(study.getAdeersReporting());
-
             if(study.getOtherMeddra() != null && !study.getOtherMeddra().equals("")){
                 MeddraVersion otherMeddra = new MeddraVersion();
                 otherMeddra.setName(study.getOtherMeddra().getName());
                 studyDto.setOtherMeddra(otherMeddra.getName());
             }
 
-            populateDesignCodeDomain2Dto(studyDto, study);
-            populateStudyTherapyDomain2Dto(studyDto, study);
-            populateStudyReportTypesDomain2Dto(studyDto, study);
             populateAeTerminologyDomain2Dto(studyDto, study);
             populateDiseaseTerminologyDomain2Dto(studyDto,study);
             populateFundingSponsorDomain2Dto(studyDto, study);
@@ -83,13 +72,7 @@ public class StudyConverter {
 		try {
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
-			study.setLongTitle(studyDto.getLongTitle());
-			study.setPrecis(studyDto.getPrecis());
-			study.setDescription(studyDto.getDescription());
 			study.setPhaseCode(studyDto.getPhaseCode().value());
-			study.setStatus(studyDto.getStatus().value());
-			study.setMultiInstitutionIndicator(studyDto.isMultiInstitutionIndicator());
-			study.setAdeersReporting(studyDto.isAdeersReporting());
 
 			if (! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null) {
 				MeddraVersion otherMeddra = null;
@@ -98,9 +81,6 @@ public class StudyConverter {
 				study.setOtherMeddra(otherMeddra);
 			}
 
-			populateDesignCode(studyDto, study);
-			populateStudyTherapy(studyDto, study);
-			populateStudyReportTypes(studyDto, study);
 			populateAeTerminology(studyDto, study);
 			populateDiseaseTerminology(studyDto,study);
 			populateFundingSponsor(studyDto, study);
@@ -390,41 +370,7 @@ public class StudyConverter {
         }
     }
 
-	//Populate DesignCode
-	private void populateDesignCode(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-
-		DesignCodeType designCodeType = studyDto.getDesign();
-		if(DesignCodeType.BLIND.equals(designCodeType)){
-			study.setDesign(Design.BLIND);
-		}
-		if(DesignCodeType.OPEN_UNBLIND.equals(designCodeType)){
-			study.setDesign(Design.OPEN_UNBLIND);
-		}
-		if(DesignCodeType.PARTIAL.equals(designCodeType)){
-			study.setDesign(Design.PARTIAL);
-		}
-	}
-
-	// Populate DesignCode
-	private void populateDesignCodeDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-        if (study.getDesign() == null) return;
-        Design d = study.getDesign();
-        studyDto.setDesign(DesignCodeType.fromValue(d.name()));
-	}
-
-	private void populateStudyTherapy(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		if(studyDto.isBehavioralTherapyType() != null && studyDto.isBehavioralTherapyType()) study.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
-		if(studyDto.isBiologicalTherapyType() != null && studyDto.isBiologicalTherapyType()) study.addStudyTherapy(StudyTherapyType.BIOLOGICAL_VACCINE);
-		if(studyDto.isDeviceTherapyType() != null && studyDto.isDeviceTherapyType()) study.addStudyTherapy(StudyTherapyType.DEVICE);
-		if(studyDto.isDietarySupplementTherapyType() != null && studyDto.isDietarySupplementTherapyType()) study.addStudyTherapy(StudyTherapyType.DIETARY_SUPPLEMENT);
-		if(studyDto.isDrugAdministrationTherapyType() != null && studyDto.isDrugAdministrationTherapyType()) study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
-		if(studyDto.isGeneticTherapyType() != null && studyDto.isGeneticTherapyType()) study.addStudyTherapy(StudyTherapyType.GENETIC);
-		if(studyDto.isOtherTherapyType() != null && studyDto.isOtherTherapyType()) study.addStudyTherapy(StudyTherapyType.OTHER);
-		if(studyDto.isRadiationTherapyType() != null && studyDto.isRadiationTherapyType()) study.addStudyTherapy(StudyTherapyType.RADIATION);
-		if(studyDto.isSurgeryTherapyType() != null && studyDto.isSurgeryTherapyType()) study.addStudyTherapy(StudyTherapyType.SURGERY);
-
-	}
-
+/*
 	private void populateStudyReportTypes(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		if (studyDto.isReportTypeAdeersPDF() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.ADEERSPDF);
 		if (studyDto.isReportTypeCaaersXML() != null && studyDto.isReportTypeCaaersXML()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CAAERSXML);
@@ -433,6 +379,7 @@ public class StudyConverter {
 		if (studyDto.isReportTypeDCPSAEForm() != null && studyDto.isReportTypeDCPSAEForm()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.DCPSAEFORM);
 		if (studyDto.isReportTypeMedwatchPDF() != null && studyDto.isReportTypeMedwatchPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.MEDWATCHPDF);
 	}
+*/
 
 	private void populateAeTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
@@ -457,18 +404,7 @@ public class StudyConverter {
 
 	}
 
-	private void populateStudyTherapyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
-		studyDto.setBehavioralTherapyType(study.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
-		studyDto.setBiologicalTherapyType(study.hasTherapyOfType(StudyTherapyType.BIOLOGICAL_VACCINE));
-		studyDto.setDeviceTherapyType(study.hasTherapyOfType(StudyTherapyType.DEVICE));
-		studyDto.setDietarySupplementTherapyType(study.hasTherapyOfType(StudyTherapyType.DIETARY_SUPPLEMENT));
-		studyDto.setDrugAdministrationTherapyType(study.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
-		studyDto.setGeneticTherapyType(study.hasTherapyOfType(StudyTherapyType.GENETIC));
-		studyDto.setOtherTherapyType(study.hasTherapyOfType(StudyTherapyType.OTHER));
-		studyDto.setRadiationTherapyType(study.hasTherapyOfType(StudyTherapyType.RADIATION));
-		studyDto.setSurgeryTherapyType(study.hasTherapyOfType(StudyTherapyType.SURGERY));
-	}
-
+/*
 	private void populateStudyReportTypesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
         studyDto.setReportTypeMedwatchPDF(study.getMedwatchPDFType());
         studyDto.setReportTypeAdeersPDF(study.getAdeersPDFType());
@@ -477,6 +413,7 @@ public class StudyConverter {
         studyDto.setReportTypeCIOMSForm(study.getCiomsPDFType());
         studyDto.setReportTypeDCPSAEForm(study.getDcpSAEPDFType());
 	}
+*/
 
 	private void populateAeTerminologyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 

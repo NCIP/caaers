@@ -67,16 +67,17 @@ public class DetailsTab extends StudyTab {
         InputFieldGroup fieldGroup = null,
                 reportFormatFieldGroup = null,
                 fundSponsorFieldGroup = null,
-                coordinatingCenterFieldGroup = null,
-                dcpCodeFieldGroup = null;
+                coordinatingCenterFieldGroup = null;
+                // dcpCodeFieldGroup = null;
 
         if (fieldGroup == null) {
             // set up the fields
             fieldGroup = new DefaultInputFieldGroup("studyDetails");
             List<InputField> fields = fieldGroup.getFields();
-            InputField shortTitleField = InputFieldFactory.createTextField("study.shortTitle", "Short title", true);
-            InputFieldAttributes.setSize(shortTitleField, 50);
+            InputField shortTitleField = InputFieldFactory.createTextArea("study.shortTitle", "Title", true);
+            InputFieldAttributes.setColumns(shortTitleField, 70);
             fields.add(shortTitleField);
+/*
             InputField longTitleField = InputFieldFactory.createTextArea("study.longTitle", "Long title", true);
             InputFieldAttributes.setColumns(longTitleField, 70);
             fields.add(longTitleField);
@@ -85,10 +86,11 @@ public class DetailsTab extends StudyTab {
             fields.add(precisField);
             InputField descField = InputFieldFactory.createTextArea("study.description", "Description", false);
             InputFieldAttributes.setColumns(descField, 70);
-
             fields.add(descField);
+*/
+
             fields.add(InputFieldFactory.createSelectField("study.phaseCode", "Phase", true, collectOptionsFromConfig("phaseCodeRefData", "desc", "desc")));
-            fields.add(InputFieldFactory.createSelectField("study.status", "Status", true, collectOptionsFromConfig("statusRefData", "code", "desc")));
+//            fields.add(InputFieldFactory.createSelectField("study.status", "Status", true, collectOptionsFromConfig("statusRefData", "code", "desc")));
 
             Map<Object, Object> options = new LinkedHashMap<Object, Object>();
             options.put("", "Please select");
@@ -99,13 +101,14 @@ public class DetailsTab extends StudyTab {
             verbatimFirstOptions.put(Boolean.FALSE, "No");
             verbatimFirstOptions.put(Boolean.TRUE, "Yes");
 
-            fields.add(InputFieldFactory.createSelectField("study.multiInstitutionIndicator", "Multi Institutional", true, options));
-            fields.add(InputFieldFactory.createSelectField("study.adeersReporting", "AdEERS  reporting required", true, options));
+//            fields.add(InputFieldFactory.createSelectField("study.multiInstitutionIndicator", "Multi Institutional", true, options));
+//            fields.add(InputFieldFactory.createSelectField("study.adeersReporting", "AdEERS  reporting required", true, options));
             fields.add(InputFieldFactory.createSelectField("study.verbatimFirst", "verbatimFirst", false, verbatimFirstOptions));
             fields.add(InputFieldFactory.createLabelField("dataEntryStatus", "Data Entry Status", false));
 
         }
 
+/*
         if (reportFormatFieldGroup == null) {
             reportFormatFieldGroup = new DefaultInputFieldGroup("rfFieldGroup");
             List<InputField> fields = reportFormatFieldGroup.getFields();
@@ -134,6 +137,7 @@ public class DetailsTab extends StudyTab {
             InputFieldAttributes.setSize(medwatchPDFTypeField, 50);
             fields.add(medwatchPDFTypeField);
         }
+*/
 
         if (fundSponsorFieldGroup == null) {
             fundSponsorFieldGroup = new DefaultInputFieldGroup("fsFieldGroup");
@@ -174,6 +178,7 @@ public class DetailsTab extends StudyTab {
         sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.diseaseCodeTerm", "Terminology", true,  diseaseOpt));
         sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));
 
+/*
         if (dcpCodeFieldGroup == null) {
             dcpCodeFieldGroup = new DefaultInputFieldGroup("dcpFieldGroup");
             List<InputField> fields = dcpCodeFieldGroup.getFields();
@@ -182,15 +187,16 @@ public class DetailsTab extends StudyTab {
             designOpts.putAll(collectOptions(Arrays.asList(Design.values()), null, "displayName"));
             fields.add(InputFieldFactory.createSelectField("study.design", "Study design", false, designOpts));
         }
+*/
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(fieldGroup);
-        map.addInputFieldGroup(reportFormatFieldGroup);
+        //map.addInputFieldGroup(reportFormatFieldGroup);
         map.addInputFieldGroup(fundSponsorFieldGroup);
         map.addInputFieldGroup(coordinatingCenterFieldGroup);
         map.addInputFieldGroup(studyCodeFieldGroup);
         map.addInputFieldGroup(studyDiseaseCodeFieldGroup);
-        map.addInputFieldGroup(dcpCodeFieldGroup);
+        // map.addInputFieldGroup(dcpCodeFieldGroup);
 
         return map;
     }

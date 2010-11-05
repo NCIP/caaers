@@ -43,20 +43,8 @@
                 	<div class="value">${command.study.primaryIdentifier.value} </div>
             	</div>
            		<div class="row">
-                	<div class="label">Short title</div>
+                	<div class="label">Title</div>
                 	<div class="value">${command.study.shortTitle} </div>
-            	</div>
-            	<div class="row">
-                	<div class="label">Long Title</div>
-                	<div class="value">${command.study.longTitle} </div>
-            	</div>
-            	<div class="row">
-                	<div class="label">Precis</div>
-                	<div class="value">${command.study.precis} </div>
-            	</div>
-            	<div class="row">
-                	<div class="label">Description</div>
-                	<div class="value">${command.study.description} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Funding sponsor</div>
@@ -80,10 +68,6 @@
                 	<div class="value">${command.study.phaseCode} </div>
             	</div>
             	<div class="row">
-                	<div class="label">Status</div>
-                	<div class="value">${command.study.status} </div>
-            	</div>
-            	<div class="row">
                 	<div class="label">Study Design</div>
                 	<div class="value">${command.study.design!=null?command.study.design.displayName:'N/A'}</div>
             	</div>
@@ -101,14 +85,12 @@
 	            	<div class="value">${command.study.otherMeddra.name}</div>
 	            </div>
             	</c:if>
-            	<div class="row">
-                	<div class="label">Multi institutional</div>
-                	<div class="value">${command.study.multiInstitutionIndicator == null ? '' : command.study.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
-            	</div>
+<%--
             	<div class="row">
                 	<div class="label">AdEERS reporting</div>
                 	<div class="value">${command.study.adeersReporting == null ? '' : command.study.adeersReporting ? 'Yes' : 'No'} </div>
             	</div>
+--%>
             	<div class="row">
                 	<div class="label"><caaers:message code="LBL_study.verbatimFirst" /></div>
                 	<div class="value">${command.study.verbatimFirst == null ? '' : command.study.verbatimFirst ? 'Yes' : 'No'}</div>

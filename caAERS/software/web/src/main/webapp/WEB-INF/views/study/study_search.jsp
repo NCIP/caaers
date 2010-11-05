@@ -75,8 +75,7 @@ var linkFormatter = function(elCell, oRecord, oColumn, oData) {
 var myColumnDefs = [
     {key:"externalId",       label:"",              	sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
     {key:"primaryIdentifierValue", label:"Primary identifier", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
-    {key:"shortTitle", label:"Short title", sortable:true, resizeable:true, formatter: linkFormatter},
-    {key:"status", label:"Status", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
+    {key:"shortTitle", label:"Title", sortable:true, resizeable:true, formatter: linkFormatter},
     {key:"phaseCode", label:"Phase code", sortable:true, resizeable:true, minWidth:150, maxWidth:150},
     {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true, minWidth:150, maxWidth:150}
 ];
@@ -84,7 +83,6 @@ var myColumnDefs = [
 var myFields = [
     {key:'id',                      parser:"string"},
     {key:'primaryIdentifierValue',  parser:"string"},
-    {key:'status',                  parser:"string"},
     {key:'phaseCode',               parser:"string"},
     {key:'primarySponsorCode',      parser:"string"},
     {key:'shortTitle',              parser:"string"},
