@@ -315,14 +315,17 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                     InvalidStudyException {
     	logger.info("Populating study details..");
         study.setShortTitle(studyDto.getShortTitleText());
-        study.setLongTitle(studyDto.getLongTitleText());
-        study.setPrecis(studyDto.getPrecisText());
-        study.setDescription(studyDto.getDescriptionText());
-        study.setStatus(gov.nih.nci.cabig.caaers.domain.Study.STATUS_ACTIVE);
-        study.setAdeersReporting(Boolean.FALSE);
+        
+        //Commented below lines due to deprecated study fields.
+        //study.setLongTitle(studyDto.getLongTitleText());
+        //study.setPrecis(studyDto.getPrecisText());
+        //study.setDescription(studyDto.getDescriptionText());
+        //study.setStatus(gov.nih.nci.cabig.caaers.domain.Study.STATUS_ACTIVE);
+        //study.setAdeersReporting(Boolean.FALSE);
+        //study.setMultiInstitutionIndicator(BooleanUtils.toBoolean(studyDto.getMultiInstitutionIndicator()));
+        
         study.setPhaseCode(studyDto.getPhaseCode());
-        study.setMultiInstitutionIndicator(BooleanUtils.toBoolean(studyDto
-                        .getMultiInstitutionIndicator()));
+
         study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
         study.setBlindedIndicator(BooleanUtils.toBoolean(studyDto.getBlindedIndicator()));
         if (coppaIdentifier != null ) {

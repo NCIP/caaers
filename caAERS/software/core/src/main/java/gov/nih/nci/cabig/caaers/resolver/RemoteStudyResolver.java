@@ -8,11 +8,11 @@ import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
-import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
@@ -23,8 +23,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -37,7 +35,6 @@ import gov.nih.nci.coppa.po.Organization;
 import gov.nih.nci.coppa.po.Person;
 import gov.nih.nci.coppa.services.pa.Arm;
 import gov.nih.nci.coppa.services.pa.DocumentWorkflowStatus;
-import gov.nih.nci.coppa.services.pa.PlannedActivity;
 import gov.nih.nci.coppa.services.pa.StudyContact;
 import gov.nih.nci.coppa.services.pa.StudyIndlde;
 import gov.nih.nci.coppa.services.pa.StudyOverallStatus;
@@ -45,7 +42,6 @@ import gov.nih.nci.coppa.services.pa.StudyProtocol;
 import gov.nih.nci.coppa.services.pa.StudySiteContact;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -179,12 +175,15 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		//Set core attributes from COPPA Object
 		//shortTitle --> PublicTitle 
 		remoteStudy.setShortTitle(CoppaPAObjectFactory.getShortTitleFromStudyProtocol(studyProtocol));
-		//longTitle --> OfficialTitle
-		remoteStudy.setLongTitle(CoppaPAObjectFactory.getLongTitleFromStudyProtocol(studyProtocol));
 		remoteStudy.setPhaseCode(CoppaConstants.coppaMap.get(CoppaPAObjectFactory.getPhaseCodeFromStudyProtocol(studyProtocol)));
-		remoteStudy.setDescription(CoppaPAObjectFactory.getPublicDescriptionFromStudyProtocol(studyProtocol));
 		remoteStudy.setExternalId(studyProtocol.getIdentifier().getExtension());
-		remoteStudy.setStatus(CoppaConstants.coppaMap.get(getStudyStatus(studyProtocol)));
+
+		//Commented below lines due to fields being deprecated in Study.
+		//longTitle --> OfficialTitle
+		//remoteStudy.setLongTitle(CoppaPAObjectFactory.getLongTitleFromStudyProtocol(studyProtocol));
+		//remoteStudy.setDescription(CoppaPAObjectFactory.getPublicDescriptionFromStudyProtocol(studyProtocol));
+		//remoteStudy.setStatus(CoppaConstants.coppaMap.get(getStudyStatus(studyProtocol)));
+		
 		
 		//Mapping StudyProtocol's Assigned Identifer as OrganizationAssignedIdentifer in caAERS.
 		//Assigned organization will be NCI.
@@ -800,7 +799,8 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 	 * @return
 	 * @throws Exception
 	 */
-	public String getStudyStatus(StudyProtocol studyProtocol) throws Exception{
+
+	private String getStudyStatus(StudyProtocol studyProtocol) throws Exception{
 		String paIdPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
 		String statusCode = "";
 		StudyOverallStatus status = null;
@@ -813,6 +813,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		}
 		return statusCode;
 	}
+	
 	
 	/**
 	 * Creates default AeTerminology and returns.
