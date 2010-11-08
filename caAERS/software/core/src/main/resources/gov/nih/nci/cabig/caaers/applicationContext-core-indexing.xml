@@ -92,8 +92,8 @@
                 <ref bean="studyIdFetcher"/>
                 <ref bean="researchStaffIdFetcher"/>
                 <ref bean="investigatorIdFetcher"/>
-                <ref bean="reportingPeriodIdFetcher"/>
                 <ref bean="participantIdFetcher"/>
+                <ref bean="reportingPeriodIdFetcher"/>
                 <ref bean="adverseEventIdFetcher"/>
                 <ref bean="expeditedAdverseEventReportIdFetcher"/>
                 <ref bean="reportIdFetcher"/>

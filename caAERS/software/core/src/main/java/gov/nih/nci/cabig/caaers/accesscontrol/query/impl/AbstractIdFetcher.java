@@ -157,11 +157,12 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
                 List<Integer> ids = (List<Integer>) search(query);
                 entry.setEntityIds(ids);
             }
+            list.add(entry);
           }
         }
         
         if(log.isInfoEnabled()){
-            log.info("Fetcher (" + getClass().getName() + " fetched " + String.valueOf(list));
+           log.info("Fetcher (" + getClass().getName() + " fetched " + String.valueOf(list));
         }
         return list;
 	}
