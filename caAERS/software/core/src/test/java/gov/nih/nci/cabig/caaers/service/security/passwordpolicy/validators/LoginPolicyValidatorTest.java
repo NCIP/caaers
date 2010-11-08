@@ -42,7 +42,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		loginPolicyValidator = new LoginPolicyValidator();
 		loginPolicy = new LoginPolicy();
 		loginPolicy.setAllowedFailedLoginAttempts(3); // 3 attempts
-		loginPolicy.setMaxPasswordAge(172800); // 2 days
+		loginPolicy.setMaxPasswordAge(180800); // 2 days
 		loginPolicy.setLockOutDuration(180); // 3 minutes
 		passwordPolicy = new PasswordPolicy();
 		passwordPolicy.setLoginPolicy(loginPolicy);
@@ -75,12 +75,14 @@ public class LoginPolicyValidatorTest extends TestCase {
 		user.setPasswordLastSet(new Timestamp(cal.getTime().getTime()));
 		assertTrue(loginPolicyValidator.validateMaxPasswordAge(loginPolicy, credential));
 	}
+	
 	public void testForMaxPasswordAge_CheckingSuccess2() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -2);// last set 2 days ago
 		user.setPasswordLastSet(new Timestamp(cal.getTime().getTime()));
 		assertTrue(loginPolicyValidator.validateMaxPasswordAge(loginPolicy, credential));
 	}
+	
 	public void testForMaxPasswordAge_CheckingFailure() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -3);//  last set 3 days ago
