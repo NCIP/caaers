@@ -137,14 +137,14 @@
             id="-30"
             participant_id="-5"
             value="Id-01"
-            primary_indicator="false"
+            primary_indicator="0"
             />
 
     <IDENTIFIERS
             id="-31"
             participant_id="-5"
             value="Id-02"
-            primary_indicator="true"
+            primary_indicator="1"
             />
 
     <studies
