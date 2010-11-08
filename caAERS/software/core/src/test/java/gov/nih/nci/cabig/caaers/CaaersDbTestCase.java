@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.dbunit.IDatabaseTester;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
@@ -168,6 +169,11 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         } else {
             return new DefaultDataTypeFactory();
         }
+    }
+    
+    @Override
+    protected IDatabaseTester getDatabaseTester() throws Exception {
+            return newDatabaseTester();
     }
 
     protected final void dumpResults(final String sql) {
