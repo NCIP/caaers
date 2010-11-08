@@ -76,7 +76,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	private String USER_ADMINISTRATOR = "user_administrator";
 	private String PO_INFO_MANAGER = "person_and_organization_information_manager";
 	
-	public static Integer ALL_IDS_FABRICATED_ID = -99887766;
+	public static Integer ALL_IDS_FABRICATED_ID = Integer.MIN_VALUE;
 	
 	//For all Investigators
 	private String AE_REPORTER = "ae_reporter";
@@ -673,11 +673,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
             entries.add(entry);
 
             List<Integer> studyIds = getAccessibleStudyIds(session, suiteRole);
-            if(studyIds.size() == 1 && studyIds.get(0).equals(ALL_IDS_FABRICATED_ID)){
-                if(allStudyIds == null) allStudyIds = getStudyIdsByOrganization(null);  //all studies in the system
-                studyIds = allStudyIds;
-            }
-
             entry.getEntityIds().addAll(studyIds);
         }
 
@@ -733,7 +728,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
 
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-        List<Integer> allOrgIds = null;
         for(SuiteRole suiteRole : SuiteRole.values()){
 
             UserGroupType userGroupType = UserGroupType.valueOf(suiteRole.getCsmName());
@@ -741,12 +735,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
             entries.add(entry);
 
             List<Integer> orgIds = getAccessibleOrganizationsForRole(session, suiteRole);
-            if(orgIds.size() == 1 && orgIds.get(0).equals(ALL_IDS_FABRICATED_ID)){
-                //has access to all organizations
-                if(allOrgIds == null) allOrgIds = getAllOrganizationIdsFromDB();
-                orgIds = allOrgIds;
-            }
-            
             entry.getEntityIds().addAll(orgIds);
         }
         
@@ -771,15 +759,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         if(CollectionUtils.isEmpty(nciCodes)) return orgIds;
         return getOrganizationIdsByIdentifiersFromDB(nciCodes);
 
-    }
-
-    
-    private List<Integer> getAllOrganizationIdsFromDB() {
-    	List<Integer> resultList = new ArrayList<Integer>();
-		String hql = "select distinct o.id from Organization o ";
-		HQLQuery query = new HQLQuery(hql.toString());
-		resultList = (List<Integer>) search(query);
-		return resultList;
     }
 
     private List<Integer> getStudyIdsByOrganization(List<Integer> orgIds) {

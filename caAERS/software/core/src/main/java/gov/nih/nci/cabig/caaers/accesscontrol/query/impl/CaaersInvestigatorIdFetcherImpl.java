@@ -1,3 +1,4 @@
+
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import java.util.ArrayList;
@@ -37,74 +38,34 @@ import org.apache.commons.logging.LogFactory;
 public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
      protected final Log log = LogFactory.getLog(CaaersInvestigatorIdFetcherImpl.class);
     //the query
-    private final String siteScopedHQL;
-    private final String studyScopedHQL;
-    private final String queryWithUserAccessToAllOrgs;
+    private final String siteScopedSQL;
+    private final String studyScopedSQL;
 
 
     public CaaersInvestigatorIdFetcherImpl(){
-        StringBuilder query = new StringBuilder();
-        query.append("select distinct si.investigator.id from SiteInvestigator si ")
-             .append(" where si.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(" )");
-        
-        //site query
-        siteScopedHQL = query.toString();
 
-        //study query (direct access for now)
-        studyScopedHQL = query.toString();
-        
-        queryWithUserAccessToAllOrgs = "select distinct si.investigator.id from SiteInvestigator si ";
+
+        //site scoped roles - can access all the researchstaff of their site.
+       StringBuilder siteSQL = new StringBuilder("select distinct sr.investigator_id as id from site_investigators  sr ")
+            .append("join organization_index oi on  oi.organization_id = sr.site_id ")
+            .append("where oi.login_id = :LOGIN_ID  ")
+            .append("and oi.role_code = :ROLE_CODE ");
+       siteScopedSQL = siteSQL.toString();
+
+        //study scoped roles - can access all research staff on their study and site
+        StringBuilder studySQL = new StringBuilder("select distinct sr.investigator_id as id from site_investigators  sr ")
+            .append("join study_organizations so on sr.site_id = so.site_id ")
+            .append("join study_index si on so.study_id = si.study_id ")
+            .append("join organization_index oi on  oi.organization_id = sr.site_id  ")
+            .append("where si.login_id = :LOGIN_ID ")
+            .append("and si.role_code = :ROLE_CODE ")
+            .append("and si.role_code = oi.role_code ")
+            .append("and si.login_id = oi.login_id ");
+        studyScopedSQL = studySQL.toString();
+
 
     }
 
-    @Override
-	public List fetch(String loginId){
-
-        List<IndexEntry> list = new ArrayList<IndexEntry>();
-        
-        long allOrgsCount = getAllOrgsCount();
-        
-        //for all site scoped roles
-        if (getApplicableSiteScopedRoles() != null) {
-	        for(UserGroupType role : getApplicableSiteScopedRoles()){
-	            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
-	            if (allOrgsCount == orgsCount) {
-	            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
-	            } else {
-	            	list.add(fetch(loginId, role, getSiteScopedHQL()));
-	            }
-	        }
-        } else {
-            long orgsCount = getOrgCountForRoleAndLogin(loginId,0);
-            if (allOrgsCount == orgsCount) {
-            	list.add(fetch(null, queryWithUserAccessToAllOrgs));
-            } else {
-            	list.add(fetch(loginId, null, getSiteScopedHQL()));
-            }        	
-        }
-
-        //for all study scoped roles
-        if (getApplicableStudyScopedRoles() != null) {
-	        for(UserGroupType role : getApplicableStudyScopedRoles()){
-	            long orgsCount = getOrgCountForRoleAndLogin(loginId,role.getCode());
-	            if (allOrgsCount == orgsCount) {
-	            	list.add(fetch(role, queryWithUserAccessToAllOrgs));
-	            } else {
-	            	list.add(fetch(loginId, role, getStudyScopedHQL()));
-	            }            
-	        }
-        } else {
-            long orgsCount = getOrgCountForRoleAndLogin(loginId,0);
-            if (allOrgsCount == orgsCount) {
-            	list.add(fetch(null, queryWithUserAccessToAllOrgs));
-            } else {
-            	list.add(fetch(loginId, null, getStudyScopedHQL()));
-            }         	
-        }
-
-        log.info("Investigator Fetcher fetched : " + String.valueOf(list) );
-        return list;
-	}
     
     /**
      * Will return the Site scoped HQL query
@@ -112,8 +73,8 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
      * @return
      */
     @Override
-    public String getSiteScopedHQL() {
-        return siteScopedHQL;
+    public String getSiteScopedSQL() {
+        return siteScopedSQL;
     }
 
     /**
@@ -122,8 +83,8 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
      * @return
      */
     @Override
-    public String getStudyScopedHQL() {
-        return studyScopedHQL;
+    public String getStudyScopedSQL() {
+        return studyScopedSQL;
     }
 
 	    

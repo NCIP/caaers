@@ -3,10 +3,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -17,9 +14,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Will find the organizations that can be accessed by the user.
  *
- * In addition to what CSM has provided, all the organizations associated to the studies also 
- * should be present in the index. 
-
+ * In addition to what CSM has provided, organization hierarchy for Coordinating center and Sponsor should be honoured. 
  * @author Biju Joseph
  *
  */
@@ -27,30 +22,39 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
 
     protected final Log log = LogFactory.getLog(CaaersOrganizationIdFetcherImpl.class);
 
+
     /**
      * Will figure out which organization the logged-in user can access.
      *
-     * Note:- Study scoped roles of a ResearchStaff may have to honour the orgnization hierarchy rule.
-     * i.e. A research staff belonging to Coordinating center can work under the same capacity, on the sites. 
-     * 
+     * Note:- Study scoped roles of a ResearchStaff may have to honour the organization hierarchy rule.
+     * i.e. A research staff belonging to Coordinating center can work under the same capacity, on the sites.
+     *
      * @param loginId - username
-     * @return
+     * @return List consisting of IndexEntry objects
      */
-	@Override
-	public List fetch(String loginId) {
+    @Override
+    public List fetch(String loginId) {
         
-		List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
+       
+        //find all the accessible organization ids
+        List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
+        if(resultList != null && !resultList.isEmpty()){
+            List<Integer> allOrgIds = null;
 
-        if(resultList != null && !resultList.isEmpty()) {
-           long allOrgCount = getAllOrgsCount();
+            for(IndexEntry entry : resultList){
+                List<Integer> orgIds = entry.getEntityIds();
+                if(orgIds == null || orgIds.isEmpty()) continue; // no access
+                if(orgIds.size() == 1 && orgIds.get(0).equals(Integer.MIN_VALUE)){ //all sites
+                   if(allOrgIds == null){
+                       HQLQuery query = new HQLQuery("select o.id from Organization o");
+                       allOrgIds = (List<Integer>) search(query);
+                   }
+                   entry.setEntityIds(allOrgIds);
+                   continue; //all site access
+                }
 
-           for(IndexEntry entry : resultList){
-               
-               List<Integer> orgIds = entry.getEntityIds();
-               if(orgIds.isEmpty()) continue; //has no access to any org
-               if(orgIds.size() == allOrgCount) continue;  //has all site access. 
-               
-               //for study scoped roles, need to honour organization hierarchy. 
+                
+               //for study scoped roles, need to honour organization hierarchy.
                if(SecurityUtils.isStudyScoped(entry.getRole().getCsmName())){
                    //can access all the study sites coordinated by his organizations, where he/she is active
                    StringBuilder hql = new StringBuilder("select distinct ss.organization.id from StudyOrganization so, StudySite ss ")
@@ -74,22 +78,22 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
 
                    List siteOrgIds = search(query);
                    if(CollectionUtils.isNotEmpty(siteOrgIds)){
-                       //merge both the organization ids. 
+                       //merge both the organization ids.
                        HashSet<Integer> set = new HashSet<Integer>(siteOrgIds);
                        set.addAll(orgIds);
                        entry.setEntityIds(new ArrayList<Integer>(set));
                    }
                }
-               
-           }
+
+            }
         }
 
 
+        if(log.isInfoEnabled()){
+          log.info("Organization Fetcher fetched : " + String.valueOf(resultList) );  
+        }
 
+        return resultList;
+    }
 
-        log.info("Organization Fetcher fetched : " + String.valueOf(resultList) );
-		return resultList;
-	}
-
-    
 }

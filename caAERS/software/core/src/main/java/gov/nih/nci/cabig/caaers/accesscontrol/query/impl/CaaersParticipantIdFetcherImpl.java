@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-
 import com.semanticbits.security.contentfilter.IdFetcher;
 
 /**
@@ -34,38 +32,40 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 
     //the query
-    private final String siteScopedHQL;
-    private final String studyScopedHQL;
+    private final String siteScopedSQL;
+    private final String studyScopedSQL;
 
     public CaaersParticipantIdFetcherImpl(){
 
-        //site query
-       StringBuilder query = new StringBuilder().append("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a ")
-        .append("join a.studySite ss where ss.study = so.study  ")
-        .append("and ( ss.organization.id  in ( ").append(ORG_INDEX_BASE_QUERY).append(" ) ")
-        .append("or ( so.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(") and so.class in ('SFS', 'SCC') ) )");
-       siteScopedHQL = query.toString();
 
-       query.setLength(0);
+        //site scoped roles - can access all the participants of their site.
+       StringBuilder siteSQL = new StringBuilder("select distinct a.participant_id as id from participant_assignments a ")
+            .append("join study_organizations so on so.id = a.study_site_id ")
+            .append("join organization_index oi on   so.site_id = oi.organization_id ")
+            .append("where oi.login_id = :LOGIN_ID  ")
+            .append("and oi.role_code = :ROLE_CODE ");
+       siteScopedSQL = siteSQL.toString();
 
-        //study query
-       query.append("select distinct a.participant.id from  StudyOrganization so ,StudyParticipantAssignment a ")
-        .append("join a.studySite ss where ss.study = so.study  ")
-        .append("and ss.study.id in (").append(STUDY_INDEX_BASE_QUERY).append(") ")
-        .append("and ( ss.organization.id  in ( ").append(ORG_INDEX_BASE_QUERY).append(" ) ")
-        .append("or ( so.organization.id in ( ").append(ORG_INDEX_BASE_QUERY).append(") and so.class in ('SFS', 'SCC') ) )");
-
-        studyScopedHQL = query.toString();
+        //study scoped roles - can access all participants
+        StringBuilder studySQL = new StringBuilder("select distinct a.participant_id as id from participant_assignments  a ")
+            .append("join study_organizations so on so.id = a.study_site_id  ")
+            .append("join organization_index oi on oi.organization_id = so.site_id ")
+            .append("join study_index si on si.study_id =  so.study_id ")
+            .append("where oi.login_id = :LOGIN_ID ")
+            .append("and oi.role_code = :ROLE_CODE ")
+            .append("and si.role_code = oi.role_code ")
+            .append("and si.login_id = oi.login_id ");
+        studyScopedSQL = studySQL.toString();
 
     }
 
 
-    public String getSiteScopedHQL(){
-        return siteScopedHQL;
+    public String getSiteScopedSQL(){
+        return siteScopedSQL;
     }
 
-    public String getStudyScopedHQL(){
-        return studyScopedHQL;
+    public String getStudyScopedSQL(){
+        return studyScopedSQL;
     }
 
 

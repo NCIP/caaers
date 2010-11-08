@@ -1,28 +1,25 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.type.NullableType;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -31,7 +28,7 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 /**
  * A base class of all IdFetcher implementations, which provides the basic infrastructure level requirements.
  *  
- * @author: Biju Joseph
+ * @author Biju Joseph
  */
 public abstract class AbstractIdFetcher extends HibernateDaoSupport implements IdFetcher {
 
@@ -40,12 +37,10 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     protected CSMUserRepository csmUserRepository;
     
     protected CaaersSecurityFacade caaersSecurityFacade;
-    protected final String ORG_INDEX_BASE_QUERY = "select oi.organization.id from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
-    protected final String STUDY_INDEX_BASE_QUERY = "select sti.study.id from StudyIndex sti where sti.roleCode = :ROLE_CODE and sti.loginId = :LOGIN_ID";
-    
     private UserGroupType[] applicableSiteScopedRoles ; 
-    private UserGroupType[] applicableStudyScopedRoles ; 
-    
+    private UserGroupType[] applicableStudyScopedRoles ;
+
+
     /**
      * Will return the Site scoped HQL query
      * @return
@@ -61,6 +56,25 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     public String getStudyScopedHQL() {
     	return null;
     }
+
+
+
+    /**
+     * Will return the Site scoped SQL query
+     * @return
+     */
+    public String getSiteScopedSQL() {
+    	return null;
+    }
+
+    /**
+     * Will return the Study scoped SQL query
+     * @return
+     */
+    public String getStudyScopedSQL() {
+    	return null;
+    }
+
 
 
     /**
@@ -81,6 +95,29 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     }
 
     /**
+     * Generates the query
+     * @param loginId
+     * @param role
+     * @param sql
+     * @param nativeQuery
+     * @return
+     */
+    private AbstractQuery createQuery(String loginId, UserGroupType role, String sql, boolean nativeQuery){
+       AbstractQuery query;
+       if(nativeQuery){
+         query = new NativeSQLQuery(sql);
+         ((NativeSQLQuery)query).setScalar("id", Hibernate.INTEGER);
+       }else{
+           query = new HQLQuery(sql);
+       }
+        
+       if(loginId != null) query.getParameterMap().put("LOGIN_ID", loginId);
+       if(role != null) query.getParameterMap().put("ROLE_CODE", role.getCode()) ;
+       return query;
+
+    }
+
+    /**
      * Will fetch all the accessible subjectIds per-role
      * @param loginId - username
      * @return
@@ -90,215 +127,82 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         List<IndexEntry> list = new ArrayList<IndexEntry>();
     
         //for all site scoped roles
-        String hql = getSiteScopedHQL();
-        if (hql != null) {
-	        if (getApplicableSiteScopedRoles() != null) {
-	        	for(UserGroupType role : getApplicableSiteScopedRoles()){
-	        		list.add(fetch(loginId, role, getSiteScopedHQL()));
-	        	}
-	        } else {
-	        	list.add(fetch(loginId, null , getSiteScopedHQL()));
-	        }
+        UserGroupType[] siteScopedRoles = getApplicableSiteScopedRoles();
+        if(siteScopedRoles != null){
+          String sql = getSiteScopedSQL();
+          boolean nativeSQL = sql != null;
+          String hql = nativeSQL ? sql : getSiteScopedHQL();
+          for(UserGroupType role : siteScopedRoles){
+            IndexEntry entry = new IndexEntry(role);
+            if(hql != null){
+                AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
+                List<Integer> ids = (List<Integer>) search(query);
+                entry.setEntityIds(ids);
+            }
+            list.add(entry);
+          }
+
         }
 
         //for all study scoped roles
-        hql = getStudyScopedHQL();
-        if (hql != null) {
-	        if (getApplicableStudyScopedRoles() != null) {
-		        for(UserGroupType role : getApplicableStudyScopedRoles()){
-		            list.add(fetch(loginId, role, getStudyScopedHQL()));
-		        }
-	        } else {
-	        	 list.add(fetch(loginId, null , getStudyScopedHQL()));
-	        }
+        UserGroupType[] studyScopedRolse = getApplicableStudyScopedRoles();
+        if(studyScopedRolse != null){
+          String sql = getStudyScopedSQL();
+          boolean nativeSQL = sql != null;
+          String hql = nativeSQL ? sql : getStudyScopedHQL();
+          for(UserGroupType role : studyScopedRolse){
+            IndexEntry entry = new IndexEntry(role);
+            if(hql != null){
+                AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
+                List<Integer> ids = (List<Integer>) search(query);
+                entry.setEntityIds(ids);
+            }
+          }
         }
-        log.info("Fetcher fetched " + String.valueOf(list));
+        
+        if(log.isInfoEnabled()){
+            log.info("Fetcher (" + getClass().getName() + " fetched " + String.valueOf(list));
+        }
         return list;
 	}
 
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
     	String queryString = query.getQueryString();
-        log.debug("::: " + queryString.toString());
+        if(log.isDebugEnabled()) log.debug("::: " + queryString);
        return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    if (value instanceof Collection) {
-                    	hibernateQuery.setParameterList(key, (Collection) value);
-                    } else {
-                    	hibernateQuery.setParameter(key, value);
+                if(query instanceof NativeSQLQuery){
+                    org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
+                    Map<String, NullableType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+                    for(String key : scalarMap.keySet()){
+                       nativeQuery.addScalar(key, scalarMap.get(key));
                     }
+                    Map<String, Object> queryParameterMap = query.getParameterMap();
+                    for (String key : queryParameterMap.keySet()) {
+                        Object value = queryParameterMap.get(key);
+                        nativeQuery.setParameter(key, value);
+                    }
+                    return nativeQuery.list();
+                }else {
+                    org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
+                    Map<String, Object> queryParameterMap = query.getParameterMap();
+                    for (String key : queryParameterMap.keySet()) {
+                        Object value = queryParameterMap.get(key);
+                        if (value instanceof Collection) {
+                            hibernateQuery.setParameterList(key, (Collection) value);
+                        } else {
+                            hibernateQuery.setParameter(key, value);
+                        }
 
+                    }
+                    return hibernateQuery.list();
                 }
-                return hibernateQuery.list();
             }
 
         });
     }
-
-
-    /**
-     * Will execute the query and will return an IndexEntry
-     * @param loginId
-     * @param role
-     * @param hql
-     * @return
-     */
-    protected IndexEntry fetch(String loginId, UserGroupType role, String hql){
-       IndexEntry entry = new IndexEntry(role);
-       HQLQuery query = new HQLQuery(hql);
-       query.getParameterMap().put("LOGIN_ID", loginId);
-       if (role == null) {
-    	   query.getParameterMap().put("ROLE_CODE", 0) ;
-       } else {
-    	   query.getParameterMap().put("ROLE_CODE", role.getCode()) ;
-       }
-
-       List<Integer> resultList = (List<Integer>) search(query);
-       entry.setEntityIds(resultList);
-
-       if(log.isDebugEnabled()){
-           log.debug("HQL : " + hql + "\r\n [" + loginId + ", " + role.name() + "] fetched : " + String.valueOf(resultList));
-       }
-
-       return entry;
-    }
-
-    /**
-     * Will execute the query and will return an IndexEntry
-     * @param role
-     * @param hql
-     * @return
-     */
-    protected IndexEntry fetch(UserGroupType role, String hql){
-       IndexEntry entry = new IndexEntry(role);
-       HQLQuery query = new HQLQuery(hql);
-
-
-       List<Integer> resultList = (List<Integer>) search(query);
-       entry.setEntityIds(resultList);
-
-       if(log.isDebugEnabled()){
-           log.debug("HQL : " + hql + "\r\n ["   + role.name() + "] fetched : " + String.valueOf(resultList));
-       }
-
-       return entry;
-    }
-    
-    protected long getOrgCountForRoleAndLogin(String loginId , int roleCode) {
-    	String ORG_INDEX_BASE_QUERY_COUNT = "select count(*) as c from OrganizationIndex oi where oi.roleCode = :ROLE_CODE and oi.loginId = :LOGIN_ID";
-    	HQLQuery query = new HQLQuery(ORG_INDEX_BASE_QUERY_COUNT);
-    	
-    	query.getParameterMap().put("LOGIN_ID", loginId);
-        query.getParameterMap().put("ROLE_CODE", roleCode) ;
-        List<Long> resultList = (List<Long>) search(query);
-        return resultList.get(0);
-    }
-
-    protected long getAllOrgsCount() {
-        // get total organizations count . 
-        String hql = " select count(*) as c from Organization org";
-        HQLQuery query = new HQLQuery(hql);
-        List<Long> resultList = (List<Long>) search(query);
-        return resultList.get(0);
-    }  
-
-   /*
-	public  List fetchOld(String loginId) {
-
-        List<Integer> participantIdList = null;
-
-        User user = findUser(loginId);
-
-        if(user != null){
-            if(user instanceof ResearchStaff){
-                participantIdList =  fetch((ResearchStaff)user);
-            }else{
-                participantIdList =  fetch((Investigator) user);
-            }
-
-           if(log.isDebugEnabled()){
-             log.debug(getClass().getName() + " found, IDs accessible for [ " + loginId + " ] are : " + String.valueOf(participantIdList));
-           }
-        }
-
-       return participantIdList;
-	}
-*/
-    /**
-     * Will fetch Ids of entities accessible to investigators
-     * @param inv - An investigator
-     * @return List of IDs of entities
-     */
-    public  List<Integer> fetch(Investigator inv){
-    	return null;
-    }
-
-    /**
-     * Will fetch Ids of entities accessible to research staff
-     * @param rs - An research staff
-     * @return List of IDs of entities
-     */
-    public List<Integer> fetch(ResearchStaff rs){
-    	return null;
-    }
-
-    /**
-     * Will return the OrganizationIds for the user for the roles mentioned. 
-     * @param loginId
-     * @param roles
-     * @return
-     */
-    protected Set<Integer> getAccessibleOrganizations(String loginId, UserGroupType... roles){
-       return null;
-    }
-
-    protected Set<Integer> getAccessibleStudys(String loginId, UserGroupType... roles){
-        return null;
-    }
-
-/*
-    protected List<Integer> getAccesibleOrganizationsIncludingStudySites(String loginId){
-    	StringBuilder hql = new StringBuilder("select distinct oi.organization.id from  OrganizationIndex oi");
-		hql.append(" where oi.loginId = :loginId ");
-		HQLQuery query = new HQLQuery(hql.toString());
-        query.setParameter("loginId", loginId);
-        List<Integer> organizationIds = (List<Integer>) search(query);
-        
-        // get all orgs from DB ..
-        String hqlStr = "select distinct o.id from Organization o ";
-        query = new HQLQuery(hqlStr);
-        List<Integer> allOrgsInDB = (List<Integer>) search(query);
-        
-        // check for these organizations , if these are SCC or SFS on any Study . 
-        List<Integer> studySiteIds = new ArrayList<Integer>();
-        if (organizationIds.size()>0) {
-            if (organizationIds.size() != allOrgsInDB.size()) {
-	        	StringBuilder sql = new StringBuilder("select distinct so.organization.id from StudyOrganization so where so.study.id in ");
-	            sql.append(" (select distinct so.study.id from StudyOrganization so");
-	            sql.append(" where so.class = 'SFS'");
-	            sql.append(" or so.class = 'SCC'");
-	            sql.append(" and so.organization.id in (:organizationIds) )");
-	        	query = new HQLQuery(sql.toString());
-	        	query.setParameterList("organizationIds", organizationIds);
-	        	studySiteIds = (List<Integer>) search(query);
-            } else {
-            	//if org index has all orgs in DB , that means all study sites are applicable ..
-            	List<Integer> allIds = new ArrayList<Integer>();
-            	allIds.add(CaaersSecurityFacadeImpl.ALL_IDS_FABRICATED_ID);
-            	return allIds;
-            }
-        }
-        if (studySiteIds.size() > 0) {
-        	organizationIds.addAll(studySiteIds);
-        }
-        return organizationIds;
-    }
-*/    
 
 
     public CSMUserRepository getCsmUserRepository() {
