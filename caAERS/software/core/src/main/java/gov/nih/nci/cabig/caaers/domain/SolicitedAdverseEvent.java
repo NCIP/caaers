@@ -20,7 +20,9 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "solicited_events")//solicited_events
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_solicited_events_id") })
 public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
-	private CtcTerm ctcterm;
+
+    private String verbatim;
+    private CtcTerm ctcterm;
 	private LowLevelTerm medraterm;
 	private LowLevelTerm otherTerm;
 
@@ -29,9 +31,11 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 	public CtcTerm getCtcterm() {
 		return ctcterm;
 	}
-	public void setCtcterm(CtcTerm ctcterm) {
+
+    public void setCtcterm(CtcTerm ctcterm) {
 		this.ctcterm = ctcterm;
 	}
+
 	@OneToOne
 	@JoinColumn(name="lowlevel_term_id")
 	public LowLevelTerm getLowLevelTerm() {
@@ -43,15 +47,23 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 	
 	@OneToOne
 	@JoinColumn(name="other_term_id")
-	public LowLevelTerm getOtherTerm(){
+	public LowLevelTerm getOtherTerm() {
 		return otherTerm;
 	}
 	
-	public void setOtherTerm(LowLevelTerm otherTerm){
+	public void setOtherTerm(LowLevelTerm otherTerm) {
 		this.otherTerm = otherTerm;
 	}
-	
-	@Override
+
+    public String getVerbatim() {
+        return verbatim;
+    }
+
+    public void setVerbatim(String verbatim) {
+        this.verbatim = verbatim;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -61,8 +73,7 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 				+ ((medraterm == null) ? 0 : medraterm.getId());
 		return result;
 	}
-	
-	
+
 	@Override
 	public boolean equals(Object obj) {
 

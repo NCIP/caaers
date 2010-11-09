@@ -15,20 +15,22 @@
     				<td align="left" style="padding-left:1em"><label  id='name-${eachRow[0]}'>${eachRow[1]}</label>
     				<input name="eachRowTermID" type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
     				<c:if test="${eachRow[3]}">
- 		   				<br><tags:requiredIndicator/>Other(MedDRA):&nbsp;
-
-                        <c:if test="${displayOnly}">${initialDisplayValue}</c:if>
-                        <c:if test="${!displayOnly}">
-                        <tags:autocompleter displayName="abcd" propertyName="otherMeddra-${eachRow[0]}" size="30" initialDisplayValue="${initialDisplayValue}" initialValue="${eachRow[2] == null ? '' : eachRow[2].id}"/>
-    					<script>
-	    					AE.createStandardAutocompleter('otherMeddra-${eachRow[0]}',
-								function(autocompleter, text) {
-									createAE.matchLowLevelTermsByCode(${terminologyVersionId}, text, function(values) {
-														autocompleter.setChoices(values)
-												})
-								},
-								function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
-    					</script>
+                        <c:if test="${not empty command.study.otherMeddra}">
+                                <br><tags:requiredIndicator/>Other(MedDRA):&nbsp;
+                                <c:if test="${displayOnly}">${initialDisplayValue}</c:if>
+                                <c:if test="${!displayOnly}">
+                                    <tags:autocompleter displayName="abcd" propertyName="otherMeddra-${eachRow[0]}" size="30" initialDisplayValue="${initialDisplayValue}" initialValue="${eachRow[2] == null ? '' : eachRow[2].id}"/>
+                                    <script>
+                                        AE.createStandardAutocompleter('otherMeddra-${eachRow[0]}',
+                                            function(autocompleter, text) { createAE.matchLowLevelTermsByCode(${terminologyVersionId}, text, function(values) { autocompleter.setChoices(values) })},
+                                            function(lowLevelTerm) { return lowLevelTerm.meddraTerm }
+                                        );
+                                    </script>
+                                </c:if>
+                        </c:if>
+                        <c:if test="${empty command.study.otherMeddra}">
+                            <br>
+                            <tags:requiredIndicator/>&nbsp;Verbatim:&nbsp;<input type="text" size="30" name="verbatim-${eachRow[0]}">
                         </c:if>
                     </c:if>
     				</td>
