@@ -11,13 +11,11 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -75,7 +73,7 @@ public class DetailsTab extends StudyTab {
             fieldGroup = new DefaultInputFieldGroup("studyDetails");
             List<InputField> fields = fieldGroup.getFields();
             InputField shortTitleField = InputFieldFactory.createTextArea("study.shortTitle", "Title", true);
-            InputFieldAttributes.setColumns(shortTitleField, 70);
+            InputFieldAttributes.setColumns(shortTitleField, 100);
             fields.add(shortTitleField);
 /*
             InputField longTitleField = InputFieldFactory.createTextArea("study.longTitle", "Long title", true);
@@ -160,23 +158,41 @@ public class DetailsTab extends StudyTab {
         }
         
         // Create fieldGroup for AeTerminology
+        List<MeddraVersion> meddraVersions = meddraVersionDao.getAll();
+        List<Term> terms = null;
+        if (meddraVersions.size() == 0) {
+            terms = new ArrayList(Arrays.asList(Term.CTC));
+        } else {
+            terms = new ArrayList(Arrays.asList(Term.values()));
+        }
+
         InputFieldGroup studyCodeFieldGroup = new DefaultInputFieldGroup("scFieldGroup");
         List<InputField> scFields = studyCodeFieldGroup.getFields();
-        scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.term", "Terminology", true, WebUtils.collectOptions(Arrays.asList(Term.values()), null, "displayName")));
-
-
-        scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.ctcVersion", "CTC version", false, collectOptions(ctcList, "id", "name")));
-        scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));
-        scFields.add(InputFieldFactory.createSelectField("study.otherMeddra", "Other MedDRA Version", false, collectOptions(meddraVersionDao.getAll(),"id", "name")));
         
+        scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.term", "Terminology", true, WebUtils.collectOptions(terms, null, "displayName")));
+        scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.ctcVersion", "CTC version", false, collectOptions(ctcList, "id", "name")));
+        if (meddraVersions.size() > 0) {
+            scFields.add(InputFieldFactory.createSelectField("study.aeTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersions, "id", "name")));
+            scFields.add(InputFieldFactory.createSelectField("study.otherMeddra", "Other MedDRA Version", false, collectOptions(meddraVersions,"id", "name")));
+        }
+
         // Create fieldGroup for DiseaseTerminology
         InputFieldGroup studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
         List<InputField> sdFields = studyDiseaseCodeFieldGroup.getFields();
         Map<Object, Object> diseaseOpt = new LinkedHashMap<Object, Object>();
+
+        List<DiseaseCodeTerm> diseaseCodeTerms = null; 
+        if (meddraVersions.size() == 0) {
+            diseaseCodeTerms = new ArrayList(Arrays.asList(DiseaseCodeTerm.CTEP, DiseaseCodeTerm.OTHER));
+        } else {
+            diseaseCodeTerms = new ArrayList(Arrays.asList(DiseaseCodeTerm.values()));
+        }
         diseaseOpt.put("", "Please select");
-        diseaseOpt.putAll(WebUtils.collectOptions(Arrays.asList(DiseaseCodeTerm.values()), null, "displayName"));
+        diseaseOpt.putAll(WebUtils.collectOptions(diseaseCodeTerms, null, "displayName"));
         sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.diseaseCodeTerm", "Terminology", true,  diseaseOpt));
-        sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));
+        if (meddraVersions.size() > 0) {
+            sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersions, "id", "name")));
+        }
 
 /*
         if (dcpCodeFieldGroup == null) {

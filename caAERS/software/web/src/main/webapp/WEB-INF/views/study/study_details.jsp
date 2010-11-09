@@ -33,39 +33,39 @@
 
         if ($('study.aeTerminology.term').options[0].selected) {
             $('study.aeTerminology.ctcVersion-row').style.display = "";
-            $('study.otherMeddra-row').style.display = "";
-            $('study.aeTerminology.meddraVersion-row').style.display = "none";
-            $('study.aeTerminology.meddraVersion').options.selectedIndex = 0;
+            if ($('study.otherMeddra-row')) $('study.otherMeddra-row').style.display = "";
+            if ($('study.aeTerminology.meddraVersion-row')) $('study.aeTerminology.meddraVersion-row').style.display = "none";
+            if ($('study.aeTerminology.meddraVersion')) $('study.aeTerminology.meddraVersion').options.selectedIndex = 0;
             if ($('study.aeTerminology.ctcVersion').options.selectedIndex == 0) $('study.aeTerminology.ctcVersion').addClassName("required"); else $('study.aeTerminology.ctcVersion').addClassName("valueOK");
-            $('study.aeTerminology.meddraVersion').removeClassName("required");
+            if ($('study.aeTerminology.meddraVersion')) $('study.aeTerminology.meddraVersion').removeClassName("required");
         } else {
             $('study.aeTerminology.ctcVersion-row').style.display = "none";
-            $('study.otherMeddra-row').style.display = "none";
-            $('study.aeTerminology.meddraVersion-row').style.display = "";
+            if ($('study.otherMeddra-row')) $('study.otherMeddra-row').style.display = "none";
+            if ($('study.aeTerminology.meddraVersion-row')) $('study.aeTerminology.meddraVersion-row').style.display = "";
             $('study.aeTerminology.ctcVersion').options.selectedIndex = 0;
-            if ($('study.aeTerminology.meddraVersion').options.selectedIndex == 0) $('study.aeTerminology.meddraVersion').addClassName("required"); else $('study.aeTerminology.meddraVersion').addClassName("valueOK");
+            if ($('study.aeTerminology.meddraVersion'))
+                if ($('study.aeTerminology.meddraVersion').options.selectedIndex == 0) $('study.aeTerminology.meddraVersion').addClassName("required"); else $('study.aeTerminology.meddraVersion').addClassName("valueOK");
             $('study.aeTerminology.ctcVersion').removeClassName("required");
         }
 
         Event.observe("study.aeTerminology.term", "change", function() { showTerms(); })
 
 		function showTerms(){
-			$('study.aeTerminology.meddraVersion-row').style.display="none";
+			if ($('study.aeTerminology.meddraVersion-row')) $('study.aeTerminology.meddraVersion-row').style.display="none";
 			$('study.aeTerminology.ctcVersion-row').style.display="none";
-			$('study.otherMeddra-row').style.display="none";
+			if ($('study.otherMeddra-row')) $('study.otherMeddra-row').style.display="none";
 			if($('study.aeTerminology.term').options[0].selected){
 				Effect.toggle($('study.aeTerminology.ctcVersion-row'), 'slide');
-				Effect.toggle($('study.otherMeddra-row'), 'slide');
-				$('study.aeTerminology.meddraVersion').options.selectedIndex = 0;
+				if ($('study.otherMeddra-row')) Effect.toggle($('study.otherMeddra-row'), 'slide');
+				if ($('study.aeTerminology.meddraVersion')) $('study.aeTerminology.meddraVersion').options.selectedIndex = 0;
                 $('study.aeTerminology.ctcVersion').addClassName("required");
-                $('study.aeTerminology.meddraVersion').removeClassName("required");
+                if ($('study.aeTerminology.meddraVersion')) $('study.aeTerminology.meddraVersion').removeClassName("required");
 			}else{
-				Effect.toggle($('study.aeTerminology.meddraVersion-row'), 'slide');
+				if ($('study.aeTerminology.meddraVersion-row')) Effect.toggle($('study.aeTerminology.meddraVersion-row'), 'slide');
 				$('study.aeTerminology.ctcVersion').options.selectedIndex = 0;
 				$('study.otherMeddra').options.selectedIndex = 0;
                 $('study.aeTerminology.ctcVersion').removeClassName("required");
-                $('study.aeTerminology.meddraVersion').addClassName("required");
-
+                if ($('study.aeTerminology.meddraVersion')) $('study.aeTerminology.meddraVersion').addClassName("required");
 			}
 		}
 
@@ -209,14 +209,14 @@
       </c:if>
 
 
-
+      <c:set var="_length" value="${fn:length(fieldGroups.scFieldGroup.fields)}" />
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
           <chrome:division title="Adverse event coding terminology">
               <c:forEach items="${fieldGroups.scFieldGroup.fields}" var="field" varStatus="status" begin="0" end="0">
                   <tags:renderRow field="${field}"/>
               </c:forEach>
 
-              <c:forEach var="i" begin="1" end="3">
+              <c:forEach var="i" begin="1" end="${_length - 1}">
                   <ui:row path="${fieldGroups.scFieldGroup.fields[i].propertyName}">
                       <jsp:attribute name="label"><ui:label required="${i < 3}" path="${fieldGroups.scFieldGroup.fields[i].propertyName}" text="${fieldGroups.scFieldGroup.fields[i].displayName}"/></jsp:attribute>
                       <jsp:attribute name="value"><ui:select path="${fieldGroups.scFieldGroup.fields[i].propertyName}" required="false" options="${fieldGroups.scFieldGroup.fields[i].attributes.options}"/></jsp:attribute>
@@ -225,14 +225,15 @@
           </chrome:division>
       </c:if>
 
-      
+
+      <c:set var="_length" value="${fn:length(fieldGroups.scFieldGroup.fields)}" />
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
           <chrome:division title="Disease coding terminology">
               <c:forEach begin="0" end="0" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
                   <tags:renderRow field="${field}"/>
               </c:forEach>
               <div id="diseaseMeddraOption" style="display:none">
-                  <c:forEach begin="1" end="1" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
+                  <c:forEach begin="1" end="${_length - 1}" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
                       <ui:row path="${field.propertyName}">
                           <jsp:attribute name="label"><ui:label required="true" path="${field.propertyName}" text="${field.displayName}"/></jsp:attribute>
                           <jsp:attribute name="value"><ui:select path="${field.propertyName}" required="false" options="${field.attributes.options}"/></jsp:attribute>
