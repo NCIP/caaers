@@ -6,8 +6,8 @@
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 
-
-<c:set var="indexCorrection" value="${ae.adverseEventTerm.otherRequired ? 1  : 0}" />
+<c:set var="hasOtherMeddra" value="${not empty command.study.otherMeddra}" />
+<c:set var="indexCorrection" value="${ae.adverseEventTerm.otherRequired and hasOtherMeddra ? 1  : 0}" />
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="title_term">${ae.adverseEventTerm.medDRA ? ae.adverseEventTerm.term.meddraTerm : ae.adverseEventTerm.term.fullName}</c:set>
 <c:set var="title_otherMedDRA_term">${ae.lowLevelTerm.meddraTerm}</c:set>
@@ -61,4 +61,4 @@
         //update the heading
          $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term} Grade: " + grades.indexOf(val) + " <c:if test="${ae.detailsForOther ne ''}">Verbatim: ${ae.detailsForOther}</c:if>";
     });
-</script>    
+</script>
