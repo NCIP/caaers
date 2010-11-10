@@ -74,9 +74,13 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        String id = "http://www.dbunit.org/features/qualifiedTableNames"; 
+        
+        String qualifiedTableNamesId = "http://www.dbunit.org/features/qualifiedTableNames"; 
 		DatabaseConfig config = getConnection().getConfig();
-		config.setFeature(id, true);
+		config.setFeature(qualifiedTableNamesId, true);
+		String skipOracle10gRecycleBinId = "http://www.dbunit.org/features/skipOracleRecycleBinTables";
+		config.setFeature(skipOracle10gRecycleBinId, true);
+		
         applicationContext = getDeployedApplicationContext();
         ((CaaersJavaMailSender)applicationContext.getBean("mailer")).SUPRESS_MAIL_SEND_EXCEPTION = true;
         setUpAuthorization();
