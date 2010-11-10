@@ -54,6 +54,7 @@
         term="Allergic reaction/hypersensitivity (including drug fever)"
         ctep_term="Hypersensitivity"
         ctep_code="10020751"
+        other_required="0"
         />
     <ctc_terms
         id="2"
@@ -61,6 +62,7 @@
         term="Allergic rhinitis (including sneezing, nasal stuffiness, postnasal drip)"
         ctep_term="Allergic rhinitis"
         ctep_code="10001723"
+        other_required="0"
         />
     <ctc_terms
         id="3"

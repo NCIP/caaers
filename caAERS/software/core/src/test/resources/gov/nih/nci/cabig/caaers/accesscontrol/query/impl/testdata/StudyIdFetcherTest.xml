@@ -453,10 +453,10 @@
     <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881"/>
     <ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882"/>
     <ctc_categories id="-6" name="abcd" version_id="3"/>
-    <ctc_terms id="-5" category_id="-6" term="term1" ctep_term="term1"/>
+    <ctc_terms id="-5" category_id="-6" term="term1" ctep_term="term1" other_required="0"/>
 
     <meddra_llt id="-7" meddra_code="700m" version_id="4"/>
-    <ctc_terms id="-51" category_id="-6" term="term1" ctep_term="term1"/>
+    <ctc_terms id="-51" category_id="-6" term="term1" ctep_term="term1" other_required="0"/>
     <meddra_llt id="-71" meddra_code="700m" version_id="4"/>
 
     <!--  due to FK references -->
