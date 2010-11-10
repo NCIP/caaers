@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbunit.IDatabaseTester;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
@@ -73,12 +74,16 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        String id = "http://www.dbunit.org/features/qualifiedTableNames"; 
+		DatabaseConfig config = getConnection().getConfig();
+		config.setFeature(id, true);
         applicationContext = getDeployedApplicationContext();
         ((CaaersJavaMailSender)applicationContext.getBean("mailer")).SUPRESS_MAIL_SEND_EXCEPTION = true;
         setUpAuthorization();
         setUpAuditing();
         setUpSession();
         System.gc();
+        
     }
     
     protected void tearDownSession(){
