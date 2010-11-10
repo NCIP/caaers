@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.dbunit.IDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -57,11 +58,15 @@ public abstract class CaaersDbTestCase extends DbTestCase {
                     "/studycalendar/zippo");
     
     @Override
+    protected IDatabaseTester getDatabaseTester() throws Exception {
+    	return newDatabaseTester();
+    }
+    
+    @Override
     protected IDatabaseConnection getConnection() throws Exception {
 	    DatabaseConnection databaseConnection = new DatabaseConnection(getDataSource().getConnection());
 	    databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, createDataTypeFactory());
 	    databaseConnection.getConfig().setProperty(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, true);
-	    databaseConnection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
 	    return databaseConnection;
     }
     
@@ -159,7 +164,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
 
     @Override
     protected DataSource getDataSource() {
-        return (DataSource) getApplicationContext().getBean("dataSource");
+        return (DataSource) getApplicationContext().getBean("dataSource") ;
     }
 
     public  ApplicationContext getApplicationContext() {
