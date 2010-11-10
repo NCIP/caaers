@@ -53,20 +53,18 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
-
         Study study = command.getStudy();
         
         Map<String, Object> refdata = super.referenceData();
     	SolicitedEventTabTable table = null;
     	
-    	if(request.getParameter(AJAX_REQUEST_ADDEPOCH ) != null || request.getParameter( AJAX_REQUEST_DELETEEPOCH ) != null ) {
+    	if (request.getParameter(AJAX_REQUEST_ADDEPOCH) != null || request.getParameter(AJAX_REQUEST_DELETEEPOCH) != null) {
     		String[] termIDs = request.getParameterValues("eachRowTermID");
     		table = new SolicitedEventTabTable(study , termIDs, ctcTermDao, lowLevelTermDao );
     	} else if (request.getParameter(AJAX_REQUEST_PARAMETER) == null && request.getAttribute(AJAX_REQUEST_PARAMETER) == null ) {
             table = new SolicitedEventTabTable(study);
     	} else {
     		// Executes when we try to add one or more rows
-    		
     		String[] termIDs = (String[])request.getAttribute("listOfTermIDs");
     		String[] terms = (String[])request.getAttribute("listOfTerms");
     		table = new SolicitedEventTabTable(study, termIDs, terms, ctcTermDao );

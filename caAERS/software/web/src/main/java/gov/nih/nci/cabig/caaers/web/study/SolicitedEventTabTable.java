@@ -29,21 +29,24 @@ public class SolicitedEventTabTable{
 	private LinkedList<LinkedList<Object>> listOfSolicitedAERows = new LinkedList<LinkedList<Object>>();
 	private List<Epoch> listOfEpochs;
 	private int numOfnewlyAddedRows;
-	public SolicitedEventTabTable( Study command, String[] termIDs, String[] terms, CtcTermDao ctcTermDao)
-	{
+
+    public SolicitedEventTabTable( Study command, String[] termIDs, String[] terms, CtcTermDao ctcTermDao) {
 		LinkedList<Object> eachRowOfSolicitedAE = null;
-		for(int i = 0 ; i < termIDs.length ; i++ )
-		{
+		for(int i = 0 ; i < termIDs.length ; i++ ) {
 			eachRowOfSolicitedAE = new LinkedList<Object>();
 			eachRowOfSolicitedAE.add(termIDs[i]);
 			eachRowOfSolicitedAE.add(terms[i]);
-			
 			eachRowOfSolicitedAE.add(null);
 			eachRowOfSolicitedAE.add(isOtherFieldRequired(command, termIDs[i], ctcTermDao));
-			
+
+            // verbatim
+			eachRowOfSolicitedAE.add(null);
+
+            // epochs
 			int numberOfEpochs = command.getActiveEpochs().size(); 
 			for( int e = 0 ; e < numberOfEpochs ; e++ )
 			  eachRowOfSolicitedAE.add(false);
+            
 			numOfnewlyAddedRows++;
 			listOfSolicitedAERows.add(eachRowOfSolicitedAE);
 		}
@@ -60,52 +63,50 @@ public class SolicitedEventTabTable{
 			return false;
 	}
 
-	public SolicitedEventTabTable( Study command, String[] termIDs, CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao )
-	{
-          listOfEpochs = command.getActiveEpochs();
-		  
-		  buildConsolidatedListOfSolicitedAEsWithExtraTerms( command, termIDs, ctcTermDao, lowLevelTermDao);
-		  
-		  constructListOfSolicitedAErows();
+	public SolicitedEventTabTable(Study command, String[] termIDs, CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao) {
+        listOfEpochs = command.getActiveEpochs();
+        buildConsolidatedListOfSolicitedAEsWithExtraTerms( command, termIDs, ctcTermDao, lowLevelTermDao);
+        constructListOfSolicitedAErows();
 	}
-
-	
-	public SolicitedEventTabTable( Study command )
-	{
+    
+	public SolicitedEventTabTable(Study command) {
 		listOfEpochs = command.getActiveEpochs();
-		
-		buildConsolidatedListOfSolicitedAEs( listOfEpochs );
-		
+		buildConsolidatedListOfSolicitedAEs(listOfEpochs);
 		constructListOfSolicitedAErows();
 	}
 	
-	private void constructListOfSolicitedAErows()
-	{
-		for( SolicitedAdverseEvent solicitedAE : consolidatedListOfSolicitedAEsForAllEpochs )
-		{
+	private void constructListOfSolicitedAErows() {
+		for (SolicitedAdverseEvent solicitedAE : consolidatedListOfSolicitedAEsForAllEpochs) {
 			LinkedList<Object> eachRowOfSolicitedAE = new LinkedList<Object>();
-			//add ctc or medra id as 1st element
+
+            //add ctc or medra id as 0st element
 			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getId() : solicitedAE.getLowLevelTerm().getId() );
-			// add ctdc or medra term as 2nd element
+
+            // add ctdc or medra term as 1st element
 			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getFullName() : solicitedAE.getLowLevelTerm().getFullName());
 			
-			// add Other meddra field as the 3rd element
+			// add Other meddra field as the 2nd element
 			eachRowOfSolicitedAE.add((solicitedAE.getOtherTerm() != null) ? solicitedAE.getOtherTerm() : null);
+
+            // 3rd
 			// add a boolean which is true incase the otherMeddra is needed for ctc Term.
 			if(solicitedAE.getCtcterm() != null && solicitedAE.getCtcterm().isOtherRequired())
 				eachRowOfSolicitedAE.add(Boolean.TRUE);
 			else
 				eachRowOfSolicitedAE.add(Boolean.FALSE);
-				
-			
-			for( Epoch epoch : listOfEpochs )
-			{
+
+            // 4th
+            eachRowOfSolicitedAE.add(solicitedAE.getVerbatim());
+
+            //5th - ...
+			for (Epoch epoch : listOfEpochs) {
 				boolean mayExpectSolicitedAE = false;
-				if( doEpochExpectSolicitedAE( epoch , solicitedAE) )
+				if( doEpochExpectSolicitedAE(epoch, solicitedAE))
 					mayExpectSolicitedAE = true;
 				
 				eachRowOfSolicitedAE.add( mayExpectSolicitedAE );
 			}
+            
 			listOfSolicitedAERows.add(eachRowOfSolicitedAE);
 		}
 	}
@@ -163,10 +164,9 @@ public class SolicitedEventTabTable{
 	}
 
 
-	private Set<SolicitedAdverseEvent> buildConsolidatedListOfSolicitedAEs( List<Epoch> listOfEpochs )
-	{
-		for( Epoch epoch : listOfEpochs )
-			consolidatedListOfSolicitedAEsForAllEpochs.addAll( getSolicitedAEsForEpoch( epoch ));
+	private Set<SolicitedAdverseEvent> buildConsolidatedListOfSolicitedAEs( List<Epoch> listOfEpochs ) {
+		for (Epoch epoch : listOfEpochs)
+			consolidatedListOfSolicitedAEsForAllEpochs.addAll(getSolicitedAEsForEpoch(epoch));
 		return consolidatedListOfSolicitedAEsForAllEpochs;
 	}
 
@@ -233,7 +233,3 @@ public class SolicitedEventTabTable{
 	}
 	
 }
-	
-	
-	
-		
