@@ -16,8 +16,9 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dbunit.IDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
@@ -55,6 +56,14 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     private static final DataAuditInfo INFO = new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo("dun", "127.1.2.7", DateUtils.createDate(2004, Calendar.NOVEMBER, 2),
                     "/studycalendar/zippo");
     
+    @Override
+    protected IDatabaseConnection getConnection() throws Exception {
+	    DatabaseConnection databaseConnection = new DatabaseConnection(getDataSource().getConnection());
+	    databaseConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, createDataTypeFactory());
+	    databaseConnection.getConfig().setProperty(DatabaseConfig.FEATURE_SKIP_ORACLE_RECYCLEBIN_TABLES, true);
+	    databaseConnection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+	    return databaseConnection;
+    }
     
     protected void setUpAuthorization() throws Exception {
     	
@@ -74,13 +83,6 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        
-        String qualifiedTableNamesId = "http://www.dbunit.org/features/qualifiedTableNames"; 
-		DatabaseConfig config = getConnection().getConfig();
-		config.setFeature(qualifiedTableNamesId, true);
-		String skipOracle10gRecycleBinId = "http://www.dbunit.org/features/skipOracleRecycleBinTables";
-		config.setFeature(skipOracle10gRecycleBinId, true);
-		
         applicationContext = getDeployedApplicationContext();
         ((CaaersJavaMailSender)applicationContext.getBean("mailer")).SUPRESS_MAIL_SEND_EXCEPTION = true;
         setUpAuthorization();
@@ -180,11 +182,6 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         }
     }
     
-    @Override
-    protected IDatabaseTester getDatabaseTester() throws Exception {
-            return newDatabaseTester();
-    }
-
     protected final void dumpResults(final String sql) {
         List<Map<String, String>> rows = new JdbcTemplate(getDataSource()).query(sql,
                         new ColumnMapRowMapper() {
