@@ -101,7 +101,7 @@ public class StudyQuery extends AbstractQuery {
     
 /*
     public void joinStudyTherapy() {
-        join("s.studyTherapies as sthe");
+        join("s.studyTherapies as "+STUDY_THERAPY_ALIAS);
     }
 */
 
