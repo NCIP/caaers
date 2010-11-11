@@ -87,11 +87,21 @@
 		application_id="-1"
 		large_element_count_flag="1"
 	/>
-	<csm_group
-		group_id="-4"
-		group_name="g1"
+	
+	<csm_role
+		role_id="-2"
+		role_name="business_administrator"
 		application_id="-1"
+		active_flag = "1"
 	/>
+	
+	<csm_role
+		role_id="-7"
+		role_name="study_creator"
+		application_id="-1"
+		active_flag = "1"
+	/>		
+	
 	<csm_user
 		user_id="-8"
 		login_name="ln"
@@ -114,83 +124,72 @@
 	<csm_user_group_role_pg
         user_group_role_pg_id="-5"
         user_id="-7"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-399"        
      /> 
         				
 	<csm_user_group_role_pg
         user_group_role_pg_id="-1"
         user_id="1"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-400"        
         />
 
 	<csm_user_group_role_pg
         user_group_role_pg_id="-2"
         user_id="1"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-401"        
         />
 
 	<csm_user_group_role_pg
         user_group_role_pg_id="-3"
         user_id="1"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-500"        
         />
 	<csm_user_group_role_pg
         user_group_role_pg_id="-4"
         user_id="1"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-501"        
         />
 	<csm_user_group_role_pg
         user_group_role_pg_id="-6"
         user_id="-7"
-        group_id="-4"
-        role_id="2"
+        role_id="-2"
         protection_group_id="-499"        
         /> 
 	<csm_user_group_role_pg
         user_group_role_pg_id="-7"
         user_id="-8"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-499"        
         />  
    	<csm_user_group_role_pg
         user_group_role_pg_id="-8"
         user_id="-8"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-400"        
         />
 
 	<csm_user_group_role_pg
         user_group_role_pg_id="-9"
         user_id="-8"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-401"        
         />  
    	<csm_user_group_role_pg
         user_group_role_pg_id="-10"
         user_id="-7"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-400"        
         />
 
 	<csm_user_group_role_pg
         user_group_role_pg_id="-11"
         user_id="-7"
-        group_id="-4"
-        role_id="7"
+        role_id="-7"
         protection_group_id="-401"        
         /> 
           
