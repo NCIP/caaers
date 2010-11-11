@@ -281,6 +281,36 @@
 			</view-column>
 
 		</dependent-object>
+        
+        <dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyTherapy</class-name>
+			<display-name>Study therapy</display-name>
+			<table-alias>STUDY_THERAPY_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinStudyTherapy</join-by-method>
+			<ui-attribute>
+				<name>studyTherapyType.code</name>
+				<label>Therapy types</label>
+				<data-type>Integer</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="1" display-uri="Drug Administration"/>
+				<valid-value valAdvancedSearchViewTabue="2" display-uri="Radiation"/>
+				<valid-value value="3" display-uri="Surgery"/>
+				<valid-value value="4" display-uri="Device"/>
+				<valid-value value="5" display-uri="Behavioral"/>
+				<operator name="=" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+				<filter-method>filterByStudyTherapy</filter-method>
+			</ui-attribute>
+
+			<view-column>
+				<column-attribute>studyTherapyType</column-attribute>
+				<column-title>Therapy type</column-title>
+				<dependent-object-index>5</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+		</dependent-object>
+        
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
 			<display-name>StudyParticipantAssignment</display-name>
