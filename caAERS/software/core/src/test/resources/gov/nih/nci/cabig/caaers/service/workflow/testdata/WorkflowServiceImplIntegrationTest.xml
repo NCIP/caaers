@@ -1,4 +1,7 @@
 <dataset>
+</dataset>
+
+<!--<dataset>
  	<ORGANIZATIONS
         id="-1000"
         name="New Site"
@@ -6,12 +9,12 @@
 	<identifiers />
 	<ind_holders />
 	
-<!--  =============== CSM Data and User data ===================== -->
+  =============== CSM Data and User data ===================== 
 
 
 
 
-	<!--  System Admin -->
+	  System Admin 
 	<CSM_USER USER_ID="-1" LOGIN_NAME="SYSTEM_ADMIN"
 		FIRST_NAME="SYSTEM_ADMIN" LAST_NAME="SYSTEM_ADMIN"
 		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
@@ -59,9 +62,9 @@
     <CSM_USER_GROUP USER_GROUP_ID="-14" USER_ID="-1" GROUP_ID="15" />
     <CSM_USER_GROUP USER_GROUP_ID="-15" USER_ID="-1" GROUP_ID="16" />
     <CSM_USER_GROUP USER_GROUP_ID="-16" USER_ID="-1" GROUP_ID="17" />
-    <CSM_USER_GROUP USER_GROUP_ID="-17" USER_ID="-1" GROUP_ID="18" />   <!-- ae_reporter -->
+    <CSM_USER_GROUP USER_GROUP_ID="-17" USER_ID="-1" GROUP_ID="18" />    ae_reporter 
     <CSM_USER_GROUP USER_GROUP_ID="-18" USER_ID="-1" GROUP_ID="19" />
-    <CSM_USER_GROUP USER_GROUP_ID="-19" USER_ID="-1" GROUP_ID="20" />   <!-- ae_study_data_reviewer -->
+    <CSM_USER_GROUP USER_GROUP_ID="-19" USER_ID="-1" GROUP_ID="20" />    ae_study_data_reviewer 
     <CSM_USER_GROUP USER_GROUP_ID="-20" USER_ID="-1" GROUP_ID="21" />
     <CSM_USER_GROUP USER_GROUP_ID="-21" USER_ID="-1" GROUP_ID="22" />
     <CSM_USER_GROUP USER_GROUP_ID="-22" USER_ID="-1" GROUP_ID="23" />
@@ -69,7 +72,7 @@
 
 
 		
-	<!--  Participant Coordinator   -->	
+	  Participant Coordinator   	
 	<CSM_USER USER_ID="-4" LOGIN_NAME="pc@def.com"
 		FIRST_NAME="Site CRA" LAST_NAME="Coordinator1"
 		PASSWORD="OI/ZpclGdfXCOfcyX1L/EA==" 
@@ -92,10 +95,10 @@
     	researchstaff_id="-900"/>        
         
         
-    <!--  associated to ae_reporter -->
+      associated to ae_reporter 
     <CSM_USER_GROUP USER_GROUP_ID="-24" USER_ID="-4" GROUP_ID="18" />
 	
-	<!--  "ae_study_data_reviewer and "ae_expedited_report_reviewer""-->
+	  "ae_study_data_reviewer and "ae_expedited_report_reviewer""
 	<CSM_USER USER_ID="-2" LOGIN_NAME="aec@def.com"
 		FIRST_NAME="Data Coordinator" LAST_NAME="Coordinator1"
 		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
@@ -120,7 +123,7 @@
  	<CSM_USER_GROUP USER_GROUP_ID="-25" USER_ID="-2" GROUP_ID="19" />
     <CSM_USER_GROUP USER_GROUP_ID="-26" USER_ID="-2" GROUP_ID="20" />
 	
-	<!-- Physician ("ae_reporter") -->
+	 Physician ("ae_reporter") 
     <CSM_USER USER_ID="-3" LOGIN_NAME="physician@def.com"
 		FIRST_NAME="Physician" LAST_NAME="Site Inv"
 		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
@@ -140,7 +143,7 @@
             site_id="-1000"
             investigator_id="-902"/>
       <CSM_USER_GROUP USER_GROUP_ID="-27" USER_ID="-3" GROUP_ID="18" />
-<!-- =========================================== -->
+ =========================================== 
 
 
     <RESEARCH_STAFFS
@@ -195,21 +198,21 @@
 	 
 	 <task_configuration id="-1" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Submit Reporting Period for Data Coordinator Review" applicable="1"  message="abcd"/>
 	
-	<!-- 
+	 
 	 <task_configuration id="-3" status_name="DATA_COORDINATOR_REVIEW" workflow_config_id="-11" location="1" task_name="Data Coordinator Review" applicable="1" message="abcdefg"/>
 	 <task_configuration id="-5" status_name="DATA_COORDINATOR_ADDITIONAL_INFO" workflow_config_id="-11" location="1" task_name="Provide Additional Information To Data Coordinator" applicable="1" message="hello"/>
-	-->
+	
 	
 	 <task_configuration id="-1000" status_name="APPROVED" workflow_config_id="-11" location="1" task_name="Approved" applicable="1" message="hijklmnop"/>
 	 <task_configuration id="-999" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Start Reporting Period Flow" applicable="1" message="abcd" />
 	  
 	 <wf_assignees id="-1" name="Bill" researchstaff_id="-1000" user_role_id="0" task_config_id="-1" dtype="p"/>
 	 <wf_assignees id="-2" name="Bush" researchstaff_id="-1001" task_config_id="-1" dtype="p"/>
-	<!--  
+	  
 	 <wf_assignees id="-5" name="DC" research_staffs_id="-1002" task_config_id="-3" dtype="p"/>
 	 <wf_assignees id="-7" name="Bill" research_staffs_id="-1000" task_config_id="-5" dtype="p"/>
 	 <wf_assignees id="-8" name="Bush" research_staffs_id="-1001" task_config_id="-5" dtype="p"/>
-	 -->
+	 
 	 
 	 
 	 <wf_transition_configs id="-1" transition_name="Approve Reporting Period" task_config_id="-1" />
@@ -227,4 +230,4 @@
 	 <jbpm_taskactorpool />
 	 <jbpm_log />
 	 
-</dataset>
+</dataset>-->
