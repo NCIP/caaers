@@ -37,7 +37,32 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private UserDao userDao;
     private MessageSource messageSource;
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
+    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(final User user, String changeURL) {
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
+        MailException mailException = null;
 
+        try {
+            if (user.getId() == null) {
+                csmUser = createCSMUser(user);
+                //sendCreateAccountEmail(user, changeURL);
+            } else {
+                csmUser = updateCSMUser(user);
+                if (csmUser == null) {
+                    csmUser = createCSMUser(user);
+                    //sendCreateAccountEmail(user, changeURL);
+                } else {
+                    //sendUpdateAccountEmail(user);
+                }
+            }
+        } catch (MailException e) {
+            mailException = e;
+        }
+        if (mailException != null) throw mailException;
+        return csmUser;
+    }
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
@@ -124,7 +149,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     	//csmUser.setEndDate(user.getEndDate());
     }
 
-    private gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user) {
+    public gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user) {
         // assumes research staff id is null
         String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser;
@@ -144,7 +169,6 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         	log.error("Error creating csm user",e2);
             throw new CaaersSystemException("Could not create user", e2);
         }
-        
         return csmUser;
     }
     

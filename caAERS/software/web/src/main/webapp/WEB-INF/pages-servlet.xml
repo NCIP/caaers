@@ -588,6 +588,10 @@
 
     <bean name="/dashboard" id="dashboardController" class="gov.nih.nci.cabig.caaers.web.DashboardController" autowire="byType" />
 
+	<bean name="/admin/userController" id="userController" class="gov.nih.nci.cabig.caaers.web.admin.UserController" autowire="byType">
+		<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+	</bean>
+
     <!-- Validators -->
 
     <bean id="numInRangeValidator" class="gov.nih.nci.cabig.caaers.validation.validator.NumInRangeValidator" autowire-candidate="false"/>

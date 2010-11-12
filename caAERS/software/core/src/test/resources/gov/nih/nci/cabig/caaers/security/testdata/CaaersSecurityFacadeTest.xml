@@ -1,38 +1,66 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
+	<csm_user
+		user_id="-1"
+		login_name="testuser1"
+		first_name="test1"
+		last_name="user1"
+	/>	
+	<csm_user
+		user_id="-2"
+		login_name="testuser2"
+		first_name="test2"
+		last_name="user2"
+	/>	
+	<csm_user
+		user_id="-3"
+		login_name="testuser3"
+		first_name="test3"
+		last_name="user3"
+	/>
+
 	<organizations
 		id="1"
-		nci_institute_code="NCI"
+		nci_institute_code="A"
 	/>
 	<organizations
 		id="2"
-		nci_institute_code="NCIBD"
+		nci_institute_code="B"
 	/>
 	<organizations
 		id="3"
-		nci_institute_code="IL034"
+		nci_institute_code="C"
 	/>
-	<csm_protection_group
-		protection_group_id="-399"
-		protection_group_name="HealthcareSite"
-		application_id="-1"
-		large_element_count_flag="1"
+	<organizations
+		id="4"
+		nci_institute_code="D"
+	/>
+	<organizations
+		id="5"
+		nci_institute_code="E"
+	/>
+	<organizations
+		id="6"
+		nci_institute_code="F"
+	/>
+		<organizations
+		id="7"
+		nci_institute_code="G"
+	/>
+	<organizations
+		id="8"
+		nci_institute_code="H"
+	/>
+	<organizations
+		id="9"
+		nci_institute_code="I"
+	/>
+	<organizations
+		id="10"
+		nci_institute_code="J"
 	/>
 	
-	<csm_protection_group
-		protection_group_id="-400"
-		protection_group_name="HealthcareSite.IL034"
-		application_id="-1"
-		large_element_count_flag="1"
-	/>	
 
-	<csm_protection_group
-		protection_group_id="-401"
-		protection_group_name="HealthcareSite.NCI"
-		application_id="-1"
-		large_element_count_flag="1"
-	/>
-	
 	<studies
 		id = "-222"
 		short_title = "N7028 Study"
@@ -53,148 +81,13 @@
 		value="6307"
 		stu_id="-223"
 	/>
-	<study_organizations
-		id = "1"
-		site_id = "1"
-		study_id = "-222"
-		type = "SST"
-	/>
 
-	<study_organizations
-		id = "2"
-		site_id = "2"
-		study_id = "-223"
-		type = "SST"
-	/>
-		
-	<csm_protection_group
-		protection_group_id="-499"
-		protection_group_name="Study"
-		application_id="-1"
-		large_element_count_flag="1"
-	/>
 	
-	<csm_protection_group
-		protection_group_id="-500"
-		protection_group_name="Study.N7028"
-		application_id="-1"
-		large_element_count_flag="1"
-	/>
-
-	<csm_protection_group
-		protection_group_id="-501"
-		protection_group_name="Study.6307"
-		application_id="-1"
-		large_element_count_flag="1"
-	/>
-	
-	<csm_role
-		role_id="-2"
-		role_name="business_administrator"
-		application_id="-1"
-		active_flag = "1"
-	/>
-	
-	<csm_role
-		role_id="-7"
-		role_name="study_creator"
-		application_id="-1"
-		active_flag = "1"
-	/>		
-	
-	<csm_user
-		user_id="-8"
-		login_name="ln"
-		first_name="fn"
-		last_name="ln"
-	/>	
-	<csm_user
-		user_id="-7"
-		login_name="ln1"
-		first_name="fn"
-		last_name="ln"
-	/>	
-	<csm_user
-		user_id="1"
-		login_name="ln2"
-		first_name="fn"
-		last_name="ln"
-	/>
-	<!-- user with all orgs -->
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-5"
-        user_id="-7"
-        role_id="-7"
-        protection_group_id="-399"        
-     /> 
-        				
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-1"
-        user_id="1"
-        role_id="-7"
-        protection_group_id="-400"        
-        />
-
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-2"
-        user_id="1"
-        role_id="-7"
-        protection_group_id="-401"        
-        />
-
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-3"
-        user_id="1"
-        role_id="-7"
-        protection_group_id="-500"        
-        />
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-4"
-        user_id="1"
-        role_id="-7"
-        protection_group_id="-501"        
-        />
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-6"
-        user_id="-7"
-        role_id="-2"
-        protection_group_id="-499"        
-        /> 
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-7"
-        user_id="-8"
-        role_id="-7"
-        protection_group_id="-499"        
-        />  
-   	<csm_user_group_role_pg
-        user_group_role_pg_id="-8"
-        user_id="-8"
-        role_id="-7"
-        protection_group_id="-400"        
-        />
-
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-9"
-        user_id="-8"
-        role_id="-7"
-        protection_group_id="-401"        
-        />  
-   	<csm_user_group_role_pg
-        user_group_role_pg_id="-10"
-        user_id="-7"
-        role_id="-7"
-        protection_group_id="-400"        
-        />
-
-	<csm_user_group_role_pg
-        user_group_role_pg_id="-11"
-        user_id="-7"
-        role_id="-7"
-        protection_group_id="-401"        
-        /> 
-          
-    <investigational_new_drugs />    
+	<investigational_new_drugs />    
     <ind_holders />		
 	<investigators/>
-    <site_investigators/>               
+    <site_investigators/>	
+	<csm_user_group/>
+	<csm_user_group_role_pg/>
+
 </dataset>

@@ -3,10 +3,14 @@ package gov.nih.nci.cabig.caaers.security;
 import gov.nih.nci.cabig.caaers.CaaersDaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
+import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
+import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.authorization.domainobjects.User;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,36 +21,87 @@ import org.acegisecurity.providers.TestingAuthenticationToken;
 
 public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	
-	private CaaersSecurityFacade caaersSecurityFacade ; 
+	private CaaersSecurityFacadeImpl caaersSecurityFacade ;
+	private ProvisioningSessionFactory provisioningSessionFactory;
+	private User csmUser = null;
+	
+	
 	public void setUp() throws Exception {
 		super.setUp();
-		caaersSecurityFacade = (CaaersSecurityFacade)getApplicationContext().getBean("caaersSecurityFacade");
+		caaersSecurityFacade = (CaaersSecurityFacadeImpl)getApplicationContext().getBean("caaersSecurityFacade");
+		provisioningSessionFactory = (ProvisioningSessionFactory)getDeployedApplicationContext().getBean("provisioningSessionFactory");
 	}
 	
 	public void testGetAccessibleOrganizationIds() {
-		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln2");
-		assertEquals(23,list.size());
+		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forSites("A","B","C","D","E","F","G","H","I","J"));
+		
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("testuser1");
+		assertEquals(1,list.size());
+		assertEquals(10, list.get(0).getEntityIds().size());
+		
+		session.deleteRole(SuiteRole.AE_REPORTER);
 	}
-	public void testGetProtectionGroupRoleContextForUser() throws Exception {
-		
-		Date  d1 = new Date();
-		Set<ProtectionGroupRoleContext> contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
-		Date  d2 = new Date();
-		System.out.println("execution time : ");
-		System.out.println(d2.getTime()-d1.getTime());
-		assertEquals(4,contexts.toArray().length);
-		
-		//from cache...
-		Date  d3 = new Date();
-		contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
-		Date  d4 = new Date();
-		System.out.println("execution time : ");
-		System.out.println(d4.getTime()-d3.getTime());
-		assertEquals(4,contexts.toArray().length);
-    }
 	
+	public void testGetAccessibleOrganizationIdsUserWithAllOrgs() {
+		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites());
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("testuser1");
+		assertEquals(1,list.size());
+		assertEquals(1,list.get(0).getEntityIds().size());
+		assertTrue(list.get(0).getEntityIds().get(0).equals(Integer.MIN_VALUE));
+		
+		session.deleteRole(SuiteRole.AE_REPORTER);
+	}
+
+	public void testGetAccessibleStudyIds() {
+		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forStudies("N7028","6307"));
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("testuser1");
+		assertEquals(1,list.size());
+		assertEquals(2,list.get(0).getEntityIds().size());
+		
+		session.deleteRole(SuiteRole.AE_REPORTER);
+	}
+	
+	
+	public void testGetAccessibleStudyIdsUserWithAllStudies() {
+		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forAllStudies());
+		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("testuser1");
+		assertEquals(1,list.size());
+		assertEquals(1,list.get(0).getEntityIds().size());
+		assertTrue(list.get(0).getEntityIds().get(0).equals(Integer.MIN_VALUE));
+		
+		session.deleteRole(SuiteRole.AE_REPORTER);
+	}
+	
+	
+	
+//	public void testGetProtectionGroupRoleContextForUser() throws Exception {
+//		
+//		Date  d1 = new Date();
+//		Set<ProtectionGroupRoleContext> contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
+//		Date  d2 = new Date();
+//		System.out.println("execution time : ");
+//		System.out.println(d2.getTime()-d1.getTime());
+//		assertEquals(4,contexts.toArray().length);
+//		
+//		//from cache...
+//		Date  d3 = new Date();
+//		contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
+//		Date  d4 = new Date();
+//		System.out.println("execution time : ");
+//		System.out.println(d4.getTime()-d3.getTime());
+//		assertEquals(4,contexts.toArray().length);
+//    }
+//	
 	public void testCacheManager () throws Exception {
-		String loginId = "1";
+		String loginId = "-1";
 		// shud be null , nothing in cache
 		Set<ProtectionElementPrivilegeContext> contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
 		assertNull(contexts);
@@ -59,22 +114,6 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
  
 	
 
-	public void testGetAccessibleOrganizationIdsUserWithAllOrgs() {
-		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("ln1");
-		assertEquals(23,list.size());
-	}
-	
-	public void testGetAccessibleStudyIds() {
-		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("ln2");
-		assertEquals(23, list.size());
-	}
-	public void testGetAccessibleStudyIdsUserWithAllStudies() {
-		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("ln1");
-		assertEquals(23, list.size());
-		
-		list = caaersSecurityFacade.getAccessibleStudyIds("ln");
-		assertEquals(23, list.size());
-	}
 	
 	public void testCheckAuthorization() {
 		String userName = "test-user";
@@ -101,7 +140,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 
 	}
 	
-    public void _BROKEN_testCheckAuthorization2() throws Exception{
+    public void testCheckAuthorization2() throws Exception{
         SecurityTestUtils.switchUser("tester",
                 UserGroupType.business_administrator.getSecurityRoleName(),
                 UserGroupType.registrar.getSecurityRoleName());
@@ -116,6 +155,60 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
         assertFalse(b);
     }
     
+
+    public void testProvisionRoleMemberships(){
+		
+		List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
+		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.SYSTEM_ADMINISTRATOR));
+		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.BUSINESS_ADMINISTRATOR));
+		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forAllStudies());
+		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.SUBJECT_MANAGER).forSites("MAYO"));
+		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.REGISTRAR).forSites("WAKE").forStudies("5876","1234","54321"));
+		
+		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser2");
+		
+		caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
+		
+		List<UserGroupType> userGroups = caaersSecurityFacade.getCsmUserRepository().getUserGroups("testuser2");
+		assertEquals(5,userGroups.size());
+		
+		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+		SuiteRoleMembership sysAd = session.getProvisionableRoleMembership(SuiteRole.SYSTEM_ADMINISTRATOR);
+		assertNotNull(sysAd);
+		assertTrue(!sysAd.getRole().isScoped());
+		
+		SuiteRoleMembership bizAd = session.getProvisionableRoleMembership(SuiteRole.BUSINESS_ADMINISTRATOR);
+		assertNotNull(bizAd);
+		assertTrue(!bizAd.getRole().isScoped());
+
+		SuiteRoleMembership aeRep = session.getProvisionableRoleMembership(SuiteRole.AE_REPORTER);
+		assertNotNull(aeRep);
+		assertTrue(aeRep.getRole().isSiteScoped());
+		assertTrue(aeRep.getRole().isStudyScoped());
+		assertTrue(aeRep.isAllSites());
+		assertTrue(aeRep.isAllStudies());
+		
+		SuiteRoleMembership subMgr = session.getProvisionableRoleMembership(SuiteRole.SUBJECT_MANAGER);
+		assertNotNull(subMgr);
+		assertTrue(subMgr.getRole().isSiteScoped());
+		assertFalse(subMgr.getRole().isStudyScoped());
+		assertEquals(1,subMgr.getSiteIdentifiers().size());
+		assertTrue(subMgr.getSiteIdentifiers().contains("MAYO"));
+		
+		SuiteRoleMembership reg = session.getProvisionableRoleMembership(SuiteRole.REGISTRAR);
+		assertNotNull(reg);
+		assertTrue(reg.getRole().isSiteScoped());
+		assertTrue(reg.getRole().isStudyScoped());
+		assertEquals(1,reg.getSiteIdentifiers().size());
+		assertTrue(reg.getSiteIdentifiers().contains("WAKE"));
+		assertEquals(3,reg.getStudyIdentifiers().size());
+		assertTrue(reg.getStudyIdentifiers().contains("5876"));
+		assertTrue(reg.getStudyIdentifiers().contains("1234"));
+		assertTrue(reg.getStudyIdentifiers().contains("54321"));
+
+	}
+    
+    
 	private Authentication buildAuthentication(String userName, String... roles) {
         GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
         for (int i = 0; i < roles.length; i++) {
@@ -126,6 +219,4 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
         return auth;
         //SecurityContextHolder.getContext().setAuthentication(auth);
     }
-
-
 }

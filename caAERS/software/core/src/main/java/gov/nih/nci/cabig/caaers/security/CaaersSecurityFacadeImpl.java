@@ -24,12 +24,14 @@ import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.utils.el.EL;
-import gov.nih.nci.cabig.ctms.suite.authorization.*;
+import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
+import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteAuthorizationAccessException;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
-import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringUtilities;
@@ -37,11 +39,8 @@ import gov.nih.nci.security.util.StringUtilities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.sf.ehcache.Cache;
@@ -51,7 +50,6 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.mail.MailException;
@@ -80,6 +78,47 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	
 	//For all Investigators
 	private String AE_REPORTER = "ae_reporter";
+	
+	
+	 /**
+     * Will create or update a csm user.
+     *
+     * @param user - A user defined in CSM.
+     * @param changeURL - The URL send email
+     */
+    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateUser(User caaersUser,String changeURL) {
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
+		try{
+			csmUser = csmUserRepository.createOrUpdateCSMUser(caaersUser, changeURL);
+		}catch(MailException e){
+			throw e;
+		}
+		return csmUser;
+    }
+	
+    
+	/*
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User, java.util.List)
+	 */
+	public void provisionRoleMemberships(
+			gov.nih.nci.security.authorization.domainobjects.User csmUser,
+			List<SuiteRoleMembership> roleMemberships) {
+		
+		//Fetch all the existing groups of the Given User.
+		List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+		//Erase all the existing SuiteRoleMemberships of the User
+		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+		for(UserGroupType group : userGroups){
+			session.deleteRole(SuiteRole.getByCsmName(group.getCsmName()));
+		}
+		
+		//Provision the newly provided SuiteRoleMemberships for the User in CSM.
+		for(SuiteRoleMembership roleMembership : roleMemberships){
+			session.replaceRole(roleMembership);
+		}
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#getRoles(java.lang.String, gov.nih.nci.cabig.caaers.domain.Study)
@@ -91,43 +130,39 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 
         String studyCCIdentifier = study.getCoordinatingCenterIdentifier().getValue();
+        
+        List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+        for(UserGroupType group : userGroups){
+        	SuiteRoleMembership membership = session.getProvisionableRoleMembership(SuiteRole.getByCsmName(group.getCsmName()));
+        	SuiteRole suiteRole = membership.getRole();
+        	
+            if(!suiteRole.isScoped()) continue;
 
-        for(SuiteRole suiteRole : SuiteRole.values()){
+            if(suiteRole.isSiteScoped() && membership.isAllSites()){
+                roles.add(suiteRole.getCsmName()); //all study access
+                continue; 
+            }
 
-          if(!suiteRole.isScoped()) continue;
-
-          SuiteRoleMembership membership = session.getProvisionableRoleMembership(suiteRole);
-          if(membership == null) continue;
-
-
-          if(suiteRole.isSiteScoped() && membership.isAllSites()){
-              roles.add(suiteRole.getCsmName()); //all study access
-              continue; 
-          }
-
-          if(suiteRole.isStudyScoped() && !membership.isAllStudies()){
-              //specific studies
-              List<String> studyIdentifiers = membership.getStudyIdentifiers();
-              if(studyIdentifiers.contains(studyCCIdentifier))  roles.add(suiteRole.getCsmName());
-              continue;
-          }
-
-
-          //siteScoped-non-all-site and  studyScoped-all-study roles
-          //can access the study if the site is an active study organization is present in membership
-          List<String> nciCodes = membership.getSiteIdentifiers();
-          lblNci:
-          for(String nciCode : nciCodes){
-              for(StudyOrganization so : study.getActiveStudyOrganizations()){
-                  if(so.getOrganization().getNciInstituteCode().equals(nciCode)){
-                      roles.add(suiteRole.getCsmName());
-                      break lblNci;
-                  }
-              }
-          }
-
+            if(suiteRole.isStudyScoped() && !membership.isAllStudies()){
+                //specific studies
+                List<String> studyIdentifiers = membership.getStudyIdentifiers();
+                if(studyIdentifiers.contains(studyCCIdentifier))  roles.add(suiteRole.getCsmName());
+                continue;
+            }
+            //siteScoped-non-all-site and  studyScoped-all-study roles
+            //can access the study if the site is an active study organization is present in membership
+            List<String> nciCodes = membership.getSiteIdentifiers();
+            lblNci:
+            for(String nciCode : nciCodes){
+                for(StudyOrganization so : study.getActiveStudyOrganizations()){
+                    if(so.getOrganization().getNciInstituteCode().equals(nciCode)){
+                        roles.add(suiteRole.getCsmName());
+                        break lblNci;
+                    }
+                }
+            }
+        	
         }
-
 		return roles;
 	}
 	
@@ -139,19 +174,18 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		Set<String> roles = new HashSet<String>();
         gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-        for(SuiteRole suiteRole : SuiteRole.values()){
+        
+        List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+        for(UserGroupType group : userGroups){
+        	SuiteRoleMembership membership = session.getProvisionableRoleMembership(SuiteRole.getByCsmName(group.getCsmName()));
+        	SuiteRole suiteRole = membership.getRole();
             if(!suiteRole.isScoped()) continue;
-            
-            SuiteRoleMembership membership = session.getProvisionableRoleMembership(suiteRole);
-            if(membership == null) continue;
 
             if(membership.isAllSites()){
                 roles.add(suiteRole.getCsmName()); //all site access
             } else {
                 if(membership.getSiteIdentifiers().contains(org.getNciInstituteCode())) roles.add(suiteRole.getCsmName());
             }
-
-
         }
 		return roles;
 	}
@@ -574,33 +608,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     
     
     /**
-     * Will create or update a csm user.
-     *
-     * @param user - A user defined in CSM.
-     * @param changeURL - The URL send email
-     */
-    public void createOrUpdateCSMUser(User user,String changeURL) {
-    	if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
-    		try{
-    			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff((ResearchStaff)user, changeURL);
-    		}catch(MailException e){
-    			provisionResearchStaff((ResearchStaff)user);
-    			throw e;
-    		}
-    		provisionResearchStaff((ResearchStaff)user);
-    		
-    	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
-    		try{
-    			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator((Investigator)user, changeURL);
-    		}catch(MailException e){
-    			provisionInvestigator((Investigator)user);
-    			throw e;
-    		}
-    		provisionInvestigator((Investigator)user);
-    	}
-    }
-
-    /**
      * Will get the accessible protection element Ids (ObjectIDs) for the login.
      *
      * @param loginId - The loginId
@@ -664,18 +671,16 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
         gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
 
-        List<Integer> allStudyIds = null;
-
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-        for(SuiteRole suiteRole : SuiteRole.values()){
-            UserGroupType userGroupType = UserGroupType.valueOf(suiteRole.getCsmName());
+        
+        List<UserGroupType> userGroups = getCsmUserRepository().getUserGroups(userName);
+		for(UserGroupType userGroupType : userGroups){
             IndexEntry entry = new IndexEntry(userGroupType);
             entries.add(entry);
 
-            List<Integer> studyIds = getAccessibleStudyIds(session, suiteRole);
+            List<Integer> studyIds = getAccessibleStudyIds(session, SuiteRole.getByCsmName(userGroupType.getCsmName()));
             entry.getEntityIds().addAll(studyIds);
-        }
-
+		}
         return entries;
     }
 
@@ -690,7 +695,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
           SuiteRoleMembership membership =  session.getProvisionableRoleMembership(suiteRole);
           if(membership == null) return studyIds;
 
-          if(suiteRole.isSiteScoped() && membership.isAllSites()){
+          if(suiteRole.isStudyScoped() && membership.isAllStudies()){
               //all studies in the system
               studyIds.add(ALL_IDS_FABRICATED_ID);
               return studyIds;
@@ -728,16 +733,14 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
 
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-        for(SuiteRole suiteRole : SuiteRole.values()){
-
-            UserGroupType userGroupType = UserGroupType.valueOf(suiteRole.getCsmName());
+        List<UserGroupType> userGroups = getCsmUserRepository().getUserGroups(userName);
+		for(UserGroupType userGroupType : userGroups){
             IndexEntry entry = new IndexEntry(userGroupType);
             entries.add(entry);
 
-            List<Integer> orgIds = getAccessibleOrganizationsForRole(session, suiteRole);
+            List<Integer> orgIds = getAccessibleOrganizationsForRole(session, SuiteRole.getByCsmName(userGroupType.getCsmName()));
             entry.getEntityIds().addAll(orgIds);
-        }
-        
+		}
         return entries;
     }
     
@@ -847,5 +850,10 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
 	public CSMUserRepositoryImpl getCsmUserRepository() {
 		return csmUserRepository;
+	}
+
+	public void createOrUpdateCSMUser(User user, String changeURL) {
+		// TODO Auto-generated method stub
+		
 	}
 }
