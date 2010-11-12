@@ -179,6 +179,43 @@
             />
 
     <ADVERSE_EVENTS
+            id="-5"
+            report_id="-17"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="1002"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            low_level_term_id="-11"
+            solicited="1"
+            />
+            
+
+    <ADVERSE_EVENTS
+            id="-2"
+            report_id="-17"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="1002"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            />
+            
+    <ADVERSE_EVENTS
             id="-3"
             reporting_period_id="1001"
             report_id="-19"
@@ -224,22 +261,6 @@
     <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/>
     
 
-    <ADVERSE_EVENTS
-            id="-2"
-            report_id="-17"
-            grade_code="5"
-            hospitalization_code="0"
-            attribution_summary_code="3"
-            expected="1"
-            participant_at_risk="1"
-            comments="That was some other big AE"
-            start_date="2007-09-12 21:43:56.987"
-            end_date="2007-09-12 21:43:56.987"
-            reporting_period_id="1002"
-            event_time_hour="12"
-            event_time_minute="3"
-            event_time_zone="1"
-            />
 
     <AE_TERMS
             id="-8"
@@ -249,24 +270,7 @@
             />
             
  
-    <ADVERSE_EVENTS
-            id="-5"
-            report_id="-17"
-            grade_code="5"
-            hospitalization_code="0"
-            attribution_summary_code="3"
-            expected="1"
-            participant_at_risk="1"
-            comments="That was some other big AE"
-            start_date="2007-09-12 21:43:56.987"
-            end_date="2007-09-12 21:43:56.987"
-            reporting_period_id="1002"
-            event_time_hour="12"
-            event_time_minute="3"
-            event_time_zone="1"
-            low_level_term_id="-11"
-            solicited="1"
-            />
+
 
     <AE_TERMS
             id="-91"
