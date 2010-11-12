@@ -37,7 +37,7 @@ public class StudyQuery extends AbstractQuery {
     
     public static final String ORGANIZATION_ALIAS = "org";
     
-    public static final String STUDY_THERAPY_ALIAS = "a,d,i";
+    public static final String STUDY_THERAPY_ALIAS = "d,i";
     
     public static final String AGENT_ALIAS = "agt";
 
@@ -100,7 +100,6 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void joinStudyTherapy() {
-        leftOuterJoin("s.studyAgentsInternal as a");
         leftOuterJoin("s.studyDevices as d");
         leftOuterJoin("s.otherInterventions as i");
     }
@@ -161,7 +160,7 @@ public class StudyQuery extends AbstractQuery {
     public void filterByStudyTherapy(Integer code, String operator) {
     	orWhere("i.studyTherapyType " + operator + " '" + code + "'" );
     	orWhere("d.studyTherapyType " + operator + " '" + code + "'" );
-    	orWhere("a.studyTherapyType " + operator + " '" + code + "'" );
+    	orWhere("sagents.studyTherapyType " + operator + " '" + code + "'" );
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
