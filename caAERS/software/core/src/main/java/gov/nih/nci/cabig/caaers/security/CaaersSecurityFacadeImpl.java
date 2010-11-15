@@ -83,7 +83,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	 /**
      * Will create or update a csm user.
      *
-     * @param user - A user defined in CSM.
+     * @param caaersUser - A user defined in CSM.
      * @param changeURL - The URL send email
      */
     public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateUser(User caaersUser,String changeURL) {
@@ -689,34 +689,37 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
          List<Integer> studyIds = new ArrayList<Integer>();
 
-           //global roles can be ignored
-          if(!suiteRole.isScoped()) return studyIds;
+         //global roles can be ignored
+         if(!suiteRole.isScoped()) return studyIds;
 
-          SuiteRoleMembership membership =  session.getProvisionableRoleMembership(suiteRole);
-          if(membership == null) return studyIds;
+         SuiteRoleMembership membership =  session.getProvisionableRoleMembership(suiteRole);
+         if(membership == null) return studyIds;
 
-          if(suiteRole.isStudyScoped() && membership.isAllStudies()){
-              //all studies in the system
-              studyIds.add(ALL_IDS_FABRICATED_ID);
-              return studyIds;
-          }
+         boolean studyScoped = suiteRole.isStudyScoped();
+         boolean siteScoped = !studyScoped;
+         boolean allSites = membership.isAllSites();
+         boolean allStudies = membership.isAllStudies();
 
-          if(suiteRole.isStudyScoped() && !membership.isAllStudies()){
-               //specific studies
-              List<String> studyIdentifiers = membership.getStudyIdentifiers();
-              if(CollectionUtils.isNotEmpty(studyIdentifiers)) studyIds = getStudyIdsByIdentifiers(studyIdentifiers);
-              return studyIds;
-          }
+         if(allSites && allStudies || (siteScoped && allSites)){
+             //all studies in the system
+             studyIds.add(ALL_IDS_FABRICATED_ID);
+             return studyIds;
+         }
 
-          //for siteScoped roles - can access all studies at those sites
-          //for studyScoped AllStudy roles - can access all studies of the sites.
-          List<String> nciCodes = membership.getSiteIdentifiers();
-          if(CollectionUtils.isNotEmpty(nciCodes)){
-            List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(nciCodes);
-            studyIds = getStudyIdsByOrganization(orgIds);  
-          }
+         if(studyScoped && !allStudies){
+             List<String> studyIdentifiers = membership.getStudyIdentifiers();
+             studyIds = getStudyIdsByIdentifiers(studyIdentifiers);
+             return studyIds;
+         }
 
-          return studyIds;
+         //-site scoped for specific sites  OR study scoped  all study roles
+         List<String> orgIdentifiers =  membership.getSiteIdentifiers();
+         // all studies belonging to the associated organizations
+         List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(orgIdentifiers);
+         studyIds = getStudyIdsByOrganization(orgIds);
+         return studyIds;
+
+
     }
 
 	
