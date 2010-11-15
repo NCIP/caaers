@@ -83,17 +83,30 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	 /**
      * Will create or update a csm user.
      *
-     * @param caaersUser - A user defined in CSM.
+     * @param user - A user defined in CSM.
      * @param changeURL - The URL send email
      */
-    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User caaersUser,String changeURL) {
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
-		try{
-			csmUser = csmUserRepository.createOrUpdateCSMUser(caaersUser, changeURL);
-		}catch(MailException e){
-			throw e;
-		}
-		return csmUser;
+    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user,String changeURL) {
+        if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
+    		try{
+    			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff((ResearchStaff)user, changeURL);
+    		}catch(MailException e){
+    			provisionResearchStaff((ResearchStaff)user);
+    			throw e;
+    		}
+    		provisionResearchStaff((ResearchStaff)user);
+
+    	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
+    		try{
+    			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator((Investigator)user, changeURL);
+    		}catch(MailException e){
+    			provisionInvestigator((Investigator)user);
+    			throw e;
+    		}
+    		provisionInvestigator((Investigator)user);
+    	}
+        return null;
+
     }
 	
     
