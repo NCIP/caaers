@@ -31,20 +31,20 @@ public class FilteredDataLoader {
 		String userName = SecurityUtils.getUserLoginName(authentication);
         long begin = System.currentTimeMillis();
         
-		log.debug("**BEGIN Updating Index for User " + userName);
+		log.info("**BEGIN Updating Index for User " + userName);
 		for (IdFetcher idFetcher : idFetchers) {
 			long t1 = System.currentTimeMillis();
 			List<IndexEntry> indexEntries = idFetcher.fetch(userName);
             long t2 = System.currentTimeMillis();
-			log.debug("TIME TOOK TO FETCH IDS " +idFetcher.getClass().getName() +" ..."+ (t2-t1)/1000 + " seconds");
+			log.info("TIME TOOK TO FETCH IDS " +idFetcher.getClass().getName() +" ..."+ (t2-t1)/1000 + " seconds");
 			AbstractIndexDao indexDao = (AbstractIndexDao)idFetcherIndexDaoMap.get(idFetcher);
 			updateAnIndex(indexEntries, userName, indexDao);
             long t3 = System.currentTimeMillis();
-			log.debug("TIME TOOK TO UPDATE INDEX ..."+ (t3-t2)/1000 + " seconds");
+			log.info("TIME TOOK TO UPDATE INDEX ..."+ (t3-t2)/1000 + " seconds");
 
 
 		}
-		log.debug("**END Updating Index for User " + userName + ", total time : " + (System.currentTimeMillis() - begin) /1000 +" seconds");
+		log.info("**END Updating Index for User " + userName + ", total time : " + (System.currentTimeMillis() - begin) /1000 +" seconds");
 
 	}
 
