@@ -1,16 +1,23 @@
 .eXtremeTable {
 	margin: 0;
 	padding: 0;
+    
 }
 
 
 
 .eXtremeTable .tableRegion {
-	border: 1px solid silver;
-	padding: 2px;
+	border: 1px solid white;
+    background-color:#F4F4F4;
+	padding: 7px;
 	font-family: arial, verdana, helvetica, sans-serif;
 	font-size: 12px;
-	margin-top: 7px;
+	margin: 15px 0;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-box-shadow: 0px 0px 6px #000;
+    -webkit-box-shadow:  0px 0px 6px #000;
+
 }
 
 .eXtremeTable .filter {
@@ -18,7 +25,7 @@
 }
 
 .eXtremeTable .filter td {
-	padding: 2px;
+	padding: 5px;
 }
 
 .eXtremeTable .title {
@@ -51,7 +58,7 @@
 	font-family: arial, verdana, helvetica, sans-serif;
 	font-size: 10px;
 	border: solid 1px grey;
-	padding: 1px;
+	padding: 3px;
 }
 
 .eXtremeTable .filter select {
@@ -61,40 +68,41 @@
 }
 
 .eXtremeTable .tableHeader {
-	background-color: #2b4186;
+	background-color: #458ac6;
 	color: white;
+    text-shadow: 0 -1px #053f72;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 13px;
-	font-weight: bold;
+    font-weight: bold;
 	text-align: left;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
+	padding-right: 7px;
+	padding-left: 7px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	margin-bottom: 5px;
+	border-bottom: solid 1px #053f72;
+    border-top: solid 1px #adcde9;
 	background-image: url(../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
-	background-position: top;
+	background-position: center;
 }
+
+
 
 .eXtremeTable .centerTableHeader {
 	background-color: #2b4186;
 	color: white;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 13px;
-	font-weight: bold;
-	text-align: center;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
+    font-weight: bold;
+	text-align: left;
+	padding-right: 5px;
+	padding-left: 7px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	margin-bottom: 5px;
+    border-bottom: solid 1px #053f72;
+    border-top: solid 1px #adcde9;
 	background-image: url(../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
 	background-position: top;
@@ -103,60 +111,91 @@
 
 .eXtremeTable .tableHeaderSort {
 	background-color: #2b4186;
-	color: white;
+	color: #adcde9;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 13px;
-	font-weight: bold;
+    text-shadow: 0 -1px #053f72;
+    font-weight: bold;
+    margin-bottom: 5px;
 	text-align: left;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
+	padding-right: 7px;
+	padding-left: 7px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+    border-bottom: solid 1px #053f72;
+    border-top: solid 1px #adcde9;
 	background-image: url(../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
-	background-position: top;
+	background-position: center;
 }
 
 .eXtremeTable .odd a, .even a {
-	color: Black;
+	color: #2a2a2a;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 5px;
+    text-shadow: 0 1px white;
+    font-weight: normal;
+}
+
+
+.eXtremeTable .odd, .even a:hover {
+	color: #0f63ad;
+    text-decoration: none;
+    text-shadow: 0 1px white;
+    font-weight: normal;
+
 }
 
 .eXtremeTable .odd td, .eXtremeTable .even td {
-	padding-top: 3px;
-	padding-right: 3px;
-	padding-bottom: 3px;
-	padding-left: 3px;
-	vertical-align: middle;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 13px;
+	padding-top: 7px;
+	padding-right: 7px;
+	padding-bottom: 7px;
+	padding-left: 7px;
+	color: #2a2a2a;
+	font-family: arial, verdana, helvetica, sans-serif;
+	font-size: 12px;
+    border-top: solid 1px white;
+    border-bottom: solid 1px #c2d2e2;
+    font-weight: normal;
+    text-shadow: 0 1px white;
 }
+
 
 
 .eXtremeTable .odd {
 	background-color: #FFFFFF;
+
 }
 
 .eXtremeTable .even {
-  	background-color: #dfe4e8;
+  	background-color: #e6edf4;
+    text-shadow: 0 1px white;
+    font-weight: normal;
 }
 
 .eXtremeTable .highlight td {
-	color: black;
-	padding-top: 3px;
-	padding-right: 3px;
-	padding-bottom: 3px;
-	padding-left: 3px;
+	color: white;
+    background: url(../images/table/highlight_bg.png) center repeat-x;
+   	padding-top: 7px;
+	padding-right: 7px;
+	padding-bottom: 7px;
+	padding-left: 7px;
 	vertical-align: middle;
-	background-color: #F09B5D;
-	font-size: 13px;
+	background-color: #a2cbf3;
+	font-size: 12px;
+    text-shadow: 0 -1px #0f63ad;
+    border-top: solid 1px #d0e1f2;
+    border-bottom: solid 1px #0f63ad;
 }
 
 .eXtremeTable .highlight a, .highlight a {
-	color: black;
+	color: white;
+    text-decoration: none;
+    padding: 7px;
+    text-transform: uppercase;
+    font-weight: normal;
+    text-shadow: 0 -1px #0f63ad;
 }
 
 .eXtremeTable .compactToolbar {
@@ -164,34 +203,44 @@
 }
 
 .eXtremeTable .toolbar {
-	background-color: #F4F4F4;
-	font-family: arial, verdana, helvetica, sans-serif;
-	font-size: 10px;
-	margin-right: 1px;
-	border-right: 1px solid silver;
-	border-left: 1px solid silver;
-	border-top: 1px solid silver;
-	border-bottom: 1px solid silver;
+	background: url(../images/table/toolbar_bg.png) center ;
+
+	border: 1px solid #ccc;
+	
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-box-shadow:inset  0px 0px 9px #000;
+    -webkit-box-shadow:inset  0px 0px 9px #000;
+    padding: 6px 10px 0 10px;
+
 }
 
 .eXtremeTable .toolbar a:hover {
 	background-color: transparent;
 }
 
-.eXtremeTable .toolbar td {
-	color: #444444;
-	padding: 0px 3px 0px 3px;
-	text-align:center;
+.eXtremeTable .toolbar img {
+  
 }
+
+.eXtremeTable .toolbar td {
+	text-align:center;
+    padding: 0 6px 2px 6px;
+    
+}
+
 
 .eXtremeTable .separator {
 	width: 7px;
+    height: 20px;
 }
 
 .eXtremeTable .statusBar {
 	background-color: #F4F4F4;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 10px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 11px;
+    padding-left: 7px;
+    text-shadow: 0 1px white;
 }
 
 .eXtremeTable .filterButtons {

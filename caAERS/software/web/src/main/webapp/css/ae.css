@@ -14,7 +14,9 @@ div.row div.extra {
 /* summary panel */
 div.row div.summarylabel {
     font-weight: bold;
+    text-shadow: 0 1px #ebf5ff;
     float: left;
+    font-size: 14px;
     margin-left: 0.3em;
     text-align: right;
     width: 5em;
@@ -26,6 +28,8 @@ div.row div.summarylabel {
 div.row div.summaryvalue {
     font-weight: normal;
     margin-left: 6em;
+    text-shadow: 0 1px #ebf5ff;
+    font-size: 14px;
 } 
 .border-BR .summarylabel {
     float: left;
