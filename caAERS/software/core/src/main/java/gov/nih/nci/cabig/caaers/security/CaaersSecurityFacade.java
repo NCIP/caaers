@@ -33,13 +33,6 @@ public interface CaaersSecurityFacade {
     void provisionUser(User user);
 
     /**
-     * Will create or update a csm user.
-     * @param csmUser - A user defined in CSM.
-     */
-    void createOrUpdateCSMUser(User user, String changeURL );
-
-
-    /**
      * Will check the authorization status.
      * @param auth - The acegi authentication object
      * @param objectId - The secure object Id
@@ -132,7 +125,7 @@ public interface CaaersSecurityFacade {
      * @param changeURL
      * @return
      */
-    gov.nih.nci.security.authorization.domainobjects.User createOrUpdateUser(User user,String changeURL);
+    gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user,String changeURL);
     
     /**
      * This method provisions all the SuiteRoleMemebrships for a given User in CSM.

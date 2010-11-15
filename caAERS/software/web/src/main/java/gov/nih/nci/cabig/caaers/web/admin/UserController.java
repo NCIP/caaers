@@ -50,7 +50,7 @@ public class UserController extends SimpleFormController {
 	 */
 	protected User createOrUpdateCSMUser(HttpServletRequest request,CSMUser caaersUser){
 		
-		return caaersSecurityFacade.createOrUpdateUser(caaersUser, 
+		return caaersSecurityFacade.createOrUpdateCSMUser(caaersUser, 
 													   ResetPasswordController.getURL(request.getScheme(), 
 																					   request.getServerName(),
 																					   request.getServerPort(),

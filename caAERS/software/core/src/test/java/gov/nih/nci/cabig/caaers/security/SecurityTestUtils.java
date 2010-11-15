@@ -127,8 +127,9 @@ public class SecurityTestUtils {
         public void provisionUser(User user){
            if(_new != null) _new.provisionUser(user);
         }
-        public void createOrUpdateCSMUser(User user, String changeURL ){
-            if(_new != null) _new.createOrUpdateCSMUser(user, changeURL);
+        public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user, String changeURL ){
+            if(_new != null) return _new.createOrUpdateCSMUser(user, changeURL);
+            return null;
         }
         public boolean checkAuthorization(Authentication auth, String objectId, String privilege){
             if(_new != null) return _new.checkAuthorization(auth, objectId, privilege);

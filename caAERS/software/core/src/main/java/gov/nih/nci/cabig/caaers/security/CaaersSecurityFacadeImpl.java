@@ -86,7 +86,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param caaersUser - A user defined in CSM.
      * @param changeURL - The URL send email
      */
-    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateUser(User caaersUser,String changeURL) {
+    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User caaersUser,String changeURL) {
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
 		try{
 			csmUser = csmUserRepository.createOrUpdateCSMUser(caaersUser, changeURL);
@@ -855,8 +855,4 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		return csmUserRepository;
 	}
 
-	public void createOrUpdateCSMUser(User user, String changeURL) {
-		// TODO Auto-generated method stub
-		
-	}
 }
