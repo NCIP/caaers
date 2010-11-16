@@ -721,15 +721,21 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
          if(studyScoped && !allStudies){
              List<String> studyIdentifiers = membership.getStudyIdentifiers();
-             studyIds = getStudyIdsByIdentifiers(studyIdentifiers);
+             if(CollectionUtils.isNotEmpty(studyIdentifiers)){
+                 studyIds = getStudyIdsByIdentifiers(studyIdentifiers);
+             }
              return studyIds;
          }
 
          //-site scoped for specific sites  OR study scoped  all study roles
          List<String> orgIdentifiers =  membership.getSiteIdentifiers();
          // all studies belonging to the associated organizations
-         List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(orgIdentifiers);
-         studyIds = getStudyIdsByOrganization(orgIds);
+         if(CollectionUtils.isNotEmpty(orgIdentifiers)){
+             List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(orgIdentifiers);
+             if(CollectionUtils.isNotEmpty(orgIds)){
+               studyIds = getStudyIdsByOrganization(orgIds);
+             }
+         }
          return studyIds;
 
 
