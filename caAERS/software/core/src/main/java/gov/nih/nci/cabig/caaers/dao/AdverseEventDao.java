@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -16,6 +19,7 @@ import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -279,6 +283,25 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 
+
+	public List<AdverseEvent> findByExample(AdverseEvent caaersAe) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);
+		//AbstractAdverseEventTerm aeTerm = caaersAe.getAdverseEventCtcTerm();
+		//CtcTerm term = null; 
+		//if (aeTerm instanceof AdverseEventCtcTerm) {
+			//term = ((AdverseEventCtcTerm)aeTerm).getCtcTerm();
+		//}
+		
+		//criteria.add(getAdverseEventExample(caaersAe));
+		
+		if (caaersAe.getLowLevelTerm() != null) {
+			criteria.createCriteria("lowLevelTerm");
+		}
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+
+	
 	private Example getParticipantExample(Participant participant) {
 		return addOptions(Example.create(participant));
 	}
@@ -288,7 +311,15 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	}
 	
 	private Example getAdverseEventExample(AdverseEvent adverseEvent) {
-		return addOptions(Example.create(adverseEvent));
+		Example ex = Example.create(adverseEvent).excludeProperty("eventApproximateTime");
+		if (adverseEvent.getEventApproximateTime().getHour() == null) {
+			System.out.println("excluding ....");
+			ex.excludeProperty("eventApproximateTime");
+		}
+		ex.excludeProperty("retiredIndicator");
+		ex.excludeProperty("solicited");
+		//ex.excludeProperty("adverseEventTerm.term");
+		return addOptions(ex);
 	}
 	
 	private Example getAssignmentExample( StudyParticipantAssignment assignment) {
@@ -312,6 +343,8 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	public void setStudyParticipantAssignmentDao(
 			StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
 		this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
-	}   
+	}
+
+ 
    
 }
