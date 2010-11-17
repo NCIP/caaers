@@ -239,7 +239,7 @@ public class GridToDomainObjectConverter {
 					t.setHourString(values[0]);
 					t.setMinuteString(values[1]);
 					String type = values[2];
-					if (type == "AM") {
+					if ("AM".equals(type)) {
 						t.setType(0);
 					} else {
 						t.setType(1);

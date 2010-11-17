@@ -15,5 +15,6 @@
 	
 	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.ae.GridToDomainObjectConverter" autowire="byType"/>
 	<bean id="adverseEventQueryImpl" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl" autowire="byType"/>
+	<bean id="adverseEventManagementImpl" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl" autowire="byType"/>
 
 </beans>

@@ -13,6 +13,10 @@ import _21090.org.iso.NullFlavor;
 import _21090.org.iso.ST;
 import _21090.org.iso.TSDateTime;
 
+/**
+ * @author Denis G. Krylov
+ *
+ */
 public final class ISO21090Helper {
 
 	/**
