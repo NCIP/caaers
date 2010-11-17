@@ -4,22 +4,19 @@ import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventSeriousness;
 import ess.caaers.nci.nih.gov.CtcTerm;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-
-import java.util.List;
-
 import _21090.org.iso.CD;
 
-public class CaaersAdverseEventManagementServiceImplTest extends CaaersDbNoSecurityTestCase{
+public class AdverseEventQueryImplTest extends CaaersDbNoSecurityTestCase{
 	
-	private CaaersAdverseEventManagementServiceImpl caaersAdverseEventManagementServiceImpl;
+	private AdverseEventQueryImpl adverseEventQueryImpl;
 	@Override
 	public void setUp () throws Exception {
 		super.setUp();
-		caaersAdverseEventManagementServiceImpl = (CaaersAdverseEventManagementServiceImpl)getApplicationContext().getBean("caaersAdverseEventManagementServiceImpl");
+		adverseEventQueryImpl = (AdverseEventQueryImpl)getApplicationContext().getBean("adverseEventQueryImpl");
 	}
 	
 	public void testGet() {
-		List<AdverseEvent> aes = caaersAdverseEventManagementServiceImpl.getAdverseEvents(getDataWithHospitalization());
+		adverseEventQueryImpl.findAdverseEvents(getDataWithHospitalization());
 
 	}
 	
