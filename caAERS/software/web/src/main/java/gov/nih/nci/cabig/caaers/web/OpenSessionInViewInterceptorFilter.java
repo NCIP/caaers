@@ -83,7 +83,7 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
                     os.setHttpSession(((HttpServletRequest) request).getSession());
                 }
                 os.setException(e);
-                os.setHibernateSession(session);
+                //os.setHibernateSession(session);
                 os.setMethodParameters(MethodParamsHolder.getParams());
                 CaaersSerializerUtil.serialize(os);
         }catch(Exception ex){
