@@ -88,6 +88,7 @@ public class GridToDomainObjectConverter {
 		}
 		
 		if (gridAe.getAdverseEventCtcTerm() != null) {
+			/*
 			AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
 			CtcTerm ctcTerm = new CtcTerm();
 			if (gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText() != null) {
@@ -97,10 +98,12 @@ public class GridToDomainObjectConverter {
 				ctcTerm.setCtepCode(gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode());
 			}
 			adverseEventCtcTerm.setCtcTerm(ctcTerm);
-			caaersAe.setAdverseEventCtcTerm(adverseEventCtcTerm);
+			caaersAe.setAdverseEventCtcTerm(adverseEventCtcTerm);*/
+			this.populateCtcTerm(gridAe, caaersAe);
 		}
 		
 		if (gridAe.getOtherMeddra() != null) {
+			/*
 			if (gridAe.getOtherMeddra() != null) {
 				gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = new gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm();
 				if (gridAe.getOtherMeddra().getMeddraCode() != null) {
@@ -112,7 +115,8 @@ public class GridToDomainObjectConverter {
 				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
 				adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
 				caaersAe.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
-			}
+			}*/
+			this.populateLowLevelTerm(gridAe.getOtherMeddra(), caaersAe);
 		}
 		
 		if (gridAe.getAdverseEventSeriousness() != null) {
