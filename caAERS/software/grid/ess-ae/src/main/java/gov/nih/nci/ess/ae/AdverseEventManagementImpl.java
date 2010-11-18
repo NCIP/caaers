@@ -45,6 +45,7 @@ public class AdverseEventManagementImpl implements MessageSourceAware {
 									new Object[] { id.getValue() },
 									Locale.getDefault()));
 		}
+		gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = converter.convertAdverseEvent(adverseEvent);
 		return null;
 	}
 
