@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="WSA" default="build">
+
+    <property environment="env" />
+    <property name="project.name" value="WSA"/>
+
+    <property name="dist.dir" value="dist"/>
+    <property name="output.dir" value="out"/>
+    <property name="src.dir" value="src"/>
+    <property name="web.dir" value="web"/>
+    <property name="lib.dir" value="lib"/>
+
+    <property name="javac.debug" value="on"/>
+    <property name="javac.deprecation" value="on"/>
+    <property name="javac.nowarn" value="on"/>
+
+    <property name="tomcat.home" value="${env.CATALINA_HOME}" />
+
+    <path id="classpath"/>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${output.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="build" description="Build the project" depends="war"/>
+
+    <target name="clean" description="Clean the project">
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${output.dir}" includes="**/*"/>
+        </delete>
+    </target>
+
+    <target name="compile" description="Compile Java source files" depends="init">
+        <javac destdir="${output.dir}"
+               classpathref="classpath"
+               debug="${javac.debug}"
+               nowarn="${javac.nowarn}"
+               deprecation="${javac.deprecation}"
+               encoding="Cp1252"
+               source="1.5"
+               target="1.5">
+            <src path="${src.dir}"/>
+            <classpath>
+                <path refid="classpath" />
+                <path location="${web.dir}/WEB-INF/classes/" />
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy todir="${output.dir}" verbose="true">
+            <fileset dir="${src.dir}" excludes="**/*.java, **/build*.xml, **/*.orig, **/*.iml">
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar basedir="${output.dir}" destfile="${web.dir}/WEB-INF/lib/${project.name}.jar"/>
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${output.dir}" includes="**/*"/>
+        </delete>
+        <copy todir="${web.dir}/WEB-INF/lib">
+            <fileset dir="${lib.dir}" excludes="j2ee.jar, servlet-api-2.4.jar"/>
+        </copy>
+    </target>
+
+    <target name="war" depends="jar">
+        <war basedir="${web.dir}" destfile="${dist.dir}/${project.name}.war" webxml="${web.dir}/WEB-INF/web.xml"/>
+    </target>
+
+<!--
+    <target name="deploy" depends="jar">
+		<echo message="Creating deployment file '${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml'" />
+        <echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml">&lt;Context path="/${project.name}" docBase="${basedir}/www/" reloadable="true" debug="9" /></echo>
+    </target>
+
+	<target name="undeploy">
+		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml"/>
+	</target>
+-->
+
+    <target name="copy" description="Copy files to output directory" depends="init">
+        <patternset id="copy.patterns">
+            <include name="**/*.gif"/>
+            <include name="**/*.jpg"/>
+            <include name="**/*.jpeg"/>
+            <include name="**/*.png"/>
+            <include name="**/*.properties"/>
+            <include name="**/*.xml"/>
+            <include name="**/*-apf.xml"/>
+            <include name="**/*.ejx"/>
+            <include name="**/*.xcfg"/>
+            <include name="**/*.cpx"/>
+            <include name="**/*.dcx"/>
+            <include name="**/*.wsdl"/>
+            <include name="**/*.ini"/>
+            <include name="**/*.tld"/>
+            <include name="**/*.tag"/>
+        </patternset>
+        <copy todir="${output.dir}">
+            <fileset dir="${src.dir}">
+                <patternset refid="copy.patterns"/>
+            </fileset>
+        </copy>
+    </target>
+
+<!--
+    <target name="deploywar" depends="war" description="Deploy application as a WAR file">
+        <delete dir="${tomcat.home}/webapps/${project.name}.war" verbose="false" />
+        <copy todir="${tomcat.home}/webapps" preservelastmodified="true" file="${dist.dir}/${project.name}.war"/>
+    </target>
+-->
+
+</project>
