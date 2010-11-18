@@ -104,6 +104,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     			throw e;
     		}
     		provisionInvestigator((Investigator)user);
+    	}else if(user instanceof CSMUser){
+    		try{
+    			return csmUserRepository.createOrUpdateCSMUser((CSMUser)user, changeURL);
+    		}catch(MailException e){
+    			throw e;
+    		}
     	}
         return null;
 

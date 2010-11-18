@@ -7,13 +7,23 @@ import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
  */
 public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
 
+	private String userName;
     private String lastName;
     private String firstName;
     private String middleName;
     private String organization;
     private String number;
     private String active;
+    private String emailAddress;
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+    
     public String getLastName() {
         return lastName;
     }
@@ -61,15 +71,25 @@ public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
     public void setActive(String active) {
         this.active = active;
     }
+    
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (userName == null ? 0 : userName.hashCode());
         result = prime * result + (firstName == null ? 0 : firstName.hashCode());
         result = prime * result + (lastName == null ? 0 : lastName.hashCode());
         result = prime * result + (organization == null ? 0 : organization.hashCode());
         result = prime * result + (number == null ? 0 : number.hashCode());
+        result = prime * result + (emailAddress == null ? 0 : emailAddress.hashCode());
         return result;
     }
 
@@ -86,10 +106,12 @@ public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
             return false;
         }
 
+        if (!ComparisonTools.nullSafeEquals(userName, o.userName)) return false;
         if (!ComparisonTools.nullSafeEquals(firstName, o.firstName)) return false;
         if (!ComparisonTools.nullSafeEquals(lastName, o.lastName)) return false;
         if (!ComparisonTools.nullSafeEquals(organization, o.organization)) return false;
         if (!ComparisonTools.nullSafeEquals(number, o.number)) return false;
+        if (!ComparisonTools.nullSafeEquals(emailAddress, o.emailAddress)) return false;
 
         return true;
     }

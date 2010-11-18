@@ -120,6 +120,7 @@
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Organization" p:linkName="searchOrganizationController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Agents" p:linkName="asaelSearchController"/>
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="User" p:linkName="userSearchController"/>
           </list>
         </property>
       </bean>
@@ -334,6 +335,10 @@
     		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/asaelCreate"/>
     		</bean>
+			<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/createUser"/>
+    		</bean>
+			    		
 	    </list>
 	</property>
   </bean> 
@@ -588,8 +593,18 @@
 
     <bean name="/dashboard" id="dashboardController" class="gov.nih.nci.cabig.caaers.web.DashboardController" autowire="byType" />
 
-	<bean name="/admin/userController" id="userController" class="gov.nih.nci.cabig.caaers.web.admin.UserController" autowire="byType">
+	<bean name="/admin/createUser" id="createUserController" class="gov.nih.nci.cabig.caaers.web.admin.CreateUserController" autowire="byType">
 		<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+		<property name="proSessionFactory" ref="provisioningSessionFactory" />
+	</bean>
+	
+	<bean name="/admin/editUser" id="editUserController" class="gov.nih.nci.cabig.caaers.web.admin.EditUserController" autowire="byType">
+		<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
+		<property name="proSessionFactory" ref="provisioningSessionFactory" />
+	</bean>
+
+	<bean id="userSearchController"  name="/admin/searchUser" class="org.springframework.web.servlet.mvc.ParameterizableViewController">    
+		<property name="viewName"><value>search/user_search</value></property>
 	</bean>
 
     <!-- Validators -->

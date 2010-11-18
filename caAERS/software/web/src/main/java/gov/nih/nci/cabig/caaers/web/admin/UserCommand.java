@@ -18,9 +18,41 @@ public class UserCommand {
 	private CSMUser csmUser;
 	//List which will hold all the RoleMemberships of the user.
 	private List<SuiteRoleMembership> roleMemberships;
+	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
 	
-
+	public UserCommand() {
+	}
+	
+	
+	public void buildRolesHelper() {
+		
+		List<SuiteRole> userRoles = new ArrayList<SuiteRole>();
+		if(roleMemberships != null){
+			for(SuiteRoleMembership srM : roleMemberships){
+				userRoles.add(srM.getRole());
+			}
+		}
+		
+		for (SuiteRole suiteRole : SuiteRole.values()) {
+			SuiteRoleMembershipHelper rh = new SuiteRoleMembershipHelper();
+			rh.setSuiteRole(suiteRole);
+			if(userRoles.contains(suiteRole)){
+				rh.setChecked(true);
+			}else{
+				rh.setChecked(false);
+			}
+			roleMembershipHelper.add(rh);
+		}
+	}
+	
 	//Utility methods
+	/**
+	 * This method returns an array of all the available SuiteRoles.
+	 */
+	public SuiteRole[] getSuiteRoles() {
+		return SuiteRole.values();
+	}
+
 	
 	/**
 	 * This method adds a given SuiteRoleMembership to the list of roleMemberships.
@@ -92,4 +124,15 @@ public class UserCommand {
 	public void setRoleMemberships(List<SuiteRoleMembership> roleMemberships) {
 		this.roleMemberships = roleMemberships;
 	}
+
+
+	public List<SuiteRoleMembershipHelper> getRoleMembershipHelper() {
+		return roleMembershipHelper;
+	}
+
+	public void setRoleMembershipHelper(
+			List<SuiteRoleMembershipHelper> roleMembershipHelper) {
+		this.roleMembershipHelper = roleMembershipHelper;
+	}
+
 }

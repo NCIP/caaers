@@ -11,12 +11,17 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
+import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +43,20 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private MessageSource messageSource;
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
     
+    
+    @SuppressWarnings("unchecked")
+	public List searchCsmUser(String firstName,String lastName,String userName){
+    	
+    	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) return null;
+    	
+    	gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
+    	if(StringUtils.isNotEmpty(firstName)) example.setFirstName(firstName);
+    	if(StringUtils.isNotEmpty(lastName)) example.setLastName(lastName);
+    	if(StringUtils.isNotEmpty(userName)) example.setLoginName(userName);
+    	UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
+    	return userProvisioningManager.getObjects(userSearchCriteria);
+    }
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(final User user, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
@@ -46,14 +65,14 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         try {
             if (user.getId() == null) {
                 csmUser = createCSMUser(user);
-                //sendCreateAccountEmail(user, changeURL);
+                sendCreateAccountEmail(user, changeURL);
             } else {
                 csmUser = updateCSMUser(user);
                 if (csmUser == null) {
                     csmUser = createCSMUser(user);
-                    //sendCreateAccountEmail(user, changeURL);
+                    sendCreateAccountEmail(user, changeURL);
                 } else {
-                    //sendUpdateAccountEmail(user);
+                    sendUpdateAccountEmail(user);
                 }
             }
         } catch (MailException e) {

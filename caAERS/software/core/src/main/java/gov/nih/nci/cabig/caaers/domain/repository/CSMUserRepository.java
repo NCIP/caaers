@@ -57,5 +57,7 @@ public interface CSMUserRepository {
     public boolean loginIDInUse(String loginId);
 
     public gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName);
+    
+    public List searchCsmUser(String firstName,String lastName,String userName);
   
 }

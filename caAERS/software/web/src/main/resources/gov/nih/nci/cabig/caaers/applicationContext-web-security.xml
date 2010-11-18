@@ -106,6 +106,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/dwr/call/plaincall/createParticipant.getParticipantTable.dwr" value="registrar" /> 
         <entry key="/dwr/call/plaincall/searchStudy.getTableForAssignParticipant.dwr" value="registrar" /> 
         <entry key="/pages/participant/create" value="subject_manager,registrar" /> 
+        <entry key="/pages/admin/createUser" value="user_administrator" />
+        <entry key="/pages/admin/editUser" value="user_administrator" />
+        <entry key="/pages/admin/searchUser" value="user_administrator" />
  		
 	</util:map>
 	
@@ -203,6 +206,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		<entry key="/pages/admin/createUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE" />
+		<entry key="/pages/admin/editUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.CSMUser:READ" />
+		<entry key="/pages/admin/searchUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:READ" />
 
 	</util:map>
 
@@ -298,6 +304,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.admin.AgentTab" value="gov.nih.nci.cabig.caaers.domain.Agent:READ" />
           <entry key="gov.nih.nci.cabig.caaers.web.admin.InvestigatorTab" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
           <entry key="gov.nih.nci.cabig.caaers.web.admin.OrganizationTab" value="gov.nih.nci.cabig.caaers.domain.Organization:READ" />
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.UserTab" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE" />
           
       </util:map>
 
