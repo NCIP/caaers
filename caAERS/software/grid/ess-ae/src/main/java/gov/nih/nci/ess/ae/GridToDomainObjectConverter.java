@@ -2,6 +2,7 @@ package gov.nih.nci.ess.ae;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventSeriousness;
+import ess.caaers.nci.nih.gov.Id;
 import ess.caaers.nci.nih.gov.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -13,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
@@ -267,6 +269,18 @@ public class GridToDomainObjectConverter {
 
 	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
 		this.lowLevelTermDao = lowLevelTermDao;
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Identifier convertIdentifier(Id id) {
+		Identifier identifier = new Identifier();
+		if (id!=null) {
+			identifier.setValue(id.getExtension());
+		}
+		return identifier;
 	}
 
 }

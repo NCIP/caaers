@@ -35,6 +35,17 @@ public class ParticipantRepository {
         }
         return false;
     }
+    
+    /**
+     * Gets the participant by id. This initializes the participant and loads all the objects.
+     *
+     * @param identifier the id.
+     * @return the participant by id.
+     */
+    public Participant getByIdentifier(final Identifier identifier) {
+        return participantDao.getByIdentifier(identifier);
+    }
+
 
 
     /**
