@@ -15,7 +15,6 @@
                 CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
                 PATTERN_TYPE_APACHE_ANT
                 /**=channelProcessingFilter,httpSessionContextIntegrationFilter,webSSOAuthenticationProcessingFilter,securityContextHolderAwareRequestFilter,webSSOExceptionTranslationFilter,webSSOFilterSecurityInterceptor
-                <!--/**=httpSessionContextIntegrationFilter,localAuthenticationProcessingFilter,localExceptionTranslationFilter,localFilterSecurityInterceptor-->
             </value>
         </property>
     </bean>
@@ -35,18 +34,6 @@
     </bean>
 
     <bean id="webSSOFilterSecurityInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
-        <property name="authenticationManager"><ref bean="localAuthenticationManager"/></property>
-        <property name="accessDecisionManager"><ref bean="accessDecisionManager"/></property>
-        <property name="objectDefinitionSource">
-            <value>
-                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-                PATTERN_TYPE_APACHE_ANT
-                /index.jsp=ROLE_USER
-            </value>
-        </property>
-    </bean>
-
-    <bean id="localFilterSecurityInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
         <property name="authenticationManager"><ref bean="authenticationManager"/></property>
         <property name="accessDecisionManager"><ref bean="accessDecisionManager"/></property>
         <property name="objectDefinitionSource">
@@ -54,14 +41,8 @@
                 CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
                 PATTERN_TYPE_APACHE_ANT
                 /index.jsp=ROLE_USER
-                /admin.jsp=ROLE_ADMIN
             </value>
         </property>
-    </bean>
-
-    <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
-        <property name="key" value="anonymousAuthKey"/>
-        <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
     </bean>
 
     <bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
@@ -108,42 +89,9 @@
         </property>
     </bean>
 
-    <bean id="localExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
-        <property name="authenticationEntryPoint" ref="localAuthenticationEntryPoint"/>
-        <property name="accessDeniedHandler">
-            <bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
-                <property name="errorPage" value="/accessDenied.jsp"/>
-            </bean>
-        </property>
-    </bean>
-
     <bean id="webSSOAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint" lazy-init="true">
         <property name="loginUrl" value="s[webSSO.server.baseUrl]"/>
         <property name="serviceProperties"><ref bean="serviceProperties"/></property>
-    </bean>
-
-    <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-        <property name="userDetailsService"><ref bean="userDetailsService"/></property>
-    </bean>
-
-    <!-- Authentication using In-memory Dao -->
-    <bean id="userDetailsService" class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
-        <property name="userMap">
-            <value>
-                jklaassen=4moreyears,ROLE_ADMIN
-                bouerj=ineedsleep,ROLE_USER
-                ion=111,ROLE_USER
-                admin=111,ROLE_ADMIN
-            </value>
-        </property>
-    </bean>
-
-    <bean id="localAuthenticationManager" class="org.acegisecurity.providers.ProviderManager">
-        <property name="providers">
-            <list>
-                <ref bean="daoAuthenticationProvider"/>
-            </list>
-        </property>
     </bean>
 
     <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
@@ -154,23 +102,11 @@
         </property>
     </bean>
 
-    <bean id="localAuthenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
-        <property name="filterProcessesUrl"><value>/j_acegi_security_check</value></property>
-        <property name="authenticationFailureUrl"><value>/accessDenied.jsp</value></property>
-        <property name="defaultTargetUrl"><value>/</value></property>
-        <property name="authenticationManager"><ref bean="localAuthenticationManager"/></property>
-    </bean>
-
     <bean id="webSSOAuthenticationProcessingFilter" class="org.acegisecurity.ui.cas.CasProcessingFilter" lazy-init="true">
         <property name="authenticationManager"><ref bean="authenticationManager"/></property>
         <property name="authenticationFailureUrl"><value>/accessDenied.jsp</value></property>
         <property name="defaultTargetUrl"><value>/</value></property>
         <property name="filterProcessesUrl"><value>/j_acegi_cas_security_check</value></property>
-    </bean>
-
-    <bean id="localAuthenticationEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-        <property name="loginFormUrl"><value>/login.jsp</value></property>
-        <property name="forceHttps"><value>false</value></property>
     </bean>
 
     <bean id="webSSOAuthenticationProvider" class="org.acegisecurity.providers.cas.CasAuthenticationProvider" lazy-init="true">
