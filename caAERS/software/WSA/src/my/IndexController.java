@@ -14,7 +14,7 @@ public class IndexController extends AbstractController {
         String urls = req.getSession().getServletContext().getInitParameter("urls.properties");
         InputStream is = IndexController.class.getResourceAsStream(urls);
         p.load(is);
-        ModelAndView mvc = new ModelAndView("/WEB-INF/views/index.jsp");
+        ModelAndView mvc = new ModelAndView("/WEB-INF/views/main.jsp");
         mvc.addObject("urls", p);
         return mvc;
     }

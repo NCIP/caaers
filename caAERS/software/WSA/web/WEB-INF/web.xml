@@ -24,7 +24,7 @@
     
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/index.jsp</url-pattern>
+        <url-pattern>/main/*</url-pattern>
     </servlet-mapping>
 
     <filter>
@@ -38,7 +38,7 @@
     
     <filter-mapping>
         <filter-name>Acegi Filter Chain Proxy</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/main/*</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>
