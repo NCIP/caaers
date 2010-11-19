@@ -30,6 +30,10 @@ public class WebSSOUser extends User {
         this(username, null, true, true, true, true, null);
     }
 
+    public WebSSOUser(String username, GrantedAuthority[] auths) {
+        this(username, "", true, true, true, true, auths);
+    }
+
     public String getGridId() {
         return gridId;
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="WSA" default="build">
+<project name="wsa" default="build">
 
     <property environment="env" />
-    <property name="project.name" value="WSA"/>
+    <property name="project.name" value="wsa"/>
 
     <property name="dist.dir" value="dist"/>
     <property name="output.dir" value="out"/>

@@ -3,6 +3,8 @@ package my;
 import gov.nih.nci.cagrid.common.Utils;
 import org.acegisecurity.AuthenticationCredentialsNotFoundException;
 import org.acegisecurity.AuthenticationException;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.providers.cas.CasAuthoritiesPopulator;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
@@ -29,7 +31,6 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
 
     public static final String ATTRIBUTE_DELIMITER = "$";
     public static final String KEY_VALUE_PAIR_DELIMITER = "^";
-//    public static final String CCTS_USER_ID_KEY = "CAGRID_SSO_EMAIL_ID";
     public static final String CAGRID_SSO_FIRST_NAME = "CAGRID_SSO_FIRST_NAME";
     public static final String CAGRID_SSO_LAST_NAME = "CAGRID_SSO_LAST_NAME";
     public static final String CAGRID_SSO_GRID_IDENTITY = "CAGRID_SSO_GRID_IDENTITY";
@@ -61,7 +62,7 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
 
         WebSSOUser user = null;
         try {
-            user = new WebSSOUser(casUserId);
+            user = new WebSSOUser(casUserId, new GrantedAuthority[] {new GrantedAuthorityImpl("ROLE_USER")});
         } catch (UsernameNotFoundException ex) {
             throw new AuthenticationCredentialsNotFoundException(ex.getMessage(), ex);
         }
