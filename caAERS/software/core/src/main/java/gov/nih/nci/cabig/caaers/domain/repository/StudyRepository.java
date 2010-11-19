@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.INDHolder;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
@@ -455,6 +456,10 @@ public class StudyRepository {
     public Study getById(int id) {
     	return studyDao.getById(id);
     }
+    
+    public Study getByIdentifier(final Identifier identifier) {
+        return studyDao.getByIdentifier(identifier);
+    }    
     
     //Activating / De-Activating StudyPersonnel 
     public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{

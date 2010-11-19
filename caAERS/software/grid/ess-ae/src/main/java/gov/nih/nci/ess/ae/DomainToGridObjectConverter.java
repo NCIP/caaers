@@ -1,5 +1,6 @@
 package gov.nih.nci.ess.ae;
 
+import ess.caaers.nci.nih.gov.AdverseEvent;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
@@ -14,7 +15,8 @@ import _21090.org.iso.TSDateTime;
 public class DomainToGridObjectConverter {
 
 	private static final String TS_DATETIME_PATTERN = "yyyyMMddHHmmss";
-	
+	private static final ISO21090Helper h = null;
+
 	private CtcTermDao ctcTermDao;
 	private LowLevelTermDao lowLevelTermDao;
 
@@ -32,7 +34,7 @@ public class DomainToGridObjectConverter {
 		}
 		return null;
 	}
-	
+
 	private TimeValue convertToTimeValue(TSDateTime tsDateTime) {
 		TimeValue t = new TimeValue();
 		try {
@@ -73,5 +75,10 @@ public class DomainToGridObjectConverter {
 		this.lowLevelTermDao = lowLevelTermDao;
 	}
 
+	public AdverseEvent convertAdverseEvent(
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
+		AdverseEvent gridAE = new AdverseEvent();
+		return gridAE;
+	}
+
 }
-	

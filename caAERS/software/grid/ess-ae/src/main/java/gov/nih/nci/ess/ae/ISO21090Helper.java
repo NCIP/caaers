@@ -15,17 +15,11 @@ import _21090.org.iso.TSDateTime;
 
 /**
  * @author Denis G. Krylov
- *
+ * 
  */
 public final class ISO21090Helper {
 
-	/**
-	 * We allow creation of instances of this class so that other classes could
-	 * use very short form -- a variable with a short name -- of referring to
-	 * this class' methods to improve readability. See usage examples for
-	 * details.
-	 */
-	public ISO21090Helper() {
+	private ISO21090Helper() {
 	}
 
 	public static final II II(String ext) {
@@ -39,8 +33,6 @@ public final class ISO21090Helper {
 		cd.setCode(code);
 		return cd;
 	}
-
-
 
 	public static final BL BL(Boolean b) {
 		BL cd = new BL();
@@ -60,16 +52,12 @@ public final class ISO21090Helper {
 		return st;
 	}
 
-	
-
 	public static final ENXP ENXP(String s, EntityNamePartType type) {
 		ENXP en = new ENXP();
 		en.setValue(s);
 		en.setType(type);
 		return en;
 	}
-
-	
 
 	public static final ADXP ADXP(String s, AddressPartType typ) {
 		ADXP ad = new ADXP();
@@ -78,16 +66,12 @@ public final class ISO21090Helper {
 		return ad;
 	}
 
-	
-
-	
-
 	public static final ED ED(String s) {
 		ED ed = new ED();
 		ed.setValue(s);
 		return ed;
 	}
-	
+
 	public static final EDText EDText(String s) {
 		EDText ed = new EDText();
 		ed.setValue(s);

@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -501,5 +502,15 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	}
     	return maxCycleNumber;
     }
+
+	@Transient
+	public AdverseEventReportingPeriod getReportingPeriod(Date courseStartDate) {
+		for (AdverseEventReportingPeriod p : getActiveReportingPeriods()) {
+			if (p.getStartDate()!=null && DateUtils.isSameDay(courseStartDate, p.getStartDate())) {
+				return p;
+			}
+		}
+		return null;
+	}
 
 }

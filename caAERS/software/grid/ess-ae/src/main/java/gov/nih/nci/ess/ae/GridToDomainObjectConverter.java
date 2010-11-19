@@ -216,7 +216,12 @@ public class GridToDomainObjectConverter {
 	}
 
 	
-	private Date convertToDate(TSDateTime tsDateTime) {
+	/**
+	 * ISO 21090 date to {@link Date}.
+	 * @param tsDateTime
+	 * @return
+	 */
+	public static Date convertToDate(TSDateTime tsDateTime) {
 		try {
 			if (tsDateTime != null && tsDateTime.getNullFlavor() == null) {
 				String value = tsDateTime.getValue();
