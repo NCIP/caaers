@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
+  <service name="SERVICE-INSTANCE-PREFIX/Query" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="gov.nih.nci.ess.ae.service.query.service.globus.QueryProviderImpl" />
+    <wsdlFile>share/schema/AdverseEventEnterpriseService/Query_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/Query-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/Query-security-metadata.xml" />
+    <parameter name="query-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="query-serviceName" value="Query" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/Management" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="gov.nih.nci.ess.ae.service.management.service.globus.ManagementProviderImpl" />
+    <wsdlFile>share/schema/AdverseEventEnterpriseService/Management_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/Management-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/Management-security-metadata.xml" />
+    <parameter name="management-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="management-serviceName" value="Management" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/AdverseEventEnterpriseService" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="gov.nih.nci.ess.ae.service.service.globus.AdverseEventEnterpriseServiceProviderImpl" />
+    <wsdlFile>share/schema/AdverseEventEnterpriseService/AdverseEventEnterpriseService_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/AdverseEventEnterpriseService-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" GetMRPProvider GetRPProvider QueryRPProvider gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/AdverseEventEnterpriseService-security-metadata.xml" />
+    <parameter name="adverseevententerpriseservice-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="adverseevententerpriseservice-serviceName" value="AdverseEventEnterpriseService" />
+  </service>
+  <typeMapping name="AggregatorContent" qname="aggr:AggregatorContent" type="java:org.globus.mds.aggregator.types.AggregatorContent" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+</deployment>
+
