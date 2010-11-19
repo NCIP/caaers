@@ -147,42 +147,25 @@
 	<bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>
 	<!--webSSO config-->
 	<bean id="webSSOAuthenticationProcessingFilter" class="org.acegisecurity.ui.cas.CasProcessingFilter" lazy-init="true">
-		<property name="authenticationManager">
-			<ref bean="authenticationManager"/>
-		</property>
-		<property name="authenticationFailureUrl">
-			<value>/decorated-error.jsp</value>
-		</property>
-		<property name="defaultTargetUrl">
-			<value>/</value>
-		</property>
-		<property name="filterProcessesUrl">
-			<value>/j_acegi_cas_security_check</value>
-		</property>
+		<property name="authenticationManager"><ref bean="authenticationManager"/></property>
+		<property name="authenticationFailureUrl"><value>/decorated-error.jsp</value></property>
+		<property name="defaultTargetUrl"><value>/</value></property>
+		<property name="filterProcessesUrl"><value>/j_acegi_cas_security_check</value></property>
 	</bean>
+
 	<bean id="webSSOAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint" lazy-init="true">
 		<property name="loginUrl" value="s[webSSO.server.baseUrl]"/>
-		<property name="serviceProperties">
-			<ref bean="serviceProperties"/>
-		</property>
+		<property name="serviceProperties"><ref bean="serviceProperties"/></property>
 	</bean>
+
 	<bean id="webSSOAuthenticationProvider" class="org.acegisecurity.providers.cas.CasAuthenticationProvider" lazy-init="true">
-		<property name="casAuthoritiesPopulator">
-			<ref local="casAuthoritiesPopulator"/>
-		</property>
-		<property name="casProxyDecider">
-			<ref local="casProxyDecider"/>
-		</property>
-		<property name="ticketValidator">
-			<ref local="casProxyTicketValidator"/>
-		</property>
-		<property name="statelessTicketCache">
-			<ref local="statelessTicketCache"/>
-		</property>
-		<property name="key">
-			<value>my_password_for_this_auth_provider_only</value>
-		</property>
+		<property name="casAuthoritiesPopulator"><ref local="casAuthoritiesPopulator"/></property>
+		<property name="casProxyDecider"><ref local="casProxyDecider"/></property>
+		<property name="ticketValidator"><ref local="casProxyTicketValidator"/></property>
+		<property name="statelessTicketCache"><ref local="statelessTicketCache"/></property>
+		<property name="key"><value>my_password_for_this_auth_provider_only</value></property>
 	</bean>
+    
 	<bean id="casProxyTicketValidator" class="gov.nih.nci.cabig.caaers.web.security.cas.CaaersCasProxyTicketValidator" lazy-init="true">
 		<property name="casValidate" value="s[webSSO.server.baseUrl]/proxyValidate"/>
 		<property name="serviceProperties">
