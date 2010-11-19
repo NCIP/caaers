@@ -95,7 +95,18 @@ public class DomainToGridObjectConverter {
 		gridAE.setIdentifier(h.II(ae.getId().toString()));
 		gridAE.setComment(h.ST(ae.getComments()));
 		gridAE.setResolutionDate(convert(ae.getEndDate()));
+		gridAE.setOnsetDate(convert(ae.getEventApproximateTime()));
 		return gridAE;
+	}
+
+	private TSDateTime convert(TimeValue time) {
+		// A day is selected arbitrarily, since it will be ignored anyway. Only
+		// hours and minutes matter.
+		// My apologies for the complex expression below.
+		return convert(DateUtils.setMinutes(DateUtils.setHours(new Date(0),
+				time.isAM() ? (time.getHour() == 12 ? 0 : time.getHour())
+						: (time.getHour() == 12 ? 12 : time.getHour() + 12)),
+				time.getMinute()));
 	}
 
 }
