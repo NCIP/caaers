@@ -8,8 +8,10 @@ import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import _21090.org.iso.NullFlavor;
 import _21090.org.iso.TSDateTime;
 
 public class DomainToGridObjectConverter {
@@ -20,7 +22,7 @@ public class DomainToGridObjectConverter {
 	private CtcTermDao ctcTermDao;
 	private LowLevelTermDao lowLevelTermDao;
 
-	private Date convertToDate(TSDateTime tsDateTime) {
+	private Date convert(TSDateTime tsDateTime) {
 		try {
 			if (tsDateTime != null && tsDateTime.getNullFlavor() == null) {
 				String value = tsDateTime.getValue();
@@ -33,6 +35,18 @@ public class DomainToGridObjectConverter {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private TSDateTime convert(Date date) {
+		TSDateTime tsDateTime = new TSDateTime();
+		if (date != null) {
+			tsDateTime.setValue(DateFormatUtils.format(date,
+					TS_DATETIME_PATTERN));
+		} else {
+			tsDateTime.setNullFlavor(NullFlavor.NI);
+		}
+		return tsDateTime;
+
 	}
 
 	private TimeValue convertToTimeValue(TSDateTime tsDateTime) {
@@ -78,6 +92,9 @@ public class DomainToGridObjectConverter {
 	public AdverseEvent convertAdverseEvent(
 			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
 		AdverseEvent gridAE = new AdverseEvent();
+		gridAE.setIdentifier(h.II(ae.getId().toString()));
+		gridAE.setComment(h.ST(ae.getComments()));
+		gridAE.setResolutionDate(convert(ae.getEndDate()));
 		return gridAE;
 	}
 

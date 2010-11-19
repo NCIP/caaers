@@ -9,6 +9,7 @@ import org.springframework.context.NoSuchMessageException;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
+import ess.caaers.nci.nih.gov.TsDateTime;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -18,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.ess.ae.service.management.common.ManagementI;
 import gov.nih.nci.logging.api.util.StringUtils;
 import _21090.org.iso.TSDateTime;
 
@@ -25,7 +27,7 @@ import _21090.org.iso.TSDateTime;
  * @author Denis G. Krylov
  * 
  */
-public class AdverseEventManagementImpl implements MessageSourceAware {
+public class AdverseEventManagementImpl implements ManagementI, MessageSourceAware {
 
 	private static final String INVALID_PARTICIPANT_ID_ERR = "WS_AEMS_032";
 	private static final String PARTICIPANT_NOT_FOUND_ERR = "WS_AEMS_033";
@@ -47,8 +49,8 @@ public class AdverseEventManagementImpl implements MessageSourceAware {
 	 * @param participantId
 	 * @return
 	 */
-	public AdverseEvent initiateAdverseEvent(AdverseEvent adverseEvent,
-			Id participantId, Id studyId, TSDateTime courseStartISODate) {
+	public AdverseEvent initiateAdverseEvent(
+			Id participantId, Id studyId, AdverseEvent adverseEvent, TsDateTime courseStartISODate) {
 		Participant participant = getParticipantByPrimaryId(participantId);
 		Study study = getStudyByPrimaryId(studyId);
 		Date courseStartDate = gridToDomainConverter

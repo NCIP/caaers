@@ -48,7 +48,11 @@ public final class ISO21090Helper {
 
 	public static final ST ST(String s) {
 		ST st = new ST();
-		st.setValue(s);
+		if (s != null) {
+			st.setValue(s);
+		} else {
+			st.setNullFlavor(NullFlavor.NI);
+		}
 		return st;
 	}
 
