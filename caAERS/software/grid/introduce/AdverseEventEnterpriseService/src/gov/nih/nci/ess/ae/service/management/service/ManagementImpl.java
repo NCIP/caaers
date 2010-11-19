@@ -1,11 +1,11 @@
 package gov.nih.nci.ess.ae.service.management.service;
 
+import gov.nih.nci.ess.ae.service.common.AdverseEventEnterpriseServiceI;
 import gov.nih.nci.ess.ae.service.management.common.ManagementI;
 
 import java.rmi.RemoteException;
 
 import org.globus.wsrf.config.ContainerConfig;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,15 +17,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class ManagementImpl extends ManagementImplBase {
 	
-	private static final String SPRING_CLASSPATH_EXPRESSION = "springClasspathExpression";
-    private static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-essae.xml";
-    private static final String BEAN_NAME = "adverseEventManagementImpl";
+	private static final String BEAN_NAME = "adverseEventManagementImpl";
 
     private ManagementI aeManagement;
 	
 	public ManagementImpl() throws RemoteException {
 		super();
-		String exp = ContainerConfig.getConfig().getOption(SPRING_CLASSPATH_EXPRESSION, DEFAULT_SPRING_CLASSPATH_EXPRESSION);
+		String exp = ContainerConfig.getConfig().getOption(AdverseEventEnterpriseServiceI.SPRING_CLASSPATH_EXPRESSION, AdverseEventEnterpriseServiceI.DEFAULT_SPRING_CLASSPATH_EXPRESSION);
 	    ApplicationContext ctx = new ClassPathXmlApplicationContext(exp);
 	    aeManagement = (ManagementI) ctx.getBean(BEAN_NAME);
    }
