@@ -18,5 +18,8 @@ public interface AdverseEventEnterpriseServiceI {
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
 
+  public static final String SPRING_CLASSPATH_EXPRESSION = "springClasspathExpression";
+  public static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-essae.xml";
+  
 }
 
