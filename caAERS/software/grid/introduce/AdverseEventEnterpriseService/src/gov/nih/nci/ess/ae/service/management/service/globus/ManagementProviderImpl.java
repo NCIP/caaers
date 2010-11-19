@@ -28,7 +28,7 @@ public class ManagementProviderImpl{
 
     public gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventResponse initiateAdverseEvent(gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventResponse boxedResult = new gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventResponse();
-    boxedResult.setAdverseEvent(impl.initiateAdverseEvent(params.getSubjectIdentifier().getId(),params.getStudyIdentifier().getId(),params.getCourseStartDate().getTsDateTime()));
+    boxedResult.setAdverseEvent(impl.initiateAdverseEvent(params.getSubjectIdentifier().getId(),params.getStudyIdentifier().getId(),params.getAdverseEvent().getAdverseEvent(),params.getCourseStartDate().getTsDateTime()));
     return boxedResult;
   }
 

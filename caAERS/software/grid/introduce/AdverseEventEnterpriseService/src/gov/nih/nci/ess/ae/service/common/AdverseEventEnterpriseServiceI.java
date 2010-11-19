@@ -12,14 +12,15 @@ import java.rmi.RemoteException;
  */
 public interface AdverseEventEnterpriseServiceI {
 
+  public static final String SPRING_CLASSPATH_EXPRESSION = "springClasspathExpression";
+  public static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-essae.xml";
+  
+
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
 
-  public static final String SPRING_CLASSPATH_EXPRESSION = "springClasspathExpression";
-  public static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-essae.xml";
-  
 }
 

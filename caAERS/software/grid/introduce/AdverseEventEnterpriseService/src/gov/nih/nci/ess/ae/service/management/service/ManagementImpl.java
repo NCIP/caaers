@@ -28,8 +28,8 @@ public class ManagementImpl extends ManagementImplBase {
 	    aeManagement = (ManagementI) ctx.getBean(BEAN_NAME);
    }
 	
-  public ess.caaers.nci.nih.gov.AdverseEvent initiateAdverseEvent(ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.TsDateTime courseStartDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-	  return aeManagement.initiateAdverseEvent(subjectIdentifier, studyIdentifier, courseStartDate);
+  public ess.caaers.nci.nih.gov.AdverseEvent initiateAdverseEvent(ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.AdverseEvent adverseEvent,ess.caaers.nci.nih.gov.TsDateTime courseStartDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+	  return aeManagement.initiateAdverseEvent(subjectIdentifier, studyIdentifier, adverseEvent, courseStartDate);
   }
 
   public ess.caaers.nci.nih.gov.AdverseEvent updateAdverseEvent(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {

@@ -76,7 +76,7 @@ public class ManagementClient extends ManagementClientBase implements Management
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AdverseEvent initiateAdverseEvent(ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.TsDateTime courseStartDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.AdverseEvent initiateAdverseEvent(ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.AdverseEvent adverseEvent,ess.caaers.nci.nih.gov.TsDateTime courseStartDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"initiateAdverseEvent");
     gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequest params = new gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequest();
@@ -86,6 +86,9 @@ public class ManagementClient extends ManagementClientBase implements Management
     gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequestStudyIdentifier studyIdentifierContainer = new gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequestStudyIdentifier();
     studyIdentifierContainer.setId(studyIdentifier);
     params.setStudyIdentifier(studyIdentifierContainer);
+    gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequestAdverseEvent adverseEventContainer = new gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequestAdverseEvent();
+    adverseEventContainer.setAdverseEvent(adverseEvent);
+    params.setAdverseEvent(adverseEventContainer);
     gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequestCourseStartDate courseStartDateContainer = new gov.nih.nci.ess.ae.service.management.stubs.InitiateAdverseEventRequestCourseStartDate();
     courseStartDateContainer.setTsDateTime(courseStartDate);
     params.setCourseStartDate(courseStartDateContainer);
