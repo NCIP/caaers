@@ -31,14 +31,40 @@ import _21090.org.iso.TSDateTime;
 public class GridToDomainObjectConverter {
 
 	private static final String TS_DATETIME_PATTERN = "yyyyMMddHHmmss";
-	
+
 	private CtcTermDao ctcTermDao;
 	private LowLevelTermDao lowLevelTermDao;
 
-	public gov.nih.nci.cabig.caaers.domain.AdverseEvent convertAdverseEvent(AdverseEvent gridAe) {
+	/**
+	 * Will convert an existing grid {@link AdverseEvent} into a new domain
+	 * class instance.
+	 * 
+	 * @param gridAe
+	 * @return
+	 */
+	public gov.nih.nci.cabig.caaers.domain.AdverseEvent convertAdverseEvent(
+			AdverseEvent gridAe) {
 		gov.nih.nci.cabig.caaers.domain.AdverseEvent caaersAe = new gov.nih.nci.cabig.caaers.domain.AdverseEvent();
+		convertAdverseEvent(gridAe, caaersAe);
+		return caaersAe;
+	}
+
+	/**
+	 * Will transfer data from the given grid-based {@link AdverseEvent} to the
+	 * given {@link gov.nih.nci.cabig.caaers.domain.AdverseEvent} domain object.
+	 * 
+	 * @param gridAe
+	 * @param caaersAe
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws CaaersSystemException
+	 */
+	public void convertAdverseEvent(AdverseEvent gridAe,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent caaersAe)
+			throws NumberFormatException, CaaersSystemException {
 		if (gridAe.getIdentifier() != null) {
-			caaersAe.setId(Integer.parseInt(gridAe.getIdentifier().getExtension()));
+			caaersAe.setId(Integer.parseInt(gridAe.getIdentifier()
+					.getExtension()));
 		}
 		if (gridAe.getComment() != null) {
 			caaersAe.setComments(gridAe.getComment().getValue());
@@ -51,18 +77,21 @@ public class GridToDomainObjectConverter {
 			TimeValue t = new TimeValue();
 			t.setHour(startDate.getHours());
 			t.setMinute(startDate.getMinutes());
-			System.out.println(t.getHourString() + ":" +t.getMinuteString());
-			if (t != null) caaersAe.setEventApproximateTime(t);
+			System.out.println(t.getHourString() + ":" + t.getMinuteString());
+			if (t != null)
+				caaersAe.setEventApproximateTime(t);
 		}
-		
+
 		if (gridAe.getLocationDescription() != null) {
-			caaersAe.setEventLocation(gridAe.getLocationDescription().getValue());
+			caaersAe.setEventLocation(gridAe.getLocationDescription()
+					.getValue());
 		}
 		if (gridAe.getExpectedIndicator() != null) {
 			caaersAe.setExpected(gridAe.getExpectedIndicator().getValue());
 		}
 		if (gridAe.getGradeCode() != null) {
-			caaersAe.setGrade(Grade.getByCode(Integer.parseInt(gridAe.getGradeCode().getCode())));
+			caaersAe.setGrade(Grade.getByCode(Integer.parseInt(gridAe
+					.getGradeCode().getCode())));
 		}
 		if (gridAe.getReportedDate() != null) {
 			caaersAe.setGradedDate(convertToDate(gridAe.getReportedDate()));
@@ -75,131 +104,171 @@ public class GridToDomainObjectConverter {
 			}
 		}
 		if (gridAe.getPostReportUpdateDate() != null) {
-			caaersAe.setPostSubmissionUpdatedDate(convertToDate(gridAe.getPostReportUpdateDate()));
+			caaersAe.setPostSubmissionUpdatedDate(convertToDate(gridAe
+					.getPostReportUpdateDate()));
 		}
 		if (gridAe.getOnsetDate() != null) {
 			caaersAe.setStartDate(convertToDate(gridAe.getOnsetDate()));
 		}
-		
+
 		if (gridAe.getResult() != null) {
 			caaersAe.setDetailsForOther(gridAe.getResult().getCode());
 		}
-		
+
 		if (gridAe.getProbabilityCode() != null) {
-			caaersAe.setAttributionSummary(Attribution.getByCode(Integer.parseInt(gridAe.getProbabilityCode().getCode())));
+			caaersAe.setAttributionSummary(Attribution.getByCode(Integer
+					.parseInt(gridAe.getProbabilityCode().getCode())));
 		}
-		
+
 		if (gridAe.getAdverseEventCtcTerm() != null) {
 			/*
-			AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
-			CtcTerm ctcTerm = new CtcTerm();
-			if (gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText() != null) {
-				ctcTerm.setCtepTerm(gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText().getValue());
-			}
-			if (gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode() != null) {
-				ctcTerm.setCtepCode(gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode());
-			}
-			adverseEventCtcTerm.setCtcTerm(ctcTerm);
-			caaersAe.setAdverseEventCtcTerm(adverseEventCtcTerm);*/
+			 * AdverseEventCtcTerm adverseEventCtcTerm = new
+			 * AdverseEventCtcTerm(); CtcTerm ctcTerm = new CtcTerm(); if
+			 * (gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText()
+			 * != null) {
+			 * ctcTerm.setCtepTerm(gridAe.getAdverseEventCtcTerm().getCtepTerm
+			 * ().getOriginalText().getValue()); } if
+			 * (gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode() != null)
+			 * {
+			 * ctcTerm.setCtepCode(gridAe.getAdverseEventCtcTerm().getCtepTerm(
+			 * ).getCode()); } adverseEventCtcTerm.setCtcTerm(ctcTerm);
+			 * caaersAe.setAdverseEventCtcTerm(adverseEventCtcTerm);
+			 */
 			this.populateCtcTerm(gridAe, caaersAe);
 		}
-		
+
 		if (gridAe.getOtherMeddra() != null) {
 			/*
-			if (gridAe.getOtherMeddra() != null) {
-				gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = new gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm();
-				if (gridAe.getOtherMeddra().getMeddraCode() != null) {
-					lowLevelTerm.setMeddraCode(gridAe.getOtherMeddra().getMeddraCode().toString());
-				}
-				if (gridAe.getOtherMeddra().getMeddraTerm() != null) {
-					lowLevelTerm.setMeddraTerm(gridAe.getOtherMeddra().getMeddraTerm().toString());
-				}				
-				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
-				adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
-				caaersAe.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
-			}*/
+			 * if (gridAe.getOtherMeddra() != null) {
+			 * gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm
+			 * = new gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm(); if
+			 * (gridAe.getOtherMeddra().getMeddraCode() != null) {
+			 * lowLevelTerm.setMeddraCode
+			 * (gridAe.getOtherMeddra().getMeddraCode().toString()); } if
+			 * (gridAe.getOtherMeddra().getMeddraTerm() != null) {
+			 * lowLevelTerm.setMeddraTerm
+			 * (gridAe.getOtherMeddra().getMeddraTerm().toString()); }
+			 * AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm =
+			 * new AdverseEventMeddraLowLevelTerm();
+			 * adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
+			 * caaersAe
+			 * .setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm
+			 * ); }
+			 */
 			this.populateLowLevelTerm(gridAe.getOtherMeddra(), caaersAe);
 		}
-		
+
+		caaersAe.getOutcomes().clear();
 		if (gridAe.getAdverseEventSeriousness() != null) {
-			populateOutcomes(gridAe.getAdverseEventSeriousness(),caaersAe);
+			populateOutcomes(gridAe.getAdverseEventSeriousness(), caaersAe);
 		}
-		return caaersAe;
+
 	}
-	
-	public void populateOutcomes(AdverseEventSeriousness[] adverseEventSeriousnessList, gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) {
-		for (int i=0 ; i<adverseEventSeriousnessList.length ; i++) {
-			
+
+	public void populateOutcomes(
+			AdverseEventSeriousness[] adverseEventSeriousnessList,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) {
+		for (int i = 0; i < adverseEventSeriousnessList.length; i++) {
+
 			AdverseEventSeriousness adverseEventSeriousness = adverseEventSeriousnessList[i];
 			CD cd = adverseEventSeriousness.getCode();
-			OutcomeType oct = OutcomeType.getByCode(Integer.parseInt((cd.getCode())));
+			OutcomeType oct = OutcomeType.getByCode(Integer.parseInt((cd
+					.getCode())));
 			Outcome outCome = new Outcome();
 			outCome.setOutcomeType(oct);
-			if (oct.equals(OutcomeType.OTHER_SERIOUS) && cd.getOriginalText() !=null) {
+			if (oct.equals(OutcomeType.OTHER_SERIOUS)
+					&& cd.getOriginalText() != null) {
 				outCome.setOther(cd.getOriginalText().getValue());
 			}
 			adverseEvent.addOutcome(outCome);
 		}
 	}
-	
-	private void populateLowLevelTerm(LowLevelTerm gridLowLevelTerm, gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) {
+
+	private void populateLowLevelTerm(LowLevelTerm gridLowLevelTerm,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) {
 		if (gridLowLevelTerm != null) {
-			gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = getLowLevelTerm(gridLowLevelTerm.getMeddraCode().getValue(),gridLowLevelTerm.getMeddraTerm().getValue());
+			gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = getLowLevelTerm(
+					gridLowLevelTerm.getMeddraCode().getValue(),
+					gridLowLevelTerm.getMeddraTerm().getValue());
 			if (lowLevelTerm == null) {
-				//throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{xmlLowLevelTerm.getMeddraCode().toString()},"",Locale.getDefault()));
-			} else {			
+				// throw new CaaersSystemException
+				// (messageSource.getMessage("WS_AEMS_021", new
+				// String[]{xmlLowLevelTerm.getMeddraCode().toString()},"",Locale.getDefault()));
+			} else {
 				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
 				adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
 				adverseEventMeddraLowLevelTerm.setAdverseEvent(adverseEvent);
-				adverseEvent.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
+				adverseEvent
+						.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
 			}
 		}
 	}
-	private void populateCtcTermLight(AdverseEvent gridAe, gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) {
+
+	private void populateCtcTermLight(AdverseEvent gridAe,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) {
 		if (gridAe.getAdverseEventCtcTerm() != null) {
 			CtcTerm ctcTerm = new CtcTerm();
 			if (gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText() != null) {
-				ctcTerm.setCtepTerm(gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText().getValue());
+				ctcTerm.setCtepTerm(gridAe.getAdverseEventCtcTerm()
+						.getCtepTerm().getOriginalText().getValue());
 			}
 			if (gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode() != null) {
-				ctcTerm.setCtepTerm(gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode());
+				ctcTerm.setCtepTerm(gridAe.getAdverseEventCtcTerm()
+						.getCtepTerm().getCode());
 			}
 
 		}
 	}
-	private void populateCtcTerm(AdverseEvent gridAe, gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) throws CaaersSystemException{
+
+	private void populateCtcTerm(AdverseEvent gridAe,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent)
+			throws CaaersSystemException {
 		if (gridAe.getAdverseEventCtcTerm() != null) {
-			CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[]{gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode()});//getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(), adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
+			CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[] { gridAe
+					.getAdverseEventCtcTerm().getCtepTerm().getCode() });// getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(),
+																			// adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
 			if (ctcTerm == null) {
-				throw new CaaersSystemException (" no term found ..");
+				throw new CaaersSystemException(" no term found ..");
 			} else {
 				if (ctcTerm.isOtherRequired()) {
 					if (gridAe.getOtherMeddra() != null) {
-						gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = getLowLevelTerm(gridAe.getOtherMeddra().getMeddraCode().getValue(),gridAe.getOtherMeddra().getMeddraTerm().getValue());
+						gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = getLowLevelTerm(
+								gridAe.getOtherMeddra().getMeddraCode()
+										.getValue(), gridAe.getOtherMeddra()
+										.getMeddraTerm().getValue());
 						if (lowLevelTerm == null) {
-							//throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
-							
+							// throw new CaaersSystemException
+							// (messageSource.getMessage("WS_AEMS_021", new
+							// String[]{adverseEventDto.getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
+
 						} else {
 							adverseEvent.setLowLevelTerm(lowLevelTerm);
 						}
 					} else {
-						//throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
+						// throw new CaaersSystemException
+						// (messageSource.getMessage("WS_AEMS_022", new
+						// String[]{},"",Locale.getDefault()));
 					}
 				} else {
 					if (gridAe.getOtherMeddra() != null) {
-						//throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
+						// throw new CaaersSystemException
+						// (messageSource.getMessage("WS_AEMS_023", new
+						// String[]{adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
 					}
 				}
 				List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
 				boolean gradeAllowed = false;
-				for (CtcGrade ctcGrade:ctcGrades) {
-					if (ctcGrade.getGrade().getCode() == Integer.parseInt( gridAe.getGradeCode().getCode())) {
+				for (CtcGrade ctcGrade : ctcGrades) {
+					if (ctcGrade.getGrade().getCode() == Integer
+							.parseInt(gridAe.getGradeCode().getCode())) {
 						gradeAllowed = true;
 						break;
 					}
 				}
 				if (!gradeAllowed) {
-					//throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
+					// throw new CaaersSystemException
+					// (messageSource.getMessage("WS_AEMS_030", new
+					// String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
 				}
 				AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
 				adverseEventCtcTerm.setCtcTerm(ctcTerm);
@@ -209,15 +278,17 @@ public class GridToDomainObjectConverter {
 
 		}
 	}
-	private gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm getLowLevelTerm(String code, String term) {
+
+	private gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm getLowLevelTerm(
+			String code, String term) {
 		gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm = null;
-		lowLevelTerm=lowLevelTermDao.getByCodeAndTerm(code,term);
+		lowLevelTerm = lowLevelTermDao.getByCodeAndTerm(code, term);
 		return lowLevelTerm;
 	}
 
-	
 	/**
 	 * ISO 21090 date to {@link Date}.
+	 * 
 	 * @param tsDateTime
 	 * @return
 	 */
@@ -235,7 +306,7 @@ public class GridToDomainObjectConverter {
 		}
 		return null;
 	}
-	
+
 	private TimeValue convertToTimeValue(TSDateTime tsDateTime) {
 		TimeValue t = new TimeValue();
 		try {
@@ -282,11 +353,10 @@ public class GridToDomainObjectConverter {
 	 */
 	public Identifier convertIdentifier(Id id) {
 		Identifier identifier = new Identifier();
-		if (id!=null) {
+		if (id != null) {
 			identifier.setValue(id.getExtension());
 		}
 		return identifier;
 	}
 
 }
-	
