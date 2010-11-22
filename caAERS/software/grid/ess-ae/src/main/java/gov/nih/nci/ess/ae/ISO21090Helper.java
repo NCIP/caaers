@@ -30,13 +30,21 @@ public final class ISO21090Helper {
 
 	public static final CD CD(String code) {
 		CD cd = new CD();
-		cd.setCode(code);
+		if (code!=null) {
+			cd.setCode(code);
+		} else {
+			cd.setNullFlavor(NullFlavor.NI);
+		}
 		return cd;
 	}
 
 	public static final BL BL(Boolean b) {
 		BL cd = new BL();
-		cd.setValue(b);
+		if (b!=null) {
+			cd.setValue(b);
+		} else {
+			cd.setNullFlavor(NullFlavor.NI);
+		}
 		return cd;
 	}
 

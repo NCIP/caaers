@@ -3,6 +3,7 @@ package gov.nih.nci.ess.ae;
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 
 import java.text.ParseException;
@@ -95,15 +96,46 @@ public class DomainToGridObjectConverter {
 		gridAE.setIdentifier(h.II(ae.getId().toString()));
 		gridAE.setComment(h.ST(ae.getComments()));
 		gridAE.setResolutionDate(convert(ae.getEndDate()));
-		gridAE.setOnsetDate(convert(ae.getEventApproximateTime()));
+		gridAE.setLocationDescription(h.ST(ae.getEventLocation()));
+		gridAE.setExpectedIndicator(h.BL(ae.getExpected()));
+		gridAE.setGradeCode(h.CD(ae.getGrade() != null ? ae.getGrade()
+				.getCode().toString() : null));
+		gridAE.setReportedDate(convert(ae.getGradedDate()));
+		if (ae.getHospitalization() != null) {
+			gridAE.setHospitalizationRequiredIndicator(h.BL(ae
+					.getHospitalization().equals(Hospitalization.YES)));
+		} else {
+			gridAE.setHospitalizationRequiredIndicator(h.BL(NullFlavor.NI));
+		}
+		gridAE.setPostReportUpdateDate(convert(ae
+				.getPostSubmissionUpdatedDate()));
+		gridAE.setOnsetDate(convert(ae.getStartDate(),
+				ae.getEventApproximateTime()));
+		gridAE.setResult(h.CD(ae.getDetailsForOther()));
+		if (ae.getAttributionSummary()!=null) {
+			gridAE.setProbabilityCode(h.CD(ae.getAttributionSummary().getCode().toString()));
+		} else {
+			gridAE.setProbabilityCode(h.CD(NullFlavor.NI));
+		}
+		populateCtcTerm(gridAE, ae);
 		return gridAE;
+	}
+
+	private void populateCtcTerm(AdverseEvent gridAE,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private TSDateTime convert(TimeValue time) {
 		// A day is selected arbitrarily, since it will be ignored anyway. Only
 		// hours and minutes matter.
-		// My apologies for the complex expression below.
-		return convert(DateUtils.setMinutes(DateUtils.setHours(new Date(0),
+		return convert(new Date(0), time);
+	}
+
+	private TSDateTime convert(Date day, TimeValue time) {
+		// My apologies for the less readable expression below.
+		return convert(DateUtils.setMinutes(DateUtils.setHours(day,
 				time.isAM() ? (time.getHour() == 12 ? 0 : time.getHour())
 						: (time.getHour() == 12 ? 12 : time.getHour() + 12)),
 				time.getMinute()));

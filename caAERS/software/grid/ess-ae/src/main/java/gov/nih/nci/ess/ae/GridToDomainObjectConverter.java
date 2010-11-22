@@ -82,7 +82,7 @@ public class GridToDomainObjectConverter {
 		}
 		
 		if (gridAe.getResult() != null) {
-			caaersAe.setDetailsForOther(gridAe.getResult().getOriginalText().getValue());
+			caaersAe.setDetailsForOther(gridAe.getResult().getCode());
 		}
 		
 		if (gridAe.getProbabilityCode() != null) {
