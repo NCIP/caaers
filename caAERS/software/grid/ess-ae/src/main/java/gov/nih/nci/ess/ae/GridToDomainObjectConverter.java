@@ -135,8 +135,8 @@ public class GridToDomainObjectConverter {
 			OutcomeType oct = OutcomeType.getByCode(Integer.parseInt((cd.getCode())));
 			Outcome outCome = new Outcome();
 			outCome.setOutcomeType(oct);
-			if (oct.equals(OutcomeType.OTHER_SERIOUS) && adverseEventSeriousness.getCode().getOriginalText() !=null) {
-				outCome.setOther(adverseEventSeriousness.getCode().getOriginalText().getValue());
+			if (oct.equals(OutcomeType.OTHER_SERIOUS) && cd.getOriginalText() !=null) {
+				outCome.setOther(cd.getOriginalText().getValue());
 			}
 			adverseEvent.addOutcome(outCome);
 		}

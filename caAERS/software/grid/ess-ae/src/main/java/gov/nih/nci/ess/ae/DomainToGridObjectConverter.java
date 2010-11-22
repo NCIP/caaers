@@ -1,20 +1,25 @@
 package gov.nih.nci.ess.ae;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
+import ess.caaers.nci.nih.gov.AdverseEventSeriousness;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import _21090.org.iso.CD;
 import _21090.org.iso.NullFlavor;
 import _21090.org.iso.TSDateTime;
 
@@ -122,7 +127,35 @@ public class DomainToGridObjectConverter {
 			gridAE.setProbabilityCode(h.CD(NullFlavor.NI));
 		}
 		populateCtcTerm(gridAE, ae);
+		populateLowLevelTerm(gridAE, ae);
+		populateOutcomes(gridAE, ae);
 		return gridAE;
+	}
+
+	private void populateOutcomes(AdverseEvent gridAE,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
+		List<AdverseEventSeriousness> list = new ArrayList<AdverseEventSeriousness>();
+		for (Outcome outcome : ae.getOutcomes()) {
+			AdverseEventSeriousness seriousness = new AdverseEventSeriousness();
+			final CD cd = h.CD(outcome.getOutcomeType().getCode().toString());
+			cd.setOriginalText(h.EDText(outcome.getOther()));
+			seriousness.setCode(cd);
+			list.add(seriousness);
+		}
+		gridAE.setAdverseEventSeriousness(list
+				.toArray(new AdverseEventSeriousness[0]));
+	}
+
+	private void populateLowLevelTerm(AdverseEvent gridAE,
+			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
+		LowLevelTerm llt = ae.getLowLevelTerm();
+		if (llt != null) {
+			final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
+			gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
+			gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
+			gridAE.setOtherMeddra(gridLlt);
+		}
+
 	}
 
 	private void populateCtcTerm(AdverseEvent gridAE,
@@ -134,13 +167,6 @@ public class DomainToGridObjectConverter {
 				final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
 				gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
 				gridAE.setAdverseEventCtcTerm(gridTerm);
-				LowLevelTerm llt = ae.getLowLevelTerm();
-				if (llt != null) {
-					final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
-					gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
-					gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
-					gridAE.setOtherMeddra(gridLlt);
-				}
 			}
 		}
 	}

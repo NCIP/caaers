@@ -86,7 +86,11 @@ public final class ISO21090Helper {
 
 	public static final EDText EDText(String s) {
 		EDText ed = new EDText();
-		ed.setValue(s);
+		if (s!=null) {
+			ed.setValue(s);
+		} else {
+			ed.setNullFlavor(NullFlavor.NI);
+		}
 		return ed;
 	}
 
