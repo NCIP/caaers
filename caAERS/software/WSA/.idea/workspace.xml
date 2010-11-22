@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="2677bbef-0844-47d5-921c-d56ac11ef73b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/views/index.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/views/index.jsp" />
-      <change type="MOVED" beforePath="C:\.SemanticBits\WSA\trunk\software\web\WEB-INF\applicationContext.xml" afterPath="$PROJECT_DIR$/web/WEB-INF/applicationContext-Security.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/web/BeanNameControllerUrlResolver.java" />
-      <change type="MOVED" beforePath="C:\.SemanticBits\WSA\trunk\software\web\WEB-INF\dispatcher-servlet.xml" afterPath="$PROJECT_DIR$/web/WEB-INF/secured-servlet.xml" />
-      <change type="MOVED" beforePath="C:\.SemanticBits\WSA\trunk\software\web\accessDenied.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/views/accessDenied.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/web/ResolvedControllerReference.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/index.jsp" afterPath="$PROJECT_DIR$/web/index.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/views/tags.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/my/IndexController.java" afterPath="$PROJECT_DIR$/src/my/IndexController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" />
-      <change type="DELETED" beforePath="C:\.SemanticBits\WSA\trunk\software\web\test.jsp" afterPath="" />
-      <change type="DELETED" beforePath="C:\.SemanticBits\WSA\trunk\software\web\WEB-INF\views\main.jsp" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/web" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Lib.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Lib.xml" />
-      <change type="DELETED" beforePath="C:\.SemanticBits\WSA\trunk\software\web\logout.jsp" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ivy.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/WSA.war" afterPath="$PROJECT_DIR$/dist/WSA.war" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ivysettings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/lib/WSA.jar" afterPath="$PROJECT_DIR$/web/WEB-INF/lib/WSA.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -89,8 +78,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="field_breakpoints_viewId" value="TABLE" />
+      <property name="exception_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -100,111 +89,19 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="web.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
+      <file leaf-file-name="ivy.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ivy.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="29" selection-start="755" selection-end="755" vertical-scroll-proportion="0.0">
+            <state line="73" column="26" selection-start="4019" selection-end="4019" vertical-scroll-proportion="1.0824176">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/index.jsp">
+      <file leaf-file-name="ivysettings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ivysettings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="16" selection-start="60" selection-end="60" vertical-scroll-proportion="-0.68">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tags.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/tags.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="62" selection-start="62" selection-end="62" vertical-scroll-proportion="-0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="secured-servlet.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/secured-servlet.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResolvedControllerReference.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/web/ResolvedControllerReference.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BeanNameControllerUrlResolver.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/web/BeanNameControllerUrlResolver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="13" selection-start="585" selection-end="585" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/index.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="20" selection-start="509" selection-end="509" vertical-scroll-proportion="-10.88">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IndexController.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/my/IndexController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="65" selection-start="765" selection-end="765" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="applicationContext-Security.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext-Security.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="24" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CasProcessingFilter.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/acegi-security-1.0.7.jar!/org/acegisecurity/ui/cas/CasProcessingFilter.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="18" selection-start="674" selection-end="674" vertical-scroll-proportion="-7.7916665">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="accessDenied.jsp" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/accessDenied.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="55" selection-start="23" selection-end="23" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/index.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="98" selection-end="98" vertical-scroll-proportion="0.0">
+            <state line="49" column="55" selection-start="3521" selection-end="3521" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -213,43 +110,7 @@
       <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="31" selection-start="1610" selection-end="1610" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="websso.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/my/websso.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="25" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/my/urls.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="4" selection-start="57" selection-end="57" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebSSOAuthoritiesPopulator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/my/WebSSOAuthoritiesPopulator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="0" selection-start="1286" selection-end="1286" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebSSOUser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/my/WebSSOUser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="25" selection-start="1144" selection-end="1144" vertical-scroll-proportion="0.0">
+            <state line="121" column="20" selection-start="4573" selection-end="4573" vertical-scroll-proportion="-17.2">
               <folding />
             </state>
           </provider>
@@ -264,15 +125,12 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext-Security.xml" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/build.xml" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/my/WebSSOAuthoritiesPopulator.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/my/WebSSOUser.java" />
-        <option value="$PROJECT_DIR$/web/accessDenied.jsp" />
-        <option value="$PROJECT_DIR$/web/test.jsp" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/views/main.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/views/index.jsp" />
         <option value="$PROJECT_DIR$/src/my/IndexController.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/views/tags.jsp" />
@@ -285,6 +143,10 @@
         <option value="$PROJECT_DIR$/web/index.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/applicationContext-Security.xml" />
         <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/views/accessDenied.jsp" />
+        <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/ivysettings.xml" />
+        <option value="$PROJECT_DIR$/ivy.xml" />
       </list>
     </option>
   </component>
@@ -323,8 +185,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
       <pane id="Scope" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -453,14 +315,14 @@
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="164" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="118" />
     <property name="project.structure.last.edited" value="Libraries" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="118" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="34" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="149" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="149" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
@@ -469,7 +331,7 @@
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="136" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="119" />
-    <property name="last_opened_file_path" value="C:\Downloads\SpringAcegiTutorial\springweb\WebContent\WEB-INF" />
+    <property name="last_opened_file_path" value="C:\.SemanticBits\WSA\trunk\software" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="794" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="120" />
     <property name="GoToClass.includeJavaFiles" value="false" />
@@ -484,10 +346,10 @@
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
@@ -700,7 +562,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6182432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5506757" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.193769" sideWeight="0.36993244" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="RemoteSynchronizer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -711,11 +572,12 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39969605" sideWeight="0.5337838" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26139817" sideWeight="0.5591216" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23100305" sideWeight="0.5591216" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5506757" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -784,43 +646,42 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/my/urls.properties">
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorReferencesProvider">
+        <state />
+      </provider>
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="4" selection-start="57" selection-end="57" vertical-scroll-proportion="0.0" />
+        <state line="19" column="29" selection-start="755" selection-end="755" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/my/WebSSOAuthoritiesPopulator.java">
+    <entry file="file://$PROJECT_DIR$/web/index.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="1286" selection-end="1286" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/my/WebSSOUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="25" selection-start="1144" selection-end="1144" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/my/IndexController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="65" selection-start="765" selection-end="765" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/acegi-security-1.0.7.jar!/org/acegisecurity/ui/cas/CasProcessingFilter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="18" selection-start="674" selection-end="674" vertical-scroll-proportion="-7.7916665">
+        <state line="1" column="16" selection-start="60" selection-end="60" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/my/websso.properties">
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/tags.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="25" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0">
+        <state line="0" column="62" selection-start="62" selection-end="62" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/ctms-commons-web-1.0.7.RELEASE.jar!/gov/nih/nci/cabig/ctms/tools/spring/ControllerUrlResolver.class">
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/secured-servlet.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="24" selection-start="184" selection-end="184" vertical-scroll-proportion="0.13627255">
+        <state line="5" column="0" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -835,43 +696,22 @@
     <entry file="file://$PROJECT_DIR$/src/web/BeanNameControllerUrlResolver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="13" selection-start="585" selection-end="585" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/secured-servlet.xml">
-      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/index.jsp">
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/index.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="16" selection-start="60" selection-end="60" vertical-scroll-proportion="-0.68">
+        <state line="16" column="20" selection-start="509" selection-end="509" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
-      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
-        <state />
-      </provider>
-      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorReferencesProvider">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/my/IndexController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="29" selection-start="755" selection-end="755" vertical-scroll-proportion="0.0">
+        <state line="16" column="65" selection-start="765" selection-end="765" vertical-scroll-proportion="0.0">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext-Security.xml">
@@ -884,23 +724,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/tags.jsp">
+    <entry file="file://$PROJECT_DIR$/web/index.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="62" selection-start="62" selection-end="62" vertical-scroll-proportion="0.0">
+        <state line="6" column="0" selection-start="98" selection-end="98" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/index.jsp">
+    <entry file="file://$PROJECT_DIR$/src/my/websso.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="20" selection-start="509" selection-end="509" vertical-scroll-proportion="-10.88">
+        <state line="3" column="25" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/views/accessDenied.jsp">
+    <entry file="file://$PROJECT_DIR$/src/my/urls.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="55" selection-start="23" selection-end="23" vertical-scroll-proportion="0.0">
+        <state line="1" column="4" selection-start="57" selection-end="57" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/my/WebSSOAuthoritiesPopulator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="0" selection-start="1286" selection-end="1286" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/my/WebSSOUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="25" selection-start="1144" selection-end="1144" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ivysettings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="55" selection-start="3521" selection-end="3521" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ivy.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="26" selection-start="4019" selection-end="4019" vertical-scroll-proportion="1.0824176">
           <folding />
         </state>
       </provider>

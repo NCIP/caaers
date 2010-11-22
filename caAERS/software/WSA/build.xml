@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="wsa" default="build">
+<project name="wsa" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <property environment="env" />
     <property name="project.name" value="wsa"/>
@@ -24,7 +24,11 @@
         <mkdir dir="${dist.dir}"/>
     </target>
 
-    <target name="build" description="Build the project" depends="war"/>
+    <target name="resolve" depends="init-ivy" description="--> retrieve dependencies with ivy">
+        <ivy:retrieve />
+    </target>
+
+    <target name="all" description="Build the project" depends="war"/>
 
     <target name="clean" description="Clean the project">
         <delete includeemptydirs="true" quiet="true">
@@ -70,7 +74,6 @@
         <war basedir="${web.dir}" destfile="${dist.dir}/${project.name}.war" webxml="${web.dir}/WEB-INF/web.xml"/>
     </target>
 
-<!--
     <target name="deploy" depends="jar">
 		<echo message="Creating deployment file '${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml'" />
         <echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml">&lt;Context path="/${project.name}" docBase="${basedir}/www/" reloadable="true" debug="9" /></echo>
@@ -79,7 +82,6 @@
 	<target name="undeploy">
 		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml"/>
 	</target>
--->
 
     <target name="copy" description="Copy files to output directory" depends="init">
         <patternset id="copy.patterns">
@@ -106,11 +108,29 @@
         </copy>
     </target>
 
-<!--
-    <target name="deploywar" depends="war" description="Deploy application as a WAR file">
-        <delete dir="${tomcat.home}/webapps/${project.name}.war" verbose="false" />
-        <copy todir="${tomcat.home}/webapps" preservelastmodified="true" file="${dist.dir}/${project.name}.war"/>
-    </target>
--->
+    <!-- IVY -->
+    <property name="ivy.install.version" value="2.0.0-beta1"/>
+    <condition property="ivy.home" value="${env.IVY_HOME}">
+        <isset property="env.IVY_HOME"/>
+    </condition>
 
+    <property name="ivy.home" value="${user.home}/.ant"/>
+    <property name="ivy.jar.dir" value="${ivy.home}/lib"/>
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+
+    <target name="download-ivy" unless="offline">
+        <mkdir dir="${ivy.jar.dir}"/>
+        <get
+                src="http://www.apache.org/dist/ant/ivy/${ivy.install.version}/ivy.jar"
+                dest="${ivy.jar.file}"
+                usetimestamp="true"/>
+    </target>
+
+    <target name="init-ivy" depends="download-ivy">
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+        </path>
+
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
 </project>
