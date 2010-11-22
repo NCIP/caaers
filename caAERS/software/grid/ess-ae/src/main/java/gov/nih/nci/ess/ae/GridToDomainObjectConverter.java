@@ -169,7 +169,7 @@ public class GridToDomainObjectConverter {
 	}
 	private void populateCtcTerm(AdverseEvent gridAe, gov.nih.nci.cabig.caaers.domain.AdverseEvent adverseEvent) throws CaaersSystemException{
 		if (gridAe.getAdverseEventCtcTerm() != null) {
-			CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[]{gridAe.getAdverseEventCtcTerm().getCtepTerm().getOriginalText().getValue()});//getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(), adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
+			CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[]{gridAe.getAdverseEventCtcTerm().getCtepTerm().getCode()});//getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(), adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
 			if (ctcTerm == null) {
 				throw new CaaersSystemException (" no term found ..");
 			} else {

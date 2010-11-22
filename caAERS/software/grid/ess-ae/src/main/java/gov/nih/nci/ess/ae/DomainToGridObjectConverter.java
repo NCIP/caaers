@@ -3,8 +3,11 @@ package gov.nih.nci.ess.ae;
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -112,8 +115,9 @@ public class DomainToGridObjectConverter {
 		gridAE.setOnsetDate(convert(ae.getStartDate(),
 				ae.getEventApproximateTime()));
 		gridAE.setResult(h.CD(ae.getDetailsForOther()));
-		if (ae.getAttributionSummary()!=null) {
-			gridAE.setProbabilityCode(h.CD(ae.getAttributionSummary().getCode().toString()));
+		if (ae.getAttributionSummary() != null) {
+			gridAE.setProbabilityCode(h.CD(ae.getAttributionSummary().getCode()
+					.toString()));
 		} else {
 			gridAE.setProbabilityCode(h.CD(NullFlavor.NI));
 		}
@@ -123,8 +127,22 @@ public class DomainToGridObjectConverter {
 
 	private void populateCtcTerm(AdverseEvent gridAE,
 			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
-		// TODO Auto-generated method stub
-		
+		AdverseEventCtcTerm term = ae.getAdverseEventCtcTerm();
+		if (term != null) {
+			CtcTerm ctcTerm = term.getCtcTerm();
+			if (ctcTerm != null) {
+				final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
+				gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
+				gridAE.setAdverseEventCtcTerm(gridTerm);
+				LowLevelTerm llt = ae.getLowLevelTerm();
+				if (llt != null) {
+					final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
+					gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
+					gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
+					gridAE.setOtherMeddra(gridLlt);
+				}
+			}
+		}
 	}
 
 	private TSDateTime convert(TimeValue time) {
