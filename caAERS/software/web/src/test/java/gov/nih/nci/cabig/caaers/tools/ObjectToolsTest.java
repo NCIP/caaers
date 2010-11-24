@@ -7,11 +7,23 @@ import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class ObjectToolsTest extends TestCase {
     public void testBuildReduced() throws Exception {
         Bean src = new Bean("A", 1, 14L, (byte) 2);
         Bean reduced = ObjectTools.reduce(src, "string", "primitiveLong");
+
+        assertBean(src.getString(), null, src.getPrimitiveLong(), (byte) 0, reduced);
+    }
+    public void testBuildReducedCustomReducer() throws Exception {
+        Bean src = new Bean("A", 1, 14L, (byte) 2);
+        Bean reduced = ObjectTools.reduce(src, null, new ObjectTools.Reducer<Bean>(){
+            public void copy(Bean src, Bean dest) {
+                dest.setString(src.getString());
+                dest.setPrimitiveLong(src.getPrimitiveLong());
+            }
+        });
 
         assertBean(src.getString(), null, src.getPrimitiveLong(), (byte) 0, reduced);
     }

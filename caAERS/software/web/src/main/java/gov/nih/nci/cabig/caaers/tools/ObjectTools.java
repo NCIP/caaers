@@ -10,7 +10,10 @@ import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
+ *
  */
+//BJ : Refactored to add the reducer, which is the prototype. 
 public class ObjectTools {
     /**
      * Creates a copy of the given object with only the listed properties included.
@@ -20,11 +23,11 @@ public class ObjectTools {
      *                if supplied, the new instance will be passed to this object's
      *                {@link Initializer#initialize} method before the properties are copied. This
      *                provides an opportunity to initialize intermediate objects.
-     * @param properties
+     * @param reducer - A default implementation of Reducer, which is the prototype. 
      * @return a newly-created object of the same class as <code>src</code>
      */
     @SuppressWarnings("unchecked")
-    public static <T> T reduce(T src, Initializer<T> initializer, String... properties) {
+    public static <T> T reduce(T src, Initializer<T> initializer, Reducer reducer) {
         T dst;
         try {
             // it doesn't seem like this cast should be necessary
@@ -35,19 +38,14 @@ public class ObjectTools {
         } catch (IllegalAccessException e) {
             throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
         }
-
-        BeanWrapper source = new BeanWrapperImpl(src);
-        BeanWrapper destination = new BeanWrapperImpl(dst);
-        for (String property : properties) {
-            destination.setPropertyValue(property, source.getPropertyValue(property));
-        }
+        reducer.copy(src, dst);
         return dst;
     }
 
-    public static <T> List<T> reduceAll(List<T> src, Initializer<T> initializer, String... properties) {
+    public static <T> List<T> reduceAll(List<T> src, Initializer<T> initializer, final String... properties) {
         List<T> dst = new ArrayList<T>(src.size());
         for (T t : src) {
-            dst.add(reduce(t, initializer, properties));
+            dst.add(reduce(t, initializer,new PropertyBasedReducer(properties)));
         }
         return dst;
     }
@@ -59,8 +57,8 @@ public class ObjectTools {
      * @param properties
      * @return a newly-created object of the same class as <code>src</code>
      */
-    public static <T> T reduce(T src, String... properties) {
-        return reduce(src, null, properties);
+    public static <T> T reduce(T src, final String... properties) {
+        return reduce(src, null, new PropertyBasedReducer(properties));
     }
 
     public static <T> List<T> reduceAll(List<T> src, String... properties) {
@@ -71,6 +69,25 @@ public class ObjectTools {
     // initialize intermediate subobjects.
     public static interface Initializer<T> {
         void initialize(T instance);
+    }
+
+    public static interface Reducer<T> {
+        void copy(T src, T dest);
+    }
+
+    static class PropertyBasedReducer implements Reducer{
+        String[] properties;
+        public PropertyBasedReducer(String... properties){
+            this.properties = properties;
+        }
+        public void copy(Object src, Object dest) {
+
+            BeanWrapper source = new BeanWrapperImpl(src);
+            BeanWrapper destination = new BeanWrapperImpl(dest);
+            for (String property : properties) {
+                destination.setPropertyValue(property, source.getPropertyValue(property));
+            }
+        }
     }
 
     // Static class
