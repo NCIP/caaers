@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/resources/websso.properties"/>
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+    </bean>
+
+    <bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+        <property name="filterInvocationDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /**=channelProcessingFilter,httpSessionContextIntegrationFilter,webSSOAuthenticationProcessingFilter,securityContextHolderAwareRequestFilter,webSSOExceptionTranslationFilter,webSSOFilterSecurityInterceptor
+            </value>
+        </property>
+    </bean>
+
+    <bean id="accessDecisionManager" class="org.acegisecurity.vote.UnanimousBased">
+        <property name="decisionVoters">
+            <list>
+                <ref bean="roleVoter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter">
+        <property name="rolePrefix">
+            <value>ROLE_</value>
+        </property>
+    </bean>
+
+    <bean id="webSSOFilterSecurityInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+        <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+        <property name="accessDecisionManager"><ref bean="accessDecisionManager"/></property>
+        <property name="objectDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /secured=ROLE_USER
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
+
+    <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+        <property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
+        <property name="filterInvocationDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                \A.*\Z=REQUIRES_SECURE_CHANNEL
+            </value>
+        </property>
+    </bean>
+
+    <bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor"/>
+    <bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>
+
+    <bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+        <property name="channelProcessors">
+            <list>
+                <ref local="secureChannelProcessor"/>
+                <ref local="insecureChannelProcessor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+
+    <bean id="webSSOLogoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter" lazy-init="true">
+        <constructor-arg value="s[webSSO.server.baseUrl]/logout"/>
+        <constructor-arg>
+            <list>
+                 <bean class="gov.nih.nci.cabig.ccts.security.HttpSessionPurgeLogoutHandler" />
+                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="webSSOExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+        <property name="authenticationEntryPoint" ref="webSSOAuthenticationProcessingFilterEntryPoint"/>
+        <property name="accessDeniedHandler">
+            <bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+                <property name="errorPage" value="/accessDenied.jsp"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="webSSOAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint" lazy-init="true">
+        <property name="loginUrl" value="s[webSSO.server.baseUrl]"/>
+        <property name="serviceProperties"><ref bean="serviceProperties"/></property>
+    </bean>
+
+    <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+        <property name="providers">
+            <list>
+                <ref bean="webSSOAuthenticationProvider"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="webSSOAuthenticationProcessingFilter" class="org.acegisecurity.ui.cas.CasProcessingFilter" lazy-init="true">
+        <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+        <property name="authenticationFailureUrl"><value>/accessDenied.jsp</value></property>
+        <property name="defaultTargetUrl"><value>/</value></property>
+        <property name="filterProcessesUrl"><value>/j_acegi_cas_security_check</value></property>
+    </bean>
+
+    <bean id="webSSOAuthenticationProvider" class="org.acegisecurity.providers.cas.CasAuthenticationProvider" lazy-init="true">
+        <property name="casAuthoritiesPopulator"><ref local="casAuthoritiesPopulator"/></property>
+        <property name="casProxyDecider"><ref local="casProxyDecider"/></property>
+        <property name="ticketValidator"><ref local="casProxyTicketValidator"/></property>
+        <property name="statelessTicketCache"><ref local="statelessTicketCache"/></property>
+        <property name="key"><value>my_password_for_this_auth_provider_only</value></property>
+    </bean>
+
+    <bean id="statelessTicketCache" class="org.acegisecurity.providers.cas.cache.EhCacheBasedTicketCache" lazy-init="true">
+        <property name="cache"><ref local="ticketCacheBackend"/></property>
+    </bean>
+
+    <bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean" lazy-init="true">
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="cacheName"><value>ticketCache</value></property>
+    </bean>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+    
+    <bean id="casProxyTicketValidator" class="gov.nih.nci.cabig.ccts.security.CaaersCasProxyTicketValidator" lazy-init="true">
+        <property name="casValidate" value="s[webSSO.server.baseUrl]/proxyValidate"/>
+        <property name="serviceProperties"><ref local="serviceProperties"/></property>
+        <property name="trustStore" value="s[webSSO.trustStore]"/>
+    </bean>
+
+    <bean id="casAuthoritiesPopulator" class="gov.nih.nci.cabig.ccts.security.WebSSOAuthoritiesPopulator" lazy-init="true">
+        <property name="hostCertificate" value="s[hostCertificate]"/>
+        <property name="hostKey" value="s[hostKey]"/>
+    </bean>
+
+    <bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties" lazy-init="true">
+        <property name="service" value="s[webSSO.cas.acegi.security.url]"/>
+        <property name="sendRenew"><value>false</value></property>
+    </bean>
+    
+    <bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets" lazy-init="true"/>
+    
+</beans>
