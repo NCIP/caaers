@@ -1,19 +1,151 @@
 <ivy-module version="2.0">
-    <info organisation="sd" module="web"/>
-    <dependencies>
-        <dependency org="log4j" name="log4j" rev="1.2.14"/>
+
+    <info organisation="gov.nih.nci.cabig.ccts"
+          module="suite-dashboard"
+          status="integration"/>
+
+
+    <configurations>
+        <conf name="default" visibility="public" extends="publish,runtime"
+              description="Dependencies needed for default setting"  />
+        <conf name="build" visibility="public"
+              description="Dependencies required for build time, all classpath should have this"/>
+        <conf name="publish" visibility="public"
+              description="Dependencies along with this module is published in repository" />
+        <conf name="distGrid" visibility="public" extends="publish"
+              description="Dependencies that are required in grid distribution of this module" />
+        <conf name="dist" visibility="public" extends="publish"
+              description="Dependencies needed for standalone distribution" />
+        <conf name="runtime" visibility="public"
+              description="The dependencies that are needed for runtime" extends="build" />
+        <conf name="test" visibility="public"
+              description="Dependencies needed for testing purposes"/>
+        <conf name="source" visibility="public"
+              description="The source files of this project"/>
+    </configurations>
+
+    <!--  Items to be published  -->
+    <publications>
+        <artifact name="${ivy.module}" conf="publish,dist,distGrid" type="jar"/>
+        <artifact name="${ivy.module}-tests" conf="test" type="jar"/>
+        <artifact name="${ivy.module}-sources" conf="source" type="jar"/>
+    </publications>
+
+    <dependencies defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)" >
+
+
+        <!-- exclusion based on class loading and other conflicts -->
+        <exclude org="net.sf.hibernate" />
+        <exclude org="cglib" module="cglib" />
+        <exclude conf="runtime,dist,distGrid" name="logkit"  />
+        <exclude conf="runtime,dist,distGrid" name="servlet-api"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-aop"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-context"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-beans"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-core"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-dao"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-hibernate3"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-jdbc"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-remoting"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-support"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-web"  />
+        <exclude conf="runtime,dist,distGrid" name="spring-webmvc"  />
+        <exclude conf="dist,distGrid" module="hsqldb" />
+        <exclude conf="dist,distGrid" name="jta" />
+        <exclude conf="dist,distGrid" module="collection-setter-injector" />
+        <exclude conf="dist,distGrid" module="commons-beanutils-core" />
+        <exclude conf="dist,distGrid" module="commons-configuration" />
+        <exclude conf="dist,distGrid" org="cryptix"  />
+        <exclude conf="dist,distGrid" module="icu4j" />
+        <exclude conf="dist,distGrid" module="jgss" />
+        <exclude conf="dist,distGrid" module="jxl" />
+        <exclude conf="dist,distGrid" module="xom" />
+        <exclude conf="*" name="asm-1*" />
+        <exclude conf="*" org="objectweb" module="asm"/>
+        <exclude conf="distGrid" org="bouncycastle" name="bouncycastle-jce-jdk13" />
+        <exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
+        <exclude conf="distGrid" org="globus" module="jcog" />
+        <exclude conf="distGrid" org="*" name="cog*"/>
+        <exclude conf="distGrid" org="*" name="gss"/>
+        <exclude conf="distGrid" org="*" name="puretls" />
+        <exclude conf="runtime,dist,distGrid" module="xmlParserAPIs" rev="2.0.2"/>
+        <exclude conf="dist,distGrid" module="subject" />
+        <exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
+
+        <!-- Build only dependency -->
+        <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build->default(*);test->default(*)"/>
+
+        <!-- Caching Related -->
+        <dependency org="net.sf.ehcache" name="ehcache-web" rev="1.6.0-beta2" />
+        <dependency org="net.sf.ehcache" name="ehcache" rev="1.5.0" force="true"/>
+
+        <!-- Site Mesh for skining -->
         <dependency org="opensymphony" name="sitemesh" rev="2.2.1" />
-        <dependency org="taglibs" name="standard" rev="1.1.2" />
-        <dependency org="jstl" name="jstl" rev="1.1.2" />
-        <dependency org="jspapi" name="jsp-api" rev="2.0" />
-        <dependency org="commons-logging" name="commons-logging" rev="1.0.4" />
-        <dependency org="javax.persistence" name="persistence-api" rev="1.0" />
-        <!-- <dependency org="dwr" name="dwr" rev="1.1.3+" /> -->
-        <!--<dependency org="org.springframework" name="spring" rev="2.5.4"/>-->
-        <dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.1.ga" />
-        <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" >
-            <exclude name="xml-apis" conf="*"/>
-            <exclude name="xerces" conf="*"/>
+
+        <!-- ========= Spring and Spring Modules =============== -->
+        <dependency org="org.springframework" name="spring" rev="2.5.6" force="true" />
+        <dependency org="org.springframework" name="spring-aspects" rev="2.5.6" force="true" />
+        <dependency org="org.springframework" name="spring-aop" rev="2.5.6" force="true"/>
+        <dependency org="org.springframework" name="spring-webmvc" rev="2.5.6">
+            <exclude org="org.apache.axis" />
+            <exclude org="struts" />
+            <exclude org="javax.faces" />
         </dependency>
+        <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"  />
+
+        <!--========  Hibernate/Supporting Jars ========-->
+        <dependency org="org.hibernate" name="hibernate" rev="3.2.7.ga" force="true" >
+            <exclude org="cglib" />
+            <exclude org="asm" />
+        </dependency>
+        <dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.1.GA">
+            <exclude org="cglib" />
+            <exclude org="asm" />
+        </dependency>
+        <dependency org="javax.persistence" name="persistence-api" rev="1.0" force="true" />
+        <dependency org="asm" name="asm" rev="2.2" force="true" />
+        <dependency org="asm" name="asm-commons" rev="2.2" force="true"/>
+        <dependency org="asm" name="asm-attrs" rev="2.2" force="true"/>
+        <dependency org="cglib" name="cglib-nodep" rev="2.1_3" force="true"/>
+
+
+        <!-- ========== caGrid Dependencies =====================-->
+        <dependency org="caGrid" name="authentication-service" rev="1.2" conf="*->client"/>
+        <dependency org="caGrid" name="authz" rev="1.2"/>
+        <dependency org="caGrid" name="core" rev="1.2"/>
+        <dependency org="caGrid" name="dorian" rev="1.2" conf="*->client"/>
+        <dependency org="caGrid" name="gridca" rev="1.2"/>
+        <dependency org="caGrid" name="gridgrouper" rev="1.2" conf="*->client"/>
+        <dependency org="caGrid" name="service-security-provider" rev="1.2" conf="*->client"/>
+
+        <dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2"/>
+        <dependency org="gov.nih.nci.cagrid" name="cagrid-cds-common" rev="1.2"/>
+        <dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2"/>
+        <dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11"/>
+
+        <!-- ================= Globus =====================-->
+        <dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
+
+        <dependency org="globus" name="axis" rev="1.2RC2"/>
+        <dependency org="globus" name="jcog" rev="4.0.3" force="true"/>
+        <dependency org="globus" name="ws-addressing" rev="1.0"/>
+        <dependency org="globus" name="ws-core-client" rev="4.0.3"/>
+
+        <!-- ========== CTMS Commons =================== -->
+        <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}"  force="true"  transitive="false" />
+        <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" force="true"  transitive="false" />
+        <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}" force="true"  transitive="false" />
+        <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" force="true"  transitive="false" />
+        <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-csm" rev="${ctms.version}" force="true" transitive="false" />
+        
+        <!-- Apache Commons -->
+        <dependency org="commons-lang" name="commons-lang" rev="2.4" />
+
+
+        <!-- Testing dependencies -->
+        <dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
+        <dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
+        <dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>
+        <dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
     </dependencies>
 </ivy-module>
