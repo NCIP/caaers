@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- bda-build-template version 1.7.1 -->
+<!--
+$Id: install.xml 3148 2010-08-12 16:27:05Z saksass $
+$HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1/software/bda-build-template/software/build/install.xml $
+-->
+
+<project name="SuiteDashboard-installer" default="upgrade" basedir="."
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+	>
+	<description>
+		This build file is part of the bda-build-templates project. This is the master install file for the project.  It should be placed in project/software.  This script is copied into the distribution and  executed from the extracted distribution.  It is run by typing "ant" from the master project build.xml or from command line. This script has two flows install and upgrade.
+		Install will do the following
+ 			* Install binaries
+			* Configure binaries
+			* Install application
+			* Configure application
+			* Re-create database
+			* Upgrade database
+		Upgrade will do the following
+			* Install application
+			* Configure application
+			* Upgrade database
+		The script includes target that may not be used by all projects, but are included in here becaue it is a template. This script has targets to deal with the following, you can delete targets you don't want to work with
+		Application servers (option for grid services also)
+			* JBoss
+			* Tomcat
+		Databases
+			* MySQL
+			* PostgreSQL
+			* Oracle
+		This script requires java and ant to run. Every thing else it needs is included in the distribution.
+	</description>
+
+	<!-- Properties file related properties and tasks -->
+	<echo message="Passed in properties file of ${properties.file}."/>
+	<property environment="env" />
+	<property file="local.properties"/>
+	<property file="project.properties"/>
+	<!-- load the properties file -->
+	<property name="properties.file" value="${basedir}/install.properties"/>
+	<echo message="Using properties file of ${properties.file}."/>
+	<available file="${properties.file}" property="properties.file.exists" />
+	<fail unless="properties.file.exists" message="The properties.file ${properties.file} does not exist, please make sure that you pass in an accurate file name with the 'ant -Dproperties.file=somepath/somefile', otherwise the build will fail."/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property file="${properties.file}" />
+
+	<!-- Generic properties -->
+	<property name="project.name" value="SuiteDashboard"/>
+	<property name="env.name" value="local"/>
+	<property name="log.dir" location="${basedir}/logs" />
+	<property name="working.dir" location="${basedir}/working" />
+	<property name="temp.dir" location="${working.dir}/temp" />
+
+
+	<!-- Install Time properties -->
+	<!-- Source and target directories -->
+	<property name="bda-utils.dir" location="${basedir}/bda-utils" />
+	<property name="tools.dir" location="${basedir}/${tools.dist.relative.dir}" />
+	<property name="common.dir.src" location="${basedir}/${common.dist.relative.dir}" />
+	<property name="common.dir.dest" location="${working.dir}/${common.dist.relative.dir}" />
+	<property name="db.dir.src" location="${basedir}/${db.dist.relative.dir}" />
+	<property name="db.dir.dest" location="${working.dir}/${db.dist.relative.dir}" />
+	<property name="db-install.dir.dest" location="${working.dir}/${db-install.dist.relative.dir}" />
+	<property name="db-upgrade.dir.dest" location="${working.dir}/${db-upgrade.dist.relative.dir}" />
+	<property name="sync-gts.dir" location="${basedir}/${sync-gts.dist.relative.dir}"/>
+	<property name="sync-gts.build.dir" location="${sync-gts.dir}/syncgts"/>
+
+	<!-- *-ds.xml and WAR -->
+	<property name="SuiteDashboard-webapp.dir.dist" location="${basedir}/${SuiteDashboard-webapp.dist.relative.dir}" />
+	<property name="SuiteDashboard-webapp.ds.file" value="SuiteDashboard-ds.xml" />
+	<property name="SuiteDashboard-webapp.name" value="SuiteDashboard-webapp" />
+	<property name="SuiteDashboard-webapp.war.file" value="${SuiteDashboard-webapp.name}.war" />
+	<!-- Added to make sure that it works with both absolute and relative paths, this property is handed to sub-project scripts in absolute format. -->
+	<property name="jar-signing.keystore.abs-location" location="${jar-signing.keystore.location}"/>
+
+	<!-- Grid related properties -->
+
+	<!-- Paths -->
+	<path id="bda-utils.classpath">
+		<fileset dir="${bda-utils.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<!-- Task definitions -->
+	<taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml" classpathref="bda-utils.classpath"/>
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask" classpathref="bda-utils.classpath"/>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="bda-utils.classpath"/>
+	<taskdef resource="liquibasetasks.properties" classpathref="bda-utils.classpath"/>
+	<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy" classpathref="bda-utils.classpath"/>
+
+	<!-- Includes-->
+	<import file="${bda-utils.dir}/bda-build-utils-${bda.version}.xml" />
+
+	<!-- Clean/make working dir -->
+	<delete dir="${working.dir}" failonerror="false"/>
+	<mkdir dir="${working.dir}" />
+
+	<!-- Start logging moved out of target so all targets are logged -->
+	<!--<property name="install-logs.dir" location="${application.base.path}/change-logs"/> -->
+	<property name="install-logs.dir" location="${log.dir}"/>
+	<mkdir dir="${install-logs.dir}"/>
+	<tstamp>
+		<format property="install.time" pattern="yyyy-MM-dd-HH-mm-ss" />
+	</tstamp>
+	<record name="${install-logs.dir}/install-${install.time}.log" action="start"/>
+
+
+
+	<target name="common:init:pre">
+		<!-- Set application.base.path based on platform -->
+		<condition property="application.base.path" value="${application.base.path.linux}">
+			<or>
+				<os family="unix" />
+				<os family="mac" />
+			</or>
+		</condition>
+
+		<condition property="application.base.path" value="${application.base.path.windows}">
+			<os family="windows" />
+		</condition>
+		<echo message="application.base.path=${application.base.path}"/>
+		<jboss-version
+			/>
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+		<tomcat-version
+			/>
+		<!-- Disable container.grid if container excluded or jdk is 1.6-->
+		<if>
+			<or>
+			</or>
+			<then>
+			</then>
+		</if>
+		<if>
+			<or>
+				<equals arg1="${exclude.tomcat}" arg2="true"/>
+				<equals arg1="${tomcat.major.version}" arg2="6"/>
+			</or>
+			<then>
+			</then>
+		</if>
+	</target>
+
+	<target name="common:tomcat:init" depends="
+		common:init:pre
+		" unless="exclude.tomcat">
+		<property name="tomcat.ssl.enable" value="false"/>
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+		<tomcat-version
+			/>
+		<if>
+			<then>
+				<property name="tomcat.application.url" value="http://${tomcat.hostname}:${tomcat.port.http}/${SuiteDashboard-webapp.name}"/>
+			</then>
+			<else>
+			</else>
+		</if>
+
+		<basename file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.file"/>
+		<dirname file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.dir"/>
+		<property name="tomcat.sock.ports" value="${tomcat.port.http},${tomcat.port.ajp},${tomcat.port.shutdown}"/>
+	</target>
+
+	<target name="common:init" depends="common:init:pre">
+		<!-- SuiteDashboard-webapp can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
+		<echoproperties  prefix="database"> <propertyset negate="yes" > <propertyref regex="passw" /> </propertyset> </echoproperties>
+		<switch value="${database.type}">
+			<case value="oracle">
+				<property name="database.dialect" value="org.hibernate.dialect.OracleDialect"/>
+				<property name="database.driver.file" value="${bda-utils.dir}/ojdbc14-10.2.0.3.0.jar"/>
+				<property name="database.driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="database.schema" value="${database.user}"/>
+			</case>
+			<case value="mysql">
+				<property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+				<property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.8.jar"/>
+				<property name="database.driver" value="com.mysql.jdbc.Driver"/>
+				<property name="database.schema" value="${database.name}"/>
+			</case>
+			<case value="postgresql">
+				<property name="database.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+				<property name="database.driver.file" value="${bda-utils.dir}/postgresql-8.4-701.jdbc3.jar"/>
+				<property name="database.driver" value="org.postgresql.Driver"/>
+				<property name="database.schema" value="public"/>
+			</case>
+			<default>
+				<fail message="Invalid database type ${database.type}"/>
+			</default>
+		</switch>
+
+		<path id="jdbc.driver.classpath">
+			<pathelement location="${database.driver.file}"/>
+		</path>
+
+		<property name="properties.template.file" value="${basedir}/properties.template" />
+		<set-grid-auth-service
+			/>
+		<filterset id="embedded.filterset">
+			<filter token="application.base.path" value="${application.base.path}"/>
+			<filter token="application.url" value="${application.url}"/>
+			<filter token="database.url" value="${database.url}"/>
+			<filter token="database.user" value="${database.user}"/>
+			<filter token="database.password" value="${database.password}"/>
+			<filter token="database.system.url" value="${database.system.url}"/>
+			<!-- added internal properties that may be used in a filtered copy -->
+			<filter token="database.driver" value="${database.driver}"/>
+			<!-- added for liquibase -->
+			<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
+			<filter token="tomcat.home" value="${tomcat.home}"/>
+			<filter token="database.dialect" value="${database.dialect}"/>
+			<filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
+			<filter token="env.LOGNAME" value="${env.LOGNAME}"/>
+			<filter token="env.JAVA_HOME" value="${env.JAVA_HOME}"/>
+			<filter token="project.name" value="${project.name}"/>
+			<filter token="" value=""/>
+		</filterset>
+
+		<!--OS Temp dir -->
+		<condition property="os.temp.dir" value="/tmp/${project.name}">
+			<or>
+				<os family="unix" />
+				<os family="mac" />
+			</or>
+		</condition>
+
+		<condition property="os.temp.dir" value="c:/temp/${project.name}">
+			<os family="windows" />
+		</condition>
+		<echo message="os.temp.dir - ${os.temp.dir}"/>
+		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in embedded.filterset and then copy with filter files -->
+		<copy todir="${common.dir.dest}" filtering="true">
+			<fileset dir="${common.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="embedded.filterset"/>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy>
+	</target>
+
+	<target name="diag">
+		<echoproperties > <propertyset negate="yes" > <propertyref regex="passw" /> </propertyset> </echoproperties>
+	</target>
+
+	<target name="install:common:clean" description="Removes all files from the local filesystem" depends="
+		common:init,
+ 		install:tomcat:clean
+		">
+	</target>
+
+	<target name="install:tomcat:clean" unless="exclude.tomcat" depends="common:tomcat:init">
+		<sleep seconds="5" />
+		<property name="backup.count" value="5"/>
+		<if>
+			<not>
+				<equals arg1="${exclude.tomcat.backup}" arg2="true"/>
+			</not>
+			<then>
+				<property name="backup.tomcat.base.dir" location="${application.base.path}/backup/tomcat"/>
+
+				<backup-dir
+					src.dir="${tomcat.home}"
+					backup.base.dir="${backup.tomcat.base.dir}"
+					backup.count="${backup.count}"
+					/>
+			</then>
+		</if>
+		<delete dir="${tomcat.home}"/>
+	</target>
+
+	<target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="common:init">
+		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
+		<echo  message="Checking if database properties exist: ${db.prop.list}"/>
+		<properties-exist properties.list="${db.prop.list}"/>
+		<echoproperties  prefix="database"> <propertyset negate="yes" > <propertyref regex="passw" /> </propertyset> </echoproperties>
+		<copy todir="${db.dir.dest}" filtering="true">
+			<fileset dir="${db.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="embedded.filterset"/>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy>
+		<mkdir dir="${os.temp.dir}/${project.name}"/>
+		<copy todir="${os.temp.dir}/${project.name}" filtering="true" flatten="true" overwrite="true">
+			<fileset dir="${db.dir.dest}">
+				<include name="**/db-upgrade.xml"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database"
+		depends="
+
+		common:init,
+		install:database:prep,
+		install:database:validation:pre-install
+		">
+		<!-- Drop all schema objects or re-create the db -->
+		<database-clean/>
+		<!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
+		<switch value="${database.type}">
+			<case value="oracle">
+				<database-install
+					db.install.create.file.list="${db.install.create.oracle.file.list}"
+					sql.delimiter="/"
+					sql.delimitertype="row"
+					/>
+			</case>
+			<case value="postgresql">
+				<database-install
+					db.install.create.file.list="${db.install.create.postgresql.file.list}"
+					sql.delimiter="/"
+					sql.delimitertype="row"
+					/>
+			</case>
+			<case value="mysql">
+				<database-install
+					db.install.create.file.list="${db.install.create.mysql.file.list}"
+					/>
+			</case>
+		</switch>
+		<database-upgrade
+			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
+			/>
+		<database-tag/>
+	</target>
+
+	<target name="install:common:validation:pre-install" description="Runs pre-install validation checks bda-utils" depends="common:init">
+		<validate-pre-install-common
+			ant.check.version="${ant.minimum.version}"
+			java.check.version.major="${java.major.version}"
+			java.check.version.minor="${java.minor.version}"
+			/>
+	</target>
+
+	<target name="install:tomcat:validation:pre-install" description="Runs pre-install validation checks bda-utils" unless="exclude.tomcat"
+		depends="
+		common:tomcat:init,
+		common:init,
+		install:common:validation:pre-install
+		">
+		<validate-pre-install-tomcat
+			/>
+	</target>
+
+	<target name="install:database:validation:pre-install" description="Runs pre-install validation checks bda-utils"
+		depends="
+		common:init,
+		install:common:validation:pre-install
+		">
+		<validate-pre-install-database
+			database.version="${mysql.minimum.version}"
+			/>
+	</target>
+
+	<target name="install:tomcat:validation:pre-install:ports" description="Checks to see if configured ports are listenting and fails buld, meant to be run after jboss:stop" unless="exclude.tomcat"
+		depends="
+		common:init,
+		install:tomcat:stop
+		">
+		<validate-pre-tomcat-ports
+			/>
+	</target>
+
+	<target name="install:common:validation:post-install" description="Run post-install checks from bda-utils"
+		depends="
+		common:init
+		">
+		<validate-post-common />
+	</target>
+
+	<target name="install:tomcat:validation:post-install" description="Run post-install checks from bda-utils" unless="exclude.tomcat"
+		depends="
+		common:tomcat:init,
+		common:init,
+		install:tomcat:start
+		">
+		<if>
+			<not>
+				<isset property="exclude.start.servers"/>
+			</not>
+			<then>
+				<validate-post-tomcat
+					connect.wait.seconds="10"
+				       />
+			</then>
+		</if>
+	</target>
+
+	<target name="install:tomcat" description="Wrapper scripts that calls all required targets to install the tomcat container" unless="exclude.tomcat"
+		depends="
+		common:tomcat:init,
+ 		common:init,
+ 		install:tomcat:validation:pre-install,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:tomcat:validation:pre-install:ports,
+ 		install:tomcat:clean,
+ 		install:tomcat:binaries,
+ 		install:tomcat:configure,
+ 		install:tomcat:SuiteDashboard-webapp:re-configure,
+ 		install:tomcat:SuiteDashboard-webapp,
+ 		install:tomcat:SuiteDashboard-webapp:configure,
+ 		install:post:tomcat,
+ 		install:tomcat:start,
+ 		install:tomcat:validation:post-install
+		">
+	</target>
+
+	<target name="install" description="Installs and configures JBOSS, creates database, and deploys application"
+		depends="
+		common:tomcat:init,
+ 		common:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:tomcat:validation:pre-install:ports,
+ 		install:common:clean,
+ 		install:database,
+ 		install:tomcat,
+ 		install:common:post,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="upgrade:tomcat:init,common:init,upgrade-ncm:tomcat">
+	</target>
+
+	<target name="upgrade" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm">
+	</target>
+
+	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm:with-dbinstall">
+	</target>
+
+	<target name="upgrade-dac:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
+		depends="
+		upgrade:tomcat:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:tomcat:validation:pre-install,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:tomcat:validation:pre-install:ports,
+ 		install:tomcat:clean,
+ 		install:tomcat:binaries,
+ 		install:tomcat:configure,
+ 		install:tomcat:SuiteDashboard-webapp:re-configure,
+ 		install:tomcat:SuiteDashboard-webapp,
+ 		install:tomcat:SuiteDashboard-webapp:configure,
+ 		upgrade:post:tomcat,
+ 		install:post:tomcat,
+ 		install:tomcat:start,
+ 		install:tomcat:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-dac" description="Upgrades JBoss and Database"
+		depends="
+		upgrade:common:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		upgrade:database,
+ 		upgrade:tomcat,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-dac:with-dbinstall" description="Upgrades JBoss and Database"
+		depends="
+		upgrade:common:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:database,
+ 		upgrade:tomcat,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-cm:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
+		depends="
+		upgrade:tomcat:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:tomcat:validation:pre-install,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:tomcat:validation:pre-install:ports,
+ 		install:tomcat:configure,
+ 		install:tomcat:SuiteDashboard-webapp:re-configure,
+ 		install:tomcat:SuiteDashboard-webapp,
+ 		install:tomcat:SuiteDashboard-webapp:configure,
+ 		upgrade:post:tomcat,
+ 		install:post:tomcat,
+ 		install:tomcat:start,
+ 		install:tomcat:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-cm" description="Upgrades JBoss and Database"
+		depends="
+		upgrade:common:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		upgrade:database,
+ 		upgrade:tomcat,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-cm:with-dbinstall" description="Upgrades JBoss and Database"
+		depends="
+		upgrade:common:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:database,
+ 		upgrade:tomcat,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-ncm:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
+		depends="
+		upgrade:tomcat:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:tomcat:validation:pre-install,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:tomcat:validation:pre-install:ports,
+ 		install:tomcat:SuiteDashboard-webapp:re-configure,
+ 		install:tomcat:SuiteDashboard-webapp,
+ 		install:tomcat:SuiteDashboard-webapp:configure,
+ 		install:post:tomcat,
+ 		install:tomcat:start,
+ 		install:tomcat:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-ncm" description="Upgrades JBoss and Database"
+		depends="
+		upgrade:common:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		upgrade:database,
+ 		upgrade:tomcat,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade-ncm:with-dbinstall" description="Upgrades JBoss and Database"
+		depends="
+		upgrade:common:init,
+ 		common:init,
+ 		common:tomcat:init,
+ 		install:common:validation:pre-install,
+ 		install:tomcat:validation:pre-install,
+ 		install:database:validation:pre-install,
+ 		install:tomcat:stop,
+ 		install:database,
+ 		upgrade:tomcat,
+ 		install:common:validation:post-install
+		">
+	</target>
+
+	<target name="upgrade:database" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
+		depends="
+		upgrade:database:init,
+		common:init,
+		install:database:prep,
+		install:database:validation:pre-install
+		">
+		<database-upgrade
+			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
+			/>
+		<database-tag/>
+	</target>
+
+	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
+		depends="
+		upgrade:database:init,
+		common:init,
+		install:database:prep
+		">
+		<database-tag/>
+	</target>
+
+	<target name="upgrade:database:rollback" description="Rolls back database to previous tagged version using rollback scripts." unless="exclude.database"
+		depends="
+		upgrade:database:init,
+		common:init,
+		install:database:prep
+		">
+		<database-rollback/>
+	</target>
+
+	<target name="install:tomcat:binaries" description="Install tomcat binaries" unless="exclude.tomcat" depends="common:init">
+		<delete dir="${tomcat.home}"/>
+		<dirname file="${tomcat.home}" property="tomcat.base.dir"/>
+		<unzip dest="${tomcat.base.dir}" src="${tools.dir}/${tomcat.binaries.file}" />
+		<tomcat-nci-customizations
+			/>
+		<if>
+			<os family="unix"/>
+			<then>
+				<chmod dir="${tomcat.home}/bin" perm="ugo+rx"
+					includes="**/*.sh"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:tomcat:configure" description="Configure tomcat (change ports)" unless="exclude.tomcat" depends="common:init">
+		<!-- need to pass ports for new override functionality.  It appears macros attribute defaults get initialized at load time not and invoke.  When I changed the value of the property then called the macro the old values were being used. -->
+		<tomcat-configure
+			tomcat.port.http="${tomcat.port.http}"
+			tomcat.port.ajp="${tomcat.port.ajp}"
+			tomcat.port.ssl="${tomcat.port.ssl}"
+			tomcat.port.shutdown="${tomcat.port.shutdown}"
+			tomcat.grid.configure="${tomcat.grid.enable}"
+			/>
+	</target>
+
+	<target name="install:tomcat:stop" description="Stop Tomcat" unless="exclude.tomcat" depends="common:init">
+		<if>
+			<available file="${tomcat.home}/bin/shutdown.sh"/>
+			<then>
+				<echo message="Shutting down tomcat"/>
+				<tomcat-stop tomcat.home="${tomcat.home}"/>
+			</then>
+			<else>
+				<echo message="Tomcat not found , not shutting down tomcat"/>
+			</else>
+		</if>
+	</target>
+
+	<target name="install:tomcat:start" description="Start Tomcat" unless="exclude.tomcat" depends="common:init">
+		<if>
+			<not>
+				<isset property="exclude.start.servers"/>
+			</not>
+			<then>
+				<tomcat-start tomcat.home="${tomcat.home}"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:common:post" depends="
+		common:init,
+ 		install:post:tomcat
+		">
+	</target>
+
+	<target name="install:post:tomcat" unless="exclude.tomcat" depends="common:init">
+		<if>
+			<not>
+				<equals arg1="${exclude.tomcat.backup}" arg2="true"/>
+			</not>
+			<then>
+				<if>
+					<available file="${backup.tomcat.base.dir}/backup/${tomcat.binaries.relative.dir}/bin/startup.sh"/>
+					<then>
+						<echo message="Producing changelog"/>
+						<report-dir-diff
+							dir1="${backup.tomcat.base.dir}/backup/${tomcat.binaries.relative.dir}"
+							dir2="${tomcat.home}"
+							reportFile="${install-logs.dir}/changeLog-tomcat-${install.time}.diff"
+							/>
+					</then>
+					<else>
+						<echo message="It appears your Tomcat backup is incomplete, skipping change log"/>
+					</else>
+				</if>
+
+				<!-- not needed for tomcat
+				<mkdir dir="${tomcat.home}/server/${tomcat.server.name}/log"/>
+				<mkdir dir="${backup.tomcat.base.dir}/backup/${tomcat.binaries.relative.dir}/server/${tomcat.server.name}/log"/>
+				<copy todir="${tomcat.home}/server/${tomcat.server.name}/log">
+					<fileset dir="${backup.tomcat.base.dir}/backup/${tomcat.binaries.relative.dir}/server/${tomcat.server.name}/log">
+						<include name="*"/>
+					</fileset>
+				</copy>
+				-->
+				<!-- Compress backup and cleanup -->
+				<mkdir dir="${backup.tomcat.base.dir}/backup1"/>
+				<zip destfile="${backup.tomcat.base.dir}/backup1/${tomcat.binaries.relative.dir}.zip" basedir="${backup.tomcat.base.dir}/backup" />
+				<delete dir="${backup.tomcat.base.dir}/backup"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:tomcat:SuiteDashboard-webapp" description="Deploy SuiteDashboard-webapp and common libraries to tomcat installation" unless="exclude.tomcat" depends="common:init">
+		<delete dir="${tomcat.home}/temp"/>
+		<delete dir="${tomcat.home}/work"/>
+		<copy file="${SuiteDashboard-webapp.dir.dist}/${SuiteDashboard-webapp.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
+		<!--  Many NCI applications require clm for csm, so you can point this to where you have the version you want to use
+		<copy file="${bda-utils.dir}/clm-3.2.jar" todir="${tomcat.home}/server/${tomcat.server.name}/lib" overwrite="true" />
+		-->
+		<copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
+	</target>
+
+	<target name="install:tomcat:SuiteDashboard-webapp:configure" description="Configure SuiteDashboard-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="common:init">
+		<!-- configure datasource -->
+	</target>
+
+	<target name="install:tomcat:SuiteDashboard-webapp:re-configure" description="Configure SuiteDashboard-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="common:init">
+	</target>
+
+	<target name="upgrade:common:init" depends="
+		upgrade:tomcat:init
+		" >
+	</target>
+
+	<target name="upgrade:tomcat:init" unless="exclude.tomcat"
+		depends="
+		upgrade:tomcat:init:prep,
+ 		upgrade:tomcat:readers:bda,
+ 		upgrade:tomcat:readers:custom
+		">
+		<properties-print
+			properties.list="${read.properties.list}"
+			/>
+		<properties-exist
+			properties.list="${read.properties.list}"
+			/>
+		<properties-write
+			properties.list="${read.properties.list}"
+			/>
+	</target>
+
+	<target name="upgrade:database:init" unless="exclude.database"
+		depends="
+		upgrade:database:readers:bda,
+ 		upgrade:database:readers:custom
+		">
+		<!-- You need to either depend on jboss or tomcat so that you can read the db properties from it's configs.  BDA only has macros to read database properties from jboss. -->
+	</target>
+
+	<target name="upgrade:common:init:prep">
+		<if>
+			<not>
+				<isset property="application.base.path"/>
+			</not>
+			<then>
+				<!-- Set application.base.path based on platform -->
+				<condition property="application.base.path" value="${application.base.path.linux}">
+					<or>
+						<os family="unix" />
+						<os family="mac" />
+					</or>
+				</condition>
+
+				<condition property="application.base.path" value="${application.base.path.windows}">
+					<os family="windows" />
+				</condition>
+				<echo message="application.base.path=${application.base.path}"/>
+			</then>
+		</if>
+		<properties-print
+			properties.list="application.base.path,jboss.home,tomcat.home,jboss.server.name"
+			/>
+		<var name="read.properties.list" value=""/>
+	</target>
+
+	<target name="upgrade:tomcat:init:prep" depends="upgrade:common:init:prep" unless="exclude.tomcat">
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+		<if>
+			<not>
+				<available file="${tomcat.home}"/>
+			</not>
+			<then>
+				<fail message="${tomcat.home} must exist during upgrades"/>
+			</then>
+		</if>
+		<tomcat-version
+			/>
+		<!-- Upgrades always use port configs -->
+		<available file="${tomcat.home}" property="tomcat.exists"/>
+		<property name="read.tomcat.home" value="${tomcat.home}"/>
+	</target>
+
+	<target name="upgrade:tomcat:readers:custom" unless="exclude.tomcat">
+		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
+	</target>
+
+	<target name="upgrade:database:readers:custom" unless="exclude.database">
+		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
+	</target>
+
+	<target name="upgrade:database:readers:bda" depends="
+ unless="exclude.database">
+
+		<!-- Make sure the ${properties.file} has at least the following props -->
+		<properties-exist
+			properties.list="application.base.path,jboss.home,jboss.server.name"
+			/>
+		<jboss-read-dbconfig
+			jboss.home="${read.jboss.home}"
+			jboss.ds-xml.file="SuiteDashboard-ds.xml"
+			/>
+	</target>
+
+	<target name="upgrade:tomcat:readers:bda" depends="upgrade:tomcat:init:prep" unless="exclude.tomcat">
+
+		<!-- Make sure the ${properties.file} has at least the following props -->
+		<properties-exist
+			properties.list="application.base.path,tomcat.home"
+			/>
+		<!-- Begin Tomcat readers, delete if you don't need -->
+		<osfamily property="os.family"/>
+		<if>
+			<or>
+				<equals arg1="${os.family}" arg2="unix"/>
+				<equals arg1="${os.family}" arg2="mac"/>
+			</or>
+			<then>
+				<property name="tomcat.hostname" value="${env.HOSTNAME}"/>
+			</then>
+		</if>
+		<if>
+			<equals arg1="${os.family}" arg2="windows"/>
+			<then>
+				<property name="tomcat.hostname" value="${env.COMPUTERNAME}"/>
+			</then>
+		</if>
+		<tomcat-read-ports
+			tomcat.home="${read.tomcat.home}"
+			/>
+		<var name="tomcat.ssl.keystore.dir" value="${working.dir}/keys/tomcat"/>
+		<tomcat-read-ssl
+			tomcat.home="${read.tomcat.home}"
+			copied.keystore.dir="${tomcat.ssl.keystore.dir}"
+			/>
+		<tomcat-read-external-hostname
+			tomcat.home="${read.tomcat.home}"
+			/>
+		<!-- Fail if any read properties are not set -->
+		<echo message="All properties after readers"/>
+		<tomcat-read-dbconfig
+			/>
+	</target>
+
+	<target name="upgrade:post:tomcat" unless="exclude.tomcat">
+		<!-- place holder -->
+	</target>
+
+	<target name="test:fail">
+		<fail message="This target is supposed to cause a build failure.  This target can be used to verfiy that &lt;exec/&gt; calls are catching failures."/>
+	</target>
+
+	<target name="install:common:property-validate:all" description=""
+		depends="
+		common:tomcat:init,
+ 		common:init
+		">
+		<echo message="**** Begin Property Rule Validation"/>
+		<xmlvalidate failonerror="yes" lenient="yes" file="${bda-utils.dir}/resource/groovy/all-property-rules.xml"/>
+		<var name="all.property.rule.validator.failed" unset="true"/>
+		<groovy src="${bda-utils.dir}/resource/groovy/propertyrulevalidator.groovy">
+			<arg line="${bda-utils.dir}/resource/groovy/all-property-rules.xml all.property.rule.validator.failed"/>
+		</groovy>
+		<if>
+			<equals arg1="${all.property.rule.validator.failed}" arg2="true"/>
+			<then>
+				<fail message="Property Validation Failed"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:common:property-validate:common" description=""
+		depends="
+		common:tomcat:init,
+ 		common:init
+		">
+		<echo message="**** Begin Property Rule Validation"/>
+		<xmlvalidate failonerror="yes" lenient="yes" file="${bda-utils.dir}/resource/groovy/common-property-rules.xml"/>
+		<var name="common.property.rule.validator.failed" unset="true"/>
+		<groovy src="${bda-utils.dir}/resource/groovy/propertyrulevalidator.groovy">
+			<arg line="${bda-utils.dir}/resource/groovy/common-property-rules.xml common.property.rule.validator.failed"/>
+		</groovy>
+		<if>
+			<equals arg1="${common.property.rule.validator.failed}" arg2="true"/>
+			<then>
+				<fail message="Property Validation Failed"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:common:property-validate:database" description=""
+		depends="
+		common:tomcat:init,
+ 		common:init
+		">
+		<echo message="**** Begin Property Rule Validation"/>
+		<xmlvalidate failonerror="yes" lenient="yes" file="${bda-utils.dir}/resource/groovy/database-property-rules.xml"/>
+		<var name="database.property.rule.validator.failed" unset="true"/>
+		<groovy src="${bda-utils.dir}/resource/groovy/propertyrulevalidator.groovy">
+			<arg line="${bda-utils.dir}/resource/groovy/database-property-rules.xml database.property.rule.validator.failed"/>
+		</groovy>
+		<if>
+			<equals arg1="${database.property.rule.validator.failed}" arg2="true"/>
+			<then>
+				<fail message="Property Validation Failed"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="install:common:property-validate:tomcat" description=""
+		depends="
+		common:tomcat:init,
+ 		common:init
+		">
+		<echo message="**** Begin Property Rule Validation"/>
+		<xmlvalidate failonerror="yes" lenient="yes" file="${bda-utils.dir}/resource/groovy/tomcat-property-rules.xml"/>
+		<var name="tomcat.property.rule.validator.failed" unset="true"/>
+		<groovy src="${bda-utils.dir}/resource/groovy/propertyrulevalidator.groovy">
+			<arg line="${bda-utils.dir}/resource/groovy/tomcat-property-rules.xml tomcat.property.rule.validator.failed"/>
+		</groovy>
+		<if>
+			<equals arg1="${tomcat.property.rule.validator.failed}" arg2="true"/>
+			<then>
+				<fail message="Property Validation Failed"/>
+			</then>
+		</if>
+	</target>
+</project>
