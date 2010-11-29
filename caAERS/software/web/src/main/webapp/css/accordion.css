@@ -22,19 +22,9 @@
 }
 		
 .accordion-content {
-	
-    background-color:white;
-    margin-bottom: 20px;
-	padding:0px 30px 20px 30px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-box-shadow: inset 0px 0px 8px #000;
-    -webkit-box-shadow: inset 0px 0px 8px #000;
-}
-
-
-.accordion-content a{
-	text-decoration: none;
-    color:#2a4f6e;
-    font-weight: bold;
+	background-color: #efefef;
+	color: #444444;
+	overflow: hidden;
+	height:auto;
+	padding:10px;
 }

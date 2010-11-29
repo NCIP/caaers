@@ -1,53 +1,52 @@
 
 #floatingTaskbar {
-	background: transparent url(../images/blue/floatingTaskbar_BG.png) no-repeat top;
-	height: 40px;
-	width: 1010px;
-	font-size: 14px;
+	background: transparent url(../images/blue/floatingTaskbar_BG.png) repeat-x top;
+	height: 51px;
+	width: 970px;
+	font-size: 12pt;
 	position: absolute;
 	top: 98px;
-	margin-left: -14px;
-	color: #c0dbf2;
-	font-weight: normal;
+	padding-left: 10px;
+	color: #FFFFFF;
+	vertical-align: middle;
 	z-index: 1;
-    margin-top: 25px;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    text-shadow: 0px -2px #216dae;
 }
 #floatingTaskbar ul {
-	margin:0 0 0 -30px;
-    text-shadow: 0px -2px #216dae;
+	margin:0 0 0 -45px;
 }
 #floatingTaskbar li {
 	list-style-type:none;
 	display:inline;
 }
 #floatingTaskbar li.lte4 a {
-	color:#c0dbf2;
+	color:#FFF;
 	text-decoration: none;
-    float:left;
-	padding: 5px 10px 0px 10px;
-	font-weight: normal;
-    text-shadow: 0px -2px #216dae;
+	height: 43px;
+	width: 232px;
+	float:left;
+	padding-top: 8px;
+	font-weight: bold;
 }
 #floatingTaskbar li.gt4 a {
-	color:#c0dbf2;
+	color:#FFF;
 	text-decoration: none;
-   	float:left;
-	padding: 8px 10px 0px 10px;
-	font-weight: normal;
-    margin-left: 10px;
-    text-shadow: 0px -2px #216dae;
-	
-	
+	height: 19px;
+	width: 232px;
+	float:left;
+	padding-top: 2px;
+	font-weight: bold;
+	font-size: 12px;
+	text-indent: 10px;
+	margin-top: 1px;
+	margin-right: 2px;
 }
 #floatingTaskbar li.gt4 a:hover {
-	color:#fff;
-
+	background-image: url(../images/blue/ftsecondlevelnav_hover_gt4.png);
+	background-repeat: no-repeat;
 }
 #floatingTaskbar li.gt4 a:active {
-	color:#b0d7ff;
-    
+	background-image: url(../images/blue/ftsecondlevelnav_hover_gt4.png);
+	background-repeat: no-repeat;
 }
 #floatingTaskbar li.lte4 img {
 	margin-right:7px;
@@ -55,14 +54,23 @@
 }
 #floatingTaskbar li a:hover {
 	color:#fff;
-
+	background-image: url(../images/blue/ftsecondlevelnav_hover.png);
+	background-repeat: no-repeat;
 }
 #floatingTaskbar li a:active {
-	color:#b0d7ff;
-	
+	color:#bbcaf0;
+	background-image: url(../images/blue/ftsecondlevelnav_hover.png);
+	background-repeat: no-repeat;
 }
-
-
+#floatingTaskbar li.lte4 img.imagegt18 {
+	float:left;
+	margin-top:6px;
+}
+#floatingTaskbar li.lte4 a.gt18 {
+	padding-top:2px;
+	display:inline;
+}
+.spangt18 { padding-right:4px }
 #floatingTaskbar .lte4 a.selected, #v .lte4 a.selected:hover, #floatingTaskbar .lte4 a.selected:active {
 	background-image: url(../images/blue/secondlevelnav_selected.jpg);
 	background-repeat: no-repeat;

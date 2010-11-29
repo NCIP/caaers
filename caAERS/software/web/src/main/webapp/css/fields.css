@@ -3,19 +3,15 @@ input, label, select, textarea {
   margin: 0; padding: 0;
 }
 input[type=text], input[type=password], select, textarea {
-  background-color: #ececec;
-  padding: 1px 2px 1px 4px;
-  margin-right:3px;
-  margin-left:2px;
-  margin-bottom:3px;
-  border: 1px solid white;
-  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  text-shadow: 0 1px white;
-  font-size:12px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-box-shadow: 0px 0px 4px #000;
-  -webkit-box-shadow: 0px 0px 4px #000;
+  background-color: #f4f4f5;
+  border: 1px inset #ccc;
+  padding: 2px;
+    border-color : #809eba;
+    border-style : solid;
+    border-width : 1px;
+    font-family: Arial;
+    font-size:12px;
+
 }
 input[disabled], select[disabled], textarea[disabled] {
   border-color: #ccc;
@@ -148,3 +144,8 @@ input[type="text"].validField, input[type="password"].validField, select.validFi
     border:1px green solid;
 }
 
+input.disabled {
+    background-color: #DDD;
+    border: 1px #aaa solid;
+    color: #aaa;
+}
