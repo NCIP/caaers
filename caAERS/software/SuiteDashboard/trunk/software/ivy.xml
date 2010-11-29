@@ -20,15 +20,14 @@
               description="The dependencies that are needed for runtime" extends="build" />
         <conf name="test" visibility="public"
               description="Dependencies needed for testing purposes"/>
-        <conf name="source" visibility="public"
-              description="The source files of this project"/>
+
     </configurations>
 
     <!--  Items to be published  -->
     <publications>
-        <artifact name="${ivy.module}" conf="publish,dist,distGrid" type="jar"/>
-        <artifact name="${ivy.module}-tests" conf="test" type="jar"/>
-        <artifact name="${ivy.module}-sources" conf="source" type="jar"/>
+        <artifact name="${artifact.name}" type="war" conf="publish" />
+        <!--<artifact name="${ivy.module}-tests" conf="test" type="jar"/>-->
+        <artifact name="${ivy.module}-sources" conf="publish" type="jar"/>
     </publications>
 
     <dependencies defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)" >

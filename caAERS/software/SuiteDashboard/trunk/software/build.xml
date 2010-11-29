@@ -1,136 +1,271 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="sd" default="war" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="suite-dashboard" basedir="." default="publish-local" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <!-- Load the properties file -->
+    <property file="build.properties" />
 
-    <property environment="env" />
-    <property name="project.name" value="sd"/>
-
-    <property name="dist.dir" value="dist"/>
-    <property name="output.dir" value="out"/>
-    <property name="src.dir" value="web/src"/>
-    <property name="web.dir" value="web/www"/>
-    <property name="lib.dir" value="lib"/>
-
-    <property name="javac.debug" value="on"/>
-    <property name="javac.deprecation" value="on"/>
-    <property name="javac.nowarn" value="on"/>
-
-    <property name="tomcat.home" value="${env.CATALINA_HOME}" />
-
-    <path id="classpath"/>
-
-    <target name="init">
-        <tstamp/>
-        <mkdir dir="${output.dir}"/>
-        <mkdir dir="${dist.dir}"/>
-    </target>
-
-    <target name="resolve" depends="init-ivy" description="--> retrieve dependencies with ivy">
-        <ivy:retrieve />
-    </target>
-
-    <target name="clean" description="Clean the project">
-        <delete includeemptydirs="true" quiet="true">
-            <fileset dir="${output.dir}" includes="**/*"/>
-        </delete>
-    </target>
-
-    <target name="compile" description="Compile Java source files" depends="init">
-        <javac destdir="${output.dir}"
-               classpathref="classpath"
-               debug="${javac.debug}"
-               nowarn="${javac.nowarn}"
-               deprecation="${javac.deprecation}"
-               encoding="Cp1252"
-               source="1.5"
-               target="1.5">
-            <src path="${src.dir}"/>
-            <classpath>
-                <path refid="classpath" />
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
-        </javac>
-        <copy todir="${output.dir}" verbose="true">
-            <fileset dir="${src.dir}" excludes="**/*.java, **/build*.xml, **/*.orig, **/*.iml"></fileset>
-        </copy>
-        <copy todir="${web.dir}/WEB-INF/classes/" verbose="true">
-            <fileset dir="${output.dir}"></fileset>
-        </copy>
-    </target>
-
-    <target name="jar" depends="compile">
-        <jar basedir="${output.dir}" destfile="${dist.dir}/${project.name}.jar"/>
-        <delete includeemptydirs="true" quiet="true">
-            <fileset dir="${output.dir}" includes="**/*"/>
-        </delete>
-        <copy todir="${web.dir}/WEB-INF/lib">
-            <fileset dir="${lib.dir}" excludes="j2ee.jar, servlet-api-2.4.jar"/>
-        </copy>
-    </target>
-
-    <target name="war" depends="jar">
-        <war basedir="${web.dir}" destfile="${dist.dir}/${project.name}.war" webxml="${web.dir}/WEB-INF/web.xml"/>
-    </target>
-
-    <target name="deploy" depends="jar">
-		<echo message="Creating deployment file '${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml'" />
-        <echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/${project.name}.xml">&lt;Context path="/${project.name}" docBase="${basedir}/www/" reloadable="true" debug="9" /></echo>
-    </target>
-
-    <target name="copy" description="Copy files to output directory" depends="init">
-        <patternset id="copy.patterns">
-            <include name="**/*.gif"/>
-            <include name="**/*.jpg"/>
-            <include name="**/*.jpeg"/>
-            <include name="**/*.png"/>
-            <include name="**/*.properties"/>
-            <include name="**/*.xml"/>
-            <include name="**/*-apf.xml"/>
-            <include name="**/*.ejx"/>
-            <include name="**/*.xcfg"/>
-            <include name="**/*.cpx"/>
-            <include name="**/*.dcx"/>
-            <include name="**/*.wsdl"/>
-            <include name="**/*.ini"/>
-            <include name="**/*.tld"/>
-            <include name="**/*.tag"/>
-        </patternset>
-        <copy todir="${output.dir}">
-            <fileset dir="${src.dir}">
-                <patternset refid="copy.patterns"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="deploywar" depends="war" description="Deploy application as a WAR file">
-        <delete dir="${tomcat.home}/webapps/${project.name}.war" verbose="false" />
-        <copy todir="${tomcat.home}/webapps" preservelastmodified="true" file="${dist.dir}/${project.name}.war"/>
-    </target>
-
-    <!-- IVY -->
-    <property name="ivy.install.version" value="2.0.0-beta1"/>
-    <condition property="ivy.home" value="${env.IVY_HOME}">
-        <isset property="env.IVY_HOME"/>
+    <!-- ======= Check if IVY is present ===== -->
+    <condition property="ivy.available">
+        <available file="${ivy.jar.file}" />
     </condition>
 
-    <property name="ivy.home" value="${user.home}/.ant"/>
-    <property name="ivy.jar.dir" value="${ivy.home}/lib"/>
-    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+    <!-- ===================================================================
+        copy-resources : This task, copy files from source to destination, with filtering on
+    ======================================================================= -->
+    <macrodef name="copy-resources" description="copies files from src to dest, with filtering">
+        <attribute name="src" />
+        <attribute name="dest"/>
+        <attribute name="filter" />
+        <sequential>
+            <filter token="project.version" value="${dashboard.version}" />
+            <filter token="buildNumber" value="${today}" />
+            <copy todir="@{dest}" filtering="@{filter}">
+                <fileset dir="@{src}" includes="**/*.*">
+                    <exclude name=".svn"/>
+                </fileset>
+            </copy>
+        </sequential>
+    </macrodef>
 
-    <target name="download-ivy" unless="offline">
-        <mkdir dir="${ivy.jar.dir}"/>
-        <get
-                src="http://www.apache.org/dist/ant/ivy/${ivy.install.version}/ivy.jar"
-                dest="${ivy.jar.file}"
-                usetimestamp="true"/>
+    <!-- =============================================================================
+        ivyResolve : Will resolve the confs to the libDir
+    ================================================================================= -->
+    <macrodef name="ivyResolve">
+        <attribute name="libDir"/>
+        <attribute name="confs"/>
+        <attribute name="resolveId"/>
+        <sequential>
+            <ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="dashboard.ivy.instance" keep="true"/>
+            <ivy:retrieve pattern="@{libDir}/[artifact]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="dashboard.ivy.instance"/>
+        </sequential>
+    </macrodef>
+
+    <!-- ==================================================================================
+        ivyPublish: Will publish the files to a repository
+    ======================================================================================= -->
+    <macrodef name="ivyPublish">
+        <attribute name="artifactspattern"/>
+        <attribute name="resolver"/>
+        <attribute name="pubrevision"/>
+        <attribute name="status"/>
+        <sequential>
+            <tstamp>
+                <format property="now" pattern="yyyyMMddHHmmss"/>
+            </tstamp>
+            <ivy:publish artifactspattern="@{artifactspattern}"
+                         resolver="@{resolver}"
+                         pubrevision="@{pubrevision}"
+                         status="@{status}"
+                         forcedeliver="true"
+                         pubdate="${now}"
+                         overwrite="true" settingsRef="dashboard.ivy.instance"/>
+        </sequential>
+    </macrodef>
+
+
+    <!-- =====================================================================
+         target : ivy-new-version
+             Will generate a new verion number
+     ========================================================================= -->
+    <target name="ivy-new-version" depends="load-ivy" unless="ivy.new.revision"
+            description="Will generate a new version number">
+        <echo message="Executing in ${ant.project.name}" />
+        <echo message="Executing ${ant.project.name} : ivy-new-version" />
+        <!-- default module version prefix value -->
+        <property name="module.version.prefix" value="${dashboard.version}" />
+
+        <!-- asks to ivy an available version number -->
+        <ivy:info file="${ivy.file}" settingsRef="dashboard.ivy.instance"/>
+        <ivy:buildnumber
+                organisation="${ivy.organisation}" module="${ivy.module}"
+                revision="${module.version.prefix}" defaultBuildNumber="1" revSep="." settingsRef="dashboard.ivy.instance"/>
     </target>
 
-    <target name="init-ivy" depends="download-ivy">
+    <!-- =====================================================================
+         target : local-version
+             Will generate a new verion number for publishing in local repository
+     ========================================================================= -->
+    <target name="local-version" description="Will generate a new verion number for publishing in local repository">
+        <echo message="Executing in ${ant.project.name}" />
+        <tstamp>
+            <format property="now" pattern="yyyyMMddHHmmss"/>
+            <format property="today" pattern="yyyy-MM-dd hh:mm:ss.mmm" />
+        </tstamp>
+        <property name="ivy.new.revision" value="${dashboard.version}-local-${now}"/>
+    </target>
+
+    <!-- =====================================================================
+         target : version
+             Will generate a new verion number for publishing in release repository
+     ========================================================================= -->
+    <target name="version" depends="ivy-new-version"
+            description="Will generate a new verion number for publishing in release repository">
+        <echo message="Executing in ${ant.project.name}" />
+        <tstamp>
+            <format property="today" pattern="yyyy-MM-dd hh:mm:ss" />
+        </tstamp>
+        <!-- create version file in classpath for later inclusion in jar -->
+        <echo message="version=${ivy.new.revision}" file="${classes.dir}/${ant.project.name}.properties" append="false" />
+        <!-- load generated version properties file -->
+        <property file="${classes.dir}/${ant.project.name}.properties" />
+    </target>
+
+    <!-- ====================================================
+         target : download-ivy
+         Download ivy if one is not available.
+         =======================================================-->
+    <target name="download-ivy" unless="ivy.available">
+        <mkdir dir="${ivy.jar.dir}"/>
+        <echo message="Downloading IVY....." />
+        <get src="${ivy.jar.location}" dest="${ivy.jar.file}" usetimestamp="true"/>
+    </target>
+
+    <!-- ==================================================
+		target : download-jsch
+	====================================================== -->
+    <target name="download-jsch" unless="jsch.available">
+        <echo message="Downloading jsch....." />
+        <get src="${ivy.sftp.remote}" dest="${ivy.jar.dir}/jsch-0.1.31.jar" verbose="true" usetimestamp="true"/>
+    </target>
+
+
+    <!-- ==============================================================
+         target: load-ivy
+     ================================================================== -->
+    <target name="load-ivy" unless="loaded.ivy" depends="download-ivy,download-jsch">
+        <echo message="Going for online settings" />
         <path id="ivy.lib.path">
             <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
         </path>
-        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
+        <ivy:settings file="${basedir}/ivysettings.xml" id="dashboard.ivy.instance"/>
+        <property name="loaded.ivy" value="true" />
     </target>
+
+
+    <!-- ====================================================
+            target : create-local-repo
+            This target will create local repository if one is not available
+    =======================================================-->
+    <condition property="local.repo.available">
+        <available file="${basedir}/repository" />
+    </condition>
+    <target name="create-repo" unless="local.repo.available"
+            description="Will create a local repository directory if it is not available">
+        <mkdir dir="${basedir}/repository"/>
+    </target>
+
+
+
+    <!-- ==================================================================
+         target: init-war
+     ======================================================================= -->
+    <target name="init" depends="create-repo" description="creates the directories necessary for the exploded war">
+        <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${classes.dir}" />
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${war.dir}"/>
+        <mkdir dir="${war.dir}/WEB-INF" />
+        <mkdir dir="${war.dir}/WEB-INF/lib"/>
+        <mkdir dir="${war.dir}/WEB-INF/classes" />
+        <mkdir dir="${war.dir}/WEB-INF/classes/META-INF" />
+    </target>
+
+    <!-- =========================================================
+         target: clean-war
+             Cleans the directory associated to keep exploded suite-dashboard files
+     =============================================================-->
+    <target name="clean">
+        <deltree dir="${war.dir}" />
+        <deltree dir="${dist.dir}" />
+        <deltree dir="${classes.dir}" />
+        <deltree dir="${lib.dir}" />
+        <deltree dir="${build.dir}" />
+    </target>
+
+
+    <!-- =========================================================
+         target: war
+             Will generate the war file
+     =============================================================-->
+	<path id="main.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
     
+    <target name="war" depends=" clean, init, load-ivy, version, source">
+        <!-- compile -->
+        <ivyResolve confs="default" libdir="${lib.dir}" resolveid="[org]-[module]"/>
+        <copy-resources src="${main.src.resources}" dest="${classes.dir}" filter="true"/>
+        <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5"/>
+
+        <!-- WAR -->
+        <ivy:resolve file="${ivy.file}" conf="distGrid" haltonfailure="false" settingsRef="dashboard.ivy.instance"/>
+        <ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="dashboard.ivy.instance"/>
+        <ivy:retrieve pattern="${war.dir}/WEB-INF/[artifact].[ext]"  haltonfailure="false" settingsRef="dashboard.ivy.instance" type="properties" />
+        <copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
+        <copy-resources src="${webapp.dir}" dest="${war.dir}"  filter="false" />
+        <war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
+             webxml="${webapp.dir}/WEB-INF/web.xml">
+        </war>
+    </target>
+
+
+    <!-- =========================================================
+         target: source
+             Will generate the source file
+     =============================================================-->
+    <target name="source">
+
+       <jar destfile="${src.jar.file}">
+          <fileset dir="${src.dir}" />
+             <manifest>
+                    <attribute name="Built-By" value="${user.name}"/>
+                    <attribute name="Build-Version" value="${version}" />
+            </manifest>
+        </jar>
+
+    </target>
+
+    <!-- =================================
+          target: publish
+         ================================= -->
+    <target name="publish" depends="war"
+    		description="--> publish this project in the ivy repository">
+    	<echo message="Executing in ${ant.project.name}" />
+    	<ivyPublish artifactspattern="${dist.dir}/[artifact].[ext]"
+    		resolver="${ivy.remote.publish.resolver}"
+    		pubrevision="${version}"
+    		status="release"
+    		/>
+        <echo message="project ${ant.project.name} released with version ${version}" />
+    </target>
+
+    <!-- =================================
+          target: publish-local
+         ================================= -->
+    <target name="publish-local" depends="local-version, war"
+    	description="--> publish this project in the local ivy repository">
+    	<echo message="Executing in ${ant.project.name}" />
+    	<ivyPublish artifactspattern="${dist.dir}/[artifact].[ext]"
+    		resolver="${ivy.local.publish.resolver}"
+    		pubrevision="${version}"
+    		status="integration"
+    		/>
+        <echo message="project ${ant.project.name} published locally with version ${version}" />
+    </target>
+
+
+
+    <!-- =================================
+          target: publish-local
+         ================================= -->
+    <target name="help" 
+    	description="--> Provides help command">
+        <echo message="Use ant publish-local or ant publish targets" />
+    </target>
+
+
+
 </project>
