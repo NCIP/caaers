@@ -177,10 +177,8 @@
      =============================================================-->
     <target name="clean">
         <deltree dir="${war.dir}" />
-        <deltree dir="${dist.dir}" />
         <deltree dir="${classes.dir}" />
         <deltree dir="${lib.dir}" />
-        <deltree dir="${build.dir}" />
     </target>
 
 
@@ -245,8 +243,7 @@
     <!-- =================================
           target: publish-local
          ================================= -->
-    <target name="publish-local" depends="local-version, war"
-    	description="--> publish this project in the local ivy repository">
+    <target name="publish-local" depends="local-version, war" description="--> publish this project in the local ivy repository">
     	<echo message="Executing in ${ant.project.name}" />
     	<ivyPublish artifactspattern="${dist.dir}/[artifact].[ext]"
     		resolver="${ivy.local.publish.resolver}"
@@ -259,13 +256,11 @@
 
 
     <!-- =================================
-          target: publish-local
+          target: 
          ================================= -->
     <target name="help" 
     	description="--> Provides help command">
         <echo message="Use ant publish-local or ant publish targets" />
     </target>
-
-
 
 </project>
