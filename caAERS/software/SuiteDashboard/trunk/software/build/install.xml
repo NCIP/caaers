@@ -70,7 +70,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
 	<!-- *-ds.xml and WAR -->
 	<property name="SuiteDashboard-webapp.dir.dist" location="${basedir}/${SuiteDashboard-webapp.dist.relative.dir}" />
 	<property name="SuiteDashboard-webapp.ds.file" value="SuiteDashboard-ds.xml" />
-	<property name="SuiteDashboard-webapp.name" value="SuiteDashboard-webapp" />
+	<property name="SuiteDashboard-webapp.name" value="suite-dashboard" />
 	<property name="SuiteDashboard-webapp.war.file" value="${SuiteDashboard-webapp.name}.war" />
 	<!-- Added to make sure that it works with both absolute and relative paths, this property is handed to sub-project scripts in absolute format. -->
 	<property name="jar-signing.keystore.abs-location" location="${jar-signing.keystore.location}"/>
@@ -143,21 +143,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
 		</if>
 	</target>
 
-	<target name="common:tomcat:init" depends="
-		common:init:pre
-		" unless="exclude.tomcat">
+	<target name="common:tomcat:init" depends="common:init:pre" unless="exclude.tomcat">
 		<property name="tomcat.ssl.enable" value="false"/>
 		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
-		<tomcat-version
-			/>
-		<if>
-			<then>
-				<property name="tomcat.application.url" value="http://${tomcat.hostname}:${tomcat.port.http}/${SuiteDashboard-webapp.name}"/>
-			</then>
-			<else>
-			</else>
-		</if>
-
+        <property name="tomcat.application.url" value="http://${tomcat.hostname}:${tomcat.port.http}/${SuiteDashboard-webapp.name}"/>
 		<basename file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.file"/>
 		<dirname file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.dir"/>
 		<property name="tomcat.sock.ports" value="${tomcat.port.http},${tomcat.port.ajp},${tomcat.port.shutdown}"/>
@@ -195,8 +184,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
 		</path>
 
 		<property name="properties.template.file" value="${basedir}/properties.template" />
-		<set-grid-auth-service
-			/>
+		<!--<set-grid-auth-service/>-->
 		<filterset id="embedded.filterset">
 			<filter token="application.base.path" value="${application.base.path}"/>
 			<filter token="application.url" value="${application.url}"/>
@@ -420,25 +408,20 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
  		common:init,
  		install:common:validation:pre-install,
  		install:tomcat:validation:pre-install,
- 		install:database:validation:pre-install,
  		install:tomcat:stop,
  		install:tomcat:validation:pre-install:ports,
  		install:common:clean,
- 		install:database,
  		install:tomcat,
  		install:common:post,
  		install:common:validation:post-install
 		">
 	</target>
 
-	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="upgrade:tomcat:init,common:init,upgrade-ncm:tomcat">
-	</target>
+	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="upgrade:tomcat:init,common:init,upgrade-ncm:tomcat"></target>
 
-	<target name="upgrade" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm">
-	</target>
+	<target name="upgrade" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm"></target>
 
-	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm:with-dbinstall">
-	</target>
+	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm:with-dbinstall"></target>
 
 	<target name="upgrade-dac:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
 		depends="
@@ -567,9 +550,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
  		common:tomcat:init,
  		install:common:validation:pre-install,
  		install:tomcat:validation:pre-install,
- 		install:database:validation:pre-install,
  		install:tomcat:stop,
- 		upgrade:database,
  		upgrade:tomcat,
  		install:common:validation:post-install
 		">
@@ -732,17 +713,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
 	<target name="install:tomcat:SuiteDashboard-webapp:re-configure" description="Configure SuiteDashboard-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="common:init">
 	</target>
 
-	<target name="upgrade:common:init" depends="
-		upgrade:tomcat:init
-		" >
-	</target>
+	<target name="upgrade:common:init" depends="upgrade:tomcat:init"></target>
 
-	<target name="upgrade:tomcat:init" unless="exclude.tomcat"
-		depends="
-		upgrade:tomcat:init:prep,
- 		upgrade:tomcat:readers:bda,
- 		upgrade:tomcat:readers:custom
-		">
+	<target name="upgrade:tomcat:init" unless="exclude.tomcat" depends="upgrade:tomcat:init:prep,upgrade:tomcat:readers:bda,upgrade:tomcat:readers:custom">
 		<properties-print
 			properties.list="${read.properties.list}"
 			/>
@@ -813,17 +786,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/branches/automation-1.7.1
 		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
 	</target>
 
-	<target name="upgrade:database:readers:bda" depends="
- unless="exclude.database">
-
+	<target name="upgrade:database:readers:bda" depends="" unless="exclude.database">
 		<!-- Make sure the ${properties.file} has at least the following props -->
-		<properties-exist
-			properties.list="application.base.path,jboss.home,jboss.server.name"
-			/>
-		<jboss-read-dbconfig
-			jboss.home="${read.jboss.home}"
-			jboss.ds-xml.file="SuiteDashboard-ds.xml"
-			/>
+		<properties-exist properties.list="application.base.path,jboss.home,jboss.server.name" />
+		<jboss-read-dbconfig jboss.home="${read.jboss.home}" jboss.ds-xml.file="SuiteDashboard-ds.xml"/>
 	</target>
 
 	<target name="upgrade:tomcat:readers:bda" depends="upgrade:tomcat:init:prep" unless="exclude.tomcat">
