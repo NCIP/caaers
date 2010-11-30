@@ -35,6 +35,12 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
     }
 
+
+    private void importRulesFile(String fileName) throws Exception{
+        File f = createTmpFileFromResource(fileName);
+        caaersRulesEngineService.importRules(f.getAbsolutePath());
+    }
+
     protected void setUp() throws Exception {
         super.setUp();
         service = (AdverseEventEvaluationServiceImpl)getDeployedApplicationContext().getBean("adverseEventEvaluationService");
@@ -64,8 +70,9 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
 	/** test field level rule on out come */
 	public void testFieldRulesOnOutcome() throws Exception {
-        File f = createTmpFileFromResource("test_field_level_rules.xml");
-        caaersRulesEngineService.importRules(f.getAbsolutePath());
+
+        importRulesFile("test_field_level_rules.xml");
+        
         ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
         mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
         mfd.setRuleName("Rule-1");
@@ -99,8 +106,123 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
         assertEquals("MANDATORY||OPTIONAL", result);
 
 	}
-    
 
+    //Rule-1 "IND holder is CTEP then Mandatory"
+    public void testEvaluateFieldRulesOnINDHolder() throws Exception{
+
+
+
+        ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
+        mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
+        mfd.setRuleName("Rule-1");
+
+        AdverseEventReportingPeriod aer = Fixtures.createReportingPeriod(1, "10/01/2009", "11/01/2009");
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        aer.addAeReport(aeReport);
+
+        AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.LIFE_THREATENING);
+        ae1.addOutcome(Fixtures.createOutcome(1, OutcomeType.LIFE_THREATENING));
+        AdverseEvent ae2 = Fixtures.createAdverseEvent(1, Grade.DEATH);
+        ae2.addOutcome(Fixtures.createOutcome(2, OutcomeType.DEATH));
+        aeReport.getAdverseEvents().clear();
+        aeReport.addAdverseEvent(ae1);
+        aeReport.addAdverseEvent(ae2);
+
+        Study s = Fixtures.createStudy("s");
+        StudySite ss = Fixtures.createStudySite(Fixtures.createOrganization("x"), 1) ;
+        s.addStudySite(ss);
+        aeReport.getAssignment().setStudySite(ss);
+
+        Organization ctep = Fixtures.createOrganization("Cancer Therapy Evaluation Program");
+        InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(Fixtures.createOrganizationINDHolder(ctep), "-111");
+        StudyAgent sa = Fixtures.createStudyAgent("my agent", ind, INDType.CTEP_IND);
+        aeReport.getStudy().addStudyAgent(sa);
+        Report report = Fixtures.createReport("x");
+
+
+        importRulesFile("test_intervention_field_level_rules.xml");
+        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
+        assertEquals("MANDATORY||MANDATORY", result );
+    }
+
+
+    //Rule-1 "IND holder is CTEP then Mandatory otherwise OPTIONAL"
+    public void testEvaluateFieldRulesOnInvalidINDHolder() throws Exception{
+
+
+
+        ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
+        mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
+        mfd.setRuleName("Rule-1");
+
+        AdverseEventReportingPeriod aer = Fixtures.createReportingPeriod(1, "10/01/2009", "11/01/2009");
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        aer.addAeReport(aeReport);
+
+        AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.LIFE_THREATENING);
+        ae1.addOutcome(Fixtures.createOutcome(1, OutcomeType.LIFE_THREATENING));
+        AdverseEvent ae2 = Fixtures.createAdverseEvent(1, Grade.DEATH);
+        ae2.addOutcome(Fixtures.createOutcome(2, OutcomeType.DEATH));
+        aeReport.getAdverseEvents().clear();
+        aeReport.addAdverseEvent(ae1);
+        aeReport.addAdverseEvent(ae2);
+
+        Study s = Fixtures.createStudy("s");
+        StudySite ss = Fixtures.createStudySite(Fixtures.createOrganization("x"), 1) ;
+        s.addStudySite(ss);
+        aeReport.getAssignment().setStudySite(ss);
+
+        Organization ctep = Fixtures.createOrganization("xxxxx");
+        InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(Fixtures.createOrganizationINDHolder(ctep), "-111");
+        StudyAgent sa = Fixtures.createStudyAgent("my agent", ind, INDType.CTEP_IND);
+        aeReport.getStudy().addStudyAgent(sa);
+        Report report = Fixtures.createReport("x");
+
+
+        importRulesFile("test_intervention_field_level_rules.xml");
+        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
+        assertEquals("OPTIONAL", result );
+    }
+
+
+    //Rule-1 "IND holder is CTEP then Mandatory, but the Study Agent is retired"
+    public void testEvaluateFieldRulesOnINDHolderWhenObjectInRuleConditionIsRetired() throws Exception{
+
+
+
+        ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
+        mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
+        mfd.setRuleName("Rule-1");
+
+        AdverseEventReportingPeriod aer = Fixtures.createReportingPeriod(1, "10/01/2009", "11/01/2009");
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        aer.addAeReport(aeReport);
+
+        AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.LIFE_THREATENING);
+        ae1.addOutcome(Fixtures.createOutcome(1, OutcomeType.LIFE_THREATENING));
+        AdverseEvent ae2 = Fixtures.createAdverseEvent(1, Grade.DEATH);
+        ae2.addOutcome(Fixtures.createOutcome(2, OutcomeType.DEATH));
+        aeReport.getAdverseEvents().clear();
+        aeReport.addAdverseEvent(ae1);
+        aeReport.addAdverseEvent(ae2);
+
+        Study s = Fixtures.createStudy("s");
+        StudySite ss = Fixtures.createStudySite(Fixtures.createOrganization("x"), 1) ;
+        s.addStudySite(ss);
+        aeReport.getAssignment().setStudySite(ss);
+
+        Organization ctep = Fixtures.createOrganization("Cancer Therapy Evaluation Program");
+        InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(Fixtures.createOrganizationINDHolder(ctep), "-111");
+        StudyAgent sa = Fixtures.createStudyAgent("my agent", ind, INDType.CTEP_IND);
+        aeReport.getStudy().addStudyAgent(sa);
+        sa.retire();
+        Report report = Fixtures.createReport("x");
+
+
+        importRulesFile("test_intervention_field_level_rules.xml");
+        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
+        assertEquals("OPTIONAL", result );
+    }
 
 
 }

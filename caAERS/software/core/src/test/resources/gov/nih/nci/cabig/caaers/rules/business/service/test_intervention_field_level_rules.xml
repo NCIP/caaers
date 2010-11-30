@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ruleSet xmlns="http://semanticbits.com/rules/brxml">
+    <id>c6ba9244-a5ff-4bf4-9ea6-8203bb3c9d8d</id>
+    <name>gov.nih.nci.cabig.caaers.rules.field_rules</name>
+    <description>Field Rules</description>
+    <subject>Field Rules|| || || ||</subject>
+    <coverage>Enabled</coverage>
+    <import>gov.nih.nci.cabig.caaers.domain.*</import>
+    
+    <rule id="b8354ba3-d070-412d-8e01-cb59076e17d8">
+        <condition>
+            <column display-uri="Study" object-type="gov.nih.nci.cabig.caaers.domain.Study" identifier="study">
+                <field-constraint grammer-prefix="Study Agent IND Holder" display-uri="undefined"
+                                  field-name="investigationalNewDrugIndicator">
+                    <literal-restriction display-uri="is" evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                        <readable-value>Cancer Therapy Evaluation Program</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column object-type="com.semanticbits.rules.objectgraph.FactResolver" identifier="factResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+        </condition>
+        <action>MANDATORY</action>
+        <readableAction>Mandatory</readableAction>
+        <metaData checkinComment="Initial Version" packageName="gov.nih.nci.cabig.caaers.rules.field_rules"
+                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-1">
+            <category>
+                <path>CAAERS_BASE</path>
+                <metaData name="field_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp;Study Agent IND Holderis 'Cancer Therapy Evaluation Program' null
+            </line>
+        </readableRule>
+    </rule>
+    <rule id="b3b7f328-5fc2-4cc4-be36-57c983740407">
+        <condition>
+            <column display-uri="Study" object-type="gov.nih.nci.cabig.caaers.domain.Study" identifier="study">
+                <field-constraint grammer-postfix="(Commercially Available Agent Only)"
+                                  grammer-prefix="Study Investigational new drug?" display-uri="undefined"
+                                  field-name="StudyAgentIndIndicator">
+                    <literal-restriction display-uri="is" evaluator="isOnly">
+                        <value>false</value>
+                        <readable-value>No</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column object-type="com.semanticbits.rules.objectgraph.FactResolver" identifier="factResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+        </condition>
+        <action>NA</action>
+        <readableAction>Not Applicable</readableAction>
+        <metaData checkinComment="Initial Version" packageName="gov.nih.nci.cabig.caaers.rules.field_rules"
+                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-2">
+            <category>
+                <path>CAAERS_BASE</path>
+                <metaData name="field_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp;Study Investigational new drug?is 'No' (Commercially Available
+                Agent Only)
+            </line>
+        </readableRule>
+    </rule>
+    <rule id="0194f9de-a22c-43c2-8916-8908de751ca5">
+        <condition>
+            <column display-uri="Study" object-type="gov.nih.nci.cabig.caaers.domain.Study" identifier="study">
+                <field-constraint grammer-postfix="(Commercially Available Agent Only)"
+                                  grammer-prefix="Study Investigational new drug?" display-uri="undefined"
+                                  field-name="StudyAgentIndIndicator">
+                    <literal-restriction display-uri="is not" evaluator="==">
+                        <value>true</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column object-type="com.semanticbits.rules.objectgraph.FactResolver" identifier="factResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+        </condition>
+        <action>MANDATORY</action>
+        <readableAction>Mandatory</readableAction>
+        <metaData checkinComment="Initial Version" packageName="gov.nih.nci.cabig.caaers.rules.field_rules"
+                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-3">
+            <category>
+                <path>CAAERS_BASE</path>
+                <metaData name="field_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp;Study Investigational new drug?is not 'Yes' (Commercially Available
+                Agent Only)
+            </line>
+        </readableRule>
+    </rule>
+    <rule id="f4046562-ae36-423d-a86c-836198304cb3">
+        <condition>
+            <column display-uri="Study" object-type="gov.nih.nci.cabig.caaers.domain.Study" identifier="study">
+                <field-constraint grammer-postfix="(Commercially Available Agent Only)"
+                                  grammer-prefix="Study Investigational new drug?" display-uri="undefined"
+                                  field-name="StudyAgentIndIndicator">
+                    <literal-restriction display-uri="is not" evaluator="==">
+                        <value>true</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column object-type="com.semanticbits.rules.objectgraph.FactResolver" identifier="factResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+        </condition>
+        <action>NA</action>
+        <readableAction>Not Applicable</readableAction>
+        <metaData checkinComment="Initial Version" packageName="gov.nih.nci.cabig.caaers.rules.field_rules"
+                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-4">
+            <category>
+                <path>CAAERS_BASE</path>
+                <metaData name="field_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp;Study Investigational new drug?is not 'Yes' (Commercially Available
+                Agent Only)
+            </line>
+        </readableRule>
+    </rule>
+    
+</ruleSet>

@@ -131,6 +131,18 @@ public class Fixtures {
         agent.getAgent().setName(agentName);
         return agent;
     }
+
+    public static StudyAgent createStudyAgent(String agentName, InvestigationalNewDrug ind, INDType indType){
+
+        StudyAgent sa = Fixtures.createStudyAgent(agentName);
+
+        StudyAgentINDAssociation a = new StudyAgentINDAssociation();
+        a.setStudyAgent(sa);
+        sa.setIndType(indType);
+        a.setInvestigationalNewDrug(ind);
+        sa.addStudyAgentINDAssociation(a);
+        return sa;
+    }
     
     public static INDHolder createOrganizationINDHolder(Organization org ){
     	OrganizationHeldIND holder = new OrganizationHeldIND();

@@ -52,6 +52,11 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
     public StudyTherapy() {
     }
 
+    public StudyTherapy(Study s, StudyTherapyType therapyType){
+        this.study = s;
+        this.studyTherapyType = therapyType;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

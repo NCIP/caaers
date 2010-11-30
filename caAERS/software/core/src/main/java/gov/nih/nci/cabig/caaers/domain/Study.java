@@ -541,7 +541,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
             case 1: return getActiveStudyAgents().size() > 0;  
             case 4: return getActiveStudyDevices().size() > 0;
             default:
-                for (OtherIntervention oi : getOtherInterventions()) {
+                for (OtherIntervention oi : getActiveOtherInterventions()) {
                     if (oi.getStudyTherapyType().equals(therapyType)) return true;
                 }
         }
@@ -896,13 +896,22 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Transient
     @Deprecated
     public List<StudyTherapy> getStudyTherapies() {
-        return studyTherapies;
+
+        List<StudyTherapy> therapies = new ArrayList<StudyTherapy>();
+        
+        if(isSurgeryPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.SURGERY));
+        if(isDevicePresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DEVICE));
+        if(isRadiationPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.RADIATION));
+        if(isBehavioralPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.BEHAVIORAL));
+        if(isDrugAdministrationPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DRUG_ADMINISTRATION));
+        if(hasTherapyOfType(StudyTherapyType.DIETARY_SUPPLEMENT)) therapies.add(new StudyTherapy(this, StudyTherapyType.DIETARY_SUPPLEMENT));
+        if(hasTherapyOfType(StudyTherapyType.GENETIC)) therapies.add(new StudyTherapy(this, StudyTherapyType.GENETIC));
+        if(hasTherapyOfType(StudyTherapyType.BIOLOGICAL_VACCINE)) therapies.add(new StudyTherapy(this, StudyTherapyType.BIOLOGICAL_VACCINE));
+        if(hasTherapyOfType(StudyTherapyType.OTHER)) therapies.add(new StudyTherapy(this, StudyTherapyType.OTHER));
+        
+        return therapies;
     }
 
-    @Deprecated
-    public void setStudyTherapies(final List<StudyTherapy> studyTherapies) {
-        this.studyTherapies = studyTherapies;
-    }
 
     @Transient
     @Deprecated

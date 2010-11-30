@@ -211,5 +211,17 @@ public class StudyTest extends TestCase {
 		study.removeTherapiesOfType(StudyTherapyType.BEHAVIORAL);
 		assertEquals(1, study.getStudyTherapies().size());
 	}
+
+
+    public void testGetStudyTherapies(){
+        
+        study.getStudyDevices().add(new StudyDevice()) ;
+        OtherIntervention oi = new OtherIntervention();
+        oi.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
+        study.getOtherInterventions().add(oi);
+        
+        assertEquals(2, study.getStudyTherapies().size());
+        assertEquals(StudyTherapyType.DEVICE, study.getStudyTherapies().get(0).getStudyTherapyType());
+    }
 	
 }
