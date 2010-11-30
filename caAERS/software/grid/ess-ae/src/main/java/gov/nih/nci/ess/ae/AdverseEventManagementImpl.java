@@ -200,8 +200,15 @@ public class AdverseEventManagementImpl implements ManagementI,
 		return ae;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.ess.ae.service.management.common.ManagementI#deactivateAdverseEvent(ess.caaers.nci.nih.gov.Id)
+	 */
 	public AdverseEvent deactivateAdverseEvent(Id adverseEventIdentifier) {
-		return null;
+		gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = findAdverseEvent(adverseEventIdentifier);
+		ae.setRetiredIndicator(true);
+		adverseEventDao.save(ae);
+		return domainToGridConverter.convertAdverseEvent(ae);
+
 	}
 
 	/**
