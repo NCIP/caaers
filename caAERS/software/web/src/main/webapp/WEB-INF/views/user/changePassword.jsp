@@ -87,7 +87,7 @@
   </style>
 </head>
 <body>
-	<a href="/caaers/public/login"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
+	<a href="/caaers/public/login"><img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
   <c:if test="${updated}">
     <c:url value="/public/login" var="login"/>
     <h2>Password changed successfully.</h2><br/>You can now <a href="${login}">login</a>.

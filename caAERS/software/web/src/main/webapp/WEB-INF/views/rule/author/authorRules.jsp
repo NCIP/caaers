@@ -46,7 +46,7 @@ div#createNew h3, div.section h3 {
 	font-size: 14px;
 	padding: 2px 5px;
 	margin: 0 0 10px 0;
-	background: url("/caaers/images/rule/window_titlebar.png");
+	background: url("../images/rule/window_titlebar.png");
 	background-color: #6E81A6;
 	display: block;
 	color: #FFFFFF;
@@ -304,11 +304,11 @@ div#createNew h3, div.section h3 {
 		var imageObj = $('toggle-image-'+ruleCount);
 		if(!toggleStatus) {
 			$('rule-condition-action-container-'+ruleCount).style.display="none";
-			imageObj.src="/caaers/images/rule/window-maximize.gif"
+			imageObj.src="../images/rule/window-maximize.gif"
 			toggleArray[ruleCount] = true;
 		} else {
 			AE.slideAndShow($('rule-condition-action-container-'+ruleCount));
-			imageObj.src="/caaers/images/rule/window-minimize.gif"
+			imageObj.src="../images/rule/window-minimize.gif"
 			toggleArray[ruleCount] = false;
 		}
 	}
@@ -821,7 +821,7 @@ div#createNew h3, div.section h3 {
 																	
 															
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35" />';
-					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+					inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 					
 
 					var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" size="35"/>';
@@ -853,7 +853,7 @@ div#createNew h3, div.section h3 {
 				var hiddenId = selectId + '.literalRestriction[0].readableValue'
 				
 				var inputArea = '<textarea id="' + newId + '" name="' + newId +'" ></textarea>';
-				inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+				inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 					
 				var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
@@ -1479,7 +1479,7 @@ div#createNew h3, div.section h3 {
 																	
 																	
 																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" />';
-																	inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+																	inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 																	
 																	var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value = "'+ fieldValue + '" size="35" />';
 																	
@@ -1521,7 +1521,7 @@ div#createNew h3, div.section h3 {
 										
 																	
 										var inputArea = '<textarea id="' + newId + '" name="' + newId +'" >'+ fieldValue.replace(/\,/,'') + '</textarea>';
-										inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+										inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 					
 										var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
@@ -1670,7 +1670,7 @@ div#createNew h3, div.section h3 {
                       </span>
                       <c:if
 						test="${columnCount > 0}"> <a href="javascript:removeCondition(${ruleCount}, ${columnCount})"> <img id="remove-column-${ruleCount}"
-							src="/caaers/images/rule/remove_condition.gif" align="absmiddle"
+							src="../images/rule/remove_condition.gif" align="absmiddle"
 							style="cursor:hand;  border:0px" /> </a> </c:if>
                     </div>
                     

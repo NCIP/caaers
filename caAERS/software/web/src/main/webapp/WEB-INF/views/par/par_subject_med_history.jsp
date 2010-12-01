@@ -252,7 +252,7 @@
      <tbody>
        <tr class="titleRow">
          <td align="left" class="title">Select :</td>
-         <td align="right"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
+         <td align="right"><a href="javascript:hideShowAllTable()"><img src="../images/rule/window-close.gif" id="close-image"/></a></td>
        </tr>
        <tr>
          <td colspan="2"><div id="showAllDropDownContent"/></td>

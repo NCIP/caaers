@@ -4,12 +4,14 @@
 	height: 51px;
 	width: 970px;
 	font-size: 12pt;
+    line-height: 13pt;
 	position: absolute;
 	top: 98px;
 	padding-left: 10px;
 	color: #FFFFFF;
 	vertical-align: middle;
 	z-index: 1;
+    text-shadow: 0 -1px 1px #053E6F;
 }
 #floatingTaskbar ul {
 	margin:0 0 0 -45px;
@@ -58,7 +60,7 @@
 	background-repeat: no-repeat;
 }
 #floatingTaskbar li a:active {
-	color:#bbcaf0;
+	color:#dff0ff;
 	background-image: url(../images/blue/ftsecondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }

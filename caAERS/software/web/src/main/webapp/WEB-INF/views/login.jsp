@@ -10,24 +10,26 @@
             } #all {
                 margin-top: 50px;
                 background: none;
-                width: 850px;
+                width: 700px;
             } .right {
                 position: absolute;
-                right: 50px;
-                top: -145px;
+                right: 100px;
+                top: 60px;
                 margin-left: 25px;
                 margin-top: 1em;
                 text-align: center;
             } .left {
                 margin-left: 50px;
             } .forgot {
-                margin-top: 1em;
+                margin-top: 1em; font-size: 11px;text-shadow: 0 2px 1px black;
             } .forgot a {
-                color: #fff;
+                color: #fff; text-decoration: none;
+            }.forgot a:hover {
+                color: #bdd1ff;
             }
             
             body {
-                background-image: none;
+                background:#02307f url(../images/blue/top_texture_bg.png) top center no-repeat;
                 color: #ccc;
             } #header {
                 visibility: hidden
@@ -36,7 +38,8 @@
             } #taskbar {
                 width: 10px;
             } #build-name {
-                color: #2e3257;
+                color: #5776aa;
+                font-weight: normal;
                 padding: 0px;
                 margin-left: 17px;
                 bottom: -175px;
@@ -47,6 +50,7 @@
                 font-size: 30px;
                 font-weight: normal;
                 margin-top: 20px;
+                text-shadow: 0 2px 1px black;
             }
             
             h1 {
@@ -54,6 +58,7 @@
             } #logo {
                 position: absolute;
                 top: -135px;
+                left: 200px;
             } .errors {
                 color: #FFCC00;
             }
@@ -98,6 +103,7 @@
             }
 			.right{
 			right: 160px;
+                top: 200px;
 			}
             </style>
         <![endif]-->
@@ -107,25 +113,25 @@
         <SCRIPT language="JavaScript">
         	AE.SESSION_TIME_OUT_ENABLED = false;
             upImage = new Image();
-            upImage.src = "/caaers/images/blue/power-btn-up.jpg";
+            upImage.src = "../images/blue/power-btn-up.png";
             downImage = new Image();
-            downImage.src = "/caaers/images/blue/power-btn-down.jpg"
+            downImage.src = "../images/blue/power-btn-down.png"
             hoverImage = new Image();
-            hoverImage.src = "/caaers/images/blue/power-btn-hover.jpg";
+            hoverImage.src = "../images/blue/power-btn-hover.png";
             var loginimg = document.getElementById("power_btn");
             
             function changeImage(){
-                document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-hover.jpg";
+                document.getElementById("power_btn").src = "../images/blue/power-btn-hover.png";
                 return true;
             }
             
             function changeImageBack(){
-                document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-up.jpg";
+                document.getElementById("power_btn").src = "../images/blue/power-btn-up.png";
                 return true;
             }
             
             function handleMDown(){
-                document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-down.jpg";
+                document.getElementById("power_btn").src = "../images/blue/power-btn-down.png";
                 return true;
             }
             
@@ -136,16 +142,16 @@
         </SCRIPT>
         <!--[if lte IE 6]>
             <div id="ie6">
-            <img src="/caaers/images/blue/no-ie-warning.png" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
+            <img src="../images/blue/no-ie-warning.png" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
             <div style="position:absolute; top:20px; left:160px; color:black;">
             <div style="font-size:20px; margin-bottom:5px;">You are using an outdated web browser.</div>
             <div>We cannot guarantee that caAERS will function completely in this browser.</div>
             <div>Please upgrade (or ask your systems administrator to upgrade) to one of the following FREE browsers:</div>
-            <a href="http://www.mozilla.com/firefox/" target="_blank" class="get-browser" style="margin-left:5px"><img src="/caaers/images/blue/FF3-logo.png" alt="" />Firefox 3.5</a>
-            <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="/caaers/images/blue/ie7-logo.png" alt="" />Internet Explorer 8</a>
+            <a href="http://www.mozilla.com/firefox/" target="_blank" class="get-browser" style="margin-left:5px"><img src="../images/blue/FF3-logo.png" alt="" />Firefox 3.5</a>
+            <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="../images/blue/ie7-logo.png" alt="" />Internet Explorer 8</a>
             </div>
-            <img src="/caaers/images/blue/ie-warning-BL.png" alt="" style="position:absolute; bottom:-1px; left:0;">
-            <img src="/caaers/images/blue/ie-warning-BR.png" alt="" style="position:absolute; bottom:-1px; right:0;">
+            <img src="../images/blue/ie-warning-BL.png" alt="" style="position:absolute; bottom:-1px; left:0;">
+            <img src="../images/blue/ie-warning-BR.png" alt="" style="position:absolute; bottom:-1px; right:0;">
             </div>
         <![endif]-->
         <noscript>
@@ -191,7 +197,7 @@
                 </style>
             <![endif]-->
             <div id="nojs">
-                <img src="/caaers/images/blue/no-js-warning.png" alt="JavaScript" style="position:absolute; top:20px; left:20px;">
+                <img src="../images/blue/no-js-warning.png" alt="JavaScript" style="position:absolute; top:20px; left:20px;">
                 <div style="position:absolute; top:20px; left:160px; color:black;">
                     <div style="font-size:20px; margin-bottom:5px;">
                         caAERS requires JavaScript in order to function.
@@ -203,23 +209,23 @@
                         Please enable JavaScript or use a browser that has JavaScript functionality.
                     </div>
                 </div>
-                <img src="/caaers/images/blue/js-warning-TL.png" alt="" style="position:absolute; top:0px; left:0;"><img src="/caaers/images/blue/js-warning-TR.png" alt="" style="position:absolute; top:0px; right:0px;"><img id="jsBL" src="/caaers/images/blue/js-warning-BL.png" alt=""><img id="jsBR" src="/caaers/images/blue/js-warning-BR.png" alt="">
+                <img src="../images/blue/js-warning-TL.png" alt="" style="position:absolute; top:0px; left:0;"><img src="../images/blue/js-warning-TR.png" alt="" style="position:absolute; top:0px; right:0px;"><img id="jsBL" src="../images/blue/js-warning-BL.png" alt=""><img id="jsBR" src="../images/blue/js-warning-BR.png" alt="">
             </div>
         </noscript>
         <div id="all-login">
             <div class="left">
-                <img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in</h2>
+                <img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in</h2>
                 <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>?rand=${_today.time}'>
                     <c:if test="${not empty param.login_error}">
                         <p class="errors">
-                             <img src="/caaers/images/error-yellow.png" style="margin-right:10px">${sessionScope['ACEGI_SECURITY_LAST_EXCEPTION'].message}
+                             <img src="../images/error-yellow.png" style="margin-right:10px">${sessionScope['ACEGI_SECURITY_LAST_EXCEPTION'].message}
                         </p>
                     </c:if>
                     
                     
                     
                     
-                    <div class="row" style="margin-top:20px;">
+                    <div class="row" style="margin-top:20px;text-shadow: 0 2px 1px black;">
                         <div class="label">
                         <tags:requiredIndicator/>&nbsp;<b>Username</b>
                         </div>
@@ -227,7 +233,7 @@
                             <input type="text" name="j_username" class="validate-NOTEMPTY required" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" title="Username"/>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="text-shadow: 0 2px 1px black;">
                         <div class="label">
                             <tags:requiredIndicator/>&nbsp;<b>Password
                         </div>
@@ -239,7 +245,7 @@
                         <a href='<c:url value="/public/user/resetPassword" />?rand=${_today.time}'>Forgot Password?</a>
                     </div>
                     <div class="right">
-                        <input type="image" src="/caaers/images/blue/power-btn-up.jpg" value="Log in" alt="Log in" height="250px" width="250px" id="power_btn" onMouseOver="return changeImage()" onMouseOut="return changeImageBack()" onMouseDown="return handleMDown()" onMouseUp="return handleMUp()"/><h2>Enter</h2>
+                        <input type="image" src="../images/blue/power-btn-up.png" value="Log in" alt="Log in" id="power_btn" onMouseOver="return changeImage()" onMouseOut="return changeImageBack()" onMouseDown="return handleMDown()" onMouseUp="return handleMUp()"/>
                     </div>
                 </form>
             </div>

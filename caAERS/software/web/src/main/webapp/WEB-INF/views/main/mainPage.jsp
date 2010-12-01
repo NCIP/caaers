@@ -131,6 +131,14 @@
         padding-right:10px;
     }
 
+    td.taskItemImage {
+        height: 37px;
+        background-image: url(../images/iphone2/quick-links_up.jpg);
+        padding-top: 2px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+
     td.taskItem a {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
         font-size: 12px;
@@ -154,13 +162,14 @@
         text-shadow: 0 1px white;
         text-transform: uppercase;
         height: 27px;
+        padding: 5px 0 5px 20px;
     }
 
     .subSubheader span.tasksSubSubheaderText {
         font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
         font-size: 14px;
         color: #fff;
-        text-shadow: 0 -1px #4a4a4a;
+        text-shadow: 0 -1px #333;
         margin: 5px;
     }
 
@@ -197,7 +206,7 @@
     .b-TR {}
     .b-BL { background: url(../images/iphone2/box_bl.png) no-repeat bottom left; }
     .b-BR { background: url(../images/iphone2/box_br.png) no-repeat bottom right; }
-    .boxIPhone .header h2 { text-align: left; padding: 4px 0 0px 20px; font: 20px Lucida Sans Unicode, Lucida Grande, sans-serif; color: #fff; text-shadow: 0 -2px #064d8c; }
+    .boxIPhone .header h2 { text-shadow:0 -2px 1px #053E6F;text-align: left; padding: 4px 0 0px 20px; font: 20px Lucida Sans Unicode, Lucida Grande, sans-serif; color: #fff;}
 
     .boxIPhone .interior {
         margin: 0px 0px 0px 0px;
@@ -217,17 +226,17 @@
     .boxIPhone h3 {
         font: bold 15px Arial, Helvetica, sans-serif;
         color: #2774b8;
-        text-shadow: 0 -1px white;
-        padding-top: 5px;
+        text-shadow: 0 1px white;
+        padding-top: 8px;
         padding-right: 0px;
-        padding-bottom: 0px;
+        padding-bottom: 7px;
         padding-left: 20px;
     }
 
     .boxIPhone h3.blue {
         font: bold 15px Arial, Helvetica, sans-serif;
-        color: blue;
-        text-shadow: 0 -1px white;
+        color: #2774B8;
+        text-shadow: 0 1px white;
         padding-top: 8px;
         padding-right: 0px;
         padding-bottom: 7px;

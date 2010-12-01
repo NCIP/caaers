@@ -262,7 +262,7 @@ aaaaaa
 	class="autocomplete  "/>
 
 
-<img id="studyAgents[0].agent-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
+<img id="studyAgents[0].agent-indicator" class="indicator" src="../images/indicator.white.gif" alt="activity indicator"/>
 
   <div id="studyAgents[0].agent-choices" class="autocomplete" style="display: none"></div>
   <input id="studyAgents[0].agent" name="studyAgents[0].agent" type="hidden" value=""/>
@@ -806,7 +806,7 @@ aaaaaa
 	class="autocomplete  "/>
 
 
-<img id="studyAgents[1].agent-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
+<img id="studyAgents[1].agent-indicator" class="indicator" src="../images/indicator.white.gif" alt="activity indicator"/>
 
   <div id="studyAgents[1].agent-choices" class="autocomplete" style="display: none"></div>
   <input id="studyAgents[1].agent" name="studyAgents[1].agent" type="hidden" value=""/>
@@ -1350,7 +1350,7 @@ aaaaaa
 	class="autocomplete  "/>
 
 
-<img id="studyAgents[2].agent-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
+<img id="studyAgents[2].agent-indicator" class="indicator" src="../images/indicator.white.gif" alt="activity indicator"/>
 
   <div id="studyAgents[2].agent-choices" class="autocomplete" style="display: none"></div>
   <input id="studyAgents[2].agent" name="studyAgents[2].agent" type="hidden" value=""/>
@@ -1798,14 +1798,14 @@ aaaaaa
         <div align=right>
 
 
-<img id="sa-add-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
+<img id="sa-add-indicator" class="indicator" src="../images/indicator.white.gif" alt="activity indicator"/>
             <input type="button" onClick="javascript:fireAction('addStudyAgent','0');" name="AddStudyAgent" value="Add Study Agent">
         </div>
     </div>
     <div class="flow-buttons">
         <span class="prev">
 
-                <input type="image" src="/caaers/images/blue/back_btn.png" id="flow-prev" class="tab1" value="&laquo; back" alt="&laquo; Back"/>
+                <input type="image" src="../images/blue/back_btn.png" id="flow-prev" class="tab1" value="&laquo; back" alt="&laquo; Back"/>
 
         </span>
         <span class="next">
@@ -1817,7 +1817,7 @@ aaaaaa
 
 
 
-            <input type="image" src="/caaers/images/blue/continue_btn.png" id="flow-next" value="continue &raquo;" alt="continue &raquo;"/>
+            <input type="image" src="../images/blue/continue_btn.png" id="flow-next" value="continue &raquo;" alt="continue &raquo;"/>
         </span>
     </div>
 </div>

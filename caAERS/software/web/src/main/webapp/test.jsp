@@ -53,7 +53,7 @@
 
 
 
-		    				<img height="16px" alt="" src="/caaers/images/chrome/../buttons/button_icons/small/trash.gif">
+		    				<img height="16px" alt="" src="../images/chrome/../buttons/button_icons/small/trash.gif">
 
 
 
@@ -115,7 +115,7 @@
 
 
 
-		    				<img height="16px" alt="" src="/caaers/images/chrome/../buttons/button_icons/small/trash.gif">
+		    				<img height="16px" alt="" src="../images/chrome/../buttons/button_icons/small/trash.gif">
 
 
 

@@ -1,7 +1,7 @@
 /**** GENERAL TAG STYLE OVERRIDES */
 
 body {
-	background: url(../images/blue/bg.png) repeat-y center #314993;
+	background: url(../images/blue/bg.png) repeat-y center #02307f;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: #000000;
@@ -51,9 +51,10 @@ body {
 #welcome-user {
 	position:absolute;
 	color:#fff;
-	right:160px;
-	top:2px;
+	right:115px;
+	top:12px;
     font-size:8pt;
+    text-shadow: 0 1px 1px #000;
 }
 
 #thirdlevelnav { margin:5px; }
@@ -160,44 +161,78 @@ a#logo {
 a#logo:link { background-position: 0px }
 a#logo:hover { background-position: 0px -100px; }
 a#logo:active { background-position: 0px -200px; }
-#logout {
-	background-image: url(../images/blue/logout_tab.png);
-	position: absolute;
-	height: 30px;
-	width: 75px;
-	top: 0px;
-	right: -9px;
-	padding-top: 2px;
-	background-repeat: no-repeat;
-	text-align: center;
-	margin-right:15px;
-	color: #333366;
-	font-weight: bold;
-	text-decoration: none;
-	font-size: 0.85em;
+a#logout {
+background-image:url(../images/blue/logout_tab.png);
+background-position:0 -64px;
+background-repeat:no-repeat;
+color:#E1E1E1;
+display:block;
+font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;
+font-size:11px;
+font-weight:normal;
+height:26px;
+margin-right:0;
+padding-right:5px;
+padding-top:6px;
+position:absolute;
+right:-3px;
+text-align:center;
+text-decoration:none;
+text-shadow:0 -1px #3A3A3A;
+top:3px;
+width:58px;
 }
-a#logout:hover { text-decoration: underline; }
+
+a#logout:hover {
+background-position:0 -32px;
+color:#FFFFFF;
+font-weight:normal;
+text-decoration:none;}
+
+a#logout:active {
+background-position:0 0;
+color:#FFFFFF;
+font-weight:normal;
+text-decoration:none;
+}
+
 #skipnav {
 	text-indent:-9999px;
 	position:absolute;
 }
-#help {
-	background-image: url(../images/blue/logout_tab.png);
-	position: absolute;
-	height: 30px;
-	width: 75px;
-	top: 0px;
-	right: 65px;
-	padding-top: 2px;
-	background-repeat: no-repeat;
-	text-align: center;
-	margin-right:15px;
-	color: #333366;
-	font-weight: bold;
-	text-decoration: none;
-	font-size: 0.85em;
+a#help {
+background-image:url(../images/blue/help_tab.png);
+background-repeat:no-repeat;
+color:#E1E1E1;
+font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;
+font-size:11px;
+font-weight:normal;
+height:26px;
+margin-right:0;
+padding-left:5px;
+padding-top:6px;
+position:absolute;
+right:60px;
+text-align:center;
+text-decoration:none;
+text-shadow:0 -1px #3A3A3A;
+top:3px;
+width:40px;
 }
-a#help:hover { text-decoration: underline; }
+
+a#help:hover {
+background-position:0 -32px;
+color:#FFFFFF;
+font-weight:normal;
+text-decoration:none; }
+
+
+a#help:active {
+background-position:0 -64px;
+color:#FFFFFF;
+font-weight:normal;
+text-decoration:none;
+}
 /***
 1st LEVEL TABS
 
@@ -206,24 +241,26 @@ ul#sections li a {
 	background-image:url(../images/blue/first-lvl-tab.png);
 	float:left;
 	height:45px;
-	margin-right:-10px;
+	margin-right:-9px;
 	padding:18px 0;
 	text-align:center;
 	width:133px;
 	color:#fff;
 	text-decoration:none;
 	font-weight:bolder;
+    text-shadow: 0 -1px 1px #053e6f;
 }
 ul#sections li a:hover {
 	background-position:0px -45px;
 }
 ul#sections li a:active {
 	background-position:0px -90px;
-	color:#ccc;
-	padding:20px 0;
+	color:#e1f0ff;
+	padding:19px 0;
 }
 ul#sections li.selected a {
 	background-position:0px -135px;
+    text-shadow: 0 -1px 1px #4a325b;
 }
 /*
 a#firstlevelnav_listAdverseEventsController {
@@ -345,7 +382,7 @@ ul.tabs li {
 #sections {
 	position: absolute;
 	top: 53px;
-	left: 236px;
+	left: 230px;
 }
 /*
 #sections li.selected {
@@ -371,12 +408,14 @@ ul.tabs li {
 	height: 51px;
 	width: 970px;
 	font-size: 12pt;
+    line-height: 13pt;
 	position: absolute;
 	top: 98px;
 	padding-left: 10px;
 	color: #FFFFFF;
 	vertical-align: middle;
 	z-index: 1;
+    text-shadow:0 -1px 1px #4A325B;
 }
 #taskbar ul {
 	margin:0 0 0 -45px;
@@ -425,7 +464,7 @@ ul.tabs li {
 	background-repeat: no-repeat;
 }
 #taskbar li a:active {
-	color:#ffe9a5;
+	color:#eedef8;
 	background-image: url(../images/blue/secondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
@@ -439,7 +478,7 @@ ul.tabs li {
 }
 .spangt18 { padding-right:4px }
 #taskbar .lte4 a.selected, #taskbar .lte4 a.selected:hover, #taskbar .lte4 a.selected:active {
-	background-image: url(../images/blue/secondlevelnav_selected.jpg);
+	background-image: url(../images/blue/secondlevelnav_selected.png);
 	background-repeat: no-repeat;
 }
 #taskbar .gt4 a.selected, #taskbar .gt4 a.selected:hover, #taskbar .gt4 a.selected:active {

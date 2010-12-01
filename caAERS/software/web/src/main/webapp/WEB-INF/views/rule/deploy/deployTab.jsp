@@ -13,7 +13,7 @@
     <p>
     
     <div>
-    	<img src="/caaers/images/rule/deploy_rule.gif" align="absmiddle" />
+    	<img src="../images/rule/deploy_rule.gif" align="absmiddle" />
     </div>
     
     </p>

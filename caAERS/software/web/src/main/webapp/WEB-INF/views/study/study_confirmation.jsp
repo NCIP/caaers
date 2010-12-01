@@ -45,7 +45,7 @@
               <div class="value">${command.study.phaseCode}</div>
            </div>
            <div>
- 			<img src="/caaers/images/chrome/spacer.gif" width="900" height="1" />
+ 			<img src="../images/chrome/spacer.gif" width="900" height="1" />
  		  </div>
        </div>
 </chrome:division>

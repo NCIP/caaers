@@ -71,7 +71,7 @@
     <link href="../../images/caaers.ico" rel="icon"/>
 </head>
 <body>
-<a href="/caaers/public/login"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
+<a href="/caaers/public/login"><img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
 An e-mail has been sent to the requested user.
 </body>
 </html>
