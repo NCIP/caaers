@@ -12,7 +12,8 @@
 	
 	<property name="registration.consumer.grid.service.dir" value="RegistrationConsumerGridService-caGrid1.3.1"/>
 	<property name="study.consumer.grid.service.dir" value="StudyConsumerGridService-caGrid1.3.1"/>
-	<property name="lab.consumer.grid.service.dir" value="LabConsumerService-caGrid13"/>
+	<property name="lab.consumer.grid.service.dir" value="LabConsumerService-caGrid13"/>	
+	<property name="aees.nes.service.dir" value="${basedir}/introduce/AdverseEventEnterpriseService"/>	
 	
 	
 	<import file="${parent.dir}/common.xml"/>
@@ -37,6 +38,7 @@
 		target: build-grid-services , compiles and builds all grid services ..
 	================================================================== -->	
 	<target name="build-grid-services">		
+		<!-- First build CTMS grid services -->
 		<subant target="all">
 			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/build.xml"/>
 		</subant>
@@ -46,6 +48,11 @@
 		<subant target="all">
 			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
 		</subant>
+		<!-- Then build caAERS's own NES grid services
+		<subant target="all">
+			<fileset dir="${aees.nes.service.dir.introduce}" includes="${aees.nes.service.dir.introduce}/build.xml"/>
+		</subant>		
+		-->
 	</target>
 
 	<!-- ==============================================================
