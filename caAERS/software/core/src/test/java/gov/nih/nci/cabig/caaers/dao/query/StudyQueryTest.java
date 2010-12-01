@@ -216,4 +216,14 @@ public class StudyQueryTest extends TestCase{
 		studyQuery.filterBySponsorOrganizationId(-1001);
 		assertEquals("select  distinct s from Study s join s.studyOrganizations as ss WHERE ss.class = 'SFS' AND ss.organization.id = :sponsorId", studyQuery.getQueryString());
 	}
+	
+	public void testFilterStudiesMatchingText(){
+		StudyQuery studyQuery = new StudyQuery();
+		studyQuery.filterStudiesMatchingText("5876");
+		String[] organizationCodes = {"MN026"};
+		studyQuery.filterStudiesByOrganizations(organizationCodes);
+		System.out.println(studyQuery.getQueryString());
+	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -8,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class StudyQuery extends AbstractQuery {
 	
@@ -272,14 +274,27 @@ public class StudyQuery extends AbstractQuery {
         String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
 
         andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " +
-                "or  lower(identifier.type) LIKE :%s " +
-                "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_TYPE, IDENTIFIER_VALUE));
+                "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
         setParameter(IDENTIFIER_VALUE, searchString);
-        setParameter(IDENTIFIER_TYPE, searchString);
         setParameter(STUDY_SHORT_TITLE, searchString);
         setParameter(STUDY_LONG_TITLE, searchString);
-
     }
+    
+    /**
+     * Introduced to have left join fetch on identifiers
+     * @param text
+     */
+    public void filterStudiesMatchingText(String text) {
+    	leftJoinFetch(STUDY_ALIAS+".identifiers as identifier");
+        String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
+
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " +
+                "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
+        setParameter(IDENTIFIER_VALUE, searchString);
+        setParameter(STUDY_SHORT_TITLE, searchString);
+        setParameter(STUDY_LONG_TITLE, searchString);
+    }
+
 
     // participantIdentifier
     public void filterByParticipantIdentifierValue(final String participantIdentifierValue) {
@@ -317,4 +332,13 @@ public class StudyQuery extends AbstractQuery {
             setParameter("dataEntryStatus", true);
         }
     }
+    
+    public void filterStudiesByOrganizations(String[] organizationCodes) {
+        if (organizationCodes != null && organizationCodes.length > 0) {
+        	joinStudyOrganization();
+            andWhere(String.format("ss.organization.nciInstituteCode in (:%s)", "OrganizationCodes"));
+            setParameter("OrganizationCodes", Arrays.asList(organizationCodes));
+        }
+    }
+    
 }

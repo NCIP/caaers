@@ -601,6 +601,8 @@
 	<bean name="/admin/editUser" id="editUserController" class="gov.nih.nci.cabig.caaers.web.admin.EditUserController" autowire="byType">
 		<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
 		<property name="proSessionFactory" ref="provisioningSessionFactory" />
+		<property name="organizationRepository" ref="organizationRepository" />
+		<property name="studyRepository" ref="studyRepository" />
 	</bean>
 
 	<bean id="userSearchController"  name="/admin/searchUser" class="org.springframework.web.servlet.mvc.ParameterizableViewController">    

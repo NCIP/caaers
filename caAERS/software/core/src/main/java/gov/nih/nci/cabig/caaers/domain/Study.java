@@ -29,6 +29,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -343,6 +344,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Transient
     public String getCoordinatingCenterIdentifierValue() {
         return getCoordinatingCenterIdentifier().getValue();
+    }
+    
+    @Transient
+    public String getIdentifierContaining(String text){
+    	for (Identifier identifier : getIdentifiers()) {
+    		if(StringUtils.containsIgnoreCase(identifier.getValue(), text)){
+    			return identifier.getValue();
+    		}
+    	}
+    	return getPrimaryIdentifierValue();
     }
     
 

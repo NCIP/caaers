@@ -88,8 +88,8 @@
             <param name="beanName" value="agentAjaxFacade" />
         </create>
         
-		<create creator="spring" javascript="searchUser">
-            <param name="beanName" value="searchUserAjaxFacade" />
+		<create creator="spring" javascript="user">
+            <param name="beanName" value="userAjaxFacade" />
         </create>
 	</allow>
 </dwr>

@@ -47,7 +47,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     @SuppressWarnings("unchecked")
 	public List searchCsmUser(String firstName,String lastName,String userName){
     	
-    	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) return null;
+    	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
     	
     	gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
     	if(StringUtils.isNotEmpty(firstName)) example.setFirstName(firstName);
@@ -65,14 +65,14 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         try {
             if (user.getId() == null) {
                 csmUser = createCSMUser(user);
-                sendCreateAccountEmail(user, changeURL);
+                //sendCreateAccountEmail(user, changeURL);
             } else {
                 csmUser = updateCSMUser(user);
                 if (csmUser == null) {
                     csmUser = createCSMUser(user);
-                    sendCreateAccountEmail(user, changeURL);
+                    //sendCreateAccountEmail(user, changeURL);
                 } else {
-                    sendUpdateAccountEmail(user);
+                    //sendUpdateAccountEmail(user);
                 }
             }
         } catch (MailException e) {

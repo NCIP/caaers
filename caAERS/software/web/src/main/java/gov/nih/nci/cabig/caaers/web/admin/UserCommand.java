@@ -5,7 +5,9 @@ import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User interface related class. Created to capture / render User details.
@@ -17,27 +19,47 @@ public class UserCommand {
 	//Attributes to capture Basic User details.
 	private CSMUser csmUser;
 	//List which will hold all the RoleMemberships of the user.
-	private List<SuiteRoleMembership> roleMemberships;
+	private List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
 	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
+	private Map<String,String> siteMap = new HashMap<String,String>();
+	private Map<String,String> studyMap = new HashMap<String,String>();
 	
 	public UserCommand() {
 	}
 	
-	
+	/**
+	 * This method prepares the command object for use in the UI. 
+	 */
 	public void buildRolesHelper() {
-		
-		List<SuiteRole> userRoles = new ArrayList<SuiteRole>();
-		if(roleMemberships != null){
-			for(SuiteRoleMembership srM : roleMemberships){
-				userRoles.add(srM.getRole());
-			}
+		Map<SuiteRole,SuiteRoleMembership> map = new HashMap<SuiteRole,SuiteRoleMembership>();
+		for(SuiteRoleMembership srM : roleMemberships){
+			map.put(srM.getRole(), srM);
 		}
-		
+		SuiteRoleMembership srM = null;
 		for (SuiteRole suiteRole : SuiteRole.values()) {
 			SuiteRoleMembershipHelper rh = new SuiteRoleMembershipHelper();
 			rh.setSuiteRole(suiteRole);
-			if(userRoles.contains(suiteRole)){
+			if(map.containsKey(suiteRole)){
 				rh.setChecked(true);
+				if(suiteRole.isScoped()){
+					srM = map.get(suiteRole);
+					
+					if(suiteRole.isStudyScoped()){
+						if(srM.isAllStudies()){
+							rh.setAllStudyAccess(true);
+						}else{
+							rh.setAllStudyAccess(false);
+							rh.setStudies(srM.getStudyIdentifiers());
+						}
+					}
+					
+					if(srM.isAllSites()){
+						rh.setAllSiteAccess(true);
+					}else{
+						rh.setAllSiteAccess(false);
+						rh.setSites(srM.getSiteIdentifiers());
+					}
+				}
 			}else{
 				rh.setChecked(false);
 			}
@@ -135,4 +157,23 @@ public class UserCommand {
 		this.roleMembershipHelper = roleMembershipHelper;
 	}
 
+
+	public Map<String, String> getSiteMap() {
+		return siteMap;
+	}
+
+
+	public void setSiteMap(Map<String, String> siteMap) {
+		this.siteMap = siteMap;
+	}
+
+
+	public Map<String, String> getStudyMap() {
+		return studyMap;
+	}
+
+
+	public void setStudyMap(Map<String, String> studyMap) {
+		this.studyMap = studyMap;
+	}
 }

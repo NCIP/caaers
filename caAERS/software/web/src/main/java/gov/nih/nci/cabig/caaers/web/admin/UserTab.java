@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+/**
+ * 
+ * @author Monish
+ *
+ */
 public class UserTab extends TabWithFields<UserCommand>{
 
+	private OrganizationDao organizationDao;
+	
 	public UserTab() {
 		super("User Details", "User Details", "/admin/user");
 	}
@@ -35,11 +44,29 @@ public class UserTab extends TabWithFields<UserCommand>{
         super.onBind(request, command, errors);
         
         if(command != null){
-        	command.getRoleMemberships().clear();
+        	if(command.getRoleMemberships() != null && command.getRoleMemberships().size() > 0){
+        		command.getRoleMemberships().clear();
+        	}
         	ProvisioningSessionFactory factory = new ProvisioningSessionFactory();
+        	SuiteRoleMembership suiteRoleMembership = null;
         	for(SuiteRoleMembershipHelper roleMembershipHelper : command.getRoleMembershipHelper()){
         		if(roleMembershipHelper.getChecked()){
-        			command.addRoleMembership(factory.createSuiteRoleMembership(roleMembershipHelper.getSuiteRole()));
+        			suiteRoleMembership = factory.createSuiteRoleMembership(roleMembershipHelper.getSuiteRole());
+        			if(roleMembershipHelper.getSuiteRole().isScoped()){
+        				if(roleMembershipHelper.getSuiteRole().isStudyScoped()){
+        					if(roleMembershipHelper.getAllStudyAccess()){
+        						suiteRoleMembership.forAllStudies();
+        					}else{
+        						suiteRoleMembership.forStudies(roleMembershipHelper.getStudies());
+        					}
+        				}
+        				if(roleMembershipHelper.getAllSiteAccess()){
+            				suiteRoleMembership.forAllSites();
+            			}else{
+            				suiteRoleMembership.forSites(roleMembershipHelper.getSites());
+            			}
+        			}
+        			command.addRoleMembership(suiteRoleMembership);
         		}
         	}
         }
@@ -50,4 +77,12 @@ public class UserTab extends TabWithFields<UserCommand>{
     	super.validate(command, commandBean, fieldGroups, errors);
     }
 
+    
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
 }

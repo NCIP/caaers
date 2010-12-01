@@ -73,8 +73,10 @@
 
     <bean id="agentAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentAjaxFacade" />
 
-	<bean id="searchUserAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchUserAjaxFacade">
+	<bean id="userAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.UserAjaxFacade">
 		<property name="csmUserRepository" ref="csmUserRepository"/>
+		<property name="organizationRepository" ref="organizationRepository"/>
+		<property name="studyDao" ref="studyDao"/>
 	</bean>
 
 </beans>

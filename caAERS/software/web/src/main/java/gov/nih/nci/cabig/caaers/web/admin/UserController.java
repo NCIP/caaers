@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.security.CSMUser;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
@@ -25,10 +27,17 @@ import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * 
+ * @author Monish
+ *
+ */
 public class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, gov.nih.nci.cabig.caaers.domain.User, UserDao>  {
 	
 	protected CaaersSecurityFacadeImpl caaersSecurityFacade;
 	protected ProvisioningSessionFactory proSessionFactory;
+	protected OrganizationRepository organizationRepository;
+	protected StudyRepository studyRepository;
 	
 	@Override
     public FlowFactory<C> getFlowFactory() {
@@ -52,7 +61,6 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 		command.setCsmUser(new CSMUser());
 		return command;
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -61,7 +69,7 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
         UserCommand command = (UserCommand)userCommand;
         CSMUser user = command.getCsmUser();
         boolean isCreateMode = user == null || user.getId() == null;
-        ModelAndView modelAndView = new ModelAndView("admin/user");
+        ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
         User csmUser = null;
         try {
 			//Create or Update User 
@@ -136,6 +144,8 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 		}
 	}
 	
+	
+	
 	//Setter & Getters.
 	
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
@@ -159,5 +169,22 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 
 	public void setProSessionFactory(ProvisioningSessionFactory proSessionFactory) {
 		this.proSessionFactory = proSessionFactory;
+	}
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
+	}
+
+	public StudyRepository getStudyRepository() {
+		return studyRepository;
+	}
+
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
 	}
 }

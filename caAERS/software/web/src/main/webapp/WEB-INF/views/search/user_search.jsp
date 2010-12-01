@@ -18,12 +18,12 @@
 
 		<title><caaers:message code="user.search.pageTitle"/></title>
 		<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
-			<tags:dwrJavascriptLink objects="searchUser"/>
+			<tags:dwrJavascriptLink objects="user"/>
 		<script language="JavaScript">
 
 			function buildTable(form) {
 				$('indicator').className=''
-				searchUser.getUserTable($('propFn').value, $('propLn').value, $('propUn').value, test);
+					user.getUserTable($('propFn').value, $('propLn').value, $('propUn').value, test);
 			    $('bigSearch').show();
 			}
 	

@@ -5,6 +5,11 @@ import gov.nih.nci.cabig.caaers.security.CSMUser;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 
+ * @author Monish
+ *
+ */
 public class CreateUserController extends UserController<UserCommand>{
 	
 	@Override
