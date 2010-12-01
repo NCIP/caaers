@@ -10,8 +10,8 @@
     </context-param>
 
     <context-param>
-        <param-name>urls.properties</param-name>
-        <param-value>urls.properties</param-value>
+        <param-name>app.properties</param-name>
+        <param-value>app.properties</param-value>
     </context-param>
 
     <listener><listener-class>org.springframework.web.context.ContextLoaderListener</listener-class></listener>

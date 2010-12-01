@@ -38,10 +38,10 @@
     <div id="wrapper">
         <div id="content">
             <ul>
-                <li class="top_left"><a href="${urls['caaers']}"><img src="images/caaers.png"/></a></li>
-                <li class="top_right"><a href="${urls['c3pr']}"><img src="images/c3pr.png"/></a></li>
-                <li class="bottom_left"><a href="${urls['psc']}"><img src="images/psc.png"/></a></li>
-                <li class="bottom_right"><a href="${urls['labviewer']}"><img src="images/labviewer.png"/></a></li>
+                <li class="top_left"><a href="${urls['caaers.url']}"><img src="images/caaers.png"/></a></li>
+                <li class="top_right"><a href="${urls['c3pr.url']}"><img src="images/c3pr.png"/></a></li>
+                <li class="bottom_left"><a href="${urls['psc.url']}"><img src="images/psc.png"/></a></li>
+                <li class="bottom_right"><a href="${urls['labviewer.url']}"><img src="images/labviewer.png"/></a></li>
                 <div class="clear"></div>
             </ul>
         </div>

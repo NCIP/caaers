@@ -176,9 +176,10 @@
              Cleans the directory associated to keep exploded suite-dashboard files
      =============================================================-->
     <target name="clean">
-        <deltree dir="${war.dir}" />
-        <deltree dir="${classes.dir}" />
-        <deltree dir="${lib.dir}" />
+        <delete dir="${war.dir}" verbose="true"/>
+        <delete dir="${dist.dir}" verbose="true"/>
+        <delete dir="${classes.dir}" verbose="true"/>
+        <delete dir="${lib.dir}" verbose="true"/>
     </target>
 
 
@@ -191,11 +192,11 @@
 			<include name="**/*.jar" />
 		</fileset>
 	</path>
-    
-    <target name="war" depends=" clean, init, load-ivy, version, source">
+
+    <target name="war" depends="clean, init, load-ivy, version, source">
         <!-- compile -->
         <ivyResolve confs="default" libdir="${lib.dir}" resolveid="[org]-[module]"/>
-        <copy-resources src="${main.src.resources}" dest="${classes.dir}" filter="true"/>
+        <copy-resources src="${main.src.resources}" dest="${classes.dir}/resources" filter="true"/>
         <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5"/>
 
         <!-- WAR -->
@@ -204,9 +205,7 @@
         <ivy:retrieve pattern="${war.dir}/WEB-INF/[artifact].[ext]"  haltonfailure="false" settingsRef="dashboard.ivy.instance" type="properties" />
         <copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
         <copy-resources src="${webapp.dir}" dest="${war.dir}"  filter="false" />
-        <war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
-             webxml="${webapp.dir}/WEB-INF/web.xml">
-        </war>
+        <war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9" webxml="${webapp.dir}/WEB-INF/web.xml"/>
     </target>
 
 

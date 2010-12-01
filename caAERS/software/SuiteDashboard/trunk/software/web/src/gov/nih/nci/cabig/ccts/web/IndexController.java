@@ -14,7 +14,7 @@ public class IndexController extends AbstractController {
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {
         Properties p = new Properties();
-        String urls = req.getSession().getServletContext().getInitParameter("urls.properties");
+        String urls = req.getSession().getServletContext().getInitParameter("app.properties");
         InputStream is = IndexController.class.getClassLoader().getResourceAsStream("/resources/" + urls);
         p.load(is);
         ModelAndView mvc = new ModelAndView("/WEB-INF/views/index.jsp");
