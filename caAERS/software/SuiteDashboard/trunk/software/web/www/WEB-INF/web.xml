@@ -27,7 +27,6 @@
         <url-pattern>/secured</url-pattern>
     </servlet-mapping>
 
-<!--
     <filter>
         <filter-name>Acegi Filter Chain Proxy</filter-name>
         <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
@@ -41,7 +40,6 @@
         <filter-name>Acegi Filter Chain Proxy</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
--->
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
