@@ -2,19 +2,129 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
     "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="true">
+		
+ 
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-caXchange.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-lab.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-labConsumer.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-registrationConsumer.xml" />		
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-studyConsumer-grid.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-studyConsumer.xml" />		
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-selenium.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-test-security.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-test.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-dwr.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-event.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-security.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-sso.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-test-security.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-validator.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-xfire.xml" />		
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml" />		
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-remote.xml" />					
+		
 
+ 
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-acegi-security.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-api.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-auditing.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-domain.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-indexing.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-jmx.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-logging.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-migrate.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-repository.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-validator.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-workflow.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-grid.xml" />	
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-rules-jcr.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-rules-services.xml" />
+	<import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-scheduler-quartz.xml" />
+	
+	
+	
+	<!-- 
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-auditing.xml" />
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-remote.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
-	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-caXchange.xml"/>
+
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
-
+    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-repository.xml"/>
+	 -->
+	 
+	<!--  overriding the authorization -->
+	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+					<property name="key" value="anonymousAuthKey"/>
+				</bean>
+			</list>
+		</property>
+	</bean>	
 	
-	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.ae.GridToDomainObjectConverter" autowire="byType"/>
-	<bean id="adverseEventQueryImpl" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl" autowire="byType"/>
-	<bean id="adverseEventManagementImpl" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl" autowire="byType"/>
+	<bean id="coppaCache" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
+	<bean id="coppaMode" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>	
+
+	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.ae.GridToDomainObjectConverter"
+		autowire="byType" />
+	<bean id="adverseEventQueryImpl" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl"
+		autowire="byType" />
+	<bean id="adverseEventManagementImpl" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl"
+		autowire="byType" />
 
 </beans>
