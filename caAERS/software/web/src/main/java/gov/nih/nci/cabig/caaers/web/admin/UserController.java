@@ -69,7 +69,7 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
         UserCommand command = (UserCommand)userCommand;
         CSMUser user = command.getCsmUser();
         boolean isCreateMode = user == null || user.getId() == null;
-        ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
+        
         User csmUser = null;
         try {
 			//Create or Update User 
@@ -87,36 +87,15 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + getMessage("USR_017", "");
             }
-            modelAndView.getModel().put("flashMessage", statusMessage);
+//            modelAndView.getModel().put("flashMessage", statusMessage);
         }
+        
+        String message = isCreateMode ? "created=OK" : "edited=OK";
+        ModelAndView modelAndView = new ModelAndView("redirect:editUser?userName=" + csmUser.getLoginName() + "&" + message);
         modelAndView.addAllObjects(errors.getModel());
 		return modelAndView;
 	}
 	
-	/**
-	 * This method processes the given UserCommand.
-	 * Creates a user in CSM.
-	 * Provisions all the Roles & Role-Memberships for the User in CSM
-	 * @param userCommand
-	 */
-	public void processUserCommand(HttpServletRequest request,UserCommand userCommand){
-		User csmUser = null;
-		try{
-			//Create or Update User 
-			csmUser = createOrUpdateCSMUser(request,userCommand.getCsmUser());
-			//Process the RoleMemeberships for the User.
-			processRoleMemberships(csmUser,userCommand.getRoleMemberships());
-		}catch(MailException mEx){
-			//TODO
-			//Handle exception appropriately for UI purposes.
-			processRoleMemberships(csmUser,userCommand.getRoleMemberships());
-			mEx.printStackTrace();
-		}catch(Exception ex){
-			//TODO
-			//Handle exception appropriately for UI purposes.
-			ex.printStackTrace();
-		}
-	}
 	
 	/**
 	 * This method creates a User in CSM.
@@ -139,9 +118,7 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	 * @param roleMemberships
 	 */
 	protected void processRoleMemberships(User csmUser, List<SuiteRoleMembership> roleMemberships){
-		if(roleMemberships != null && roleMemberships.size() > 0){
-			caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
-		}
+		caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
 	}
 	
 	

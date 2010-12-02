@@ -7,10 +7,12 @@ import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -36,6 +38,13 @@ public class UserTab extends TabWithFields<UserCommand>{
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, UserCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
+        if (!StringUtils.isEmpty(request.getParameter("created")) && request.getParameter("created").equals("OK")) {
+        	refdata.put("flashMessage", getMessage("MSG_USER.created", null, Locale.getDefault()));
+        }  
+        if (!StringUtils.isEmpty(request.getParameter("edited")) && request.getParameter("edited").equals("OK")) {
+        	refdata.put("flashMessage", getMessage("MSG_USER.updated", null, Locale.getDefault()));
+        }  
+        
         return refdata;
     }
     

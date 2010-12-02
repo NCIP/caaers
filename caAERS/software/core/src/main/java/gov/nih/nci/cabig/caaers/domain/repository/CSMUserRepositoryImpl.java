@@ -65,14 +65,14 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         try {
             if (user.getId() == null) {
                 csmUser = createCSMUser(user);
-                //sendCreateAccountEmail(user, changeURL);
+                sendCreateAccountEmail(user, changeURL);
             } else {
                 csmUser = updateCSMUser(user);
                 if (csmUser == null) {
                     csmUser = createCSMUser(user);
-                    //sendCreateAccountEmail(user, changeURL);
+                    sendCreateAccountEmail(user, changeURL);
                 } else {
-                    //sendUpdateAccountEmail(user);
+                    sendUpdateAccountEmail(user);
                 }
             }
         } catch (MailException e) {

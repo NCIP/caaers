@@ -107,8 +107,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	}else if(user instanceof CSMUser){
     		try{
     			return csmUserRepository.createOrUpdateCSMUser((CSMUser)user, changeURL);
-    		}catch(MailException e){
-    			throw e;
+    		}catch(MailException mEx){
+    			throw mEx;
     		}
     	}
         return null;
@@ -120,21 +120,21 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	 * (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User, java.util.List)
 	 */
-	public void provisionRoleMemberships(
-			gov.nih.nci.security.authorization.domainobjects.User csmUser,
-			List<SuiteRoleMembership> roleMemberships) {
+	public void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships) {
 		
 		//Fetch all the existing groups of the Given User.
 		List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+		
 		//Erase all the existing SuiteRoleMemberships of the User
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 		for(UserGroupType group : userGroups){
 			session.deleteRole(SuiteRole.getByCsmName(group.getCsmName()));
 		}
-		
 		//Provision the newly provided SuiteRoleMemberships for the User in CSM.
-		for(SuiteRoleMembership roleMembership : roleMemberships){
-			session.replaceRole(roleMembership);
+		if(CollectionUtils.isNotEmpty(roleMemberships)){
+			for(SuiteRoleMembership roleMembership : roleMemberships){
+				session.replaceRole(roleMembership);
+			}
 		}
 	}
 	
