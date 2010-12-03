@@ -3,11 +3,12 @@ package gov.nih.nci.ess.ae;
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
+import gov.nih.nci.ess.ae.service.query.common.QueryI;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdverseEventQueryImpl {
+public class AdverseEventQueryImpl implements QueryI { 
 
 	private AdverseEventDao adverseEventDao ;
 	private GridToDomainObjectConverter gridToDomainObjectConverter;

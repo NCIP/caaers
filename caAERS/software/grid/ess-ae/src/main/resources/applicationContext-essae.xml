@@ -61,8 +61,8 @@
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-domain.xml" />
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-indexing.xml" />
-	<import
-		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-jmx.xml" />
+	<!-- <import
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-jmx.xml" /> -->
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-logging.xml" />
 	<import
@@ -112,6 +112,12 @@
 			</list>
 		</property>
 	</bean>	
+	
+	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
+		<property name="migrators">
+			<list/>
+		</property>
+    </bean>	
 	
 	<bean id="coppaCache" class="java.lang.Boolean">
 		<constructor-arg value="false"/>
