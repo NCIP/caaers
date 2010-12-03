@@ -144,7 +144,11 @@
 									<c:set var="_title" value=" "/>
 								</c:if>
 								
-								<chrome:accordion id="section-${index.index}" title="${roleMembership.suiteRole.displayName} ${roleMembership.checked ? 'X' : '' }">
+								<chrome:accordion id="section-${index.index}">
+                                    <jsp:attribute name="title">
+                                        ${roleMembership.suiteRole.displayName} ${roleMembership.checked ? 'X' : '' }
+                                    </jsp:attribute>
+                                    <jsp:body>
 									${roleMembership.suiteRole.description}<br>
 									<ui:checkbox path="roleMembershipHelper[${index.index}].checked" />&nbsp;&nbsp;Grant this user the ${roleMembership.suiteRole.displayName} role.<br><br>
 									<c:if test="${roleMembership.scoped}">
@@ -269,6 +273,7 @@
 												</div>
 										</c:if>
 									</c:if>
+                                    </jsp:body>
 								</chrome:accordion>
 							</c:forEach>
     						</div>
