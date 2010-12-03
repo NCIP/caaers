@@ -66,7 +66,11 @@ var Accordion = Class.create({
     },
 
     clickHandler: function(e) {
-        var el = e.element();
+        var elx = e.element();
+        var el = elx.up('.accordion-title');
+        if(!el){
+           el = elx; 
+        }
         if(el.hasClassName(this.options.toggleClass) && !this.isAnimating) {
             this.expand(el);
         }

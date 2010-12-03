@@ -1,10 +1,7 @@
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
-<script src="js/prototype.js"></script>
-
-<script src="js/scriptaculous/effects.js"></script>
-
-<script src="js/accordion.js"></script>
+<script src="js/compressed/prototype_jquery_scriptaclous_accordion.js" ></script>
 <script type="text/javascript"><!--
 var myAccordion;
 
@@ -62,47 +59,54 @@ Event.observe(window, 'load',  function(){
   <a href="#" onclick="showMe()" >Are you a JS geek?</a>
 </div>
 <div id="test-accordion" class="accordion">
-	<div class="accordion-toggle">At last</div>
-	<div class="accordion-content">
-		<p>
-			Hai.... 
-		</p>
-		<p>	
-		  It is working!!!!
-		</p>
 
-	</div>
-	<div class="accordion-toggle">Hello</div>
-	<div class="accordion-content">
-		<p>
-			Lets go for coffee
-		</p>
-		<p>
-			are you comming?
-		</p>
 
-	</div>
-	<div class="accordion-toggle">Something Big</div>
-	<div class="accordion-content">
-		<p>
+    <chrome:accordion id="abc">
+        <jsp:attribute name="title">something big</jsp:attribute>
+        <jsp:body>
+            <p>
 		What is it?
 
 		Git is a fast, efficient, distributed version control system ideal for the collaborative development of software.
 
-		GitHub is the easiest (and prettiest) way to participate in that collaboration: fork projects, send pull requests, monitor development, all with ease. 
+		GitHub is the easiest (and prettiest) way to participate in that collaboration: fork projects, send pull requests, monitor development, all with ease.
 		</p>
-	</div>
-	<div id="newdc" style="display:none">
-	<div class="accordion-toggle">Mr. Geek</div>
+        </jsp:body>
+    </chrome:accordion>
 
-	<div class="accordion-content">
-		<p>
-		 Yes You are!!!!
-		 So get up from your seat!!!!
+    <chrome:accordion id="abc">
+        <jsp:attribute name="title">
+            <!-- Multi columnn title example -->
+            <table>
+                <tr>
+                    <td width="80%">System Admin</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>Sites 3</td>
+                                <td>Study 6</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </jsp:attribute>
+        <jsp:body>
+            <p>
+		What is it?
+
+		Git is a fast, efficient, distributed version control system ideal for the collaborative development of software.
+
+		GitHub is the easiest (and prettiest) way to participate in that collaboration: fork projects, send pull requests, monitor development, all with ease.
 		</p>
-	</div>
-	</div>
+        </jsp:body>
+    </chrome:accordion>
+    <chrome:accordion id="xyz">
+        <jsp:attribute name="title">hello</jsp:attribute>
+        <jsp:body>testing</jsp:body>
+    </chrome:accordion>
 </div>
+
 
 </body>
 </html>

@@ -907,8 +907,12 @@ function validate(aeReportId){
 		<c:set var="_aeReportId" value="${aeReport.id}" />
 		<c:set var ="_primaryAE" value="${fn:length(aeReport.adverseEvents) gt 0 ? aeReport.adverseEvents[0] : null}" />
 		<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
-		<chrome:accordion id="dc-section-${_aeReportId}" title="${empty _primaryAE ? '' : _primaryAE.adverseEventTerm.universalTerm}, Grade ${empty _primaryAE ? '' : _primaryAE.grade.code}: ${empty _primaryAE ? '' : _primaryAE.grade.displayName}" >
-			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
+		<chrome:accordion id="dc-section-${_aeReportId}"  >
+			<jsp:attribute name="title">
+                ${empty _primaryAE ? '' : _primaryAE.adverseEventTerm.universalTerm}, Grade ${empty _primaryAE ? '' : _primaryAE.grade.code}: ${empty _primaryAE ? '' : _primaryAE.grade.displayName}
+			</jsp:attribute>
+            <jsp:body>
+            <c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 
             <caaers:message code="section.header.recomended.actions" var="_recomendedActionsHeader" text="Recommended Actions" />
 			<caaers:message code="section.header.available.actions" var="_availableActionsHeader" text="Available Actions" />
@@ -931,6 +935,7 @@ function validate(aeReportId){
 			 		<tags:button id="report-btn-${_aeReportId}" type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
 				</div>
 			</div>
+           </jsp:body>
 		</chrome:accordion>
 			
 		</c:forEach>
@@ -948,8 +953,9 @@ function validate(aeReportId){
             </c:if>
         </jsp:attribute>
     </c:set>
-	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm} ${gradeText}">
-
+	<chrome:accordion  id="dc-section-0" >
+        <jsp:attribute name="title">${_primaryAE.adverseEventTerm.universalTerm} ${gradeText}</jsp:attribute>
+        <jsp:body>
         <caaers:message code="section.header.recomended.actions" var="_recomendedActionsHeader" text="Recommended Actions" />
         <caaers:message code="section.header.available.actions" var="_availableActionsHeader" text="Available Actions" />
 
@@ -969,6 +975,7 @@ function validate(aeReportId){
 			 	<tags:button id="report-btn-0" type="button" onclick="forwardToReport(0, this.form);" value="Report" color="green" icon="continue" />
 			</div>
 		</div>
+       </jsp:body>
 	</chrome:accordion>	
 	</div>
 	
