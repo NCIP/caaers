@@ -285,7 +285,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     public User getUserByName(String userName) {
     	User user = userDao.getByLoginId(userName);
     	if(user == null){
-    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
+    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
     	}
     	//populate user groups
     	user.setUserGroupTypes(getUserGroups(userName));
