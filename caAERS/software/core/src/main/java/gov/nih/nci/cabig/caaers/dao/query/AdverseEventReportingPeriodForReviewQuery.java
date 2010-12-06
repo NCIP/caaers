@@ -19,7 +19,7 @@ public class AdverseEventReportingPeriodForReviewQuery extends AbstractQuery {
 	 private static final String ORGANIZATION = "organizationId";
 	 
 	 public AdverseEventReportingPeriodForReviewQuery() {
-		 super("select rp from AdverseEventReportingPeriod rp ");
+		 super("select distinct rp from AdverseEventReportingPeriod rp ");
 		 join("rp.assignment as spa ");
 		 join("spa.studySite as ss ");
 		 join("ss.organization as org ");
