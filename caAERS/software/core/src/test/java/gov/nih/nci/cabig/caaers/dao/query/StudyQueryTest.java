@@ -51,7 +51,7 @@ public class StudyQueryTest extends TestCase{
 	public void testFilterStudiesWithMatchingText(){
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterStudiesWithMatchingText("testStudy");
-		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 4);
+		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 3);
 	}
 	
 	public void testFilterByNonAdministrativelyComplete(){
@@ -222,7 +222,9 @@ public class StudyQueryTest extends TestCase{
 		studyQuery.filterStudiesMatchingText("5876");
 		String[] organizationCodes = {"MN026"};
 		studyQuery.filterStudiesByOrganizations(organizationCodes);
-		System.out.println(studyQuery.getQueryString());
+		
+		String expectedQuery = "select  distinct s from Study s left join fetch s.identifiers as identifier join s.studyOrganizations as ss WHERE (lower(s.shortTitle) LIKE :shortTitle or lower(s.longTitle) LIKE :longTitle or lower(identifier.value) LIKE :identifierValue) AND ss.organization.nciInstituteCode in (:OrganizationCodes)";
+		assertEquals(expectedQuery, studyQuery.getQueryString());
 	}
 	
 	
