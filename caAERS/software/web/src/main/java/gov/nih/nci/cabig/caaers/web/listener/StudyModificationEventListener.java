@@ -1,16 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.listener;
 
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.event.StudyModificationEvent;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.security.util.StringUtilities;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.context.ApplicationEvent;
 
@@ -32,35 +31,56 @@ public class StudyModificationEventListener extends AbstractEventListener {
     public void preProcess(ApplicationEvent event) {
         StudyModificationEvent studyEvent = (StudyModificationEvent) event;
         Study study = (Study) studyEvent.getSource();
+
+        //re-provision in CSM the study protection elements. 
         studyRepository.provisionStudyTeam(study);
-        caaersSecurityFacade.clearUserCache(SecurityUtils.getUserLoginName(getAuthentication(event)));
-        clearStudyUserCache(study);
+
+        Set<String> loginNames = findLoginNamesFromStudy(study);
+        loginNames.add(SecurityUtils.getUserLoginName(getAuthentication(event)) );
+        
+        //clear the users caches.
+        for(String loginName : loginNames){
+            caaersSecurityFacade.clearUserCache(loginName);
+        }
     }
-    
-	/**
-	 * RS or INV may have been added to the study , we need to clear cache of all users  associated to the study .
-	 * @param study
-	 */
-    private void clearStudyUserCache(Study study) {
+
+    /**
+     * Will find all the usersnames associated with the study
+     * @param study
+     * @return
+     */
+    private Set<String> findLoginNamesFromStudy(Study study){
+      Set<String> userNames = new HashSet<String>();
         List<StudyOrganization> sos = study.getStudyOrganizations();
         for (StudyOrganization so:sos) {
         	List<StudyPersonnel>  sps= so.getStudyPersonnels();
         	for (StudyPersonnel sp:sps) {
-        		String loginName = sp.getSiteResearchStaff().getResearchStaff().getLoginId();
-        		if (!StringUtilities.isBlank(loginName)) {
-        			caaersSecurityFacade.clearUserCache(loginName);
-        		}
+                if(sp == null) continue;
+                SiteResearchStaff srs = sp.getSiteResearchStaff();
+                if(srs == null) continue;
+                ResearchStaff rs = srs.getResearchStaff();
+                if(rs == null) continue;
+                String loginName = rs.getLoginId();
+                if(loginName != null) userNames.add(loginName);
         	}
-        	
+
         	List<StudyInvestigator> sis = so.getStudyInvestigators();
         	for (StudyInvestigator si:sis) {
-        		String loginName = si.getSiteInvestigator().getInvestigator().getLoginId();
-        		if (!StringUtilities.isBlank(loginName)) {
-        			caaersSecurityFacade.clearUserCache(loginName);
-        		}
-        	}   
+                if(si == null) continue;
+                SiteInvestigator siteInv = si.getSiteInvestigator();
+                if(siteInv == null) continue;
+                Investigator i = siteInv.getInvestigator();
+                if(i == null) continue;
+                String loginName = i.getLoginId();
+                if(loginName != null) userNames.add(loginName);
+
+        	}
+
         }
+        return userNames;
     }
+    
+
     
     public StudyRepository getStudyRepository() {
         return studyRepository;

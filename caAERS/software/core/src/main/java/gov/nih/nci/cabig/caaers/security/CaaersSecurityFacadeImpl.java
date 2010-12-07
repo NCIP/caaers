@@ -827,9 +827,13 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		if (StringUtilities.isBlank(userName)) {
 			return;
 		}
-		
-		Long id = csmUserRepository.getCSMUserByName(userName).getUserId();
+        
+		gov.nih.nci.security.authorization.domainobjects.User user = csmUserRepository.getCSMUserByName(userName);
+        if(user == null) return;
+
+		Long id = user.getUserId();
 		if (id != null ) {
+
 			String loginId = id.toString();
 
 			//loginId is cacheKey , remove the cache for that user .. 
