@@ -16,6 +16,7 @@
                 <%--<tags:requiredIndicator/>--%>
                 <c:out value="${studyTerm.fullName}" /><br>
 
+            <c:if test="${not empty command.study.otherMeddra}">
                 <ui:autocompleter path="study.expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}" readonly="false">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
@@ -32,7 +33,8 @@
                         }
                     </jsp:attribute>
                 </ui:autocompleter>
-
+            </c:if>
+    
     <b><caaers:message code="LBL_otherToxicity" /></b>:
     <c:set var="_tox"><jsp:attribute name="value"><caaers:value path="study.expectedAECtcTerms[${index}].otherToxicity" /></jsp:attribute></c:set>
     <ui:text path="study.expectedAECtcTerms[${index}].otherToxicity" readonly="${_tox ne ''}"/>
