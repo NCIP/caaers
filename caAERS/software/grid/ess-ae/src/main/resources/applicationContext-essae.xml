@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
     "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-lazy-init="true">
-		
- 
+<beans default-lazy-init="true">		
+ 	
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-caXchange.xml" />
 	<import
@@ -41,10 +40,7 @@
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml" />		
 	<import
-		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-remote.xml" />					
-		
-
- 
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-remote.xml" /> 
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-acegi-security.xml" />	
 	<import
@@ -60,9 +56,7 @@
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-domain.xml" />
 	<import
-		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-indexing.xml" />
-	<!-- <import
-		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-jmx.xml" /> -->
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-indexing.xml" />	
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-logging.xml" />
 	<import
@@ -87,7 +81,6 @@
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-scheduler-quartz.xml" />
 	
 	
-	
 	<!-- 
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
@@ -95,12 +88,11 @@
     <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-remote.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
-
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
-    <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-repository.xml"/>
-	 -->
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-repository.xml"/>
+	--> 
 	 
 	<!--  overriding the authorization -->
 	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">

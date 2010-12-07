@@ -27,6 +27,21 @@
 			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
 			<exclude conf="distGrid" org="globus" module="jcog" />
 			<exclude conf="distGrid" org="*" name="cog*"/>
+			<exclude conf="distGrid" org="gov.nih.nci.cagrid" name="cagrid-core" rev="1.0"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-core" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-remoting" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-aop" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-beans" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-context" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-jdbc" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-dao" rev="1.2.9"/>
+			<exclude conf="distGrid" org="org.springframework" name="spring-support" rev="1.2.9"/>
+			<exclude conf="distGrid" org="javax.xml.stream" name="stax-api" rev="1.0-2"/>
+			
+			<dependency org="org.springframework" name="spring-webmvc" rev="2.5.6" 
+				conf="distGrid" transitive="false" force="true"/>
+			<dependency org="org.mvel" name="mvel" rev="1.2.22-java1.5" 
+				conf="distGrid" transitive="true" force="true"/>				
 			
 			<!-- caAERS module dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
