@@ -21,17 +21,18 @@ public class StudyTherapyMigratorTest extends AbstractTestCase {
 		outcome = new DomainObjectImportOutcome<Study>();
 		migrator = new StudyTherapyMigrator();
 	}
-	
-	
-	public void testMigrate() {
-		xstreamStudy.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
-		xstreamStudy.addStudyTherapy(StudyTherapyType.RADIATION);
-		
-		migrator.migrate(xstreamStudy, dest, outcome);
-		assertEquals(2, dest.getStudyTherapies().size());
-		assertTrue("No errors should be there", outcome.getMessages().isEmpty());
 
-	}
+    //commented based on JIRA 	CAAERS-4576
+	
+//	public void testMigrate() {
+//		xstreamStudy.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
+//		xstreamStudy.addStudyTherapy(StudyTherapyType.RADIATION);
+//
+//		migrator.migrate(xstreamStudy, dest, outcome);
+//		assertEquals(2, dest.getStudyTherapies().size());
+//		assertTrue("No errors should be there", outcome.getMessages().isEmpty());
+//
+//	}
 	
 	
 	public void testMigrateWithNoTherapy() {

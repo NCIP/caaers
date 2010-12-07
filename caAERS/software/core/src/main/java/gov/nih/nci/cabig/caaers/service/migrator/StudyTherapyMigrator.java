@@ -14,11 +14,11 @@ public class StudyTherapyMigrator implements Migrator<Study> {
 	 * @param outcome - The outcome of migration 
 	 */
 	public void migrate(Study src, Study dest,	DomainObjectImportOutcome<Study> outcome) {
-		
+		//Commented based on JIRA 	CAAERS-4576
 		for(StudyTherapy therapy : src.getStudyTherapies()){
-			if(!dest.hasTherapyOfType(therapy.getStudyTherapyType())){
-				dest.addStudyTherapy(therapy.getStudyTherapyType());
-			}
+//			if(!dest.hasTherapyOfType(therapy.getStudyTherapyType())){
+//				dest.addStudyTherapy(therapy.getStudyTherapyType());
+//			}
 		}
 	    
 	}
