@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.dataproviders;
 
 import gov.nih.nci.cabig.caaers.dao.index.AbstractIndexDao;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
+import gov.nih.nci.cabig.caaers.reportdefinition.GroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
@@ -38,9 +37,22 @@ public class FilteredDataLoader {
             long t2 = System.currentTimeMillis();
 			log.info("TIME TOOK TO FETCH IDS " +idFetcher.getClass().getName() +" ..."+ (t2-t1)/1000 + " seconds");
 			AbstractIndexDao indexDao = (AbstractIndexDao)idFetcherIndexDaoMap.get(idFetcher);
-			updateAnIndex(indexEntries, userName, indexDao);
+
+            List<IndexEntry> existingIndexEntries = indexDao.queryAllIndexEntries(userName);
             long t3 = System.currentTimeMillis();
-			log.info("TIME TOOK TO UPDATE INDEX ..."+ (t3-t2)/1000 + " seconds");
+            log.info("TIME TOOK TO query existing entries  " +idFetcher.getClass().getName() +" ..."+ (t3-t2)/1000 + " seconds");
+
+            Map<UserGroupType, IndexEntry> existingEntryMap = convertToMap(existingIndexEntries);
+            Map<UserGroupType, IndexEntry> newEntryMap = convertToMap(indexEntries);
+
+            Set<UserGroupType> allRoles = new HashSet<UserGroupType>();
+            if(!existingEntryMap.isEmpty()) allRoles.addAll(existingEntryMap.keySet());
+            if(!newEntryMap.isEmpty()) allRoles.addAll(newEntryMap.keySet());
+
+            updateAnIndex(userName, allRoles, existingEntryMap, newEntryMap, indexDao);
+
+            long t4 = System.currentTimeMillis();
+			log.info("TIME TOOK TO UPDATE INDEX ..."+ (t4-t3)/1000 + " seconds");
 
 
 		}
@@ -48,18 +60,32 @@ public class FilteredDataLoader {
 
 	}
 
+    private Map<UserGroupType, IndexEntry> convertToMap(List<IndexEntry> entries){
+        Map<UserGroupType, IndexEntry> entryMap = new HashMap<UserGroupType, IndexEntry>();
+        if(entries != null){
+            for(IndexEntry entry : entries){
+                entryMap.put(entry.getRole(), entry);
+            }
+        }
+
+        return entryMap;
+    }
+
+
     /**
-     * Will take care of refreshing a particular index. 
-     * @param indexEntries
-     * @param userName
-     * @param indexDao
+     * Will take care of refreshing the indexes
+     * @param allRoles
+     * @param existingMap
+     * @param availableMap
      */
     //should run in a transaction. 
     @Transactional
-	public void updateAnIndex(List<IndexEntry> indexEntries, String userName, AbstractIndexDao indexDao){
-       indexDao.clearIndex(userName);
-       for (IndexEntry ie:indexEntries) {
-    	   indexDao.updateIndex(ie.getEntityIds(), userName,ie.getRoleCode());
+	public void updateAnIndex(String userName, Set<UserGroupType> allRoles , Map<UserGroupType, IndexEntry> existingMap, Map<UserGroupType, IndexEntry> availableMap, AbstractIndexDao indexDao){
+       for(UserGroupType ug: allRoles){
+           long t1= System.currentTimeMillis();
+           indexDao.updateIndex(userName, ug.getCode(), availableMap.get(ug), existingMap.get(ug));
+           long t2 = System.currentTimeMillis();
+           log.info("TIME TOOK to update index for Role [ " + ug.getDisplayName() +"] ..."+ (t2-t1)/1000 + " seconds");
        }
     }
 	

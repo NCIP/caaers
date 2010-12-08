@@ -2,8 +2,7 @@ package gov.nih.nci.cabig.caaers;
 
 import gov.nih.nci.cabig.caaers.domain.Retireable;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @author Ion C. Olaru
@@ -15,5 +14,14 @@ public class CollectionUtil<T extends Retireable> {
             if (!object.isRetired()) l.add((T)object);
         }
         return l;
+    }
+
+    public static List<Integer> subtract(List<Integer> a, List<Integer> b){
+        Set<Integer> y = new HashSet<Integer>(b);
+        Set<Integer> z = new HashSet<Integer>();
+        for(Integer i : a){
+            if(y.add(i)) z.add(i);
+        }
+        return new ArrayList(z);
     }
 }

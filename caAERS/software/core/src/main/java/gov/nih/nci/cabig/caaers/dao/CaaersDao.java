@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -26,6 +27,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.NullableType;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -366,28 +368,47 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     }
 
     @SuppressWarnings("unchecked")
-	public List<? extends Object> search(final AbstractQuery query){
-    	String queryString = query.getQueryString();
-        log.debug("::: " + queryString.toString());
-       return (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
+	public List<?> search(final AbstractQuery query){
+       String queryString = query.getQueryString();
+       if(log.isDebugEnabled()) log.debug("::: " + queryString);
+       return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
-                Map<String, Object> queryParameterMap = query.getParameterMap();
-                for (String key : queryParameterMap.keySet()) {
-                    Object value = queryParameterMap.get(key);
-                    if (value instanceof Collection) {
-                    	hibernateQuery.setParameterList(key, (Collection) value);
-                    } else {
-                    	hibernateQuery.setParameter(key, value);
+                if(query instanceof NativeSQLQuery){
+                    org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
+                    Map<String, NullableType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+                    for(String key : scalarMap.keySet()){
+                       nativeQuery.addScalar(key, scalarMap.get(key));
                     }
+                    Map<String, Object> queryParameterMap = query.getParameterMap();
+                    for (String key : queryParameterMap.keySet()) {
+                        Object value = queryParameterMap.get(key);
+                        if (value instanceof Collection) {
+                            nativeQuery.setParameterList(key, (Collection) value);
+                        } else {
+                            nativeQuery.setParameter(key, value);
+                        }
+                    }
+                    return nativeQuery.list();
+                }else {
+                    org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
+                    Map<String, Object> queryParameterMap = query.getParameterMap();
+                    for (String key : queryParameterMap.keySet()) {
+                        Object value = queryParameterMap.get(key);
+                        if (value instanceof Collection) {
+                            hibernateQuery.setParameterList(key, (Collection) value);
+                        } else {
+                            hibernateQuery.setParameter(key, value);
+                        }
 
+                    }
+                    return hibernateQuery.list();
                 }
-                return hibernateQuery.list();
             }
 
         });
     }
+
     
     @SuppressWarnings("unchecked")
 	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {

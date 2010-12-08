@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Retireable;
 import gov.nih.nci.cabig.caaers.domain.StudyCondition;
 import gov.nih.nci.cabig.caaers.domain.Condition;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -39,5 +40,19 @@ public class CollectionUtilTest extends TestCase {
         sc2.setRetiredIndicator(true);
         assertEquals(1, CollectionUtil.getActiveObjects(l).size());
 
+    }
+
+    public void testSubtract(){
+        List<Integer> a = Arrays.asList(new Integer[]{1,2,3});
+        List<Integer> b = Arrays.asList(new Integer[]{1,2,4});
+        assertEquals(Arrays.asList(new Integer[] {3}), CollectionUtil.subtract(a, b));
+        assertEquals(Arrays.asList(new Integer[] {4}), CollectionUtil.subtract(b, a));
+        assertEquals(Arrays.asList(new Integer[] {}), CollectionUtil.subtract(a, a));
+        try{
+            CollectionUtil.subtract(null, a);
+            fail("should throw exception");
+        }catch(NullPointerException e){
+
+        }
     }
 }

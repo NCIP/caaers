@@ -169,8 +169,8 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
-    	String queryString = query.getQueryString();
-        if(log.isDebugEnabled()) log.debug("::: " + queryString);
+       String queryString = query.getQueryString();
+       if(log.isDebugEnabled()) log.debug("::: " + queryString);
        return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {

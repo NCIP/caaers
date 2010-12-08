@@ -44,6 +44,9 @@ public class IndexEntry {
     public void setRole(UserGroupType role) {
         this.role = role;
     }
+    public void addEntityId(Integer id){
+        entityIds.add(id);
+    }
 
     @Override
     public String toString() {

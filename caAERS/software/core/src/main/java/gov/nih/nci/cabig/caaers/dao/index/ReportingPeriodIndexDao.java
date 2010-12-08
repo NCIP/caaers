@@ -11,47 +11,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReportingPeriodIndexDao extends AbstractIndexDao {
 
+
+
+
     @Override
-    @Transactional(readOnly = false)
-    public int[] updateIndex(final List pIds , final String userName, final Integer roleCode){
-    	String sql = "insert into reportingperiod_index (login_id,reportingperiod_id,role_code) "
-            + "values (?,?,?)";
-    	
-        String dataBase = "";
-    	if(this.getProperties().getProperty(DB_NAME) != null){
-    		dataBase = getProperties().getProperty(DB_NAME);
-    	}
-    	if(dataBase.equals(ORACLE_DB))
-    		sql = "insert into reportingperiod_index (id,login_id,reportingperiod_id,role_code) "
-                + "values (seq_reportingperiod_index_id.NEXTVAL,?,?,?)";
-    	
-    	
-		BatchPreparedStatementSetter setter = null;
-        setter = new BatchPreparedStatementSetter() {
+    public String entityIdColumnName() {
+        return "reportingperiod_id";
+    }
 
-            public int getBatchSize() {
-                return pIds.size();
-            }
+    @Override
+    public String indexTableName() {
+        return "reportingperiod_index";
+    }
 
-            public void setValues(PreparedStatement ps, int index) throws SQLException {
-            	Integer pId = (Integer) pIds.get(index);
-            	ps.setString(1, userName);
-                ps.setInt(2, pId);
-                ps.setInt(3, roleCode);
-            }
-
-
-        };
-        return this.getJdbcTemplate().batchUpdate(sql, setter);
-    	
+    @Override
+    public String sequenceName() {
+        return "seq_reportingperiod_index_id";
     }
     
 	
-    @Override
-    @Transactional(readOnly = false)
-    public void clearIndex(String userName) {
-    	String sql = "delete from reportingperiod_index where login_id = '"+userName+"'";
-    	getJdbcTemplate().update(sql);
-
-    }
 }
