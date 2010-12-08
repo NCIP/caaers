@@ -14,11 +14,13 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.ess.ae.service.management.common.ManagementI;
-import gov.nih.nci.logging.api.util.StringUtils;
+
 
 import java.util.Date;
 import java.util.Locale;
 
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
