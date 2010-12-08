@@ -209,7 +209,7 @@ public class SearchStudyAjaxFacade {
             ssado.setStatus(ss.getStudy().getStatus());
             ssado.setStudyPhase(ss.getStudy().getPhaseCode());
             ssado.setNciInstituteCode(ss.getStudy().getPrimaryFundingSponsor().getOrganization().getNciInstituteCode());
-            ssado.setName(ss.getStudy().getPrimaryFundingSponsor().getOrganization().getName());
+            ssado.setName(ss.getOrganization().getFullName());  //CAAERS-4565
             rs.add(ssado);
         }
 
