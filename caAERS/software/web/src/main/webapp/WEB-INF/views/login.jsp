@@ -14,7 +14,7 @@
             } .right {
                 position: absolute;
                 right: 100px;
-                top: 60px;
+                top: 70px;
                 margin-left: 25px;
                 margin-top: 1em;
                 text-align: center;
@@ -31,6 +31,7 @@
             body {
                 background:#02307f url(../images/blue/top_texture_bg.png) top center no-repeat;
                 color: #ccc;
+                font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
             } #header {
                 visibility: hidden
             } .wide-header {
@@ -41,9 +42,12 @@
                 color: #5776aa;
                 font-weight: normal;
                 padding: 0px;
-                margin-left: 17px;
+                margin-left: 68px;
                 bottom: -175px;
+                text-shadow: 0 -1px 1px #00112d;
             }
+
+            #main {background-image: none}
             
             h2 {
                 color: #fff;
@@ -227,7 +231,7 @@
                     
                     <div class="row" style="margin-top:20px;text-shadow: 0 2px 1px black;">
                         <div class="label">
-                        <tags:requiredIndicator/>&nbsp;<b>Username</b>
+                        <tags:requiredIndicator/>&nbsp;Username
                         </div>
                         <div class="value">
                             <input type="text" name="j_username" class="validate-NOTEMPTY required" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" title="Username"/>
@@ -235,7 +239,7 @@
                     </div>
                     <div class="row" style="text-shadow: 0 2px 1px black;">
                         <div class="label">
-                            <tags:requiredIndicator/>&nbsp;<b>Password
+                            <tags:requiredIndicator/>&nbsp;Password
                         </div>
                         <div class="value">
                             <input type="password" name="j_password" value="" class="validate-NOTEMPTY required" title="Password"/>
