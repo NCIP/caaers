@@ -34,6 +34,7 @@
 				sitesCount[index] = sitesCount[index] + 1;
 				
 				AE.resetAutocompleter(el+".selectedSiteForDisplay");
+				updateRoleSummary(index);
 			}
 
 			function addStudy(el,index){
@@ -51,18 +52,20 @@
 
 				studiesCount[index] = studiesCount[index] + 1;
 				AE.resetAutocompleter(el+".selectedStudyForDisplay");
+				updateRoleSummary(index);
 			}
 
 			function removeSite(el,index){
 				$(el).remove();
 				sitesCount[index] = sitesCount[index] - 1;
+				updateRoleSummary(index);
 			}
 			
 			function removeStudy(el,index){
 				$(el).remove();
 				studiesCount[index] = studiesCount[index] - 1;
+				updateRoleSummary(index);
 			}
-			
 			
 			function showHideDiv(index,suffix){
 				var _div = "roleMembershipHelper["+index+"]-"+suffix;
@@ -71,8 +74,43 @@
 				}else{
 					$(_div).hide();
 				}
+				updateRoleSummary(index);
 			}
-				
+
+			function updateRoleSummary(index){
+
+				if($('roleMembershipHelper['+index+'].checked').checked){
+					
+					var nSiteSummary = '';
+					var nStudySummary = '';
+					var nRoleSummary = '';
+					var selectedImg = "&nbsp;&nbsp;&nbsp;&nbsp;<img src='/caaers/images/check.png' border='0'>";
+					var eRoleSummary = $('summary-'+index).innerHTML;
+					
+					if(eRoleSummary.blank()){
+						$('summary-'+index).innerHTML = selectedImg;
+						$('membershipDiv-'+index).show();
+					}else{
+						if($('roleMembershipHelper['+index+'].allSiteAccess').checked){
+							nSiteSummary = 'All Sites';
+						}else{
+							nSiteSummary = 'Sites('+sitesCount[index]+')';
+						}
+						if($('roleMembershipHelper['+index+'].allStudyAccess').checked){
+							nStudySummary = ' | All Studies';
+						}else{
+							nStudySummary = ' | Studies('+studiesCount[index]+')';
+						}
+						nRoleSummary = nSiteSummary+nStudySummary+selectedImg;
+						$('summary-'+index).innerHTML = nRoleSummary;						
+						$('summary-'+index).show();
+						$('membershipDiv-'+index).show();
+					}
+				}else{
+					$('summary-'+index).hide();
+					$('membershipDiv-'+index).hide();
+				}
+			} 	
 	    	
     	</script>
     	<tags:dwrJavascriptLink objects="user"/>
@@ -116,7 +154,7 @@
 								 <div class="rightpanel">
 									<div class="row">
 										<div class="label"><ui:label path="csmUser.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
-										<div class="value"><ui:text path="csmUser.emailAddress" required="true" title="Primary email"/></div>
+										<div class="value"><ui:text path="csmUser.emailAddress" required="true" title="Primary email" size="30"/></div>
 									</div>
 		                        <div class="row">
 		                            <div class="label"><ui:label path="csmUser.loginId" text="" labelProperty="loginId" required="true"/></div>
@@ -132,25 +170,42 @@
     					<chrome:division title="${detailsSectionTitle}" id="details">
     						<div id="roles-div">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">
-								<c:set var="noOfSites" value="${fn:length(roleMembership.sites)}" />
-								<c:set var="noOfStudies" value="${fn:length(roleMembership.studies)}" />
-								<c:if test="${roleMembership.scoped && roleMembership.checked}">
-									<c:set var="_title" value=" -----  Sites(${noOfSites}) | Studies(${noOfStudies})"/>
-								</c:if>
-								<c:if test="${! roleMembership.checked}">
-									<c:set var="_title" value=" "/>
-								</c:if>
-								<c:if test="${!roleMembership.scoped}">
-									<c:set var="_title" value=" "/>
-								</c:if>
-								
-								<chrome:accordion id="section-${index.index}">
-                                    <jsp:attribute name="title">
-                                        ${roleMembership.suiteRole.displayName} ${roleMembership.checked ? 'X' : '' }
-                                    </jsp:attribute>
+								<chrome:division id="section-${index.index}" title="${roleMembership.suiteRole.displayName}" collapsed="true" collapsable="true">
+									<jsp:attribute name="additionalInfo">
+										<c:set var="noOfSites" value="${fn:length(roleMembership.sites)}" />
+										<c:set var="noOfStudies" value="${fn:length(roleMembership.studies)}" />
+										<c:set var="_sitesSummary" value=""/>
+										<c:set var="_studiesSummary" value=""/>
+										<c:set var="_roleSummary" value=""/>
+										<c:if test="${roleMembership.scoped && roleMembership.checked}">
+											<c:choose>
+												<c:when test="${roleMembership.allSiteAccess}">
+													<c:set var="_sitesSummary" value="All Sites"/>
+												</c:when>
+												<c:otherwise>
+													<c:set var="_sitesSummary" value="Sites(${noOfSites})"/>
+												</c:otherwise>
+											</c:choose>
+											<c:if test="${roleMembership.studyScoped}">
+												<c:choose>
+													<c:when test="${roleMembership.allStudyAccess}">
+														<c:set var="_studiesSummary" value=" | All Studies"/>
+													</c:when>
+													<c:otherwise>
+														<c:set var="_studiesSummary" value=" | Studies(${noOfStudies})"/>
+													</c:otherwise>
+												</c:choose>													
+											</c:if>
+											<c:set var="_roleSummary" value="${_sitesSummary}${_studiesSummary}"/>
+										</c:if>
+										<span id="summary-${index.index}">
+											${_roleSummary} ${roleMembership.checked ? '&nbsp;&nbsp;&nbsp;&nbsp;<img src="/caaers/images/check.png" border="0">' : '' }
+										</span>
+									</jsp:attribute>
                                     <jsp:body>
 									${roleMembership.suiteRole.description}<br>
-									<ui:checkbox path="roleMembershipHelper[${index.index}].checked" />&nbsp;&nbsp;Grant this user the ${roleMembership.suiteRole.displayName} role.<br><br>
+									<ui:checkbox path="roleMembershipHelper[${index.index}].checked" onclick="updateRoleSummary('${index.index}');"/>&nbsp;&nbsp;Grant this user the ${roleMembership.suiteRole.displayName} role.<br><br>
+									<div id="membershipDiv-${index.index}" style="display:${roleMembership.checked ? '' : 'none'}">
 									<c:if test="${roleMembership.scoped}">
 										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')"/>&nbsp;&nbsp;All Site access.<br><br>
 											<div class="row" id="roleMembershipHelper[${index.index}]-siteSelector" style="display:${roleMembership.allSiteAccess ? 'none' : ''}">
@@ -273,8 +328,9 @@
 												</div>
 										</c:if>
 									</c:if>
+									</div>
                                     </jsp:body>
-								</chrome:accordion>
+								</chrome:division>
 							</c:forEach>
     						</div>
     					</chrome:division>

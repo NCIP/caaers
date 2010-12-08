@@ -77,6 +77,7 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 			//Process the RoleMemeberships for the User.
 			processRoleMemberships(csmUser,command.getRoleMemberships());
         }catch (MailException e) {
+        	csmUser = caaersSecurityFacade.getCsmUserRepository().getCSMUserByName(user.getLoginId());
         	processRoleMemberships(csmUser,command.getRoleMemberships());
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
