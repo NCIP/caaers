@@ -2,7 +2,7 @@
 
 body {
 	background: url(../images/blue/bg.png) repeat-y center #02307f;
-	font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;
+	font-family:"Lucida Grande", Arial, Helvetica, sans-serifsans-serif;
 	font-size: 10pt;
 	color: #333;
 	text-align: center;
@@ -21,7 +21,7 @@ body {
 	width:100%;
 }
 .workflow-tabs {
-
+    font-size: 13px;
 	position: relative;
 	top: 41px;
 	width:950px;
@@ -50,6 +50,7 @@ body {
 	background-repeat:repeat-x;
 	top:-21px;
 	left:-18px;
+    font-size: 13px;
 }
 #welcome-user {
 	position:absolute;
@@ -60,12 +61,13 @@ body {
     text-shadow: 0 1px 1px #000;
 }
 
-#thirdlevelnav { margin:3px 5px; }
+#thirdlevelnav { margin:3px 5px;font-size: 13px; }
 #thirdlevelnav div {
 	background-image: url(../images/blue/thirdlevelarrow_grey.png);
 	background-repeat: no-repeat;
 	background-position:right;
 	padding-right: 20px;
+    margin: 2px 0;
 }
 .workflow-tabs2 #thirdlevelnav div {
 	background-image:none;	
@@ -74,7 +76,8 @@ body {
 	text-decoration:none;
 	color: #fff;
     text-shadow: 0 -1px #333;
-    padding: 0px 5px 0px 9px;
+    padding: 3px 7px 3px 10px;
+
 }
 
 #thirdlevelnav div a:hover {
@@ -111,9 +114,9 @@ body {
 	color:#333333;
 	font-weight: normal;
 	background-color: #FFFFCC;
-	padding-top: 0px;
+	padding-top: 3px;
 	padding-right: 7px;
-	padding-bottom: 0px;
+	padding-bottom: 3px;
 	padding-left: 10px;
 	background-image: url(../images/blue/taskbar_selected.png);
 	background-repeat: repeat-x;
@@ -781,7 +784,8 @@ div.row div.label {
 	margin-left: 0.5em;
 	text-align: right;
 	/* default width; pages might override */
-  width: 13em;
+    width: 13em;
+    
 }
 div.row div.value {
 	font-weight: normal;
