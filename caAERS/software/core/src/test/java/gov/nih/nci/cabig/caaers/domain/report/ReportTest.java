@@ -307,4 +307,17 @@ public class ReportTest extends AbstractNoSecurityTestCase {
 
     }
 
+
+    public void testIsWorkflowEnabled(){
+        r.setReportDefinition(null);
+        assertFalse(r.isWorkflowEnabled());
+        ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+        r.setReportDefinition(rd1);
+        assertFalse(r.isWorkflowEnabled());
+        rd1.setWorkflowEnabled(true);
+        assertFalse(r.isWorkflowEnabled());
+        r.setWorkflowId(3);
+        assertTrue(r.isWorkflowEnabled());
+    }
+
 }

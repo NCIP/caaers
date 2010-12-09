@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ListAdverseEventsControllerTest extends WebTestCase {

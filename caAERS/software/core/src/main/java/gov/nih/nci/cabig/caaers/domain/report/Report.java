@@ -751,4 +751,12 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     public void setMandatoryFields(List<ReportMandatoryField> mandatoryFields) {
         this.mandatoryFields = mandatoryFields;
     }
+
+    @Transient
+    public boolean isWorkflowEnabled(){
+       if(getReportDefinition() != null){
+          return (getReportDefinition().getWorkflowEnabled() != null && getReportDefinition().getWorkflowEnabled()) && getWorkflowId() != null;
+       }
+       return false;
+    }
 }
