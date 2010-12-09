@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -86,56 +82,69 @@ public class ViewReportTab extends AeTab {
     	
         return refdata;
     }
+
+
+    /**
+     * Will return true if the user is an Expedited Report Reviewer at the Cooordinating Center.
+     * @return
+     */
+    private Boolean isUserAEReviewer(Study study){
+
+        boolean userAEReviewer = false;
+        String loginId = SecurityUtils.getUserLoginName();
+        boolean isReportReviewer = SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer);
+
+        //now check if the sae coordinator is associated to the coordinaoting center
+        if(isReportReviewer && study != null){
+            Organization ccOrg = study.getStudyCoordinatingCenter().getOrganization();
+            ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
+            if(researchStaff != null && ccOrg != null){
+                for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
+                    if(siteRs.getOrganization().getId().equals(ccOrg.getId())){
+                        userAEReviewer = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+       return userAEReviewer;
+    }
     
     private Map<Integer, Boolean> initializeRenderSubmitLinkMap(ExpeditedAdverseEventInputCommand command){
     	Map<Integer, Boolean> renderSubmitLink = new HashMap<Integer, Boolean>();
-    	
-    	String loginId = SecurityUtils.getUserLoginName();
+
+
     	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-    	
+    	boolean canLoggedInUserSubmit = isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.ae_reporter,UserGroupType.ae_expedited_report_reviewer);
+
     	//First of all initialize renderSubmitLink map with the values based on the report status
     	for(Report report: command.getAeReport().getActiveReports()){
-    		renderSubmitLink.put(report.getId(), report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED));
+    		renderSubmitLink.put(report.getId(), canLoggedInUserSubmit &&
+                    (report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED)) );
     	}
     	
     	// If the logged in person is superUser then he is allowed to submit all the reports based on whether its complete/incomplete
     	// so simply return in this case
     	if(isSuperUser) return renderSubmitLink;
     	
-    	boolean canLoggedInUserSubmit = SecurityUtils.checkAuthorization(UserGroupType.ae_reporter,UserGroupType.ae_expedited_report_reviewer);
+
     	
     	// We update reportSubmittability based on workflow if the workflow is enabled at the System level first
-        boolean isReportReviewer = SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer); 
-        boolean isReviewerAtCC = false;
-        //now check if the reviewer is associated to the coordinating center
-        if(isReportReviewer && command.getStudy() != null){
-            Organization ccOrg = command.getStudy().getStudyCoordinatingCenter().getOrganization();
-            ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
-            if(researchStaff != null && ccOrg != null){
-                for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
-                    if(siteRs.getOrganization().getId().equals(ccOrg.getId())){
-                        isReviewerAtCC = true;
-                        break;
-                    }
-                }
-            }
-        }
+        boolean isReviewerAtCC = isUserAEReviewer(command.getStudy());
+        
     		
         // Now we have to check again whether the worklow is enabled for each individual report
         // If the workflow is disabled for a report then canLoggedInUserSubmit will determine the reportSubmittability
         // else if the workflow is enabled for a report then only reviewer at the coordinating center can submit
         // the report
         for(Report report: command.getAeReport().getActiveReports()){
-            if(report.getWorkflowId() != null){
-                // This implies the report is in a workflow
-                    boolean canSubmit = renderSubmitLink.get(report.getId());
-                    renderSubmitLink.put(report.getId(), canSubmit && isReviewerAtCC);
-            }else{
-                // This implies that the report is not in a workflow
-                    boolean canSubmit = renderSubmitLink.get(report.getId());
-                    renderSubmitLink.put(report.getId(), canSubmit && canLoggedInUserSubmit);
+            if(report.isWorkflowEnabled()){
+                boolean canSubmit = renderSubmitLink.get(report.getId());
+                renderSubmitLink.put(report.getId(), canSubmit && isReviewerAtCC);
             }
         }
+        
     	return renderSubmitLink;
     }
 

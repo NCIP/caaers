@@ -116,9 +116,10 @@ public class ListAdverseEventsCommand {
     private Boolean isUserAEReviewer(){
        if(userAEReviewer != null) return userAEReviewer;
 
+        userAEReviewer = false;
         String loginId = SecurityUtils.getUserLoginName();
         boolean isReportReviewer = SecurityUtils.checkAuthorization(UserGroupType.ae_expedited_report_reviewer);
-        boolean isSAECoordinatorAtCC = false;
+
         //now check if the sae coordinator is associated to the coordinaoting center
         if(isReportReviewer && getStudy() != null){
             Organization ccOrg = getStudy().getStudyCoordinatingCenter().getOrganization();
@@ -126,7 +127,7 @@ public class ListAdverseEventsCommand {
             if(researchStaff != null && ccOrg != null){
                 for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
                     if(siteRs.getOrganization().getId().equals(ccOrg.getId())){
-                        isSAECoordinatorAtCC = true;
+                        userAEReviewer = true;
                         break;
                     }
                 }

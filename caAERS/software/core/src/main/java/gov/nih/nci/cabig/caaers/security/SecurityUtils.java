@@ -160,7 +160,7 @@ public final class SecurityUtils {
 
 	
 	/**
-	 * Will check whether, the authentication, has all the roleNames
+	 * Will check whether, the authentication, has at least one the roleNames
 	 * @param authentication
 	 * @param roleNames
 	 * @return
