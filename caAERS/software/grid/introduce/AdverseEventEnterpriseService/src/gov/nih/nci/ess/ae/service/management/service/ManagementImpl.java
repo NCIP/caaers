@@ -21,19 +21,28 @@ public class ManagementImpl extends ManagementImplBase {
 
 	private static final String BEAN_NAME = "adverseEventManagementImpl";
 
-	private ManagementI aeManagement;
+	private static ManagementI aeManagement;
 
 	public ManagementImpl() throws RemoteException {
 		super();
-		ApplicationContext ctx = getApplicationContext();
-		aeManagement = (ManagementI) ctx.getBean(BEAN_NAME);
+		loadApplicationContext();
+	}
+
+	/**
+	 * @throws BeansException
+	 */
+	private synchronized static void loadApplicationContext() throws BeansException {
+		if (aeManagement==null) {
+			ApplicationContext ctx = getApplicationContext();
+			aeManagement = (ManagementI) ctx.getBean(BEAN_NAME);
+		}
 	}
 
 	/**
 	 * @return
 	 * @throws BeansException
 	 */
-	private ApplicationContext getApplicationContext() throws BeansException {
+	private synchronized static ApplicationContext getApplicationContext() throws BeansException {
 		ApplicationContext ctx = null;
 		String exp = ContainerConfig
 				.getConfig()

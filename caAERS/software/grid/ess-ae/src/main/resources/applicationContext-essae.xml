@@ -121,12 +121,17 @@
 	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.ae.GridToDomainObjectConverter"
 		autowire="byType" />
 	<bean id="domainToGridObjectConverter" class="gov.nih.nci.ess.ae.DomainToGridObjectConverter"
-		autowire="byType" />		
-
-	<bean id="adverseEventManagementImplTarget" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl" autowire="byType" />
-		
+		autowire="byType" />
+	<bean id="adverseEventManagementImplTarget" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl" autowire="byType" />		
 	<bean id="adverseEventQueryImplTarget" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl" autowire="byType"/>
 
+	<!-- Audit -->
+    <bean id="adverseEventManagementGridServiceUrl" class="java.lang.String">
+        <constructor-arg value="s[grid.aemanagement.url]"/>
+    </bean>
+	<bean id="adverseEventManagementAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" ref="adverseEventManagementGridServiceUrl" />
+	</bean>
     
 	<bean id="adverseEventQueryImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="proxyTargetClass"><value>true</value></property>
@@ -145,6 +150,7 @@
 		<property name="interceptorNames"> 
 			<list> 
 				<value>runAsAutenticationProviderInterceptor</value>
+				<value>adverseEventManagementAuditInfoPopulatorInterceptor</value>				
 				<value>hibernateInterceptor</value> 
 			</list> 
 		</property> 

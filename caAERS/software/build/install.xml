@@ -701,6 +701,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="hostKey=@HOST_KEY@" value="" />
 	 	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.cas.acegi.security.url=@ACEGI_URL@" value="" />
 	 	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="grid.studyconsumer.url=@STUDY_CONSUMER_URL@" value="" />
+	 	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="grid.aemanagement.url=@AE_MANAGEMENT_URL@" value="" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="grid.registrationconsumer.url=@REGISTRATION_CONSUMER_URL@" value="" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="enable.coppa.cache=@ENABLE_COPPA_CACHE@" value="${enable.coppa.cache}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="enable.coppa.mode=@ENABLE_COPPA_MODE@" value="${enable.coppa.mode}" />	
@@ -712,6 +713,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_BASEURL@" value="${webSSO.server.baseUrl}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ACEGI_URL@" value="${webSSO.cas.acegi.security.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@STUDY_CONSUMER_URL@" value="${grid.studyconsumer.url}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@AE_MANAGEMENT_URL@" value="${grid.aemanagement.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@REGISTRATION_CONSUMER_URL@" value="${grid.registrationconsumer.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${tomcat.home}/conf/${tomcat.grid.secure.cert.file}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${tomcat.home}/conf/${tomcat.grid.secure.key.file}" />

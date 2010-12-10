@@ -21,19 +21,30 @@ public class QueryImpl extends QueryImplBase {
 
 	private static final String BEAN_NAME = "adverseEventQueryImpl";
 
-	private QueryI aeQuery;
+	private static QueryI aeQuery;
 
 	public QueryImpl() throws RemoteException {
 		super();
-		ApplicationContext ctx = getApplicationContext();
-		aeQuery = (QueryI) ctx.getBean(BEAN_NAME);
+		loadApplicationContext();
+	}
+
+	/**
+	 * @throws BeansException
+	 */
+	private static synchronized void loadApplicationContext()
+			throws BeansException {
+		if (aeQuery == null) {
+			ApplicationContext ctx = getApplicationContext();
+			aeQuery = (QueryI) ctx.getBean(BEAN_NAME);
+		}
 	}
 
 	/**
 	 * @return
 	 * @throws BeansException
 	 */
-	private ApplicationContext getApplicationContext() throws BeansException {
+	private static synchronized ApplicationContext getApplicationContext()
+			throws BeansException {
 		ApplicationContext ctx = null;
 		String exp = ContainerConfig
 				.getConfig()

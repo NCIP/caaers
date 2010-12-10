@@ -232,6 +232,12 @@
 					    		  displayText="Study Consumer URL" 
 					    		  defaultValue="/wsrf/services/cagrid/StudyConsumer" 
 					    	          explanatoryText="Give the url for study consumer service" />
+
+								<text property="grid.aemanagement.url" 
+					    		  displayText="AE Management URL" 
+					    		  defaultValue="/wsrf/services/cagrid/Management" 
+					    	          explanatoryText="Give the url for adverse event management service" />
+
         
 								<text property="grid.registrationconsumer.url" 
 					    		  displayText="Registration Consumer URL" 
