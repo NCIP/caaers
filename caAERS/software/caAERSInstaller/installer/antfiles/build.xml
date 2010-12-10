@@ -358,7 +358,6 @@
 		<replace file="${basedir}/conf_temp/datasource.properties" token="@WEBSSO_SERVER_PORT@" value="${webSSO.server.port}" />		
 		<replace file="${basedir}/conf_temp/datasource.properties" token="@ACEGI_URL@" value="${webSSO.cas.acegi.security.url}" />
 		<replace file="${basedir}/conf_temp/datasource.properties" token="@STUDY_CONSUMER_URL@" value="${grid.studyconsumer.url}" />
-		<replace file="${basedir}/conf_temp/datasource.properties" token="@AE_MANAGEMENT_URL@" value="${grid.aemanagement.url}" />
 		<replace file="${basedir}/conf_temp/datasource.properties" token="@REGISTRATION_CONSUMER_URL@" value="${grid.registrationconsumer.url}" />
 
 		<pathconvert property="modified.trust.store" refid="trust.store">
@@ -397,7 +396,6 @@
 		<replace file="${basedir}/conf_temp/datasource.properties" token="hostKey=@HOST_KEY@" value="" />
 	 	<replace file="${basedir}/conf_temp/datasource.properties" token="webSSO.cas.acegi.security.url=@ACEGI_URL@" value="" />
 	 	<replace file="${basedir}/conf_temp/datasource.properties" token="grid.studyconsumer.url=@STUDY_CONSUMER_URL@" value="" />
-	 	<replace file="${basedir}/conf_temp/datasource.properties" token="grid.aemanagement.url=@AE_MANAGEMENT_URL@" value="" />
 		<replace file="${basedir}/conf_temp/datasource.properties" token="grid.registrationconsumer.url=@REGISTRATION_CONSUMER_URL@" value="" />
 	</target>
 	

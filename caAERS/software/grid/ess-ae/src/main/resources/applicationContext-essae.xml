@@ -127,7 +127,7 @@
 
 	<!-- Audit -->
     <bean id="adverseEventManagementGridServiceUrl" class="java.lang.String">
-        <constructor-arg value="s[grid.aemanagement.url]"/>
+        <constructor-arg value="/wsrf-caaers/services/cagrid/Management"/>
     </bean>
 	<bean id="adverseEventManagementAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
 		<property name="fromUrl" ref="adverseEventManagementGridServiceUrl" />
