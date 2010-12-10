@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 
 import _21090.org.iso.CD;
+import _21090.org.iso.TS;
 import _21090.org.iso.TSDateTime;
 
 public class GridToDomainObjectConverter {
@@ -292,7 +293,7 @@ public class GridToDomainObjectConverter {
 	 * @param tsDateTime
 	 * @return
 	 */
-	public static Date convertToDate(TSDateTime tsDateTime) {
+	public static Date convertToDate(TS tsDateTime) {
 		try {
 			if (tsDateTime != null && tsDateTime.getNullFlavor() == null) {
 				String value = tsDateTime.getValue();
@@ -307,7 +308,7 @@ public class GridToDomainObjectConverter {
 		return null;
 	}
 
-	private TimeValue convertToTimeValue(TSDateTime tsDateTime) {
+	private TimeValue convertToTimeValue(TS tsDateTime) {
 		TimeValue t = new TimeValue();
 		try {
 			if (tsDateTime != null && tsDateTime.getNullFlavor() == null) {

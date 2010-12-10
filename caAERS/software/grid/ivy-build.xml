@@ -53,6 +53,9 @@
 		<subant target="all">
 			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
 		</subant>
+		<copy todir="${parent.dir}/grid/ess-ae/lib">
+			<fileset dir="${aees.nes.service.dir}/build/lib" includes="AdverseEventEnterpriseService-*.jar"/>
+		</copy> 		
 	</target>
 
 	<!-- ==============================================================

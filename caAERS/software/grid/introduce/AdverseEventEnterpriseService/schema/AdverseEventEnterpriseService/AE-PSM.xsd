@@ -15,7 +15,7 @@
 	<xs:complexType name="AdverseEventSeriousness">
 		<xs:sequence>
 			<xs:element name="code" type="ISO:CD"/>
-			<xs:element name="date" type="ISO:PQ"/>
+			<xs:element name="date" type="ISO:TS"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BiologicEntityIdentifier">
@@ -50,12 +50,12 @@
 					<xs:documentation>A coded value specifying the physical or societal properties by which male is distinguished from female.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="birthDate" type="ISO:TS.DateTime">
+			<xs:element name="birthDate" type="ISO:TS">
 				<xs:annotation>
 					<xs:documentation>The date (and time) on which the biologic entity is 	born.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="deathDate" type="ISO:TS.DateTime">
+			<xs:element name="deathDate" type="ISO:TS">
 				<xs:annotation>
 					<xs:documentation>The date (and time) on which the biologic entity died.</xs:documentation>
 				</xs:annotation>
@@ -78,7 +78,7 @@
 							subject..</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="statusDate" type="ISO:TS.DateTime">
+					<xs:element name="statusDate" type="ISO:TS">
 						<xs:annotation>
 							<xs:documentation>The date (and time) on which the status is assigned to the study
 							 subject..</xs:documentation>
@@ -150,22 +150,22 @@
 							<xs:documentation>A coded value specifying the time recurrence by which an adverse event occurs.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="onsetDate" type="ISO:TS.DateTime">
+					<xs:element name="onsetDate" type="ISO:TS">
 						<xs:annotation>
 							<xs:documentation>The date (and time) on which an adverse event began.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="reportedDate" type="ISO:TS.DateTime">
+					<xs:element name="reportedDate" type="ISO:TS">
 						<xs:annotation>
 							<xs:documentation>The date (and time) on which an adverse event reported.</xs:documentation>
 						</xs:annotation>
 					</xs:element>					
-					<xs:element name="postReportUpdateDate" type="ISO:TS.DateTime">
+					<xs:element name="postReportUpdateDate" type="ISO:TS">
 						<xs:annotation>
 							<xs:documentation>The date (and time) on which the adverse event was updated after it had been submitted.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="resolutionDate" type="ISO:TS.DateTime">
+					<xs:element name="resolutionDate" type="ISO:TS">
 						<xs:annotation>
 							<xs:documentation>The date (and time) when the adverse event ends or returns to baseline.</xs:documentation>
 						</xs:annotation>
@@ -492,7 +492,7 @@
 			<xs:element name="identifier" type="ISO:II"/>
 			<xs:element name="treatmentDescription" type="ISO:ST"/>
 			<xs:element name="totalCourses" type="ISO:CD"/>
-			<xs:element name="firstCourseDate" type="ISO:TS.DateTime"/>
+			<xs:element name="firstCourseDate" type="ISO:TS"/>
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -540,7 +540,7 @@
 			<xs:element name="objectId" type="ISO:ST"/>
 			<xs:element name="operation" type="ISO:ST"/>
 			<xs:element name="url" type="ISO:ST"/>
-			<xs:element name="recordedTime" type="ISO:TS.DateTime"/>
+			<xs:element name="recordedTime" type="ISO:TS"/>
 			<xs:element name="values" type="ESS-AE:AuditTrialValue"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -617,7 +617,7 @@
     <xs:element name="TsDateTime">
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="ISO:TS.DateTime" />
+                <xs:extension base="ISO:TS" />
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
