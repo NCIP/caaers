@@ -13,8 +13,8 @@
                 width: 700px;
             } .right {
                 position: absolute;
-                right: 100px;
-                top: 70px;
+                right: 66px;
+                top: 75px;
                 margin-left: 25px;
                 margin-top: 1em;
                 text-align: center;
