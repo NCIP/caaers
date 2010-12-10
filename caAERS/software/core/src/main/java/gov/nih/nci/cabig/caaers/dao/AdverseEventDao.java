@@ -292,11 +292,11 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 			//term = ((AdverseEventCtcTerm)aeTerm).getCtcTerm();
 		//}
 		
-		//criteria.add(getAdverseEventExample(caaersAe));
+		criteria.add(getAdverseEventExample(caaersAe));
 		
-		if (caaersAe.getLowLevelTerm() != null) {
-			criteria.createCriteria("lowLevelTerm");
-		}
+		//if (caaersAe.getLowLevelTerm() != null) {
+			//criteria.createCriteria("lowLevelTerm");
+		//}
 		
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
