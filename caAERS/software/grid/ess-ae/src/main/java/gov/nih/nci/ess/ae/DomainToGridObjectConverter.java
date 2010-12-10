@@ -166,6 +166,7 @@ public class DomainToGridObjectConverter {
 			if (ctcTerm != null) {
 				final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
 				gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
+				gridTerm.setCtepCode(h.CD(ctcTerm.getCtepCode()));
 				gridAE.setAdverseEventCtcTerm(gridTerm);
 			}
 		}
