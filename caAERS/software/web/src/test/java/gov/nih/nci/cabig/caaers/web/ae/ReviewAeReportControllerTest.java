@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.*;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.userdetails.User;
@@ -12,11 +12,9 @@ import org.springframework.validation.BindException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
@@ -87,7 +85,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
-        expect(csmUserRepository.getUserByName("SYSTEM_ADMIN")).andReturn(new LocalResearchStaff());
+        expect(csmUserRepository.getUserGroups("SYSTEM_ADMIN")).andReturn(new ArrayList<UserGroupType>());
 		replayMocks();
 		Map<String, Object> refdata = controller.referenceData(request, command, errors);
 		verifyMocks();

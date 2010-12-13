@@ -147,7 +147,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		TaskConfig taskConfig = wfConfig.findTaskConfig(taskNodeName);
 		if(taskConfig == null )  return possibleTransitions; // task is not configured
 		
-		User user = csmUserRepository.getUserByName(loginId);
+        List<UserGroupType> userGroupTypes = csmUserRepository.getUserGroups(loginId);  //CAAERS-4586
 		
         Map<String, Transition> filteredTransitionMap = new HashMap<String, Transition>();
 
@@ -171,7 +171,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 					PersonRole ownerRole = roleOwner.getUserRole();
 					UserGroupType[] ownerGroupTypes = ownerRole.getUserGroups();
 					
-					for(UserGroupType userGroupType : user.getUserGroupTypes()){
+					for(UserGroupType userGroupType : userGroupTypes){
 						if(ArrayUtils.contains(ownerGroupTypes, userGroupType)){
 							if(!filteredTransitionMap.containsKey(transition.getName()) ){
                                 filteredTransitionMap.put(transition.getName(), transition);
@@ -191,7 +191,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Map<ReviewStatus, Boolean> allowedReviewStatusMap = new HashMap<ReviewStatus, Boolean>();
 		try{
 
-            User user = csmUserRepository.getUserByName(loginId);
+            List<UserGroupType> userGroupTypes = csmUserRepository.getUserGroups(loginId); //CAAERS-4586
             //first fetch all the possible workflow configs.
             List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
             for(WorkflowConfig wc : workflowConfigList){
@@ -199,13 +199,13 @@ public class WorkflowServiceImpl implements WorkflowService {
                     for(Assignee assignee: tc.getAssignees()){
                         if(assignee.isUser()){
                             PersonAssignee personAssignee = (PersonAssignee) assignee;
-                            if(personAssignee.getUser().getLoginId().equals(user.getLoginId())){
+                            if(personAssignee.getUser().getLoginId().equals(loginId)){
                                 allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
                             }
                         }else if(assignee.isRole()){
                             RoleAssignee roleAssignee = (RoleAssignee) assignee;
                             PersonRole role = roleAssignee.getUserRole();
-                            for(UserGroupType type: user.getUserGroupTypes()){
+                            for(UserGroupType type: userGroupTypes){
                                 if(ArrayUtils.contains(role.getUserGroups(), type)){
                                     allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
                                     break;
@@ -217,7 +217,7 @@ public class WorkflowServiceImpl implements WorkflowService {
             }
 
         }catch(CaaersNoSuchUserException noUser){
-            log.info("No user is present within caAERS having loginId : " + loginId);
+            log.warn("No user is present within caAERS having loginId : " + loginId);
         }
 		List<ReviewStatus> allowedReviewStatusList = new ArrayList<ReviewStatus>(allowedReviewStatusMap.keySet());
 		return allowedReviewStatusList;

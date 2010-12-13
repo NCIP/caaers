@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -104,8 +105,9 @@ public class ReviewAeReportController extends SimpleFormController{
         SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
 		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
 		boolean isReportReviewer = false;
-        User user = csmUserRepository.getUserByName(userId);
-        if(user.getUserGroupTypes().contains(UserGroupType.ae_expedited_report_reviewer)){
+
+        List<UserGroupType> userGroupTypes = csmUserRepository.getUserGroups(userId); //	CAAERS-4586
+        if(userGroupTypes.contains(UserGroupType.ae_expedited_report_reviewer)){
             isReportReviewer = true;
         }
         
