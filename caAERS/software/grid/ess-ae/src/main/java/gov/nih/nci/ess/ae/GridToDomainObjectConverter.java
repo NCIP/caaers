@@ -138,7 +138,7 @@ public class GridToDomainObjectConverter {
 			this.populateCtcTerm(gridAe, caaersAe);
 		}
 
-		if (gridAe.getOtherMeddra() != null) {
+		if (gridAe.getOtherMeddra() != null && caaersAe.getLowLevelTerm()==null) {
 			/*
 			 * if (gridAe.getOtherMeddra() != null) {
 			 * gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm
@@ -226,7 +226,7 @@ public class GridToDomainObjectConverter {
 			throws CaaersSystemException {
 		if (gridAe.getAdverseEventCtcTerm() != null) {
 			CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[] { gridAe
-					.getAdverseEventCtcTerm().getCtepTerm().getCode() });// getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(),
+					.getAdverseEventCtcTerm().getCtepCode().getCode() });// getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(),
 																			// adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
 			if (ctcTerm == null) {
 				throw new CaaersSystemException(" no term found ..");

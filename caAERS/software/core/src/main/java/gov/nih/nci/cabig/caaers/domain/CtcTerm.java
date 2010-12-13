@@ -135,4 +135,16 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     public void setDefinition(String definition) {
         this.definition = definition;
     }
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CtcTerm [term=" + term + ", select=" + select + ", ctepTerm="
+				+ ctepTerm + ", ctepCode=" + ctepCode + ", otherRequired="
+				+ otherRequired + ", definition=" + definition + "]";
+	}
+    
+    
 }
