@@ -194,7 +194,7 @@ public class AdverseEventManagementImpl implements ManagementI,
 		int aeId = Integer.parseInt(id.getExtension());
 		gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = adverseEventDao
 				.getById(aeId);
-		if (ae == null) {
+		if (ae == null || Boolean.TRUE.equals(ae.getRetiredIndicator())) {
 			throw new AdverseEventServiceException(ADVERSE_EVENT_NOT_FOUND,
 					getMessageSource().getMessage(ADVERSE_EVENT_NOT_FOUND,
 							new Object[] {}, Locale.getDefault()));

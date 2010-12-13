@@ -138,7 +138,7 @@ public class GridToDomainObjectConverter {
 			this.populateCtcTerm(gridAe, caaersAe);
 		}
 
-		if (gridAe.getOtherMeddra() != null && caaersAe.getLowLevelTerm()==null) {
+		if (gridAe.getOtherMeddra() != null /*&& caaersAe.getLowLevelTerm()==null*/) {
 			/*
 			 * if (gridAe.getOtherMeddra() != null) {
 			 * gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm
