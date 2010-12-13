@@ -124,6 +124,7 @@
 		autowire="byType" />
 	<bean id="adverseEventManagementImplTarget" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl" autowire="byType" />		
 	<bean id="adverseEventQueryImplTarget" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl" autowire="byType"/>
+	<bean id="adverseEventAssociateImplTarget" class="gov.nih.nci.ess.ae.AdverseEventAssociateImpl" autowire="byType" />
 
 	<!-- Audit -->
     <bean id="adverseEventManagementGridServiceUrl" class="java.lang.String">
@@ -132,6 +133,13 @@
 	<bean id="adverseEventManagementAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
 		<property name="fromUrl" ref="adverseEventManagementGridServiceUrl" />
 	</bean>
+    <bean id="adverseEventAssociateGridServiceUrl" class="java.lang.String">
+        <constructor-arg value="/wsrf-caaers/services/cagrid/Associate"/>
+    </bean>
+	<bean id="adverseEventAssociateAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" ref="adverseEventAssociateGridServiceUrl" />
+	</bean>
+	
     
 	<bean id="adverseEventQueryImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="proxyTargetClass"><value>true</value></property>
@@ -155,6 +163,18 @@
 			</list> 
 		</property> 
 	</bean>		
+
+	<bean id="adverseEventAssociateImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="adverseEventAssociateImplTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>adverseEventAssociateAuditInfoPopulatorInterceptor</value>				
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>	
 		
 
 </beans>
