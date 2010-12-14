@@ -22,6 +22,7 @@
 			xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
 			xmlns:ns0="http://ess.caaers.nci.nih.gov"
 			xmlns:ns2="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/types"
+			xmlns:ns9="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate/types"
 			xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
