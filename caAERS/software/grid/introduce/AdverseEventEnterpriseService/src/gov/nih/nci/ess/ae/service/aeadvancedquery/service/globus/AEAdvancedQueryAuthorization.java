@@ -55,7 +55,7 @@ public class AEAdvancedQueryAuthorization implements PDP {
 		}
 	}
 					
-	public void authorizeQueryAdverseEvents(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeFindAdverseEvents(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
@@ -70,8 +70,8 @@ public class AEAdvancedQueryAuthorization implements PDP {
 		if(!operation.getNamespaceURI().equals(getServiceNamespace())){
 		  return false;
 		}
-		if(operation.getLocalPart().equals("queryAdverseEvents")){
-			authorizeQueryAdverseEvents(peerSubject, context, operation);
+		if(operation.getLocalPart().equals("findAdverseEvents")){
+			authorizeFindAdverseEvents(peerSubject, context, operation);
 			return true;
 		} else if(operation.getLocalPart().equals("getServiceSecurityMetadata")){
 			authorizeGetServiceSecurityMetadata(peerSubject, context, operation);

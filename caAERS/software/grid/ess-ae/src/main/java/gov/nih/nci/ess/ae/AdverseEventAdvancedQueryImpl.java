@@ -88,7 +88,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware, AEAdva
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI#queryAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery, ess.caaers.nci.nih.gov.LimitOffset)
 	 */
-	public AdverseEvent[] queryAdverseEvents(
+	public AdverseEvent[] findAdverseEvents(
 			AdverseEventQuery adverseEventQuery, LimitOffset limitOffset)
 			throws RemoteException, AdverseEventServiceException {
 		// TODO Auto-generated method stub

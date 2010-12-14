@@ -55,6 +55,16 @@ public abstract class QueryImplBase {
 		return (gov.nih.nci.ess.ae.service.management.service.globus.resource.ManagementResourceHome)resource;
 	}
 	
+	public gov.nih.nci.ess.ae.service.aeassociate.service.globus.resource.AEAssociateResourceHome getAEAssociateResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("aEAssociateHome");
+		return (gov.nih.nci.ess.ae.service.aeassociate.service.globus.resource.AEAssociateResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome getAEAdvancedQueryResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("aEAdvancedQueryHome");
+		return (gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome)resource;
+	}
+	
 	
 	protected ResourceHome getResourceHome(String resourceKey) throws Exception {
 		MessageContext ctx = MessageContext.getCurrentContext();

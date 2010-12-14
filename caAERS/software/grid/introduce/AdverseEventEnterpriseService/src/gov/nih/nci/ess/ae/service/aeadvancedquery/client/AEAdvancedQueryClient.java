@@ -76,17 +76,17 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AdverseEvent[] queryAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"queryAdverseEvents");
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequest();
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequestAdverseEventQuery adverseEventQueryContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequestAdverseEventQuery();
+      configureStubSecurity((Stub)portType,"findAdverseEvents");
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequest();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequestAdverseEventQuery adverseEventQueryContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequestAdverseEventQuery();
     adverseEventQueryContainer.setAdverseEventQuery(adverseEventQuery);
     params.setAdverseEventQuery(adverseEventQueryContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequestLimitOffset limitOffsetContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequestLimitOffset();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequestLimitOffset limitOffsetContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequestLimitOffset();
     limitOffsetContainer.setLimitOffset(limitOffset);
     params.setLimitOffset(limitOffsetContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsResponse boxedResult = portType.queryAdverseEvents(params);
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse boxedResult = portType.findAdverseEvents(params);
     return boxedResult.getAdverseEvent();
     }
   }

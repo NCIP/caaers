@@ -26,9 +26,9 @@ public class AEAdvancedQueryProviderImpl{
 	}
 	
 
-    public gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsResponse queryAdverseEvents(gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsResponse boxedResult = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.QueryAdverseEventsResponse();
-    boxedResult.setAdverseEvent(impl.queryAdverseEvents(params.getAdverseEventQuery().getAdverseEventQuery(),params.getLimitOffset().getLimitOffset()));
+    public gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse findAdverseEvents(gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse boxedResult = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse();
+    boxedResult.setAdverseEvent(impl.findAdverseEvents(params.getAdverseEventQuery().getAdverseEventQuery(),params.getLimitOffset().getLimitOffset()));
     return boxedResult;
   }
 

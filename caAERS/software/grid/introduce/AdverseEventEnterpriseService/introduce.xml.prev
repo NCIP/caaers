@@ -366,7 +366,7 @@
   </ns3:Service>
   <ns3:Service name="AEAdvancedQuery" namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery" packageName="gov.nih.nci.ess.ae.service.aeadvancedquery" xsi:type="ns3:ServiceType">
    <ns63:Methods xsi:type="ns63:MethodsType" xmlns:ns63="gme://gov.nih.nci.cagrid.introduce/1/Methods">
-    <ns63:Method description="" isImported="false" isProvided="false" name="queryAdverseEvents" xsi:type="ns63:MethodType">
+    <ns63:Method description="" isImported="false" isProvided="false" name="findAdverseEvents" xsi:type="ns63:MethodType">
      <ns63:Inputs>
       <ns63:Input qName="ns64:AdverseEventQuery" description="" isArray="false" name="adverseEventQuery" xmlns:ns64="http://ess.caaers.nci.nih.gov"/>
       <ns63:Input qName="ns65:LimitOffset" description="" isArray="false" name="limitOffset" xmlns:ns65="http://ess.caaers.nci.nih.gov"/>
