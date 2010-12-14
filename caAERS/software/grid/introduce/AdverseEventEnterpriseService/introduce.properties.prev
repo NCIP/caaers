@@ -1,6 +1,6 @@
 #Introduce Properties
-#Fri Nov 19 15:46:03 EST 2010
-introduce.skeleton.services.list=AdverseEventEnterpriseService,Management,Query
+#Mon Dec 13 21:14:26 EST 2010
+introduce.skeleton.services.list=AdverseEventEnterpriseService,Management,Query,AEAssociate
 introduce.skeleton.extensions=cagrid_metadata
 introduce.skeleton.timestamp=1290182246705
 introduce.skeleton.service.name=AdverseEventEnterpriseService

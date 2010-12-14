@@ -140,6 +140,9 @@
   <ns2:Namespace location="./QueryTypes.xsd" namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Query/types" packageName="gov.nih.nci.ess.ae.service.query.stubs.types" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="QueryReference" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
+  <ns2:Namespace location="./AEAssociateTypes.xsd" namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate/types" packageName="gov.nih.nci.ess.ae.service.aeassociate.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AEAssociateReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
  </ns2:Namespaces>
  <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns3:Service name="AdverseEventEnterpriseService" namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService" packageName="gov.nih.nci.ess.ae.service" xsi:type="ns3:ServiceType">
@@ -278,8 +281,88 @@
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
+  <ns3:Service name="AEAssociate" namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate" packageName="gov.nih.nci.ess.ae.service.aeassociate" xsi:type="ns3:ServiceType">
+   <ns41:Methods xsi:type="ns41:MethodsType" xmlns:ns41="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns41:Method description="" isImported="false" isProvided="false" name="associateAdverseEventToStudy" xsi:type="ns41:MethodType">
+     <ns41:Inputs>
+      <ns41:Input qName="ns42:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns42="http://ess.caaers.nci.nih.gov"/>
+      <ns41:Input qName="ns43:Id" description="" isArray="false" name="studyIdentifier" xmlns:ns43="http://ess.caaers.nci.nih.gov"/>
+     </ns41:Inputs>
+     <ns41:Output qName="void" description="" isArray="false"/>
+     <ns41:Exceptions>
+      <ns41:Exception description="" name="AdverseEventServiceException" qname="ns44:AdverseEventServiceException" xmlns:ns44="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns41:Exceptions>
+    </ns41:Method>
+    <ns41:Method description="" isImported="false" isProvided="false" name="dissociateAdverseEventFromStudy" xsi:type="ns41:MethodType">
+     <ns41:Inputs>
+      <ns41:Input qName="ns45:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns45="http://ess.caaers.nci.nih.gov"/>
+      <ns41:Input qName="ns46:Id" description="" isArray="false" name="studyIdentifier" xmlns:ns46="http://ess.caaers.nci.nih.gov"/>
+     </ns41:Inputs>
+     <ns41:Output qName="void" description="" isArray="false"/>
+     <ns41:Exceptions>
+      <ns41:Exception description="" name="AdverseEventServiceException" qname="ns47:AdverseEventServiceException" xmlns:ns47="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns41:Exceptions>
+    </ns41:Method>
+    <ns41:Method description="" isImported="false" isProvided="false" name="associateAdditionalInformationToAdverseEvent" xsi:type="ns41:MethodType">
+     <ns41:Inputs>
+      <ns41:Input qName="ns48:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns48="http://ess.caaers.nci.nih.gov"/>
+      <ns41:Input qName="ns49:AdditionalInformation" description="" isArray="false" name="additionalInformation" xmlns:ns49="http://ess.caaers.nci.nih.gov"/>
+     </ns41:Inputs>
+     <ns41:Output qName="void" description="" isArray="false"/>
+     <ns41:Exceptions>
+      <ns41:Exception description="" name="AdverseEventServiceException" qname="ns50:AdverseEventServiceException" xmlns:ns50="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns41:Exceptions>
+    </ns41:Method>
+    <ns41:Method description="" isImported="false" isProvided="false" name="dissociateAdditionalInformationFromAdverseEvent" xsi:type="ns41:MethodType">
+     <ns41:Inputs>
+      <ns41:Input qName="ns51:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns51="http://ess.caaers.nci.nih.gov"/>
+      <ns41:Input qName="ns52:AdditionalInformation" description="" isArray="false" name="additionalInformation" xmlns:ns52="http://ess.caaers.nci.nih.gov"/>
+     </ns41:Inputs>
+     <ns41:Output qName="void" description="" isArray="false"/>
+     <ns41:Exceptions>
+      <ns41:Exception description="" name="AdverseEventServiceException" qname="ns53:AdverseEventServiceException" xmlns:ns53="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns41:Exceptions>
+    </ns41:Method>
+    <ns41:Method description="" isImported="false" isProvided="false" name="associateTreatmentInformationToAdverseEvent" xsi:type="ns41:MethodType">
+     <ns41:Inputs>
+      <ns41:Input qName="ns54:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns54="http://ess.caaers.nci.nih.gov"/>
+      <ns41:Input qName="ns55:TreatmentInformation" description="" isArray="false" name="treatmentInformation" xmlns:ns55="http://ess.caaers.nci.nih.gov"/>
+     </ns41:Inputs>
+     <ns41:Output qName="void" description="" isArray="false"/>
+     <ns41:Exceptions>
+      <ns41:Exception description="" name="AdverseEventServiceException" qname="ns56:AdverseEventServiceException" xmlns:ns56="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns41:Exceptions>
+    </ns41:Method>
+    <ns41:Method description="" isImported="false" isProvided="false" name="disassociateTreatmentInformationFromAdverseEvent" xsi:type="ns41:MethodType">
+     <ns41:Inputs>
+      <ns41:Input qName="ns57:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns57="http://ess.caaers.nci.nih.gov"/>
+      <ns41:Input qName="ns58:TreatmentInformation" description="" isArray="false" name="treatmentInformation" xmlns:ns58="http://ess.caaers.nci.nih.gov"/>
+     </ns41:Inputs>
+     <ns41:Output qName="void" description="" isArray="false"/>
+     <ns41:Exceptions>
+      <ns41:Exception description="" name="AdverseEventServiceException" qname="ns59:AdverseEventServiceException" xmlns:ns59="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns41:Exceptions>
+    </ns41:Method>
+    <ns41:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns41:MethodType">
+     <ns41:Output qName="ns60:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns61:MethodSecurity xsi:type="ns61:MethodSecurity" xmlns:ns61="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns61:SecuritySetting xsi:type="ns61:SecuritySetting">None</ns61:SecuritySetting>
+      <ns61:MethodAuthorization xsi:type="ns61:MethodAuthorization">
+       <ns61:NoAuthorization xsi:type="ns61:NoAuthorization"/>
+      </ns61:MethodAuthorization>
+     </ns61:MethodSecurity>
+     <ns41:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns41:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns41:Method>
+   </ns41:Methods>
+   <ns62:ResourcePropertiesList xsi:type="ns62:ResourcePropertiesListType" xmlns:ns62="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
  </ns3:Services>
- <ns41:Extensions xsi:type="ns41:ExtensionsType" xmlns:ns41="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns41:Extension name="cagrid_metadata" version="1.3" xsi:type="ns41:ExtensionType"/>
- </ns41:Extensions>
+ <ns63:Extensions xsi:type="ns63:ExtensionsType" xmlns:ns63="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns63:Extension name="cagrid_metadata" version="1.3" xsi:type="ns63:ExtensionType"/>
+ </ns63:Extensions>
 </ns1:ServiceDescription>
