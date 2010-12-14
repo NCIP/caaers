@@ -215,6 +215,8 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final ResearchStaffCommand command) {
+        boolean hasSRSRUpdate = CaaersSecurityFacadeImpl.getInstance().checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole", "UPDATE");
+               
         boolean remoteEntity = false;
         if (command.getResearchStaff() instanceof RemoteResearchStaff) {
             remoteEntity = true;
@@ -253,7 +255,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         InputFieldAttributes.setSize(emailField, 30);
         researchStaffFieldGroup.getFields().add(emailField);
 
-        InputField loginIdField = InputFieldFactory.createTextField("researchStaff.loginId", "Login ID", true);
+        InputField loginIdField = InputFieldFactory.createTextField("researchStaff.loginId", "Login ID", hasSRSRUpdate);
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
 

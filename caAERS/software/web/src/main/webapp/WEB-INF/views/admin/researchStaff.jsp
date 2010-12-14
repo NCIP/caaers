@@ -232,11 +232,13 @@
                             <div class="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="${fieldGroups['researchStaff'].fields[3].required}"/></div>
                             <div class="value"><ui:text path="researchStaff.emailAddress" cssClass="${not empty command.researchStaff.emailAddress ? 'valueOK' : 'required'}" required="${fieldGroups['researchStaff'].fields[3].required}" title="Primary email" readonly="${!hasRSCreate}"/></div>
                         </div>
+                        <c:if test="${not editMode and hasSRSRCreate}">
+                           <div class="row">
+                                <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="${fieldGroups['researchStaff'].fields[4].required}"/></div>
+                                <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasSRSRCreate}" cssClass="${fieldGroups['researchStaff'].fields[4].required ? 'required' : ''}" required="${fieldGroups['researchStaff'].fields[4].required}" title="Login ID"/></div>
+                            </div>
+                        </c:if>
 
-                        <div class="row">
-                            <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="${fieldGroups['researchStaff'].fields[4].required}"/></div>
-                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${((readonly || editMode) and not empty command.researchStaff.loginId) or !hasRSCreate}" cssClass="${fieldGroups['researchStaff'].fields[4].required ? 'required' : ''}" required="${fieldGroups['researchStaff'].fields[4].required}" title="Login ID"/></div>
-                        </div>
                         <c:if test="${editMode}">
                             <div class="row">
                                 <div class="label">Active Date</div>
