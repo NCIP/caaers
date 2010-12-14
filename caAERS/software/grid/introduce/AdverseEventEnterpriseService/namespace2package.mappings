@@ -17,9 +17,14 @@ http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate=gov
 http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate/bindings=gov.nih.nci.ess.ae.service.aeassociate.stubs.bindings
 http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate/service=gov.nih.nci.ess.ae.service.aeassociate.stubs.service
 http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
+http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery=gov.nih.nci.ess.ae.service.aeadvancedquery.stubs
+http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/bindings=gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.bindings
+http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/service=gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.service
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
 
 http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Query/types=gov.nih.nci.ess.ae.service.query.stubs.types
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/types=gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.types
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 uri\:iso.org\:21090=_21090.org.iso
 http\://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types=gov.nih.nci.ess.ae.service.management.stubs.types
