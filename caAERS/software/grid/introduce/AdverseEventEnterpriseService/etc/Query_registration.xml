@@ -15,6 +15,7 @@
       <agg:GetMultipleResourcePropertiesPollType
 			xmlns:ns8="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Query/types"
 			xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
+			xmlns:ns10="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/types"
 			xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
 			xmlns:ns1="uri:iso.org:21090"
 			xmlns:ns7="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"
