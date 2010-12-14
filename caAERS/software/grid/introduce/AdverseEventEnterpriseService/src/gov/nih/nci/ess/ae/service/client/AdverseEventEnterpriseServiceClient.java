@@ -60,8 +60,7 @@ public class AdverseEventEnterpriseServiceClient extends AdverseEventEnterpriseS
 		if(!(args.length < 2)){
 			if(args[0].equals("-url")){
 			  AdverseEventEnterpriseServiceClient client = new AdverseEventEnterpriseServiceClient(args[1]);
-			  // place client calls here if you want to use this main as a
-			  // test....
+			  System.out.println(client.getEndpointReference().getAddress().getHost());
 			} else {
 				usage();
 				System.exit(1);
