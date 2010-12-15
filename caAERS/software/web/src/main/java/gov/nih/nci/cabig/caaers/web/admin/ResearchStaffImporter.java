@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
@@ -21,6 +22,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
@@ -120,5 +122,8 @@ public class ResearchStaffImporter extends Importer{
         		logger.warn("Exception wile sending email to ResearchStaff", mEx);
         	}
         }
+        
+        //	CAAERS-4461
+        if(CollectionUtils.isNotEmpty(importableResearchStaff)) getEventFactory().publishEntityModifiedEvent(new LocalResearchStaff(), true);
 	}
 }

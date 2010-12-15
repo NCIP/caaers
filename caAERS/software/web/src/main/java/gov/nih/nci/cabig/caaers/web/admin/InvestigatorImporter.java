@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -21,6 +22,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
@@ -120,5 +122,7 @@ public class InvestigatorImporter extends Importer{
         		logger.warn("Exception while sending email to Investigator", mEx);
         	}
         }
+        //	CAAERS-4461
+        if(CollectionUtils.isNotEmpty(importableInvestigators)) getEventFactory().publishEntityModifiedEvent(new LocalInvestigator(), true);
 	}
 }

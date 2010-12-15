@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -17,6 +18,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -89,6 +91,10 @@ public class StudyImporter extends Importer{
 		for (DomainObjectImportOutcome<Study> importOutcome : command.getImportableStudies()) {
 			studyRepository.synchronizeStudyPersonnel(importOutcome.getImportedDomainObject());
         	studyRepository.save(importOutcome.getImportedDomainObject());
+        }
+        //	CAAERS-4461
+        if(CollectionUtils.isNotEmpty(command.getImportableStudies())){
+           getEventFactory().publishEntityModifiedEvent(new LocalStudy(), true);
         }
 	}
 

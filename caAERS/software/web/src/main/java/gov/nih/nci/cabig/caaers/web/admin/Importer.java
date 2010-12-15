@@ -21,6 +21,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
@@ -41,8 +42,17 @@ public abstract class Importer{
 	static final String INVESTIGATOR_IMPORT = "investigator";
 	
 	private MessageSource messageSource;
-	
-	public void setMessageSource(MessageSource messageSource){
+    private EventFactory eventFactory;
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
+
+    public void setMessageSource(MessageSource messageSource){
 		this.messageSource = messageSource;
 	}
 	

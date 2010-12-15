@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -98,6 +99,10 @@ public class OrganizationImporter extends Importer {
         //Update existing Organizations.
         for (DomainObjectImportOutcome<Organization> importOutcome : command.getUpdateableOrganizations()) {
         	organizationRepository.saveImportedOrganization(importOutcome.getImportedDomainObject());
+        }
+        //	CAAERS-4461
+        if(CollectionUtils.isNotEmpty(command.getImportableOrganizations()) || CollectionUtils.isNotEmpty(command.getUpdateableOrganizations())){
+           getEventFactory().publishEntityModifiedEvent(new LocalOrganization(), true); 
         }
 	}
 

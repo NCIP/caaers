@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 
 import org.apache.log4j.Logger;
@@ -53,6 +54,8 @@ public class ImporterFactory{
 
     private ASAELImporter asaelImporter;
 
+    private EventFactory eventFactory;
+
 	public Importer createImporterInstance(String type){
 		if(type.equals(STUDY_IMPORT)){
 			StudyImporter studyImporter = new StudyImporter();
@@ -60,12 +63,14 @@ public class ImporterFactory{
 			studyImporter.setStudyRepository(studyRepository);
 			studyImporter.setMessageSource(messageSource);
 			studyImporter.setStudyProcessorImpl((StudyProcessorImpl)studyProcessor);
+            studyImporter.setEventFactory(getEventFactory());
 			return studyImporter;
 		}else if (type.equals(SUBJECT_IMPORT)){
 			SubjectImporter subjectImporter = new SubjectImporter();
 			subjectImporter.setDomainObjectValidator(domainObjectValidator);
 			subjectImporter.setParticipantDao(participantDao);
 			subjectImporter.setMessageSource(messageSource);
+            subjectImporter.setEventFactory(getEventFactory());
 			subjectImporter.setParticipantServiceImpl((ParticipantServiceImpl)participantService);
 			return subjectImporter;
 		}else if (type.equals(RESEARCH_STAFF_IMPORT)){
@@ -73,6 +78,7 @@ public class ImporterFactory{
 			researchStaffImporter.setDomainObjectValidator(domainObjectValidator);
 			researchStaffImporter.setResearchStaffMigratorService(researchStaffMigratorService);
 			researchStaffImporter.setResearchStaffRepository(researchStaffRepository);
+            researchStaffImporter.setEventFactory(getEventFactory());
 			researchStaffImporter.setMessageSource(messageSource);
 			return researchStaffImporter;
 		}else if (type.equals(INVESTIGATOR_IMPORT)){
@@ -80,11 +86,13 @@ public class ImporterFactory{
 			investigatorImporter.setDomainObjectValidator(domainObjectValidator);
 			investigatorImporter.setInvestigatorMigratorService(investigatorMigratorService);
 			investigatorImporter.setInvestigatorRepository(investigatorRepository);
+            investigatorImporter.setEventFactory(getEventFactory());
 			investigatorImporter.setMessageSource(messageSource);
 			return investigatorImporter;
 		}else if(type.equals(ORGANIZATION_IMPORT)){
 			OrganizationImporter organizationImporter = new OrganizationImporter();
 			organizationImporter.setOrganizationRepository(organizationRepository);
+            organizationImporter.setEventFactory(getEventFactory());
 			return organizationImporter;
 		}else if(type.equals(AGENT_IMPORT)){
 			AgentImporter agentImporter = new AgentImporter();
@@ -195,5 +203,13 @@ public class ImporterFactory{
 
     public void setAsaelImporter(ASAELImporter asaelImporter) {
         this.asaelImporter = asaelImporter;
+    }
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
     }
 }

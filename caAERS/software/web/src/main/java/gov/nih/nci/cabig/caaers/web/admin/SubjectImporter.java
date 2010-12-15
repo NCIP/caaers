@@ -17,6 +17,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 
@@ -90,6 +91,8 @@ public class SubjectImporter extends Importer{
 		for (DomainObjectImportOutcome<Participant> importOutcome : command.getImportableParticipants()) {
         	participantDao.save(importOutcome.getImportedDomainObject());
         }
+        //	CAAERS-4461
+        if(CollectionUtils.isNotEmpty(command.getImportableParticipants())) getEventFactory().publishEntityModifiedEvent(new Participant(),true);
 	}
 	
 	public DomainObjectValidator getDomainObjectValidator(){

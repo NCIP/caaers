@@ -278,6 +278,7 @@
   	<property name="meddraVersionDao" ref="meddraVersionDao" />
   	<property name="asaelImporter" ref="asaelImporter" />
   	<property name="messageSource" ref="messageSource" />
+    <property name="eventFactory"  ref="eventFactory" />
   </bean>
     
   <!-- ============================== Section link - Task Mapping resolvers ====================================
