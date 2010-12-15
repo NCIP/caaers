@@ -133,11 +133,10 @@
 	        	drop table rep_prop;
 	        	drop table rep_refs;
 	        	drop table rep_ver_binval;
-	        	drop table rep_ver_fsentry;
 	        	drop table rep_ver_node;
 	        	drop table rep_ver_prop;
 	        	drop table rep_ver_refs;
-
+	        	drop table rep_ver_fsentry;
 	        </sql>
 	    </target>
     <target name="generate-jaxb"
