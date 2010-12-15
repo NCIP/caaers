@@ -49,7 +49,7 @@ public class AEAdvancedQueryImpl extends AEAdvancedQueryImplBase {
 		return ctx;
 	}
 
-	public ess.caaers.nci.nih.gov.AdverseEvent[] queryAdverseEvents(
+	public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(
 			ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,
 			ess.caaers.nci.nih.gov.LimitOffset limitOffset)
 			throws RemoteException,
