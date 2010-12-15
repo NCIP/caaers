@@ -193,8 +193,8 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="findAdverseEvents">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns37:AdverseEventQuery" dimensionality="1" index="0" isArray="false" isRequired="false" name="adverseEventQuery" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns38:LimitOffset" dimensionality="1" index="1" isArray="false" isRequired="false" name="limitOffset" xmlns:ns38="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns37:AdverseEventQuery" dimensionality="1" index="0" isArray="false" isRequired="true" name="adverseEventQuery" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns38:LimitOffset" dimensionality="1" index="1" isArray="false" isRequired="true" name="limitOffset" xmlns:ns38="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns39:AdverseEvent" dimensionality="1" isArray="true" xmlns:ns39="http://ess.caaers.nci.nih.gov"/>
        <ns2:faultCollection>

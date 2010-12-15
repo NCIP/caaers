@@ -567,7 +567,7 @@
 	<xs:element name="AdverseEventQuery">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="searchCriteria" type="ESS-AE:Criteria"/>
+				<xs:element name="searchCriteria" type="ESS-AE:Criteria" maxOccurs="16" minOccurs="1"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
