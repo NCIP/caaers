@@ -55,7 +55,7 @@ public class AEAdvancedQueryImpl extends AEAdvancedQueryImplBase {
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		return advancedQueryI
-				.queryAdverseEvents(adverseEventQuery, limitOffset);
+				.findAdverseEvents(adverseEventQuery, limitOffset);
 	}
 
 }
