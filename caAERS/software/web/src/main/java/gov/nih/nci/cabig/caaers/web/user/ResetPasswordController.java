@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
-import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +17,9 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 public class ResetPasswordController extends SimpleFormController {
 
     private PasswordManagerService passwordManagerService;
-
-    private CSMUserRepository csmUserRepository;
-
-    private String emailPretext, emailPosttext;
+    private UserRepository userRepository;
+	private String emailPretext, emailPosttext;
     
-    private UserDao userDao;
 
 	public ResetPasswordController() {
         setFormView("user/resetPassword");
@@ -41,17 +37,17 @@ public class ResetPasswordController extends SimpleFormController {
         ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
 
     	UserName userName = (UserName) command;
-        User dbUser = userDao.getByLoginId(userName.getUserName());
+        _User dbUser = userRepository.getUserByLoginName(userName.getUserName());
         
         if(dbUser==null) return modelAndView.addObject("noSuchUser", true);
-        if(csmUserRepository.getCSMUserByName(userName.getUserName())  == null) return modelAndView.addObject("noSuchUser", true);
+        if(dbUser.getCsmUser()  == null) return modelAndView.addObject("noSuchUser", true);
         
         // Srini Akkala , CAAERS-2356
-        String userEmail = dbUser.getEmailAddress();
+        String userEmail = dbUser.getCsmUser().getEmailId();
         //find the user object, preference given to researchstaff
-        User user = passwordManagerService.requestToken(userName.getUserName());
+        _User user = passwordManagerService.requestToken(userName.getUserName());
         //csmUserRepository.sendUserEmail(userName.getUserName(), "Reset caAERS Password", emailPretext
-        csmUserRepository.sendUserEmail(userEmail, "Reset caAERS Password", emailPretext
+        userRepository.sendUserEmail(userEmail, "Reset caAERS Password", emailPretext
                 + userName.getURL() + "&token=" + user.getToken() + emailPosttext);
         return new ModelAndView("user/emailSent");
     }
@@ -86,14 +82,8 @@ public class ResetPasswordController extends SimpleFormController {
         this.passwordManagerService = passwordManagerService;
     }
 
-    @Required
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
-    }
-    
-    @Required
-    public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
+    public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
     public static String getURL(String scheme, String serverName, int serverPort, String contextPath) {

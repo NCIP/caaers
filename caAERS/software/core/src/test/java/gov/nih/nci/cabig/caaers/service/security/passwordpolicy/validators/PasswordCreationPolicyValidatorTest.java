@@ -1,13 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
 import static org.easymock.EasyMock.expect;
-import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
@@ -25,27 +20,29 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 		private PasswordCreationPolicy passwordCreationPolicy;    
 		private PasswordPolicy passwordPolicy;   
 		private CombinationPolicy combinationPolicy;
-		private CSMUserRepository csmUserRepository;    
 		private Credential credential;
 		private String userName;    
 		private String password;    
-		private User user;
+		private _User user;
+		private gov.nih.nci.security.authorization.domainobjects.User csmUser;
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void setUp() throws Exception {        
 		super.setUp();        
 		userName = "wxyz1234";        
 		password = "Password1!";  
-		Organization org = Fixtures.createOrganization("test");        
-		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.business_administrator}) , "Test");
+		user =  new _User();
+		csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
+		user.setLoginName(userName);
+		csmUser.setLoginName(userName);
+		csmUser.setPassword(password);
+		user.setCsmUser(csmUser);
 		
-		csmUserRepository = registerMockFor(CSMUserRepository.class);       
 		passwordPolicy = new PasswordPolicy();   
 		combinationPolicy = new CombinationPolicy();
 		passwordCreationPolicy = new PasswordCreationPolicy();				
 		passwordCreationPolicyValidator = new PasswordCreationPolicyValidator();    
-		passwordCreationPolicyValidator.setCsmUserRepository(csmUserRepository);  
+		passwordCreationPolicyValidator.setUser(user);  
 		credential = new Credential(userName, password);  
 		passwordPolicy.setPasswordCreationPolicy(passwordCreationPolicy);
 		passwordCreationPolicy.setMinPasswordLength(7);
@@ -58,26 +55,24 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 		combinationPolicy.setNonAlphaNumericRequired(true);
 		combinationPolicy.setUpperCaseAlphabetRequired(false);
 
-		expect(csmUserRepository.getUserByName(userName)).andReturn(user).anyTimes();
 	}  
 	
 	/**
 	 * 1. This testcase checks if the all the validations return "true" in a positive case.
 	 */
 	public void testAllValidations_Success() {
-		expect(csmUserRepository.userHadPassword(userName, password)).andReturn(false);
-		expect(csmUserRepository.userHasPassword(userName, password)).andReturn(false);
-		replayMocks();
 		assertTrue(passwordCreationPolicyValidator.validate(passwordPolicy, credential, new ValidationErrors()));
-		verifyMocks();   
 	}
 
 	/**
 	 * 2. This testcase checks if the validate method returns false if the user tries to set a password which is already used.
 	 */
 	public void testPasswordHistoryValidation_Failure() {
-		expect(csmUserRepository.userHasPassword(userName, password)).andReturn(false);
-		expect(csmUserRepository.userHadPassword(userName, password)).andReturn(true);
+		user = registerMockFor(_User.class);
+		expect(user.getPasswordAge()).andReturn(new Long(190));
+		expect(user.userHasPassword(password)).andReturn(false);
+		expect(user.userHadPassword(password)).andReturn(true);
+		passwordCreationPolicyValidator.setUser(user);
 		replayMocks();
 		assertFalse(passwordCreationPolicyValidator.validate(passwordPolicy, credential, new ValidationErrors()));
 		verifyMocks();   
@@ -87,8 +82,11 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 	 * 3. This method has various assertions to check the password creation validations on various passwords.
 	 */
 	public void testAllPasswordFormatValidations() {
-		expect(csmUserRepository.userHasPassword((String)EasyMock.anyObject(), (String)EasyMock.anyObject() )).andReturn(false).anyTimes();
-		expect(csmUserRepository.userHadPassword((String)EasyMock.anyObject(), (String)EasyMock.anyObject() )).andReturn(false).anyTimes();
+		user = registerMockFor(_User.class);
+		expect(user.getPasswordAge()).andReturn(new Long(190)).anyTimes();
+		expect(user.userHasPassword((String)EasyMock.anyObject())).andReturn(false).anyTimes();
+		expect(user.userHadPassword((String)EasyMock.anyObject())).andReturn(false).anyTimes();
+		passwordCreationPolicyValidator.setUser(user);
 		replayMocks();		
 		assertFalse(tryThisPassword("Pass1!")); // Purpose of this assertion: To test for password length to be 7
 		assertFalse(tryThisPassword("Password1")); // Purpose of this assertion: To test for password to have a special character

@@ -213,6 +213,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.index.ReportIndex</value>
 				
 				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
+				
+				<value>gov.nih.nci.cabig.caaers.domain._User</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -391,6 +393,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.index.ReportIndex</value>
 				
 				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
+				
+				<value>gov.nih.nci.cabig.caaers.domain._User</value>
             </list>
         </property>
         <!--
@@ -595,6 +599,8 @@ This applicationContext contains the definition of the DAOs
 	
 	<bean id="advancedSearchDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao"/>
 	<bean id="deviceDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DeviceDao"/>
+	
+	<bean id="_userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao._UserDao"/>
 
     <!-- Factory beans end here-->
 

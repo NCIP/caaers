@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.dao._UserDao;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-import gov.nih.nci.cabig.caaers.security.CSMUser;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -16,13 +17,11 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,9 +31,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Monish
  *
  */
-public class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, gov.nih.nci.cabig.caaers.domain.User, UserDao>  {
+public class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, gov.nih.nci.cabig.caaers.domain._User, _UserDao>  {
 	
 	protected CaaersSecurityFacadeImpl caaersSecurityFacade;
+	protected UserRepository userRepository;
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	protected ProvisioningSessionFactory proSessionFactory;
 	protected OrganizationRepository organizationRepository;
 	protected StudyRepository studyRepository;
@@ -58,41 +62,23 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		UserCommand command = new UserCommand();
-		command.setCsmUser(new CSMUser());
+		command.setUser(new _User());
 		return command;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request,HttpServletResponse response, Object userCommand, BindException errors) throws Exception {
-		String emailSendingErrorMessage = "";
         UserCommand command = (UserCommand)userCommand;
-        CSMUser user = command.getCsmUser();
-        boolean isCreateMode = user == null || user.getId() == null;
-        
-        User csmUser = null;
+        _User user = command.getUser();
+        boolean isCreateMode = user.getCsmUser() == null || user.getCsmUser().getUserId() == null;
         try {
-			//Create or Update User 
-			csmUser = createOrUpdateCSMUser(request,user);
-			//Process the RoleMemeberships for the User.
-			processRoleMemberships(csmUser,command.getRoleMemberships());
+			createOrUpdateUser(request,user);
         }catch (MailException e) {
-        	csmUser = caaersSecurityFacade.getCsmUserRepository().getCSMUserByName(user.getLoginId());
-        	processRoleMemberships(csmUser,command.getRoleMemberships());
-            emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
         }
-        if (!errors.hasErrors()) {
-            String statusMessage = getMessageSource().getMessage(isCreateMode ? "MSG_USER.created" : "MSG_USER.updated", null, Locale.getDefault());
-            
-            if (!StringUtils.isBlank(emailSendingErrorMessage)) {
-                statusMessage = statusMessage + getMessage("USR_017", "");
-            }
-//            modelAndView.getModel().put("flashMessage", statusMessage);
-        }
-        
+        processRoleMemberships(user.getCsmUser(),command.getRoleMemberships());
         String message = isCreateMode ? "created=OK" : "edited=OK";
-        ModelAndView modelAndView = new ModelAndView("redirect:editUser?userName=" + csmUser.getLoginName() + "&" + message);
+        ModelAndView modelAndView = new ModelAndView("redirect:editUser?userName=" + user.getLoginName() + "&" + message);
         modelAndView.addAllObjects(errors.getModel());
 		return modelAndView;
 	}
@@ -104,10 +90,9 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	 * @param csmUser
 	 * @return
 	 */
-	protected User createOrUpdateCSMUser(HttpServletRequest request,CSMUser caaersUser){
+	protected void createOrUpdateUser(HttpServletRequest request,_User user){
 		
-		return caaersSecurityFacade.createOrUpdateCSMUser(caaersUser, 
-													   ResetPasswordController.getURL(request.getScheme(), 
+		userRepository.createOrUpdateUser(user, ResetPasswordController.getURL(request.getScheme(), 
 																					   request.getServerName(),
 																					   request.getServerPort(),
 																					   request.getContextPath()));
@@ -131,13 +116,13 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	}
 
 	@Override
-	protected CSMUser getPrimaryDomainObject(C command) {
+	protected _User getPrimaryDomainObject(C command) {
 		// TODO Auto-generated method stub
-		return command.getCsmUser();
+		return command.getUser();
 	}
 
 	@Override
-	protected UserDao getDao() {
+	protected _UserDao getDao() {
 		return null;
 	}
 

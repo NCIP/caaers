@@ -5,11 +5,10 @@ import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.security.CSMUser;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
-import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.List;
 
@@ -27,22 +26,15 @@ public class EditUserController extends UserController<UserCommand> {
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-		User csmUser = caaersSecurityFacade.getCsmUserRepository().getCSMUserByName(request.getParameter("userName"));
-		CSMUser caaersUser = new CSMUser();
+		_User user = userRepository.getUserByLoginName(request.getParameter("userName"));
 		UserCommand command = new UserCommand();
-		if(csmUser != null){
-			//Set user details
-			caaersUser.setId(csmUser.getUserId().intValue());
-			caaersUser.setFirstName(csmUser.getFirstName());
-			caaersUser.setLastName(csmUser.getLastName());
-			caaersUser.setEmailAddress(csmUser.getEmailId());
-			caaersUser.setLoginId(csmUser.getLoginName());
-			//Get all the suite role memberships for user
-			populateRoleMemberships(csmUser,command);
+		if(user.getCsmUser() != null){
+ 			//Get all the suite role memberships for user
+			populateRoleMemberships(user,command);
 			populateSiteMap(command);
 			populateStudyMap(command);
 		}
-		command.setCsmUser(caaersUser);
+		command.setUser(user);
 		command.buildRolesHelper();
 		return command;
 	}
@@ -52,10 +44,9 @@ public class EditUserController extends UserController<UserCommand> {
 	 * @param csmUser
 	 * @param command
 	 */
-	private void populateRoleMemberships(User csmUser,UserCommand command){
-		List<UserGroupType> userGroups = caaersSecurityFacade.getCsmUserRepository().getUserGroups(csmUser.getLoginName());
-		ProvisioningSession session =  proSessionFactory.createSession(csmUser.getUserId());
-		for(UserGroupType group : userGroups){
+	private void populateRoleMemberships(_User user,UserCommand command){
+		ProvisioningSession session =  proSessionFactory.createSession(user.getCsmUser().getUserId());
+		for(UserGroupType group : user.getUserGroupTypes()){
 			command.addRoleMembership(session.getProvisionableRoleMembership(SuiteRole.getByCsmName(group.getCsmName())));
 		}
 	}

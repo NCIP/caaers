@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
@@ -12,8 +12,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 public class PasswordCreationPolicyValidator implements PasswordPolicyValidator {
 
     private PasswordPolicyValidator combinationValidator;
-
-    private CSMUserRepository csmUserRepository;
+    private _User user;
 
     public PasswordCreationPolicyValidator() {
         combinationValidator = new CombinationValidator();
@@ -42,8 +41,7 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
      * @throws ValidationException - if the user password age is less than one set in passwords creation policy 
      */
     public boolean validateMinPasswordAge(PasswordCreationPolicy policy, Credential credential, ValidationErrors validationErrors) {
-        if (csmUserRepository.getUserByName(credential.getUserName()).getPasswordAge() < policy
-                .getMinPasswordAge()) {
+        if (user.getPasswordAge() < policy.getMinPasswordAge()) {
             //throw new ValidationException("Password was changed too recently.");
         	validationErrors.addValidationError("PCP_001", "Password was changed too recently.");
         	return false;
@@ -60,9 +58,7 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
      * @throws ValidationException - when user tries to set password which is same as the one which is already used before or currently using.
      */
     public boolean validatePasswordHistory(PasswordCreationPolicy policy, Credential credential, ValidationErrors validationErrors) {
-        if (csmUserRepository.userHasPassword(credential.getUserName(), credential.getPassword())
-                || csmUserRepository.userHadPassword(credential.getUserName(), credential
-                .getPassword())) {
+        if (user.userHasPassword(credential.getPassword()) || user.userHadPassword(credential.getPassword())) {
             //throw new ValidationException("Must choose a password that has not been used recently.");
         	validationErrors.addValidationError("PCP_002", "Must choose a password that has not been used recently.");
         	return false;
@@ -87,9 +83,11 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
         }
     }
 
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
-    }
+    public _User getUser() {
+		return user;
+	}
 
-
+	public void setUser(_User user) {
+		this.user = user;
+	}
 }

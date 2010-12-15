@@ -5,19 +5,16 @@ import static org.easymock.EasyMock.expectLastCall;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
-import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.Group;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Jared Flatow
@@ -25,112 +22,85 @@ import java.util.Set;
 public class PasswordManagerServiceTest extends AbstractTestCase {
 
     private PasswordManagerServiceImpl passwordManagerService;
-
     private PasswordPolicyServiceImpl passwordPolicyService;
-
     private PasswordPolicyDao passwordPolicyDao;
 
-    private CSMUserRepositoryImpl csmUserRepository;
-
-    private UserDao userDao;
-    
-    private UserProvisioningManager userProvisioningManager;
-
-    private User user;
-
+    private _User user;
     private gov.nih.nci.security.authorization.domainobjects.User csmUser;
-
-    private String userName;
+    private UserRepository userRepository;
     
-    private Set<Group> groups;
-
+   
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        userName = "user@domain";
-        user = new LocalResearchStaff();
-        user.setEmailAddress(userName);
-        user.setLoginId(userName);
-
-        csmUser = registerMockFor(gov.nih.nci.security.authorization.domainobjects.User.class);
-
-       // userDao = registerDaoMockFor(UserDao.class);
-        //expect(userDao.getByLoginId(userName)).andReturn(user).anyTimes();
-
-        userProvisioningManager = registerMockFor(UserProvisioningManager.class);
-        expect(userProvisioningManager.getUser(userName)).andReturn(csmUser).anyTimes();
-
-        csmUserRepository = new CSMUserRepositoryImpl();
-        //csmUserRepository.setUserDao(userDao);
-        csmUserRepository.setUserProvisioningManager(userProvisioningManager);
-
+        userRepository = registerMockFor(UserRepository.class);
         passwordPolicyDao = registerDaoMockFor(PasswordPolicyDao.class);
-        expect(passwordPolicyDao.getById(1)).andReturn(Fixtures.createPasswordPolicy()).anyTimes();
-
-        passwordPolicyService = new PasswordPolicyServiceImpl();
-        passwordPolicyService.setCsmUserRepository(csmUserRepository);
-        passwordPolicyService.setPasswordPolicyDao(passwordPolicyDao);
-
         passwordManagerService = new PasswordManagerServiceImpl();
-        passwordManagerService.setPasswordPolicyService(passwordPolicyService);
-        passwordManagerService.setCsmUserRepository(csmUserRepository);
-        
-       userDao = registerDaoMockFor(UserDao.class);
-       passwordManagerService.setUserDao(userDao);
-       csmUserRepository.setUserDao(userDao);
-       
-       Group group = new Group();
-       group.setGroupName("ae_reporter");
-       group.setGroupId( -2L);
-       groups = new HashSet<Group>();
-       groups.add(group);
+        passwordPolicyService = new PasswordPolicyServiceImpl();
     }
 
     public void testRequestToken() throws Exception {
-//        userDao.save(user);
-        Investigator inv = Fixtures.createInvestigator("tester");
-        inv.setLoginId(userName);
-        expect(userDao.getByLoginId(userName)).andReturn(inv);
-        userDao.save(inv);
+       
+    	String userName = "user@domain";
+        user = new _User();
+        user.setTokenTime(new Timestamp(new Date().getTime()));
+        
+        
+        passwordManagerService.setUserRepository(userRepository);
+        expect(userRepository.getUserByLoginName(userName)).andReturn(user).anyTimes();
+        userRepository.save(user);
+        
         replayMocks();
-        assertNotNull(passwordManagerService.requestToken(userName));
+        _User returnedUser = passwordManagerService.requestToken(userName);
         verifyMocks();
+        assertNotNull(returnedUser);
+        assertNotNull(returnedUser.getToken());
+        assertTrue(StringUtils.isNotEmpty(returnedUser.getToken()));
     }
 
     public void testSetPassword() throws Exception {
-        expect(csmUser.getPassword()).andReturn("old_password").atLeastOnce();
-        expect(csmUser.getUserId()).andReturn(5L).anyTimes();
+    	
+    	String userName = "user@domain";
+        user = new _User();
+        user.setLoginName(userName);
+        csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
+        csmUser.setLoginName(userName);
         csmUser.setPassword("v@l1d_Password");
-        expect(userProvisioningManager.getGroups("5")).andReturn(groups).anyTimes();
-        userProvisioningManager.modifyUser(csmUser);
-        Investigator inv = Fixtures.createInvestigator("tester");
-        inv.setLoginId(userName);
-        inv.setEmailAddress(userName);
-        expect(userDao.getByLoginId(userName)).andReturn(inv).anyTimes();
-        expect(userDao.getByLoginId("Invalid_user")).andReturn(null).anyTimes();
-        userDao.save(inv);
+    	user.generateNewToken();
+    	user.setCsmUser(csmUser);
+    	
+        passwordPolicyService.setUserRepository(userRepository);
+        passwordPolicyService.setPasswordPolicyDao(passwordPolicyDao);
+        
+        passwordManagerService.setUserRepository(userRepository);
+        passwordManagerService.setPasswordPolicyService(passwordPolicyService);
+        
+        expect(passwordPolicyDao.getById(1)).andReturn(Fixtures.createPasswordPolicy()).anyTimes();
+        expect(userRepository.getUserByLoginName(userName)).andReturn(user).anyTimes();
+        expect(userRepository.getUserByLoginName("Invalid_user")).andReturn(null).anyTimes();
+        userRepository.userChangePassword(user, "v@l1d_Password", 1);
         expectLastCall().anyTimes();
+        
         replayMocks();
-        User user = passwordManagerService.requestToken(userName);
         passwordManagerService.setPassword(userName, "v@l1d_Password", user.getToken());
         try {
-            passwordManagerService.setPassword(userName, "v@l1d_Password", user.getToken());
+        	user.generateNewToken();
+            passwordManagerService.setPassword(userName, "v@l1d_Password", "123");
             fail("Shouldn't accept invalid token.");
         } catch (CaaersSystemException e) { /* good */
         }
         try {
-            User user2 = passwordManagerService.requestToken(userName);
-            passwordManagerService.setPassword(userName, "invalid_Password", user2.getToken());
+        	user.generateNewToken();
+            passwordManagerService.setPassword(userName, "invalid_Password", user.getToken());
             fail("Shouldn't accept invalid password.");
         } catch (CaaersSystemException e) { /* good */
         }
         try {
-            User user3 = passwordManagerService.requestToken(userName);
-            passwordManagerService.setPassword("Invalid_user", "v@l1d_Password", user3.getToken());
+            passwordManagerService.setPassword("Invalid_user", "v@l1d_Password", user.getToken());
             fail("No Such User");
         } catch (CaaersNoSuchUserException e) { /* good */
         }
         verifyMocks();
+        
     }
 }

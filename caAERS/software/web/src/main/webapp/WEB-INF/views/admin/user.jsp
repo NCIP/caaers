@@ -141,24 +141,24 @@
 							<div style="height:100px;">
 								 <div class="leftpanel">
 									<div class="row">
-	                            		<div class="label"><ui:label path="csmUser.firstName" text="" labelProperty="firstName" required="true"/></div>
-	                            		<div class="value"><ui:text path="csmUser.firstName" required="true" title="First name"/></div>
+	                            		<div class="label"><ui:label path="user.csmUser.firstName" text="" labelProperty="firstName" required="true"/></div>
+	                            		<div class="value"><ui:text path="user.csmUser.firstName" required="true" title="First name"/></div>
 	                        		</div>
 	                        		
 			                        <div class="row">
-			                            <div class="label"><ui:label path="csmUser.lastName" text="" labelProperty="lastName" required="true"/></div>
-			                            <div class="value"><ui:text path="csmUser.lastName" required="true" title="Last name"/></div>
+			                            <div class="label"><ui:label path="user.csmUser.lastName" text="" labelProperty="lastName" required="true"/></div>
+			                            <div class="value"><ui:text path="user.csmUser.lastName" required="true" title="Last name"/></div>
 			                        </div>
 	                        		
 								 </div>
 								 <div class="rightpanel">
 									<div class="row">
-										<div class="label"><ui:label path="csmUser.emailAddress" text="" labelProperty="emailAddress" required="true"/></div>
-										<div class="value"><ui:text path="csmUser.emailAddress" required="true" title="Primary email" size="30"/></div>
+										<div class="label"><ui:label path="user.csmUser.emailId" text="" labelProperty="emailAddress" required="true"/></div>
+										<div class="value"><ui:text path="user.csmUser.emailId" required="true" title="Primary email" size="30"/></div>
 									</div>
 		                        <div class="row">
-		                            <div class="label"><ui:label path="csmUser.loginId" text="" labelProperty="loginId" required="true"/></div>
-		                            <div class="value"><ui:text path="csmUser.loginId" required="true" title="Login ID"/></div>
+		                            <div class="label"><ui:label path="user.csmUser.loginName" text="" labelProperty="loginId" required="true"/></div>
+		                            <div class="value"><ui:text path="user.csmUser.loginName" required="true" title="Login ID"/></div>
 		                        </div>									
 								 </div>
 							</div>

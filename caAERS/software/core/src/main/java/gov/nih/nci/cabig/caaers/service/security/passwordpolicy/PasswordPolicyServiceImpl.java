@@ -2,7 +2,8 @@ package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyException;
@@ -20,9 +21,9 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
 
     PasswordPolicyDao passwordPolicyDao;
 
-    CSMUserRepository csmUserRepository;
+    private UserRepository userRepository;
 
-    public PasswordPolicyServiceImpl() {
+	public PasswordPolicyServiceImpl() {
         passwordCreationPolicyValidator = new PasswordCreationPolicyValidator();
         loginPolicyValidator = new LoginPolicyValidator();
     }
@@ -46,6 +47,8 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     public boolean validatePasswordAgainstCreationPolicy(Credential credential)
             throws PasswordCreationPolicyException {
     	ValidationErrors validationErrors = new ValidationErrors();
+    	_User user = userRepository.getUserByLoginName(credential.getUserName());
+    	passwordCreationPolicyValidator.setUser(user);
 		boolean result = passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential, validationErrors);
 		if(validationErrors.hasErrors()) throw new PasswordCreationPolicyException("Error while saving password", validationErrors);
 		return result;
@@ -61,14 +64,9 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     public void setPasswordPolicyDao(PasswordPolicyDao passwordPolicyDao) {
         this.passwordPolicyDao = passwordPolicyDao;
     }
-
-    @Required
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
-        passwordCreationPolicyValidator.setCsmUserRepository(csmUserRepository);
-        //loginPolicyValidator.setCsmUserRepository(csmUserRepository);
-
-    }
-
+    
+    public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 }

@@ -2,9 +2,8 @@ package gov.nih.nci.cabig.caaers.service.security;
 
 import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
@@ -20,36 +19,31 @@ import org.springframework.beans.factory.annotation.Required;
 public class PasswordManagerServiceImpl implements PasswordManagerService {
 	
     private PasswordPolicyService passwordPolicyService;
+    private UserRepository userRepository;
 
-    private CSMUserRepository csmUserRepository;
-    
-    private UserDao userDao;
-
-    public User requestToken(String userName) throws CaaersSystemException {
-    	User user = userDao.getByLoginId(userName);
+    public _User requestToken(String userName) throws CaaersSystemException {
+    	_User user = userRepository.getUserByLoginName(userName);
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
     	}
         //get the token
-    	csmUserRepository.userCreateToken(user);
-    	userDao.save(user);
+    	user.generateNewToken();
+    	userRepository.save(user);
     	return user;
     }
 
     public void setPassword(String userName, String password, String token)
             throws CaaersSystemException {
-    	User user = userDao.getByLoginId(userName);
+    	_User user = userRepository.getUserByLoginName(userName);
     	
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
     	}
         validateToken(user, token);
         validateAndSetPassword(user, password);
-        userDao.save(user);
-        
     }
 
-    private boolean validateToken(User user, String token) throws CaaersSystemException {
+    private boolean validateToken(_User user, String token) throws CaaersSystemException {
         if (user.getTokenTime().after(
                 new Timestamp(new Date().getTime()
                         - passwordPolicyService.getPasswordPolicy()
@@ -58,11 +52,11 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         throw new CaaersSystemException("Invalid token.");
     }
 
-    private boolean validateAndSetPassword(User user, String password)
+    private boolean validateAndSetPassword(_User user, String password)
             throws CaaersSystemException {
-        passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(user.getLoginId(),
+        passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(user.getLoginName(),
                 password));
-        csmUserRepository.userChangePassword(user, password, passwordPolicyService
+        userRepository.userChangePassword(user, password, passwordPolicyService
                 .getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
         return true;
     }
@@ -72,12 +66,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         this.passwordPolicyService = passwordPolicyService;
     }
 
-    @Required
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
-    }
-    @Required
-    public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 }

@@ -53,6 +53,7 @@ public class UserTab extends TabWithFields<UserCommand>{
         super.onBind(request, command, errors);
         
         if(command != null){
+        	command.getUser().setLoginName(command.getUser().getCsmUser().getLoginName());
         	if(command.getRoleMemberships() != null && command.getRoleMemberships().size() > 0){
         		command.getRoleMemberships().clear();
         	}

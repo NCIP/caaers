@@ -117,5 +117,13 @@
         <property name="deviceDao" ref="deviceDao"></property>
     </bean>
 
+	<bean id="userRepository" class="gov.nih.nci.cabig.caaers.domain.repository.UserRepositoryImpl"
+          lazy-init="true" autowire="byType">
+        <property name="authenticationMode" ref="authenticationMode"/>
+        <property name="mailSender" ref="mailer"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="userDao" ref="_userDao" />
+    </bean>
+
 
  </beans>

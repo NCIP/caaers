@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.security.CSMUser;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 public class UserCommand {
 	
 	//Attributes to capture Basic User details.
-	private CSMUser csmUser;
+	private _User user;
 	//List which will hold all the RoleMemberships of the user.
 	private List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
 	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
@@ -131,12 +131,12 @@ public class UserCommand {
 	
 	//Setters & Getters for the private attributes if this class.
 
-	public CSMUser getCsmUser() {
-		return csmUser;
+	public _User getUser() {
+		return user;
 	}
 
-	public void setCsmUser(CSMUser csmUser) {
-		this.csmUser = csmUser;
+	public void setUser(_User user) {
+		this.user = user;
 	}
 
 	public List<SuiteRoleMembership> getRoleMemberships() {

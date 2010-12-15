@@ -54,9 +54,7 @@
     </bean>
 
     <bean name="/user/resetPassword" id="resetPasswordController" autowire="byType"
-	  class="gov.nih.nci.cabig.caaers.web.user.ResetPasswordController">
-	  <property name="csmUserRepository" ref="csmUserRepository"/>
-	</bean>
+	  class="gov.nih.nci.cabig.caaers.web.user.ResetPasswordController"/>
 
     <bean name="/user/emailSent" id="emailSentController" autowire="byType"
 	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
