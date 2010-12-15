@@ -16,15 +16,15 @@ public class InvestigatorIndexDaoTest extends TestCase {
     }
 
     public void testEntityIdColumnName() throws Exception {
-        assertEquals("participant_id", dao.entityIdColumnName());
+        assertEquals("investigator_id", dao.entityIdColumnName());
     }
 
     public void testIndexTableName() throws Exception {
-        assertEquals("participant_index", dao.indexTableName());
+        assertEquals("investigator_index", dao.indexTableName());
     }
 
     public void testSequenceName() throws Exception {
-        assertEquals("seq_participant_index_id", dao.sequenceName());
+        assertEquals("seq_investigator_index_id", dao.sequenceName());
     }
 
 }
