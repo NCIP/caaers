@@ -58,7 +58,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		staff.setLoginId("Joel@def.com");
 		String changeUrl = "/pages/url";
 		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
-		caaersSecurityFacadeImpl.createOrUpdateCSMUser(staff, changeUrl);
+		expect(caaersSecurityFacadeImpl.createOrUpdateCSMUser(staff, changeUrl)).andReturn(null);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
@@ -84,7 +84,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
 		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
-		caaersSecurityFacadeImpl.createOrUpdateCSMUser(staff, changeUrl);
+		expect(caaersSecurityFacadeImpl.createOrUpdateCSMUser(staff, changeUrl)).andReturn(null);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
