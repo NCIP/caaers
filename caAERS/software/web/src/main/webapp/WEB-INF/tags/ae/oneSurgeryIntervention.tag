@@ -16,8 +16,10 @@
     <tags:errors path="aeReport.surgeryInterventions[${index}]"/>
 
     <ui:row path="aeReport.surgeryInterventions[${index}].studySurgery">
-         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[4].propertyName}" text="${fieldGroup.fields[4].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[4].propertyName}" options="${fieldGroup.fields[4].attributes.options}" field="${fieldGroup.fields[4]}"/></jsp:attribute>
+         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[4].propertyName}" text="${fieldGroup.fields[4].displayName}"
+                                               mandatory="${fieldGroup.fields[4].attributes.mandatory}" required="true"/></jsp:attribute>
+         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[4].propertyName}" options="${fieldGroup.fields[4].attributes.options}"
+                                                field="${fieldGroup.fields[4]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.surgeryInterventions[${index}].studySurgery.description">
