@@ -17,9 +17,12 @@ import java.io.InputStream;
  *
  * @author Sameer Sawant
  */
-public class AdvancedSearchUiUtil{
+public final class AdvancedSearchUiUtil{
 
     private static final Log log = LogFactory.getLog(AdvancedSearchUiUtil.class);
+    
+    private AdvancedSearchUiUtil() {    	
+    }
 
 	public static SearchTargetObject getSearchTargetObjectByName(AdvancedSearchUi advancedSearchUi, String targetObjectName){
 		for(SearchTargetObject stObject: advancedSearchUi.getSearchTargetObject())

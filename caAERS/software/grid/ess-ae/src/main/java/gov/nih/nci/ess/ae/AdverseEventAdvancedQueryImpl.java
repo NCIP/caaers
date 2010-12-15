@@ -1,13 +1,19 @@
 package gov.nih.nci.ess.ae;
 
-import java.rmi.RemoteException;
-
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventQuery;
 import ess.caaers.nci.nih.gov.LimitOffset;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
+import gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaParameter;
+import gov.nih.nci.cabig.caaers.web.search.AdvancedSearchUiUtil;
+import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
+import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI;
 import gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -16,7 +22,8 @@ import org.springframework.context.MessageSourceAware;
  * @author Denis G. Krylov
  * 
  */
-public class AdverseEventAdvancedQueryImpl implements MessageSourceAware, AEAdvancedQueryI {
+public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
+		AEAdvancedQueryI {
 
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private DomainToGridObjectConverter domainToGridConverter;
@@ -85,13 +92,22 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware, AEAdva
 		this.adverseEventDao = adverseEventDao;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI#queryAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery, ess.caaers.nci.nih.gov.LimitOffset)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI#
+	 * queryAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery,
+	 * ess.caaers.nci.nih.gov.LimitOffset)
 	 */
 	public AdverseEvent[] findAdverseEvents(
 			AdverseEventQuery adverseEventQuery, LimitOffset limitOffset)
 			throws RemoteException, AdverseEventServiceException {
-		// TODO Auto-generated method stub
+		AdvancedSearchUi advancedSearchUi = AdvancedSearchUiUtil
+				.loadAdvancedSearchUi();
+		SearchTargetObject targetObject = AdvancedSearchUiUtil
+				.getSearchTargetObjectByName(advancedSearchUi,
+						"gov.nih.nci.cabig.caaers.domain.AdverseEvent");
+		List<AdvancedSearchCriteriaParameter> params = new ArrayList<AdvancedSearchCriteriaParameter>();		
 		return null;
 	}
 
