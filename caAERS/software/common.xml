@@ -457,16 +457,20 @@
           target: clean-lib              
     =======================================================-->
     <target name="clean-lib" unless="already.resolved" description="--> clean the project libraries directory (dependencies)">
-    	<echo message="Executing in ${ant.project.name}" />
-    	<echo message="Executing in ${ant.project.name}" />
-        <delete includeemptydirs="true" dir="${lib.dir}"/>
+    	<antcall target="clean-lib-dir" inheritAll="true" inheritRefs="true"/>
     </target>
+	
+    <target name="clean-lib-dir" description="--> clean the project libraries directory (dependencies)" unless="skip.clean">    	
+    	<echo message="Executing in ${ant.project.name}" />
+    	<echo message="Erasing ${lib.dir}" />
+        <delete includeemptydirs="true" dir="${lib.dir}"/>
+    </target>	
 	
 	<!-- ====================================================
 		target : clean-lib-test
 		Cleans the 3rd party libraries
 	=======================================================-->
-    <target name="clean-lib-test" description="--> clean the project libraries directory (dependencies)">
+    <target name="clean-lib-test" description="--> clean the project libraries directory (dependencies)" unless="skip.clean">
     	<echo message="Executing in ${ant.project.name}" />
         <delete includeemptydirs="true" dir="${test.lib.dir}"/>
     </target>
@@ -474,7 +478,7 @@
     <!-- ================================= 
           target: clean-dist              
          ================================= -->
-    <target name="clean-dist" description="--> clean the project built files">
+    <target name="clean-dist" description="--> clean the project built files" unless="skip.clean">
     	<echo message="Executing in ${ant.project.name}" />
         <delete includeemptydirs="true" dir="${dist.dir}"/>
     </target>
@@ -482,7 +486,7 @@
     <!-- ================================= 
           target: clean-classes              
          ================================= -->	
-	<target name="clean-classes" description="--> clean the classes dir">
+	<target name="clean-classes" description="--> clean the classes dir" unless="skip.clean">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${classes.dir}" />
 	</target>
@@ -490,7 +494,7 @@
     <!-- ================================= 
           target: clean-classes-test              
          ================================= -->	
-	<target name="clean-classes-test" description="--> clean the test classes dir">
+	<target name="clean-classes-test" description="--> clean the test classes dir" unless="skip.clean">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${test.classes.dir}" />
 	</target>
@@ -498,7 +502,7 @@
     <!-- ================================= 
           target: clean-generated-src              
          ================================= -->	
-	<target name="clean-generated-src" description="--> clean the generated sources dir">
+	<target name="clean-generated-src" description="--> clean the generated sources dir" unless="skip.clean">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${generated.src.dir}" />
 		<delete includeemptydirs="true" dir="${webservice.xsd.dest}" />
@@ -507,7 +511,7 @@
     <!-- ================================= 
           target: clean-test-results           
          ================================= -->	
-	<target name="clean-test-results" description="--> clean the test result dir">
+	<target name="clean-test-results" description="--> clean the test result dir" unless="skip.clean">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${test.results.dir}" />
 	</target>
@@ -515,7 +519,7 @@
     <!-- ================================= 
           target: clean-test-reports              
          ================================= -->	
-	<target name="clean-test-reports" description="--> clean the test report dir">
+	<target name="clean-test-reports" description="--> clean the test report dir" unless="skip.clean">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${test.reports.dir}" />
 	</target>
@@ -523,21 +527,21 @@
 	<!-- ================================= 
 	          target: clean-cobertura-dir             
 	         ================================= -->	
-		<target name="clean-cobertura-dir" description="--> clean the cobertura report dir">
+		<target name="clean-cobertura-dir" description="--> clean the cobertura report dir" unless="skip.clean">
 			<echo message="Executing in ${ant.project.name}" />
 			<delete includeemptydirs="true" dir="${cobertura.report.dir}" />
 		</target>
 	<!-- ================================================================
 	    target : clean-cobertura-instruments
 	===================================================================-->
-	<target name="clean-cobertura-instruments" description="--> clean the cobertura instruments classes dir">
+	<target name="clean-cobertura-instruments" description="--> clean the cobertura instruments classes dir" unless="skip.clean">
 				<echo message="Executing in ${ant.project.name}" />
 				<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
 	</target>
     <!-- ================================= 
           target: clean-working           
          ================================= -->	
-	<target name="clean-working" description="--> clean the working dir">
+	<target name="clean-working" description="--> clean the working dir" unless="skip.clean">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${build.dir}/working" />
 	</target>
@@ -546,6 +550,7 @@
          ================================= -->
     <target name="clean" depends="clean-classes, clean-classes-test, clean-generated-src, clean-dist, clean-lib, 
     			clean-lib-test, clean-test-results, clean-test-reports,clean-cobertura-instruments,clean-cobertura-dir,clean-working" 
+    	 		unless="skip.clean"
     	description="--> clean the project">
     	<delete dir="${main.src}" includes="**/*.class" />
 		<delete dir="${test.src}" includes="**/*.class" />

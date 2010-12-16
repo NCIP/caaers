@@ -51,6 +51,8 @@
 				conf="build->publish;runtime->runtime,publish;dist->dist;distGrid->distGrid"/>
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-web" rev="latest.integration" 
+				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
 				
         	<!--  C3PR registration stubs/skeltons -->
 			<dependency org="gov.nih.nci.ccts.grid"
@@ -123,6 +125,7 @@
 						
 			<!-- Test only dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-web" conf="test->test(default)" rev="latest.integration" />
 			<dependency org="dbunit" name="dbunit" rev="2.1" conf="test->default"/>
 			<dependency org="org.springframework" name="spring-mock" rev="2.5.6" force="true" conf="test->default" />
         	<dependency org="xmlunit" name="xmlunit" rev="1.0" conf="test->default" />

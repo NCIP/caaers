@@ -105,14 +105,14 @@
   <target name="clean" depends="clean-all, clean-repo" 
   			description="clean delete repository, and all projects" />
 	
-	<target name="clean-repo" description="cleans the local repository">
+	<target name="clean-repo" description="cleans the local repository" unless="skip.clean">
 		<delete dir="${local.repo.dir}"/>
 	</target>
 
 	<!-- ==================================================================
 		target : clean-pmd
 	====================================================================== -->
-	<target name="clean-pmd" description="cleans the pmd report directory ">
+	<target name="clean-pmd" description="cleans the pmd report directory " unless="skip.clean">
 		<delete dir="${pmd.report.dir}"/>
 	</target>
 	

@@ -53,7 +53,7 @@
 		target: clean-war 
 			Cleans the directory associated to keep exploded caaers files
 	=============================================================-->
-	 <target name="clean-war">
+	 <target name="clean-war" unless="skip.clean">
 	 	<delete dir="${dist.dir}/${war.filename}" />
 	 	<deltree dir="${war.dir}" />
 	 </target>	
@@ -111,7 +111,7 @@
 	<!--=================================================================
 		target :undeploy-caaers
 	==================================================================== -->
-	<target name="undeploy-caaers">
+	<target name="undeploy-caaers" unless="skip.clean">
 		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml"/>
 		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
 		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
