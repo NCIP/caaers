@@ -351,7 +351,7 @@
                             </span>
                             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
                                 <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />">${rvDTO.reportName}</a></td>
-                                <c:if test="${rvDTO.rv.submittedOn eq null}">
+                                <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn ne null}">
                                     <td align="right"><i>Due on:</i></td>
                                     <td align="left">
 <%--
@@ -366,6 +366,10 @@
                                 <c:if test="${rvDTO.rv.submittedOn ne null}">
                                     <td align="right" width="100px"><i>Submited on:</i></td>
                                     <td align="left" width="70px"><span style="color:green;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
+                                </c:if>
+                                <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn eq null}">
+                                    <td align="right" width="100px"><i>Withdrawn on:</i></td>
+                                    <td align="left" width="70px"><span style="color:blue;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
                                 </c:if>
                             </tr>
                         </c:forEach>
