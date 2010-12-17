@@ -31,7 +31,7 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name = "caaers_users")
-@GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_caaers_users_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_caaers_users_id") })
 public class _User extends AbstractMutableDomainObject{
 	
 	protected String loginName;
