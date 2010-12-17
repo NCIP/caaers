@@ -747,14 +747,14 @@ this collection of information, including suggestions for reducing this burden t
 													<fo:block>
 														<fo:inline font-size="6.5pt">6. </fo:inline>
 														<fo:inline xsl:use-attribute-sets="label">Lot # </fo:inline>
-														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic"></fo:inline>
 													</fo:block>
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border"  number-columns-spanned="2">													
 													<fo:block>
 														<fo:inline font-size="6.5pt">7. </fo:inline>
 														<fo:inline xsl:use-attribute-sets="label">Exp Date # </fo:inline>
-														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic"></fo:inline>
 													</fo:block>
 												</fo:table-cell>				
 
