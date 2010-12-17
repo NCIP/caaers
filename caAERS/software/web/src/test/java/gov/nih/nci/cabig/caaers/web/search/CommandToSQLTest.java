@@ -26,19 +26,18 @@ public class CommandToSQLTest extends TestCase {
 	List<AdvancedSearchCriteriaParameter> criteriaParameters;
 	SearchTargetObject targetObject;
 	AdvancedSearchUi advancedSearchUi;
-	CommandToSQL commandToSQL;
+	
 	
 	protected void setUp() throws Exception {
         super.setUp();
-        criteriaParameters = new ArrayList<AdvancedSearchCriteriaParameter>();
-        commandToSQL = new CommandToSQL();
+        criteriaParameters = new ArrayList<AdvancedSearchCriteriaParameter>();    
         advancedSearchUi = AdvancedSearchUiUtil.loadAdvancedSearchUi();
     }
 
 	
 	public void testTest() throws Exception {
 		createStudySearchXML();
-		AbstractQuery aq = commandToSQL.transform(targetObject, criteriaParameters);
+		AbstractQuery aq = CommandToSQL.transform(targetObject, criteriaParameters);
 		String expectedHql = "select  distinct s from Study s WHERE lower(s.shortTitle) like :shortTitleText AND terminology.term = :term";
 		assertEquals(expectedHql,aq.getQueryString());
 		System.out.println(aq.getQueryString());

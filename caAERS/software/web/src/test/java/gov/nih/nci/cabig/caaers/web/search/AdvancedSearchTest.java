@@ -18,7 +18,7 @@ public class AdvancedSearchTest extends TestCase{
 	 */
 	public void testAdvancedSearchUiXML() throws Exception {
 		AdvancedSearchUi advancedSearchUi = AdvancedSearchUiUtil.loadAdvancedSearchUi();
-		CommandToSQL commandToSQL = new CommandToSQL();
+		
 		
 		List<SearchTargetObject> searchTargetObjects = advancedSearchUi.getSearchTargetObject();
 		
@@ -28,7 +28,7 @@ public class AdvancedSearchTest extends TestCase{
 			assertEquals(query.getClass().getName(),queryClassName);
 			// invoke fields
 			String tableAlias = searchTargetObject.getTableAlias();
-			commandToSQL.invokeField(query, tableAlias);
+			CommandToSQL.invokeField(query, tableAlias);
 			
 			List<DependentObject> dependentObjects = searchTargetObject.getDependentObject();
 			for (DependentObject dependentObject:dependentObjects) {
@@ -36,9 +36,9 @@ public class AdvancedSearchTest extends TestCase{
 				String joinMethodName = dependentObject.getJoinByMethod();
 				boolean isOuterJoinRequired = dependentObject.isOuterJoinRequired();
 				if (joinMethodName != null) {
-					commandToSQL.invokeMethod(query, joinMethodName, new Class[0], new Object[0]);
+					CommandToSQL.invokeMethod(query, joinMethodName, new Class[0], new Object[0]);
 					if (isOuterJoinRequired) {
-						commandToSQL.invokeMethod(query, CommandToSQL.OUTER_JOIN_PREFIX+joinMethodName, new Class[0], new Object[0]);
+						CommandToSQL.invokeMethod(query, CommandToSQL.OUTER_JOIN_PREFIX+joinMethodName, new Class[0], new Object[0]);
 					}
 				}
 				
@@ -67,13 +67,13 @@ public class AdvancedSearchTest extends TestCase{
 					par[1] = String.class;
 					obj[1] = "=";
 
-					commandToSQL.invokeMethod(query,filterMethodName,par,obj);
+					CommandToSQL.invokeMethod(query,filterMethodName,par,obj);
 				}
 				
 				List<ViewColumn> vcs = dependentObject.getViewColumn();
 				for (ViewColumn vc:vcs) {
 					if (vc.getFilterMethod() != null) {
-						commandToSQL.invokeMethod(query, vc.getFilterMethod(), new Class[0], new Object[0]);
+						CommandToSQL.invokeMethod(query, vc.getFilterMethod(), new Class[0], new Object[0]);
 					}
 				}
 			}

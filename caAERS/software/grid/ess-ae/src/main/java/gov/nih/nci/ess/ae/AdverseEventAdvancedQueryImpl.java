@@ -4,11 +4,17 @@ import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventQuery;
 import ess.caaers.nci.nih.gov.Criteria;
 import ess.caaers.nci.nih.gov.LimitOffset;
+import gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaParameter;
 import gov.nih.nci.cabig.caaers.web.search.AdvancedSearchUiUtil;
+import gov.nih.nci.cabig.caaers.web.search.CommandToSQL;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
+import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.Operator;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 import gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI;
 
 import java.rmi.RemoteException;
@@ -16,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 
@@ -28,73 +36,66 @@ import _21090.org.iso.ST;
 public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		AEAdvancedQueryI {
 
-	private static final String INVALID_QUERY_CRITERIA = "WS_AEMS_041";
+	private static final Log log = LogFactory
+			.getLog(AdverseEventAdvancedQueryImpl.class);
 	private static final ISO21090Helper h = null;
-	private GridToDomainObjectConverter gridToDomainConverter;
-	private DomainToGridObjectConverter domainToGridConverter;
-	private MessageSource messageSource;
+	private static final String INCOMPLETE_CRITERIA = "WS_AEMS_045";
+	private static final String INVALID_ATTR_NAME = "WS_AEMS_043";
+	private static final String INVALID_OBJ_NAME = "WS_AEMS_042";
+	private static final String INVALID_PREDICATE = "WS_AEMS_044";
+	private static final String INVALID_QUERY_CRITERIA = "WS_AEMS_041";
 	private AdverseEventDao adverseEventDao;
+	private AdvancedSearchDao advancedSearchDao;
+	private DomainToGridObjectConverter domainToGridConverter;
+	private GridToDomainObjectConverter gridToDomainConverter;
+	private MessageSource messageSource;
 
 	/**
-	 * @return the gridToDomainConverter
+	 * @param criteria
+	 * @param tgtObj
+	 * @return
 	 */
-	public final GridToDomainObjectConverter getGridToDomainConverter() {
-		return gridToDomainConverter;
-	}
+	private AdvancedSearchCriteriaParameter convert(Criteria criteria,
+			SearchTargetObject tgtObj) {
+		AdvancedSearchCriteriaParameter param = new AdvancedSearchCriteriaParameter();
+		final String attrName = getStringValue(criteria.getAttributeName());
+		final String objName = getStringValue(criteria.getObjectName());
+		final String predicate = getStringValue(criteria.getPredicate());
+		final String value = getStringValue(criteria.getValue());
 
-	/**
-	 * @param gridToDomainConverter
-	 *            the gridToDomainConverter to set
-	 */
-	public final void setGridToDomainConverter(
-			GridToDomainObjectConverter gridToDomainObjectConverter) {
-		this.gridToDomainConverter = gridToDomainObjectConverter;
-	}
+		// check whether the object name is right
+		DependentObject depObj = AdvancedSearchUiUtil.getDependentObjectByName(
+				tgtObj, objName);
+		if (depObj == null) {
+			raiseError(INVALID_OBJ_NAME);
+		}
 
-	/**
-	 * @return the messageSource
-	 */
-	public final MessageSource getMessageSource() {
-		return messageSource;
-	}
+		// check the attribute name
+		UiAttribute uiAttr = AdvancedSearchUiUtil.getUiAttributeByName(depObj,
+				attrName);
+		if (uiAttr == null) {
+			raiseError(INVALID_ATTR_NAME);
+		}
 
-	/**
-	 * @param messageSource
-	 *            the messageSource to set
-	 */
-	public final void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
-	}
+		// is the predicate supported for this attribute?
+		Operator op = AdvancedSearchUiUtil.getOperator(uiAttr, predicate);
+		if (op == null) {
+			raiseError(INVALID_PREDICATE);
+		}
 
-	/**
-	 * @return the domainToGridConverter
-	 */
-	public final DomainToGridObjectConverter getDomainToGridConverter() {
-		return domainToGridConverter;
-	}
+		param.setAttributeName(attrName);
+		param.setObjectName(objName);
+		param.setPredicate(predicate);
+		param.setValue(value);
+		param.setDataType(uiAttr.getDataType());
+		param.setDependentObjectName(depObj.getClassName());
+		param.setFilterByMethodInQueryClass(uiAttr.getFilterMethod());
+		param.setDeleted(false);
 
-	/**
-	 * @param domainToGridConverter
-	 *            the domainToGridConverter to set
-	 */
-	public final void setDomainToGridConverter(
-			DomainToGridObjectConverter domainToGridConverter) {
-		this.domainToGridConverter = domainToGridConverter;
-	}
-
-	/**
-	 * @return the adverseEventDao
-	 */
-	public final AdverseEventDao getAdverseEventDao() {
-		return adverseEventDao;
-	}
-
-	/**
-	 * @param adverseEventDao
-	 *            the adverseEventDao to set
-	 */
-	public final void setAdverseEventDao(AdverseEventDao adverseEventDao) {
-		this.adverseEventDao = adverseEventDao;
+		if (!param.isFilled()) {
+			raiseError(INCOMPLETE_CRITERIA);
+		}
+		return param;
 	}
 
 	/*
@@ -110,9 +111,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		// basic parameters check first
 		if (query.getSearchCriteria() == null
 				|| query.getSearchCriteria().length == 0) {
-			throw new AdverseEventServiceException(INVALID_QUERY_CRITERIA,
-					getMessageSource().getMessage(INVALID_QUERY_CRITERIA,
-							new Object[] {}, Locale.getDefault()));
+			raiseError(INVALID_QUERY_CRITERIA);
 		}
 
 		AdvancedSearchUi advancedSearchUi = AdvancedSearchUiUtil
@@ -122,22 +121,54 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 						"gov.nih.nci.cabig.caaers.domain.AdverseEvent");
 		List<AdvancedSearchCriteriaParameter> params = new ArrayList<AdvancedSearchCriteriaParameter>();
 		for (Criteria criteria : query.getSearchCriteria()) {
-			params.add(convert(criteria));
+			params.add(convert(criteria, targetObject));
 		}
-		return null;
+		if (params.isEmpty()) {
+			raiseError(INCOMPLETE_CRITERIA);
+		}
+		try {
+			AbstractQuery hqlQuery = CommandToSQL.transform(targetObject,
+					params);
+			log.debug(hqlQuery.getQueryString());
+			List<gov.nih.nci.cabig.caaers.domain.AdverseEvent> list = (List<gov.nih.nci.cabig.caaers.domain.AdverseEvent>) advancedSearchDao
+					.search(hqlQuery);
+			List<AdverseEvent> gridList = new ArrayList();
+			for (gov.nih.nci.cabig.caaers.domain.AdverseEvent ae : list) {
+				gridList.add(domainToGridConverter.convertAdverseEvent(ae));
+			}
+			return gridList.toArray(new AdverseEvent[0]);
+		} catch (Exception e) {
+			log.error(e, e);
+			throw new AdverseEventServiceException(e);
+		}		
 	}
 
 	/**
-	 * @param criteria
-	 * @return
+	 * @return the adverseEventDao
 	 */
-	private AdvancedSearchCriteriaParameter convert(Criteria criteria) {
-		AdvancedSearchCriteriaParameter param = new AdvancedSearchCriteriaParameter();
-		param.setAttributeName(getStringValue(criteria.getAttributeName()));
-		param.setObjectName(getStringValue(criteria.getObjectName()));
-		param.setPredicate(getStringValue(criteria.getPredicate()));
-		param.setValue(getStringValue(criteria.getValue()));
-		return param;
+	public final AdverseEventDao getAdverseEventDao() {
+		return adverseEventDao;
+	}
+
+	/**
+	 * @return the domainToGridConverter
+	 */
+	public final DomainToGridObjectConverter getDomainToGridConverter() {
+		return domainToGridConverter;
+	}
+
+	/**
+	 * @return the gridToDomainConverter
+	 */
+	public final GridToDomainObjectConverter getGridToDomainConverter() {
+		return gridToDomainConverter;
+	}
+
+	/**
+	 * @return the messageSource
+	 */
+	public final MessageSource getMessageSource() {
+		return messageSource;
 	}
 
 	/**
@@ -146,6 +177,60 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	 */
 	private String getStringValue(ST st) {
 		return (st != null && st.getValue() != null) ? st.getValue() : "";
+	}
+
+	private void raiseError(String code) {
+		throw new AdverseEventServiceException(code, getMessageSource()
+				.getMessage(code, new Object[] {}, Locale.getDefault()));
+	}
+
+	/**
+	 * @param adverseEventDao
+	 *            the adverseEventDao to set
+	 */
+	public final void setAdverseEventDao(AdverseEventDao adverseEventDao) {
+		this.adverseEventDao = adverseEventDao;
+	}
+
+	/**
+	 * @param domainToGridConverter
+	 *            the domainToGridConverter to set
+	 */
+	public final void setDomainToGridConverter(
+			DomainToGridObjectConverter domainToGridConverter) {
+		this.domainToGridConverter = domainToGridConverter;
+	}
+
+	/**
+	 * @param gridToDomainConverter
+	 *            the gridToDomainConverter to set
+	 */
+	public final void setGridToDomainConverter(
+			GridToDomainObjectConverter gridToDomainObjectConverter) {
+		this.gridToDomainConverter = gridToDomainObjectConverter;
+	}
+
+	/**
+	 * @param messageSource
+	 *            the messageSource to set
+	 */
+	public final void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	/**
+	 * @return the advancedSearchDao
+	 */
+	public final AdvancedSearchDao getAdvancedSearchDao() {
+		return advancedSearchDao;
+	}
+
+	/**
+	 * @param advancedSearchDao
+	 *            the advancedSearchDao to set
+	 */
+	public final void setAdvancedSearchDao(AdvancedSearchDao advancedSearchDao) {
+		this.advancedSearchDao = advancedSearchDao;
 	}
 
 }

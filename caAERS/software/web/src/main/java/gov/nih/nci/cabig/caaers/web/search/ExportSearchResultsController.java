@@ -194,14 +194,13 @@ public class ExportSearchResultsController extends AbstractCommandController {
 			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted())
 					parameters.add(p);
 		}
-
-		CommandToSQL commandToSQL = new CommandToSQL();
-		AbstractQuery query = commandToSQL.transform(command.getSearchTargetObject(), parameters);
+		
+		AbstractQuery query = CommandToSQL.transform(command.getSearchTargetObject(), parameters);
 		command.setHql(query.getQueryString());
 		
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
-		if(commandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
+		if(CommandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
 			multipleObjectList = (List<Object[]>) advancedSearchDao.search(query);
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());

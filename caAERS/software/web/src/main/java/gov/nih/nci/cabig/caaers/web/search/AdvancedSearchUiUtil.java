@@ -3,14 +3,18 @@ package gov.nih.nci.cabig.caaers.web.search;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.Operator;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import java.io.InputStream;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This is a utility class for AdvancedSearchUi.
@@ -49,6 +53,20 @@ public final class AdvancedSearchUiUtil{
 		for(DependentObject dObject: stObject.getDependentObject())
 			if(dObject.getDisplayName().equals(dependentObjectDisplayName))
 				return dObject;
+		return null;
+	}
+	
+	/**
+	 * @param attr
+	 * @param predicate
+	 * @return
+	 */
+	public static Operator getOperator(UiAttribute attr, String predicate) {
+		for (Operator op:attr.getOperator()) {
+			if (StringUtils.equalsIgnoreCase(predicate, op.getName())) {
+				return op;
+			}
+		}
 		return null;
 	}
 

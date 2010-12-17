@@ -119,4 +119,18 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 	public void setFilterByMethodInQueryClass(String filterByMethodInQueryClass) {
 		this.filterByMethodInQueryClass = filterByMethodInQueryClass;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "AdvancedSearchCriteriaParameter [dependentObjectName="
+				+ dependentObjectName + ", objectName=" + objectName
+				+ ", attributeName=" + attributeName + ", predicate="
+				+ predicate + ", value=" + value + ", displayValue="
+				+ displayValue + ", deleted=" + deleted
+				+ ", filterByMethodInQueryClass=" + filterByMethodInQueryClass
+				+ ", dataType=" + dataType + "]";
+	}
 }

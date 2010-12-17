@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -383,6 +384,12 @@ public abstract class AbstractQuery {
 		return dateQuery.toString();
 	}
 
-    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+    	return ToStringBuilder.reflectionToString(this);
+    }
     
 }

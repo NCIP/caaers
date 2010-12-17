@@ -73,10 +73,9 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 					parameters.add(p);
 		}
 		//String query = "";
-		AbstractQuery queryObj = null;
-		CommandToSQL commandToSQL =  new CommandToSQL();
+		AbstractQuery queryObj = null;		
 		try{
-			queryObj = commandToSQL.transform(command.getSearchTargetObject(), parameters);
+			queryObj = CommandToSQL.transform(command.getSearchTargetObject(), parameters);
 			
 			//query = commandToSQL.transform(command.getSearchTargetObject(), parameters, true);
 		}catch(Exception e){
@@ -87,7 +86,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
 		
-		if(commandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
+		if(CommandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
 			multipleObjectList = (List<Object[]>) advancedSearchDao.search(queryObj);
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());

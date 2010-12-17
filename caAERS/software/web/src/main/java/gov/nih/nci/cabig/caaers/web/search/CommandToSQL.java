@@ -18,18 +18,21 @@ import org.apache.commons.lang.StringUtils;
  * @author Sameer Sawant
  * @author Srini Akkala
  */
-public class CommandToSQL{
+public final class CommandToSQL {
+	
+	private CommandToSQL() {	
+	}
 
 	public static String OUTER_JOIN_PREFIX = "outer";
 
 	
-	public  AbstractQuery transform(SearchTargetObject targetObject, 
+	public static AbstractQuery transform(SearchTargetObject targetObject, 
 			List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception{
 
-		return this.buildAbstractQuery(targetObject, criteriaParameters);
+		return buildAbstractQuery(targetObject, criteriaParameters);
 	}
 
-	private AbstractQuery buildAbstractQuery(SearchTargetObject targetObject , List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception {
+	private static AbstractQuery buildAbstractQuery(SearchTargetObject targetObject , List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception {
 		String queryClassName = targetObject.getQueryClassName();
 		AbstractQuery query = (AbstractQuery)Class.forName(queryClassName).newInstance();
 	 	 
@@ -135,7 +138,7 @@ public class CommandToSQL{
 		return query;
 	}
 	
-	public boolean isMultipleViewQuery(SearchTargetObject targetObject){
+	public static boolean isMultipleViewQuery(SearchTargetObject targetObject){
 		int numberOfDependentObjectsInView = 0;
 		for(DependentObject dObject: targetObject.getDependentObject())
 			if(dObject.isInView())
@@ -143,13 +146,13 @@ public class CommandToSQL{
 		return numberOfDependentObjectsInView > 1;
 	}
 	
-	public String invokeField(Object query , String fieldName) throws Exception{
+	public static String invokeField(Object query , String fieldName) throws Exception{
 		Field field = query.getClass().getField(fieldName);
 		Object aliasValue = field.get(query);
 		return aliasValue.toString();
 	}
 	
-	public void invokeMethod(Object query , String joinMethodName , Class[] par , Object[] obj) throws Exception {
+	public static void invokeMethod(Object query , String joinMethodName , Class[] par , Object[] obj) throws Exception {
 		Method mthd = query.getClass().getMethod(joinMethodName,par);
 		mthd.invoke(query,obj);
 	}
