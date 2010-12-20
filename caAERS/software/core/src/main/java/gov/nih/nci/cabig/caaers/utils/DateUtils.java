@@ -202,19 +202,34 @@ public class DateUtils {
     	return dv;
     }
 
+    /**
+     * Validate a date to be a valid calendar date.
+     * Input may come with date "00" which means the date was not indicated,
+     * in which case we are going to use 01 just for validation purposes.
+     *
+     * @param date - the date to be validates
+     * @return boolean - true if the date is valid, false otherwise
+     *
+     * */
     public static boolean isValidDate(String date) {
+        String cloneDate = null;
+
+        if (date.substring(3, 5).equals("00")) {
+            cloneDate = date.replaceFirst("/00/", "/01/");
+        } else cloneDate = new String(date);
+
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
 
         Date testDate;
         try {
-          testDate = sdf.parse(date);
+            testDate = sdf.parse(cloneDate);
         }
         catch (ParseException e) {
-          return false;
+            return false;
         }
 
-        if (!sdf.format(testDate).equals(date)) {
-          return false;
+        if (!sdf.format(testDate).equals(cloneDate)) {
+            return false;
         }
 
         return true;
