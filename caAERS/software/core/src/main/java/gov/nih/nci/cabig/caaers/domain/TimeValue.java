@@ -108,6 +108,11 @@ public class TimeValue {
 			return false;
 		return true;
 	}
+	
+	@Transient
+	public boolean isBlank() {
+		return getHour()==null && getMinute()==null;
+	}
     
 
 }

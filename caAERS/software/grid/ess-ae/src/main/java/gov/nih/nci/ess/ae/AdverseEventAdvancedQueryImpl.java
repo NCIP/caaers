@@ -106,7 +106,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	 * ess.caaers.nci.nih.gov.LimitOffset)
 	 */
 	public AdverseEvent[] findAdverseEvents(AdverseEventQuery query,
-			LimitOffset offset) throws RemoteException,
+			LimitOffset limitAndOffset) throws RemoteException,
 			AdverseEventServiceException {
 		// basic parameters check first
 		if (query.getSearchCriteria() == null
@@ -126,12 +126,18 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		if (params.isEmpty()) {
 			raiseError(INCOMPLETE_CRITERIA);
 		}
+		Integer firstResult = limitAndOffset != null
+				&& limitAndOffset.getOffset() != null ? limitAndOffset
+				.getOffset().getValue() : null;
+		Integer maxResults = limitAndOffset != null
+				&& limitAndOffset.getLimit() != null ? limitAndOffset
+				.getLimit().getValue() : null;
 		try {
 			AbstractQuery hqlQuery = CommandToSQL.transform(targetObject,
 					params);
-			log.debug(hqlQuery.getQueryString());
+			log.info(hqlQuery.getQueryString());
 			List<gov.nih.nci.cabig.caaers.domain.AdverseEvent> list = (List<gov.nih.nci.cabig.caaers.domain.AdverseEvent>) advancedSearchDao
-					.search(hqlQuery);
+					.search(hqlQuery, firstResult, maxResults);
 			List<AdverseEvent> gridList = new ArrayList();
 			for (gov.nih.nci.cabig.caaers.domain.AdverseEvent ae : list) {
 				gridList.add(domainToGridConverter.convertAdverseEvent(ae));
@@ -140,7 +146,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		} catch (Exception e) {
 			log.error(e, e);
 			throw new AdverseEventServiceException(e);
-		}		
+		}
 	}
 
 	/**

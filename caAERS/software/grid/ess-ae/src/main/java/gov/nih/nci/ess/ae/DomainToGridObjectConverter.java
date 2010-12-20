@@ -179,6 +179,10 @@ public class DomainToGridObjectConverter {
 	}
 
 	private TSDateTime convert(Date day, TimeValue time) {
+		if (time == null || time.isBlank()) {
+			return convert(day);
+		}
+		day = day == null ? new Date(0) : day;
 		// My apologies for the less readable expression below.
 		return convert(DateUtils.setMinutes(DateUtils.setHours(day,
 				time.isAM() ? (time.getHour() == 12 ? 0 : time.getHour())

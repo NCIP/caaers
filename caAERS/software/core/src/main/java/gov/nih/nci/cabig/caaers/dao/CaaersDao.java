@@ -23,6 +23,7 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
@@ -369,48 +370,74 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
-       String queryString = query.getQueryString();
-       if(log.isDebugEnabled()) log.debug("::: " + queryString);
-       return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-                if(query instanceof NativeSQLQuery){
-                    org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
-                    Map<String, NullableType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
-                    for(String key : scalarMap.keySet()){
-                       nativeQuery.addScalar(key, scalarMap.get(key));
-                    }
-                    Map<String, Object> queryParameterMap = query.getParameterMap();
-                    for (String key : queryParameterMap.keySet()) {
-                        Object value = queryParameterMap.get(key);
-                        if (value instanceof Collection) {
-                            nativeQuery.setParameterList(key, (Collection) value);
-                        } else {
-                            nativeQuery.setParameter(key, value);
-                        }
-                    }
-                    return nativeQuery.list();
-                }else {
-                    org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
-                    Map<String, Object> queryParameterMap = query.getParameterMap();
-                    for (String key : queryParameterMap.keySet()) {
-                        Object value = queryParameterMap.get(key);
-                        if (value instanceof Collection) {
-                            hibernateQuery.setParameterList(key, (Collection) value);
-                        } else {
-                            hibernateQuery.setParameter(key, value);
-                        }
-
-                    }
-                    return hibernateQuery.list();
-                }
-            }
-
-        });
+    	return search(query, null, null);
     }
 
-    
+    /**
+     * @param query
+     * @param firstResult can be null.
+     * @param maxResults can be null.
+     * @return
+     */
     @SuppressWarnings("unchecked")
+	public List<?> search(final AbstractQuery query, final Integer firstResult, final Integer maxResults) {
+	       String queryString = query.getQueryString();
+	       if(log.isDebugEnabled()) log.debug("::: " + queryString);
+	       return (List<?>) getHibernateTemplate().execute(new HibernateCallback() {
+
+	            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+	                if(query instanceof NativeSQLQuery){
+	                    org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
+	                    setResultSetBoundaries(nativeQuery, firstResult, maxResults);
+	                    Map<String, NullableType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+	                    for(String key : scalarMap.keySet()){
+	                       nativeQuery.addScalar(key, scalarMap.get(key));
+	                    }
+	                    Map<String, Object> queryParameterMap = query.getParameterMap();
+	                    for (String key : queryParameterMap.keySet()) {
+	                        Object value = queryParameterMap.get(key);
+	                        if (value instanceof Collection) {
+	                            nativeQuery.setParameterList(key, (Collection) value);
+	                        } else {
+	                            nativeQuery.setParameter(key, value);
+	                        }
+	                    }
+	                    return nativeQuery.list();
+	                }else {
+	                    org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
+	                    setResultSetBoundaries(hibernateQuery, firstResult, maxResults);
+	                    Map<String, Object> queryParameterMap = query.getParameterMap();
+	                    for (String key : queryParameterMap.keySet()) {
+	                        Object value = queryParameterMap.get(key);
+	                        if (value instanceof Collection) {
+	                            hibernateQuery.setParameterList(key, (Collection) value);
+	                        } else {
+	                            hibernateQuery.setParameter(key, value);
+	                        }
+
+	                    }
+	                    return hibernateQuery.list();
+	                }
+	            }
+
+	        });
+	    }
+
+    
+    /**
+     * @param query
+     * @param firstResult
+     * @param maxResults
+     */
+    private void setResultSetBoundaries(org.hibernate.Query query,
+			Integer firstResult, Integer maxResults) {
+    	if (firstResult!=null)
+    		query.setFirstResult(firstResult);
+    	if (maxResults!=null)
+    		query.setMaxResults(maxResults);
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {
 		String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
