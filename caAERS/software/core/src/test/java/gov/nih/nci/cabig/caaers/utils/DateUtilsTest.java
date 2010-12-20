@@ -127,6 +127,9 @@ public class DateUtilsTest extends TestCase {
     public void testValidationByString() {
         assertFalse(DateUtils.isValidDate("13/12/2009"));
         assertTrue(DateUtils.isValidDate("12/12/2009"));
+        assertTrue(DateUtils.isValidDate("12/00/2009"));
+        assertFalse(DateUtils.isValidDate("00/00/2009"));
+        assertFalse(DateUtils.isValidDate("00/12/2009"));
     }
 
     public void testValidationByDateValue() {
