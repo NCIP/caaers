@@ -44,7 +44,7 @@ function buildTable(form) {
 		$('indicator').className='';
 		showCoppaSearchDisclaimer();
         var parameterMap = getParameterMap(form);
-		searchStudy.getStudiesTable(parameterMap, type, text, test);
+		searchStudy.getStudiesTable(parameterMap, type, text, ajaxCallBack);
 	}
 }
 
@@ -54,7 +54,7 @@ function fireAction(action, selected){
 	document.searchForm.submit();
 }
 
-function test(jsonResult) {
+function ajaxCallBack(jsonResult) {
     $('indicator').className = 'indicator';
     initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
     hideCoppaSearchDisclaimer();

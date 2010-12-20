@@ -30,11 +30,11 @@ function buildTable(form) {
     $('nsc').value = nsc;
 
 	var parameterMap = getParameterMap(form);
-	search.getAgentsTable(parameterMap, name, nsc, test);
+	search.getAgentsTable(parameterMap, name, nsc, ajaxCallBack);
     $('bigSearch').show();
 }
 
-function test(jsonResult) {
+function ajaxCallBack(jsonResult) {
     $('indicator').className = 'indicator';
     initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
     hideCoppaSearchDisclaimer();

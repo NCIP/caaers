@@ -42,11 +42,11 @@
             $('value').value = text
 
             var parameterMap = getParameterMap(form);
-            search.getInvestigatorTable(parameterMap, type, text, test);
+            search.getInvestigatorTable(parameterMap, type, text, ajaxCallBack);
             $('bigSearch').show();
         }
 
-        function test(jsonResult) {
+        function ajaxCallBack(jsonResult) {
             $('indicator').className = 'indicator';
             initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
             hideCoppaSearchDisclaimer();

@@ -45,7 +45,7 @@
                 var type = $('searchType').options[$('searchType').selectedIndex].value;
 
                 var parameterMap = getParameterMap(form);
-                createParticipant.getParticipantTable(parameterMap, type, text, test)
+                createParticipant.getParticipantTable(parameterMap, type, text, ajaxCallBack)
 
                 $('bigSearch').show();
 
@@ -56,7 +56,7 @@
              $('command').participant.value = selectedParticipant;
         }
 
-        function test(jsonResult) {
+        function ajaxCallBack(jsonResult) {
             $('indicator').className='indicator'
             //document.getElementById('tableDiv').innerHTML = jsonResult;
             initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);

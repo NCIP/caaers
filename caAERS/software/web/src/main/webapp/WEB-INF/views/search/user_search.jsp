@@ -23,11 +23,11 @@
 
 			function buildTable(form) {
 				$('indicator').className=''
-					user.getUserTable($('propFn').value, $('propLn').value, $('propUn').value, test);
+					user.getUserTable($('propFn').value, $('propLn').value, $('propUn').value, ajaxCallBack);
 			    $('bigSearch').show();
 			}
 	
-			function test(jsonResult) {
+			function ajaxCallBack(jsonResult) {
 			    $('indicator').className = 'indicator';
 			    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
 			}

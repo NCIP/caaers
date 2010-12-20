@@ -46,7 +46,7 @@
 
             var parameterMap = getParameterMap(form);
             parameterMap["organizationID"] = "<c:out value="${command.organization.id}" />";
-            searchStudy.getStudiesForCreateParticipant(parameterMap, type, text, "${command.organization.nciInstituteCode}", test);
+            searchStudy.getStudiesForCreateParticipant(parameterMap, type, text, "${command.organization.nciInstituteCode}", ajaxCallBack);
             $('indicator').hide();
             $('bigSearch').show();
         }
@@ -72,7 +72,7 @@
     }
 */
 
-    function test(jsonResult) {
+    function ajaxCallBack(jsonResult) {
         $('indicator').className='indicator'
         initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
         hideCoppaSearchDisclaimer();

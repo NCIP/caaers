@@ -41,10 +41,10 @@ function buildTable(form) {
 	$('value').value=text
 	
 	var parameterMap = getParameterMap(form);
-	search.buildParticipantTable(parameterMap, type, text, test);		
+	search.buildParticipantTable(parameterMap, type, text, ajaxCallBack);
 }
 
-function test(jsonResult) {
+function ajaxCallBack(jsonResult) {
     $('indicator').className = 'indicator';
     initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
     hideCoppaSearchDisclaimer();
