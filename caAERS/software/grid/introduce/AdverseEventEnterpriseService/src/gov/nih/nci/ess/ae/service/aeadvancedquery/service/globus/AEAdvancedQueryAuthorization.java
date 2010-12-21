@@ -62,6 +62,10 @@ public class AEAdvancedQueryAuthorization implements PDP {
 	public void authorizeGetServiceSecurityMetadata(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGetAuditTrialOfAdverseEvent(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -75,6 +79,9 @@ public class AEAdvancedQueryAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getServiceSecurityMetadata")){
 			authorizeGetServiceSecurityMetadata(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getAuditTrialOfAdverseEvent")){
+			authorizeGetAuditTrialOfAdverseEvent(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;
