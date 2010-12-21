@@ -50,6 +50,40 @@
           </sequence>
         </complexType>
       </element>
+      <element name="GetAuditTrialOfAdverseEventRequest">
+        <complexType>
+          <sequence>
+            <element name="adverseEventIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="minDate">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TsDateTime" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="maxDate">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TsDateTime" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetAuditTrialOfAdverseEventResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:AuditTrial" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="AEAdvancedQueryResourceProperties">
         <complexType>
           <sequence />
@@ -64,6 +98,12 @@
   <message name="FindAdverseEventsResponse">
     <part name="parameters" element="tns:FindAdverseEventsResponse" />
   </message>
+  <message name="GetAuditTrialOfAdverseEventRequest">
+    <part name="parameters" element="tns:GetAuditTrialOfAdverseEventRequest" />
+  </message>
+  <message name="GetAuditTrialOfAdverseEventResponse">
+    <part name="parameters" element="tns:GetAuditTrialOfAdverseEventResponse" />
+  </message>
   <message name="AdverseEventServiceExceptionFaultMessage">
     <part name="fault" element="ns7:AdverseEventServiceException" />
   </message>
@@ -76,6 +116,11 @@
     <operation name="findAdverseEvents">
       <input message="tns:FindAdverseEventsRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/FindAdverseEventsRequest" />
       <output message="tns:FindAdverseEventsResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/FindAdverseEventsResponse" />
+      <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/AdverseEventServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="getAuditTrialOfAdverseEvent">
+      <input message="tns:GetAuditTrialOfAdverseEventRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/GetAuditTrialOfAdverseEventRequest" />
+      <output message="tns:GetAuditTrialOfAdverseEventResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/GetAuditTrialOfAdverseEventResponse" />
       <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/AdverseEventServiceExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">
