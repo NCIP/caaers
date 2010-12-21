@@ -49,28 +49,16 @@ public class ManagementImpl extends ManagementImplBase {
 		return ctx;
 	}
 
-	public ess.caaers.nci.nih.gov.AdverseEvent initiateAdverseEvent(
-			ess.caaers.nci.nih.gov.Id subjectIdentifier,
-			ess.caaers.nci.nih.gov.Id studyIdentifier,
-			ess.caaers.nci.nih.gov.AdverseEvent adverseEvent,
-			ess.caaers.nci.nih.gov.TsDateTime courseStartDate)
-			throws RemoteException,
-			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.AdverseEvent initiateAdverseEvent(ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.AdverseEvent adverseEvent,ess.caaers.nci.nih.gov.TsDateTime courseStartDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		return aeManagement.initiateAdverseEvent(subjectIdentifier,
 				studyIdentifier, adverseEvent, courseStartDate);
 	}
 
-	public ess.caaers.nci.nih.gov.AdverseEvent updateAdverseEvent(
-			ess.caaers.nci.nih.gov.AdverseEvent adverseEvent)
-			throws RemoteException,
-			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.AdverseEvent updateAdverseEvent(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		return aeManagement.updateAdverseEvent(adverseEvent);
 	}
 
-	public ess.caaers.nci.nih.gov.AdverseEvent deactivateAdverseEvent(
-			ess.caaers.nci.nih.gov.Id adverseEventIdentifier)
-			throws RemoteException,
-			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.AdverseEvent deactivateAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		return aeManagement.deactivateAdverseEvent(adverseEventIdentifier);
 	}
 
