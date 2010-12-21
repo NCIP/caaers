@@ -2,8 +2,11 @@ package gov.nih.nci.ess.ae;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventQuery;
+import ess.caaers.nci.nih.gov.AuditTrail;
 import ess.caaers.nci.nih.gov.Criteria;
+import ess.caaers.nci.nih.gov.Id;
 import ess.caaers.nci.nih.gov.LimitOffset;
+import ess.caaers.nci.nih.gov.TsDateTime;
 import gov.nih.nci.cabig.caaers.dao.AdvancedSearchDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
@@ -15,13 +18,21 @@ import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.Operator;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
+import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao;
+import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
+import gov.nih.nci.cabig.ctms.audit.dao.query.DataAuditEventQuery;
+import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
 import gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
@@ -44,11 +55,13 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	private static final String INVALID_OBJ_NAME = "WS_AEMS_042";
 	private static final String INVALID_PREDICATE = "WS_AEMS_044";
 	private static final String INVALID_QUERY_CRITERIA = "WS_AEMS_041";
+	public static final String INVALID_AE_ID = AdverseEventManagementImpl.INVALID_AE_ID;
 	private AdverseEventDao adverseEventDao;
 	private AdvancedSearchDao advancedSearchDao;
 	private DomainToGridObjectConverter domainToGridConverter;
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private MessageSource messageSource;
+	private AuditHistoryDao auditHistoryDao;
 
 	/**
 	 * @param criteria
@@ -237,6 +250,53 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	 */
 	public final void setAdvancedSearchDao(AdvancedSearchDao advancedSearchDao) {
 		this.advancedSearchDao = advancedSearchDao;
+	}
+
+	public AuditTrail[] getAuditTrailOfAdverseEvent(Id aeId,
+			TsDateTime minDate, TsDateTime maxDate)
+			throws RemoteException,
+			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+		Date startDate = gridToDomainConverter.convertToDate(minDate);
+		Date endDate = gridToDomainConverter.convertToDate(maxDate);
+		if (aeId == null || !NumberUtils.isNumber(aeId.getExtension())) {
+			raiseError(INVALID_AE_ID);
+		}
+		int id = NumberUtils.toInt(aeId.getExtension());
+		// I can't use audit repository object, because it does not expose
+		// methods that I need.
+		// I can't change it either, since it's owned by CTMS Commons.
+		// Hence, pardon some copy&paste here...
+		DataAuditEventQuery dataAuditEventQuery = new DataAuditEventQuery();
+		dataAuditEventQuery.leftJoinFetch("e.values");
+		dataAuditEventQuery
+				.filterByClassName(gov.nih.nci.cabig.caaers.domain.AdverseEvent.class
+						.getName());
+		dataAuditEventQuery.filterByEntityId(id);
+		if (startDate != null) {
+			dataAuditEventQuery.filterByStartDateAfter(startDate);
+		}
+		if (endDate != null) {
+			dataAuditEventQuery.filterByEndDateBefore(endDate);
+		}		
+		final List<DataAuditEvent> dataAuditEvents = auditHistoryDao
+				.findDataAuditEvents(dataAuditEventQuery);
+
+		return null;
+	}
+
+	/**
+	 * @return the auditHistoryDao
+	 */
+	public final AuditHistoryDao getAuditHistoryDao() {
+		return auditHistoryDao;
+	}
+
+	/**
+	 * @param auditHistoryDao
+	 *            the auditHistoryDao to set
+	 */
+	public final void setAuditHistoryDao(AuditHistoryDao auditHistoryDao) {
+		this.auditHistoryDao = auditHistoryDao;
 	}
 
 }

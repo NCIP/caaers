@@ -42,7 +42,7 @@ public class AdverseEventManagementImpl implements ManagementI,
 	private static final String INVALID_COURSE_START_DATE_ERR = "WS_AEMS_036";
 	private static final String PARTICIPANT_NOT_ASSIGNED_ERR = "WS_AEMS_037";
 	private static final String NO_REPORTING_PERIOD_ERR = "WS_AEMS_038";
-	private static final String INVALID_AE_ID = "WS_AEMS_039";
+	public static final String INVALID_AE_ID = "WS_AEMS_039";
 	private static final String ADVERSE_EVENT_NOT_FOUND = "WS_AEMS_040";
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private DomainToGridObjectConverter domainToGridConverter;

@@ -24,13 +24,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import _21090.org.iso.CD;
 import _21090.org.iso.TS;
-import _21090.org.iso.TSDateTime;
 
 public class GridToDomainObjectConverter {
 
+	private static final Log log = LogFactory
+			.getLog(GridToDomainObjectConverter.class);
 	private static final String TS_DATETIME_PATTERN = "yyyyMMddHHmmss";
 
 	private CtcTermDao ctcTermDao;
@@ -138,7 +141,10 @@ public class GridToDomainObjectConverter {
 			this.populateCtcTerm(gridAe, caaersAe);
 		}
 
-		if (gridAe.getOtherMeddra() != null /*&& caaersAe.getLowLevelTerm()==null*/) {
+		if (gridAe.getOtherMeddra() != null /*
+											 * &&
+											 * caaersAe.getLowLevelTerm()==null
+											 */) {
 			/*
 			 * if (gridAe.getOtherMeddra() != null) {
 			 * gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm lowLevelTerm
@@ -303,7 +309,7 @@ public class GridToDomainObjectConverter {
 				}
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -327,7 +333,7 @@ public class GridToDomainObjectConverter {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 		return null;
 	}
