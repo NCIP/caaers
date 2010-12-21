@@ -387,15 +387,26 @@
      <ns63:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
      <ns63:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns63:Method>
+    <ns63:Method description="" isImported="false" isProvided="false" name="getAuditTrialOfAdverseEvent" xsi:type="ns63:MethodType">
+     <ns63:Inputs>
+      <ns63:Input qName="ns70:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns70="http://ess.caaers.nci.nih.gov"/>
+      <ns63:Input qName="ns71:TsDateTime" description="" isArray="false" name="minDate" xmlns:ns71="http://ess.caaers.nci.nih.gov"/>
+      <ns63:Input qName="ns72:TsDateTime" description="" isArray="false" name="maxDate" xmlns:ns72="http://ess.caaers.nci.nih.gov"/>
+     </ns63:Inputs>
+     <ns63:Output qName="ns73:AuditTrial" description="" isArray="false" xmlns:ns73="http://ess.caaers.nci.nih.gov"/>
+     <ns63:Exceptions>
+      <ns63:Exception description="" name="AdverseEventServiceException" qname="ns74:AdverseEventServiceException" xmlns:ns74="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns63:Exceptions>
+    </ns63:Method>
    </ns63:Methods>
-   <ns70:ResourcePropertiesList xsi:type="ns70:ResourcePropertiesListType" xmlns:ns70="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+   <ns75:ResourcePropertiesList xsi:type="ns75:ResourcePropertiesListType" xmlns:ns75="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns71:Extensions xsi:type="ns71:ExtensionsType" xmlns:ns71="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns71:Extension name="cagrid_metadata" version="1.3" xsi:type="ns71:ExtensionType"/>
- </ns71:Extensions>
+ <ns76:Extensions xsi:type="ns76:ExtensionsType" xmlns:ns76="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns76:Extension name="cagrid_metadata" version="1.3" xsi:type="ns76:ExtensionType"/>
+ </ns76:Extensions>
 </ns1:ServiceDescription>
