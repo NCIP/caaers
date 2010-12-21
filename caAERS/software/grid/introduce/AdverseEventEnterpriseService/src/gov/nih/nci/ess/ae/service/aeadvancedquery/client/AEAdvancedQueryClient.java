@@ -76,21 +76,21 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AuditTrial getAuditTrialOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate,ess.caaers.nci.nih.gov.TsDateTime maxDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.AuditTrail[] getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate,ess.caaers.nci.nih.gov.TsDateTime maxDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getAuditTrialOfAdverseEvent");
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequest();
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequestAdverseEventIdentifier adverseEventIdentifierContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequestAdverseEventIdentifier();
+      configureStubSecurity((Stub)portType,"getAuditTrailOfAdverseEvent");
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestAdverseEventIdentifier adverseEventIdentifierContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestAdverseEventIdentifier();
     adverseEventIdentifierContainer.setId(adverseEventIdentifier);
     params.setAdverseEventIdentifier(adverseEventIdentifierContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequestMinDate minDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequestMinDate();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMinDate minDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMinDate();
     minDateContainer.setTsDateTime(minDate);
     params.setMinDate(minDateContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequestMaxDate maxDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventRequestMaxDate();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMaxDate maxDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMaxDate();
     maxDateContainer.setTsDateTime(maxDate);
     params.setMaxDate(maxDateContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrialOfAdverseEventResponse boxedResult = portType.getAuditTrialOfAdverseEvent(params);
-    return boxedResult.getAuditTrial();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse boxedResult = portType.getAuditTrailOfAdverseEvent(params);
+    return boxedResult.getAuditTrail();
     }
   }
 

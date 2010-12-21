@@ -50,7 +50,7 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GetAuditTrialOfAdverseEventRequest">
+      <element name="GetAuditTrailOfAdverseEventRequest">
         <complexType>
           <sequence>
             <element name="adverseEventIdentifier">
@@ -77,10 +77,10 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GetAuditTrialOfAdverseEventResponse">
+      <element name="GetAuditTrailOfAdverseEventResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:AuditTrial" minOccurs="1" maxOccurs="1" />
+            <element ref="ns0:AuditTrail" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -98,11 +98,11 @@
   <message name="FindAdverseEventsResponse">
     <part name="parameters" element="tns:FindAdverseEventsResponse" />
   </message>
-  <message name="GetAuditTrialOfAdverseEventRequest">
-    <part name="parameters" element="tns:GetAuditTrialOfAdverseEventRequest" />
+  <message name="GetAuditTrailOfAdverseEventRequest">
+    <part name="parameters" element="tns:GetAuditTrailOfAdverseEventRequest" />
   </message>
-  <message name="GetAuditTrialOfAdverseEventResponse">
-    <part name="parameters" element="tns:GetAuditTrialOfAdverseEventResponse" />
+  <message name="GetAuditTrailOfAdverseEventResponse">
+    <part name="parameters" element="tns:GetAuditTrailOfAdverseEventResponse" />
   </message>
   <message name="AdverseEventServiceExceptionFaultMessage">
     <part name="fault" element="ns7:AdverseEventServiceException" />
@@ -118,9 +118,9 @@
       <output message="tns:FindAdverseEventsResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/FindAdverseEventsResponse" />
       <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/AdverseEventServiceExceptionFaultMessage" />
     </operation>
-    <operation name="getAuditTrialOfAdverseEvent">
-      <input message="tns:GetAuditTrialOfAdverseEventRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/GetAuditTrialOfAdverseEventRequest" />
-      <output message="tns:GetAuditTrialOfAdverseEventResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/GetAuditTrialOfAdverseEventResponse" />
+    <operation name="getAuditTrailOfAdverseEvent">
+      <input message="tns:GetAuditTrailOfAdverseEventRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/GetAuditTrailOfAdverseEventRequest" />
+      <output message="tns:GetAuditTrailOfAdverseEventResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/GetAuditTrailOfAdverseEventResponse" />
       <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/AdverseEventServiceExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">

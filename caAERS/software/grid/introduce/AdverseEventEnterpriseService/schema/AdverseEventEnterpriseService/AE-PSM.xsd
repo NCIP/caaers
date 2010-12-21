@@ -531,7 +531,7 @@
 	
 <xs:element name="ReviewProcess" type="ESS-AE:ReviewProcess"/>
 
-	<xs:complexType name="AuditTrial">
+	<xs:complexType name="AuditTrail">
 		<xs:sequence>
 			<xs:element name="identifier" type="ISO:II"/>
 			<xs:element name="ipAddress" type="ISO:ST"/>
@@ -541,10 +541,10 @@
 			<xs:element name="operation" type="ISO:ST"/>
 			<xs:element name="url" type="ISO:ST"/>
 			<xs:element name="recordedTime" type="ISO:TS"/>
-			<xs:element name="values" type="ESS-AE:AuditTrialValue"/>
+			<xs:element name="values" type="ESS-AE:AuditTrailValue"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="AuditTrialValue">
+	<xs:complexType name="AuditTrailValue">
 		<xs:sequence>
 			<xs:element name="identifier" type="ISO:II"/>
 			<xs:element name="ipAddress" type="ISO:ST"/>
@@ -555,7 +555,7 @@
 		</xs:sequence>
 	</xs:complexType>	
 	
-<xs:element name="AuditTrial" type="ESS-AE:AuditTrial"/>
+<xs:element name="AuditTrail" type="ESS-AE:AuditTrail"/>
 
 <xs:element name="LimitOffset" type="ESS-AE:LimitOffset"/>
 	<xs:complexType name="LimitOffset">

@@ -213,13 +213,13 @@
        </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
-      <ns2:Operation description="" name="getAuditTrialOfAdverseEvent">
+      <ns2:Operation description="" name="getAuditTrailOfAdverseEvent">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns42:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="adverseEventIdentifier" xmlns:ns42="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns43:TsDateTime" dimensionality="1" index="1" isArray="false" isRequired="false" name="minDate" xmlns:ns43="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns44:TsDateTime" dimensionality="1" index="2" isArray="false" isRequired="false" name="maxDate" xmlns:ns44="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns45:AuditTrial" dimensionality="1" isArray="false" xmlns:ns45="http://ess.caaers.nci.nih.gov"/>
+       <ns2:Output qName="ns45:AuditTrail" dimensionality="1" isArray="true" xmlns:ns45="http://ess.caaers.nci.nih.gov"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="AdverseEventServiceException"/>
        </ns2:faultCollection>

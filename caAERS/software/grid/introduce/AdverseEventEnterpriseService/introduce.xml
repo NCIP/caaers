@@ -6,7 +6,7 @@
    <ns2:SchemaElement type="AdverseEventQuery" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AdverseEventSummary" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ANY" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="AuditTrial" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AuditTrail" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="BiologicEntity" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Bl" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="CaaersRule" xsi:type="ns2:SchemaElementType"/>
@@ -387,13 +387,13 @@
      <ns63:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
      <ns63:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns63:Method>
-    <ns63:Method description="" isImported="false" isProvided="false" name="getAuditTrialOfAdverseEvent" xsi:type="ns63:MethodType">
+    <ns63:Method description="" isImported="false" isProvided="false" name="getAuditTrailOfAdverseEvent" xsi:type="ns63:MethodType">
      <ns63:Inputs>
       <ns63:Input qName="ns70:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns70="http://ess.caaers.nci.nih.gov"/>
       <ns63:Input qName="ns71:TsDateTime" description="" isArray="false" name="minDate" xmlns:ns71="http://ess.caaers.nci.nih.gov"/>
       <ns63:Input qName="ns72:TsDateTime" description="" isArray="false" name="maxDate" xmlns:ns72="http://ess.caaers.nci.nih.gov"/>
      </ns63:Inputs>
-     <ns63:Output qName="ns73:AuditTrial" description="" isArray="false" xmlns:ns73="http://ess.caaers.nci.nih.gov"/>
+     <ns63:Output qName="ns73:AuditTrail" description="" isArray="true" xmlns:ns73="http://ess.caaers.nci.nih.gov"/>
      <ns63:Exceptions>
       <ns63:Exception description="" name="AdverseEventServiceException" qname="ns74:AdverseEventServiceException" xmlns:ns74="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns63:Exceptions>

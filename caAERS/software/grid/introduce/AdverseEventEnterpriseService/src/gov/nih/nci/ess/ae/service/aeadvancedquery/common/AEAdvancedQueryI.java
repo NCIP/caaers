@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
  */
 public interface AEAdvancedQueryI {
 
-  public ess.caaers.nci.nih.gov.AuditTrial getAuditTrialOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate,ess.caaers.nci.nih.gov.TsDateTime maxDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+  public ess.caaers.nci.nih.gov.AuditTrail[] getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate,ess.caaers.nci.nih.gov.TsDateTime maxDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
   public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
