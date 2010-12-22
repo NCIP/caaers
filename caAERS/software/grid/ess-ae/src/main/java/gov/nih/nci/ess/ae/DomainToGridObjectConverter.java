@@ -2,6 +2,8 @@ package gov.nih.nci.ess.ae;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventSeriousness;
+import ess.caaers.nci.nih.gov.AuditTrail;
+import ess.caaers.nci.nih.gov.AuditTrailValue;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -10,6 +12,8 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.ctms.audit.domain.AuditHistory;
+import gov.nih.nci.cabig.ctms.audit.domain.AuditHistoryDetail;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -188,6 +192,34 @@ public class DomainToGridObjectConverter {
 				time.isAM() ? (time.getHour() == 12 ? 0 : time.getHour())
 						: (time.getHour() == 12 ? 12 : time.getHour() + 12)),
 				time.getMinute()));
+	}
+
+	public AuditTrail convert(AuditHistory his) {
+		AuditTrail trail = new AuditTrail();
+		trail.setUrl(h.ST(his.getUrl()));
+		trail.setUserName(h.ST(his.getUsername()));
+		trail.setIpAddress(h.ST(his.getIp()));
+		trail.setRecordedTime(convert(his.getTime()));
+		trail.setObjectName(h.ST(his.getClassName()));
+		trail.setObjectId(h.ST(his.getEntityId()));
+		trail.setOperation(h.ST(his.getOperation() != null ? his.getOperation()
+				.name() : null));
+		trail.setIdentifier(h.II(his.getAuditEventId()));
+
+		List<AuditTrailValue> list = new ArrayList<AuditTrailValue>();
+		for (AuditHistoryDetail detail : his.getAuditHistoryDetails()) {
+			list.add(convert(detail));
+		}
+		trail.setValues(list.toArray(new AuditTrailValue[0]));
+		return trail;
+	}
+
+	public AuditTrailValue convert(AuditHistoryDetail detail) {
+		AuditTrailValue v = new AuditTrailValue();
+		v.setAttributeName(h.ST(detail.getAttributeName()));
+		v.setPreviousValue(h.ST(detail.getPreviousValue()));
+		v.setNewValue(h.ST(detail.getCurrentValue()));		
+		return v;
 	}
 
 }

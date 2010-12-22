@@ -24,13 +24,17 @@ public final class ISO21090Helper {
 
 	public static final II II(String ext) {
 		II ii = new II();
-		ii.setExtension(ext);
+		if (ext != null) {
+			ii.setExtension(ext);
+		} else {
+			ii.setNullFlavor(NullFlavor.NI);
+		}
 		return ii;
 	}
 
 	public static final CD CD(String code) {
 		CD cd = new CD();
-		if (code!=null) {
+		if (code != null) {
 			cd.setCode(code);
 		} else {
 			cd.setNullFlavor(NullFlavor.NI);
@@ -40,7 +44,7 @@ public final class ISO21090Helper {
 
 	public static final BL BL(Boolean b) {
 		BL cd = new BL();
-		if (b!=null) {
+		if (b != null) {
 			cd.setValue(b);
 		} else {
 			cd.setNullFlavor(NullFlavor.NI);
@@ -86,7 +90,7 @@ public final class ISO21090Helper {
 
 	public static final EDText EDText(String s) {
 		EDText ed = new EDText();
-		if (s!=null) {
+		if (s != null) {
 			ed.setValue(s);
 		} else {
 			ed.setNullFlavor(NullFlavor.NI);
@@ -104,6 +108,14 @@ public final class ISO21090Helper {
 		BL bl = new BL();
 		bl.setNullFlavor(ni);
 		return bl;
+	}
+
+	public II II(Integer i) {
+		return i != null ? II(i.toString()) : II((String) null);
+	}
+
+	public ST ST(Integer i) {
+		return i != null ? ST(i.toString()) : ST((String) null);
 	}
 
 }

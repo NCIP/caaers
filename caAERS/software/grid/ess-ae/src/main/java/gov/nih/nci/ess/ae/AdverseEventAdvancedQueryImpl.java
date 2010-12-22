@@ -273,10 +273,15 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(startDate);
 
-		List<AuditHistory> list = auditHistoryRepository.getAuditDetailsForEntity(
-				gov.nih.nci.cabig.caaers.domain.AdverseEvent.class, id, cal);
-
-		return null;
+		List<AuditHistory> list = auditHistoryRepository
+				.getAuditDetailsForEntity(
+						gov.nih.nci.cabig.caaers.domain.AdverseEvent.class, id,
+						cal);
+		List<AuditTrail> trail = new ArrayList<AuditTrail>();
+		for (AuditHistory history : list) {
+			trail.add(domainToGridConverter.convert(history));
+		}
+		return trail.toArray(new AuditTrail[0]);
 	}
 
 	/**
