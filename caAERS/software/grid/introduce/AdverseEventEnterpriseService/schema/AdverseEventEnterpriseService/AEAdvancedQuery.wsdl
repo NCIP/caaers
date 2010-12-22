@@ -67,13 +67,6 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="maxDate">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:TsDateTime" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
           </sequence>
         </complexType>
       </element>

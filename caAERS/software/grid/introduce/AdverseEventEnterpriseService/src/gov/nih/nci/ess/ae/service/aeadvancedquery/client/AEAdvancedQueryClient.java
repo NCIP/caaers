@@ -76,24 +76,6 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AuditTrail[] getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate,ess.caaers.nci.nih.gov.TsDateTime maxDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getAuditTrailOfAdverseEvent");
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest();
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestAdverseEventIdentifier adverseEventIdentifierContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestAdverseEventIdentifier();
-    adverseEventIdentifierContainer.setId(adverseEventIdentifier);
-    params.setAdverseEventIdentifier(adverseEventIdentifierContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMinDate minDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMinDate();
-    minDateContainer.setTsDateTime(minDate);
-    params.setMinDate(minDateContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMaxDate maxDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMaxDate();
-    maxDateContainer.setTsDateTime(maxDate);
-    params.setMaxDate(maxDateContainer);
-    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse boxedResult = portType.getAuditTrailOfAdverseEvent(params);
-    return boxedResult.getAuditTrail();
-    }
-  }
-
   public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"findAdverseEvents");
@@ -106,6 +88,21 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
     params.setLimitOffset(limitOffsetContainer);
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse boxedResult = portType.findAdverseEvents(params);
     return boxedResult.getAdverseEvent();
+    }
+  }
+
+  public ess.caaers.nci.nih.gov.AuditTrail[] getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getAuditTrailOfAdverseEvent");
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest();
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestAdverseEventIdentifier adverseEventIdentifierContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestAdverseEventIdentifier();
+    adverseEventIdentifierContainer.setId(adverseEventIdentifier);
+    params.setAdverseEventIdentifier(adverseEventIdentifierContainer);
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMinDate minDateContainer = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequestMinDate();
+    minDateContainer.setTsDateTime(minDate);
+    params.setMinDate(minDateContainer);
+    gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse boxedResult = portType.getAuditTrailOfAdverseEvent(params);
+    return boxedResult.getAuditTrail();
     }
   }
 

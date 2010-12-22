@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cabig.ctms.audit.dao.query.DataAuditEventQuery;
+import gov.nih.nci.cabig.ctms.audit.domain.AuditHistory;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
 import gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI;
 
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
@@ -61,7 +61,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	private DomainToGridObjectConverter domainToGridConverter;
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private MessageSource messageSource;
-	private AuditHistoryDao auditHistoryDao;
+	private AuditHistoryRepository auditHistoryRepository;
 
 	/**
 	 * @param criteria
@@ -252,51 +252,47 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		this.advancedSearchDao = advancedSearchDao;
 	}
 
-	public AuditTrail[] getAuditTrailOfAdverseEvent(Id aeId,
-			TsDateTime minDate, TsDateTime maxDate)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI#
+	 * getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id,
+	 * ess.caaers.nci.nih.gov.TsDateTime)
+	 */
+	public AuditTrail[] getAuditTrailOfAdverseEvent(Id aeId, TsDateTime minDate)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		Date startDate = gridToDomainConverter.convertToDate(minDate);
-		Date endDate = gridToDomainConverter.convertToDate(maxDate);
 		if (aeId == null || !NumberUtils.isNumber(aeId.getExtension())) {
 			raiseError(INVALID_AE_ID);
 		}
-		int id = NumberUtils.toInt(aeId.getExtension());
-		// I can't use audit repository object, because it does not expose
-		// methods that I need.
-		// I can't change it either, since it's owned by CTMS Commons.
-		// Hence, pardon some copy&paste here...
-		DataAuditEventQuery dataAuditEventQuery = new DataAuditEventQuery();
-		dataAuditEventQuery.leftJoinFetch("e.values");
-		dataAuditEventQuery
-				.filterByClassName(gov.nih.nci.cabig.caaers.domain.AdverseEvent.class
-						.getName());
-		dataAuditEventQuery.filterByEntityId(id);
-		if (startDate != null) {
-			dataAuditEventQuery.filterByStartDateAfter(startDate);
+		if (startDate == null) {
+			startDate = new Date();
 		}
-		if (endDate != null) {
-			dataAuditEventQuery.filterByEndDateBefore(endDate);
-		}		
-		final List<DataAuditEvent> dataAuditEvents = auditHistoryDao
-				.findDataAuditEvents(dataAuditEventQuery);
+		int id = NumberUtils.toInt(aeId.getExtension());
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+
+		List<AuditHistory> list = auditHistoryRepository.getAuditDetailsForEntity(
+				gov.nih.nci.cabig.caaers.domain.AdverseEvent.class, id, cal);
 
 		return null;
 	}
 
 	/**
-	 * @return the auditHistoryDao
+	 * @return the auditHistoryRepository
 	 */
-	public final AuditHistoryDao getAuditHistoryDao() {
-		return auditHistoryDao;
+	public final AuditHistoryRepository getAuditHistoryRepository() {
+		return auditHistoryRepository;
 	}
 
 	/**
-	 * @param auditHistoryDao
-	 *            the auditHistoryDao to set
+	 * @param auditHistoryRepository
+	 *            the auditHistoryRepository to set
 	 */
-	public final void setAuditHistoryDao(AuditHistoryDao auditHistoryDao) {
-		this.auditHistoryDao = auditHistoryDao;
+	public final void setAuditHistoryRepository(
+			AuditHistoryRepository auditHistoryRepository) {
+		this.auditHistoryRepository = auditHistoryRepository;
 	}
 
 }
