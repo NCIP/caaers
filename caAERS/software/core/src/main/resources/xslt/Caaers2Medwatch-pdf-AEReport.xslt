@@ -411,7 +411,7 @@ this collection of information, including suggestions for reducing this burden t
                                                                 <xsl:when test="substring(gridId,1,3) = 'PRY'">
                                                                     <fo:block xsl:use-attribute-sets="normal">Primary AE:
                                                                         <fo:block/>
-                                                                        <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                                                                        Term: <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
                                                                         <xsl:if test="LowLevelTerm/fullName"> (<xsl:value-of select="LowLevelTerm/fullName"/>)</xsl:if>
                                                                         <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
                                                                         <xsl:if test="detailsForOther">
@@ -419,7 +419,7 @@ this collection of information, including suggestions for reducing this burden t
                                                                             Verbatim: <xsl:value-of select="detailsForOther"/>
                                                                         </xsl:if>
                                                                         <fo:block/>
-                                                                        <xsl:value-of select="grade"/>
+                                                                        Grade: <xsl:value-of select="grade"/>
                                                                         <fo:block/>
                                                                         <xsl:value-of select="comments"/>
                                                                         <fo:block/>
@@ -430,7 +430,7 @@ this collection of information, including suggestions for reducing this burden t
                                                                 <xsl:otherwise>
                                                                     <fo:block xsl:use-attribute-sets="normal">AE<xsl:number format="1 "/>:
                                                                         <fo:block/>
-                                                                        <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                                                                        Term: <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
                                                                         <xsl:if test="LowLevelTerm/fullName"> (<xsl:value-of select="LowLevelTerm/fullName"/>)</xsl:if>
                                                                         <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
                                                                         <xsl:if test="detailsForOther">
@@ -438,7 +438,7 @@ this collection of information, including suggestions for reducing this burden t
                                                                             Verbatim: <xsl:value-of select="detailsForOther"/>
                                                                         </xsl:if>
                                                                         <fo:block/>
-                                                                        <xsl:value-of select="grade"/>
+                                                                        Grade: <xsl:value-of select="grade"/>
                                                                         <fo:block/>
                                                                         <xsl:value-of select="comments"/>
                                                                         <fo:block/>

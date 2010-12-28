@@ -679,6 +679,19 @@
             </OutcomeType>
         </Outcome>
     </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRNnull</gridId>
+        <detailsForOther>Verbatim</detailsForOther>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <full-name></full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm>
+            <universalTerm>T888</universalTerm>
+        </AdverseEventMeddraLowLevelTerm>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+    </AdverseEvent>
     <SAEReportPriorTherapy>
         <id>101</id>
         <PriorTherapy>
@@ -712,7 +725,7 @@
         <value>Adrenal insufficiency</value>
     </Summary>
     <Summary id="AE count">
-        <value>3</value>
+        <value>4</value>
     </Summary>
     <Summary id="Public identifier">
         <value>MN026-MN026</value>

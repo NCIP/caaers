@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
@@ -157,6 +158,14 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         tv.setMinute(40);
         aeReport.getAdverseEvents().get(0).setEventApproximateTime(tv);
 
+        ae = new AdverseEvent();
+        ae.setAdverseEventMeddraLowLevelTerm(new AdverseEventMeddraLowLevelTerm());
+        ae.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(new LowLevelTerm());
+        ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().setMeddraCode("888");
+        ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().setMeddraTerm("T888");
+        ae.setDetailsForOther("Verbatim");
+        aeReport.getAdverseEvents().add(ae);
+
         ConfigProperty cp = new ConfigProperty();
         cp.setCode("RT_FDA");
         cp.setDescription("FDA Report");
@@ -208,6 +217,7 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         assertTrue(xml.indexOf("field.three.name") == -1);
         assertTrue(xml.indexOf("field.four.name") >= 0);
         assertTrue(xml.indexOf("field.five.name") >= 0);
+        System.out.println(xml);
 
     }
 }
