@@ -30,4 +30,13 @@ public class ReportMandatoryFieldTest extends TestCase {
        assertEquals("abcd", field.getFieldPath());
     }
 
+    public void testIsSelfReferenced(){
+        assertTrue(new ReportMandatoryField("a.b[3].x", Mandatory.NA).isSelfReferenced());
+        assertTrue(new ReportMandatoryField("a.b[3].x[4]", Mandatory.NA).isSelfReferenced());
+        assertTrue(new ReportMandatoryField("a.b[3].x[4].j", Mandatory.NA).isSelfReferenced());
+        assertTrue(new ReportMandatoryField("a.b[].x[5].j", Mandatory.NA).isSelfReferenced());
+        assertFalse(new ReportMandatoryField("a.b.x", Mandatory.NA).isSelfReferenced());
+        assertFalse(new ReportMandatoryField("a.b[].x", Mandatory.NA).isSelfReferenced());
+    }
+
 }

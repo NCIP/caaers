@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -133,7 +134,7 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
     }
 
     public void testFindListPropertyChildNode() throws Exception {
-        TreeNode found = tree.find("diseaseHistory.metastaticDiseaseSites[].codedSite");
+        TreeNode found = tree.find("diseaseHistory.metastaticDiseaseSites[1].codedSite");
         assertNotNull(found);
         assertEquals("Site name", found.getDisplayName());
     }

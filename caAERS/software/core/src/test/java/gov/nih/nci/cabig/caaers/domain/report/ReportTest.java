@@ -290,22 +290,47 @@ public class ReportTest extends AbstractNoSecurityTestCase {
        ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
        r.setReportDefinition(rd1);
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", RequirednessIndicator.MANDATORY));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[4].one", RequirednessIndicator.MANDATORY));
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", RequirednessIndicator.OPTIONAL));
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", RequirednessIndicator.OPTIONAL));
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", RequirednessIndicator.OPTIONAL));
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", RequirednessIndicator.NA));
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", RequirednessIndicator.NA));
 
-       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", RequirednessIndicator.NA));
-       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", RequirednessIndicator.NA));
-       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", RequirednessIndicator.OPTIONAL));
+        Fixtures.updateMandatoryFields(rd1, r);
+        {
+            List<String> fields = r.getPathOfNonSelfReferencedMandatoryFields();
+            assertEquals(1, fields.size());
+            assertEquals("field.one", fields.get(0));
+        }
 
-       Fixtures.updateMandatoryFields(rd1, r);
-        List<String> fields = r.getPathOfMandatoryFields();
-        assertEquals(1, fields.size());
-        assertEquals("field.one", fields.get(0));
+
 
     }
+
+
+    public void testGetPathOfSelfReferencedMandatoryFields(){
+       ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+       r.setReportDefinition(rd1);
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", RequirednessIndicator.MANDATORY));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[4].one", RequirednessIndicator.MANDATORY));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", RequirednessIndicator.NA));
+
+        Fixtures.updateMandatoryFields(rd1, r);
+
+
+        {
+            List<String> fields = r.getPathOfSelfReferencedMandatoryFields();
+            assertEquals(1, fields.size());
+            assertEquals("field[4].one", fields.get(0));
+        }
+
+    }
+
 
 
     public void testIsWorkflowEnabled(){

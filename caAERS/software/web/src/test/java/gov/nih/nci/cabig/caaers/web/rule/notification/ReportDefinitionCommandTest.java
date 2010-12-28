@@ -1,8 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.semanticbits.rules.brxml.MetaData;
+import com.semanticbits.rules.brxml.ReadableRule;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
 import org.easymock.classextension.EasyMock;
 
 
@@ -73,4 +79,32 @@ public class ReportDefinitionCommandTest extends AbstractTestCase {
 		assertEquals(3, options.size());
 		assertEquals("Please select", options.get(""));
 	}
+
+
+    public void testUpdateAutoSelfReferencedRules(){
+        command.updateAutoSelfReferencedRules();
+        assertTrue(command.getAutoSelfReferencedRules().isEmpty());
+
+        RuleSet rs = new RuleSet();
+        List<Rule>  ruleList = new ArrayList<Rule>();
+        Rule r1 = new Rule();
+        r1.setMetaData(new MetaData());
+        r1.getMetaData().setName("test");
+        ReadableRule rr = new ReadableRule();
+        rr.setLine(Arrays.asList(new String[]{"hello", "an Adverse Event has occured"}));
+        r1.setReadableRule(rr);
+        ruleList.add(r1);
+        rs.setRule(ruleList);
+
+
+        command.setRuleSet(rs);
+        command.updateAutoSelfReferencedRules();
+        assertFalse(command.getAutoSelfReferencedRules().isEmpty());
+        assertEquals("test", command.getAutoSelfReferencedRules().get(0));
+
+        rr.setLine(Arrays.asList(new String[]{"hello", "an Some Event has occured"}));
+        command.updateAutoSelfReferencedRules();
+        assertTrue(command.getAutoSelfReferencedRules().isEmpty());
+
+    }
 }

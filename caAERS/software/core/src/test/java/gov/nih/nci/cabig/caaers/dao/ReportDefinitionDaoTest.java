@@ -160,7 +160,8 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 assertEquals("Path should be same", "biju.a3", mfLoaded.getFieldPath());
                 assertTrue(mfLoaded.getMandatory() == RequirednessIndicator.RULE);
                 assertTrue(mfLoaded.getRuleBindURL().equals("abcd"));
-                
+                assertFalse(mfLoaded.isSelfReferenced());
+                assertTrue(mfLoaded.isRuleBased());
                 // update the values.
                 nf.setIndexOnTimeScale(4);
                 nf.setSubjectLine("New Subject Line");

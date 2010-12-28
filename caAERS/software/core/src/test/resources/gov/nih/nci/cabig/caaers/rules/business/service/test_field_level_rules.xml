@@ -57,7 +57,7 @@
                 </field-constraint>
             </column>
         </condition>
-        <action>OPTIONAL</action>
+        <action>NA</action>
         <metaData checkinComment="Initial Version" packageName="gov.nih.nci.cabig.caaers.rules.field_rules"
                   description="Setting Description since its mandatory by JBoss Repository config" name="Rule-2">
             <category>

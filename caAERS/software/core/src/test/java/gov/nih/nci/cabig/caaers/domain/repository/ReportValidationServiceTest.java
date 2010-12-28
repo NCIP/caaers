@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import org.easymock.classextension.EasyMock;
@@ -62,6 +64,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         report.getReportDefinition().setPhysicianSignOff(false);
         report.setAeReport(expeditedData);
         report.getReportDefinition().setAttributionRequired(true);
+        report.setMandatoryFields(new ArrayList<ReportMandatoryField>());
         // TODO:
         // report.setAttributionMandatory(true);
         return report;
@@ -196,6 +199,139 @@ public class ReportValidationServiceTest extends CaaersTestCase {
 
     }
 
+    //checkes if the agent (generic fields are valid)
+    public void testValidate(){
+        populateAgents(expeditedData);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false); //turn off attribution requiredness
+
+        //set mandatory fields on agent fields
+        ReportMandatoryField mf1 = new ReportMandatoryField("treatmentInformation.courseAgents[].studyAgent", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("treatmentInformation.courseAgents[].formulation", Mandatory.MANDATORY);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        assertTrue(reportSubmittability.isSubmittable());
+        verifyMocks();
+
+    }
+
+
+
+    //checkes if the agent (generic fields are valid)
+    public void testValidateWithErrors(){
+        populateAgents(expeditedData);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false); //turn off attribution requiredness
+
+        //set mandatory fields on agent fields
+        ReportMandatoryField mf1 = new ReportMandatoryField("treatmentInformation.courseAgents[].studyAgent", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("treatmentInformation.courseAgents[].lotNumber", Mandatory.MANDATORY);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        assertFalse(reportSubmittability.isSubmittable());
+        verifyMocks();
+
+    }
+
+
+    //checkes if the agent (indexed)
+    public void testValidateWithSelfReferencedFields(){
+        populateAgents(expeditedData);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false); //turn off attribution requiredness
+
+        //set mandatory fields on agent fields
+        ReportMandatoryField mf1 = new ReportMandatoryField("treatmentInformation.courseAgents[0].studyAgent", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("treatmentInformation.courseAgents[0].formulation", Mandatory.MANDATORY);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        assertTrue(reportSubmittability.isSubmittable());
+        verifyMocks();
+
+    }
+
+
+
+
+    //checkes if only the indexed agent is validated
+    public void testValidateWithSelfReferencedFieldsOnlyAtAnIndex(){
+        populateAgents(expeditedData);
+        expeditedData.getTreatmentInformation().getCourseAgents().add(new CourseAgent());
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false); //turn off attribution requiredness
+
+        //set mandatory fields on agent fields
+        ReportMandatoryField mf1 = new ReportMandatoryField("treatmentInformation.courseAgents[0].studyAgent", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("treatmentInformation.courseAgents[0].formulation", Mandatory.MANDATORY);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        assertTrue(reportSubmittability.isSubmittable());
+        verifyMocks();
+
+    }
+
+
+
+
+    //checkes if both self referenced and non self referenced agents are validated
+    public void testValidateMix(){
+        populateAgents(expeditedData);
+        expeditedData.getTreatmentInformation().getCourseAgents().add(new CourseAgent());
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false); //turn off attribution requiredness
+
+        //set mandatory fields on agent fields
+        ReportMandatoryField mf1 = new ReportMandatoryField("treatmentInformation.courseAgents[].studyAgent", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("treatmentInformation.courseAgents[0].formulation", Mandatory.MANDATORY);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        assertFalse(reportSubmittability.isSubmittable());
+        assertTrue(reportSubmittability.getMessages().containsKey(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION));
+        verifyMocks();
+
+    }
+
+
     //Will populate agent information in the Expedited Adverse Event Report
     private void populateAgents(ExpeditedAdverseEventReport aeReport){
         // Treatment Information
@@ -227,6 +363,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         sa1.setId(44);
         ca1.setDose(d1);
         ca1.setStudyAgent(sa1);
+        ca1.setFormulation("test");
 
         ti.addCourseAgent(ca1);
         aeReport.setTreatmentInformation(ti);

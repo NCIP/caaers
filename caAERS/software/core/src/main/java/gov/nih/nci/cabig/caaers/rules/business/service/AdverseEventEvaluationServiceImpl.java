@@ -634,6 +634,52 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return "OPTIONAL";
     }
 
+    /**
+     * Will evaluate the field level rule.
+     * @param bindURL  - The url where the field level rule is registered
+     * @param ruleNames  - The rule name
+     * @param inputObjects - The input objects to evaluate.
+     * @return
+     */
+    public String evaluateFieldLevelRules(String bindURL, String ruleNames, List<Object> inputObjects) {
+
+        StringBuilder sb = new StringBuilder();
+        List<Object> inputList = new ArrayList(inputObjects);
+        try{
+
+           if(StringUtils.isNotEmpty(bindURL) && StringUtils.isNotEmpty(ruleNames)){
+                String result = null;
+                //add the rule name agenda & fact resolver.
+                inputList.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
+                inputList.add(new FactResolver());
+                List<Object> outputObjects = businessRulesExecutionService.fireRules(bindURL, inputList);
+                if(outputObjects != null){
+                   //populate the correct message.
+                   for(Object o : outputObjects) {
+                      if (o instanceof RuleEvaluationResult){
+                          result = ((RuleEvaluationResult)o).getMessage();
+                          break;
+                     }
+                   }
+                }
+
+                if(result != null && result.length() > 0){
+                    if(sb.length() > 0) sb.append("||");
+                    sb.append(result);
+                }
+           }
+           
+        }catch(Exception e){
+            log.warn("Error while evaluating field rules", e);
+            log.warn("Due to error evaluating fields rules setting the return value as  : OPTIONAL"); 
+        }
+
+        if(sb.length() > 0) return sb.toString();
+
+        return "OPTIONAL";
+    }
+
+
     // /Object Methods
     public BusinessRulesExecutionService getBusinessRulesExecutionService() {
         return businessRulesExecutionService;

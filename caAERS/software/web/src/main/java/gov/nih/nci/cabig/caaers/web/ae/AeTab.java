@@ -378,7 +378,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
             for (InputField field : fields) {
                 List<String> props = field.getCategory() == InputField.Category.COMPOSITE ? CompositeField.getEffectivePropertyNames(field): Arrays.asList(field.getPropertyName());
                 for (String prop : props) {
-                    setMandatoryAttribute(listNode.find(prop), field);
+                    setMandatoryAttribute(listProperty + "." + prop, field);
                     setHelpKeyAttribute(field);
                 }
                 factory.addField(field);
@@ -412,7 +412,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
             BasePropertyInputFieldGroup group = new BasePropertyInputFieldGroup(name, displayName, "aeReport" + (baseProperty == null ? "" : '.' + baseProperty));
             for (InputField field : fields) {
                 String treePropName = (baseProperty == null ? "" : baseProperty + '.') + field.getPropertyName();
-                setMandatoryAttribute(expeditedReportTree.find(treePropName), field);
+                setMandatoryAttribute(treePropName, field);
                 setHelpKeyAttribute(field);
                 group.addField(field);
             }
@@ -424,9 +424,9 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
             return map;
         }
 
-        private void setMandatoryAttribute(TreeNode fieldNode, InputField field) {
+        private void setMandatoryAttribute(String fieldPath, InputField field) {
             if (command.getMandatoryProperties() != null) {
-                if (command.getMandatoryProperties().isMandatory(fieldNode)) {
+                if (command.getMandatoryProperties().isMandatory(fieldPath)) {
                     field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
                 }
             }

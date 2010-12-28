@@ -6,17 +6,22 @@ import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
     AdverseEventEvaluationServiceImpl service;
 
     CaaersRulesEngineService caaersRulesEngineService;
     RulesPropertiesFileLoader propertiesBean;
+    String bindURL =  "gov.nih.nci.cabig.caaers.rules.field_rules";
 
     private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
         InputStream testDataStream = ResourceRetriever.getResource(getClass().getPackage(), testDataFileName);
@@ -73,9 +78,6 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
         importRulesFile("test_field_level_rules.xml");
         
-        ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
-        mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
-        mfd.setRuleName("Rule-1");
 
         AdverseEventReportingPeriod aer = Fixtures.createReportingPeriod(1, "10/01/2009", "11/01/2009");
         ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
@@ -90,31 +92,77 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
         aeReport.addAdverseEvent(ae2);
         aeReport.getAssignment().setStudySite(new StudySite());
 
+        {
+            String result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae1 , ae2
+        }));
 
+            System.out.println(result);
+        }
 
-        Report report = Fixtures.createReport("x");
-        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
-        assertEquals("MANDATORY", result );
+        {
+            String result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae2 , ae1
+        }));
 
-        mfd.setRuleName("Rule-2");
-        result = service.evaluateFieldLevelRules(aeReport,report, mfd);
-        assertEquals("OPTIONAL", result);
+            System.out.println(result);
+        }
 
+        {
+            String result = service.evaluateFieldLevelRules(bindURL, "Rule-2",  Arrays.asList(new Object[]{
+                aeReport, ae1 , ae2
+        }));
 
-        mfd.setRuleName("Rule-1,Rule-2");
-        result = service.evaluateFieldLevelRules(aeReport,report, mfd);
-        assertEquals("MANDATORY||OPTIONAL", result);
+            System.out.println(result);
+        }
+
+        {
+            String result = service.evaluateFieldLevelRules(bindURL, "Rule-2",  Arrays.asList(new Object[]{
+                aeReport, ae2 , ae1
+        }));
+
+            System.out.println(result);
+        }
+//
+//        //for ae1
+//        String result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+//                aeReport, ae1
+//        }));
+//        assertEquals("MANDATORY", result );
+//
+//        result  = service.evaluateFieldLevelRules(bindURL, "Rule-2",  Arrays.asList(new Object[]{
+//                aeReport, ae1
+//        }));
+//        assertEquals("OPTIONAL", result);
+//
+//
+//        result = service.evaluateFieldLevelRules(bindURL, "Rule-1,Rule-2",  Arrays.asList(new Object[]{
+//                aeReport, ae1
+//        }));
+//        assertEquals("MANDATORY", result);
+//
+//        //for ae2
+//        result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+//                aeReport, ae2
+//        }));
+//        assertEquals("OPTIONAL", result );
+//
+//        result  = service.evaluateFieldLevelRules(bindURL, "Rule-2",  Arrays.asList(new Object[]{
+//                aeReport, ae2
+//        }));
+//        assertEquals("NA", result);
+//
+//
+//        result = service.evaluateFieldLevelRules(bindURL, "Rule-1,Rule-2",  Arrays.asList(new Object[]{
+//                aeReport, ae2
+//        }));
+//        assertEquals("NA", result);
+
 
 	}
 
     //Rule-1 "IND holder is CTEP then Mandatory"
     public void testEvaluateFieldRulesOnINDHolder() throws Exception{
-
-
-
-        ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
-        mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
-        mfd.setRuleName("Rule-1");
 
         AdverseEventReportingPeriod aer = Fixtures.createReportingPeriod(1, "10/01/2009", "11/01/2009");
         ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
@@ -141,19 +189,20 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
 
         importRulesFile("test_intervention_field_level_rules.xml");
-        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
-        assertEquals("MANDATORY||MANDATORY", result );
+        String result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae1, s
+        }));
+        assertEquals("MANDATORY", result );
+        result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae2, s
+        }));
+        assertEquals("MANDATORY", result );
     }
 
 
     //Rule-1 "IND holder is CTEP then Mandatory otherwise OPTIONAL"
     public void testEvaluateFieldRulesOnInvalidINDHolder() throws Exception{
 
-
-
-        ReportMandatoryFieldDefinition mfd = Fixtures.createMandatoryField("x", RequirednessIndicator.MANDATORY);
-        mfd.setRuleBindURL("gov.nih.nci.cabig.caaers.rules.field_rules");
-        mfd.setRuleName("Rule-1");
 
         AdverseEventReportingPeriod aer = Fixtures.createReportingPeriod(1, "10/01/2009", "11/01/2009");
         ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
@@ -180,7 +229,13 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
 
         importRulesFile("test_intervention_field_level_rules.xml");
-        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
+        String result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae1, s
+        }));
+        assertEquals("OPTIONAL", result );
+        result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae2, s
+        }));
         assertEquals("OPTIONAL", result );
     }
 
@@ -220,9 +275,17 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
 
         importRulesFile("test_intervention_field_level_rules.xml");
-        String result = service.evaluateFieldLevelRules(aeReport,report, mfd);
+        String result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae1, s
+        }));
+        assertEquals("OPTIONAL", result );
+        result = service.evaluateFieldLevelRules(bindURL, "Rule-1",  Arrays.asList(new Object[]{
+                aeReport, ae2, s
+        }));
         assertEquals("OPTIONAL", result );
     }
+
+
 
 
 }

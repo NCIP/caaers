@@ -22,20 +22,37 @@
 
 //push all rulenames into an array.
 AE.ALL_FIELD_RULES = new Array();
+AE.AUTO_SELF_REF_RULES = new Array();
+
 <tags:noform>
  <c:if test="${command.fieldRulesAvailable}">
   <c:forEach var="rule" items="${command.ruleSet.rule}">
    AE.ALL_FIELD_RULES.push('${rule.metaData.name}');
   </c:forEach>
+  <c:forEach var="sRule" items="${command.autoSelfReferencedRules}">
+   AE.ALL_FIELD_RULES.push('${sRule}');
+  </c:forEach>
  </c:if>
 </tags:noform>
 
+//helps in determining the value of autoSelfReferencing.
+function isAutoSelfReferenced(_selRuleNames){
+  if(_selRuleNames){
+      var _rArray = _selRuleNames.split(',');
+      $A(_rArray).each(function (_rName){
+        if(AE.ALL_FIELD_RULES.indexOf(_rName) > -1) return true;
+      });
+  }
+  return false;
+
+}
 //helps in showing the rules, and selecting them.    
-function showRulePicker(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
+function showRulePicker(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath, fldSelfReferencedPath){
 
     AE.FLD_SELECT =  fldSelectPath;
     AE.FLD_BIND_URL = fldRuleBindURLPath;
     AE.FLD_RULE_NAME = fldRuleNamePath;
+    AE.FLD_SELF_REF_NAME = fldSelfReferencedPath;
 
     //clear off the selected fields
     $$('.selected-rules-value').each(function(adiv){
@@ -78,6 +95,7 @@ function showRulePicker(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
 //invoked when a rule is selected
 function ruleSelected(chkBox, bindUrl, ruleName){
     var selectedRuleNames = $(AE.FLD_RULE_NAME).value;
+
     var newRuleNames = "";
     if(chkBox.checked){
          if(!contains(selectedRuleNames, ruleName)){
@@ -96,6 +114,7 @@ function ruleSelected(chkBox, bindUrl, ruleName){
     }
     $(AE.FLD_RULE_NAME).value =   selectedRuleNames;
     $(AE.FLD_BIND_URL).value = bindUrl;
+    $(AE.FLD_SELF_REF_NAME).value = isAutoSelfReferenced(selectedRuleNames);
     
     $('winRulePicker').select('.selected-rules-value')[0].innerHTML= selectedRuleNames;
     if(selectedRuleNames.length > 0){

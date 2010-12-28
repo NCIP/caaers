@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
@@ -41,8 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletRequest;
-
+import org.apache.commons.collections15.Closure;
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.FactoryUtils;
 import org.apache.commons.collections15.list.LazyList;
 import org.apache.commons.lang.StringUtils;
@@ -401,16 +400,24 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
        }
 
        mandatoryProperties = new MandatoryProperties(expeditedReportTree);
-
        //evaluate the mandatoryness
-       for(Report reportToEvaluate : reportsToEvaluate){
-           evaluationService.evaluateMandatoryness(aeReport, reportToEvaluate);
-           for(ReportMandatoryField mf : reportToEvaluate.getMandatoryFields()){
-               if(mf.getMandatory() == Mandatory.MANDATORY){
-                   mandatoryProperties.addNode(mf.getFieldPath());
-               }
+       CollectionUtils.forAllDo(reportsToEvaluate, new Closure<Report>(){
+           public void execute(Report report) {
+              evaluationService.evaluateMandatoryness(aeReport, report);
+              for(ReportMandatoryField mf : report.getMandatoryFields()){
+                  Mandatory mandatoryness = mf.getMandatory();
+                  if(mandatoryness == Mandatory.MANDATORY){
+                      if(mf.isSelfReferenced()){
+                         mandatoryProperties.addRealPropertyPath(mf.getFieldPath());
+                      }else{
+                         mandatoryProperties.addNode(mf.getFieldPath());
+                      }
+                  }
+                  
+              }
            }
-       }
+       });
+
 
        //update the render decision
        renderDecisionManager.updateRenderDecision(reportsToEvaluate);

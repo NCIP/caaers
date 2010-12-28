@@ -9,28 +9,20 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
-
-import java.io.Serializable;
-import java.util.*;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code>
@@ -250,6 +242,58 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     public void setMandatoryFields(List<ReportMandatoryFieldDefinition> mandatoryFields) {
         this.mandatoryFields = mandatoryFields;
+    }
+
+    /**
+     * Will return all the ReportMandatoryFieldDefinition that are not rule based
+     * @return
+     */
+    @Transient
+    public Collection<ReportMandatoryFieldDefinition> getAllNonRuleBasedMandatoryFields(){
+        return CollectionUtils.select(getMandatoryFields(), new Predicate<ReportMandatoryFieldDefinition>(){
+            public boolean evaluate(ReportMandatoryFieldDefinition rd) {
+                return !rd.isRuleBased();
+            }
+        });
+    }
+
+    /**
+     * Will return the ReportMandatoryFieldDefinition that are associated to rules. 
+     * @return
+     */
+    @Transient
+    public Collection<ReportMandatoryFieldDefinition> getAllRuleBasedMandatoryFields(){
+       return CollectionUtils.select(getMandatoryFields(), new Predicate<ReportMandatoryFieldDefinition>(){
+            public boolean evaluate(ReportMandatoryFieldDefinition rd) {
+                return rd.isRuleBased();
+            }
+        });
+    }
+
+    /**
+     * Will return the ReportMandatoryFieldDefinition that are self referenced. 
+     * @return
+     */
+    @Transient
+    public Collection<ReportMandatoryFieldDefinition> getSelfReferencedRuleBasedMandatoryFields(){
+        return CollectionUtils.select(getMandatoryFields(), new Predicate<ReportMandatoryFieldDefinition>(){
+            public boolean evaluate(ReportMandatoryFieldDefinition rd) {
+                return rd.isRuleBased() && rd.isSelfReferenced();
+            }
+        });
+    }
+
+    /**
+     * Will return the ReportMandatoryFieldDefinition that are not self referenced.
+     * @return
+     */
+    @Transient
+    public Collection<ReportMandatoryFieldDefinition> getNonSelfReferencedRuleBasedMandatoryFields(){
+        return CollectionUtils.select(getMandatoryFields(), new Predicate<ReportMandatoryFieldDefinition>(){
+            public boolean evaluate(ReportMandatoryFieldDefinition rd) {
+                return rd.isRuleBased() && !rd.isSelfReferenced();
+            }
+        });
     }
 
     public Boolean getAmendable() {

@@ -77,4 +77,14 @@ public interface AdverseEventEvaluationService {
      * @return
      */
     String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition);
+
+    /**
+     * Will evaluate the field level rule. 
+     * @param bindURL  - The url where the field level rule is registered
+     * @param ruleName  - The rule name
+     * @param inputObjects - The input objects to evaluate. 
+     * @return
+     */
+    String evaluateFieldLevelRules(String bindURL, String ruleName, List<Object> inputObjects);
+
 }

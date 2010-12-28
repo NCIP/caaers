@@ -65,6 +65,7 @@
          <xs:element name="mandatory" type="xs:string"/>
          <xs:element name="ruleBindURL" type="xs:string" />
          <xs:element name="ruleName"  type="xs:string" />
+         <xs:element name="selfReferenced" type="xs:boolean" default="false"/>
       </xs:sequence>
     </xs:complexType>
     

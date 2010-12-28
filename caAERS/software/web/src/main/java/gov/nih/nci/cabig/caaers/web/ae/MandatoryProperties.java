@@ -4,16 +4,13 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin
@@ -23,15 +20,17 @@ public class MandatoryProperties {
     private static final Log log = LogFactory.getLog(MandatoryProperties.class);
 
     private Set<TreeNode> mandatoryNodes;
+    private Set<String> realPropertyPaths;
 
     private ExpeditedReportTree tree;
 
     public MandatoryProperties(ExpeditedReportTree tree) {
         mandatoryNodes = new LinkedHashSet<TreeNode>();
+        realPropertyPaths = new LinkedHashSet<String>();
         this.tree = tree;
     }
 
-    public void add(TreeNode node) {
+    private void add(TreeNode node) {
         if (node == null) throw new NullPointerException("Cannot add null nodes");
         mandatoryNodes.add(node);
     }
@@ -45,14 +44,26 @@ public class MandatoryProperties {
        if(node != null) add(node);
     }
 
+    /**
+     * Will add the path of a self referenced field.
+     * @param fieldPath
+     */
+    public void addRealPropertyPath(String fieldPath){
+       if(tree.find(fieldPath) != null) realPropertyPaths.add(fieldPath);
+    }
+
 
     public boolean isMandatory(String realProperty) {
         TreeNode node = tree.find(realProperty);
         if (node == null) {
-            log.debug("No expedited tree node matching " + realProperty);
+            log.warn("No expedited tree node matching " + realProperty);
             return false;
         }
-        boolean mandatory = isMandatory(node);
+        boolean m1 = getMandatoryNodes().contains(node);
+        boolean m2 = getRealPropertyPaths().contains(realProperty);
+
+        boolean mandatory = m1 || m2;
+
         if (log.isDebugEnabled()) {
             log.debug(realProperty + "is " + (mandatory ? "" : "not ") + "mandatory");
         }
@@ -60,7 +71,16 @@ public class MandatoryProperties {
     }
 
     public boolean isMandatory(TreeNode node) {
-        boolean mandatory = getMandatoryNodes().contains(node);
+        boolean m1 = mandatoryNodes.contains(node);
+        boolean m2 = false;
+        for(String name : realPropertyPaths){
+            TreeNode n = tree.find(name);
+            if(n != null && n.equals(node)){
+                m2 = true;
+                break;
+            }
+        }
+        boolean mandatory = m1 || m2;
         if (log.isDebugEnabled()) {
             log.debug(node + "is " + (mandatory ? "" : "not ") + "mandatory");
         }
@@ -82,6 +102,15 @@ public class MandatoryProperties {
     }
 
     public List<UnsatisfiedProperty> getUnsatisfied(TreeNode section, ExpeditedAdverseEventReport aeReport) {
+
+        BeanWrapper bw = new BeanWrapperImpl(aeReport);
+        for(String path : realPropertyPaths){
+            TreeNode node = tree.find(path);
+            if(node != null){
+                if(bw.getPropertyValue(path) == null) return Arrays.asList(new UnsatisfiedProperty(node, path));
+            }
+        }
+
         List<TreeNode> filtered = new LinkedList<TreeNode>();
         for (TreeNode node : getMandatoryNodes()) {
             if (section.isAncestorOf(node)) filtered.add(node);
@@ -92,5 +121,9 @@ public class MandatoryProperties {
     // exposed for testing
     Set<TreeNode> getMandatoryNodes() {
         return mandatoryNodes;
+    }
+
+    Set<String> getRealPropertyPaths(){
+        return realPropertyPaths;
     }
 }

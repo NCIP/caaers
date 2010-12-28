@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -18,6 +18,8 @@ import com.semanticbits.rules.brxml.FieldConstraint;
 import com.semanticbits.rules.brxml.LiteralRestriction;
 import com.semanticbits.rules.brxml.MetaData;
 import com.semanticbits.rules.utils.RuleUtil;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 public class CaaersRuleUtil {
 	
@@ -100,4 +102,36 @@ public class CaaersRuleUtil {
     }
 
 
+    public static Map<String, Object> multiplexAndEvaluate(Object src, String path) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        String[] pathParts = path.split("\\[\\]\\.");
+        if (pathParts.length < 2) return map;
+
+        BeanWrapper bw = new BeanWrapperImpl(src);
+        Object coll = bw.getPropertyValue(pathParts[0]);
+        if(coll instanceof Collection){
+            int i =0;
+            for(Object o : (Collection) coll){
+               if(pathParts.length == 2){
+                    String s = pathParts[0] + "[" + i + "]." + pathParts[1];
+                    map.put(s, o);
+
+               }else{
+                    String s = pathParts[0] + "[" + i +"]";
+                    String[] _newPathParts = new String[pathParts.length -1];
+                    System.arraycopy(pathParts, 1, _newPathParts, 0, _newPathParts.length);
+                    String _p = StringUtils.join(_newPathParts, "[].");
+                    Map<String , Object> m =   multiplexAndEvaluate(o, _p );
+                    //map.put(s, o);
+                    for(String k : m.keySet()){
+                        map.put(s + "." + k, m.get(k));
+                    }
+               }
+               i++;
+            }
+        }
+
+
+        return map;
+    }
 }

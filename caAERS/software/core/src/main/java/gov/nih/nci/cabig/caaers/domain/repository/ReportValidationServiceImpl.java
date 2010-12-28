@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.annotation.Required;
@@ -62,11 +64,12 @@ public class ReportValidationServiceImpl implements ReportValidationService{
         //evaluate mandatoryness
         evaluationService.evaluateMandatoryness(aeReport, report);
 
-        List<String> mandatoryFields = report.getPathOfMandatoryFields(); 
+        List<String> nonSelfReferencedMandatoryFields = report.getPathOfNonSelfReferencedMandatoryFields();
+        List<String> selfReferencedMandatoryFields = report.getPathOfSelfReferencedMandatoryFields();
         for (ExpeditedReportSection section : reportSections) {
             if (section == null)
                 throw new NullPointerException("The mandatory sections collection must not contain nulls");
-            validate(aeReport, mandatoryFields, section, messages);
+            validate(aeReport, nonSelfReferencedMandatoryFields, selfReferencedMandatoryFields, section, messages);
         }
 
         //biz rule - Attribution validation should be done if the ReportDefinition says that it is attributable
@@ -156,10 +159,10 @@ public class ReportValidationServiceImpl implements ReportValidationService{
         }
         return false;
     }
-    
+
     @SuppressWarnings("unchecked")
     private void validate(
-            ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, ExpeditedReportSection section,
+            ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, List<String> selfReferencedMandatoryFields , ExpeditedReportSection section,
             ReportSubmittability messages
     ) {
         TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
@@ -182,8 +185,22 @@ public class ReportValidationServiceImpl implements ReportValidationService{
                     uProp.getDisplayName(),
                     uProp.getBeanPropertyName());
         }
+
+        //evaluate the self referenced fields
+        BeanWrapper bw = new BeanWrapperImpl(aeReport);
+        for(String fieldPath : selfReferencedMandatoryFields){
+            TreeNode node = expeditedReportTree.find(fieldPath);
+            
+            if(node != null && sectionNode.isAncestorOf(node)){
+                if(bw.getPropertyValue(fieldPath) == null){
+                   messages.addMissingField(section, node.getDisplayName(), fieldPath); 
+                }
+            }
+
+        }
+
     }
-    
+
     @Required
     public void setExpeditedReportTree(final ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;

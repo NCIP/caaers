@@ -36,5 +36,10 @@ public class ReportMandatoryFieldDefinitionTest extends AbstractTestCase {
         assertEquals("some rule", def.getRuleName());
         assertEquals("some url", def.getRuleBindURL());
     }
+
+    public void testIsRuleBased(){
+        assertTrue( def.isRuleBased());
+        assertFalse( new ReportMandatoryFieldDefinition().isRuleBased());
+    }
     
 }

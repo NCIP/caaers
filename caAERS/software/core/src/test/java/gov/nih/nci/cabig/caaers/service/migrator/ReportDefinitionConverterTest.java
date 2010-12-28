@@ -3,9 +3,11 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 
 import java.io.FileNotFoundException;
@@ -46,7 +48,18 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		assertEquals(reportDefinitionDto.getDeliveryDefinition().size(), reportDefinitionDomain.getDeliveryDefinitions().size());
 		assertEquals(reportDefinitionDto.getMandatoryField().size(), reportDefinitionDomain.getMandatoryFields().size());
 		assertEquals(reportDefinitionDto.getPlannedNotificaiton().size(), reportDefinitionDomain.getPlannedNotifications().size());
-		
+        int s = reportDefinitionDomain.getMandatoryFields().size();
+
+        assertFalse(reportDefinitionDto.getMandatoryField().get(0).isSelfReferenced());
+        assertFalse(reportDefinitionDomain.getMandatoryFields().get(0).isSelfReferenced());
+
+        assertTrue(reportDefinitionDto.getMandatoryField().get(s -1).isSelfReferenced());
+        assertTrue(reportDefinitionDomain.getMandatoryFields().get(s -1).isSelfReferenced());
+        assertEquals("diseaseHistory.diagnosisDate", reportDefinitionDto.getMandatoryField().get(s -1).getFieldPath());
+        assertEquals("diseaseHistory.diagnosisDate", reportDefinitionDomain.getMandatoryFields().get(s -1).getFieldPath());
+        assertEquals("Rule-1", reportDefinitionDto.getMandatoryField().get(s -1).getRuleName());
+        assertEquals("Rule-1", reportDefinitionDomain.getMandatoryFields().get(s -1).getRuleName());
+
 		
 	}
     
@@ -80,6 +93,13 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		assertEquals("RT_INST", reportDefinitionDomain.getGroup().getCode());
 		assertNotNull(reportDefinitionDomain.getGroup().getConfigType());
 		assertEquals(ConfigPropertyType.REPORT_GROUP, reportDefinitionDomain.getGroup().getConfigType());
+
+        //add mandatory fields
+        ReportMandatoryFieldDefinition rmfd = Fixtures.createMandatoryField("abcd.efg", RequirednessIndicator.RULE);
+        rmfd.setRuleName("xxx");
+        rmfd.setRuleBindURL("xxx");
+        rmfd.setSelfReferenced(true);
+        reportDefinitionDomain.addReportMandatoryFieldDefinition(rmfd);
 		
 		reportDefinitions = reportDefinitionConverter.domainToDto(reportDefinitionDomain);
 		reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
@@ -89,6 +109,12 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		assertEquals(reportDefinitionDomain.getDeliveryDefinitions().size(),reportDefinitionDto.getDeliveryDefinition().size());
 		assertEquals(reportDefinitionDomain.getMandatoryFields().size(),reportDefinitionDto.getMandatoryField().size() );
 		assertEquals(reportDefinitionDomain.getPlannedNotifications().size(),reportDefinitionDto.getPlannedNotificaiton().size());
+
+        int s = reportDefinitionDomain.getMandatoryFields().size();
+        assertTrue(reportDefinitionDomain.getMandatoryFields().get(s-1).isRuleBased());
+        assertTrue(reportDefinitionDto.getMandatoryField().get(s-1).isSelfReferenced());
+
+
 		
 	}
 

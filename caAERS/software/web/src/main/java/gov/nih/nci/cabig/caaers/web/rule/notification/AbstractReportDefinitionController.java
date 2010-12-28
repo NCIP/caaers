@@ -117,7 +117,8 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
 
     protected void populateFieldRuleSet(ReportDefinitionCommand command){
        RuleSet ruleSet =  caaersRulesEngineService.getFieldRuleSet(RuleType.FIELD_LEVEL_RULES.getName());
-       command.setRuleSet(ruleSet); 
+       command.setRuleSet(ruleSet);
+       command.updateAutoSelfReferencedRules();
     }
 
     @Override

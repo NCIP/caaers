@@ -33,41 +33,77 @@ public class RenderDecisionManager {
 	}
 	
 	public boolean canRenderField(String fieldId){
-        Boolean decision = decisionCache.get(findActualName(fieldId));
-		if (decision == null) return true; 
-        return decision;
+        Boolean d1 = decisionCache.get(fieldId);
+        Boolean d2 = decisionCache.get(findActualName(fieldId));
+        if(d1 == null && d2 == null) return true;
+        if(d1 == null) return d2;
+        if(d2 == null) return d1;
+        return d1 || d2;
     }
 
-	/**
-	 * Will mark the field, identified by the name as conceled (not renderable).
-	 * @param fieldNames
-	 */
-	public void conceal(String... fieldNames){
-		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.FALSE);
-	}
-	
-	/**
-	 * Will mark the field, identified by the name as renderable.
-	 * @param fieldNames
-	 */
-	public void reveal(String... fieldNames){
-		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.TRUE);
-	}
-	
+    /**
+     * Will mark the field as not renderable
+     * @param fieldName
+     */
+    public void conceal(String fieldName){
+        conceal(fieldName, false);
+    }
+
+    /**
+     * Will mark the field as not renderable
+     * @param fieldName
+     * @param useActualPath
+     */
+    public void conceal(String fieldName, boolean useActualPath){
+       decisionCache.put(useActualPath ? fieldName : findActualName(fieldName), false);
+    }
 	/**
 	 * Will mark the field, identified by the name as conceled (not renderable).
 	 * @param fieldNamesList
 	 */
 	public void conceal(List<String> fieldNamesList){
-		for(String fieldName : fieldNamesList) decisionCache.put(findActualName(fieldName), Boolean.FALSE);
+		this.conceal(fieldNamesList, false);
 	}
+
+    /**
+     * Will mark the field, identified by the name as conceled (not renderable).
+     * @param fieldNamesList
+     */
+    public void conceal(List<String> fieldNamesList, boolean useActualPath){
+        for(String fieldName : fieldNamesList) conceal(fieldName, useActualPath);
+    }
+
+    /**
+     * Will mark the field as not viewable
+     * @param fieldName
+     */
+    public void reveal(String fieldName){
+        reveal(fieldName, false);
+    }
+
+    /**
+     * Will mark the field as not viewable
+     * @param fieldName
+     * @param useActualPath
+     */
+    public void reveal(String fieldName, boolean useActualPath){
+       decisionCache.put(useActualPath ? fieldName : findActualName(fieldName), true);
+    }
+
+    /**
+     * Will mark the field, identified by the name as renderable.
+     * @param fieldNamesList
+     */
+    public void reveal(List<String> fieldNamesList){
+        this.reveal(fieldNamesList, false);
+    }
 	
 	/**
 	 * Will mark the field, identified by the name as renderable.
 	 * @param fieldNamesList
 	 */
-	public void reveal(List<String> fieldNamesList){
-		for(String fieldName : fieldNamesList) decisionCache.put(findActualName(fieldName), Boolean.TRUE);
+	public void reveal(List<String> fieldNamesList, boolean useActualPath){
+		for(String fieldName : fieldNamesList) reveal(fieldName, useActualPath);
 	}
 	
 	
@@ -103,8 +139,8 @@ public class RenderDecisionManager {
 			}
 		}
 		for(Map.Entry<String, Boolean> entry : tempDecisionMap.entrySet()){
-			if(entry.getValue()) conceal(entry.getKey());
-			else reveal(entry.getKey());
+			if(entry.getValue()) conceal(entry.getKey(), ReportMandatoryField.isSelfReferenced(entry.getKey()));
+			else reveal(entry.getKey(), ReportMandatoryField.isSelfReferenced(entry.getKey()));
 		}
     }
 

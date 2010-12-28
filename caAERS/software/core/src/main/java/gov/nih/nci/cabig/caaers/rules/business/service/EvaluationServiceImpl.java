@@ -10,12 +10,15 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections15.Closure;
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -70,7 +73,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     	result.addAllAdverseEvents(new Integer(0), newlyAddedAdverseEvents);
     	
     	//for each data collection (existing) find the evaluation
-    	if(CollectionUtils.isNotEmpty(aeReports)){
+    	if(aeReports != null && !aeReports.isEmpty()){
     		for(ExpeditedAdverseEventReport aeReport : aeReports){
     			List<AdverseEvent> evaluatableAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
     			List<AdverseEvent> existingAdverseEvents = aeReport.isActive() ? aeReport.getActiveAdverseEvents() : aeReport.getActiveModifiedAdverseEvents() ;
@@ -164,7 +167,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             //throw away rules suggestion
             if(expeditedData != null){
             	List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
-            	if(CollectionUtils.isNotEmpty(completedReports)){
+            	if(completedReports != null && !completedReports.isEmpty()){
             		for(AdverseEvent adverseEvent : aeList){
             			if(adverseEvent.isModified() || adverseEvent.getReport() == null) continue;
             			List<String> nameList = map.get(adverseEvent);
@@ -250,7 +253,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             	
             	
             	//any ae modified/got completed reports ? add those report definitions.
-            	if(CollectionUtils.isNotEmpty(modifiedAdverseEvents)){
+            	if(modifiedAdverseEvents != null && !modifiedAdverseEvents.isEmpty()){
             		List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
                 	//Any completed report, suggest amending it to proceed (but no alert).
                 	for(Report report : completedReports){
@@ -351,7 +354,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        	  }
 	        	  
 	        	  //Nothing getting edited,  add in this report def in create list
-	        	  if(CollectionUtils.isEmpty(reportsEdited)){
+	        	  if(reportsEdited != null && !reportsEdited.isEmpty()){
 	        		 wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
 	         		 wrapper.setStatus("Not started");
 	         		 rdCreateSet.add(wrapper);
@@ -362,7 +365,7 @@ public class EvaluationServiceImpl implements EvaluationService {
            }//for rd
            
            //Check if there is a need to withdraw any active report. 
-           if(expeditedData != null && CollectionUtils.isNotEmpty(activeReports)){
+           if(expeditedData != null && activeReports != null){
         	   for(Report report : activeReports){
         		   ReportDefinition rdActive = report.getReportDefinition();
         		   if(report.isManuallySelected()) continue;
@@ -485,38 +488,86 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param report
      */
     public void evaluateMandatoryness(final ExpeditedAdverseEventReport aeReport, final Report report) {
-        final HashMap<String, Mandatory> rulesDecisionCache = new HashMap<String, Mandatory>();
-        final RequirednessEvaluator requirednessEvaluator = new RequirednessEvaluator() {
 
-            // evaluates the mandatory field definition against fixed and dynamic rules
-            public Mandatory evaluate(ReportMandatoryFieldDefinition def){
-                //evaluate static rules first
-                 if(def.getMandatory().equals(RequirednessIndicator.OPTIONAL)) return Mandatory.OPTIONAL;
-                 if(def.getMandatory().equals(RequirednessIndicator.MANDATORY)) return Mandatory.MANDATORY;
-                 if(def.getMandatory().equals(RequirednessIndicator.NA)) return Mandatory.NA;
+        final ReportDefinition rd = report.getReportDefinition();
 
-                //evaluate dynamic rules and cache if necessary.
-                 String key = def.getRuleBindURL() + ":" + def.getRuleName();
-                 Mandatory cachedRequiredness = rulesDecisionCache.get(key);
-                 if(cachedRequiredness != null) return cachedRequiredness;
-                 String decision = adverseEventEvaluationService.evaluateFieldLevelRules(aeReport, report, def);
-                 cachedRequiredness = translateRulesMandatorynessResult(decision);
-                 rulesDecisionCache.put(key, cachedRequiredness);
-                 return cachedRequiredness;
+        //clear the mandatory fields in report
+        final List<ReportMandatoryField> mfList = new ArrayList<ReportMandatoryField>();
+        report.setMandatoryFields(mfList);
+
+        if(log.isDebugEnabled()) log.debug("Static Mandatory field evaluation");
+
+        //evaluation of static field rules
+        CollectionUtils.forAllDo(rd.getAllNonRuleBasedMandatoryFields(), new Closure<ReportMandatoryFieldDefinition>(){
+            public void execute(ReportMandatoryFieldDefinition mfd) {
+                ReportMandatoryField mf = new ReportMandatoryField(mfd.getFieldPath(), Mandatory.NA);
+                //update the mandatory flag
+                if(mfd.getMandatory().equals(RequirednessIndicator.OPTIONAL)) mf.setMandatory(Mandatory.OPTIONAL);
+                if(mfd.getMandatory().equals(RequirednessIndicator.MANDATORY)) mf.setMandatory(Mandatory.MANDATORY);
+                if(log.isDebugEnabled()) log.debug( mfd.getFieldPath() + " -->" + mf.getMandatory().getName());
+                mfList.add(mf);
             }
-        };
+        });
 
-        List<ReportMandatoryField> reportMandatoryFields = new ArrayList<ReportMandatoryField>();
-        for(ReportMandatoryFieldDefinition mandatoryFieldDef : report.getReportDefinition().getMandatoryFields()){
-            Mandatory mandatory = requirednessEvaluator.evaluate(mandatoryFieldDef);
-            ReportMandatoryField mandatoryField = new ReportMandatoryField(mandatoryFieldDef.getFieldPath(), mandatory );
-            reportMandatoryFields.add(mandatoryField);
-        }
-        report.setMandatoryFields(reportMandatoryFields);
+
+        final List<Object> baseInputObjects = new ArrayList<Object>();
+        baseInputObjects.add(aeReport);
+        baseInputObjects.add(rd);
+        if(aeReport.getStudy() != null) baseInputObjects.add(aeReport.getStudy());
+        if(aeReport.getTreatmentInformation() != null) baseInputObjects.add(aeReport.getTreatmentInformation());
+
+
+        //non self referenced rules
+        final List<Object> inputObjects = new ArrayList(baseInputObjects);
+        inputObjects.addAll(aeReport.getActiveAdverseEvents());
+        
+        final HashMap<String, Mandatory> rulesDecisionCache = new HashMap<String, Mandatory>();
+        if(log.isDebugEnabled()) log.debug("Non Self referenced rule evaluation");
+        CollectionUtils.forAllDo(rd.getNonSelfReferencedRuleBasedMandatoryFields(), new Closure<ReportMandatoryFieldDefinition>(){
+            public void execute(ReportMandatoryFieldDefinition mfd) {
+               String ruleName = mfd.getRuleName();
+               String path = mfd.getFieldPath();
+               Mandatory m = rulesDecisionCache.get(ruleName);
+               if(m == null){
+                   String decision = adverseEventEvaluationService.evaluateFieldLevelRules(mfd.getRuleBindURL(),
+                       ruleName, inputObjects);
+                   if(log.isDebugEnabled()) log.debug("rules decision : " + decision);
+                   m = translateRulesMandatorynessResult(decision);
+                   rulesDecisionCache.put(ruleName, m);
+                   if(log.isDebugEnabled()) log.debug( "caching --> " + m.getName());
+               }
+               if(log.isDebugEnabled()) log.debug( mfd.getFieldPath() + " -->" + m.getName());
+               mfList.add(new ReportMandatoryField(path, m));
+            }
+        });
+
+        //self referenced rules
+        if(log.isDebugEnabled()) log.debug("Self referenced rule evaluation");
+        CollectionUtils.forAllDo(rd.getSelfReferencedRuleBasedMandatoryFields(), new Closure<ReportMandatoryFieldDefinition>(){
+            public void execute(ReportMandatoryFieldDefinition mfd) {
+                Map<String, Object> map = CaaersRuleUtil.multiplexAndEvaluate(aeReport, mfd.getFieldPath());
+                for(String path : map.keySet()){
+                    List<Object> inputObjects = new ArrayList(baseInputObjects);
+                    Object o = map.get(path);
+                    if(o == null) continue;
+                    if(o instanceof Collection){
+                        inputObjects.addAll((Collection) o);
+                    }else {
+                        inputObjects.add(o);
+                    }
+                    String decision = adverseEventEvaluationService.evaluateFieldLevelRules(mfd.getRuleBindURL(), mfd.getRuleName(), inputObjects);
+                    if(log.isDebugEnabled()) log.debug("rules decision : " + decision);
+                    Mandatory m = translateRulesMandatorynessResult(decision);
+                    if(log.isDebugEnabled()) log.debug( mfd.getFieldPath() + " -->" + m.getName());
+                    mfList.add(new ReportMandatoryField(path, m));
+                }
+            }
+        });
+
     }
 
     protected Mandatory translateRulesMandatorynessResult(String decision){
-       if(StringUtils.isEmpty(decision)) return Mandatory.OPTIONAL;
+       if(StringUtils.isEmpty(decision)) return Mandatory.OPTIONAL;                                   
        String[] nameArray = StringUtils.split(decision,"||");
        Set<Mandatory> set = new TreeSet<Mandatory>(new Comparator<Mandatory>(){
            public int compare(Mandatory o1, Mandatory o2) {
@@ -536,6 +587,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     	}
     	return null;
     }
+
+
+    
 
     // //// CONFIGURATION
 
@@ -557,8 +611,5 @@ public class EvaluationServiceImpl implements EvaluationService {
 		this.organizationDao = organizationDao;
 	}
 
-    interface RequirednessEvaluator {
-           Mandatory evaluate(ReportMandatoryFieldDefinition def);
-    }
  
 }

@@ -60,6 +60,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
                         .addField(InputFieldFactory.createSelectField("mandatory", displayName, false, WebUtils.collectOptions(Arrays.asList(RequirednessIndicator.values()), "name", "displayName")))
                         .addField(InputFieldFactory.createHiddenField("ruleBindURL"))
                         .addField(InputFieldFactory.createHiddenField("ruleName"))
+                        .addField(InputFieldFactory.createHiddenField("selfReferenced"))
                     );
             fields.add(field);
             		

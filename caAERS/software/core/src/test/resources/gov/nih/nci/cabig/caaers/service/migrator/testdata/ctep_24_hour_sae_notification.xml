@@ -670,7 +670,10 @@
         </mandatoryField>
         <mandatoryField>
             <fieldPath>diseaseHistory.diagnosisDate</fieldPath>
-            <mandatory>OPTIONAL</mandatory>
+            <mandatory>RULE</mandatory>
+            <ruleBindURL>http://ls.com</ruleBindURL>
+            <ruleName>Rule-1</ruleName>
+            <selfReferenced>true</selfReferenced>
         </mandatoryField>
         <plannedNotificaiton>
             <indexOnTimeScale>0</indexOnTimeScale>

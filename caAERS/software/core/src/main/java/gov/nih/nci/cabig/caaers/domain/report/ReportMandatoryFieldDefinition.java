@@ -30,6 +30,8 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
     private String ruleBindURL;
     private String ruleName;
 
+    private boolean selfReferenced;
+
 
     public ReportMandatoryFieldDefinition() {
     }
@@ -98,6 +100,20 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
     public void setRuleNames(List<String> rulenames){
         ruleName = StringUtils.join(rulenames, '#');
     }
+
+    public boolean isSelfReferenced() {
+        return selfReferenced;
+    }
+
+    public void setSelfReferenced(boolean selfReferenced) {
+        this.selfReferenced = selfReferenced;
+    }
+
+    @Transient
+    public boolean isRuleBased(){
+        return getRuleName() != null;
+    }
+
 
     @Override
     public String toString() {

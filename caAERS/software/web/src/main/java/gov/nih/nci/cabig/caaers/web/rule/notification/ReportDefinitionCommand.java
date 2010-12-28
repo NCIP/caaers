@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import com.semanticbits.rules.brxml.ReadableRule;
+import com.semanticbits.rules.brxml.Rule;
 import com.semanticbits.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
@@ -15,10 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.Factory;
@@ -61,6 +60,7 @@ public class ReportDefinitionCommand {
     protected Map<Object, Object> recipientRoleOptions;
     private RuleSet ruleSet;
     private boolean ruleManager;
+    private List<String> autoSelfReferencedRules;
 
     public ReportDefinitionCommand(){
     }
@@ -291,6 +291,25 @@ public class ReportDefinitionCommand {
     }
     public boolean isFieldRulesAvailable(){
         return (ruleSet != null && ruleSet.getRule().size() > 0 );
+    }
+
+    public List<String> getAutoSelfReferencedRules(){
+       return autoSelfReferencedRules;
+    }
+
+    public void updateAutoSelfReferencedRules(){
+        autoSelfReferencedRules = new ArrayList<String>();
+        if(ruleSet != null){
+            for(Rule r : ruleSet.getRule() ) {
+                for(String l : r.getReadableRule().getLine()){
+                    if(l.contains("Adverse Event")) {
+                        autoSelfReferencedRules.add(r.getMetaData().getName());
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     public boolean isRuleManager() {

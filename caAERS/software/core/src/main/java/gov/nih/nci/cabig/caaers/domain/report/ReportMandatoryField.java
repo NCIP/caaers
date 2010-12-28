@@ -16,9 +16,6 @@ import java.io.Serializable;
  * 
  * @author: Biju Joseph
  */
-//@Entity
-//@Table(name = "REPORT_MANDATORY_FIELDS")
-//@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_mandatory_fields_id") })
 public class ReportMandatoryField extends AbstractMutableDomainObject implements Serializable{
    
    private String fieldPath;
@@ -39,14 +36,21 @@ public class ReportMandatoryField extends AbstractMutableDomainObject implements
         this.fieldPath = fieldPath;
     }
 
-//    @Type(type="mandatoryType")
-//    @Column(name="mandatory")
     public Mandatory getMandatory() {
         return mandatory;
     }
 
     public void setMandatory(Mandatory mandatory) {
         this.mandatory = mandatory;
+    }
+
+    public boolean isSelfReferenced(){
+        return isSelfReferenced(fieldPath);
+    }
+
+    public static boolean isSelfReferenced(String fieldPath){
+        if(fieldPath == null) return false;
+        return fieldPath.matches("(.*\\[\\d+\\].*)*");
     }
 
     public String toString(){

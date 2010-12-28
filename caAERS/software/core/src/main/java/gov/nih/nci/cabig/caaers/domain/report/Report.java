@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
@@ -419,13 +420,28 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     * This will return only the fields marked as mandatory 
     */
     @Transient
-    public List<String> getPathOfMandatoryFields() {
+    public List<String> getPathOfNonSelfReferencedMandatoryFields() {
         List<String> fields = new LinkedList<String>();
         for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY)){
-            fields.add(mandatoryField.getFieldPath());
+            if(!mandatoryField.isSelfReferenced())fields.add(mandatoryField.getFieldPath());
         }
         return fields;
     }
+
+
+    /*
+    *
+    * This will return only the fields marked as mandatory
+    */
+    @Transient
+    public List<String> getPathOfSelfReferencedMandatoryFields() {
+        List<String> fields = new LinkedList<String>();
+        for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY)){
+            if(mandatoryField.isSelfReferenced()) fields.add(mandatoryField.getFieldPath());
+        }
+        return fields;
+    }
+
 
     /**
      * Will list all the fields that are applicable (ie. Mandatory and Optional)
@@ -433,11 +449,11 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      */
     @Transient
     public List<String> getPathOfApplicableFields(){
-       List<String> fields = new LinkedList<String>();
+       Set<String> fields = new LinkedHashSet<String>();
         for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL)){
-            fields.add(mandatoryField.getFieldPath().replace("[]", ""));
+            fields.add(mandatoryField.getFieldPath().replaceAll("(\\[\\d+\\])", ""));
         }
-        return fields;
+        return new ArrayList(fields);
     }
 
     /**
@@ -460,16 +476,11 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     @Transient
     public List<ReportMandatoryField> getFieldsByApplicability(final Mandatory... mandatoryTypes) {
         ArrayList<ReportMandatoryField> reportMandatoryFields = new ArrayList<ReportMandatoryField>();
-        if(getMandatoryFields() != null) reportMandatoryFields.addAll(getMandatoryFields());
-        CollectionUtils.filter(reportMandatoryFields, new Predicate<ReportMandatoryField>(){
-            //only applicable fields will be returned.
-            public boolean evaluate(ReportMandatoryField mField) {
-               for(Mandatory mandatoryType : mandatoryTypes){
-                  if(mandatoryType == mField.getMandatory()) return true;
-               }
-               return false;
+        for(ReportMandatoryField mf : getMandatoryFields()){
+            if(ArrayUtils.contains(mandatoryTypes, mf.getMandatory())){
+                reportMandatoryFields.add(mf);
             }
-        });
+        }
         return reportMandatoryFields;
     }
 

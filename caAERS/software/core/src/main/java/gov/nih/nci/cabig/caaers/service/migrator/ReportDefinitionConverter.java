@@ -175,6 +175,7 @@ public class ReportDefinitionConverter {
                 reportMandatoryFieldDefinition.setMandatory(RequirednessIndicator.RULE);
                 reportMandatoryFieldDefinition.setRuleBindURL(repoDefinition.getRuleBindURL());
                 reportMandatoryFieldDefinition.setRuleName(repoDefinition.getRuleName());
+                reportMandatoryFieldDefinition.setSelfReferenced(repoDefinition.isSelfReferenced());
             }
 			mandatoryFields.add(reportMandatoryFieldDefinition);
 		}
@@ -294,6 +295,7 @@ public class ReportDefinitionConverter {
 			rMFDDto.setMandatory(repoMandatoryFieldDefinition.getMandatory().getName());
             rMFDDto.setRuleBindURL(repoMandatoryFieldDefinition.getRuleBindURL());
             rMFDDto.setRuleName(repoMandatoryFieldDefinition.getRuleName());
+            rMFDDto.setSelfReferenced(repoMandatoryFieldDefinition.isSelfReferenced());
 			mandatoryFields.add(rMFDDto);
 			
 		}
