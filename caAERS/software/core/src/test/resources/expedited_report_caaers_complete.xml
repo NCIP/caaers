@@ -711,9 +711,7 @@
         <ReportDefinition>
             <id>2</id>
             <duration>10</duration>
-            <timeScaleUnitType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                DAY
-            </timeScaleUnitType>
+            <timeScaleUnitType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DAY</timeScaleUnitType>
         </ReportDefinition>
         <ReportVersion>
             <reportVersionId>10</reportVersionId>
@@ -721,5 +719,6 @@
             <ReportStatus>AMENDED</ReportStatus>
         </ReportVersion>
         <emailRecipient>sameer.sawant@semanticbits.com</emailRecipient>
+        <submittedToFDA>Yes</submittedToFDA>
     </Report>
 </AdverseEventReport>

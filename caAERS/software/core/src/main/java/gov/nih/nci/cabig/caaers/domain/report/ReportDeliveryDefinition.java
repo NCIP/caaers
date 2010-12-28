@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -48,6 +49,9 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
     private String userName;
 
     private String password;
+
+    // dummy field to be used in serialized XML to check the status of the delivery using this ReportDeliveryDefinition
+    private String status;
 
     // LOGIC
     public ReportDelivery createReportDelivery() {
@@ -165,4 +169,12 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
         this.password = password;
     }
 
+    @Transient
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

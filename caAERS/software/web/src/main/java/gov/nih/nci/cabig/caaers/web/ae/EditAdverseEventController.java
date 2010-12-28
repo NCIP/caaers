@@ -48,8 +48,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	//validator needs to be called in onBindAndValidate()
 	protected WebControllerValidator webControllerValidator;
 	private static final String ACTION_PARAMETER = "action";
-	
-    
+
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private ResearchStaffDao researchStaffDao;
     private InvestigatorDao investigatorDao;

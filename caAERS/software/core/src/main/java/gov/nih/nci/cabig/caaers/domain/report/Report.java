@@ -65,7 +65,10 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     private  String _24HR_AMENDMENT = "24-hr amendment";
     private  String _24HR_AMENDMENT_COMPLETE = "24-hr amendment complete";
     private  String _REGULAR_AMENDMENT = "Regular amendment";
-    
+
+    // dummy field to be used in serialized XML to check the status of the delivery for FDA
+    private String submittedToFDA = "No";
+
     public Report(){
     	//for hibernate
     }
@@ -758,5 +761,14 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
           return (getReportDefinition().getWorkflowEnabled() != null && getReportDefinition().getWorkflowEnabled()) && getWorkflowId() != null;
        }
        return false;
+    }
+
+    @Transient
+    public String getSubmittedToFDA() {
+        return submittedToFDA;
+    }
+
+    public void setSubmittedToFDA(String submittedToFDA) {
+        this.submittedToFDA = submittedToFDA;
     }
 }

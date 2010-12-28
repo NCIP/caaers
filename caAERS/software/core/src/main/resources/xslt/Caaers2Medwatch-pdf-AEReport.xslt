@@ -1160,7 +1160,7 @@ this collection of information, including suggestions for reducing this burden t
 														<fo:block xsl:use-attribute-sets="normal">
 															<xsl:value-of select="AdverseEventReport/Reporter/firstName"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 															<xsl:value-of select="AdverseEventReport/Reporter/lastName"/>
-                                                            <fo:block/>
+                                                        <fo:block/>
 															<xsl:value-of select="AdverseEventReport/Reporter/address/street"/>
                                                             <fo:block/>
 															<xsl:value-of select="AdverseEventReport/Reporter/address/city"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
@@ -1288,9 +1288,17 @@ this collection of information, including suggestions for reducing this burden t
 											<fo:table-row height="10mm">
 												<fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">4. Contact Person</fo:block>
+													<fo:block xsl:use-attribute-sets="normal"><xsl:value-of select="AdverseEventReport/Reporter/firstName"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="AdverseEventReport/Reporter/lastName"/></fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">5. Phone number</fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal">
+                                                        <xsl:for-each select="AdverseEventReport/Reporter/ContactMechanism">
+                                                            <xsl:if test="key = 'phone'">
+                                                                <xsl:value-of select="value"/>
+                                                            </xsl:if>
+                                                        </xsl:for-each>
+                                                    </fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row height="15mm">
@@ -1299,11 +1307,13 @@ this collection of information, including suggestions for reducing this burden t
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">7. Type of Report</fo:block>
-													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Initial</fo:block>
-													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Follow-up # <fo:leader leader-length="40%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                    <xsl:variable name="reportStatus" select="AdverseEventReport/Report/ReportVersion/ReportStatus"/>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="$reportStatus != 'AMENDED'">x</xsl:if>] Initial</fo:block>
+													<fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="$reportStatus = 'AMENDED'">x</xsl:if>] Follow-up # <fo:leader leader-length="40%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
 												</fo:table-cell>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">8. Date of This Report <fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy)</fo:inline></fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/createdAt"/></xsl:call-template></fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row>
@@ -1334,7 +1344,13 @@ this collection of information, including suggestions for reducing this burden t
 											<fo:table-row>
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">11. Report Sent to FDA?</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">[ ] Yes <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal">
+                                                        <xsl:if test="AdverseEventReport/Report/submittedToFDA = 'Yes'">[x] Yes <xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/></xsl:call-template></xsl:if>
+                                                    </fo:block>
+                                                    <fo:block xsl:use-attribute-sets="normal">
+                                                        <xsl:if test="AdverseEventReport/Report/submittedToFDA = 'No'">[ ] Yes</xsl:if>
+                                                    </fo:block>
+
 													<fo:block xsl:use-attribute-sets="normal"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>(mm/dd/yyyy)</fo:block>
 													<fo:block xsl:use-attribute-sets="normal">[ ] No</fo:block>
 												</fo:table-cell>
@@ -1356,7 +1372,18 @@ this collection of information, including suggestions for reducing this burden t
                                                             </fo:table-row>
                                                             <fo:table-row>
                                                                 <fo:table-cell number-columns-spanned="2">
-                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Other <fo:leader leader-length="70%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block>
+                                                                    <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Other
+                                                                        <xsl:for-each select="AdverseEventReport/AdverseEvent">
+										                                    <xsl:if test="substring(gridId,1,3) = 'PRY'">
+                                                                                    <xsl:if test="eventLocation != ''">
+                                                                                        <xsl:value-of select="eventLocation"/>
+                                                                                    </xsl:if>
+                                                                                    <xsl:if test="eventLocation = ''">
+                                                                                        <fo:leader leader-length="70%" leader-pattern="rule" rule-thickness="0.5pt"/>
+                                                                                    </xsl:if>
+                                                                            </xsl:if>
+                                                                        </xsl:for-each>
+                                                                    </fo:block>
                                                                     <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160; (Specify)</xsl:text></fo:block>
                                                                 </fo:table-cell>
                                                             </fo:table-row>
@@ -1375,6 +1402,11 @@ this collection of information, including suggestions for reducing this burden t
 											<fo:table-row height="20mm">
 												<fo:table-cell number-columns-spanned="6" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">14. Manufacturer Name/Address</fo:block>
+													<fo:block xsl:use-attribute-sets="normal">
+                                                        <xsl:value-of select="AdverseEventReport/MedicalDevice/manufacturerName"/>,
+                                                        <xsl:value-of select="AdverseEventReport/MedicalDevice/manufacturerCity"/>,
+                                                        <xsl:value-of select="AdverseEventReport/MedicalDevice/manufacturerState"/>
+													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1">
@@ -1448,6 +1480,13 @@ this collection of information, including suggestions for reducing this burden t
 											<fo:table-row xsl:use-attribute-sets="tr-height-1" height="10mm">
 												<fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
 													<fo:block xsl:use-attribute-sets="label">6. If IND, Give Protocol #</fo:block>
+													<fo:block xsl:use-attribute-sets="normal">
+                                                        <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier">
+                                                            <xsl:if test="type = 'Coordinating Center Identifier'">
+                                                                <xsl:value-of select="value" />
+                                                            </xsl:if>
+                                                        </xsl:for-each>
+													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -1457,19 +1496,19 @@ this collection of information, including suggestions for reducing this burden t
                                                     <fo:table>
                                                         <fo:table-body>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 5-day</fo:block></fo:table-cell>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 30-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '5'">x</xsl:if> ] 5-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '30'">x</xsl:if> ] 30-day</fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 7-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '7'">x</xsl:if> ] 7-day</fo:block></fo:table-cell>
                                                                 <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Periodic</fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 10-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '10'">x</xsl:if> ] 10-day</fo:block></fo:table-cell>
                                                                 <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Initial</fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                             <fo:table-row>
-                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] 15-day</fo:block></fo:table-cell>
+                                                                <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[<xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '15'">x</xsl:if> ] 15-day</fo:block></fo:table-cell>
                                                                 <fo:table-cell><fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Follow-up # <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/></fo:block></fo:table-cell>
                                                             </fo:table-row>
                                                         </fo:table-body>

@@ -162,7 +162,6 @@ public class AdverseEventReportSerializer {
 	    	List<RadiationIntervention> radiationInterventionList = hibernateAdverseEventReport.getRadiationInterventions();
 
 	    	for (RadiationIntervention radiationIntervention: radiationInterventionList) {
-	    		
 	    		aer.addRadiationIntervention(getRadiationIntervention(radiationIntervention));
 	    	}
 	   	
@@ -252,25 +251,31 @@ public class AdverseEventReportSerializer {
 * 
 * */
 	   private Report getReport(Report report) throws Exception {
-		   
 		   Report r = new Report();
 		   r.setId(report.getId());
-		   
 		   r.setSubmissionMessage(report.getSubmissionMessage());
            r.setSubmittedOn(report.getSubmittedOn());
            r.setStatus(report.getStatus());
-
 		   r.setAdeersReportTypeIndicator(report.deriveAdeersReportTypeIndicator());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
-
-		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
+		   r.setReportDefinition(getReportDefinition(report, report.getReportDefinition()));
 		   r.setEmailAddresses(report.getEmailRecipients());
            r.setMandatoryFields(report.getMandatoryFields());
-	   		   
+	   	   r.setReportDeliveries(report.getReportDeliveries());
+
+           // determine the FDA delivery
+           if (report.getReportDefinition().getGroup().getCode().equals("RT_FDA")) {
+               for (ReportDelivery rd : report.getReportDeliveries()) {
+                   if (rd.getDeliveryStatus().equals(DeliveryStatus.DELIVERED)) {
+                        r.setSubmittedToFDA("Yes");
+                   }
+               }
+           }
+
 		   return r;
 	   }
 
-	   private ReportDefinition getReportDefinition(ReportDefinition rd) throws Exception {
+	   private ReportDefinition getReportDefinition(Report report, ReportDefinition rd) throws Exception {
 		   ReportDefinition reportDefinition = new ReportDefinition();
 		   reportDefinition.setId(rd.getId());
 		   reportDefinition.setDuration(rd.getDuration());
@@ -279,10 +284,30 @@ public class AdverseEventReportSerializer {
 		   reportDefinition.setHeader(rd.getHeader());
 		   reportDefinition.setFooter(rd.getFooter());
 		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());
-		   
+		   reportDefinition.setGroup(rd.getGroup());
+           reportDefinition.setDeliveryDefinitionsInternal(adjustDeliveryDefinitions(report, rd.getDeliveryDefinitions()));
 		   return reportDefinition;
 	   }
-    
+
+        /**
+         * This method adds the deliveryStatus to every Delivery definition
+         * The delivery status is computed from Report.deliveries.deliveryStatus
+         * with delivery.reportDeliveryDefinition = current ReportDeliveryDefinition
+         *
+         * */
+        private List<ReportDeliveryDefinition> adjustDeliveryDefinitions(Report report, List<ReportDeliveryDefinition> ddl) {
+            if (report == null) return ddl;
+
+            for (ReportDeliveryDefinition rdd : ddl) {
+                for (ReportDelivery rd : report.getReportDeliveries()) {
+                    if (rd.getReportDeliveryDefinition().getId().equals(rdd.getId())) {
+                        rdd.setStatus(rd.getDeliveryStatus().getName());
+                    }
+                }
+            }
+            return ddl;
+        }
+
 	   private AdditionalInformation getAdditionalInformation (AdditionalInformation additionalInformation) throws Exception {
 		   
 		   AdditionalInformation a = new AdditionalInformation();
@@ -390,26 +415,20 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private MedicalDevice getMedicalDevice(MedicalDevice medicalDevice) throws Exception {
-
-
            StudyDevice studyDevice = new StudyDevice();
-           if(!medicalDevice.getStudyDevice().isOtherDevice()){
-              Device device = new Device();
-              device.setBrandName(medicalDevice.getBrandName());
-		      device.setCommonName(medicalDevice.getCommonName());
-		      device.setType(medicalDevice.getDeviceType()); 
-              studyDevice.setDevice(device);
-           }else{
-              studyDevice.setOtherBrandName(medicalDevice.getBrandName());
-		      studyDevice.setOtherCommonName(medicalDevice.getCommonName());
-		      studyDevice.setOtherDeviceType(medicalDevice.getDeviceType());
+           if (!medicalDevice.getStudyDevice().isOtherDevice()) {
+               Device device = new Device();
+               device.setBrandName(medicalDevice.getBrandName());
+               device.setCommonName(medicalDevice.getCommonName());
+               device.setType(medicalDevice.getDeviceType());
+               studyDevice.setDevice(device);
+           } else {
+               studyDevice.setOtherBrandName(medicalDevice.getBrandName());
+               studyDevice.setOtherCommonName(medicalDevice.getCommonName());
+               studyDevice.setOtherDeviceType(medicalDevice.getDeviceType());
            }
 
-
-
-
-		   MedicalDevice m = new MedicalDevice(studyDevice);
-
+           MedicalDevice m = new MedicalDevice(studyDevice);
 		   studyDevice.setManufacturerName(medicalDevice.getManufacturerName());
 		   studyDevice.setManufacturerCity(medicalDevice.getManufacturerCity());
 		   studyDevice.setManufacturerState(medicalDevice.getManufacturerState());

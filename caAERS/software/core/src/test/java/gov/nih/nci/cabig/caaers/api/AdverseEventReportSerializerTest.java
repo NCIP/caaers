@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
@@ -35,13 +32,12 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
 	 * Tests the serialize of a full blown report
 	 * @throws Exception
 	 */
-	public void testFullblownReportSerailization() throws Exception{
+	public void testFullblownReportSerailization() throws Exception {
 		String xmlFileName = "expedited_report_caaers_complete.xml";
 		ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
-		String serailzedXML = serializer.serialize(aeReport, null);
-		assertNotNull(serailzedXML);
+		String serializedXML = serializer.serialize(aeReport, null);
+		assertNotNull(serializedXML);
 	}
-	
 	
 	/**
 	 * Runs the serialize in parallel... (30 threads), fails the test when there is an exception. 
@@ -142,6 +138,60 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
 
         aeReport.getReports().get(0).getReportDefinition().setHeader("THIS IS HEADER");
         aeReport.getReports().get(0).getReportDefinition().setFooter("THIS IS FOOTER");
+
+        MedicalDevice md = new MedicalDevice();
+        md.setStudyDevice(new StudyDevice());
+        md.getStudyDevice().setDevice(new Device());
+        md.setBrandName("Brand name");
+        md.setCommonName("Common name");
+        md.setCommonName("Common name");
+        md.setManufacturerName("Manufacturer name");
+        md.setManufacturerCity("Manufacturer city");
+        md.setManufacturerState("Manufacturer state");
+        aeReport.addMedicalDevice(md);
+
+        AdverseEvent ae = new AdverseEvent();
+        aeReport.getAdverseEvents().get(0).setEventLocation("SOME LOCATION");
+        TimeValue tv = new TimeValue();
+        tv.setHour(22);
+        tv.setMinute(40);
+        aeReport.getAdverseEvents().get(0).setEventApproximateTime(tv);
+
+        ConfigProperty cp = new ConfigProperty();
+        cp.setCode("RT_FDA");
+        cp.setDescription("FDA Report");
+        cp.setName("FDA Report");
+        cp.setConfigType(ConfigPropertyType.REPORT_GROUP);
+        aeReport.getReports().get(0).getReportDefinition().setGroup(cp);
+
+        ReportDeliveryDefinition rdd1 = new ReportDeliveryDefinition();
+        rdd1.setId(1001);
+        rdd1.setEndPoint("EndPoint 1001");
+        rdd1.setEntityName("EntityName 1001");
+        rdd1.setEndPointType("EndPointType 1001");
+        aeReport.getReports().get(0).getReportDefinition().addReportDeliveryDefinition(rdd1);
+
+        ReportDeliveryDefinition rdd2 = new ReportDeliveryDefinition();
+        rdd2.setId(1002);
+        rdd2.setEndPoint("EndPoint 1002");
+        rdd2.setEntityName("EntityName 1002");
+        rdd2.setEndPointType("EndPointType 1002");
+        aeReport.getReports().get(0).getReportDefinition().addReportDeliveryDefinition(rdd2);
+
+        aeReport.getReports().get(0).getReportDefinition().setDuration(10);
+        aeReport.getReports().get(0).getReportDefinition().setTimeScaleUnitType(TimeScaleUnit.DAY);
+
+        ReportDelivery rd1 = new ReportDelivery();
+        rd1.setDeliveryStatus(DeliveryStatus.DELIVERED);
+        rd1.setEndPoint("Some endpoint");
+        rd1.setReportDeliveryDefinition(rdd1);
+        aeReport.getReports().get(0).addReportDelivery(rd1);
+
+        ReportDelivery rd2 = new ReportDelivery();
+        rd2.setDeliveryStatus(DeliveryStatus.SCHEDULED);
+        rd2.setEndPoint("Some endpoint 2");
+        aeReport.getReports().get(0).addReportDelivery(rd2);
+        rd2.setReportDeliveryDefinition(rdd2);
 
         aeReport.getReports().get(0).getReportDefinition().setReportType(ReportType.REPORT);
         aeReport.getReports().get(0).getReportDefinition().setDescription("Some Description");
