@@ -30,7 +30,7 @@ AE.AUTO_SELF_REF_RULES = new Array();
    AE.ALL_FIELD_RULES.push('${rule.metaData.name}');
   </c:forEach>
   <c:forEach var="sRule" items="${command.autoSelfReferencedRules}">
-   AE.ALL_FIELD_RULES.push('${sRule}');
+   AE.AUTO_SELF_REF_RULES.push('${sRule}');
   </c:forEach>
  </c:if>
 </tags:noform>
@@ -312,7 +312,8 @@ function selectFieldChanged(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
 			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
 					</div>
 			 	  <div class="half">
-			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" tabular="true"/>
+			   		<rd:renderMandatory
+                               Fields key="LABS_SECTION~Labs~Baseline" heading="Baseline" tabular="true"/>
 					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" tabular="true" />
 					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" tabular="true" />
 			 	  </div>
