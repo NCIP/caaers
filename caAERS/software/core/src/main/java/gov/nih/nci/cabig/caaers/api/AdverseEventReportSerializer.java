@@ -155,21 +155,24 @@ public class AdverseEventReportSerializer {
 	    	List<MedicalDevice> medicalDeviceList = hibernateAdverseEventReport.getMedicalDevices();
 
 	    	for (MedicalDevice medicalDevice: medicalDeviceList) {
-	    		aer.addMedicalDevice(getMedicalDevice(medicalDevice));
+                MedicalDevice md = getMedicalDevice(medicalDevice);
+	    		if (md != null) aer.addMedicalDevice(md);
 	    	}
 	    	
 	    	//	build RadiationInterventions
 	    	List<RadiationIntervention> radiationInterventionList = hibernateAdverseEventReport.getRadiationInterventions();
 
 	    	for (RadiationIntervention radiationIntervention: radiationInterventionList) {
-	    		aer.addRadiationIntervention(getRadiationIntervention(radiationIntervention));
+                RadiationIntervention ri = getRadiationIntervention(radiationIntervention);
+	    		if (ri != null) aer.addRadiationIntervention(ri);
 	    	}
 	   	
 	    	//	build SurgeryInterventions
 	    	List<SurgeryIntervention> surgeryInterventionList = hibernateAdverseEventReport.getSurgeryInterventions();
 
 	    	for (SurgeryIntervention surgeryIntervention: surgeryInterventionList) {
-	    		aer.addSurgeryIntervention(getSurgeryIntervention(surgeryIntervention));
+                SurgeryIntervention si = getSurgeryIntervention(surgeryIntervention);
+                if (si != null) aer.addSurgeryIntervention(getSurgeryIntervention(surgeryIntervention));
 	    	}
 
 	    	aer.setAdditionalInformation(getAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation()));
@@ -398,6 +401,7 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private SurgeryIntervention getSurgeryIntervention(SurgeryIntervention surgeryIntervention) throws Exception{
+           if (surgeryIntervention.getStudySurgery() == null) return null;
 		   SurgeryIntervention s = new SurgeryIntervention();
 		   OtherIntervention oi = new OtherIntervention();
            oi.setId(surgeryIntervention.getStudySurgery().getId());
@@ -415,6 +419,8 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private MedicalDevice getMedicalDevice(MedicalDevice medicalDevice) throws Exception {
+           if (medicalDevice.getStudyDevice() == null) return null;
+
            StudyDevice studyDevice = new StudyDevice();
            if (!medicalDevice.getStudyDevice().isOtherDevice()) {
                Device device = new Device();
@@ -460,6 +466,7 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private RadiationIntervention getRadiationIntervention(RadiationIntervention ri) throws Exception {
+           if (ri.getStudyRadiation() == null) return null;
            OtherIntervention oi = new OtherIntervention();
            oi.setId(ri.getStudyRadiation().getId());
            oi.setName(ri.getStudyRadiation().getName());
@@ -477,7 +484,7 @@ public class AdverseEventReportSerializer {
 			   radiationIntervention.setAdjustment(ri.getAdjustment());
 			   radiationIntervention.setAdministration(ri.getAdministration());
 	    	} catch (Exception e) {
-	    		throw new Exception ("Error building getRadiationIntervention() "+e.getMessage() , e);
+	    		throw new Exception ("Error building getRadiationIntervention() " + e.getMessage() , e);
 	    	}
 		    return radiationIntervention;
 	   }
