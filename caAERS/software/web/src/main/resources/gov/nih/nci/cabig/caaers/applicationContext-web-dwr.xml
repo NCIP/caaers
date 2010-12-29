@@ -74,7 +74,7 @@
     <bean id="agentAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentAjaxFacade" />
 
 	<bean id="userAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.UserAjaxFacade">
-		<property name="csmUserRepository" ref="csmUserRepository"/>
+		<property name="userRepository" ref="userRepository"/>
 		<property name="organizationRepository" ref="organizationRepository"/>
 		<property name="studyDao" ref="studyDao"/>
 	</bean>

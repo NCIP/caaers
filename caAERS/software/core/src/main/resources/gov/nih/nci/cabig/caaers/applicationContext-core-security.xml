@@ -323,7 +323,7 @@
         <property name="csmAuthenticationManager" ref="csmAuthenticationManager"/>
         <property name="userDetailsService" ref="csmUserDetailsService"/>
         <property name="passwordPolicyService" ref="passwordPolicyService"/>
-        <property name="userDao" ref="userDao"/>
+        <property name="userRepository" ref="userRepository"/>
         <property name="userCache" ref="userCache"/>
     </bean>
 
@@ -351,13 +351,15 @@
 
     <!-- The security facade bean -->
     <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl">
-        <property name="csmUserRepository" ref="csmUserRepository"/>
+        <property name="userRepository" ref="userRepository"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>
         <property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>
 
     <bean id="gridServicesAuthorizationHelper" class="gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper">
-        <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="userRepository" ref="userRepository"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>
 

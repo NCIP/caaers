@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.security.user;
 
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain._User;
 
 public class Credential {
     private String _userName;
 
     private String _password;
     
-    private User user;
+    private _User user;
 
     public Credential(String userName, String password) {
         _userName = userName;
@@ -22,11 +22,11 @@ public class Credential {
         return _userName;
     }
 
-	public User getUser() {
+	public _User getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(_User user) {
 		this.user = user;
 	}
 }

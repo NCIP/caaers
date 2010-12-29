@@ -5,35 +5,28 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.utils.el.EL;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
-import gov.nih.nci.cabig.ctms.suite.authorization.SuiteAuthorizationAccessException;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
+import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
-import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -49,10 +42,8 @@ import net.sf.ehcache.CacheManager;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.mail.MailException;
 
 /**
  * The Facade Layer to CSM. 
@@ -62,7 +53,8 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
 	protected static CaaersSecurityFacade instance;
     protected final Log log = LogFactory.getLog(getClass());
-	private CSMUserRepositoryImpl csmUserRepository;
+	private UserRepository userRepository;
+	private UserProvisioningManager userProvisioningManager;
 	private RolePrivilegeDao rolePrivilegeDao;
 	private ProvisioningSessionFactory provisioningSessionFactory;
 
@@ -87,30 +79,24 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param changeURL - The URL send email
      */
     public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user,String changeURL) {
-        if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
-    		try{
-    			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff((ResearchStaff)user, changeURL);
-    		}catch(MailException e){
-    			provisionResearchStaff((ResearchStaff)user);
-    			throw e;
-    		}
-    		provisionResearchStaff((ResearchStaff)user);
-
-    	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
-    		try{
-    			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator((Investigator)user, changeURL);
-    		}catch(MailException e){
-    			provisionInvestigator((Investigator)user);
-    			throw e;
-    		}
-    		provisionInvestigator((Investigator)user);
-    	}else if(user instanceof CSMUser){
-    		try{
-    			return csmUserRepository.createOrUpdateCSMUser((CSMUser)user, changeURL);
-    		}catch(MailException mEx){
-    			throw mEx;
-    		}
-    	}
+//        if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
+//    		try{
+//    			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff((ResearchStaff)user, changeURL);
+//    		}catch(MailException e){
+//    			provisionResearchStaff((ResearchStaff)user);
+//    			throw e;
+//    		}
+//    		provisionResearchStaff((ResearchStaff)user);
+//
+//    	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
+//    		try{
+//    			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator((Investigator)user, changeURL);
+//    		}catch(MailException e){
+//    			provisionInvestigator((Investigator)user);
+//    			throw e;
+//    		}
+//    		provisionInvestigator((Investigator)user);
+//    	}
         return null;
 
     }
@@ -123,7 +109,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships) {
 		
 		//Fetch all the existing groups of the Given User.
-		List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+		List<UserGroupType> userGroups = userRepository.getUserGroups(csmUser.getLoginName());
 		
 		//Erase all the existing SuiteRoleMemberships of the User
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
@@ -145,12 +131,13 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ : refactored to use SuiteRoleMembership
 	public Collection<String> getRoles(String userName, Study study) {
 		Set<String> roles = new HashSet<String>();
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
+		_User user = userRepository.getUserByLoginName(userName);
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 
         String studyCCIdentifier = study.getCoordinatingCenterIdentifier().getValue();
         
-        List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+        List<UserGroupType> userGroups = user.getUserGroupTypes();
         for(UserGroupType group : userGroups){
         	SuiteRoleMembership membership = session.getProvisionableRoleMembership(SuiteRole.getByCsmName(group.getCsmName()));
         	SuiteRole suiteRole = membership.getRole();
@@ -191,10 +178,11 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ : Refactored to use SuiteRoleMembership
 	public Collection<String> getRoles(String userName, Organization org) {
 		Set<String> roles = new HashSet<String>();
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
+		_User user = userRepository.getUserByLoginName(userName);
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
         
-        List<UserGroupType> userGroups = csmUserRepository.getUserGroups(csmUser.getLoginName());
+        List<UserGroupType> userGroups = user.getUserGroupTypes();
         for(UserGroupType group : userGroups){
         	SuiteRoleMembership membership = session.getProvisionableRoleMembership(SuiteRole.getByCsmName(group.getCsmName()));
         	SuiteRole suiteRole = membership.getRole();
@@ -300,16 +288,16 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param user - The logged-in user.
      */
     public void provisionUser(User user) throws CaaersUserProvisioningException{
-    	try{
-        	if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
-        		provisionResearchStaff((ResearchStaff)user);
-        	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
-        		provisionInvestigator((Investigator)user);
-        	}
-    	}catch(Exception ex){
-    		log.error("Exception in CaaersSecurityFacadeImpl.provisionUser() "+ex.getMessage());
-    		throw new CaaersUserProvisioningException("Exception while provisioning Organizations/Studies for user - "+user.getLoginId() ,ex);
-    	}
+//    	try{
+//        	if(user instanceof RemoteResearchStaff || user instanceof LocalResearchStaff){
+//        		provisionResearchStaff((ResearchStaff)user);
+//        	}else if(user instanceof RemoteInvestigator || user instanceof LocalInvestigator){
+//        		provisionInvestigator((Investigator)user);
+//        	}
+//    	}catch(Exception ex){
+//    		log.error("Exception in CaaersSecurityFacadeImpl.provisionUser() "+ex.getMessage());
+//    		throw new CaaersUserProvisioningException("Exception while provisioning Organizations/Studies for user - "+user.getLoginId() ,ex);
+//    	}
     }
     
     /**
@@ -318,38 +306,38 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public void provisionInvestigator(Investigator investigator){
     	
-    	if(StringUtils.isEmpty(investigator.getLoginId())) return;
-    	
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(investigator.getLoginId());
-    	if(csmUser == null) return;
-    	
-    	try {
-			String groupId;
-	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
-			provisioningSession.deleteRole(suiteRole);
-			groupId = csmUserRepository.getGroupIdByName(AE_REPORTER);
-			csmUserRepository.getUserProvisioningManager().removeUserFromGroup(groupId,String.valueOf(csmUser.getUserId()));
-			
-			SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole,null,null);
-			for(SiteInvestigator eachSiteInv : investigator.getActiveSiteInvestigators()){
-				suiteRoleMembership.addSite(eachSiteInv.getOrganization().getNciInstituteCode());
-			}
-			List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
-			for(String studyIdentifier : studyIndetifiers){
-				suiteRoleMembership.addStudy(studyIdentifier);
-			}
-			if(suiteRoleMembership.getSiteIdentifiers() != null && suiteRoleMembership.getSiteIdentifiers().size() > 0){
-				provisioningSession.replaceRole(suiteRoleMembership);
-				csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
-			}
-    	}catch (CSObjectNotFoundException e) {
-			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
-		} catch (CSTransactionException e) {
-			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
-		} catch (Exception e){
-			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
-		}
+//    	if(StringUtils.isEmpty(investigator.getLoginId())) return;
+//    	
+//    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(investigator.getLoginId());
+//    	if(csmUser == null) return;
+//    	
+//    	try {
+//			String groupId;
+//	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+//			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
+//			provisioningSession.deleteRole(suiteRole);
+//			groupId = csmUserRepository.getGroupIdByName(AE_REPORTER);
+//			csmUserRepository.getUserProvisioningManager().removeUserFromGroup(groupId,String.valueOf(csmUser.getUserId()));
+//			
+//			SuiteRoleMembership suiteRoleMembership = new SuiteRoleMembership(suiteRole,null,null);
+//			for(SiteInvestigator eachSiteInv : investigator.getActiveSiteInvestigators()){
+//				suiteRoleMembership.addSite(eachSiteInv.getOrganization().getNciInstituteCode());
+//			}
+//			List<String> studyIndetifiers = getAllInvestigatorStudies(investigator.getLoginId());
+//			for(String studyIdentifier : studyIndetifiers){
+//				suiteRoleMembership.addStudy(studyIdentifier);
+//			}
+//			if(suiteRoleMembership.getSiteIdentifiers() != null && suiteRoleMembership.getSiteIdentifiers().size() > 0){
+//				provisioningSession.replaceRole(suiteRoleMembership);
+//				csmUserRepository.getUserProvisioningManager().addGroupsToUser(String.valueOf(csmUser.getUserId()), new String[]{groupId});
+//			}
+//    	}catch (CSObjectNotFoundException e) {
+//			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+//		} catch (CSTransactionException e) {
+//			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+//		} catch (Exception e){
+//			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+//		}
     }
     
     
@@ -358,62 +346,62 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param researchStaff
      */
     private void provisionSitesForResearchStaff(ResearchStaff researchStaff,ProvisioningSession provisioningSession){
-
-    	for(SiteResearchStaff eachSrs : researchStaff.getInActiveSiteResearchStaff()){
-    		SuiteRoleMembership suiteRoleMembership = null;
-    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
-    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			if(suiteRole.isScoped()){
-        			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
-        			if(srsList == null || srsList.isEmpty()){
-        				provisioningSession.deleteRole(suiteRole);
-        			}else{
-        				suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-        				if(!suiteRoleMembership.isAllSites()){
-        					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
-        					provisioningSession.replaceRole(suiteRoleMembership);
-        				}
-        			}
-    			}else{
-    				provisioningSession.deleteRole(suiteRole);
-    			}
-    		}
-    	}
-    	for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
-    		SuiteRoleMembership suiteRoleMembership = null;
-    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getInActiveSiteResearchStaffRoles()){
-    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			if(suiteRole.isScoped()){
-        			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
-        			if(srsList.isEmpty()){
-        				provisioningSession.deleteRole(suiteRole);
-        			}else{
-       					suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-        				if(!suiteRoleMembership.isAllSites()){
-        					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
-        					provisioningSession.replaceRole(suiteRoleMembership);
-        				}
-        			}
-    			}else{
-    				provisioningSession.deleteRole(suiteRole);
-    			}
-    		}
-    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
-    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-    			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-    			if(suiteRole.isScoped()){
-        			if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
-        				suiteRoleMembership.forAllSites();
-        			}
-        			if(!suiteRoleMembership.isAllSites()){
-        				suiteRoleMembership.addSite(eachSrs.getOrganization().getNciInstituteCode());
-        			}
-            		provisioningSession.replaceRole(suiteRoleMembership);
-    			}else{
-    				provisioningSession.replaceRole(suiteRoleMembership);
-    			}
-    		}
-    	}
+//
+//    	for(SiteResearchStaff eachSrs : researchStaff.getInActiveSiteResearchStaff()){
+//    		SuiteRoleMembership suiteRoleMembership = null;
+//    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
+//    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+//    			if(suiteRole.isScoped()){
+//        			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
+//        			if(srsList == null || srsList.isEmpty()){
+//        				provisioningSession.deleteRole(suiteRole);
+//        			}else{
+//        				suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+//        				if(!suiteRoleMembership.isAllSites()){
+//        					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
+//        					provisioningSession.replaceRole(suiteRoleMembership);
+//        				}
+//        			}
+//    			}else{
+//    				provisioningSession.deleteRole(suiteRole);
+//    			}
+//    		}
+//    	}
+//    	for(SiteResearchStaff eachSrs : researchStaff.getActiveSiteResearchStaff()){
+//    		SuiteRoleMembership suiteRoleMembership = null;
+//    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getInActiveSiteResearchStaffRoles()){
+//    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+//    			if(suiteRole.isScoped()){
+//        			List<SiteResearchStaff> srsList = researchStaff.findSiteResearchStaffByRoles(eachSrsRole.getRoleCode());
+//        			if(srsList.isEmpty()){
+//        				provisioningSession.deleteRole(suiteRole);
+//        			}else{
+//       					suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+//        				if(!suiteRoleMembership.isAllSites()){
+//        					suiteRoleMembership.removeSite(eachSrs.getOrganization().getNciInstituteCode());
+//        					provisioningSession.replaceRole(suiteRoleMembership);
+//        				}
+//        			}
+//    			}else{
+//    				provisioningSession.deleteRole(suiteRole);
+//    			}
+//    		}
+//    		for(SiteResearchStaffRole eachSrsRole : eachSrs.getActiveSiteResearchStaffRoles()){
+//    			SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+//    			suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+//    			if(suiteRole.isScoped()){
+//        			if(suiteRole.getCsmName().equals(USER_ADMINISTRATOR) || suiteRole.getCsmName().equals(PO_INFO_MANAGER)){
+//        				suiteRoleMembership.forAllSites();
+//        			}
+//        			if(!suiteRoleMembership.isAllSites()){
+//        				suiteRoleMembership.addSite(eachSrs.getOrganization().getNciInstituteCode());
+//        			}
+//            		provisioningSession.replaceRole(suiteRoleMembership);
+//    			}else{
+//    				provisioningSession.replaceRole(suiteRoleMembership);
+//    			}
+//    		}
+//    	}
     }
     
     /**
@@ -422,17 +410,17 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public void provisionResearchStaff(ResearchStaff researchStaff){
     	
-    	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
-    	if(csmUser == null) return;
-    	
-    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-		try {
-			provisionSitesForResearchStaff(researchStaff, provisioningSession);
-			provisionStudies(researchStaff, provisioningSession);
-		} catch (Exception e){
-			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
-		}
+//    	if(StringUtils.isEmpty(researchStaff.getLoginId())) return;
+//    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(researchStaff.getLoginId());
+//    	if(csmUser == null) return;
+//    	
+//    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+//		try {
+//			provisionSitesForResearchStaff(researchStaff, provisioningSession);
+//			provisionStudies(researchStaff, provisioningSession);
+//		} catch (Exception e){
+//			throw new CaaersUserProvisioningException("Exception while provisioning user - "+csmUser.getLoginName() ,e);
+//		}
     }
     
     
@@ -442,31 +430,31 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public void provisionStudies(StudyPersonnel studyPersonnel){
 
-    	if (studyPersonnel == null) return;
-    	String loginId =  studyPersonnel.getSiteResearchStaff().getResearchStaff().getLoginId();
-    	
-    	if(StringUtils.isEmpty(loginId)) return;
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
-    	if(csmUser == null) return;
-    	try {
-        	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-        	SuiteRole suiteRole = SuiteRole.getByCsmName(studyPersonnel.getRoleCode());
-        	if(suiteRole.isStudyScoped()){
-        		SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-            	String studyIdentifier = studyPersonnel.getStudyOrganization().getStudy().getCoordinatingCenterIdentifier().getValue();
-            	if(!suiteRoleMembership.isAllStudies()){
-                	if(studyPersonnel.isActive()){
-                		suiteRoleMembership.addStudy(studyIdentifier);
-                	}else if(studyPersonnel.isInActive()){
-                		suiteRoleMembership.removeStudy(studyIdentifier);
-                	}
-            	}
-            	provisioningSession.replaceRole(suiteRoleMembership);
-        	}
-
-		}catch (Exception e){
-			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+loginId ,e);
-		}
+//    	if (studyPersonnel == null) return;
+//    	String loginId =  studyPersonnel.getSiteResearchStaff().getResearchStaff().getLoginId();
+//    	
+//    	if(StringUtils.isEmpty(loginId)) return;
+//    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
+//    	if(csmUser == null) return;
+//    	try {
+//        	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+//        	SuiteRole suiteRole = SuiteRole.getByCsmName(studyPersonnel.getRoleCode());
+//        	if(suiteRole.isStudyScoped()){
+//        		SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+//            	String studyIdentifier = studyPersonnel.getStudyOrganization().getStudy().getCoordinatingCenterIdentifier().getValue();
+//            	if(!suiteRoleMembership.isAllStudies()){
+//                	if(studyPersonnel.isActive()){
+//                		suiteRoleMembership.addStudy(studyIdentifier);
+//                	}else if(studyPersonnel.isInActive()){
+//                		suiteRoleMembership.removeStudy(studyIdentifier);
+//                	}
+//            	}
+//            	provisioningSession.replaceRole(suiteRoleMembership);
+//        	}
+//
+//		}catch (Exception e){
+//			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+loginId ,e);
+//		}
     }
     
     /**
@@ -474,38 +462,38 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @param researchStaff
      */
     private void provisionStudies(ResearchStaff researchStaff,ProvisioningSession provisioningSession){
-		try {
-	   		for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
-				for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
-					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
-					if(suiteRole.isStudyScoped()){
-						SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-	    				List<String> studiesToRemove = getAllRSStudiesToRemove(researchStaff.getLoginId());
-	    				for(String studyIdentifier : studiesToRemove){
-	    					if(!suiteRoleMembership.isAllStudies()){
-	    						suiteRoleMembership.removeStudy(studyIdentifier);
-	    					}
-	    				}
-	    				List<String> studiesToAdd = getAllRSStudiesToAdd(researchStaff.getLoginId());
-	    				for(String studyIdentifier : studiesToAdd){
-	    					if(!suiteRoleMembership.isAllStudies()){
-	    						suiteRoleMembership.addStudy(studyIdentifier);
-	    					}
-	    				}
-	    				try{
-	    					if(suiteRoleMembership.getSiteIdentifiers() != null && suiteRoleMembership.getSiteIdentifiers().size() > 0){
-	    						provisioningSession.replaceRole(suiteRoleMembership);
-	    					}
-	    				}catch(SuiteAuthorizationAccessException siteE){
-	    					//allSite = true;
-	    					provisioningSession.replaceRole(suiteRoleMembership);
-	    				}
-					}
-				}
-			}
-		}catch (Exception e){
-			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+researchStaff.getLoginId() ,e);
-		}
+//		try {
+//	   		for(SiteResearchStaff eachSrs : researchStaff.getSiteResearchStaffs()){
+//				for(SiteResearchStaffRole eachSrsRole : eachSrs.getSiteResearchStaffRoles()){
+//					SuiteRole suiteRole = SuiteRole.getByCsmName(eachSrsRole.getRoleCode());
+//					if(suiteRole.isStudyScoped()){
+//						SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+//	    				List<String> studiesToRemove = getAllRSStudiesToRemove(researchStaff.getLoginId());
+//	    				for(String studyIdentifier : studiesToRemove){
+//	    					if(!suiteRoleMembership.isAllStudies()){
+//	    						suiteRoleMembership.removeStudy(studyIdentifier);
+//	    					}
+//	    				}
+//	    				List<String> studiesToAdd = getAllRSStudiesToAdd(researchStaff.getLoginId());
+//	    				for(String studyIdentifier : studiesToAdd){
+//	    					if(!suiteRoleMembership.isAllStudies()){
+//	    						suiteRoleMembership.addStudy(studyIdentifier);
+//	    					}
+//	    				}
+//	    				try{
+//	    					if(suiteRoleMembership.getSiteIdentifiers() != null && suiteRoleMembership.getSiteIdentifiers().size() > 0){
+//	    						provisioningSession.replaceRole(suiteRoleMembership);
+//	    					}
+//	    				}catch(SuiteAuthorizationAccessException siteE){
+//	    					//allSite = true;
+//	    					provisioningSession.replaceRole(suiteRoleMembership);
+//	    				}
+//					}
+//				}
+//			}
+//		}catch (Exception e){
+//			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+researchStaff.getLoginId() ,e);
+//		}
     }
     
     /**
@@ -514,30 +502,30 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     public void provisionStudies(StudyInvestigator studyInvestigator){
     	
-    	if(studyInvestigator == null) return;
-    	
-    	String loginId =  studyInvestigator.getSiteInvestigator().getInvestigator().getLoginId();
-    	if(StringUtils.isEmpty(loginId)) return;
-
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
-    	if(csmUser == null) return;
-    	
-    	try {
-	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
-			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
-			SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
-			String studyIdentifier = studyInvestigator.getStudyOrganization().getStudy().getCoordinatingCenterIdentifier().getValue();
-        	if(!suiteRoleMembership.isAllStudies()){
-            	if(studyInvestigator.isActive()){
-            		suiteRoleMembership.addStudy(studyIdentifier);
-            	}else if(studyInvestigator.isInActive()){
-            		suiteRoleMembership.removeStudy(studyIdentifier);
-            	}
-        	}
-			provisioningSession.replaceRole(suiteRoleMembership);
-    	}catch (Exception e){
-			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+csmUser.getLoginName() ,e);
-		}
+//    	if(studyInvestigator == null) return;
+//    	
+//    	String loginId =  studyInvestigator.getSiteInvestigator().getInvestigator().getLoginId();
+//    	if(StringUtils.isEmpty(loginId)) return;
+//
+//    	gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getUserProvisioningManager().getUser(loginId);
+//    	if(csmUser == null) return;
+//    	
+//    	try {
+//	    	ProvisioningSession provisioningSession = provisioningSessionFactory.createSession(csmUser.getUserId());
+//			SuiteRole suiteRole = SuiteRole.getByCsmName(AE_REPORTER);
+//			SuiteRoleMembership suiteRoleMembership = provisioningSession.getProvisionableRoleMembership(suiteRole);
+//			String studyIdentifier = studyInvestigator.getStudyOrganization().getStudy().getCoordinatingCenterIdentifier().getValue();
+//        	if(!suiteRoleMembership.isAllStudies()){
+//            	if(studyInvestigator.isActive()){
+//            		suiteRoleMembership.addStudy(studyIdentifier);
+//            	}else if(studyInvestigator.isInActive()){
+//            		suiteRoleMembership.removeStudy(studyIdentifier);
+//            	}
+//        	}
+//			provisioningSession.replaceRole(suiteRoleMembership);
+//    	}catch (Exception e){
+//			throw new CaaersUserProvisioningException("Exception while provisioning studies for - "+csmUser.getLoginName() ,e);
+//		}
     }
     
     
@@ -657,7 +645,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	Set<ProtectionGroupRoleContext> contexts = null;
     	contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_GROUP_ROLE_CONTEXT);
     	if (contexts  == null ) {
-    		contexts = csmUserRepository.getUserProvisioningManager().getProtectionGroupRoleContextForUser(loginId);
+    		contexts = userProvisioningManager.getProtectionGroupRoleContextForUser(loginId);
     		CSMCacheManager.addProtectionGroupRoleContextToCache(loginId , loginId, contexts);
     	}
 		return contexts;
@@ -673,7 +661,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     	Set<ProtectionElementPrivilegeContext> contexts = null;
     	contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
     	if (contexts  == null ) {
-    		contexts = csmUserRepository.getUserProvisioningManager().getProtectionElementPrivilegeContextForUser(loginId);
+    		contexts = userProvisioningManager.getProtectionElementPrivilegeContextForUser(loginId);
     		CSMCacheManager.addProtectionElementPrivilegeContextToCache(loginId, loginId, contexts);
     	}
     	return contexts;
@@ -688,11 +676,13 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ - Refactored to use the SuiteRoleMemberShip
     public List<IndexEntry> getAccessibleStudyIds(String userName){
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
+        
+        _User user = userRepository.getUserByLoginName(userName);
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
 
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
         
-        List<UserGroupType> userGroups = getCsmUserRepository().getUserGroups(userName);
+        List<UserGroupType> userGroups = user.getUserGroupTypes();
 		for(UserGroupType userGroupType : userGroups){
             IndexEntry entry = new IndexEntry(userGroupType);
             entries.add(entry);
@@ -758,10 +748,11 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ - Refactored to use the SuiteRoleMemberShip
     public List<IndexEntry> getAccessibleOrganizationIds(String userName){
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = csmUserRepository.getCSMUserByName(userName);
+        _User user = userRepository.getUserByLoginName(userName);
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
 
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-        List<UserGroupType> userGroups = getCsmUserRepository().getUserGroups(userName);
+        List<UserGroupType> userGroups = user.getUserGroupTypes();
 		for(UserGroupType userGroupType : userGroups){
             IndexEntry entry = new IndexEntry(userGroupType);
             entries.add(entry);
@@ -828,10 +819,11 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			return;
 		}
         
-		gov.nih.nci.security.authorization.domainobjects.User user = csmUserRepository.getCSMUserByName(userName);
-        if(user == null) return;
+		_User user = userRepository.getUserByLoginName(userName);
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
+        if(csmUser == null) return;
 
-		Long id = user.getUserId();
+		Long id = csmUser.getUserId();
 		if (id != null ) {
 
 			String loginId = id.toString();
@@ -876,12 +868,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         return instance;
     }
 
-	public void setCsmUserRepository(CSMUserRepositoryImpl csmUserRepository) {
-		this.csmUserRepository = csmUserRepository;
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
-	public CSMUserRepositoryImpl getCsmUserRepository() {
-		return csmUserRepository;
+	public void setUserProvisioningManager(
+			UserProvisioningManager userProvisioningManager) {
+		this.userProvisioningManager = userProvisioningManager;
 	}
-
 }

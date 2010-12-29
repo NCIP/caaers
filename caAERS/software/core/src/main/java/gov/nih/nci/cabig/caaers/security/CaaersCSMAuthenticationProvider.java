@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
+import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
@@ -29,8 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	
 	private static final Log logger = LogFactory.getLog(CaaersCSMAuthenticationProvider.class);	
-	private UserDao userDao;
-	private PasswordPolicyService passwordPolicyService; 
+	private PasswordPolicyService passwordPolicyService;
+	private UserRepository userRepository;
 	
 	public PasswordPolicyService getPasswordPolicyService() {
 		return passwordPolicyService;
@@ -48,7 +47,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) 
 	throws AccountExpiredException{
 
-		User caaersUser = null;
+		_User caaersUser = null;
 		Credential credential =  new Credential(user.getUsername(), user.getPassword());
 		PasswordPolicy passwordPolicy = passwordPolicyService.getPasswordPolicy();
 		LoginPolicyValidator loginPolicyValidator = new LoginPolicyValidator();		
@@ -58,7 +57,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 			throw new AccountExpiredException((new StringBuilder()).append("Error authenticating: User is InActive").toString());
 		}		
 		
-		caaersUser = userDao.getByLoginId(user.getUsername());
+		caaersUser = userRepository.getUserByLoginName(user.getUsername());
 		
 		try {
 			// If the user is a caAERS user, then apply Login Policy Validations
@@ -73,11 +72,6 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 				loginPolicyValidator.validate(passwordPolicy, credential, null);
 				if(caaersUser.getFailedLoginAttempts()==-1)	caaersUser.setFailedLoginAttempts(0);
 				if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt())	caaersUser.setFailedLoginAttempts(0);
-
-                //check if the user is active or not. 
-                if(!caaersUser.isActive()){
-                    throw new DisabledException("User is inactive");
-                }
 
 			}
 			
@@ -112,15 +106,12 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 		} finally {
 			// save the caAERS user properties.
 			if(caaersUser!=null) {
-			userDao.save(caaersUser);
+				userRepository.save(caaersUser);
 			}
 		}
 	}
 
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-	public UserDao getUserDao() {
-		return userDao;
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 }

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
@@ -18,8 +19,8 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.drools.util.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -35,6 +36,19 @@ public class UserRepositoryImpl implements UserRepository {
     private MailSender mailSender;
     private String authenticationMode;
     private MessageSource messageSource;
+    
+	
+    @SuppressWarnings("unchecked")
+	public List searchCsmUser(String firstName, String lastName, String userName) {
+    	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
+    	
+    	gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
+    	if(StringUtils.isNotEmpty(firstName)) example.setFirstName(firstName);
+    	if(StringUtils.isNotEmpty(lastName)) example.setLastName(lastName);
+    	if(StringUtils.isNotEmpty(userName)) example.setLoginName(userName);
+    	UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
+    	return userProvisioningManager.getObjects(userSearchCriteria);	
+	}
 	
     @Transactional(readOnly = false)
     public void save(_User user){
@@ -78,10 +92,10 @@ public class UserRepositoryImpl implements UserRepository {
      * @param userName
      * @return
      */
-    protected List<UserGroupType> getUserGroups(String userId) {
+    public List<UserGroupType> getUserGroups(String loginName) {
     	List<UserGroupType> userGroups = new ArrayList<UserGroupType>();
     	try {
-			Set groups = userProvisioningManager.getGroups(userId);
+			Set groups = userProvisioningManager.getGroups(loginName);
 			if(groups != null){
 				for(Object obj : groups){
 					Group group = (Group) obj;
@@ -90,7 +104,7 @@ public class UserRepositoryImpl implements UserRepository {
 				}
 			}
 		} catch (CSObjectNotFoundException e) {
-			logger.warn("unable to fetch groups for CSM user (" + userId + "), something is wrong", e);
+			logger.warn("unable to fetch groups for CSM user (" + loginName + "), something is wrong", e);
 		}
     	return userGroups;
     }
@@ -117,7 +131,11 @@ public class UserRepositoryImpl implements UserRepository {
             throw new CaaersSystemException("Could not create user", e2);
         }
     }
-
+    
+    public void unlockUser(_User user){
+    	user.unlock();
+    	save(user);
+    }
     
     public void userChangePassword(_User user, String password, int maxHistorySize) {
         user.resetToken();
@@ -128,7 +146,11 @@ public class UserRepositoryImpl implements UserRepository {
         save(user);
     }
     
-
+    public boolean loginIDInUse(String loginId) {
+    	if(userProvisioningManager.getUser(loginId) != null ) return true;
+		return false;
+    }
+    
 	public String encryptString(String string){
     	try{
     		return new StringEncrypter().encrypt(string);
@@ -161,7 +183,8 @@ public class UserRepositoryImpl implements UserRepository {
     	if ("local".equals(getAuthenticationMode())) {
     		sendUserEmail(user.getCsmUser().getEmailId(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
     	}
-    }    
+    }  
+    
     
 	public void setUserDao(_UserDao userDao) {
 		this.userDao = userDao;
@@ -194,5 +217,5 @@ public class UserRepositoryImpl implements UserRepository {
 
 	public MailSender getMailSender() {
 		return mailSender;
-	}	
+	}
 }

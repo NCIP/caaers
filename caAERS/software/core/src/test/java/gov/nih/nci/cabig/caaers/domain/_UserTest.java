@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-
-import java.util.Arrays;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
@@ -10,21 +7,13 @@ import junit.framework.TestCase;
 /**
  * @author Ram Seethiraju
  */
-public class UserTest extends TestCase {
 
-	private Credential credential;
-	private User user;	
-	private String userName;    
-	private String password;
+public class _UserTest extends TestCase {
+	private _User user;	
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		userName = "xyz";
-		password = "Abcdef1!";  
-		credential = new Credential(userName, password);
-		Organization org = Fixtures.createOrganization("test");        
-		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.ae_reporter}) , "Test");
-		credential.setUser(user);
+		user =  new _User();
 	}
 
 	public void testIsLocked_CheckingSuccess() {

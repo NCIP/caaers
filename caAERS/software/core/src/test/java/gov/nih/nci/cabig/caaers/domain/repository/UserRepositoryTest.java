@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -117,5 +119,18 @@ public class UserRepositoryTest extends AbstractTestCase {
     		/*good*/
     	}
     	verifyMocks();
+    }
+    
+    public void testUnlockUser(){
+    	_User _user = new _User();
+    	_user.setLoginName("monishd");
+    	_user.setFailedLoginAttempts(3);
+    	_user.setLastFailedLoginAttemptTime(new Timestamp(new Date().getTime()));
+    	userDao.save(_user);
+    	replayMocks();
+    	repository.unlockUser(_user);
+    	verifyMocks();
+    	assertNull(_user.getLastFailedLoginAttemptTime());
+    	assertEquals(0,_user.getFailedLoginAttempts());
     }
 }

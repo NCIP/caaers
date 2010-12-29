@@ -63,7 +63,7 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
                       .append("join srs.researchStaff rs " )
                       .append("where ss.study = so.study ")
                       .append("and so.organization.id in (:orgIds) ")
-                      .append("and rs.loginId = :loginId  ")
+                      .append("and rs.caaersUser.loginName = :loginId  ")
                       .append("and (sp.endDate is null or sp.endDate >= :endDate) ")
                       .append("and sp.startDate <= :startDate  ")
                       .append("and sp.retiredIndicator <> true ")

@@ -1,0 +1,67 @@
+<dataset>
+
+	<caaers_users
+		id="-1"
+		login_name="karthiki"
+		salt=""
+		token="abcd"
+		token_time="2008-10-22 12:03:13.605"
+		password_last_set="2008-10-22 12:03:13.605"
+		num_failed_logins="0"
+		last_login="2008-10-22 12:03:13.605"
+	/>
+	
+	<caaers_users
+		id="-2"
+		login_name="sunil"
+		salt=""
+		token="abcdef"
+		token_time="2008-10-22 12:03:13.605"
+		password_last_set="2008-10-22 12:03:13.605"
+		num_failed_logins="0"
+		last_login="2008-10-22 12:03:13.605"
+	/>
+
+    <INVESTIGATORS
+        id="-200"
+        first_name="karthik"
+        last_name="iyer"
+		nci_identifier="222"
+        email_address="ki@def.com"
+        phone_number="123-456-789"
+        user_id="-1"
+       />
+	
+	<ORGANIZATIONS 
+		id="-1003" 
+		version="1" 
+		name="Cancer and Leukemia Group B" 
+		description_text="NUCC" 
+		nci_institute_code="CALGB"/>
+    
+    <SITE_INVESTIGATORS 
+    	id="-4004" 
+    	site_id="-1003" 
+    	investigator_id="-200"/>
+    	
+    <RESEARCH_STAFFS 
+	    id="-1000" 
+	    version="1" 
+	    first_name="Bill" 
+	    last_name="Gates" 
+	    email_address="big@def.com" 
+	    phone_number="123-456-789" 
+	    nci_identifier="nci id" 
+	    street="Park Centre Road"
+	   	city="Fairfax"
+	   	state="Virginia"
+	   	zip="22033"
+	   	code="0"
+	   	user_id="-2"/> 
+	   	
+	<SITE_RESEARCH_STAFFS 
+    	id="-4004" 
+    	site_id="-1003" 
+    	researchstaff_id="-1000"/>	   	   	       
+
+</dataset>

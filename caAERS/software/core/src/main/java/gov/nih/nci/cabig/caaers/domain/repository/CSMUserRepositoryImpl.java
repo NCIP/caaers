@@ -1,39 +1,20 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.dao.GroupSearchCriteria;
-import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
-import gov.nih.nci.security.exceptions.CSTransactionException;
-import gov.nih.nci.security.util.StringEncrypter;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.MessageSource;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
+//TODO:MONISH Retire this class when appropriate
 public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     private UserProvisioningManager userProvisioningManager;
@@ -44,300 +25,71 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
     
     
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public List searchCsmUser(String firstName,String lastName,String userName){
-    	
-    	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
-    	
-    	gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
-    	if(StringUtils.isNotEmpty(firstName)) example.setFirstName(firstName);
-    	if(StringUtils.isNotEmpty(lastName)) example.setLastName(lastName);
-    	if(StringUtils.isNotEmpty(userName)) example.setLoginName(userName);
-    	UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
-    	return userProvisioningManager.getObjects(userSearchCriteria);
+		throw new UnsupportedOperationException();
     }
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(final User user, String changeURL) {
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
-        MailException mailException = null;
-
-        try {
-            if (user.getId() == null) {
-                csmUser = createCSMUser(user);
-                sendCreateAccountEmail(user, changeURL);
-            } else {
-                csmUser = updateCSMUser(user);
-                if (csmUser == null) {
-                    csmUser = createCSMUser(user);
-                    sendCreateAccountEmail(user, changeURL);
-                } else {
-                    sendUpdateAccountEmail(user);
-                }
-            }
-        } catch (MailException e) {
-            mailException = e;
-        }
-        if (mailException != null) throw mailException;
-        return csmUser;
+    	throw new UnsupportedOperationException();
     }
     
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
-        MailException mailException = null;
-
-        try {
-            if (researchStaff.getId() == null) {
-                csmUser = createCSMUser(researchStaff);
-                sendCreateAccountEmail(researchStaff, changeURL);
-            } else {
-                csmUser = updateCSMUser(researchStaff);
-                if (csmUser == null) {
-                    csmUser = createCSMUser(researchStaff);
-                    sendCreateAccountEmail(researchStaff, changeURL);
-                } else {
-                    sendUpdateAccountEmail(researchStaff);
-                }
-            }
-        } catch (MailException e) {
-            mailException = e;
-        }
-        //createCSMUserGroups(csmUser, researchStaff, null);
-        if (mailException != null) throw mailException;
+    	throw new UnsupportedOperationException();
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForInvestigator(Investigator investigator, String changeURL) {
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
-    	MailException mailException = null;
-    	
-    	try {
-			if(investigator.getId() == null){
-				csmUser = createCSMUser(investigator);
-				sendCreateAccountEmail(investigator, changeURL);
-			}else{
-				csmUser = updateCSMUser(investigator);
-				if(csmUser == null){
-					csmUser = createCSMUser(investigator);
-					sendCreateAccountEmail(investigator, changeURL);
-				}else{
-					sendUpdateAccountEmail(investigator);
-				}
-			}
-		} catch (MailException e) {
-			mailException = e;
-		}
-        //createCSMUserGroups(csmUser, investigator, null);
-        if(mailException != null) throw mailException;
+    	throw new UnsupportedOperationException();
     }
     
-    private void createCSMUserGroups(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final User user, List<Organization> allowedOrgs) {
-        try {
-            List<String> groupIds = new ArrayList<String>();
-            for (UserGroupType group : user.getUserGroupTypes()) {
-            	String groupId = getGroupIdByName(group.getCsmName());
-                groupIds.add(groupId);
-            }
-            if (csmUser.getUserId() == null) {
-                throw new CaaersSystemException("ID has not been assigned to CSM user.");
-            }
-            assignUserToGroup(String.valueOf(csmUser.getUserId()), groupIds.toArray(new String[groupIds.size()]));
-        } catch (CSObjectNotFoundException e) {
-            throw new CaaersSystemException("Could not assign user to organization group.", e);
-        }
-        log.debug("Successfully assigned user to organization");
-    }
-
-    private void copyUserToCSMUser(User user, gov.nih.nci.security.authorization.domainobjects.User csmUser) {
-        String emailId = user.getEmailAddress();
-        if (user.getLoginId() == null || user.getLoginId().trim().length() == 0) {
-            csmUser.setLoginName(emailId);
-        } else {
-            csmUser.setLoginName(user.getLoginId());
-        }
-        csmUser.setEmailId(emailId);
-        // this line is causing issues, the CSM_USER table has the phone length as 15 chars, and the phone can be wider, as it can have spaces and extension        
-        // csmUser.setPhoneNumber(user.getPhoneNumber());
-        csmUser.setFirstName(user.getFirstName());
-        csmUser.setLastName(user.getLastName());
-        // psc does not use these
-        // do we really need this? csmUser.setOrganization(researchStaff.getOrganization().getName());
-        // or this? csmUser.setOrganization(researchStaff.getOrganization().getNciInstituteCode());
-    	//csmUser.setStartDate(user.getStartDate());
-    	//csmUser.setEndDate(user.getEndDate());
-    }
-
-    public gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user) {
-        // assumes research staff id is null
-        String loginId = user.getLoginId();
-        gov.nih.nci.security.authorization.domainobjects.User csmUser;
-        
-    	csmUser = getCSMUserByName(loginId);
-    	if(csmUser != null)  throw new CaaersSystemException("Couldn't add user: " + loginId + ": already exists.");
-    	
-    	//we can create a new user
-    	csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
-        copyUserToCSMUser(user, csmUser);
-        csmUser.setPassword(encryptString((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + "obscurity"));
-        userCreateToken(user);
-        //create a csm user
-        try {
-            userProvisioningManager.createUser(csmUser);
-        } catch (CSTransactionException e2) {
-        	log.error("Error creating csm user",e2);
-            throw new CaaersSystemException("Could not create user", e2);
-        }
-        return csmUser;
-    }
-    
-    private void sendCreateAccountEmail(User user, String changeURL){
-
-        String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null, Locale.getDefault());
-        String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getLoginId(), changeURL + "&token=" + user.getToken()}, Locale.getDefault());;
-        
-        //send out an email
-        if ("local".equals(getAuthenticationMode())) {
-            sendUserEmail(user.getEmailAddress(), EMAIL_SUBJECT, EMAIL_TEXT);
-        }
-    }
-    
-    private void sendUpdateAccountEmail(User user){
-    	if ("local".equals(getAuthenticationMode())) {
-    		sendUserEmail(user.getEmailAddress(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
-    	}
-    }
-    
-    private gov.nih.nci.security.authorization.domainobjects.User updateCSMUser(final User user) {
-        String loginId = user.getLoginId();
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
-        if(csmUser != null){
-        	copyUserToCSMUser(user, csmUser);
-            saveCSMUser(csmUser);
-        }
-        return csmUser;
-    }
-
-    private void assignUserToGroup(final String userId, final String[] groupIds) throws CaaersSystemException {
-        try {
-            userProvisioningManager.assignGroupsToUser(userId, groupIds);
-        } catch (CSTransactionException e) {
-            throw new CaaersSystemException("Could not add user to group", e);
-        }
-    }
-
     public String getGroupIdByName(final String groupName) throws CSObjectNotFoundException {
-        Group search = new Group();
-        search.setGroupName(groupName);
-        GroupSearchCriteria sc = new GroupSearchCriteria(search);
-        Group returnGroup = (Group) userProvisioningManager.getObjects(sc).get(0);
-        return returnGroup.getGroupId().toString();
+    	throw new UnsupportedOperationException();
     }
 
     
     public boolean loginIDInUse(String loginId) {
-    	if(getCSMUserByName(loginId) != null ) return true;
-    	try {
-			if(getUserByName(loginId) != null)
-				return true;
-		} catch (CaaersNoSuchUserException e) {
-		}
-		return false;
+    	throw new UnsupportedOperationException();
     }
 
     public gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName) {
-        return userProvisioningManager.getUser(userName);
+    	throw new UnsupportedOperationException();
     }
     
     public void saveCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) {
-        try {
-            userProvisioningManager.modifyUser(csmUser);
-        } catch (CSTransactionException e) {
-            throw new CaaersSystemException("Couldn't save CSM user: ", e);
-        }
+    	throw new UnsupportedOperationException();
     }
     
-    /**
-     * Fetches the groups associated to users.  
-     * @param userName
-     * @return
-     */
     public List<UserGroupType> getUserGroups(String userName) {
-    	List<UserGroupType> userGroups = new ArrayList<UserGroupType>();
-    	try {
-			gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(userName);
-			if(csmUser != null){
-				Set groups = userProvisioningManager.getGroups(csmUser.getUserId().toString());
-				if(groups != null){
-					for(java.util.Iterator it = groups.iterator(); it.hasNext(); ){
-						Group group = (Group) it.next();
-						UserGroupType userGroupType = UserGroupType.valueOf(group.getGroupName());  //     .getByCode(group.getGroupId().intValue());
-						if(userGroupType != null) userGroups.add(userGroupType);
-					}
-				}
-			}
-		} catch (CSObjectNotFoundException e) {
-			log.warn("The groups for csmUser (" + userName + ") unable to fetch, something is wrong", e);
-		}
-    	return userGroups;
+    	throw new UnsupportedOperationException();
     }
 
     public User getUserByName(String userName) {
-    	User user = userDao.getByLoginId(userName);
-    	if(user == null){
-    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
-    	}
-    	//populate user groups
-    	user.setUserGroupTypes(getUserGroups(userName));
-        return user;
+    	throw new UnsupportedOperationException();
     }
 
     public String userCreateToken(User user) {
-    	user.setTokenTime(new Timestamp(new Date().getTime()));
-        user.setToken(encryptString((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + user.getTokenTime().toString()
-                + "random_string").replaceAll("\\W", "Q"));
-        return user.getToken();
+    	throw new UnsupportedOperationException();
     }
 
     public void userChangePassword(User user, String password, int maxHistorySize) {
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(user.getLoginId());
-        user.resetToken();
-        user.setPasswordLastSet(new Timestamp(new Date().getTime()));
-        user.addPasswordToHistory(DigestUtils.shaHex(password), maxHistorySize);
-        csmUser.setPassword((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + password);
-        saveCSMUser(csmUser);
+    	throw new UnsupportedOperationException();
     }
 
     public boolean userHasPassword(String userName, String password) {
-    	User user = getUserByName(userName);
-        return encryptString((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + password).equals(getCSMUserByName(userName).getPassword());
+    	throw new UnsupportedOperationException();
     }
 
     public boolean userHadPassword(String userName, String password) {
-        return getUserByName(userName).getPasswordHistory().contains(DigestUtils.shaHex(password));
+    	throw new UnsupportedOperationException();
     }
 
     public void sendUserEmail(String emailAddress, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(emailAddress);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
+    	throw new UnsupportedOperationException();
 
     }
-
-    private String encryptString(String string) {
-        try {
-            return new StringEncrypter().encrypt(string);
-        } catch (StringEncrypter.EncryptionException e) {
-            throw new CaaersSystemException(e);
-        }
-    }
-
 
     // end
 
-    @Required
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
         this.userProvisioningManager = userProvisioningManager;
     }
@@ -346,17 +98,14 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 		return userProvisioningManager;
 	}
 
-    @Required
     public void setMailSender(final MailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    @Required
     public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
    
-    @Required
     public String getAuthenticationMode() {
         return authenticationMode;
     }

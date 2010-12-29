@@ -3,7 +3,8 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -14,13 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections15.Factory;
-import org.apache.commons.collections15.Predicate;
-import org.apache.commons.collections15.list.PredicatedList;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -47,7 +48,6 @@ public abstract class Investigator extends User {
 	protected String status;
 	protected List<Investigator> externalInvestigators = new ArrayList<Investigator>();
 	protected Boolean allowedToLogin = Boolean.TRUE;
-	
 	protected boolean wasLoginIdNull = true;
 	protected boolean wasLoginDisallowed = true;
 	
@@ -67,6 +67,12 @@ public abstract class Investigator extends User {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    @OneToOne
+    @JoinColumn(name = "user_id")	
+	public _User getCaaersUser() {
+		return caaersUser;
+	}
     
     // business methods
 
@@ -213,6 +219,7 @@ public abstract class Investigator extends User {
 		return null;
 	}
     
+	@Transient
     @Column(name = "allowed_to_login")
 	public Boolean getAllowedToLogin() {
 		return allowedToLogin;
@@ -276,6 +283,4 @@ public abstract class Investigator extends User {
 			return siteInvestigator;
 		}
     }
-        
-    
 }

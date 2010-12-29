@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import gov.nih.nci.security.authentication.CommonAuthenticationManager;
 
@@ -24,6 +25,7 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 
 	private CaaersCSMAuthenticationProvider provider;
+	private UserRepository userRepository;
 	private CaaersUser user;
 	private UsernamePasswordAuthenticationToken token;
 	private Credential credential;
@@ -35,8 +37,8 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		now = new Timestamp(new Date().getTime());
-		provider = (CaaersCSMAuthenticationProvider) getDeployedApplicationContext()
-				.getBean("localAuthenticationProvider");
+		provider = (CaaersCSMAuthenticationProvider) getDeployedApplicationContext().getBean("localAuthenticationProvider");
+		userRepository = (UserRepository) getDeployedApplicationContext().getBean("userRepository");
 	}
 
 	private void createToken(String userName, String password) {
@@ -50,15 +52,15 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 				authorities);
 	}
 
-	private User loadUser() {
+	private _User loadUser() {
 		// load the user and update the last password set time
-		User user = provider.getUserDao().getByLoginId(token.getName());
+		_User user = userRepository.getUserByLoginName(token.getName());
 		assertNotNull(user);
 		return user;
 	}
 
-	private void saveUser(User user) {
-		provider.getUserDao().save(user);
+	private void saveUser(_User user) {
+		userRepository.save(user);
 	}
 
 	public void testLoading() {
@@ -69,9 +71,9 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	 * 1. Testcase to check the ideal case in which no exceptions are thrown.
 	 */
 	public void testAdditionalAuthChecks_CheckingSuccess() {
-		createToken("abcd", "xxx");
+		createToken("monishd", "xxx");
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(0);
 			saveUser(user);
@@ -94,7 +96,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			assertEquals(0, user.getFailedLoginAttempts());
 			assertNull(user.getLastFailedLoginAttemptTime());
 		}
@@ -106,9 +108,9 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	 */
 	public void testAdditionalChecks_ThrowingBadCredentialsException()
 			throws Exception {
-		createToken("abcd", "xxx");
+		createToken("monishd", "xxx");
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(0);
 			saveUser(user);
@@ -138,7 +140,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			assertEquals(1, user.getFailedLoginAttempts());
 		}
 	}
@@ -149,9 +151,9 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	 */
 	public void testAdditionalChecks_ThrowingCredentialsExpiredException()
 			throws Exception {
-		createToken("abcd", "xxx");
+		createToken("monishd", "xxx");
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.DATE, -100);
 			user.setPasswordLastSet(new Timestamp(cal.getTime().getTime()));// last
@@ -185,7 +187,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			assertEquals(0, user.getFailedLoginAttempts());
 		}
 	}
@@ -196,11 +198,12 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	 */
 	public void testAdditionalChecks_ThrowingDisabledException()
 			throws Exception {
-		createToken("abcd", "xxx");
+		createToken("monishd", "xxx");
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(4);
+			user.setLastFailedLoginAttemptTime(null);
 			// Login Policy Allowed failed login attempts = 3
 			saveUser(user);
 		}
@@ -227,7 +230,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			assertEquals(-1, user.getFailedLoginAttempts());
 		}
 	}
@@ -237,9 +240,9 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	 * failed login attempts has exceeded the threshold.
 	 */
 	public void testAdditionalChecks_ThrowingLockedException() throws Exception {
-		createToken("abcd", "xxx");
+		createToken("monishd", "xxx");
 		{
-			User user = loadUser();
+			_User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(-1);
 			user.setLastFailedLoginAttemptTime(now);

@@ -73,7 +73,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     public ResearchStaff merge(ResearchStaff staff) {
     	ResearchStaff mergedStaff =  super.merge(staff);
     	//copy the user groups
-    	mergedStaff.setUserGroupTypes(staff.getUserGroupTypes());
+    	//mergedStaff.setUserGroupTypes(staff.getUserGroupTypes());
     	return mergedStaff;
     }
     

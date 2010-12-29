@@ -18,8 +18,7 @@ public interface CSMUserRepository {
      * @param researchStaff the research staff for which csm users and groups to be created or updated
      * @throws CaaersSystemException if CSM user can not be created.
      */
-    void createOrUpdateCSMUserAndGroupsForResearchStaff(
-            gov.nih.nci.cabig.caaers.domain.ResearchStaff researchStaff, String changeURL);
+    void createOrUpdateCSMUserAndGroupsForResearchStaff(gov.nih.nci.cabig.caaers.domain.ResearchStaff researchStaff, String changeURL);
     /**
      * Creates a csm user and groups for the newly created investigator. 
      * Or

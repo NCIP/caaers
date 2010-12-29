@@ -601,6 +601,12 @@ This applicationContext contains the definition of the DAOs
 	<bean id="deviceDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DeviceDao"/>
 	
 	<bean id="_userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao._UserDao"/>
+	
+	<bean id="personDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PersonDao">
+		<property name="researchStaffDao" ref="researchStaffDao"/>
+    	<property name="investigatorDao" ref="investigatorDao"/>
+    </bean>
+		
 
     <!-- Factory beans end here-->
 

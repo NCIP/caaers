@@ -3,10 +3,12 @@ package gov.nih.nci.cabig.caaers.security;
 import gov.nih.nci.cabig.caaers.CaaersDaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
+import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.User;
 
@@ -24,16 +26,20 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	private CaaersSecurityFacadeImpl caaersSecurityFacade ;
 	private ProvisioningSessionFactory provisioningSessionFactory;
 	private User csmUser = null;
+	private UserProvisioningManager userProvisioningManager;
+	private UserRepository userRepository;
 	
 	
 	public void setUp() throws Exception {
 		super.setUp();
 		caaersSecurityFacade = (CaaersSecurityFacadeImpl)getApplicationContext().getBean("caaersSecurityFacade");
 		provisioningSessionFactory = (ProvisioningSessionFactory)getDeployedApplicationContext().getBean("provisioningSessionFactory");
+		userProvisioningManager = (UserProvisioningManager)getDeployedApplicationContext().getBean("userProvisioningManager");
+		userRepository = (UserRepository)getDeployedApplicationContext().getBean("userRepository");
 	}
 	
 	public void testGetAccessibleOrganizationIds() {
-		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		csmUser = userProvisioningManager.getUser("testuser1");
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forSites("A","B","C","D","E","F","G","H","I","J"));
 		
@@ -45,7 +51,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	}
 	
 	public void testGetAccessibleOrganizationIdsUserWithAllOrgs() {
-		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		csmUser = userProvisioningManager.getUser("testuser1");
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites());
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("testuser1");
@@ -57,7 +63,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	}
 
 	public void testGetAccessibleStudyIds() {
-		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		csmUser = userProvisioningManager.getUser("testuser1");
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forStudies("N7028","6307"));
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("testuser1");
@@ -69,7 +75,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	
 	
 	public void testGetAccessibleStudyIdsUserWithAllStudies() {
-		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser1");
+		csmUser = userProvisioningManager.getUser("testuser1");
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forAllStudies());
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("testuser1");
@@ -81,25 +87,6 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	}
 	
 	
-	
-//	public void testGetProtectionGroupRoleContextForUser() throws Exception {
-//		
-//		Date  d1 = new Date();
-//		Set<ProtectionGroupRoleContext> contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
-//		Date  d2 = new Date();
-//		System.out.println("execution time : ");
-//		System.out.println(d2.getTime()-d1.getTime());
-//		assertEquals(4,contexts.toArray().length);
-//		
-//		//from cache...
-//		Date  d3 = new Date();
-//		contexts = caaersSecurityFacade.getProtectionGroupRoleContextForUser("1");
-//		Date  d4 = new Date();
-//		System.out.println("execution time : ");
-//		System.out.println(d4.getTime()-d3.getTime());
-//		assertEquals(4,contexts.toArray().length);
-//    }
-//	
 	public void testCacheManager () throws Exception {
 		String loginId = "-1";
 		// shud be null , nothing in cache
@@ -165,11 +152,11 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.SUBJECT_MANAGER).forSites("MAYO"));
 		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.REGISTRAR).forSites("WAKE").forStudies("5876","1234","54321"));
 		
-		csmUser = caaersSecurityFacade.getCsmUserRepository().getUserProvisioningManager().getUser("testuser2");
+		csmUser = userProvisioningManager.getUser("testuser2");
 		
 		caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
 		
-		List<UserGroupType> userGroups = caaersSecurityFacade.getCsmUserRepository().getUserGroups("testuser2");
+		List<UserGroupType> userGroups = userRepository.getUserGroups("testuser2");
 		assertEquals(5,userGroups.size());
 		
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());

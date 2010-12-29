@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.ArrayList;
-
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
@@ -11,12 +9,13 @@ import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
+import java.util.ArrayList;
+
 import org.easymock.classextension.EasyMock;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
 /**
  * 
  * @author Biju Joseph
@@ -87,19 +86,4 @@ public class ResearchStaffTabTest extends WebTestCase {
 		System.out.println(errors);
 		verifyMocks();
 	}
-	 
-	public void testUnlockUser() {
-		staff.setEmailAddress("hello@ab.com");
-		staff.setLoginId("abcd");
-		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
-		siteResearchStaff.setOrganization(Fixtures.createOrganization("test", "test"));
-		staff.addSiteResearchStaff(siteResearchStaff);
-		staff.setFailedLoginAttempts(-1);
-		staff.setLastFailedLoginAttemptTime(NOW);
-		repository.unlockResearchStaff(staff);
-		replayMocks();
-		tab.unlockUser(request, command, errors);
-		verifyMocks();
-	}
-
 }

@@ -39,4 +39,19 @@ public class RemoteInvestigator extends Investigator{
     public String getMiddleName() {
         return middleName;
     }
+	
+	@RemoteProperty
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	@Override
+	public String getFaxNumber() {
+		return faxNumber;
+	}
+
+	@Override
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 }

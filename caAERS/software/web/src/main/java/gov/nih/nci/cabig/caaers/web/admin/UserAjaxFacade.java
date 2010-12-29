@@ -6,8 +6,8 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserAjaxFacade extends AbstractAjaxFacade {
 
 	private static Class<?>[] CONTROLLERS = {};
-	private CSMUserRepository csmUserRepository; 
+	private UserRepository userRepository; 
 	private OrganizationRepository organizationRepository;
 	private StudyDao studyDao;
 	
@@ -67,7 +67,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getUserTable(String firstName, String lastName, String userName, HttpServletRequest request) {
     	
-    	List<User> csmUserList = csmUserRepository.searchCsmUser(firstName, lastName, userName);
+    	List<User> csmUserList = userRepository.searchCsmUser(firstName, lastName, userName);
 		List<UserAjaxableDomainObject> ajaxableUserList = new ArrayList<UserAjaxableDomainObject>();
 		UserAjaxableDomainObject ajaxableUser = null;
 		for(User csmUser : csmUserList){
@@ -113,12 +113,12 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
          return studies;
      }
     
-	public CSMUserRepository getCsmUserRepository() {
-		return csmUserRepository;
+	public UserRepository getUserRepository() {
+		return userRepository;
 	}
 
-	public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
-		this.csmUserRepository = csmUserRepository;
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 	public OrganizationRepository getOrganizationRepository() {

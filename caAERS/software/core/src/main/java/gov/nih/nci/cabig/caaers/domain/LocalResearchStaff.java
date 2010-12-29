@@ -2,15 +2,20 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("LOCAL")
 public class LocalResearchStaff extends ResearchStaff{
+   
     @Override
     public String getFirstName() {
         return firstName;
     }
+    
+    @Override
+    public String getMiddleName() {
+        return middleName;
+    }    
     
     @Override
     public String getLastName() {
@@ -18,18 +23,17 @@ public class LocalResearchStaff extends ResearchStaff{
     }
     
     @Override
-    public String getMiddleName() {
-        return middleName;
-    }
-    
-    @Override
-    public String getNciIdentifier() {
-        return nciIdentifier;
-    }
-    
-	@Transient
-	public String getExternalId() {
-		return externalId;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
-	
+
+	@Override
+	public String getFaxNumber() {
+		return faxNumber;
+	}
+
+	@Override
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 }

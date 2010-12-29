@@ -1,130 +1,36 @@
 <dataset>
-    <ORGANIZATIONS 
-    id="-1000" 
-    name="New Site 1" 
-    grid_id="gridSite1"/>
-    
-    <ORGANIZATIONS 
-    id="-1001" 
-    name="New Site 2" 
-    grid_id="gridSite2"/>
-    
-    <RESEARCH_STAFFS 
-    id="-1000" 
-    version="1" 
-    first_name="Bill" 
-    last_name="Gates" 
-    email_address="big@def.com" 
-    phone_number="123-456-789" 
-    nci_identifier="nci id" 
-    login_id="abcd"
-    street="Park Centre Road"
-   	city="Fairfax"
-   	state="Virginia"
-   	zip="22033"
-   	code="0"
-	password_last_set="2008-12-31"
+
+	<caaers_users
+	id="-1"
+	login_name="monishd"
+	salt=""
+	token="abcd"
+	token_time="2008-10-22 12:03:13.605"
+	password_last_set="2010-11-10 12:03:13.605"
 	num_failed_logins="2"
+	last_login="2010-12-10 12:04:13.605"
 	/>
-    
-    <RESEARCH_STAFFS 
-    id="-1001" 
-    version="1" 
-    first_name="George" 
-    last_name="Bush" 
-    email_address="gb@def.com" 
-    phone_number="123-456-789" 
-    nci_identifier="nci id"
-	num_failed_logins="0"/>
-    
-    <RESEARCH_STAFFS 
-    id="-1002" 
-    version="1" 
-    first_name="Benjamin" 
-    last_name="Franklin" 
-    email_address="bf@def.com" 
-    phone_number="123-456-789" 
-    nci_identifier="nci id" 
-	num_failed_logins="0"/>
-    
-    <RESEARCH_STAFFS 
-    id="-1003" 
-    version="1" 
-    first_name="JF" 
-    last_name="Kennedy" 
-    email_address="jfk@def.com" 
-    phone_number="123-456-789" 
-    nci_identifier="nci id"
-	num_failed_logins="0"/>
+
+	<caaers_users
+	id="-2"
+	login_name="dmonish"
+	salt=""
+	token="efgh"
+	token_time="2008-10-22 12:03:13.605"
+	password_last_set="2010-11-04"
+	num_failed_logins="1"
+	last_login="2008-10-22 12:03:13.605"
+	/>
 	
-	<SITE_RESEARCH_STAFFS 
-    	id="-4004" 
-    	site_id="-1000" 
-    	researchstaff_id="-1000"/>
-   
-   	<SITE_RESEARCH_STAFFS 
-    	id="-4005" 
-    	site_id="-1000" 
-    	researchstaff_id="-1001"/> 	
-    	
-    <SITE_RESEARCH_STAFFS 
-    	id="-4006" 
-    	site_id="-1001" 
-    	researchstaff_id="-1002"/>
-	
-    <SITE_RESEARCH_STAFFS 
-    	id="-4007" 
-    	site_id="-1001" 
-    	researchstaff_id="-1003"/>
-
-	<site_rs_staff_roles
-    	id="-6001"
-    	site_research_staffs_id="-4004"
-    	role_code="caaers_site_cd"
-    	start_date="2008-01-01"
-    />
-    <site_rs_staff_roles
-    	id="-6002"
-    	site_research_staffs_id="-4005"
-    	role_code="caaers_site_cd"
-    	start_date="2008-01-01"
-    />
-
-
-	<site_rs_staff_roles
-    	id="-6003"
-    	site_research_staffs_id="-4006"
-    	role_code="caaers_site_cd"
-    	start_date="2008-01-01"
-    />
-    <site_rs_staff_roles
-    	id="-6004"
-    	site_research_staffs_id="-4007"
-    	role_code="caaers_site_cd"
-    	start_date="2008-01-01"
-    />
-    
-    <investigational_new_drugs />
-    <ind_holders />	
-	
-	<study_agent_inds />
-
-    <ae_report_people />
-    
-    <contact_mechanisms />
-    
-    <identifiers />
-    
-    <site_investigators />
-  
-    <study_organizations />
-
-    <study_investigators />
-    
-    <study_personnel />
-    
-    <study_site_wf_cfgs />
-      
+	<CSM_USER 
+		USER_ID="-11234" LOGIN_NAME="monishd"
+		FIRST_NAME="Monish" 
+		LAST_NAME="Dombla"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg=="
+		EMAIL_ID="j_reporter@caaers.org"
+		UPDATE_DATE="2007-01-27" />
+		UPDATE_DATE="2007-01-27" />
+		
     <password_policy
         id="1"
         ln_allowed_attempts="3"
@@ -139,6 +45,6 @@
         cn_cb_is_non_alpha_numeric="1"
         cn_cb_is_base_ten_digit="1"
         cn_cb_max_substring_length="3"
-        />	
-        
+        />		
+	
 </dataset>

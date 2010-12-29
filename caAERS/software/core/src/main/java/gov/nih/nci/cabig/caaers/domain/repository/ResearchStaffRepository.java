@@ -90,9 +90,10 @@ public class ResearchStaffRepository {
 		}
     }
     
+    //TODO:MONISH -- No longer need this method. Will have to be removed.
     public void unlockResearchStaff(ResearchStaff researchStaff) {
-    	researchStaff.unlock();
-    	researchStaffDao.save(researchStaff);
+//    	researchStaff.unlock();
+//    	researchStaffDao.save(researchStaff);
     }
     
     public void evict(ResearchStaff researchStaff){
@@ -130,7 +131,7 @@ public class ResearchStaffRepository {
      * @return
      */
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
-        researchStaff.setUserGroupTypes(((CaaersSecurityFacadeImpl)caaersSecurityFacade).getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
+        //researchStaff.setUserGroupTypes(((CaaersSecurityFacadeImpl)caaersSecurityFacade).getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
         return researchStaff;
     }
     

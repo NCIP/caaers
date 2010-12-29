@@ -1,15 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
@@ -27,17 +23,16 @@ public class LoginPolicyValidatorTest extends TestCase {
 	private PasswordPolicy passwordPolicy;
 	private LoginPolicy loginPolicy;
 	private Credential credential;
-	private User user;	
+	private _User user;	
 	private String userName;    
 	private String password;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		userName = "xyz";
-		password = "Abcdef1!";  
+		password = "Abcdef1!";
+		user = new _User();
 		credential = new Credential(userName, password);
-		Organization org = Fixtures.createOrganization("test");        
-		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.business_administrator}) , "Test");
 		credential.setUser(user);
 		loginPolicyValidator = new LoginPolicyValidator();
 		loginPolicy = new LoginPolicy();

@@ -85,7 +85,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     @Override
     public Investigator merge(Investigator inv) {
     	Investigator mergedInv = super.merge(inv);
-    	mergedInv.setUserGroupTypes(inv.getUserGroupTypes());
+    	//mergedInv.setUserGroupTypes(inv.getUserGroupTypes());
     	return mergedInv;
     }
     

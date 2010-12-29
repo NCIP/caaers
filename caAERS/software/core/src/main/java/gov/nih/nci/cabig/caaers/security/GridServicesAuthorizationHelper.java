@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteAuthorizationAccessException;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
+import gov.nih.nci.security.UserProvisioningManager;
 
 import java.util.List;
 
@@ -18,7 +20,8 @@ import org.globus.wsrf.security.SecurityManager;
  */
 public class GridServicesAuthorizationHelper {
 
-	private CaaersSecurityFacadeImpl caaersSecurityFacade;
+	private UserProvisioningManager userProvisioningManager;
+	private UserRepository userRepository;
 	private ProvisioningSessionFactory provisioningSessionFactory;
 	
 	/**
@@ -30,7 +33,7 @@ public class GridServicesAuthorizationHelper {
 	public boolean authorizedRegistrationConsumer(String siteIdetifier, String studyIdentifier){
 		String gridIdentity = SecurityManager.getManager().getCaller();
 		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = caaersSecurityFacade.getCsmUserRepository().getCSMUserByName(userName);
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
 		if(csmUser == null){
 			return false;
 		}
@@ -81,7 +84,7 @@ public class GridServicesAuthorizationHelper {
 	public boolean authorizedStudyConsumer(String siteIdetifier){
 		String gridIdentity = SecurityManager.getManager().getCaller();
 		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = caaersSecurityFacade.getCsmUserRepository().getCSMUserByName(userName);
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
 		if(csmUser == null){
 			return false;
 		}
@@ -125,7 +128,7 @@ public class GridServicesAuthorizationHelper {
 	public boolean authorizedLabConsumer(){
 		String gridIdentity = SecurityManager.getManager().getCaller();
 		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		List<UserGroupType> roles = caaersSecurityFacade.getCsmUserRepository().getUserGroups(userName);
+		List<UserGroupType> roles = userRepository.getUserGroups(userName);
 		if(roles.contains(UserGroupType.lab_data_user)){
 			return true;
 		}else{
@@ -133,9 +136,16 @@ public class GridServicesAuthorizationHelper {
 		}
 	}
 	
-	public void setCaaersSecurityFacade(
-			CaaersSecurityFacadeImpl caaersSecurityFacade) {
-		this.caaersSecurityFacade = caaersSecurityFacade;
+
+	public void setUserProvisioningManager(
+			UserProvisioningManager userProvisioningManager) {
+		this.userProvisioningManager = userProvisioningManager;
+	}
+	
+	
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 	public void setProvisioningSessionFactory(
