@@ -312,8 +312,7 @@ function selectFieldChanged(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
 			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
 					</div>
 			 	  <div class="half">
-			   		<rd:renderMandatory
-                               Fields key="LABS_SECTION~Labs~Baseline" heading="Baseline" tabular="true"/>
+			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" tabular="true"/>
 					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" tabular="true" />
 					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" tabular="true" />
 			 	  </div>
