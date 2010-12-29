@@ -39,11 +39,12 @@ AE.AUTO_SELF_REF_RULES = new Array();
 function isAutoSelfReferenced(_selRuleNames){
   if(_selRuleNames){
       var _rArray = _selRuleNames.split(',');
+      var retVal = false;
       $A(_rArray).each(function (_rName){
-        if(AE.ALL_FIELD_RULES.indexOf(_rName) > -1) return true;
+        if(AE.ALL_FIELD_RULES.indexOf(_rName) > -1) retVal =  true;
       });
   }
-  return false;
+  return retVal;
 
 }
 //helps in showing the rules, and selecting them.    
