@@ -1,13 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -104,22 +98,20 @@ public class ReporterTab extends AeTab {
     	
     	//set the reporter, as the login person
         String loginId = SecurityUtils.getUserLoginName();
+        Person loggedInPerson = null;
         if(loginId != null){
-     	   User loggedInUser = userDao.getByLoginId(loginId);
-     	   boolean validPersonnel = false;
-     	   if(loggedInUser != null){
-     		   for(ResearchStaff rstaff: researchStaffList)
-     			   if(rstaff.getId().equals(loggedInUser.getId()))
-     				   validPersonnel = true;
-     		   for(Investigator inv: investigatorList)
-     			   if(inv.getId().equals(loggedInUser.getId()))
-     				   validPersonnel = true;
-     	   }
-     	   refData.put("validPersonnel", validPersonnel);
-     	   if(validPersonnel)
-     		  refData.put("loggedInUserId", loggedInUser.getId());
-     	   else
-     	   	  refData.put("loggedInUserId", "0");
+
+           for(ResearchStaff rs : researchStaffList){
+               if(rs.getLoginId().equals(loginId)) loggedInPerson = rs;
+           }
+           for(Investigator inv : investigatorList){
+               if(inv.getLoginId().equals(loginId)) loggedInPerson = inv;
+           }
+
+
+     	   refData.put("validPersonnel", loggedInPerson != null);
+           refData.put("loggedInUserId", loggedInPerson != null ? loggedInPerson.getId() : "0");
+
         }
     	
     	return refData;
