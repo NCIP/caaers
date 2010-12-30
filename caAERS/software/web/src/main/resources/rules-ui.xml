@@ -64,7 +64,7 @@
 				<operator name="==" display-uri="Equal To" readable-text=""/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(adverseEvent,null,'expectedness','runTimeValue','runTimeOperator')</expression>	
-				<grammer prefix=" Adverse Event " postfix="expected "/>	
+				<grammer prefix=" Expectedness " postfix="expected "/>
 			</field>			
 			<field name="participantAtRisk" display-uri="Participant at increased risk">
 				<field-value>
@@ -173,7 +173,7 @@
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(study,null,'phaseCode','runTimeValue','runTimeOperator')</expression>
-				<grammer prefix=" Study " postfix="."/>
+				<grammer prefix=" Phase " postfix="."/>
 			</field>
 			<!--
 			<field name="INDType" display-uri="IND Information" >
@@ -261,7 +261,7 @@
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(reportDefinition,null,'name','runTimeValue','runTimeOperator')</expression>	
-				<grammer prefix=" Report Definition " postfix="."/>
+				<grammer prefix=" Name " postfix="."/>
 			</field>
 		</domain-object>
 
