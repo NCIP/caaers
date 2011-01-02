@@ -23,9 +23,13 @@
 //push all rulenames into an array.
 AE.ALL_FIELD_RULES = new Array();
 AE.AUTO_SELF_REF_RULES = new Array();
+AE.AE_SECTION_FIELDS = new Array();
 
 <tags:noform>
  <c:if test="${command.fieldRulesAvailable}">
+  <c:forEach var="field" items="${fieldGroups['ADVERSE_EVENT_SECTION~Adverse events'].fields}">
+      AE.AE_SECTION_FIELDS.push('${field.attributes.subfields[0].propertyName}');
+  </c:forEach>
   <c:forEach var="rule" items="${command.ruleSet.rule}">
    AE.ALL_FIELD_RULES.push('${rule.metaData.name}');
   </c:forEach>
@@ -37,13 +41,18 @@ AE.AUTO_SELF_REF_RULES = new Array();
 
 //helps in determining the value of autoSelfReferencing.
 function isAutoSelfReferenced(_selRuleNames){
-  if(_selRuleNames){
+  var retVal = false;
+  if(AE.AE_SECTION_FIELDS.indexOf(AE.FLD_SELECT) > -1){
+
+    if(_selRuleNames){
       var _rArray = _selRuleNames.split(',');
-      var retVal = false;
       $A(_rArray).each(function (_rName){
         if(AE.ALL_FIELD_RULES.indexOf(_rName) > -1) retVal =  true;
       });
+    }
+
   }
+
   return retVal;
 
 }
