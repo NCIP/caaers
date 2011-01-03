@@ -110,11 +110,11 @@ public final class ISO21090Helper {
 		return bl;
 	}
 
-	public II II(Integer i) {
+	public static final II II(Integer i) {
 		return i != null ? II(i.toString()) : II((String) null);
 	}
 
-	public ST ST(Integer i) {
+	public static final ST ST(Integer i) {
 		return i != null ? ST(i.toString()) : ST((String) null);
 	}
 

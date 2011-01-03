@@ -262,16 +262,16 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	public AuditTrail[] getAuditTrailOfAdverseEvent(Id aeId, TsDateTime minDate)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+		Calendar cal = null;
 		Date startDate = gridToDomainConverter.convertToDate(minDate);
 		if (aeId == null || !NumberUtils.isNumber(aeId.getExtension())) {
 			raiseError(INVALID_AE_ID);
 		}
-		if (startDate == null) {
-			startDate = new Date();
-		}
+		if (startDate != null) {
+			cal = Calendar.getInstance();
+			cal.setTime(startDate);
+		}		
 		int id = NumberUtils.toInt(aeId.getExtension());
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(startDate);
 
 		List<AuditHistory> list = auditHistoryRepository
 				.getAuditDetailsForEntity(
