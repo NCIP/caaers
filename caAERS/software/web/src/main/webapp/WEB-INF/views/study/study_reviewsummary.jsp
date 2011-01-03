@@ -240,21 +240,23 @@
             </tr>
             <c:forEach items="${command.study.activeStudyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
-                    <tr class="results">
-                        <td>
-                            <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
-                                <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
-                            </c:if>
-                                ${studyInvestigator.siteInvestigator.investigator.fullName}
-                        </td>
-                        <td>${studyInvestigator.siteInvestigator.organization}</td>
-                        <td>${command.studyInvestigatorRoles[studyInvestigator.roleCode]}</td>
-                        <td>
-                            <c:if test="${studyInvestigator.active}">Active</c:if>
-                            <c:if test="${!studyInvestigator.active}">Inactive</c:if>
-                        </td>
-                    </tr>
-                    <c:set var="invCnt" value="${invCnt + 1}" />
+                    <c:if test="${studyInvestigator.active}">
+                        <tr class="results">
+                            <td>
+                                <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
+                                    <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                                </c:if>
+                                    ${studyInvestigator.siteInvestigator.investigator.fullName}
+                            </td>
+                            <td>${studyInvestigator.siteInvestigator.organization}</td>
+                            <td>${command.studyInvestigatorRoles[studyInvestigator.roleCode]}</td>
+                            <td>
+                                <c:if test="${studyInvestigator.active}">Active</c:if>
+                                <c:if test="${!studyInvestigator.active}">Inactive</c:if>
+                            </td>
+                        </tr>
+                        <c:set var="invCnt" value="${invCnt + 1}" />
+                    </c:if>
                 </c:forEach>
             </c:forEach>
             <c:if test="${invCnt eq 0}">
@@ -291,23 +293,25 @@
             <c:forEach items="${command.study.activeStudyOrganizations}" var="studySite" >
                 <c:set var="orgIndex" value="0" />
                 <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="i">
-                    <c:if test="${not i.first}"><c:set var="orgIndex" value="1" /></c:if>
-                    <tr class="results">
-                        <td>
-                            <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
-                                <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
-                            </c:if>
-                                ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
-                        </td>
-                        <%-- orgIndex 0 means a new Organiation in the list and should be rendered, all are rendered now --%>
-                        <td><c:if test="${orgIndex >= 0}">${studyPersonnel.siteResearchStaff.organization}</c:if></td>
-                        <td>${command.studyPersonnelRoles[studyPersonnel.roleCode]}</td>
-                        <td>
-                            <c:if test="${studyPersonnel.active}">Active</c:if>
-                            <c:if test="${!studyPersonnel.active}">Inactive</c:if>
-                        </td>
-                    </tr>
-                    <c:set var="staffCnt" value="${invCnt + 1}" />
+                    <c:if test="${studyPersonnel.active}">
+                        <c:if test="${not i.first}"><c:set var="orgIndex" value="1" /></c:if>
+                        <tr class="results">
+                            <td>
+                                <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
+                                    <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                                </c:if>
+                                    ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
+                            </td>
+                            <%-- orgIndex 0 means a new Organiation in the list and should be rendered, all are rendered now --%>
+                            <td><c:if test="${orgIndex >= 0}">${studyPersonnel.siteResearchStaff.organization}</c:if></td>
+                            <td>${command.studyPersonnelRoles[studyPersonnel.roleCode]}</td>
+                            <td>
+                                <c:if test="${studyPersonnel.active}">Active</c:if>
+                                <c:if test="${!studyPersonnel.active}">Inactive</c:if>
+                            </td>
+                        </tr>
+                        <c:set var="staffCnt" value="${invCnt + 1}" />
+                    </c:if>
                 </c:forEach>
             </c:forEach>
             <c:if test="${staffCnt eq 0}">
