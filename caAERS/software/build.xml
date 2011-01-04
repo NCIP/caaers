@@ -39,7 +39,7 @@
 			<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/study-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/lab-consumer/ivy-build.xml" />
-			<!--<fileset file="${basedir}/grid/ess-ae/ivy-build.xml" />-->
+			<fileset file="${basedir}/grid/ess-ae/ivy-build.xml" />
     		<fileset file="${basedir}/grid/ivy-build.xml" />
     			
     	</ivy:buildlist>

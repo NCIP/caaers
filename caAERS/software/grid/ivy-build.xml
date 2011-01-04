@@ -48,14 +48,14 @@
 		<subant target="all">
 			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
 		</subant>
-		<!-- Then build caAERS's own NES grid services 
+		<!-- Then build caAERS's own NES grid services -->
 		<echo message="Adverse Event Enterprise Service located in ${aees.nes.service.dir}, build file is ${aees.nes.service.dir}/build.xml" />
 		<subant target="all">
 			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
 		</subant>
 		<copy todir="${parent.dir}/grid/ess-ae/lib">
 			<fileset dir="${aees.nes.service.dir}/build/lib" includes="AdverseEventEnterpriseService-*.jar"/>
-		</copy> -->		
+		</copy> 		
 	</target>
 
 	<!-- ==============================================================
@@ -78,16 +78,16 @@
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
 		</subant>
-		<!--<subant target="deployTomcat">
+		<subant target="deployTomcat">
 				<property name="globus.webapp" value="${wsrf}"/>
 				<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 				<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
-		</subant>-->		
+		</subant>		
 		<copy todir="${wsrf-root}/WEB-INF/lib">
 	        <fileset dir="${parent.dir}/grid/registration-consumer/build/dist" includes="caaers-registration-consumer.jar"/>
 			<fileset dir="${parent.dir}/grid/study-consumer/build/dist" includes="caaers-study-consumer.jar"/>
 			<fileset dir="${parent.dir}/grid/lab-consumer/build/dist" includes="caaers-lab-consumer.jar"/>
-			<!--<fileset dir="${parent.dir}/grid/ess-ae/build/dist" includes="caaers-ess-ae.jar"/>-->
+			<fileset dir="${parent.dir}/grid/ess-ae/build/dist" includes="caaers-ess-ae.jar"/>
 	    </copy> 
 		
 		<antcall target="resolve-dist" />
