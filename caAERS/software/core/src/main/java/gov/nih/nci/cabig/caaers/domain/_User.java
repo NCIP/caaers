@@ -46,9 +46,13 @@ public class _User extends AbstractMutableDomainObject{
 	protected gov.nih.nci.security.authorization.domainobjects.User csmUser;
 	
     public _User() {
-    	userGroupTypes = new ArrayList<UserGroupType>();
-        passwordHistory = new ArrayList<String>();
-        csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
+        this(new gov.nih.nci.security.authorization.domainobjects.User());
+    }
+
+    public _User(gov.nih.nci.security.authorization.domainobjects.User csmUser){
+       userGroupTypes = new ArrayList<UserGroupType>();
+       passwordHistory = new ArrayList<String>();
+       this.csmUser = csmUser;
     }
     
     @Transient
@@ -248,6 +252,76 @@ public class _User extends AbstractMutableDomainObject{
 			gov.nih.nci.security.authorization.domainobjects.User csmUser) {
 		this.csmUser = csmUser;
 	}
+
+
+    //=== methods that are delegated to CSM User
+
+
+    @Transient
+    public String getFirstName() {
+        return getCsmUser().getFirstName();
+    }
+
+    public void setFirstName(String firstName) {
+        getCsmUser().setFirstName(firstName);
+    }
+
+    @Transient
+    public String getLastName() {
+        return getCsmUser().getLastName();
+    }
+
+    public void setLastName(String lastName) {
+        getCsmUser().setLastName(lastName);
+    }
+
+    @Transient
+    public String getMiddleName() {
+        return null;
+    }
+
+    public void setMiddleName(String middleName) {
+       //
+    }
+
+    @Transient
+	public String getTitle() {
+		return getCsmUser().getTitle();
+	}
+
+	public void setTitle(String title) {
+		getCsmUser().setTitle(title);
+	}
+
+    @Transient
+	public String getEmailAddress() {
+		return getCsmUser().getEmailId();
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		getCsmUser().setEmailId(emailAddress);
+	}
+
+    @Transient
+	public String getPhoneNumber() {
+		return getCsmUser().getPhoneNumber();
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		getCsmUser().setPhoneNumber(phoneNumber);
+	}
+
+    @Transient
+	public String getFaxNumber() {
+		return null;
+	}
+
+	public void setFaxNumber(String faxNumber) {
+		
+	}
+    //==
+
+
 	
 	@Override
 	public int hashCode() {

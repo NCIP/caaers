@@ -19,19 +19,35 @@ public class Reporter extends ReportPerson {
     
     /**
      * This method will copy a user, and set it as the referenced user of this reporter.
-     * @param user
+     * @param person
      */
-    public void copy(User user){
-    	if(user == null) return;
+    public void copy(Person person){
+    	if(person == null) return;
     	
-    	this.setFirstName(user.getFirstName());
-    	this.setLastName(user.getLastName());
+    	this.setFirstName(person.getFirstName());
+    	this.setLastName(person.getLastName());
+    	this.setMiddleName(person.getMiddleName());
+    	this.setTitle(person.getTitle());
+    	this.setFax(person.getFaxNumber());
+    	this.setPhoneNumber(person.getPhoneNumber());
+    	this.setEmailAddress(person.getEmailAddress());
+        if(person.isUser()) setCaaersUser(person.getCaaersUser());
+    	
+    }
+
+    /**
+     * Will copy the details from the supplied user. 
+     * @param user - A user in caAERS. 
+     */
+    public void copy(_User user) {
+        if(user == null) return;
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
     	this.setMiddleName(user.getMiddleName());
     	this.setTitle(user.getTitle());
     	this.setFax(user.getFaxNumber());
     	this.setPhoneNumber(user.getPhoneNumber());
     	this.setEmailAddress(user.getEmailAddress());
-    	this.setUser(user);
-    	
+        this.setCaaersUser(user);
     }
 }

@@ -3,39 +3,21 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Availability;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.EventStatus;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.tools.editors.AbstractStudyDiseaseEditor;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -46,6 +28,11 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -118,17 +105,21 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     
     protected ReportRepository reportRepository;
     
-    protected UserDao userDao;
+    protected _UserDao userDao;  //TODO : MD- rename this to UserDao
     
     private Configuration configuration;
     
-    protected SiteResearchStaffDao siteResearchStaffDao;
 
     protected StudyDeviceDao studyDeviceDao;
 
     protected OtherInterventionDao otherInterventionDao;
     
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+
+    protected UserRepository userRepository;
+
+    protected PersonRepository personRepository;
+
 	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -510,14 +501,10 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     }
     
     @Required
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(_UserDao userDao) {
 		this.userDao = userDao;
 	}
     
-    @Required
-    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao){
-    	this.siteResearchStaffDao = siteResearchStaffDao;
-    }
     
 	@Required
 	public Configuration getConfiguration() {
@@ -549,5 +536,21 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     public void setOtherInterventionDao(OtherInterventionDao otherInterventionDao) {
         this.otherInterventionDao = otherInterventionDao;
+    }
+
+    public PersonRepository getPersonRepository() {
+        return personRepository;
+    }
+
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

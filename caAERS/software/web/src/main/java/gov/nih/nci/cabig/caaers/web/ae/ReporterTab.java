@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.dao.PersonDao;
+import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -40,7 +41,7 @@ import org.springframework.validation.Errors;
  */
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
-    private UserDao userDao;
+    private PersonRepository personRepository;
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter", "ae/reporter");
@@ -100,17 +101,9 @@ public class ReporterTab extends AeTab {
         String loginId = SecurityUtils.getUserLoginName();
         Person loggedInPerson = null;
         if(loginId != null){
-
-           for(ResearchStaff rs : researchStaffList){
-               if(rs.getLoginId().equals(loginId)) loggedInPerson = rs;
-           }
-           for(Investigator inv : investigatorList){
-               if(inv.getLoginId().equals(loginId)) loggedInPerson = inv;
-           }
-
-
+           loggedInPerson =  personRepository.getByLoginId(loginId);
      	   refData.put("validPersonnel", loggedInPerson != null);
-           refData.put("loggedInUserId", loggedInPerson != null ? loggedInPerson.getId() : "0");
+           refData.put("loggedInUserId", loggedInPerson != null ? loggedInPerson.getId() : 0);
 
         }
     	
@@ -226,13 +219,17 @@ public class ReporterTab extends AeTab {
     protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
     	super.validate(command, commandBean, fieldGroups, errors);
     	if(command.getWorkflowEnabled()){
-    		if(command.getAeReport().getReporter().getUser() == null){
+    		if(!command.getAeReport().getReporter().isUser()){
     			errors.rejectValue("aeReport.reporter.user", "SAE_019","Reporter should be selected in the drop down");
     		}
     	}
     }
-    
-    public void setUserDao(UserDao userDao){
-    	this.userDao = userDao;
+
+    public PersonRepository getPersonRepository() {
+        return personRepository;
+    }
+
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 }

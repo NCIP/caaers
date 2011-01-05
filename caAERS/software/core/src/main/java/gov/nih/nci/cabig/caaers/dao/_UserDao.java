@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+//TODO - MD : Rename this to UserDao
 @Transactional(readOnly = true)
 public class _UserDao extends CaaersDao<_User> implements MutableDomainObjectDao<_User>{
 

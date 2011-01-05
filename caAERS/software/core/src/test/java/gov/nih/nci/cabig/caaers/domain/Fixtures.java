@@ -775,4 +775,12 @@ public class Fixtures {
       sd.setDevice(d);
       return sd;
   }
+
+  public static _User createUser(String loginId, String name){
+     _User u = new _User();
+     gov.nih.nci.security.authorization.domainobjects.User csmUser = new  gov.nih.nci.security.authorization.domainobjects.User();
+     csmUser.setFirstName(name);
+     u.setLoginName(loginId);
+     return u;
+  }
 }

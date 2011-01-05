@@ -1,33 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
-
-import java.util.Map;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -36,6 +19,12 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * The Webflow for ExpeditedAdverseEventReport modification is maintained by this controller. 
@@ -50,9 +39,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	private static final String ACTION_PARAMETER = "action";
 
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
-    private ResearchStaffDao researchStaffDao;
-    private InvestigatorDao investigatorDao;
-	
+
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
@@ -156,32 +143,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		//set the default reporter as the logged-in person
         		String loginId = SecurityUtils.getUserLoginName();
                 if(loginId != null){
-             	   User loggedInUser = null;
-             	   ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
-             	   SiteResearchStaff siteResearchStaff = null;
-             	   
-             	   
-             	   // Now if there is a siteResearchStaff then we need to copy details like emailAddress, phoneNumber and faxNumber from the
-             	   // siteResearchStaff.
-             	   if(researchStaff != null){
-             		   siteResearchStaff = siteResearchStaffDao.getOrganizationResearchStaff(command.getAssignment().getStudySite().getOrganization(), researchStaff);
-             		   loggedInUser = researchStaff;
-             	   }else{
-          			   loggedInUser = investigatorDao.getByLoginId(loginId); 
-             	   }
-             	  command.getAeReport().getReporter().copy(loggedInUser);
-             	   if(siteResearchStaff != null){
-             		   if(siteResearchStaff.getEmailAddress() != null)
-             			   command.getAeReport().getReporter().setEmailAddress(siteResearchStaff.getEmailAddress());
-             		   if(siteResearchStaff.getPhoneNumber() != null)
-             			   command.getAeReport().getReporter().setPhoneNumber(siteResearchStaff.getPhoneNumber());
-             		   if(siteResearchStaff.getFaxNumber() != null)
-             			   command.getAeReport().getReporter().setFax(siteResearchStaff.getFaxNumber());
-             		   if(siteResearchStaff.getAddress() != null)
-             			   command.getAeReport().getReporter().setAddress(siteResearchStaff.getAddress());
-             	   }
+                   Person loggedInPerson = getPersonRepository().getByLoginId(loginId);
+                   command.getAeReport().getReporter().copy(loggedInPerson);
+                   if(loggedInPerson == null){
+                       _User loggedInUser = getUserRepository().getUserByLoginName(loginId);
+                       command.getAeReport().getReporter().copy(loggedInUser);
+                   }
                 }
-        		
+
                	
         	}
         	
@@ -422,19 +391,4 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	return adverseEventReportingPeriodDao;
     }
   
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
-    	this.researchStaffDao = researchStaffDao;
-    }
-    
-    public ResearchStaffDao getResearchStaffDao(){
-    	return researchStaffDao;
-    }
-    
-    public void setInvestigatorDao(InvestigatorDao investigatorDao){
-    	this.investigatorDao = investigatorDao;
-    }
-    
-    public InvestigatorDao getInvestigatorDao(){
-    	return investigatorDao;
-    }
 }

@@ -21,7 +21,7 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
 	protected String emailAddress;
 	protected String phoneNumber;
 	protected String faxNumber;
-	protected _User caaersUser;
+	protected _User caaersUser; //TODO - MD : Need to rename this to user, also make sure reporter.jsp field name are modified. 
 	
     @Transient
     public String getLastFirst() {
@@ -163,4 +163,9 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
 	public void setCaaersUser(_User caaersUser) {
 		this.caaersUser = caaersUser;
 	}
+
+    @Transient
+    public boolean isUser(){
+        return getCaaersUser() != null;
+    }
 }

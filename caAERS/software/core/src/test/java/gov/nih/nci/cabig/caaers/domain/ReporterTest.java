@@ -68,13 +68,30 @@ public class ReporterTest extends AbstractTestCase {
 
     public void testCopy() {
     	ResearchStaff staff = new LocalResearchStaff();
+        staff.setCaaersUser(Fixtures.createUser("x", "tester"));
     	staff.setFirstName("a");
     	staff.setEmailAddress("k");
     	reporter.copy(staff);
-    	assertSame(reporter.getUser(), staff);
+    	
     	assertEquals("a", reporter.getFirstName());
     	assertNull(reporter.getLastName());
     	assertNull(reporter.getPhoneNumber());
     	assertEquals("k", reporter.getEmailAddress());
+        assertEquals("x", reporter.getCaaersUser().getLoginName());
+    }
+
+
+
+    public void testCopyUser() {
+        _User user = Fixtures.createUser("x", "tester");
+    	user.setFirstName("a");
+    	user.setEmailAddress("k");
+    	reporter.copy(user);
+
+    	assertEquals("a", reporter.getFirstName());
+    	assertNull(reporter.getLastName());
+    	assertNull(reporter.getPhoneNumber());
+    	assertEquals("k", reporter.getEmailAddress());
+        assertSame(user, reporter.getCaaersUser());
     }
 }

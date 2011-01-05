@@ -26,9 +26,6 @@ public class PersonRepository {
 		personDao.save(person);
 	}
 	
-	public Person getByEmailAddress(String emailAddress) {
-		return personDao.getByEmailAddress(emailAddress);
-	}
 	
 	public Person getByLoginId(String loginName) {
 		return personDao.getByLoginId(loginName);

@@ -70,26 +70,25 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional(readOnly = true)
 	public _User getUserByLoginName(String loginName) {
 		_User _user = userDao.getByLoginName(loginName);
-		if(_user == null){
-			_user = new _User();
-		}
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(loginName);
-		_user.setCsmUser(csmUser);
-		if(csmUser != null){
-			_user.setUserGroupTypes(getUserGroups(csmUser.getUserId().toString()));
-		}
-		if(StringUtils.isEmpty(_user.getLoginName()) &&  _user.getCsmUser() == null){
-			return null;
-		}
-		if(! StringUtils.isEmpty(_user.getLoginName()) &&  _user.getCsmUser() == null){
-			throw new CaaersSystemException("caAERS user exists and relevant CSM user does not exist : Data Integrity issue");
-		}
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(loginName);
+        if(_user == null && csmUser == null) return null; // may be login-id supplied is incorrect.
+        if(csmUser == null){
+            logger.error("CSM User with loginName [" + loginName +"] don't exist, a data integrity issue as user exist in caAERS");
+            throw new CaaersSystemException("caAERS user exists and relevant CSM user does not exist : Data Integrity issue");
+        }
+        if(_user == null){
+            _user = new _User(csmUser);
+        }else{
+            _user.setCsmUser(csmUser);
+        }
+        _user.setUserGroupTypes(getUserGroups(csmUser.getUserId().toString()));
+        
 		return _user;
 	}	
 	
     /**
      * Fetches the groups associated to users.  
-     * @param userName
+     * @param loginName
      * @return
      */
     public List<UserGroupType> getUserGroups(String loginName) {
