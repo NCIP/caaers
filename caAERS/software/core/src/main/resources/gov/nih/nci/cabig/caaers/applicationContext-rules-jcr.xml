@@ -71,12 +71,11 @@
 		autowire="byType">
 		<property name="template" ref="jcrTemplate" />
 	</bean>
-	
-	
+		
 	<bean id="rulesPropertiesFileLoader"
 				class="com.semanticbits.rules.utils.RulesPropertiesFileLoader">
 		<property name="databaseConfigurationName" value="@databaseConfigurationName@" />
-		<property name="applicationDirectoryName" value="caaers" />
+		<property name="applicationDirectoryName" ref="applicationDirectoryName"/>
 	</bean>
 	
 	

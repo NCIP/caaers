@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
-    "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-lazy-init="true">		
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+	default-autowire="no">		
  	
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-caXchange.xml" />
@@ -116,6 +120,9 @@
 	</bean>
 	<bean id="coppaMode" class="java.lang.Boolean">
 		<constructor-arg value="false"/>
+	</bean>	
+	<bean id="applicationDirectoryName" class="java.lang.String" autowire-candidate="false" >
+		<constructor-arg value="wsrf-caaers"/>
 	</bean>	
 
 	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.ae.GridToDomainObjectConverter"
