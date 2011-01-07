@@ -133,6 +133,7 @@
 	<bean id="adverseEventQueryImplTarget" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl" autowire="byType"/>
 	<bean id="adverseEventAssociateImplTarget" class="gov.nih.nci.ess.ae.AdverseEventAssociateImpl" autowire="byType" />
 	<bean id="adverseEventAdvancedQueryImplTarget" class="gov.nih.nci.ess.ae.AdverseEventAdvancedQueryImpl" autowire="byType" />
+	<bean id="adverseEventProtocolImplTarget" class="gov.nih.nci.ess.ae.AdverseEventProtocolImpl" autowire="byType" />
 
 	<!-- Audit -->
     <bean id="adverseEventManagementGridServiceUrl" class="java.lang.String">
@@ -144,6 +145,10 @@
     <bean id="adverseEventAdvancedQueryGridServiceUrl" class="java.lang.String">
         <constructor-arg value="/wsrf-caaers/services/cagrid/AdvancedQuery"/>
     </bean>
+    <bean id="adverseEventProtocolGridServiceUrl" class="java.lang.String">
+        <constructor-arg value="/wsrf-caaers/services/cagrid/AEProtocol"/>
+    </bean>
+    
 	<bean id="adverseEventManagementAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
 		<property name="fromUrl" ref="adverseEventManagementGridServiceUrl" />
 	</bean>
@@ -152,6 +157,9 @@
 	</bean>
 	<bean id="adverseEventAdvancedQueryAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
 		<property name="fromUrl" ref="adverseEventAdvancedQueryGridServiceUrl" />
+	</bean>	
+	<bean id="adverseEventProtocolAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" ref="adverseEventProtocolGridServiceUrl" />
 	</bean>	
     
 	<bean id="adverseEventQueryImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
@@ -200,6 +208,17 @@
 			</list> 
 		</property> 
 	</bean>	
-		
+
+	<bean id="adverseEventProtocolImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="adverseEventProtocolImplTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>adverseEventAdvancedQueryAuditInfoPopulatorInterceptor</value>				
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>
 
 </beans>
