@@ -34,7 +34,6 @@ public class QueryImpl extends QueryImplBase {
 		}
 	}
 
-
   public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	    initialize();
 		return aeQuery.findAdverseEvents(adverseEvent);

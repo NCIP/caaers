@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns1="uri:iso.org:21090" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns11="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/types" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns8="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Query/types" xmlns:ns10="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/types" xmlns:ns7="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types" xmlns:ns0="http://ess.caaers.nci.nih.gov" xmlns:ns2="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/types" xmlns:ns9="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate/types" name="AEProtocol" targetNamespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="uri:iso.org:21090" schemaLocation="./ISO_datatypes_Narrative.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/types" schemaLocation="./AEProtocolTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Query/types" schemaLocation="./QueryTypes.xsd" />
+      <import namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAdvancedQuery/types" schemaLocation="./AEAdvancedQueryTypes.xsd" />
+      <import namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types" schemaLocation="./ManagementTypes.xsd" />
+      <import namespace="http://ess.caaers.nci.nih.gov" schemaLocation="./AE-PSM.xsd" />
+      <import namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/types" schemaLocation="./AdverseEventEnterpriseServiceTypes.xsd" />
+      <import namespace="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEAssociate/types" schemaLocation="./AEAssociateTypes.xsd" />
+      <element name="UpdateCodingTerminologyForStudyRequest">
+        <complexType>
+          <sequence>
+            <element name="id">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="oid">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Oid" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateCodingTerminologyForStudyResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AEProtocolResourceProperties">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="UpdateCodingTerminologyForStudyRequest">
+    <part name="parameters" element="tns:UpdateCodingTerminologyForStudyRequest" />
+  </message>
+  <message name="UpdateCodingTerminologyForStudyResponse">
+    <part name="parameters" element="tns:UpdateCodingTerminologyForStudyResponse" />
+  </message>
+  <message name="AdverseEventServiceExceptionFaultMessage">
+    <part name="fault" element="ns7:AdverseEventServiceException" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="AEProtocolPortType" wsrp:ResourceProperties="tns:AEProtocolResourceProperties">
+    <operation name="updateCodingTerminologyForStudy">
+      <input message="tns:UpdateCodingTerminologyForStudyRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/UpdateCodingTerminologyForStudyRequest" />
+      <output message="tns:UpdateCodingTerminologyForStudyResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/UpdateCodingTerminologyForStudyResponse" />
+      <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/AdverseEventServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+  </portType>
+</definitions>
+

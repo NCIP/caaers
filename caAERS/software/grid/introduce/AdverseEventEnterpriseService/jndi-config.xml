@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+  <service name="SERVICE-INSTANCE-PREFIX/AEProtocol">
+    <resource name="configuration" type="gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/AEProtocol_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>resourceClass</name>
+          <value>gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResource</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyName</name>
+          <value>{http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol}AEProtocolResultsKey</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyType</name>
+          <value>java.lang.String</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AdverseEventEnterpriseService/serviceconfiguration" />
+    <resourceLink name="adverseEventEnterpriseServiceHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AdverseEventEnterpriseService/home" />
+    <resourceLink name="managementHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Management/home" />
+    <resourceLink name="queryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Query/home" />
+    <resourceLink name="aEAssociateHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAssociate/home" />
+    <resourceLink name="aEAdvancedQueryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAdvancedQuery/home" />
+  </service>
   <service name="SERVICE-INSTANCE-PREFIX/AEAdvancedQuery">
     <resource name="configuration" type="gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceConfiguration">
       <resourceParams>
@@ -44,6 +90,7 @@
     <resourceLink name="managementHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Management/home" />
     <resourceLink name="queryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Query/home" />
     <resourceLink name="aEAssociateHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAssociate/home" />
+    <resourceLink name="aEProtocolHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEProtocol/home" />
   </service>
   <service name="SERVICE-INSTANCE-PREFIX/AEAssociate">
     <resource name="configuration" type="gov.nih.nci.ess.ae.service.aeassociate.service.globus.resource.AEAssociateResourceConfiguration">
@@ -89,6 +136,7 @@
     <resourceLink name="managementHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Management/home" />
     <resourceLink name="queryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Query/home" />
     <resourceLink name="aEAdvancedQueryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAdvancedQuery/home" />
+    <resourceLink name="aEProtocolHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEProtocol/home" />
   </service>
   <service name="SERVICE-INSTANCE-PREFIX/Query">
     <resource name="configuration" type="gov.nih.nci.ess.ae.service.query.service.globus.resource.QueryResourceConfiguration">
@@ -134,6 +182,7 @@
     <resourceLink name="managementHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Management/home" />
     <resourceLink name="aEAssociateHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAssociate/home" />
     <resourceLink name="aEAdvancedQueryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAdvancedQuery/home" />
+    <resourceLink name="aEProtocolHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEProtocol/home" />
   </service>
   <service name="SERVICE-INSTANCE-PREFIX/Management">
     <resource name="configuration" type="gov.nih.nci.ess.ae.service.management.service.globus.resource.ManagementResourceConfiguration">
@@ -179,6 +228,7 @@
     <resourceLink name="queryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Query/home" />
     <resourceLink name="aEAssociateHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAssociate/home" />
     <resourceLink name="aEAdvancedQueryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAdvancedQuery/home" />
+    <resourceLink name="aEProtocolHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEProtocol/home" />
   </service>
   <service name="SERVICE-INSTANCE-PREFIX/AdverseEventEnterpriseService">
     <resource name="configuration" type="gov.nih.nci.ess.ae.service.service.globus.resource.AdverseEventEnterpriseServiceResourceConfiguration">
@@ -228,6 +278,7 @@
     <resourceLink name="queryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Query/home" />
     <resourceLink name="aEAssociateHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAssociate/home" />
     <resourceLink name="aEAdvancedQueryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEAdvancedQuery/home" />
+    <resourceLink name="aEProtocolHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/AEProtocol/home" />
   </service>
 </jndiConfig>
 

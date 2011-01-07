@@ -65,6 +65,11 @@ public abstract class AEAssociateImplBase {
 		return (gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome)resource;
 	}
 	
+	public gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome getAEProtocolResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("aEProtocolHome");
+		return (gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome)resource;
+	}
+	
 	
 	protected ResourceHome getResourceHome(String resourceKey) throws Exception {
 		MessageContext ctx = MessageContext.getCurrentContext();

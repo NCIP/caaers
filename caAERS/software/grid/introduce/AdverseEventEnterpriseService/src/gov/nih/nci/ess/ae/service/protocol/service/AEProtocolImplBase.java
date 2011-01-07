@@ -1,6 +1,6 @@
-package gov.nih.nci.ess.ae.service.aeadvancedquery.service;
+package gov.nih.nci.ess.ae.service.protocol.service;
 
-import gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResource;
+import gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResource;
 import  gov.nih.nci.ess.ae.service.service.AdverseEventEnterpriseServiceConfiguration;
 
 import java.rmi.RemoteException;
@@ -26,9 +26,9 @@ import org.globus.wsrf.ResourcePropertySet;
  * @created by Introduce Toolkit version 1.3
  * 
  */
-public abstract class AEAdvancedQueryImplBase {
+public abstract class AEProtocolImplBase {
 	
-	public AEAdvancedQueryImplBase() throws RemoteException {
+	public AEProtocolImplBase() throws RemoteException {
 	
 	}
 	
@@ -37,9 +37,9 @@ public abstract class AEAdvancedQueryImplBase {
 	}
 	
 	
-	public gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome getResourceHome() throws Exception {
+	public gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome getResourceHome() throws Exception {
 		ResourceHome resource = getResourceHome("home");
-		return (gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome)resource;
+		return (gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome)resource;
 	}
 
 	
@@ -65,9 +65,9 @@ public abstract class AEAdvancedQueryImplBase {
 		return (gov.nih.nci.ess.ae.service.aeassociate.service.globus.resource.AEAssociateResourceHome)resource;
 	}
 	
-	public gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome getAEProtocolResourceHome() throws Exception {
-		ResourceHome resource = getResourceHome("aEProtocolHome");
-		return (gov.nih.nci.ess.ae.service.protocol.service.globus.resource.AEProtocolResourceHome)resource;
+	public gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome getAEAdvancedQueryResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("aEAdvancedQueryHome");
+		return (gov.nih.nci.ess.ae.service.aeadvancedquery.service.globus.resource.AEAdvancedQueryResourceHome)resource;
 	}
 	
 	
