@@ -26,6 +26,16 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
         <param-value>wsrfcaaers.root</param-value>
     </context-param>
     
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+		classpath:applicationContext-grid.xml
+                classpath:applicationContext-lab.xml
+		classpath:applicationContext-studyConsumer-grid.xml
+		classpath:applicationContext-essae.xml
+        </param-value>
+    </context-param>
+    
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
@@ -33,6 +43,11 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
    <listener>
      <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
    </listener>
+   
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>   
+   
 
   <servlet>
     <servlet-name>WSRFServlet</servlet-name>

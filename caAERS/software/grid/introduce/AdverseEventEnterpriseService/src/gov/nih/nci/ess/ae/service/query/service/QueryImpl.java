@@ -1,15 +1,12 @@
 package gov.nih.nci.ess.ae.service.query.service;
 
-import gov.nih.nci.ess.ae.service.common.AdverseEventEnterpriseServiceI;
-import gov.nih.nci.ess.ae.service.misc.SpringContextHolder;
+import gov.nih.nci.ess.ae.service.misc.SpringContextCreator;
 import gov.nih.nci.ess.ae.service.query.common.QueryI;
 
 import java.rmi.RemoteException;
 
-import org.globus.wsrf.config.ContainerConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
@@ -24,36 +21,27 @@ public class QueryImpl extends QueryImplBase {
 	private QueryI aeQuery;
 
 	public QueryImpl() throws RemoteException {
-		super();
-		ApplicationContext ctx = getApplicationContext();
-		aeQuery = (QueryI) ctx.getBean(BEAN_NAME);
+		super();		
 	}
 
 	/**
-	 * @return
 	 * @throws BeansException
 	 */
-	private ApplicationContext getApplicationContext() throws BeansException {
-		ApplicationContext ctx = null;
-		String exp = ContainerConfig
-				.getConfig()
-				.getOption(
-						AdverseEventEnterpriseServiceI.SPRING_CLASSPATH_EXPRESSION,
-						AdverseEventEnterpriseServiceI.DEFAULT_SPRING_CLASSPATH_EXPRESSION);
-		if (SpringContextHolder.getApplicationContext() == null) {
-			ctx = new ClassPathXmlApplicationContext(exp);
-			SpringContextHolder.setApplicationContext(ctx);
-		} else {
-			ctx = SpringContextHolder.getApplicationContext();
+	private void initialize() throws BeansException {
+		if (aeQuery==null) {
+			ApplicationContext ctx = SpringContextCreator.getApplicationContext();
+			aeQuery = (QueryI) ctx.getBean(BEAN_NAME);
 		}
-		return ctx;
 	}
 
+
   public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+	    initialize();
 		return aeQuery.findAdverseEvents(adverseEvent);
 	}
 
   public ess.caaers.nci.nih.gov.AdverseEvent getAdverseEventData(ess.caaers.nci.nih.gov.Id adverseEventIdentifier) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+	    initialize();
 		return aeQuery.getAdverseEventData(adverseEventIdentifier);
 	}
 
