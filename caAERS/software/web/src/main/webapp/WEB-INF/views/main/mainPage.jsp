@@ -30,7 +30,7 @@
         </div>
 
         <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="1">
             <tr>
                 <c:forEach begin="0" end="2" items="${taskgroups}" var="taskGroup" varStatus="index">
                     <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
@@ -66,7 +66,7 @@
         </div>
 
         <div style="margin-left: 1px; margin-right:2px;" class="subSubheader">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="1">
             <tr>
                 <c:forEach begin="3" end="9" items="${taskgroups}" var="taskGroup" varStatus="index">
                     <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
@@ -99,6 +99,7 @@
 
 <jsp:include page="/pages/dashboard" />
 
+<%--
 <chrome:boxIPhone title="Quick Links" style="width:100%;">
 <jsp:body>
 
@@ -112,6 +113,7 @@
 
 </jsp:body>
 </chrome:boxIPhone>
+--%>
 
 <style>
 
@@ -182,7 +184,7 @@
     .calendar tbody .reportActivity {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
     .calendar tbody .pastDue {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
     tr.last { border-bottom : 1px black solid; }
-    .scroller { height: 70px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
+    .scroller { height: 150px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scrollerTask { height: 227px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scroller h4 { color: #933; display: inline; }
     .scroller div { height: 22px; padding: 8px; margin-top: -1px; }
