@@ -232,4 +232,13 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 		this.applicableStudyScopedRoles = applicableStudyScopedRoles;
 	}
 
+    protected boolean isEmpty(IndexEntry entry){
+        if(entry == null) return true;
+        if(entry.getEntityIds() == null) return true;
+        return entry.getEntityIds().isEmpty();
+    }
+
+    protected boolean isAllSiteOrAllStudy(List<Integer> list){
+        return list.size() == 1 && list.get(0).equals(Integer.MIN_VALUE);
+    }
 }

@@ -52,6 +52,15 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
                 }
                 return entries;
             }
+
+            @Override
+            public List<IndexEntry> getAccessibleStudyIds(String loginId) {
+                List<IndexEntry> entries =  super.getAccessibleStudyIds(loginId);
+                IndexEntry e = new IndexEntry(UserGroupType.ae_reporter);
+                e.addEntityId(-2);
+                entries.add(e);
+                return entries;
+            }
         });
 
     }

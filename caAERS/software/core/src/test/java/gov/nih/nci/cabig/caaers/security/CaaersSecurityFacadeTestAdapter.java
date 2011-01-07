@@ -8,6 +8,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleConte
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import org.acegisecurity.Authentication;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -39,11 +40,11 @@ public class CaaersSecurityFacadeTestAdapter implements CaaersSecurityFacade {
     }
 
     public List<IndexEntry> getAccessibleStudyIds(String loginId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new ArrayList<IndexEntry>();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public List<IndexEntry> getAccessibleOrganizationIds(String loginId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new ArrayList<IndexEntry>();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Collection<String> getRoles(String userLoginName, Organization org) {
