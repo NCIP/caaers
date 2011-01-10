@@ -741,7 +741,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
                 organizationQuery.filterByOrganizationName(sText);
             }
             if (sType.equals("nciInstituteCode")) {
-                organizationQuery.filterByNciInstituteCode(sText);
+            	organizationQuery.filterByNciCodeExactMatch(sText);
             }
 
         }
