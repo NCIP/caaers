@@ -648,6 +648,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="install:post:tomcat:caaers:config">
 		
 		<mkdir dir="${tomcat.home}/conf/caaers"/>
+		<mkdir dir="${tomcat.home}/conf/wsrf-caaers"/>
 		<mkdir dir="${tomcat.home}/conf/cabig"/>
 		<switch value="${database.type}">
 			<case value="oracle">
@@ -687,10 +688,26 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<condition property="rules.repository" value="${rules.repository.windows}">
 			<os family="windows" />
 		</condition>
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@URL@" value="${rules.repository}" />		
+		
+		<condition property="grid.rules.repository" value="${grid.rules.repository.linux}">
+			<or>
+				<os family="unix" />
+				<os family="mac" />
+			</or>
+		</condition>
+	
+		<condition property="grid.rules.repository" value="${grid.rules.repository.windows}">
+			<os family="windows" />
+		</condition>
 		
 		<antcall target="caaers:websso:properties:required" />
-		<antcall target="caaers:websso:properties:not:required" />		
+		<antcall target="caaers:websso:properties:not:required" />
+		
+		<copy file="${tomcat.home}/conf/caaers/datasource.properties" tofile="${tomcat.home}/conf/wsrf-caaers/datasource.properties" overwrite="true" />
+		
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@URL@" value="${rules.repository}" />
+		<replace file="${tomcat.home}/conf/wsrf-caaers/datasource.properties" token="@URL@" value="${grid.rules.repository}"/>
+		
 	</target>
 	
 	<!-- webSSO properties will be removed from datasource.properties file for local mode-->
