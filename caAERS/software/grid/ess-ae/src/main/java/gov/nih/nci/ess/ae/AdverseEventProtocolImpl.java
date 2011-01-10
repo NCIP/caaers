@@ -98,7 +98,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	public void updateCodingTerminologyForStudy(Id id, Oid oid)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-
+		
 	}
 
 }
