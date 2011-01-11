@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web;
+package gov.nih.nci.cabig.caaers.web.dashboard;
 
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +15,8 @@ import java.util.List;
  * @author Ion C. Olaru
  * 
  */
-public class DashboardController extends AbstractController {
+public class AEReporterDashboardController extends DashboardController {
+
     ReportVersionRepository reportVersionRepository;
     AdverseEventRoutingAndReviewRepositoryImpl rrRepositry;
     
@@ -25,7 +25,7 @@ public class DashboardController extends AbstractController {
 
         List<ReportVersion> l1 = reportVersionRepository.getPastDue();
         List<ReportVersion> l2 = reportVersionRepository.getReportActivity();
-        ModelAndView mv = new ModelAndView("dashboard");
+        ModelAndView mv = new ModelAndView("dashboard/dashboard_AEReporter");
         mv.addObject("pastDueReports", l1);
         mv.addObject("reportActivity", l2);
 

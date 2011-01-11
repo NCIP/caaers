@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
+<c:if test="${not empty roles.ae_reporter}">
 
             <chrome:boxIPhone title="Alerts" style="width:700px;">
             </chrome:boxIPhone>
@@ -323,4 +324,4 @@ jQuery(function( $ ){
 
 </script>
 
-
+</c:if>

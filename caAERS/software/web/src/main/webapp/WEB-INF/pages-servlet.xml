@@ -592,7 +592,10 @@
     <bean name="/admin/asaelCreate" id="asaelCreateController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentCreateController" />
     <bean name="/admin/asaelEdit" id="asaelEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentEditController" />
 
-    <bean name="/dashboard" id="dashboardController" class="gov.nih.nci.cabig.caaers.web.DashboardController" autowire="byType" />
+    <!-- DASHBOARD CONTROLLERS -->
+    <bean name="/dashboard" id="dashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.IndexDashboardController" autowire="byType" />
+    <bean name="/dashboard/aeReporter" id="aeReporterDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.AEReporterDashboardController" autowire="byType" />
+    <!-- DASHBOARD CONTROLLERS -->
 
 	<bean name="/admin/createUser" id="createUserController" class="gov.nih.nci.cabig.caaers.web.admin.CreateUserController" autowire="byType">
 		<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />

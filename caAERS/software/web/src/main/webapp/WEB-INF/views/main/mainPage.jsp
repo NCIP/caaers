@@ -20,7 +20,7 @@
 
 <!-- CURTIME : <%=new java.util.Date().getTime()%>  -->
 
-<jsp:include page="/pages/dashboard" />
+<%@include file="/WEB-INF/views/dashboard.jsp"%>
 
 <style>
 
