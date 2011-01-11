@@ -411,34 +411,36 @@
    <ns75:Methods xsi:type="ns75:MethodsType" xmlns:ns75="gme://gov.nih.nci.cagrid.introduce/1/Methods">
     <ns75:Method description="Updates the terminology system to be used for encoding adverse events on a study." isImported="false" isProvided="false" name="updateCodingTerminologyForStudy" xsi:type="ns75:MethodType">
      <ns75:Inputs>
-      <ns75:Input qName="ns76:Id" description="" isArray="false" name="id" xmlns:ns76="http://ess.caaers.nci.nih.gov"/>
-      <ns75:Input qName="ns77:Oid" description="" isArray="false" name="oid" xmlns:ns77="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns76:Id" description="" isArray="false" name="studyId" xmlns:ns76="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns77:Oid" description="" isArray="false" name="termCode" xmlns:ns77="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns78:Oid" description="" isArray="false" name="termVersion" xmlns:ns78="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns79:Oid" description="" isArray="false" name="otherMeddra" xmlns:ns79="http://ess.caaers.nci.nih.gov"/>
      </ns75:Inputs>
      <ns75:Output qName="void" description="" isArray="false"/>
      <ns75:Exceptions>
-      <ns75:Exception description="" name="AdverseEventServiceException" qname="ns78:AdverseEventServiceException" xmlns:ns78="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+      <ns75:Exception description="" name="AdverseEventServiceException" qname="ns80:AdverseEventServiceException" xmlns:ns80="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns75:Exceptions>
     </ns75:Method>
     <ns75:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns75:MethodType">
-     <ns75:Output qName="ns79:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns79="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
-     <ns80:MethodSecurity xsi:type="ns80:MethodSecurity" xmlns:ns80="gme://gov.nih.nci.cagrid.introduce/1/Security">
-      <ns80:SecuritySetting xsi:type="ns80:SecuritySetting">None</ns80:SecuritySetting>
-      <ns80:MethodAuthorization xsi:type="ns80:MethodAuthorization">
-       <ns80:NoAuthorization xsi:type="ns80:NoAuthorization"/>
-      </ns80:MethodAuthorization>
-     </ns80:MethodSecurity>
+     <ns75:Output qName="ns81:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns81="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns82:MethodSecurity xsi:type="ns82:MethodSecurity" xmlns:ns82="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns82:SecuritySetting xsi:type="ns82:SecuritySetting">None</ns82:SecuritySetting>
+      <ns82:MethodAuthorization xsi:type="ns82:MethodAuthorization">
+       <ns82:NoAuthorization xsi:type="ns82:NoAuthorization"/>
+      </ns82:MethodAuthorization>
+     </ns82:MethodSecurity>
      <ns75:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
      <ns75:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns75:Method>
    </ns75:Methods>
-   <ns81:ResourcePropertiesList xsi:type="ns81:ResourcePropertiesListType" xmlns:ns81="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+   <ns83:ResourcePropertiesList xsi:type="ns83:ResourcePropertiesListType" xmlns:ns83="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns82:Extensions xsi:type="ns82:ExtensionsType" xmlns:ns82="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns82:Extension name="cagrid_metadata" version="1.3" xsi:type="ns82:ExtensionType"/>
- </ns82:Extensions>
+ <ns84:Extensions xsi:type="ns84:ExtensionsType" xmlns:ns84="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns84:Extension name="cagrid_metadata" version="1.3" xsi:type="ns84:ExtensionType"/>
+ </ns84:Extensions>
 </ns1:ServiceDescription>

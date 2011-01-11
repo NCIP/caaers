@@ -61,6 +61,7 @@
                 <value>/WEB-INF/label</value>
                 <value>/WEB-INF/error_messages</value>
                 <value>/WEB-INF/service-messages</value>
+                <value>classpath:service-messages</value>
                 <value>service-messages</value>
 	    	</list>
 	    </property>

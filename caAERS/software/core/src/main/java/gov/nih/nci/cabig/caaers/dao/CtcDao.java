@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 
 import java.util.List;
+
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,4 +58,14 @@ public class CtcDao extends CaaersDao<Ctc> {
         String query = "select c from Ctc as c left join fetch c.categories as cats where c.id = ?";
         return (Ctc)getHibernateTemplate().find(query, new Object[] {id}).get(0);
     }
+    
+    /**
+     * Looks for one with the given name and returns null if not found.
+     * @param name
+     * @return
+     */
+    public Ctc getByName(String name) {
+    	return (Ctc)CollectionUtils.firstElement(getHibernateTemplate().find("select c from Ctc as c where c.name = ?", new Object[] {name}));
+    }
+    
 }

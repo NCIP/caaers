@@ -28,7 +28,7 @@ public class AEProtocolProviderImpl{
 
     public gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse updateCodingTerminologyForStudy(gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse();
-    impl.updateCodingTerminologyForStudy(params.getId().getId(),params.getOid().getOid());
+    impl.updateCodingTerminologyForStudy(params.getStudyId().getId(),params.getTermCode().getOid(),params.getTermVersion().getOid(),params.getOtherMeddra().getOid());
     return boxedResult;
   }
 

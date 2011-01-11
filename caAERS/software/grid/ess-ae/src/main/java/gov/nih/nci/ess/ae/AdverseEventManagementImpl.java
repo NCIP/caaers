@@ -35,13 +35,13 @@ import _21090.org.iso.II;
 public class AdverseEventManagementImpl implements ManagementI,
 		MessageSourceAware {
 
-	private static final String INVALID_PARTICIPANT_ID_ERR = "WS_AEMS_032";
-	private static final String PARTICIPANT_NOT_FOUND_ERR = "WS_AEMS_033";
-	private static final String INVALID_STUDY_ID_ERR = "WS_AEMS_034";
-	private static final String STUDY_NOT_FOUND_ERR = "WS_AEMS_035";
-	private static final String INVALID_COURSE_START_DATE_ERR = "WS_AEMS_036";
-	private static final String PARTICIPANT_NOT_ASSIGNED_ERR = "WS_AEMS_037";
-	private static final String NO_REPORTING_PERIOD_ERR = "WS_AEMS_038";
+	public static final String INVALID_PARTICIPANT_ID_ERR = "WS_AEMS_032";
+	public static final String PARTICIPANT_NOT_FOUND_ERR = "WS_AEMS_033";
+	public static final String INVALID_STUDY_ID_ERR = "WS_AEMS_034";
+	public static final String STUDY_NOT_FOUND_ERR = "WS_AEMS_035";
+	public static final String INVALID_COURSE_START_DATE_ERR = "WS_AEMS_036";
+	public static final String PARTICIPANT_NOT_ASSIGNED_ERR = "WS_AEMS_037";
+	public static final String NO_REPORTING_PERIOD_ERR = "WS_AEMS_038";
 	public static final String INVALID_AE_ID = "WS_AEMS_039";
 	private static final String ADVERSE_EVENT_NOT_FOUND = "WS_AEMS_040";
 	private GridToDomainObjectConverter gridToDomainConverter;

@@ -30,6 +30,20 @@ public enum Term implements CodedEnum<Integer> {
     public static Term getByCode(int code) {
         return getByClassAndCode(Term.class, code);
     }
+    
+    /**
+     * The same as {@link Enum#valueOf}, but returns null instead of throwing {@link IllegalArgumentException}.
+     * @param name
+     * @return
+     */
+    public static Term getByName(String name) {
+        try {
+			return valueOf(name);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+    }
+    
 
     public Integer getCode() {
         return code;
