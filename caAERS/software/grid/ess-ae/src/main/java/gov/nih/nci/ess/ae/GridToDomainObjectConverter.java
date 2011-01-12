@@ -28,6 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import _21090.org.iso.CD;
+import _21090.org.iso.II;
 import _21090.org.iso.TS;
 
 public class GridToDomainObjectConverter {
@@ -358,7 +359,7 @@ public class GridToDomainObjectConverter {
 	 * @param id
 	 * @return
 	 */
-	public Identifier convertIdentifier(Id id) {
+	public Identifier convertIdentifier(II id) {
 		Identifier identifier = new Identifier();
 		if (id != null) {
 			identifier.setValue(id.getExtension());

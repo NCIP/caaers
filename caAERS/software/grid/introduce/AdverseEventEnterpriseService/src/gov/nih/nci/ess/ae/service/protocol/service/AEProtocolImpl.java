@@ -37,9 +37,9 @@ public class AEProtocolImpl extends AEProtocolImplBase {
 		}
 	}
 	
-  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Oid termCode,ess.caaers.nci.nih.gov.Oid termVersion,ess.caaers.nci.nih.gov.Oid otherMeddra) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	initialize();
-    aeProtocolI.updateCodingTerminologyForStudy(studyId, termCode, termVersion, otherMeddra);
+    aeProtocolI.updateCodingTerminologyForStudy(aeTerminology);
   }
 
 }

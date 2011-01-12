@@ -1,6 +1,7 @@
 package gov.nih.nci.ess.ae;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
+import ess.caaers.nci.nih.gov.AeTerminology;
 import ess.caaers.nci.nih.gov.Id;
 import ess.caaers.nci.nih.gov.Oid;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -22,6 +23,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.NoSuchMessageException;
+
+import _21090.org.iso.II;
 
 /**
  * @author Denis G. Krylov
@@ -71,7 +74,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 * @param st
 	 * @return
 	 */
-	private String getSafeStringValue(Oid oid) {
+	private String getSafeStringValue(II oid) {
 		if (oid != null) {
 			if (StringUtils.isNotBlank(oid.getExtension())) {
 				return oid.getExtension();
@@ -122,15 +125,14 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 * updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id,
 	 * ess.caaers.nci.nih.gov.Oid)
 	 */
-	public void updateCodingTerminologyForStudy(Id studyId, Oid termCode,
-			Oid termVersion, Oid otherMeddra)
+	public void updateCodingTerminologyForStudy(AeTerminology aeTerminology)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-		Study study = getStudyByPrimaryId(studyId);
+		Study study = getStudyByPrimaryId(aeTerminology.getStudyId());
 
-		String termCodeStr = getSafeStringValue(termCode);
-		String termVersionStr = getSafeStringValue(termVersion);
-		String otherMeddraStr = getSafeStringValue(otherMeddra);
+		String termCodeStr = getSafeStringValue(aeTerminology.getTermCode());
+		String termVersionStr = getSafeStringValue(aeTerminology.getTermVersion());
+		String otherMeddraStr = getSafeStringValue(aeTerminology.getMeddra());
 
 		Term term = null;
 		Ctc ctc = null;
@@ -168,7 +170,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 * @throws AdverseEventServiceException
 	 * @throws NoSuchMessageException
 	 */
-	private Study getStudyByPrimaryId(Id studyId)
+	private Study getStudyByPrimaryId(II studyId)
 			throws AdverseEventServiceException, NoSuchMessageException {
 		Identifier sid = gridToDomainConverter.convertIdentifier(studyId);
 		if (StringUtils.isBlank(sid.getValue())) {

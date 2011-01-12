@@ -15,14 +15,11 @@ public interface AEProtocolI {
   /**
    * Updates the terminology system to be used for encoding adverse events on a study.
    *
-   * @param studyId
-   * @param termCode
-   * @param termVersion
-   * @param otherMeddra
+   * @param aeTerminology
    * @throws AdverseEventServiceException
    *	
    */
-  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Oid termCode,ess.caaers.nci.nih.gov.Oid termVersion,ess.caaers.nci.nih.gov.Oid otherMeddra) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
 }
 

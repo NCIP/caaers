@@ -27,31 +27,10 @@
       <element name="UpdateCodingTerminologyForStudyRequest">
         <complexType>
           <sequence>
-            <element name="studyId">
+            <element name="aeTerminology">
               <complexType>
                 <sequence>
-                  <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-            <element name="termCode">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:Oid" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-            <element name="termVersion">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:Oid" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-            <element name="otherMeddra">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:Oid" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:AeTerminology" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>

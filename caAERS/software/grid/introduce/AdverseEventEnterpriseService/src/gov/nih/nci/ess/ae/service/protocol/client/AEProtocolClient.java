@@ -76,22 +76,13 @@ public class AEProtocolClient extends AEProtocolClientBase implements AEProtocol
 		}
 	}
 
-  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Oid termCode,ess.caaers.nci.nih.gov.Oid termVersion,ess.caaers.nci.nih.gov.Oid otherMeddra) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"updateCodingTerminologyForStudy");
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest();
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestStudyId studyIdContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestStudyId();
-    studyIdContainer.setId(studyId);
-    params.setStudyId(studyIdContainer);
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestTermCode termCodeContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestTermCode();
-    termCodeContainer.setOid(termCode);
-    params.setTermCode(termCodeContainer);
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestTermVersion termVersionContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestTermVersion();
-    termVersionContainer.setOid(termVersion);
-    params.setTermVersion(termVersionContainer);
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestOtherMeddra otherMeddraContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestOtherMeddra();
-    otherMeddraContainer.setOid(otherMeddra);
-    params.setOtherMeddra(otherMeddraContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestAeTerminology aeTerminologyContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestAeTerminology();
+    aeTerminologyContainer.setAeTerminology(aeTerminology);
+    params.setAeTerminology(aeTerminologyContainer);
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse boxedResult = portType.updateCodingTerminologyForStudy(params);
     }
   }
