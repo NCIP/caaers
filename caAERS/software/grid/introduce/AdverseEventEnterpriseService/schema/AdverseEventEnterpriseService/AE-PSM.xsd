@@ -627,5 +627,16 @@
 <xs:element name="ANY" type="ISO:ANY"/>
 <xs:element name="ST" type="ISO:ST"/>
 
+
+	<!-- AE Protocol Types and Elements -->
+	<xs:element name="AeTerminology" type="ESS-AE:AeTerminology"></xs:element>
+	<xs:complexType name="AeTerminology">
+		<xs:sequence>
+			<xs:element name="studyId" type="ISO:II"/>
+			<xs:element name="termCode" type="ISO:II"/>
+			<xs:element name="termVersion" type="ISO:II"/>
+			<xs:element name="meddra" type="ISO:II"/>
+		</xs:sequence>
+	</xs:complexType>
 	
 </xs:schema>
