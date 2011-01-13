@@ -87,10 +87,12 @@ public class StudyRepository {
      * @param text
      * @return
      */
+/*
     @Transactional(readOnly = false)
     public List<Study> search(StudyQuery query,String type, String text){
       return search(query, type, text);
     }
+*/
 
     /**
      * Search the study 
