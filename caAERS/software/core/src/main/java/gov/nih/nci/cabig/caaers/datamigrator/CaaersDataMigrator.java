@@ -10,7 +10,7 @@ public interface CaaersDataMigrator {
     enum MigraorType {
 
         //NOTE : Make sure we give a unique value for code.
-        USER(1),MEDICAL_DEVICE(2), RADIATION(3), SURGERY(4);
+        USER(1),MEDICAL_DEVICE(2), RADIATION(3), SURGERY(4), USER_PRIVILEGE(5);
         private Integer code;
         
         private MigraorType(Integer code){

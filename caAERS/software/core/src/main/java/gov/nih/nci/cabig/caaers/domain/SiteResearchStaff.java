@@ -24,16 +24,20 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "site_research_staffs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_site_research_staffs_id") })
-public class SiteResearchStaff extends AbstractMutableDomainObject{
+public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
 
 	private ResearchStaff researchStaff;
 	private Organization organization;
     private List<StudyPersonnel> studyPersonnels;
-    private List<SiteResearchStaffRole> siteResearchStaffRoles;
+
     private String emailAddress;
     private String phoneNumber;
     private String faxNumber; 
     private Address address;
+
+    @Deprecated
+    private List<SiteResearchStaffRole> siteResearchStaffRoles;
+    @Deprecated
     private Boolean associateAllStudies;
     
     
@@ -96,7 +100,10 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
 		siteResearchStaffRole.setSiteResearchStaff(this);
 		getSiteResearchStaffRoles().add(siteResearchStaffRole);
 	}
-    
+
+
+
+
     @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<StudyPersonnel> getStudyPersonnels() {
@@ -168,6 +175,15 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
 		this.address = address;
 	}
 
+    @Override
+    public void retire() {
+        super.retire();
+        //cascade the retrie to Study Personnels associated to this SiteResearchstaff. 
+        if(getStudyPersonnels() != null){
+            for(StudyPersonnel sp :getStudyPersonnels()) sp.retire();
+        }
+    }
+
     @Transient
     public boolean isActive() {
     	
@@ -215,6 +231,24 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
             }
         }
         return false;
+    }
+
+
+    public void sync(SiteResearchStaff srs){
+        if(srs == null){
+            retire();
+        }else{
+            setEmailAddress(srs.getEmailAddress());
+            setPhoneNumber(srs.getPhoneNumber());
+            setFaxNumber(srs.getFaxNumber());
+            if(getAddress() == null) {
+                setAddress(srs.getAddress());
+            } else {
+                getAddress().sync(srs.getAddress());
+            }
+
+        }
+
     }
     
     

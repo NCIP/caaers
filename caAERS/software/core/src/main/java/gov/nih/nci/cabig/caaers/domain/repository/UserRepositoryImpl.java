@@ -1,9 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.dao._UserDao;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
+import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.dao.UserSearchCriteria;
@@ -12,11 +18,7 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +35,8 @@ public class UserRepositoryImpl implements UserRepository {
 	private Logger logger = Logger.getLogger(UserRepositoryImpl.class);
 	private _UserDao userDao;
 	private UserProvisioningManager userProvisioningManager;
+    private ProvisioningSessionFactory provisioningSessionFactory;
+    
     private MailSender mailSender;
     private String authenticationMode;
     private MessageSource messageSource;
@@ -81,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
         }else{
             _user.setCsmUser(csmUser);
         }
-        _user.setUserGroupTypes(getUserGroups(csmUser.getUserId().toString()));
+        //TODO : MD populate role memebership
         
 		return _user;
 	}	
@@ -182,10 +186,60 @@ public class UserRepositoryImpl implements UserRepository {
     	if ("local".equals(getAuthenticationMode())) {
     		sendUserEmail(user.getCsmUser().getEmailId(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
     	}
-    }  
-    
-    
-	public void setUserDao(_UserDao userDao) {
+    }
+
+    /**
+     * Will provision in SuiteCSM all the roles. 
+     *
+     * @param user
+     */
+    public void provisionUser(_User user) {
+
+        ProvisioningSession session = provisioningSessionFactory.createSession(user.getCsmUser().getUserId());
+
+        //delete all the roles
+        for(SuiteRole suiteRole : SuiteRole.values()){
+            logger.debug("Deleting suite role " + suiteRole.name());
+            session.deleteRole(suiteRole);
+        }
+
+        //add selected roles
+        for(Map.Entry<UserGroupType , RoleMembership> membershipEntry : user.getRoleMembershipMap().entrySet()){
+            UserGroupType userRole = membershipEntry.getKey();
+            RoleMembership userMembership = membershipEntry.getValue();
+
+            //find the SuiteRoleMembership
+            SuiteRole suiteRole = SuiteRole.getByCsmName(userRole.getCsmName());
+            SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
+            if(suiteRole.isScoped()){
+
+                //add new entries
+                if(suiteRole.isStudyScoped()){
+                    //study scoped roles only can provision study information
+                    if(userMembership.isAllStudy()){
+                        suiteRoleMembership.forAllStudies();
+                    }else{
+                        suiteRoleMembership.forStudies(userMembership.getStudyIdentifiers());
+                    }
+                }
+                //both site and study scoped roles, can provision organizations information 
+                if(userMembership.isAllSite()){
+                    suiteRoleMembership.forAllSites();
+                }else{
+                    suiteRoleMembership.forSites(userMembership.getOrganizationNCICodes());
+                }
+
+            }
+
+            //replace the old role membership with new one. 
+            session.replaceRole(suiteRoleMembership);
+            logger.debug("provisioned suite role " + suiteRole.name());
+
+        }
+
+    }
+
+    public void setUserDao(_UserDao userDao) {
 		this.userDao = userDao;
 	}
 

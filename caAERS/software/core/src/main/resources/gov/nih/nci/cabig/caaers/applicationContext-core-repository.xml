@@ -126,7 +126,6 @@
     </bean>
 
 	<bean id="personRepository" class="gov.nih.nci.cabig.caaers.domain.repository.PersonRepository" lazy-init="true" autowire="byType">
-        <property name="userRepository" ref="userRepository" />
         <property name="personDao" ref="personDao" />
     </bean>
 	

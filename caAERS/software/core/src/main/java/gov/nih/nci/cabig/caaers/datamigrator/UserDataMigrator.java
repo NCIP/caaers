@@ -21,7 +21,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * This class will migrate existing users to new groups.
- * 
+ *
+ * @see gov.nih.nci.cabig.caaers.datamigrator.UserPrivilegeMigrator
  * @author Monish Dombla
  * @author Biju Joseph (Refactored - made use of template)
  *
@@ -29,7 +30,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 
-    private String authenticationMode="local";
     private UserDao userDao;
     private CaaersSecurityFacade caaersSecurityFacade;
     public static final List<String> EXISTING_GROUPS = Arrays.asList("caaers_study_cd",
@@ -59,10 +59,8 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
         //Migrate SP role codes
         migrateStudyPersonnelRole(context);
         deleteUnusedStudyPersonnel(context);
-        //Provision Instances for existing users (incase of local mode).
-        if(StringUtils.equals("local", authenticationMode)){
-           provisionExistingUsers(context);
-        }
+
+        //NOTE : - The user data provisioning is moved to another UserPrivilegeMigrator migrator. 
         
         log.debug("Migration complete");
           
@@ -537,8 +535,5 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 
-	@Required
-	public void setAuthenticationMode(String authenticationMode) {
-		this.authenticationMode = authenticationMode;
-	}
+
 }

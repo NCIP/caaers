@@ -9,31 +9,31 @@ public class LocalResearchStaff extends ResearchStaff{
    
     @Override
     public String getFirstName() {
-        return firstName;
+        return super.getFirstName();
     }
     
     @Override
     public String getMiddleName() {
-        return middleName;
+        return super.getMiddleName();
     }    
     
     @Override
     public String getLastName() {
-        return lastName;
+        return super.getLastName();
     }
     
     @Override
 	public String getEmailAddress() {
-		return emailAddress;
+		return super.getEmailAddress();
 	}
 
 	@Override
 	public String getFaxNumber() {
-		return faxNumber;
+		return super.getFaxNumber();
 	}
 
 	@Override
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return super.getPhoneNumber();
 	}
 }

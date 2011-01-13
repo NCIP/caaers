@@ -17,12 +17,12 @@ public class PersonRepository {
 	
 	private Log logger = LogFactory.getLog(PersonRepository.class);
 	private PersonDao personDao;
-	private UserRepository userRepository;
 
+    /**
+     * Will takes care of saving a person. 
+     * @param person
+     */
 	public void save(Person person){
-		if(person.getCaaersUser() != null && StringUtils.isNotEmpty(person.getCaaersUser().getLoginName())){
-			userRepository.createOrUpdateUser(person.getCaaersUser(),getChangePasswordUrl());
-		}
 		personDao.save(person);
 	}
 	
@@ -35,23 +35,9 @@ public class PersonRepository {
 		return personDao.getById(id);
 	}
 	
-	protected String getChangePasswordUrl(){
-		String caAERSBaseUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAAERS_BASE_URL);
-		if(StringUtils.isEmpty(caAERSBaseUrl)){
-			caAERSBaseUrl = "https://localhost:8443/caaers";
-			logger.debug("CAAERS_BASE_URL is not configured, hence setting it to be running on localhost");
-		}
-        StringBuilder changePasswordUrl = new StringBuilder(caAERSBaseUrl);
-        changePasswordUrl.append("/public/user/changePassword?");
-
-        return changePasswordUrl.toString();
-	}
 	
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
 	}
 
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
 }

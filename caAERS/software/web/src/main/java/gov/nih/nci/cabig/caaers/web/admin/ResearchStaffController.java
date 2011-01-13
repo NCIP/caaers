@@ -133,11 +133,13 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         }
         // STOP sync the Sites Roles
 
-        //Union of roles for csm
-        researchStaff.getUserGroupTypes().clear();
-        for (String roleCode : researchStaff.getAllRoles()) {
-        	researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
-        }
+        //BJ - To be removed and should not be used. 
+//        //Union of roles for csm
+//        researchStaff.getUserGroupTypes().clear();
+
+//        for (String roleCode : researchStaff.getAllRoles()) {
+//        	researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
+//        }
 
         String emailSendingErrorMessage = "";
         try {

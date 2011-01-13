@@ -16,4 +16,11 @@ public interface UserRepository {
 	public List searchCsmUser(String firstName,String lastName,String userName);
 	public boolean loginIDInUse(String loginId);
 	public List<UserGroupType> getUserGroups(String loginName);
+
+    /**
+     * Will provision the user. 
+     * @param user
+     */
+    public void provisionUser(_User user);
+
 }

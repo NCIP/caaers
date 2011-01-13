@@ -68,4 +68,25 @@ public class _UserTest extends TestCase {
 		assertFalse(user.getLastFailedLoginAttemptTime()==cal.getTime());
 	}
 
+    public void testSync(){
+        
+       assertNull(user.getFirstName());
+       assertNull(user.getLastName());
+       assertNull(user.getMiddleName());
+       assertTrue(user.getRoleMembershipMap().isEmpty());
+
+       _User x  = new _User();
+       x.setFirstName("x");
+       x.setLastName("y");
+       x.findRoleMembership(UserGroupType.ae_reporter).addOrganizationNCICode("xyz");
+
+       user.sync(x);
+       assertEquals("x", user.getFirstName());
+       assertEquals("y", user.getLastName());
+
+       assertTrue(user.findRoleMembership(UserGroupType.ae_reporter).getOrganizationNCICodes().contains("xyz"));
+
+
+    }
+
 }

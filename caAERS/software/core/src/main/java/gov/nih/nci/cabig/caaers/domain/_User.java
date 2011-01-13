@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +41,9 @@ public class _User extends AbstractMutableDomainObject{
 	protected int numFailedLogins;
 	protected List<String> passwordHistory;
 	protected Date lastLoginAttemptTime;
-	protected List<UserGroupType> userGroupTypes;
+
+    protected Map<UserGroupType, RoleMembership> roleMembershipMap;
+
 	protected gov.nih.nci.security.authorization.domainobjects.User csmUser;
 	
     public _User() {
@@ -50,9 +51,18 @@ public class _User extends AbstractMutableDomainObject{
     }
 
     public _User(gov.nih.nci.security.authorization.domainobjects.User csmUser){
-       userGroupTypes = new ArrayList<UserGroupType>();
        passwordHistory = new ArrayList<String>();
        this.csmUser = csmUser;
+       roleMembershipMap = new HashMap<UserGroupType, RoleMembership>();
+    }
+
+    public RoleMembership findRoleMembership(UserGroupType role){
+        RoleMembership roleMembership = roleMembershipMap.get(role);
+        if(roleMembership == null) {
+            roleMembership = new RoleMembership(role);
+            roleMembershipMap.put(role, roleMembership);
+        }
+        return roleMembership;
     }
     
     @Transient
@@ -71,16 +81,6 @@ public class _User extends AbstractMutableDomainObject{
     public long getPasswordAge() {
     	long age = (new Date().getTime() - getPasswordLastSet().getTime())/1000;    
         return age;
-    }
-    
-    public void addUserGroupType(UserGroupType userGroupType) {
-        if (!userGroupTypes.contains(userGroupType)) {
-            userGroupTypes.add(userGroupType);
-        }
-    }
-
-    public void removeUserGroupType(UserGroupType userGroupType) {
-        this.userGroupTypes.remove(userGroupType);
     }
     
     public void addPasswordToHistory(String password, int maxHistorySize) {
@@ -236,13 +236,13 @@ public class _User extends AbstractMutableDomainObject{
 
     @Transient
     public List<UserGroupType> getUserGroupTypes() {
-        return userGroupTypes;
+        ArrayList<UserGroupType> userGroupTypeList = new ArrayList<UserGroupType>();
+        if(getRoleMembershipMap().isEmpty()) return userGroupTypeList;
+        userGroupTypeList.addAll(getRoleMembershipMap().keySet());
+
+        return userGroupTypeList;
     }
 
-    public void setUserGroupTypes(List<UserGroupType> userGroupTypes) {
-        this.userGroupTypes = userGroupTypes;
-    }
-    
     @Transient
 	public gov.nih.nci.security.authorization.domainobjects.User getCsmUser() {
 		return csmUser;
@@ -252,6 +252,15 @@ public class _User extends AbstractMutableDomainObject{
 			gov.nih.nci.security.authorization.domainobjects.User csmUser) {
 		this.csmUser = csmUser;
 	}
+
+    @Transient
+    public Map<UserGroupType, RoleMembership> getRoleMembershipMap() {
+        return roleMembershipMap;
+    }
+
+    public void setRoleMembershipMap(Map<UserGroupType, RoleMembership> roleMembershipMap) {
+        this.roleMembershipMap = roleMembershipMap;
+    }
 
 
     //=== methods that are delegated to CSM User
@@ -319,11 +328,41 @@ public class _User extends AbstractMutableDomainObject{
 	public void setFaxNumber(String faxNumber) {
 		
 	}
+
+
     //==
 
+    /**
+     * Will copy the User details from the supplied User. If the input User is null, all the
+     * role memberships of this user will be removed. 
+     * @param u - User from which details to be copied. 
+     */
+    public void sync(_User u){
+        getRoleMembershipMap().clear(); //clear so that if the incoming user is NULL, this user atleast have no roles.
+        if(u == null) return;
+        
+        setFirstName(u.getFirstName());
+        setMiddleName(u.getMiddleName());
+        setLastName(u.getLastName());
+        if(u.getRoleMembershipMap() != null) getRoleMembershipMap().putAll(u.getRoleMembershipMap());
+        
+    }
 
-	
-	@Override
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString())
+           .append("\n, loginName : ").append(getLoginName())
+           .append("\n, CsmUser [").append(getCsmUser().getUserId()).append("],")
+           .append("\n RoleMemberships {");
+        for(RoleMembership roleMembership :roleMembershipMap.values()){
+            sb.append(roleMembership.toString()).append(",\n");
+        }
+        sb.append(" }");
+        return sb.toString();
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();

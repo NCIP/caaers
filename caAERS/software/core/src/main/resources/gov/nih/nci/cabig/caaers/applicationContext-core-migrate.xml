@@ -20,7 +20,6 @@
         </property>
         <property name="userDao" ref="userDao"/>
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
-        <property name="authenticationMode" ref="authenticationMode"/>
     </bean>
 
  	<bean id="userDataMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
@@ -32,6 +31,26 @@
 			</list>
 		</property>
 	</bean>
+
+
+    <bean id="userPrivilegeMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.UserPrivilegeMigrator">
+		<property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="userRepository" ref="userRepository" />
+        <property name="authenticationMode" ref="authenticationMode" />
+    </bean>
+
+ 	<bean id="userPrivilegeMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="userPrivilegeMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
 
 
     <bean id="medicalDeviceMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.MedicalDeviceDataMigrator">
@@ -97,6 +116,7 @@
                 <ref bean="medicalDeviceDataMigrator"/>
                 <ref bean="radiationDataMigrator"/>
                 <ref bean="surgeryDataMigrator"/>
+                <ref bean="userPrivilegeMigrator" />
 
 			</list>
 		</property>

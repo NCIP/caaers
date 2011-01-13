@@ -66,4 +66,25 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public void clear(){
+        setCountry(null);
+        setZip(null);
+        setState(null);
+        setCity(null);
+        setStreet(null);
+
+    }
+
+    public void sync(Address a){
+        if(a == null){
+            clear();
+            return;
+        }
+        setCountry(a.getCountry());
+        setZip(a.getZip());
+        setState(a.getState());
+        setCity(a.getCity());
+        setStreet(a.getStreet());
+    }
 }

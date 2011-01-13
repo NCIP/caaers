@@ -1,17 +1,11 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
@@ -23,52 +17,31 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService", serviceName="ResearchStaffMigratorService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
-public class DefaultResearchStaffMigratorService extends DefaultMigratorService implements
-		ResearchStaffMigratorService,ApplicationContextAware {
+public class DefaultResearchStaffMigratorService extends DefaultMigratorService implements ResearchStaffMigratorService {
 	
 	private static final Log logger = LogFactory.getLog(DefaultResearchStaffMigratorService.class);
-	private ResearchStaffDao researchStaffDao;
-	private ApplicationContext applicationContext;
-	protected ResearchStaffRepository researchStaffRepository;
+    protected PersonRepository personRepository;
+    protected UserRepository userRepository;
 	
 	/**
      * Fetches the research staff from the DB
-     * 
-     * @param nciCode
      * @return
      */
-    ResearchStaff fetchResearchStaff(String loginId) {//String nciIdentifier) {
-    	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-        if (StringUtils.isNotEmpty(loginId)) {
-        	rsQuery.filterByExactLoginId(loginId);
-        	//rsQuery.filterByEmailAddress(email);
-        }
-        List<ResearchStaff> rsList = researchStaffRepository.searchResearchStaff(rsQuery);
-        
-        if (rsList == null || rsList.isEmpty()) {
-            return null;
-        }
-        return rsList.get(0);
+    ResearchStaff fetchResearchStaff(String loginId) {
+        Person p = personRepository.getByLoginId(loginId);
+        if(p instanceof ResearchStaff) return (ResearchStaff) p;
+        throw new CaaersSystemException("Login Id/e-mail address is already associated to an Investigator");
     }
     
     
@@ -86,11 +59,10 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             }
             dbResearchStaff = fetchResearchStaff(loginId);
 			if(dbResearchStaff == null){
-    			validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,null,false);
     			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
 			}else{
-				validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,null,true);
-				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
+				syncPersonDetails(dbResearchStaff, xmlResearchStaff);
+                syncUserDetails(dbResearchStaff, xmlResearchStaff);
     			researchStaffImportOutcome.setImportedDomainObject(dbResearchStaff);
 			}
 		} catch (CaaersSystemException e) {
@@ -146,14 +118,13 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                 }
                 dbResearchStaff = fetchResearchStaff(loginId);
     			if(dbResearchStaff == null){
-    				validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,wsErrors,false);
     				if(wsErrors.size() == 0){
     					saveResearchStaff(xmlResearchStaff);
     				}
     			}else{
-    				validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,wsErrors,true);
     				if(wsErrors.size() == 0){
-        				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
+                        syncPersonDetails(dbResearchStaff, xmlResearchStaff);
+                        syncUserDetails(dbResearchStaff, xmlResearchStaff);
         				saveResearchStaff(dbResearchStaff);
     				}
     			}
@@ -179,26 +150,37 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     	caaersServiceResponse.setServiceResponse(serviceResponse);
     	return caaersServiceResponse;
     }
-    
-    public ResearchStaff buildResearchStaff(ResearchStaffType researchStaffDto) throws CaaersSystemException {
+
+    /**
+     * Will use the email address as the loginId if loginId is empty. 
+     * @param researchStaffDto
+     * @return
+     * @throws CaaersSystemException
+     */
+    private ResearchStaff buildResearchStaff(ResearchStaffType researchStaffDto) throws CaaersSystemException {
     	  try {
               logger.info("Begining of ResearchStaffMigrator : buildResearchStaff");
                
-              String nciIdentifier = researchStaffDto.getNciIdentifier();
-              String email = researchStaffDto.getEmailAddress();
               String loginId = researchStaffDto.getLoginId();
               if (StringUtils.isEmpty(loginId)) {
-            	  loginId = email;
+            	  loginId = researchStaffDto.getEmailAddress();
               }
+              //populate the user details
+                final _User user = new _User();
+                user.setLoginName(loginId);
+                user.setFirstName(researchStaffDto.getFirstName());
+                user.setLastName(researchStaffDto.getLastName());
+                user.setMiddleName(researchStaffDto.getMiddleName());
+                user.setPhoneNumber(researchStaffDto.getPhoneNumber());
+                user.setFaxNumber(researchStaffDto.getFaxNumber());
+                user.setEmailAddress(researchStaffDto.getEmailAddress());
               
-              	ResearchStaff researchStaff = new LocalResearchStaff();
+              	final ResearchStaff researchStaff = new LocalResearchStaff();
+                researchStaff.setCaaersUser(user);
+
+                researchStaff.setCaaersUser(user);
               	researchStaff.setAddress(new Address());
-              	researchStaff.setNciIdentifier(nciIdentifier); 
-              	if (StringUtils.isEmpty(loginId)) {
-              		researchStaff.setLoginId(researchStaffDto.getEmailAddress());
-              	} else {
-              		researchStaff.setLoginId(loginId);
-              	} 
+              	researchStaff.setNciIdentifier(researchStaffDto.getNciIdentifier());
                 researchStaff.setFirstName(researchStaffDto.getFirstName());
                 researchStaff.setLastName(researchStaffDto.getLastName());
                 researchStaff.setMiddleName(researchStaffDto.getMiddleName());              
@@ -216,7 +198,6 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                 
                 List<SiteResearchStaffType> siteRsTypeList= researchStaffDto.getSiteResearchStaffs().getSiteResearchStaff();
                 Address siteResearchStaffAddress = null;
-                SiteResearchStaffRole siteResearchStaffRole = null;
                 List<SiteResearchStaffRoleType> srsRoleTypes = null;
                 for (SiteResearchStaffType siteResearchStaffType : siteRsTypeList) {
 	              	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
@@ -234,27 +215,21 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	              	siteResearchStaff.setAddress(siteResearchStaffAddress);
 	                	
 	              	Organization org = fetchOrganization(siteResearchStaffType.getOrganizationRef().getNciInstituteCode());
-	                	
-	              	srsRoleTypes = 	siteResearchStaffType.getSiteResearchStaffRoles().getSiteResearchStaffRole();
-	              	for(SiteResearchStaffRoleType srsRoleType : srsRoleTypes){
-	              		siteResearchStaffRole = new SiteResearchStaffRole();
-	              		siteResearchStaffRole.setRoleCode(srsRoleType.getRole().value());
-	              		siteResearchStaffRole.setStartDate(srsRoleType.getStartDate().toGregorianCalendar().getTime());
-	              		if(srsRoleType.getEndDate() != null){
-	              			siteResearchStaffRole.setEndDate(srsRoleType.getEndDate().toGregorianCalendar().getTime());
-	              		}
-	              		siteResearchStaffRole.setSiteResearchStaff(siteResearchStaff);
-	              		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
-	              	}
-	                	siteResearchStaff.setOrganization(org);
-	                	siteResearchStaff.setResearchStaff(researchStaff);
-	                	researchStaff.addSiteResearchStaff(siteResearchStaff);
+	                siteResearchStaff.setOrganization(org);
+	                siteResearchStaff.setResearchStaff(researchStaff);
+	                researchStaff.addSiteResearchStaff(siteResearchStaff);
+
+                    srsRoleTypes = 	siteResearchStaffType.getSiteResearchStaffRoles().getSiteResearchStaffRole();
+	                for(SiteResearchStaffRoleType roleType : srsRoleTypes){
+                       UserGroupType role = UserGroupType.valueOf(roleType.getRole().value());
+                       RoleMembership roleMembership = user.findRoleMembership(role);
+                       roleMembership.addOrganizationNCICode(org.getNciInstituteCode());
+                       roleMembership.setAllStudy(siteResearchStaffType.isAssociateAllStudies());
+                    }
+
+
                 }              	
               
-              researchStaff.getUserGroupTypes().clear();
-              for (String roleCode : researchStaff.getAllRoles()) {
-            	  researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
-              }
               
               return researchStaff;
 
@@ -264,21 +239,31 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
           }	  	
     	
     }
-	public void saveResearchStaff(ResearchStaff researchStaff) throws CaaersSystemException {
+
+    //will synchronize the DB fetched ResearchStaff with the XML supplied researchstaff
+    private void syncPersonDetails(ResearchStaff dbRS, ResearchStaff xmlRS){
+        dbRS.sync(xmlRS);
+
+    }
+
+    //will synchronize the user dtails of the DB fetched ResearchStaff with XML fetched ResearchStaff
+    private void syncUserDetails(ResearchStaff dbRS, ResearchStaff xmlRS){
+        if(dbRS.getCaaersUser() == null){
+            dbRS.setCaaersUser(xmlRS.getCaaersUser());
+        }else{
+            dbRS.getCaaersUser().sync(xmlRS.getCaaersUser());
+        }
+    }
+
+    //will save and provision the user details and save the person details.  
+	private void saveResearchStaff(ResearchStaff researchStaff) throws CaaersSystemException {
 
         try {
-            logger.info("Begining of ResearchStaffMigrator : saveResearchStaff");             
-            
-            String caAERSBaseUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAAERS_BASE_URL);
-            StringBuilder changePasswordUrl = new StringBuilder();
-            if(StringUtils.isNotEmpty(caAERSBaseUrl)){
-                changePasswordUrl.append(caAERSBaseUrl);
-                changePasswordUrl.append("/public/user/changePassword?");
-            }else{
-            	logger.info("caAERS base URL is not set");
-            }
-            //save 
-            researchStaffRepository.save(researchStaff,changePasswordUrl.toString());
+            logger.info("Begining of ResearchStaffMigrator : saveResearchStaff");
+            userRepository.createOrUpdateUser(researchStaff.getCaaersUser(), getChangePasswordUrl());
+            userRepository.provisionUser(researchStaff.getCaaersUser());
+            personRepository.save(researchStaff);
+
             logger.info("Created the research staff :" + researchStaff.getId());
             logger.info("End of ResearchStaffMigrator : saveResearchStaff");
 
@@ -288,140 +273,36 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         }	
         
 	}
-	
-	/**
-	 * 
-	 * @param xmlResearchStaff
-	 * @param dbResearchStaff
-	 */
-	private void syncResearchStaff(ResearchStaff xmlResearchStaff, ResearchStaff dbResearchStaff){
-		
-		//do the basic property sync
-		dbResearchStaff.setFirstName(xmlResearchStaff.getFirstName());
-		dbResearchStaff.setMiddleName(xmlResearchStaff.getMiddleName());
-		dbResearchStaff.setLastName(xmlResearchStaff.getLastName());
-		dbResearchStaff.setEmailAddress(xmlResearchStaff.getEmailAddress());
-		dbResearchStaff.setPhoneNumber(xmlResearchStaff.getPhoneNumber());
-		dbResearchStaff.setFaxNumber(xmlResearchStaff.getFaxNumber());
-		dbResearchStaff.getAddress().setStreet(xmlResearchStaff.getAddress().getStreet());
-		dbResearchStaff.getAddress().setCity(xmlResearchStaff.getAddress().getCity());
-		dbResearchStaff.getAddress().setState(xmlResearchStaff.getAddress().getState());
-		dbResearchStaff.getAddress().setZip(xmlResearchStaff.getAddress().getZip());
-		dbResearchStaff.getAddress().setCountry(xmlResearchStaff.getAddress().getCountry());
-		//do the site research staff sync
-		if(CollectionUtils.isEmpty(xmlResearchStaff.getSiteResearchStaffs())) return;  //nothing provided in xml input
-		List<SiteResearchStaff> existingSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
-		List<SiteResearchStaff> newSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
-		for(SiteResearchStaff xmlSiteResearchStaff : xmlResearchStaff.getSiteResearchStaffs()){
-			SiteResearchStaff existing = dbResearchStaff.findSiteResearchStaff(xmlSiteResearchStaff);
-			if(existing != null){
-				existing.setAssociateAllStudies(xmlSiteResearchStaff.getAssociateAllStudies());
-				existing.setPhoneNumber(xmlSiteResearchStaff.getPhoneNumber());
-				existing.setFaxNumber(xmlSiteResearchStaff.getFaxNumber());
-				if(xmlSiteResearchStaff.getAddress() != null){
-					existing.getAddress().setCity(xmlSiteResearchStaff.getAddress().getCity());
-					existing.getAddress().setStreet(xmlSiteResearchStaff.getAddress().getStreet());
-					existing.getAddress().setState(xmlSiteResearchStaff.getAddress().getState());
-					existing.getAddress().setZip(xmlSiteResearchStaff.getAddress().getZip());
-					existing.getAddress().setCountry(xmlSiteResearchStaff.getAddress().getCountry());
-				}
-				//sync the roles
-				List<SiteResearchStaffRole> existingRoles = new ArrayList<SiteResearchStaffRole>();
-				List<SiteResearchStaffRole> newRoles = new ArrayList<SiteResearchStaffRole>();
-				if(CollectionUtils.isNotEmpty(xmlSiteResearchStaff.getSiteResearchStaffRoles())){
-					for(SiteResearchStaffRole xmlRole : xmlSiteResearchStaff.getSiteResearchStaffRoles()){
-						SiteResearchStaffRole existingRole = existing.findSiteResearchStaffRole(xmlRole);
-						if(existingRole != null){
-							existingRole.setStartDate(xmlRole.getStartDate());
-							existingRole.setEndDate(xmlRole.getEndDate());
-							existingRoles.add(existingRole);
-						}else{
-							xmlRole.setSiteResearchStaff(existing);
-							newRoles.add(xmlRole);
-						}
-					}
-					
-					//add new roles
-					existing.getSiteResearchStaffRoles().addAll(newRoles);
-					existingSiteResearchStaffs.add(existing);
-				}
-				
-			}else {
-				newSiteResearchStaffs.add(xmlSiteResearchStaff);
-			}
+
+
+    private String getChangePasswordUrl(){
+		String caAERSBaseUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAAERS_BASE_URL);
+		if(StringUtils.isEmpty(caAERSBaseUrl)){
+			caAERSBaseUrl = "https://localhost:8443/caaers";
+			logger.debug("CAAERS_BASE_URL is not configured, hence setting it to be running on localhost");
 		}
-		//add the items in new
-		for(SiteResearchStaff sRs : newSiteResearchStaffs){
-			dbResearchStaff.addSiteResearchStaff(sRs);
-		}
+        StringBuilder changePasswordUrl = new StringBuilder(caAERSBaseUrl);
+        changePasswordUrl.append("/public/user/changePassword?");
+
+        return changePasswordUrl.toString();
 	}
-	
-	
-	private void validateResearchStaff(ResearchStaff researchStaff ,DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome, List<WsError> wsErrors,boolean isExisting) throws CaaersSystemException{
-		Date now = new Date();
-		WsError err = null;
-        List<SiteResearchStaff> siteResearchStaffs = researchStaff.getSiteResearchStaffs();
-        for(SiteResearchStaff siteResearchStaff : siteResearchStaffs){
-        	for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
-                
-        		if(siteResearchStaff.getId() == null & !isExisting){
-                	//startdate cannot be less than today's date
-                    if(siteResearchStaffRole.getStartDate() != null){
-                    	if(DateUtils.compareDate(siteResearchStaffRole.getStartDate(),now) < 0){
-                    		researchStaffImportOutcome.addErrorMessage("Start date cannot be before today's date for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode(), Severity.ERROR);
-                    		if(wsErrors != null){
-                    			err = new WsError();
-                    			err.setErrorDesc("Start date cannot be before today's date for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode());
-                    			wsErrors.add(err);
-                    		}
-                    	}
-                    }
-                }
-                
-                if(siteResearchStaffRole.getEndDate() != null){
-                	if(DateUtils.compareDate(siteResearchStaffRole.getEndDate(),now) < 0){
-                		researchStaffImportOutcome.addErrorMessage("End date cannot be before today's date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode(), Severity.ERROR);
-                		if(wsErrors != null){
-                			err = new WsError();
-                			err.setErrorDesc("End date cannot be before today's date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode());
-                			wsErrors.add(err);
-                		}
-                    }
-                }
-                if(siteResearchStaffRole.getStartDate() != null && siteResearchStaffRole.getEndDate() != null){
-                	if(DateUtils.compareDate(siteResearchStaffRole.getEndDate(), siteResearchStaffRole.getStartDate()) < 0){
-                		researchStaffImportOutcome.addErrorMessage("End date cannot be before Start date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode(), Severity.ERROR);
-                		if(wsErrors != null){
-                			err = new WsError();
-                			err.setErrorDesc("End date cannot be before Start date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode());
-                			wsErrors.add(err);
-                		}
-                	}
-                }
-        	}
-        }
-	}
-	
+
 	
 	//CONFIGURATION
 
-    @Required
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
-	}
+    public PersonRepository getPersonRepository() {
+        return personRepository;
+    }
 
-    @Required
-	public ResearchStaffDao getResearchStaffDao() {
-		return researchStaffDao;
-	}
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-		
-	}
-	public void setResearchStaffRepository(
-			ResearchStaffRepository researchStaffRepository) {
-		this.researchStaffRepository = researchStaffRepository;
-	}
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 }

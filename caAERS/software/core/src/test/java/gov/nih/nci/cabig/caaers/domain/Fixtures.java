@@ -323,10 +323,7 @@ public class Fixtures {
         researchStaff.setEmailAddress(name + "@def.com");
         researchStaff.setPhoneNumber("123-5-789");
         researchStaff.setNciIdentifier("nci id");
-        
-        for (UserGroupType userGroupType : userGroupTypes) {
-            researchStaff.addUserGroupType(userGroupType);
-        }
+
         SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
         siteResearchStaff.setAddress(new Address());
         siteResearchStaff.setOrganization(organization);
@@ -778,8 +775,7 @@ public class Fixtures {
 
   public static _User createUser(String loginId, String name){
      _User u = new _User();
-     gov.nih.nci.security.authorization.domainobjects.User csmUser = new  gov.nih.nci.security.authorization.domainobjects.User();
-     csmUser.setFirstName(name);
+     u.setFirstName(name);
      u.setLoginName(loginId);
      return u;
   }

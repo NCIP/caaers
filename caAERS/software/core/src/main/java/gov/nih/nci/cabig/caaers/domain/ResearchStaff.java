@@ -24,6 +24,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections15.Closure;
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Factory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -71,10 +73,6 @@ public abstract class ResearchStaff extends User {
 		return caaersUser;
 	}
 
-	@Transient
-	public boolean isAssociatedToUserGroup(UserGroupType groupType) {
-		return getUserGroupTypes().contains(groupType);
-	}
 
 	public boolean equals(Object o) {
 		if (this == o)
@@ -277,7 +275,37 @@ public abstract class ResearchStaff extends User {
         }
 
         return srsList;
-       
+
+    }
+
+
+    /**
+     * Will copy into this Person, the details from the input Person
+     *
+     * @param rs - The Person from which the details to be copied from.
+     */
+    public void sync(final ResearchStaff rs) {
+        super.sync(rs);
+        setNciIdentifier(rs.getNciIdentifier());
+        if (getAddress() != null) {
+            getAddress().sync(rs.getAddress());
+        } else {
+            setAddress(rs.getAddress());
+        }
+
+        //sync the site researchstaffs
+        CollectionUtils.forAllDo(getSiteResearchStaffs(), new Closure<SiteResearchStaff>() {
+            public void execute(SiteResearchStaff srs) {
+                SiteResearchStaff otherSRS = rs.findSiteResearchStaff(srs);
+                srs.sync(otherSRS);
+            }
+        });
+
+        //add new site researchstaff if needed
+        for (SiteResearchStaff srs : rs.getSiteResearchStaffs()) {
+            SiteResearchStaff availableSRS = findSiteResearchStaff(srs);
+            if (availableSRS == null) addSiteResearchStaff(srs);
+        }
     }
 
 
@@ -296,5 +324,5 @@ public abstract class ResearchStaff extends User {
 			return siteResearchStaff;
 		}
 	}
-    
+
 }

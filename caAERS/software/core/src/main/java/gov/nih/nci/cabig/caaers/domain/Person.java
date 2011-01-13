@@ -74,20 +74,6 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
 		return getFullName().compareTo(person.getFullName());
 	}	
 	
-	@Transient
-	public List<UserGroupType> getUserGroupTypes() {
-		if(getCaaersUser() != null){
-			return getCaaersUser().getUserGroupTypes();
-		}
-	    return null;
-	}
-	
-	public void addUserGroupType(UserGroupType userGroupType) {
-		if(getCaaersUser() != null){
-			getCaaersUser().addUserGroupType(userGroupType);
-		}
-	}	
-	
 	
     @Transient
     public String getFirstName() {
@@ -167,5 +153,26 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
     @Transient
     public boolean isUser(){
         return getCaaersUser() != null;
+    }
+
+    /**
+     * Will copy into this Person, the details from the input Person
+     * @param p - The Person from which the details to be copied from.
+     */
+    public <P extends Person> void sync(P p){
+        setTitle(p.getTitle());
+        setFirstName(p.getFirstName());
+        setMiddleName(p.getMiddleName());
+        setLastName(p.getLastName());
+        setEmailAddress(p.getEmailAddress());
+        setPhoneNumber(p.getPhoneNumber());
+        setFaxNumber(p.getFaxNumber());
+        
+        if(getCaaersUser() == null){
+            setCaaersUser(p.getCaaersUser());
+        }else{
+            getCaaersUser().sync(p.getCaaersUser());
+        }
+
     }
 }
