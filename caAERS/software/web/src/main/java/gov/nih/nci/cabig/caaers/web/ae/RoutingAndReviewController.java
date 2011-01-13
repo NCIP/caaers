@@ -79,8 +79,7 @@ public class RoutingAndReviewController extends SimpleFormController{
     }
     
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerGridDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "organization", organizationDao);

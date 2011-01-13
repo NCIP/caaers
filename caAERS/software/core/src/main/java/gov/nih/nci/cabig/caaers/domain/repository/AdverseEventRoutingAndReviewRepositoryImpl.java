@@ -44,7 +44,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	private ReportValidationService reportValidationService;
 	private ReportDao reportDao;
-	
+
 	private WorkflowService workflowService;
 	
 	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office Report Reviewer";
@@ -509,9 +509,12 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
                 dto.setStudyShortTitle(s.getShortTitle());
                 dto.setSubjectFullName(p.getFullName());
-                dto.setMessage(task.getDescription() != null ? task.getDescription() : task.getName());
+                dto.setTask(task.getName());
+                dto.setDescription(task.getDescription());
                 dto.setDate(task.getCreate());
-
+                dto.setStatus(reportingPeriod.getReviewStatus().getDisplayName());
+                dto.setReportingPeriodId(reportingPeriod.getId());
+                // dto.setPossibleActions(this.nextTransitionNames(reportingPeriod.getWorkflowId(), userLogin));
                 dtos.add(dto);
             }
 

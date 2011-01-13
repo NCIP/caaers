@@ -22,16 +22,13 @@ public class AEReporterDashboardController extends DashboardController {
     
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String loginId = SecurityUtils.getUserLoginName();
-
-        List<ReportVersion> l1 = reportVersionRepository.getPastDue();
         List<ReportVersion> l2 = reportVersionRepository.getReportActivity();
         ModelAndView mv = new ModelAndView("dashboard/dashboard_AEReporter");
-        mv.addObject("pastDueReports", l1);
         mv.addObject("reportActivity", l2);
 
         List<TaskNotificationDTO> l3 = rrRepositry.getTaskNotificationByUserLogin(loginId);
         for (TaskNotificationDTO dto : l3) {
-            dto.setMessage(dto.getMessage().replaceAll("(http(s)?://(.)*?)[\\s]", "<a href='$1' class='linkHere' target='_blank'>here</a> "));
+            dto.setDescription(dto.getDescription().replaceAll("(http(s)?://(.)*?)[\\s]", "<a href='$1' class='linkHere' target='_blank'>here</a> "));
         }
         mv.addObject("taskNotifications", l3);
         

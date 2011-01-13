@@ -25,10 +25,7 @@
 	<td width="22%">${reportingPeriod.evaluationPeriodTypeName}</td>
 	<c:if test="${reportingPeriod.workflowId != null}">
 	<td width="25%" id="reportingPeriod-${reportingPeriod.id}-status">${reportingPeriod.reviewStatus.displayName}</td>
-	<td>
-		<a href="#" onClick="displayPopup('reportingPeriod', ${reportingPeriod.id})">
-			<img src="<chrome:imageUrl name="../edit.png" />" /></td>
-		</a>
+	<td><a href="#" onClick="displayPopup('reportingPeriod', ${reportingPeriod.id})"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
 	<td width="25%">
 		<select onChange="advanceWorkflow(this,${reportingPeriod.workflowId }, ${reportingPeriod.id }, 'reportingPeriod')" class="wf${reportingPeriod.workflowId }" style="width: 150px">
 			<option value="Please Select">Please select</option>
