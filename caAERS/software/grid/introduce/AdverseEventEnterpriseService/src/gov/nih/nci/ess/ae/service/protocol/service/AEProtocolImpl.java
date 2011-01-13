@@ -42,5 +42,10 @@ public class AEProtocolImpl extends AEProtocolImplBase {
     aeProtocolI.updateCodingTerminologyForStudy(aeTerminology);
   }
 
+  public ess.caaers.nci.nih.gov.AeTerminology getCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+	initialize();
+    return aeProtocolI.getCodingTerminologyForStudy(studyId);
+  }
+
 }
 

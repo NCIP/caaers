@@ -76,6 +76,18 @@ public class AEProtocolClient extends AEProtocolClientBase implements AEProtocol
 		}
 	}
 
+  public ess.caaers.nci.nih.gov.AeTerminology getCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getCodingTerminologyForStudy");
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyRequest();
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyRequestStudyId studyIdContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyResponse boxedResult = portType.getCodingTerminologyForStudy(params);
+    return boxedResult.getAeTerminology();
+    }
+  }
+
   public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"updateCodingTerminologyForStudy");

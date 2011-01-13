@@ -233,4 +233,16 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 		this.meddraVersionDao = meddraVersionDao;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.ess.ae.service.protocol.common.AEProtocolI#getCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id)
+	 */
+	public AeTerminology getCodingTerminologyForStudy(Id studyId)
+			throws RemoteException,
+			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+		Study study = getStudyByPrimaryId(studyId);
+		final AeTerminology gridTerm = domainToGridConverter.convert(study.getAeTerminology());
+		gridTerm.setStudyId(studyId);
+		return gridTerm;
+	}
+
 }

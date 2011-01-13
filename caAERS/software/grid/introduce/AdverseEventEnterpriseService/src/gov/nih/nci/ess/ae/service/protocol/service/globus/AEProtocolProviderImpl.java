@@ -26,6 +26,12 @@ public class AEProtocolProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyResponse getCodingTerminologyForStudy(gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.GetCodingTerminologyForStudyResponse();
+    boxedResult.setAeTerminology(impl.getCodingTerminologyForStudy(params.getStudyId().getId()));
+    return boxedResult;
+  }
+
     public gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse updateCodingTerminologyForStudy(gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse();
     impl.updateCodingTerminologyForStudy(params.getAeTerminology().getAeTerminology());

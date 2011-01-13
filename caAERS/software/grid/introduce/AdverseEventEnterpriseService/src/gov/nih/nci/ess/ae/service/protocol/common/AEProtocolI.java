@@ -13,6 +13,15 @@ import java.rmi.RemoteException;
 public interface AEProtocolI {
 
   /**
+   * Retrieves the terminology system used for encoding adverse events on a study.
+   *
+   * @param studyId
+   * @throws AdverseEventServiceException
+   *	
+   */
+  public ess.caaers.nci.nih.gov.AeTerminology getCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+
+  /**
    * Updates the terminology system to be used for encoding adverse events on a study.
    *
    * @param aeTerminology

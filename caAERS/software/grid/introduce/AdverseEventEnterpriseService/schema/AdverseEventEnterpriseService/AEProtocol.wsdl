@@ -42,6 +42,26 @@
           <sequence />
         </complexType>
       </element>
+      <element name="GetCodingTerminologyForStudyRequest">
+        <complexType>
+          <sequence>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetCodingTerminologyForStudyResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:AeTerminology" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="AEProtocolResourceProperties">
         <complexType>
           <sequence />
@@ -56,6 +76,12 @@
   <message name="UpdateCodingTerminologyForStudyResponse">
     <part name="parameters" element="tns:UpdateCodingTerminologyForStudyResponse" />
   </message>
+  <message name="GetCodingTerminologyForStudyRequest">
+    <part name="parameters" element="tns:GetCodingTerminologyForStudyRequest" />
+  </message>
+  <message name="GetCodingTerminologyForStudyResponse">
+    <part name="parameters" element="tns:GetCodingTerminologyForStudyResponse" />
+  </message>
   <message name="AdverseEventServiceExceptionFaultMessage">
     <part name="fault" element="ns7:AdverseEventServiceException" />
   </message>
@@ -68,6 +94,11 @@
     <operation name="updateCodingTerminologyForStudy">
       <input message="tns:UpdateCodingTerminologyForStudyRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/UpdateCodingTerminologyForStudyRequest" />
       <output message="tns:UpdateCodingTerminologyForStudyResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/UpdateCodingTerminologyForStudyResponse" />
+      <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/AdverseEventServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="getCodingTerminologyForStudy">
+      <input message="tns:GetCodingTerminologyForStudyRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/GetCodingTerminologyForStudyRequest" />
+      <output message="tns:GetCodingTerminologyForStudyResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/GetCodingTerminologyForStudyResponse" />
       <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/AdverseEventServiceExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">

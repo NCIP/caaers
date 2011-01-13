@@ -2,6 +2,7 @@ package gov.nih.nci.ess.ae;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventSeriousness;
+import ess.caaers.nci.nih.gov.AeTerminology;
 import ess.caaers.nci.nih.gov.AuditTrail;
 import ess.caaers.nci.nih.gov.AuditTrailValue;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -218,8 +219,23 @@ public class DomainToGridObjectConverter {
 		AuditTrailValue v = new AuditTrailValue();
 		v.setAttributeName(h.ST(detail.getAttributeName()));
 		v.setPreviousValue(h.ST(detail.getPreviousValue()));
-		v.setNewValue(h.ST(detail.getCurrentValue()));		
+		v.setNewValue(h.ST(detail.getCurrentValue()));
 		return v;
+	}
+
+	public AeTerminology convert(
+			gov.nih.nci.cabig.caaers.domain.AeTerminology aeTerminology) {
+		AeTerminology gridTerm = new AeTerminology();
+		if (aeTerminology.getTerm() != null) {
+			gridTerm.setTermCode(h.II(aeTerminology.getTerm().name()));
+		}
+		if (aeTerminology.getCtcVersion()!=null) {
+			gridTerm.setTermVersion(h.II(aeTerminology.getCtcVersion().getName()));
+		}
+		if (aeTerminology.getMeddraVersion()!=null) {
+			gridTerm.setMeddra(h.II(aeTerminology.getMeddraVersion().getName()));
+		}		
+		return gridTerm;
 	}
 
 }
