@@ -64,6 +64,10 @@ public class _User extends AbstractMutableDomainObject{
         }
         return roleMembership;
     }
+
+    public void removeRoleMembership(UserGroupType role){
+        roleMembershipMap.remove(role);
+    }
     
     @Transient
     public void unlock() {
