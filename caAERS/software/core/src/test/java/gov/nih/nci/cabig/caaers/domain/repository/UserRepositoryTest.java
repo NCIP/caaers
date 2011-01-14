@@ -28,67 +28,8 @@ public class UserRepositoryTest extends AbstractTestCase {
     	repository.setUserProvisioningManager(userProvisioningManager);
     }
     
-    public void testGetUserByLoginName_UserExists() throws Exception{
-    	String userId = "100";
-    	String loginName = "monishd";
-    	_User _user = new _User();
-    	_user.setLoginName("monishd");
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
-    	csmUser.setUserId(new Long(userId));
-    	csmUser.setLoginName(loginName);
-    	
-    	Set<Group> groups;
-        Group group = new Group();
-        group.setGroupId(-2L);
-        group.setGroupName("data_analyst");
-        groups = new HashSet<Group>();
-        groups.add(group);
-    	
-    	expect(userDao.getByLoginName(loginName)).andReturn(_user).anyTimes();
-    	expect(userProvisioningManager.getUser(loginName)).andReturn(csmUser).anyTimes();
-    	expect(userProvisioningManager.getGroups(userId)).andReturn(groups).anyTimes();
-    	replayMocks();
-    	_user = repository.getUserByLoginName(loginName);
-    	verifyMocks();
-    	assertNotNull(_user);
-    	assertEquals("monishd",_user.getLoginName());
-    	assertNotNull(_user.getCsmUser());
-    	assertEquals("100", _user.getCsmUser().getUserId().toString());
-    	assertNotNull(_user.getUserGroupTypes());
-    	assertEquals(1,_user.getUserGroupTypes().size());
-    	assertEquals("data_analyst",_user.getUserGroupTypes().get(0).getCsmName());
-    }
-    
-    
-    public void testGetUserByLoginName_UserDoesNotExist() throws Exception{
-    	String userId = "100";
-    	String loginName = "monishd";
-    	_User _user = null;
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
-    	csmUser.setUserId(new Long(userId));
-    	csmUser.setLoginName(loginName);
-    	
-    	Set<Group> groups;
-        Group group = new Group();
-        group.setGroupId(-2L);
-        group.setGroupName("data_analyst");
-        groups = new HashSet<Group>();
-        groups.add(group);
-    	
-    	expect(userDao.getByLoginName(loginName)).andReturn(_user).anyTimes();
-    	expect(userProvisioningManager.getUser(loginName)).andReturn(csmUser).anyTimes();
-    	expect(userProvisioningManager.getGroups(userId)).andReturn(groups).anyTimes();
-    	replayMocks();
-    	_user = repository.getUserByLoginName(loginName);
-    	verifyMocks();
-    	assertNotNull(_user);
-    	assertNotNull(_user.getCsmUser());
-    	assertEquals("100", _user.getCsmUser().getUserId().toString());
-    	assertNotNull(_user.getUserGroupTypes());
-    	assertEquals(1,_user.getUserGroupTypes().size());
-    	assertEquals("data_analyst",_user.getUserGroupTypes().get(0).getCsmName());
-    }
-    
+
+
     public void testGetUserByLoginName_caAERSAndCSMUserDoesNotExist() throws Exception{
     	String loginName = "monishd";
     	_User _user = null;
