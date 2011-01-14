@@ -520,6 +520,11 @@ public class StudyRepository {
     	}
     	
     }
+    
+    public List<Study> getAllStudies() {
+        StudyQuery q = new StudyQuery();
+        return this.search(q, "", "", false);
+    }
 
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;

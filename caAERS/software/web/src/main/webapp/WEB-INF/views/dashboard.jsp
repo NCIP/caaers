@@ -4,6 +4,7 @@
 <tr>
     <td valign="top">
         <jsp:include page="/pages/dashboard/aeReporter" />
+        <jsp:include page="/pages/dashboard/study" />
     </td>
     <td valign="top">
         <%@include file="/WEB-INF/views/dashboard/dashboardTasks.jsp"%>

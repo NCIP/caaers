@@ -594,6 +594,8 @@
 
     <!-- DASHBOARD CONTROLLERS -->
     <bean name="/dashboard/aeReporter" id="aeReporterDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.AEReporterDashboardController" autowire="byType" />
+     <bean name="/dashboard/study" id="studyDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.StudyDashboardController" autowire="byType" />
+    
     <!-- DASHBOARD CONTROLLERS -->
 
 	<bean name="/admin/createUser" id="createUserController" class="gov.nih.nci.cabig.caaers.web.admin.CreateUserController" autowire="byType">
