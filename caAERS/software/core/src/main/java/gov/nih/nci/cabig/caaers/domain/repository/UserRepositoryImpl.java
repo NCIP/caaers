@@ -70,7 +70,12 @@ public class UserRepositoryImpl implements UserRepository {
 			sendUpdateAccountEmail(user);
 		}
 	}
-	
+
+    /**
+     * Will fetch the user from the DB, along with the CSM related information properly populated. 
+     * @param loginName
+     * @return
+     */
     @Transactional(readOnly = true)
 	public _User getUserByLoginName(String loginName) {
 		_User _user = userDao.getByLoginName(loginName);
@@ -85,8 +90,24 @@ public class UserRepositoryImpl implements UserRepository {
         }else{
             _user.setCsmUser(csmUser);
         }
-        //TODO : MD populate role memebership
-        
+
+        //populate the role memebership
+        ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+        for(SuiteRole suiteRole : SuiteRole.values()){
+            UserGroupType role = UserGroupType.getByCSMName(suiteRole.name());
+            RoleMembership roleMembership = _user.findRoleMembership(role);
+            if(suiteRole.isScoped()){
+               SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
+               roleMembership.setAllSite(suiteRoleMembership.isAllSites());
+               roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
+               if(suiteRoleMembership.getSiteIdentifiers() != null)
+                   roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
+               if(suiteRoleMembership.getStudyIdentifiers() != null)
+                   roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
+            }
+        }
+
+
 		return _user;
 	}	
 	

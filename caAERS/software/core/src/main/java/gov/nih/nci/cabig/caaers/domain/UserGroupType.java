@@ -81,6 +81,13 @@ public enum UserGroupType implements CodedEnum<Integer> {
         return getByClassAndCode(UserGroupType.class, code);
     }
 
+    public static UserGroupType getByCSMName(String csmName){
+        for(UserGroupType ug : UserGroupType.values()){
+            if(ug.getCsmName().equals(csmName)) return ug;
+        }
+        return null;
+    }
+
     public String toString() {
         return csmName;
     }
