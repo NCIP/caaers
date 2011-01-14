@@ -161,6 +161,7 @@ public class _User extends AbstractMutableDomainObject{
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+        getCsmUser().setLoginName(loginName);
     }
     
     @Column(name = "salt")
@@ -328,7 +329,6 @@ public class _User extends AbstractMutableDomainObject{
 	public void setFaxNumber(String faxNumber) {
 		
 	}
-
 
     //==
 

@@ -133,4 +133,6 @@ public class UserRepositoryTest extends AbstractTestCase {
     	assertNull(_user.getLastFailedLoginAttemptTime());
     	assertEquals(0,_user.getFailedLoginAttempts());
     }
+
+
 }
