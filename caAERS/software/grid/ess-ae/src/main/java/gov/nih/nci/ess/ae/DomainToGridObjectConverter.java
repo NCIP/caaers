@@ -155,12 +155,21 @@ public class DomainToGridObjectConverter {
 			gov.nih.nci.cabig.caaers.domain.AdverseEvent ae) {
 		LowLevelTerm llt = ae.getLowLevelTerm();
 		if (llt != null) {
-			final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
-			gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
-			gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
+			final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = convert(llt);
 			gridAE.setOtherMeddra(gridLlt);
 		}
 
+	}
+
+	/**
+	 * @param llt
+	 * @return
+	 */
+	public ess.caaers.nci.nih.gov.LowLevelTerm convert(LowLevelTerm llt) {
+		final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
+		gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
+		gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
+		return gridLlt;
 	}
 
 	private void populateCtcTerm(AdverseEvent gridAE,
@@ -169,12 +178,21 @@ public class DomainToGridObjectConverter {
 		if (term != null) {
 			CtcTerm ctcTerm = term.getCtcTerm();
 			if (ctcTerm != null) {
-				final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
-				gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
-				gridTerm.setCtepCode(h.CD(ctcTerm.getCtepCode()));
+				final ess.caaers.nci.nih.gov.CtcTerm gridTerm = convert(ctcTerm);
 				gridAE.setAdverseEventCtcTerm(gridTerm);
 			}
 		}
+	}
+
+	/**
+	 * @param ctcTerm
+	 * @return
+	 */
+	public ess.caaers.nci.nih.gov.CtcTerm convert(CtcTerm ctcTerm) {
+		final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
+		gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
+		gridTerm.setCtepCode(h.CD(ctcTerm.getCtepCode()));
+		return gridTerm;
 	}
 
 	private TSDateTime convert(TimeValue time) {

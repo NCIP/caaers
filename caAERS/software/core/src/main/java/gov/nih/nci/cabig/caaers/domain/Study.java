@@ -1274,7 +1274,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than ones")
+    @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than once")
     @Where(clause = "term_type = 'meddra'")    
     public List<ExpectedAEMeddraLowLevelTerm> getExpectedAEMeddraLowLevelTerms() {
         return expectedAEMeddraTerms;

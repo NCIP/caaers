@@ -449,6 +449,7 @@
 			<xs:element name="referralLetters" type="ISO:BL"/>
 		</xs:sequence>
 	</xs:complexType>
+	
 	<xs:complexType name="CtcTerm">
 		<xs:annotation>
 			<xs:documentation>An adverse event as described by the CTCAE..</xs:documentation>
@@ -483,6 +484,16 @@
 					<xs:documentation>.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="ExpectedAdverseEvent" type="ESS-AE:ExpectedAdverseEvent"/>
+	<xs:complexType name="ExpectedAdverseEvent">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="LowLevelTerm" type="ESS-AE:LowLevelTerm"></xs:element>
+				<xs:element name="CtcTerm" type="ESS-AE:CtcTerm"></xs:element>
+			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
 			

@@ -13,6 +13,15 @@ import java.rmi.RemoteException;
 public interface AEProtocolI {
 
   /**
+   * Updates the terminology system to be used for encoding adverse events on a study.
+   *
+   * @param aeTerminology
+   * @throws AdverseEventServiceException
+   *	
+   */
+  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+
+  /**
    * Retrieves the terminology system used for encoding adverse events on a study.
    *
    * @param studyId
@@ -22,13 +31,23 @@ public interface AEProtocolI {
   public ess.caaers.nci.nih.gov.AeTerminology getCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
   /**
-   * Updates the terminology system to be used for encoding adverse events on a study.
+   * Updates the expected adverse event records associated to a study.
    *
-   * @param aeTerminology
+   * @param ctcOrMeddraCode
+   * @param studyId
    * @throws AdverseEventServiceException
    *	
    */
-  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[] ctcOrMeddraCode,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+
+  /**
+   * Retrieves the expected adverse events associated to a study.
+   *
+   * @param studyId
+   * @throws AdverseEventServiceException
+   *	
+   */
+  public ess.caaers.nci.nih.gov.ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
 }
 

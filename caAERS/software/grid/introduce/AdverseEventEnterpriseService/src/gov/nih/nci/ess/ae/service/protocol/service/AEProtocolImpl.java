@@ -47,5 +47,15 @@ public class AEProtocolImpl extends AEProtocolImplBase {
     return aeProtocolI.getCodingTerminologyForStudy(studyId);
   }
 
+  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[] ctcOrMeddraCode,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+	  initialize();
+	  aeProtocolI.updateExpectedAdverseEventsForStudy(ctcOrMeddraCode, studyId);
+  }
+
+  public ess.caaers.nci.nih.gov.ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+	  initialize();
+	  return aeProtocolI.getExpectedAdverseEventsForStudy(studyId);
+  }
+
 }
 

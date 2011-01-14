@@ -66,6 +66,14 @@ public class AEProtocolAuthorization implements PDP {
 	public void authorizeGetCodingTerminologyForStudy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeUpdateExpectedAdverseEventsForStudy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetExpectedAdverseEventsForStudy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -82,6 +90,12 @@ public class AEProtocolAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getCodingTerminologyForStudy")){
 			authorizeGetCodingTerminologyForStudy(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateExpectedAdverseEventsForStudy")){
+			authorizeUpdateExpectedAdverseEventsForStudy(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getExpectedAdverseEventsForStudy")){
+			authorizeGetExpectedAdverseEventsForStudy(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

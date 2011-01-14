@@ -76,6 +76,17 @@ public class AEProtocolClient extends AEProtocolClientBase implements AEProtocol
 		}
 	}
 
+  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateCodingTerminologyForStudy");
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest();
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestAeTerminology aeTerminologyContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestAeTerminology();
+    aeTerminologyContainer.setAeTerminology(aeTerminology);
+    params.setAeTerminology(aeTerminologyContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse boxedResult = portType.updateCodingTerminologyForStudy(params);
+    }
+  }
+
   public ess.caaers.nci.nih.gov.AeTerminology getCodingTerminologyForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getCodingTerminologyForStudy");
@@ -88,14 +99,29 @@ public class AEProtocolClient extends AEProtocolClientBase implements AEProtocol
     }
   }
 
-  public void updateCodingTerminologyForStudy(ess.caaers.nci.nih.gov.AeTerminology aeTerminology) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[] ctcOrMeddraCode,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"updateCodingTerminologyForStudy");
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest();
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestAeTerminology aeTerminologyContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequestAeTerminology();
-    aeTerminologyContainer.setAeTerminology(aeTerminology);
-    params.setAeTerminology(aeTerminologyContainer);
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse boxedResult = portType.updateCodingTerminologyForStudy(params);
+      configureStubSecurity((Stub)portType,"updateExpectedAdverseEventsForStudy");
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequest();
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestCtcOrMeddraCode ctcOrMeddraCodeContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestCtcOrMeddraCode();
+    ctcOrMeddraCodeContainer.setId(ctcOrMeddraCode);
+    params.setCtcOrMeddraCode(ctcOrMeddraCodeContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestStudyId studyIdContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyResponse boxedResult = portType.updateExpectedAdverseEventsForStudy(params);
+    }
+  }
+
+  public ess.caaers.nci.nih.gov.ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getExpectedAdverseEventsForStudy");
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequest();
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequestStudyId studyIdContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyResponse boxedResult = portType.getExpectedAdverseEventsForStudy(params);
+    return boxedResult.getExpectedAdverseEvent();
     }
   }
 
