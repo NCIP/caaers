@@ -328,7 +328,7 @@ jQuery(function( $ ){
 var curWin;
 function displayPopup(ety, etyId) {
     var url = "ae/listReviewComments?entity=#{entity}&entityId=#{entityId}&subview".interpolate({entity:ety, entityId:etyId});
-    curWin = new Window({className:"alphacube",destroyOnClose:true,title:"",url: url, width: 850, height: 400,   recenterAuto:true});
+    curWin = new Window({className:"alphacube",destroyOnClose:true,title:"",url: url, width: 950, height: 400,   recenterAuto:true});
     curWin.showCenter(true);
 }
 
