@@ -101,7 +101,7 @@ public class UserRepositoryImpl implements UserRepository {
         if(!CollectionUtils.isEmpty(groups)){
            ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
            for(UserGroupType role : groups){
-               SuiteRole suiteRole = SuiteRole.valueOf(role.getCsmName());
+               SuiteRole suiteRole = SuiteRole.getByCsmName(role.getCsmName());
                if(!suiteRole.isScoped()){
                      _user.findRoleMembership(role);
                }else{
