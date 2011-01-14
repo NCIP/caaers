@@ -123,6 +123,7 @@
         <property name="mailSender" ref="mailer"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="userDao" ref="_userDao" />
+        <property name="provisioningSessionFactory" ref="provisioningSessionFactory" /> 
     </bean>
 
 	<bean id="personRepository" class="gov.nih.nci.cabig.caaers.domain.repository.PersonRepository" lazy-init="true" autowire="byType">
