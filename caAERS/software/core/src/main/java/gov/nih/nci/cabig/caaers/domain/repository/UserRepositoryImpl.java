@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.dao._UserDao;
@@ -96,24 +97,33 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         //populate the role membership
-        ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-        for(SuiteRole suiteRole : SuiteRole.values()){
-            UserGroupType role = UserGroupType.getByCSMName(suiteRole.name());
-            RoleMembership roleMembership = _user.findRoleMembership(role);
-            if(suiteRole.isScoped()){
-               SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
-               if(suiteRoleMembership.isAllSites()){
-            	   roleMembership.setAllSite(suiteRoleMembership.isAllSites());
+        List<UserGroupType> groups = getUserGroups(loginName);
+        if(!CollectionUtils.isEmpty(groups)){
+           ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+           for(UserGroupType role : groups){
+               SuiteRole suiteRole = SuiteRole.valueOf(role.getCsmName());
+               if(!suiteRole.isScoped()){
+                     _user.findRoleMembership(role);
                }else{
-            	   roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
+                   SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
+                   RoleMembership roleMembership = _user.findRoleMembership(role);
+                   if(suiteRoleMembership.isAllSites()){
+                       roleMembership.setAllSite(suiteRoleMembership.isAllSites());
+                   }else{
+                       roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
+                   }
+                   if(suiteRole.isStudyScoped()){
+                      if(suiteRoleMembership.isAllStudies()){
+                            roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
+                       }else{
+                           roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
+                       }
+                   }
+
                }
-               if(suiteRoleMembership.isAllStudies()){
-            	   roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
-               }else{
-            	   roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
-               }
-            }
+           }
         }
+
 		return _user;
 	}	
 	
