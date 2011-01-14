@@ -97,7 +97,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         //populate the role membership
-        List<UserGroupType> groups = getUserGroups(loginName);
+        List<UserGroupType> groups = getUserGroups(csmUser.getUserId().toString());
         if(!CollectionUtils.isEmpty(groups)){
            ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
            for(UserGroupType role : groups){
