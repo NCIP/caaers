@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.dao._UserDao;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
@@ -18,7 +17,12 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -91,23 +95,25 @@ public class UserRepositoryImpl implements UserRepository {
             _user.setCsmUser(csmUser);
         }
 
-        //populate the role memebership
+        //populate the role membership
         ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
         for(SuiteRole suiteRole : SuiteRole.values()){
             UserGroupType role = UserGroupType.getByCSMName(suiteRole.name());
             RoleMembership roleMembership = _user.findRoleMembership(role);
             if(suiteRole.isScoped()){
                SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
-               roleMembership.setAllSite(suiteRoleMembership.isAllSites());
-               roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
-               if(suiteRoleMembership.getSiteIdentifiers() != null)
-                   roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
-               if(suiteRoleMembership.getStudyIdentifiers() != null)
-                   roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
+               if(suiteRoleMembership.isAllSites()){
+            	   roleMembership.setAllSite(suiteRoleMembership.isAllSites());
+               }else{
+            	   roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
+               }
+               if(suiteRoleMembership.isAllStudies()){
+            	   roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
+               }else{
+            	   roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
+               }
             }
         }
-
-
 		return _user;
 	}	
 	
