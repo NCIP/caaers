@@ -84,6 +84,7 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
 	public List<SiteResearchStaffRole> getSiteResearchStaffRoles() {
 		return siteResearchStaffRoles;
 	}
+    
 	public void setSiteResearchStaffRoles(
 			List<SiteResearchStaffRole> siteResearchStaffRoles) {
 		this.siteResearchStaffRoles = siteResearchStaffRoles;

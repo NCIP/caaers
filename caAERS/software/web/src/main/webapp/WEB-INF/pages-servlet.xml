@@ -110,8 +110,9 @@
         <property name="tasks">
           <list>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure caAERS" p:linkName="configurationController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="searchInvestigatorController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="searchResearchStaffController"/>
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Personnel" p:linkName="userSearchController"/>
+<!--                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="searchInvestigatorController"/>-->
+<!--                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="searchResearchStaffController"/>-->
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import" p:linkName="importController"/>
                   <!--
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
@@ -121,7 +122,7 @@
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Organization" p:linkName="searchOrganizationController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Agents" p:linkName="asaelSearchController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="User" p:linkName="userSearchController"/>
+                
           </list>
         </property>
       </bean>
@@ -233,10 +234,12 @@
   <bean id="userTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup" p:displayName="User Management ">
     <property name="taskList">
       <list>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Investigator Users" p:linkName="createInvestigatorController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Investigator" p:linkName="searchInvestigatorController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Research Staff Users" p:linkName="createResearchStaffController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Research Staff Users" p:linkName="searchResearchStaffController"/>
+<!--            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Investigator Users" p:linkName="createInvestigatorController"/>-->
+<!--            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Investigator" p:linkName="searchInvestigatorController"/>-->
+<!--            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Research Staff Users" p:linkName="createResearchStaffController"/>-->
+<!--            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Research Staff Users" p:linkName="searchResearchStaffController"/>-->
+			<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Personnel" p:linkName="createUserController"/>
+			<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Personnel" p:linkName="userSearchController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
       </list>
     </property>
@@ -602,6 +605,7 @@
 		<property name="caaersSecurityFacade" ref="caaersSecurityFacade" />
 		<property name="proSessionFactory" ref="provisioningSessionFactory" />
 		<property name="userRepository" ref="userRepository" />
+		<property name="personRepository" ref="personRepository" />
 	</bean>
 	
 	<bean name="/admin/editUser" id="editUserController" class="gov.nih.nci.cabig.caaers.web.admin.EditUserController" autowire="byType">
@@ -610,6 +614,7 @@
 		<property name="organizationRepository" ref="organizationRepository" />
 		<property name="studyRepository" ref="studyRepository" />
 		<property name="userRepository" ref="userRepository" />
+		<property name="personRepository" ref="personRepository" />
 	</bean>
 
 	<bean id="userSearchController"  name="/admin/searchUser" class="org.springframework.web.servlet.mvc.ParameterizableViewController">    

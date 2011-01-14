@@ -100,7 +100,7 @@ function makeFieldOptional(_fieldPath){
 
       if(_vClass != null && _vClass.length > 15){
           _fld.removeClassName(_vClass);
-          _vClass = _vClass.sub('&&NOTEMPTY','').sub('NOTEMPTY&&','');
+          _vClass = _vClass.sub('&&NOTEMPTY','').sub('NOTEMPTY&&','').sub('NOTEMPTY');
           _fld.addClassName(_vClass);
       }
 

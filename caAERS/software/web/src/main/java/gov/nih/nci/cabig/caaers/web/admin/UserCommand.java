@@ -1,11 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +29,23 @@ public class UserCommand {
 	private Map<String,String> siteMap = new HashMap<String,String>();
 	private Map<String,String> studyMap = new HashMap<String,String>();
 	
+	private HashMap<String, String> personTypeOptionsMap = new LinkedHashMap<String, String>();
+	private String personType;
+	//ResearchStaff Class is used as a DTO here. 
+	private ResearchStaff researchStaff;
+	private Person person;
+	
+	private boolean createAsPerson = true;
+	private boolean createAsUser = true;
+	
+    boolean isPO = SecurityUtils.hasAuthorityOf(UserGroupType.person_and_organization_information_manager);
+    boolean isUA = SecurityUtils.hasAuthorityOf(UserGroupType.user_administrator);
+
+	
 	public UserCommand() {
+		personTypeOptionsMap.put("", "Please select");
+		personTypeOptionsMap.put("Investigator", "Investigator");
+		personTypeOptionsMap.put("ResearchStaff", "ResearchStaff");
 	}
 	
 	/**
@@ -172,8 +193,55 @@ public class UserCommand {
 		return studyMap;
 	}
 
-
 	public void setStudyMap(Map<String, String> studyMap) {
 		this.studyMap = studyMap;
+	}
+
+	public String getPersonType() {
+		return personType;
+	}
+
+	public void setPersonType(String personType) {
+		this.personType = personType;
+	}
+
+	public ResearchStaff getResearchStaff() {
+		return researchStaff;
+	}
+
+	public void setResearchStaff(ResearchStaff researchStaff) {
+		this.researchStaff = researchStaff;
+	}
+
+	public HashMap<String, String> getPersonTypeOptionsMap() {
+		return personTypeOptionsMap;
+	}
+
+	public void setPersonTypeOptionsMap(HashMap<String, String> personTypeOptionsMap) {
+		this.personTypeOptionsMap = personTypeOptionsMap;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public boolean getCreateAsPerson() {
+		return createAsPerson;
+	}
+
+	public void setCreateAsPerson(boolean createAsPerson) {
+		this.createAsPerson = createAsPerson;
+	}
+
+	public boolean getCreateAsUser() {
+		return createAsUser;
+	}
+
+	public void setCreateAsUser(boolean createAsUser) {
+		this.createAsUser = createAsUser;
 	}
 }

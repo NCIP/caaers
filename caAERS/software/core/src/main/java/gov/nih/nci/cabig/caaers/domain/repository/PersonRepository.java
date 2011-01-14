@@ -2,9 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.PersonDao;
 import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,6 +33,9 @@ public class PersonRepository {
 		return personDao.getById(id);
 	}
 	
+	public Person getByEmailAddress(String emailAddress){
+		return personDao.getByEmailAddress(emailAddress);
+	}
 	
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;

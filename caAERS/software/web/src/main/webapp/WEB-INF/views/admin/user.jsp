@@ -1,22 +1,35 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" var="hasRSCreate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" var="hasRSUpdate"/>
+<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" var="hasRSRead"/>
+
 <html>
     <head>
     	<title>User</title>
+    	<tags:js name="ui/ajaxCRUD" />
     </head>
     
     <body>
-    
+        <style>
+            .CSSDate { width: 80px; }
+            .hand { cursor: pointer; }
+			div.row div.label { width:13em; }
+			div.row div.value { margin-left:14em; }
+			.rightpanel { width:54% }
+        </style>
+            
     	<script type="text/javascript">
+
+			ajaxCRUD = new AJAX_CRUD_HELPER();
 			var sitesCount = new Array();
 			var studiesCount = new Array();
 		
 	    	Event.observe(window, "load", function() {
-	    		theAccordion = new Accordion("roles-div", 1);
 	    	});
 
 	    	var tableRow = "<tr id='#{trId}'><td>#{selectedChoiceForDisplay}<input type='hidden' id='#{fldName}' name='#{fldName}' value='#{identifier}' /></td><td>#{deleteBtn}</td></tr>";
 	    	
-			
 			function addSite(el, index){
 
 				Form.Element.disable('addSite_btn['+index+']');
@@ -77,6 +90,28 @@
 				updateRoleSummary(index);
 			}
 
+			function showHidePersonDiv(){
+				var divElement = $('person-div');
+				divElement.toggle();
+				
+				if(divElement.visible()){
+					makeFieldRequired('personType');	
+				}else {
+					makeFieldOptional('personType');
+				}
+			}
+
+			function showHideUserDiv(){
+				var divElement = $('user-div');
+				divElement.toggle();
+				
+				if(divElement.visible()){
+					makeFieldRequired('user.loginName');	
+				}else {
+					makeFieldOptional('user.loginName');
+				}
+			}
+
 			function updateRoleSummary(index){
 
 				if($('roleMembershipHelper['+index+'].checked').checked){
@@ -96,10 +131,12 @@
 						}else{
 							nSiteSummary = 'Sites('+sitesCount[index]+')';
 						}
-						if($('roleMembershipHelper['+index+'].allStudyAccess').checked){
-							nStudySummary = ' | All Studies';
-						}else{
-							nStudySummary = ' | Studies('+studiesCount[index]+')';
+						if($('roleMembershipHelper['+index+'].allStudyAccess')){
+							if($('roleMembershipHelper['+index+'].allStudyAccess').checked){
+								nStudySummary = ' | All Studies';
+							}else{
+								nStudySummary = ' | Studies('+studiesCount[index]+')';
+							}
 						}
 						nRoleSummary = nSiteSummary+nStudySummary+selectedImg;
 						$('summary-'+index).innerHTML = nRoleSummary;						
@@ -110,10 +147,24 @@
 					$('summary-'+index).hide();
 					$('membershipDiv-'+index).hide();
 				}
-			} 	
+			}
+
+            function fireAction(_action, _index) {
+                if (_action == "removeSiteResearchStaff") {
+                    removeSiteResearchStaff(_index);
+                }
+            }
+            			
+ 			function addSiteResearchStaff() {
+                ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0, 'Bottom');
+            }
+        
+ 			function removeSiteResearchStaff(_index) {
+                ajaxCRUD._deleteItem('siteResearchStaff', _index, '_organizationsDIV', 0);
+            }			 	
 	    	
     	</script>
-    	<tags:dwrJavascriptLink objects="user"/>
+    	<tags:dwrJavascriptLink objects="user,createStudy"/>
     
     	<div class="tabpane">
     		
@@ -135,39 +186,64 @@
     		<tags:tabForm tab="${tab}" flow="${flow}" formName="userForm" hideErrorDetails="false" hideBox="true">
     			<jsp:attribute name="repeatingFields">
     				<input type="hidden" name="_finish" value="true"/>
+    				<tags:instructions code="personUserCreateInstructions" />
 					<chrome:box title="Basic Details">
-						<tags:instructions code="userdetailsForUA" />
-						<chrome:division title="${detailsSectionTitle}" id="details">
 							<div style="height:100px;">
 								 <div class="leftpanel">
-									<div class="row">
-	                            		<div class="label"><ui:label path="user.csmUser.firstName" text="" labelProperty="firstName" required="true"/></div>
-	                            		<div class="value"><ui:text path="user.csmUser.firstName" required="true" title="First name"/></div>
-	                        		</div>
-	                        		
-			                        <div class="row">
-			                            <div class="label"><ui:label path="user.csmUser.lastName" text="" labelProperty="lastName" required="true"/></div>
-			                            <div class="value"><ui:text path="user.csmUser.lastName" required="true" title="Last name"/></div>
-			                        </div>
-	                        		
+								 	<ui:row path="researchStaff.firstName">
+								 		<jsp:attribute name="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></jsp:attribute>
+								 		<jsp:attribute name="value"><ui:text path="researchStaff.firstName" required="true" title="First name"/></jsp:attribute>
+								 	</ui:row>
+	                        		<ui:row path="researchStaff.middleName">
+	                        			<jsp:attribute name="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></jsp:attribute>
+	                        			<jsp:attribute name="value"><ui:text path="researchStaff.middleName" required="false" title="Middle name"/></jsp:attribute>
+	                        		</ui:row>
+									<ui:row path="researchStaff.lastName">
+										<jsp:attribute name="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></jsp:attribute>
+										<jsp:attribute name="value"><ui:text path="researchStaff.lastName" required="true" title="Last name"/></jsp:attribute>
+									</ui:row>	                        		
 								 </div>
 								 <div class="rightpanel">
-									<div class="row">
-										<div class="label"><ui:label path="user.csmUser.emailId" text="" labelProperty="emailAddress" required="true"/></div>
-										<div class="value"><ui:text path="user.csmUser.emailId" required="true" title="Primary email" size="30"/></div>
-									</div>
-		                        <div class="row">
-		                            <div class="label"><ui:label path="user.csmUser.loginName" text="" labelProperty="loginId" required="true"/></div>
-		                            <div class="value"><ui:text path="user.csmUser.loginName" required="true" title="Login ID"/></div>
-		                        </div>									
+								 	<ui:row path="researchStaff.emailAddress">
+								 		<jsp:attribute name="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
+								 		<jsp:attribute name="value"><ui:text path="researchStaff.emailAddress" required="true" title="Primary email" size="30"/></jsp:attribute>
+								 	</ui:row>
+									<ui:checkbox path="createAsPerson" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
+									<ui:checkbox path="createAsUser" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
 								 </div>
 							</div>
+    				</chrome:box>
+    				
+    				<chrome:box title="Person Details" id="person-div" style="display:${command.createAsPerson ? '' : 'none'}" >
+    					<ui:row path="personType">
+    						<jsp:attribute name="label"><ui:label path="personType" text="" labelProperty="personType" required="${command.createAsPerson}"/></jsp:attribute>
+    						<jsp:attribute name="value"><ui:select path="personType" options="${command.personTypeOptionsMap}" title="Type of Person" required="${command.createAsPerson}"></ui:select></jsp:attribute>
+    					</ui:row>
+						<ui:row path="researchStaff.nciIdentifier">
+							<jsp:attribute name="label"><ui:label path="researchStaff.nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
+							<jsp:attribute name="value"><ui:text path="researchStaff.nciIdentifier" title="Person Identifier" required="false"/></jsp:attribute>
+						</ui:row>		    					
+                        <chrome:division>
+							<caaers:message code="researchstaff.details.organizations" var="rsOrganizations"/>
+		                    <div id="_organizationsDIV">
+		                        <c:set var="size" value="${fn:length(command.researchStaff.siteResearchStaffs)}" />
+		                        <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="rss">
+		                            <c:set var="newIndex" value="${size - (status.index + 1)}" />
+		                            <researchStaff:oneSitePerson index="${newIndex}" collapsed="false" />
+		                        </c:forEach>
+		                    </div>
+	                        <c:if test="${hasRSCreate}">
+							    <div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+	                        </c:if>
 						</chrome:division>
     				</chrome:box>
     				
-    				<chrome:box title="User Roles">
+    				<chrome:box title="User Details" id="user-div" style="display:${command.createAsUser ? '' : 'none'}" >
     					<tags:instructions code="userRolesForUA" />
-    					<chrome:division title="${detailsSectionTitle}" id="details">
+    					<ui:row path="user.loginName">
+    						<jsp:attribute name="label"><ui:label path="user.loginName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
+    						<jsp:attribute name="value"><ui:text path="user.loginName" required="${command.createAsUser}" title="Username"/></jsp:attribute>
+    					</ui:row>
     						<div id="roles-div">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">
 								<chrome:division id="section-${index.index}" title="${roleMembership.suiteRole.displayName}" collapsed="true" collapsable="true">
@@ -333,7 +409,6 @@
 								</chrome:division>
 							</c:forEach>
     						</div>
-    					</chrome:division>
     				</chrome:box>
     			</jsp:attribute>
     		</tags:tabForm>
