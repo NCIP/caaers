@@ -214,20 +214,22 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      * @return
      */
     @Transient
-    public List<User> findUsersByRole(PersonRole personRole){
-    	List<User> users = new ArrayList<User>();
+    public List<Person> findUsersByRole(PersonRole personRole){
+    	List<Person> people = new ArrayList<Person>();
     	for(StudyInvestigator studyInvestigator : getStudyInvestigators()){
+            if(!studyInvestigator.getSiteInvestigator().getInvestigator().isUser()) continue;
     		if(StringUtils.equals(studyInvestigator.getRoleCode(), personRole.getRoleCode()) || StringUtils.equals(studyInvestigator.getRoleCode(), personRole.getDisplayName())){
-    			users.add(studyInvestigator.getSiteInvestigator().getInvestigator());
+    			people.add(studyInvestigator.getSiteInvestigator().getInvestigator());
     		}
     	}
     	
     	for(StudyPersonnel studyPerson : getStudyPersonnels()){
+            if(!studyPerson.getSiteResearchStaff().getResearchStaff().isUser())  continue;
     		if(StringUtils.equals(studyPerson.getRoleCode(), personRole.getRoleCode())|| StringUtils.equals(studyPerson.getRoleCode(), personRole.getDisplayName())){
-    			users.add(studyPerson.getSiteResearchStaff().getResearchStaff());
+    			people.add(studyPerson.getSiteResearchStaff().getResearchStaff());
     		}
     	}
-    	return users;
+    	return people;
     }
     
     /**

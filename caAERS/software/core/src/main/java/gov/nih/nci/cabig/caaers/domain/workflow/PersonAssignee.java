@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -34,12 +34,12 @@ public class PersonAssignee extends Assignee {
 	}
 	
 	@Transient
-	public User getUser() {
+	public Person getPerson() {
 		if(getResearchStaff() != null) return researchStaff;
 		return getInvestigator();
 	}
 	
-	public void setUser(User user) {
+	public void setPerson(Person user) {
 		if(user instanceof ResearchStaff) setResearchStaff((ResearchStaff)user); 
 		else setInvestigator((Investigator)user);
 	}

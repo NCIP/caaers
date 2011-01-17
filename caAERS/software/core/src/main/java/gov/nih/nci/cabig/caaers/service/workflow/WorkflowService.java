@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
@@ -115,7 +116,7 @@ public interface WorkflowService{
 	 * @param taskNodeName
 	 * @return
 	 */
-	public List<User> findTaskAssignees(ProcessInstance pInstance, String taskNodeName);
+	public List<Person> findTaskAssignees(ProcessInstance pInstance, String taskNodeName);
 	
 	/**
 	 * This method returns the task configuration identified by the taskNodeName, 
@@ -126,12 +127,6 @@ public interface WorkflowService{
 	 */
 	public TaskConfig findTaskConfig(String workflowDefinitionName, String taskNodeName);
 	
-	/**
-	 * This method is used to notify the assignees about the creation of a task
-	 * @param workflowDefinitionName
-	 * @param taskNodeName
-	 */
-	public void notifiyTaskAssignees(String message, String taskNodeName,List<User> recipients);
 
 	/**
 	 * This method is used to get the list of possible review status that a person/role can see.

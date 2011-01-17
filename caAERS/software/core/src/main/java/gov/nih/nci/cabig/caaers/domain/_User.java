@@ -52,8 +52,8 @@ public class _User extends AbstractMutableDomainObject{
 
     public _User(gov.nih.nci.security.authorization.domainobjects.User csmUser){
        passwordHistory = new ArrayList<String>();
-       this.csmUser = csmUser;
        roleMembershipMap = new HashMap<UserGroupType, RoleMembership>();
+       setCsmUser(csmUser);
     }
 
     public RoleMembership findRoleMembership(UserGroupType role){
@@ -256,6 +256,7 @@ public class _User extends AbstractMutableDomainObject{
 	public void setCsmUser(
 			gov.nih.nci.security.authorization.domainobjects.User csmUser) {
 		this.csmUser = csmUser;
+        setLoginName(csmUser.getLoginName());
 	}
 
     @Transient

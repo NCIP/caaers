@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.workflow.callback;
 
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.User;
 
 import java.util.List;
@@ -18,14 +19,14 @@ import org.springmodules.workflow.jbpm31.JbpmCallback;
  *
  */
 public class CreateTaskJbpmCallback implements JbpmCallback {
-	private List<User> taskAssigneesList;
+	private List<Person> taskAssigneesList;
 	private ExecutionContext context;
 	
 	private String processDefinitionName;
 	private Node currentNode;
 	private String description;
 	
-	public CreateTaskJbpmCallback(ExecutionContext context, List<User> taskAssigneesList){
+	public CreateTaskJbpmCallback(ExecutionContext context, List<Person> taskAssigneesList){
 		this.taskAssigneesList = taskAssigneesList;
 		this.context = context;
 		this.currentNode = context.getNode();
@@ -42,8 +43,8 @@ public class CreateTaskJbpmCallback implements JbpmCallback {
 		int userCount = taskAssigneesList.size();
 		String[] pooleActorIds = new String[userCount];
 		int i = 0;
-		for(User user : taskAssigneesList){
-			pooleActorIds[i] = user.getLoginId();
+		for(Person person : taskAssigneesList){
+			pooleActorIds[i] = person.getLoginId();
 			i++;
 		}
 		tInstance.setPooledActors(pooleActorIds);
@@ -59,7 +60,7 @@ public class CreateTaskJbpmCallback implements JbpmCallback {
 	public String getProcessDefinitionName() {
 		return processDefinitionName;
 	}
-	public List<User> getTaskAssigneesList() {
+	public List<Person> getTaskAssigneesList() {
 		return taskAssigneesList;
 	}
 	public ExecutionContext getContext() {

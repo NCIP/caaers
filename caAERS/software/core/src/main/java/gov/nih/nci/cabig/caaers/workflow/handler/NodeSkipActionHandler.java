@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.workflow.handler;
 
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
@@ -51,7 +51,7 @@ public class NodeSkipActionHandler extends Action{
 			currentNode.leave(context);
 		}else {
 			//applicable, so create tasks
-			List<User> assignees = workflowService.findTaskAssignees(pInstance, taskNodeName);
+			List<Person> assignees = workflowService.findTaskAssignees(pInstance, taskNodeName);
 			workflowService.createTaskInstances(new CreateTaskJbpmCallback(context, assignees));	
 		}
 		

@@ -7,17 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Location;
-import gov.nih.nci.cabig.caaers.domain.PersonRole;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
@@ -199,7 +189,7 @@ public class WorkflowServiceImpl implements WorkflowService {
                     for(Assignee assignee: tc.getAssignees()){
                         if(assignee.isUser()){
                             PersonAssignee personAssignee = (PersonAssignee) assignee;
-                            if(personAssignee.getUser().getLoginId().equals(loginId)){
+                            if(personAssignee.getPerson().getLoginId().equals(loginId)){
                                 allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
                             }
                         }else if(assignee.isRole()){
@@ -351,8 +341,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/**
 	 * @see WorkflowService#findTaskAssignees(ProcessInstance, String)
 	 */
-	public List<User> findTaskAssignees(ProcessInstance pInstance, String taskNodeName) {
-		List<User> assignees = new ArrayList<User>();
+	public List<Person> findTaskAssignees(ProcessInstance pInstance, String taskNodeName) {
+		List<Person> assignees = new ArrayList<Person>();
 		TaskConfig taskConfig = findTaskConfig(pInstance.getProcessDefinition().getName(), taskNodeName);
 		for(Assignee assignee : taskConfig.getAssignees()){
 			
@@ -362,7 +352,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				assignees.addAll(findUsersHavingRole(roleAssignee.getUserRole(), pInstance, taskConfig.getLocation()));
 				
 			}else if(assignee.isUser()) {
-				User user = ((PersonAssignee) assignee).getUser();
+				Person user = ((PersonAssignee) assignee).getPerson();
 				assignees.add(user);
 			}
 		}
@@ -387,14 +377,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * Will notifiy the assignees about the creation of a task. 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-	public void notifiyTaskAssignees(String message, String taskNodeName, List<User> recipients) {
+	public void notifiyTaskAssignees(String message, String taskNodeName, List<Person> recipients) {
 		if(recipients.isEmpty())
 			return;
 		String subject = "Task : " + taskNodeName;
 		String[] to = new String[recipients.size()];
 		int i = 0;
-		for(User user : recipients){
-			to[i] = user.getEmailAddress();
+		for(Person person : recipients){
+			to[i] = person.getEmailAddress();
 			i++;
 		}
 		caaersJavaMailSender.sendMail(to, subject, message, new String[0]);
@@ -411,8 +401,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	
-	public List<User> findUsersHavingRole(PersonRole personRole,  ProcessInstance pInstance , Location location){
-		List<User> users = new ArrayList<User>();
+	public List<Person> findUsersHavingRole(PersonRole personRole,  ProcessInstance pInstance , Location location){
+		List<Person> people = new ArrayList<Person>();
 		Map<Object, Object> contextVariables = pInstance.getContextInstance().getVariables(); 
 		
 		String wfType = (String)contextVariables.get(VAR_WF_TYPE);
@@ -460,59 +450,59 @@ public class WorkflowServiceImpl implements WorkflowService {
 		
 		switch(personRole){
 			case AE_EXPEDITED_REPORT_REVIEWER:
-				List<User> saeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(saeCoordinators);
+				List<Person> saeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(saeCoordinators);
 				break;
 			case AE_STUDY_DATA_REVIEWER:
-				List<User> dataCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(dataCoordinators);
+				List<Person> dataCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(dataCoordinators);
 				break;
 			case ADVERSE_EVENT_COORDINATOR:
-				List<User> aeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(aeCoordinators);
+				List<Person> aeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(aeCoordinators);
 				break;
 			case AE_REPORTER:
-				List<User> participantCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(participantCoordinators);
+				List<Person> participantCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(participantCoordinators);
 				break;
 			case PHYSICIAN:
-				User physician = report.getAeReport().getPhysician().getUser();
-				if(physician != null){
-					users.add(physician);
+				Person physician = report.getAeReport().getPhysician().getUser();
+				if(physician != null && physician.isUser()){
+					people.add(physician);
 				}
 				break;
 			case PRINCIPAL_INVESTIGATOR:
-				List<User> principalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(principalInvestigators);
+				List<Person> principalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(principalInvestigators);
 				break;
 			case REPORTER:
-				User reporter = report.getAeReport().getReporter().getUser();
-				if(reporter != null){
-					users.add(reporter);
+				Person reporter = report.getAeReport().getReporter().getUser();
+				if(reporter != null && reporter.isUser()){
+					people.add(reporter);
 				}
 				break;
 			case SITE_INVESTIGATOR:
-				List<User> siteInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(siteInvestigators);
+				List<Person> siteInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(siteInvestigators);
 				break;
 			case SITE_PRINCIPAL_INVESTIGATOR:
-				List<User> sitePrincipalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				users.addAll(sitePrincipalInvestigators);
+				List<Person> sitePrincipalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(sitePrincipalInvestigators);
 				break;
 			case STUDY_COORDINATOR:
 				break;
 		}
-		return users;
+		return people;
 	}
 	
 	
 
-	private List<User> fetchUsersHavingRoleFromStudyOrganizations(List<StudyOrganization> studyOrganizations, PersonRole role){
-		List<User> users = new ArrayList<User>();
+	private List<Person> fetchUsersHavingRoleFromStudyOrganizations(List<StudyOrganization> studyOrganizations, PersonRole role){
+		List<Person> people = new ArrayList<Person>();
 		for(StudyOrganization studyOrg : studyOrganizations){
-			users.addAll(studyOrg.findUsersByRole(role));
+			people.addAll(studyOrg.findUsersByRole(role));
 		}
-		return users;
+		return people;
 	}
 	
 	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender){

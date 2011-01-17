@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.workflow.callback;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.User;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
  */
 public class CreateTaskJbpmCallbackTest extends AbstractTestCase {
 	ExecutionContext context;
-	List<User> taskAssigneesList;
+	List<Person> taskAssigneesList;
 	Node node ;
 	TaskMgmtInstance taskMgmtInstance;
 	JbpmContext jbpmContext;
@@ -30,12 +31,14 @@ public class CreateTaskJbpmCallbackTest extends AbstractTestCase {
 		super.setUp();
 		
 		
-		taskAssigneesList = new ArrayList<User>();
+		taskAssigneesList = new ArrayList<Person>();
 		Investigator inv1 = Fixtures.createInvestigator("test1");
+        inv1.setCaaersUser(Fixtures.createUser("test", "test1"));
 		inv1.setEmailAddress("joel1@abc.com");
 		inv1.setLoginId("joel1@abc.com");
 		
 		Investigator inv2 = Fixtures.createInvestigator("test2");
+        inv2.setCaaersUser(Fixtures.createUser("test", "test1"));
 		inv2.setEmailAddress("joel2@abc.com");
 		inv2.setLoginId("joel2@abc.com");
 		
