@@ -523,7 +523,7 @@ public class StudyRepository {
     
     public List<Study> getAllStudies() {
         StudyQuery q = new StudyQuery();
-        return this.search(q, "", "", false);
+        return this.find(q);
     }
 
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
