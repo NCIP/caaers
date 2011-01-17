@@ -129,5 +129,7 @@
 	<bean id="personRepository" class="gov.nih.nci.cabig.caaers.domain.repository.PersonRepository" lazy-init="true" autowire="byType">
         <property name="personDao" ref="personDao" />
     </bean>
-	
+
+	<bean id="studyParticipantAssignmentRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyParticipantAssignmentRepository" lazy-init="true" autowire="byType" />
+
  </beans>

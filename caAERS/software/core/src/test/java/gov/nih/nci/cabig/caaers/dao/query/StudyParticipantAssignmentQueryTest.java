@@ -37,4 +37,11 @@ public class StudyParticipantAssignmentQueryTest extends TestCase {
         assertEquals("Wrong Query String", "SELECT spa FROM StudyParticipantAssignment spa WHERE lower(spa.studySubjectIdentifier) = :SSI AND spa.studySite.id = :SS_ID AND spa.participant.id != :P_ID", q.getQueryString());
     }
 
+    public void testJoinStudyAndParticipant() throws Exception {
+        StudyParticipantAssignmentQuery q = new StudyParticipantAssignmentQuery();
+        q.joinParticipant();
+        q.joinStudySite();
+        assertEquals("Wrong query", "SELECT spa FROM StudyParticipantAssignment spa left join fetch spa.participant p left join fetch spa.studySite ss left join fetch ss.study s", q.getQueryString());
+    }
+
 }
