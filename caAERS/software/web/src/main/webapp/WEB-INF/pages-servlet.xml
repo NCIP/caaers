@@ -599,6 +599,7 @@
     <bean name="/dashboard/aeReporter" id="aeReporterDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.AEReporterDashboardController" autowire="byType" />
     <bean name="/dashboard/study" id="studyDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.StudyDashboardController" autowire="byType" />
     <bean name="/dashboard/routingAndReview" id="rountinAndReviewDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.RoutingAndReviewDashboardController" autowire="byType" />
+    <bean name="/dashboard/users" id="usersDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.UsersDashboardController" autowire="byType" />
 
     <!-- DASHBOARD CONTROLLERS -->
 

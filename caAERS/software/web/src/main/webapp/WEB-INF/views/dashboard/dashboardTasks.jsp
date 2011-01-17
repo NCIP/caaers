@@ -1,4 +1,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
+<chrome:boxIPhone title="Quick Links" style="width:240px;">
+<div style="padding-left:1pt">
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <c:forEach begin="0" end="2" items="${taskgroups}" var="taskGroup" varStatus="index">
         <csmauthz:accesscontrol domainObject="${taskGroup}" authorizationCheckName="taskGroupAuthorizationCheck">
@@ -23,3 +25,5 @@
         </csmauthz:accesscontrol>
     </c:forEach>
 </table>
+</div>
+</chrome:boxIPhone>
