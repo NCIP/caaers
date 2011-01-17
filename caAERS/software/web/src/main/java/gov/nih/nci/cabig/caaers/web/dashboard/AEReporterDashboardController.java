@@ -28,7 +28,9 @@ public class AEReporterDashboardController extends DashboardController {
 
         List<TaskNotificationDTO> l3 = rrRepositry.getTaskNotificationByUserLogin(loginId);
         for (TaskNotificationDTO dto : l3) {
-            dto.setDescription(dto.getDescription().replaceAll("(http(s)?://(.)*?)[\\s]", "<a href='$1' class='linkHere' target='_blank'>here</a> "));
+            if(dto.getDescription() != null){
+               dto.setDescription(dto.getDescription().replaceAll("(http(s)?://(.)*?)[\\s]", "<a href='$1' class='linkHere' target='_blank'>here</a> "));
+            }
         }
         mv.addObject("taskNotifications", l3);
         
