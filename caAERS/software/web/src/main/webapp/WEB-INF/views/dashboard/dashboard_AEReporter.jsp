@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
-<c:if test="${not empty roles.ae_reporter}">
+<c:if test="${not empty roles.ae_reporter or not empty roles.ae_expedited_report_reviewer}">
 
 <chrome:boxIPhone title="Task Notifications" style="width:700px;">
     <div id="tasksNotifications" class="scrollerTask">
