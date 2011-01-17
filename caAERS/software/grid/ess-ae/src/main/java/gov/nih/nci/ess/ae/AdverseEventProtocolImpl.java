@@ -5,9 +5,11 @@ import ess.caaers.nci.nih.gov.AeTerminology;
 import ess.caaers.nci.nih.gov.ExpectedAdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -51,10 +53,13 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	private static final String NO_AE_TERMINOLOGY = "WS_AEMS_050";
 	private static final String NO_MEDDRA_VERSION = "WS_AEMS_051";
 	private static final String NO_MEDDRA_TERM = "WS_AEMS_052";
+	private static final String NO_CTC_VERSION = "WS_AEMS_053";
+	private static final String NO_CTC_TERM = "WS_AEMS_054";
 	private DomainToGridObjectConverter domainToGridConverter;
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private StudyRepository studyRepository;
 	private CtcDao ctcDao;
+	private CtcTermDao ctcTermDao;
 	private MeddraVersionDao meddraVersionDao;
 	private LowLevelTermDao lowLevelTermDao;
 	private MessageSource messageSource;
@@ -295,13 +300,38 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 										meddraVersion.getId()));
 				if (term == null) {
 					raiseError(NO_MEDDRA_TERM, id.getExtension(),
-							meddraVersion.getId());
+							meddraVersion.getName());
 				}
 				addLowLevelTermToStudy(study, term);
+			}
+		} else {
+			Ctc ctcVer = aeTerminology.getCtcVersion();
+			if (ctcVer == null) {
+				raiseError(NO_CTC_VERSION);
+			}
+			for (Id id : ctcOrMeddraCode) {
+				CtcTerm term = CollectionUtils.firstElement(ctcTermDao
+						.getByCtepCodeandVersion(id.getExtension(),
+								ctcVer.getId()));
+				if (term == null) {
+					raiseError(NO_CTC_TERM, id.getExtension(), ctcVer.getName());
+				}
+				addCtcTermToStudy(study, term);
 			}
 		}
 		studyRepository.save(study);
 
+	}
+
+	private void addCtcTermToStudy(Study study, CtcTerm ctcTerm) {
+		for (ExpectedAECtcTerm term : study.getExpectedAECtcTerms()) {
+			if (ctcTerm.equals(term.getTerm())) {
+				return;
+			}
+		}
+		ExpectedAECtcTerm aeCtcTerm = new ExpectedAECtcTerm();
+		aeCtcTerm.setCtcTerm(ctcTerm);
+		study.addExpectedAECtcTerm(aeCtcTerm);
 	}
 
 	private void addLowLevelTermToStudy(Study study, LowLevelTerm llt) {
@@ -356,6 +386,21 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 */
 	public final void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
 		this.lowLevelTermDao = lowLevelTermDao;
+	}
+
+	/**
+	 * @return the ctcTermDao
+	 */
+	public final CtcTermDao getCtcTermDao() {
+		return ctcTermDao;
+	}
+
+	/**
+	 * @param ctcTermDao
+	 *            the ctcTermDao to set
+	 */
+	public final void setCtcTermDao(CtcTermDao ctcTermDao) {
+		this.ctcTermDao = ctcTermDao;
 	}
 
 }

@@ -167,8 +167,10 @@ public class DomainToGridObjectConverter {
 	 */
 	public ess.caaers.nci.nih.gov.LowLevelTerm convert(LowLevelTerm llt) {
 		final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
-		gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
-		gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
+		if (llt!=null) {
+			gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
+			gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
+		}
 		return gridLlt;
 	}
 
@@ -190,8 +192,10 @@ public class DomainToGridObjectConverter {
 	 */
 	public ess.caaers.nci.nih.gov.CtcTerm convert(CtcTerm ctcTerm) {
 		final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
-		gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
-		gridTerm.setCtepCode(h.CD(ctcTerm.getCtepCode()));
+		if (ctcTerm!=null) {
+			gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
+			gridTerm.setCtepCode(h.CD(ctcTerm.getCtepCode()));
+		}
 		return gridTerm;
 	}
 
