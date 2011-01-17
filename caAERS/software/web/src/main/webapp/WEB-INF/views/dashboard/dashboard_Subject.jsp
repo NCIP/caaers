@@ -1,8 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
-<html>
-<head>
-</head>
-  
+
   <chrome:boxIPhone title="Subjects" style="width:700px;">
   	<jsp:body>
   		<form action = "dummy">
@@ -27,6 +24,3 @@
           </form>      
   	</jsp:body>               
   </chrome:boxIPhone>
-</html>
-  
-         
