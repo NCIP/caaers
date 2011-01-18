@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
-  <chrome:boxIPhone title="My Studies" style="width:700px;">
+  <chrome:boxIPhone title="Studies" style="width:700px;">
   	<jsp:body>
   		<form action = "dummy">
                 <div id="myStudies" class="scrollerTask">

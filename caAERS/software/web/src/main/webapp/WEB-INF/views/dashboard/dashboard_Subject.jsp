@@ -20,7 +20,18 @@
                                 <td>${subject.lastName}</td>
                                 <td>${subject.assignments[0].studySite.study.primaryIdentifier}</td>
                                 <td></td>
-                                <td></td>
+                                <c:set var="subjectId" value="${subject.id}" />
+                         		<td >
+                         			<c:url var="url" value="/pages/participant/edit" >
+                         				<c:param name="participantId" value="${subjectId}" />
+                         			</c:url>
+									 <a href="${url}"><strong>View\Edit</strong></a>
+
+                                    <c:url var="url" value="/pages/participant/assignParticipant" >
+
+                         			</c:url>
+									 <a href="${url}"><strong>  Assign Study</strong></a>
+                                 </td>
                            </tr>
                          </c:forEach>
                      </table>
