@@ -46,9 +46,17 @@
 		        var _recordType = oRecord.getData("recordType");
 		        var _userName = oRecord.getData("userName");
 		        elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
-			};			
+			};
+
+			var linkFormatterWithNCI = function(elCell, oRecord, oColumn, oData) {
+		        var _nr = oRecord.getData("externalId");
+		        var _s = "";
+		        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />">';
+		        elCell.innerHTML = _s;
+			};						
 		
 			var myColumnDefs = [
+				{key:"externalId",      label:"",              	sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},			        			
                 {key:"firstName",       label:"First Name",    	sortable:true,      resizeable:true, formatter: linkFormatter},
                 {key:"middleName",      label:"Middle Name",    sortable:true,      resizeable:true},
                 {key:"lastName",        label:"Last Name",     	sortable:true,      resizeable:true, formatter: linkFormatter},
@@ -67,7 +75,8 @@
                 {key:'userName',    	parser:"string"},
                 {key:'emailAddress',   	parser:"string"},
                 {key:'recordType',   	parser:"string"},
-                {key:'id',           	parser:"integer"}
+                {key:'id',           	parser:"integer"},
+                {key:'externalId',   	parser:"string"}
             ];
 			
 		</script>
@@ -145,7 +154,7 @@
 			            	<div class="value">
 				            	<select name="propPt" id="propPt">
 				            		<option value="Please Select">Please Select
-									<option value="ResearchStaff">Research Staff
+									<option value="ResearchStaff">ResearchStaff
 									<option value="Investigator">Investigator
 								</select>
 							</div>

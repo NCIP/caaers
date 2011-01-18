@@ -157,6 +157,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 			ajaxableUser.setFirstName(csmUser.getFirstName());
 			ajaxableUser.setLastName(csmUser.getLastName());
 			ajaxableUser.setNumber("");
+			ajaxableUser.setExternalId("");
 			ajaxableUser.setUserName(csmUser.getLoginName());
 			ajaxableUser.setEmailAddress(csmUser.getEmailId());
 			ajaxableUser.setRecordType("CSM_RECORD");
