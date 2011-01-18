@@ -52,9 +52,9 @@ public class UserRepositoryImpl implements UserRepository {
     	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
     	
     	gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
-    	if(StringUtils.isNotEmpty(firstName)) example.setFirstName(firstName);
-    	if(StringUtils.isNotEmpty(lastName)) example.setLastName(lastName);
-    	if(StringUtils.isNotEmpty(userName)) example.setLoginName(userName);
+    	if(StringUtils.isNotEmpty(firstName)) example.setFirstName("%"+firstName+"%");
+    	if(StringUtils.isNotEmpty(lastName)) example.setLastName("%"+lastName+"%");
+    	if(StringUtils.isNotEmpty(userName)) example.setLoginName("%"+userName+"%");
     	UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
     	return userProvisioningManager.getObjects(userSearchCriteria);	
 	}

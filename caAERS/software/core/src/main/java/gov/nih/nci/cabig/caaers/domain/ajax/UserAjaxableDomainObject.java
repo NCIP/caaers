@@ -15,6 +15,7 @@ public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
     private String number;
     private String active;
     private String emailAddress;
+    private String recordType;
 
 	public String getUserName() {
 		return userName;
@@ -79,8 +80,16 @@ public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
+	
+    public String getRecordType() {
+		return recordType;
+	}
 
-    @Override
+	public void setRecordType(String recordType) {
+		this.recordType = recordType;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -105,7 +114,6 @@ public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
         if (obj == null) {
             return false;
         }
-
         if (!ComparisonTools.nullSafeEquals(userName, o.userName)) return false;
         if (!ComparisonTools.nullSafeEquals(firstName, o.firstName)) return false;
         if (!ComparisonTools.nullSafeEquals(lastName, o.lastName)) return false;

@@ -6,17 +6,21 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -74,30 +78,14 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		return investigator;
 	}
 	
-	public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text){
+	@SuppressWarnings("unchecked")
+	public List<Investigator> searchInvestigator(final InvestigatorQuery query,HashMap searchCriteriaMap){
 		
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        String sType, sText;
-        String firstName = "";
-        String lastName = "";
-        String nciIdentifier = "";
-        String organization = "";
+        String firstName = (String)searchCriteriaMap.get("firstName");
+        String lastName = (String)searchCriteriaMap.get("lastName");
+        String nciIdentifier = (String)searchCriteriaMap.get("personIdentifier");
+        String organization = (String)searchCriteriaMap.get("organization");
 
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            if (sType.equals("firstName")) {
-                firstName = sText;
-            } else if (sType.equals("nciIdentifier")) {
-            	nciIdentifier = sText;
-            } else if (sType.equals("lastName")) {
-                lastName = sText;
-            } else if (sType.equals("organization")) {
-            	organization = sText;
-            }
-        }
-    	
         if(StringUtils.isEmpty(firstName) &&
         		StringUtils.isEmpty(lastName) &&
         			StringUtils.isEmpty(nciIdentifier) &&

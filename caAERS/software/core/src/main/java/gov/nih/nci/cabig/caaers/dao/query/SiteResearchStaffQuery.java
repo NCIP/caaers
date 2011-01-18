@@ -6,20 +6,18 @@ package gov.nih.nci.cabig.caaers.dao.query;
 public class SiteResearchStaffQuery extends AbstractQuery {
 
     private static String queryString = "SELECT distinct srs from SiteResearchStaff srs " ;
-       //     "left join fetch srs.researchStaff rs " +
-        //    "left join fetch srs.organization org " +
-         //   "order by srs.id";
 
     private static String FIRST_NAME = "firstName";
     private static String LAST_NAME = "lastName";
     private static String ORGANIZATION = "organization";
+    private static String NCI_CODE = "nciIdentifier";
+    private static String USER_NAME = "userName";
 
     public SiteResearchStaffQuery() {
         super(queryString);
         leftJoinFetch("srs.researchStaff rs");
         leftJoinFetch("srs.organization org");
         orderBy("srs.id");
-        
     }
 
     public void filterByFirstName(final String firstName) {
@@ -38,5 +36,18 @@ public class SiteResearchStaffQuery extends AbstractQuery {
         String searchString = organization.trim();
         andWhere("srs.organization.id =:" + ORGANIZATION);
         setParameter(ORGANIZATION, Integer.parseInt(searchString));
+    }
+    
+    public void filterByNciIdentifier(final String value) {
+        String searchString = "%" + value.toLowerCase() + "%";
+        andWhere("lower(rs.nciIdentifier) LIKE :" + NCI_CODE);
+        setParameter(NCI_CODE, searchString);
+    }    
+    
+    public void filterByUserName(final String value) {
+    	join("srs.researchStaff.caaersUser cu");
+        String searchString = "%" + value.toLowerCase() + "%";
+        andWhere("lower(cu.loginName) LIKE :" + USER_NAME);
+        setParameter(USER_NAME, searchString);
     }
 }

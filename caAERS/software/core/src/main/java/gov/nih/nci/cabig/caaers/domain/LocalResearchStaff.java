@@ -36,4 +36,10 @@ public class LocalResearchStaff extends ResearchStaff{
 	public String getPhoneNumber() {
 		return super.getPhoneNumber();
 	}
+
+	@Override
+	public String getNciIdentifier() {
+		return super.getNciIdentifier();
+	}
+	
 }

@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -204,27 +205,13 @@ public class ResearchStaffRepository {
     }
     
     
-    @Transactional(readOnly = false)
-    public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query,String type,String text){
+    @SuppressWarnings("unchecked")
+	@Transactional(readOnly = false)
+    public List<SiteResearchStaff> getSiteResearchStaff(SiteResearchStaffQuery query,HashMap searchCriteriaMap){
     	
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        String sType, sText;
-        String firstName = "";
-        String lastName = "";
-        String organization = "";
-
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            if (sType.equals("firstName")) {
-                firstName = sText;
-            } else if (sType.equals("lastName")) {
-                lastName = sText;
-            } else if (sType.equals("organization")) {
-            	organization = sText;
-            }
-        }
+        String firstName = (String)searchCriteriaMap.get("firstName");
+        String lastName = (String)searchCriteriaMap.get("lastName");
+        String organization = (String)searchCriteriaMap.get("organization");
     	
         if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(organization)){
         	return researchStaffDao.getSiteResearchStaff(query);

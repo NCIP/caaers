@@ -77,6 +77,8 @@
 		<property name="userRepository" ref="userRepository"/>
 		<property name="organizationRepository" ref="organizationRepository"/>
 		<property name="studyDao" ref="studyDao"/>
+		<property name="investigatorRepository" ref="investigatorRepository"/>
+		<property name="researchStaffRepository" ref="researchStaffRepository"/>
 	</bean>
 
 </beans>

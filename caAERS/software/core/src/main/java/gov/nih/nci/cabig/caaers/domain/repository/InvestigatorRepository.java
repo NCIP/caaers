@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface InvestigatorRepository {
@@ -14,7 +15,7 @@ public interface InvestigatorRepository {
    */
   public Investigator save(Investigator  investigator, String changeURL);
   public List<Investigator> searchInvestigator(final InvestigatorQuery query);
-  public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text);
+  public List<Investigator> searchInvestigator(InvestigatorQuery query,HashMap searchCriteriaMap);
   public List<SiteInvestigator> getBySubnames(final String[] subnames,int siteId);
   public void convertToRemote(Investigator localInvestigator, Investigator remoteInvestigator);
 /**

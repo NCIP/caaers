@@ -620,9 +620,8 @@
 		<property name="personRepository" ref="personRepository" />
 	</bean>
 
-	<bean id="userSearchController"  name="/admin/searchUser" class="org.springframework.web.servlet.mvc.ParameterizableViewController">    
-		<property name="viewName"><value>search/user_search</value></property>
-	</bean>
+	<bean id="userSearchController"  name="/admin/searchUser" class="gov.nih.nci.cabig.caaers.web.search.SearchUserController"/>    
+
 
     <!-- Validators -->
 
