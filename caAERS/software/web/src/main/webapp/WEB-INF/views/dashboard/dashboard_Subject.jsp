@@ -15,6 +15,8 @@
                          <c:forEach var ="subject" items="${subjectList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td>${subject.studySubjectIdentifier}</td>
+                                 <td>${subject.participant.firstName},${subject.participant.lastName}</td>
+                                 <td>${subject.studySite.study.primaryIdentifier}</td>
 
 
                            </tr>
