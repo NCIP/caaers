@@ -42,7 +42,7 @@ public class ParticipantQuery extends AbstractQuery {
     }
     
     public void joinAssignment() {
-    	join ("p.assignments assignment");
+    	join("p.assignments assignment");
     }
     
     // participant shud have assignmengt and study , outerjoin method is only for naming convention in advanced search
@@ -61,7 +61,7 @@ public class ParticipantQuery extends AbstractQuery {
     public void joinStudy() {
     	joinAssignment();
     	joinStudySite();
-    	join ("studySite.study s");
+    	join("studySite.study s");
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {

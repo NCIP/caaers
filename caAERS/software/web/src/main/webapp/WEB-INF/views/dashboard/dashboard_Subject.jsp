@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
-  <chrome:boxIPhone title="Subjects" style="width:700px;">
+  <chrome:boxIPhone title="Subjects (${fn:length(subjectList)})" style="width:700px;">
   	<jsp:body>
   		<form action = "dummy">
                 <div id="subjects" class="scrollerTask">
@@ -14,11 +14,13 @@
                         </tr>
                          <c:forEach var ="subject" items="${subjectList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
-                         		<td>${subject.studySubjectIdentifier}</td>
-                                 <td>${subject.participant.firstName},${subject.participant.lastName}</td>
-                                 <td>${subject.studySite.study.primaryIdentifier}</td>
-
-
+                                <td>${subject}</td>
+<%--
+                                <td>${subject.firstName},${subject.participant.lastName}</td>
+                                <td>${subject.assignment.study.primaryIdentifier}</td>
+--%>
+                                <td></td>
+                                <td></td>
                            </tr>
                          </c:forEach>
                      </table>

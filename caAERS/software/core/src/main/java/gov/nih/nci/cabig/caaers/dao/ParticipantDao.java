@@ -166,7 +166,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
     @SuppressWarnings("unchecked")
     public List<Participant> searchParticipant(final ParticipantQuery query) {
         String queryString = query.getQueryString();
-        log.debug("::: " + queryString.toString());
+        log.debug(">>> " + queryString.toString());
         return (List<Participant>) super.search(query);
     }
     

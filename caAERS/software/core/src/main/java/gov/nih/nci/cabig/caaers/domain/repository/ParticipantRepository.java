@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ParticipantRepository {
 
     private ParticipantDao participantDao;
+    private static Log log = LogFactory.getLog(ParticipantRepository.class);
 
     /**
      * Checks if participant exist for given identifiers
@@ -57,6 +60,14 @@ public class ParticipantRepository {
      */
     public List<Participant> search(Participant participant) throws Exception {
         return participantDao.searchByExample(participant);
+    }
+
+    public List<Participant> getAll() {
+        ParticipantQuery q = new ParticipantQuery();
+        q.joinStudy();
+        List<Participant> participants = participantDao.searchParticipant(q);
+        log.debug(String.format(">>> Found %d Participants", participants.size()));
+        return participants;
     }
 
     /**
