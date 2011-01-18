@@ -48,15 +48,15 @@ public class AEAdvancedQueryImpl extends AEAdvancedQueryImplBase {
 		}
 	}
 	
-  public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_AdverseEvent findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	    initialize();
 		return advancedQueryI
-				.findAdverseEvents(adverseEventQuery, limitOffset);
+				.findAdverseEvents(adverseEventQuery, limitOffset);	    
 	}
 
-  public ess.caaers.nci.nih.gov.AuditTrail[] getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_AuditTrail getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	  initialize();
-	  return advancedQueryI.getAuditTrailOfAdverseEvent(adverseEventIdentifier, minDate);
+	  return advancedQueryI.getAuditTrailOfAdverseEvent(adverseEventIdentifier, minDate);	  
   }
 
 }

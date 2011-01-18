@@ -2,6 +2,7 @@ package gov.nih.nci.ess.ae;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import ess.caaers.nci.nih.gov.AeTerminology;
+import ess.caaers.nci.nih.gov.DSET_ExpectedAdverseEvent;
 import ess.caaers.nci.nih.gov.ExpectedAdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -32,6 +33,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.NoSuchMessageException;
 
+import _21090.org.iso.DSET_II;
 import _21090.org.iso.II;
 
 /**
@@ -55,6 +57,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	private static final String NO_MEDDRA_TERM = "WS_AEMS_052";
 	private static final String NO_CTC_VERSION = "WS_AEMS_053";
 	private static final String NO_CTC_TERM = "WS_AEMS_054";
+	private static final String NO_CTC_OR_MEDDRA_CODES = "WS_AEMS_055";
 	private DomainToGridObjectConverter domainToGridConverter;
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private StudyRepository studyRepository;
@@ -277,10 +280,11 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 * updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[],
 	 * ess.caaers.nci.nih.gov.Id)
 	 */
-	public void updateExpectedAdverseEventsForStudy(Id[] ctcOrMeddraCode,
-			Id studyId)
+	public void updateExpectedAdverseEventsForStudy(Id studyId,
+			DSET_II ctcOrMeddraCodeSet)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+		
 		Study study = getStudyByPrimaryId(studyId);
 		gov.nih.nci.cabig.caaers.domain.AeTerminology aeTerminology = study
 				.getAeTerminology();
@@ -288,12 +292,19 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 			raiseError(NO_AE_TERMINOLOGY);
 		}
 
+		if (ctcOrMeddraCodeSet==null) {
+			raiseError(NO_CTC_OR_MEDDRA_CODES);
+		}
+		
+		II[] ctcOrMeddraCode = ctcOrMeddraCodeSet.getItem()!=null?ctcOrMeddraCodeSet.getItem():new II[0];
+		study.getExpectedAECtcTerms().clear();
+		study.getExpectedAEMeddraLowLevelTerms().clear();
 		if (aeTerminology.getTerm() == Term.MEDDRA) {
 			MeddraVersion meddraVersion = aeTerminology.getMeddraVersion();
 			if (meddraVersion == null) {
 				raiseError(NO_MEDDRA_VERSION);
 			}
-			for (Id id : ctcOrMeddraCode) {
+			for (II id : ctcOrMeddraCode) {
 				LowLevelTerm term = CollectionUtils
 						.firstElement(lowLevelTermDao
 								.getByMeddraCodeandVersion(id.getExtension(),
@@ -309,7 +320,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 			if (ctcVer == null) {
 				raiseError(NO_CTC_VERSION);
 			}
-			for (Id id : ctcOrMeddraCode) {
+			for (II id : ctcOrMeddraCode) {
 				CtcTerm term = CollectionUtils.firstElement(ctcTermDao
 						.getByCtepCodeandVersion(id.getExtension(),
 								ctcVer.getId()));
@@ -353,7 +364,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 * @see gov.nih.nci.ess.ae.service.protocol.common.AEProtocolI#
 	 * getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id)
 	 */
-	public ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(Id studyId)
+	public DSET_ExpectedAdverseEvent getExpectedAdverseEventsForStudy(Id studyId)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		Study study = getStudyByPrimaryId(studyId);
@@ -370,7 +381,8 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 			eae.setLowLevelTerm(domainToGridConverter.convert(term.getTerm()));
 			list.add(eae);
 		}
-		return list.toArray(new ExpectedAdverseEvent[0]);
+		return new DSET_ExpectedAdverseEvent(
+				list.toArray(new ExpectedAdverseEvent[0]));
 	}
 
 	/**

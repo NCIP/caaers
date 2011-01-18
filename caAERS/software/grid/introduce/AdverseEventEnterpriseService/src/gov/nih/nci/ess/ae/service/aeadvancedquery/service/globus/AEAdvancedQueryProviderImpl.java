@@ -28,13 +28,13 @@ public class AEAdvancedQueryProviderImpl{
 
     public gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse findAdverseEvents(gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse boxedResult = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse();
-    boxedResult.setAdverseEvent(impl.findAdverseEvents(params.getAdverseEventQuery().getAdverseEventQuery(),params.getLimitOffset().getLimitOffset()));
+    boxedResult.setDSET_AdverseEvent(impl.findAdverseEvents(params.getAdverseEventQuery().getAdverseEventQuery(),params.getLimitOffset().getLimitOffset()));
     return boxedResult;
   }
 
     public gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse getAuditTrailOfAdverseEvent(gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse boxedResult = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse();
-    boxedResult.setAuditTrail(impl.getAuditTrailOfAdverseEvent(params.getAdverseEventIdentifier().getId(),params.getMinDate().getTsDateTime()));
+    boxedResult.setDSET_AuditTrail(impl.getAuditTrailOfAdverseEvent(params.getAdverseEventIdentifier().getId(),params.getMinDate().getTsDateTime()));
     return boxedResult;
   }
 

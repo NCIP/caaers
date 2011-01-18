@@ -47,7 +47,7 @@
       <element name="FindAdverseEventsResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:AdverseEvent" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:DSET_AdverseEvent" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -74,7 +74,7 @@
       <element name="GetAuditTrailOfAdverseEventResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:AuditTrail" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:DSET_AuditTrail" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>

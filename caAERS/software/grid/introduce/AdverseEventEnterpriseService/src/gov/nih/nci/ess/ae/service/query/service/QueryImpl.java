@@ -34,9 +34,9 @@ public class QueryImpl extends QueryImplBase {
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_AdverseEvent findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	    initialize();
-		return aeQuery.findAdverseEvents(adverseEvent);
+		return aeQuery.findAdverseEvents(adverseEvent);	    
 	}
 
   public ess.caaers.nci.nih.gov.AdverseEvent getAdverseEventData(ess.caaers.nci.nih.gov.Id adverseEventIdentifier) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {

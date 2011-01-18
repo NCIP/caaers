@@ -89,6 +89,22 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="StudySubject" type="ESS-AE:StudySubject"/>
+	
+  <xs:element name="DSET_AdverseEvent" type="ESS-AE:DSET_AdverseEvent"></xs:element>	
+  <xs:complexType name="DSET_AdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="ESS-AE:COLL_AdverseEvent">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-AE:AdverseEvent" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="COLL_AdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>	
 	<xs:complexType name="AdverseEvent">
 		<xs:annotation>
 			<xs:documentation>Any unfavorable and unintended sign, symptom, disease, or other
@@ -488,6 +504,22 @@
 	</xs:complexType>
 	
 	<xs:element name="ExpectedAdverseEvent" type="ESS-AE:ExpectedAdverseEvent"/>
+	<xs:element name="DSET_ExpectedAdverseEvent" type="ESS-AE:DSET_ExpectedAdverseEvent"></xs:element>
+  <xs:complexType name="DSET_ExpectedAdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="ESS-AE:COLL_ExpectedAdverseEvent">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-AE:ExpectedAdverseEvent" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="COLL_ExpectedAdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>
+	
 	<xs:complexType name="ExpectedAdverseEvent">
 		<xs:sequence>
 			<xs:choice>
@@ -542,6 +574,21 @@
 	
 <xs:element name="ReviewProcess" type="ESS-AE:ReviewProcess"/>
 
+<xs:element name="DSET_AuditTrail" type="ESS-AE:DSET_AuditTrail"></xs:element>
+<xs:complexType name="DSET_AuditTrail">
+    <xs:complexContent>
+      <xs:extension base="ESS-AE:COLL_AuditTrail">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-AE:AuditTrail" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="COLL_AuditTrail">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>
 	<xs:complexType name="AuditTrail">
 		<xs:sequence>
 			<xs:element name="identifier" type="ISO:II"/>
@@ -637,6 +684,7 @@
 
 <xs:element name="ANY" type="ISO:ANY"/>
 <xs:element name="ST" type="ISO:ST"/>
+<xs:element name="DSET_II" type="ISO:DSET_II"></xs:element>
 
 
 	<!-- AE Protocol Types and Elements -->

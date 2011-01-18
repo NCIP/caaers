@@ -4,6 +4,8 @@ import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.AdverseEventQuery;
 import ess.caaers.nci.nih.gov.AuditTrail;
 import ess.caaers.nci.nih.gov.Criteria;
+import ess.caaers.nci.nih.gov.DSET_AdverseEvent;
+import ess.caaers.nci.nih.gov.DSET_AuditTrail;
 import ess.caaers.nci.nih.gov.Id;
 import ess.caaers.nci.nih.gov.LimitOffset;
 import ess.caaers.nci.nih.gov.TsDateTime;
@@ -18,11 +20,8 @@ import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.Operator;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
-import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
-import gov.nih.nci.cabig.ctms.audit.dao.query.DataAuditEventQuery;
 import gov.nih.nci.cabig.ctms.audit.domain.AuditHistory;
-import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
 import gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI;
 
 import java.rmi.RemoteException;
@@ -111,14 +110,11 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		return param;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI#
-	 * queryAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery,
-	 * ess.caaers.nci.nih.gov.LimitOffset)
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.ess.ae.service.aeadvancedquery.common.AEAdvancedQueryI#findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery, ess.caaers.nci.nih.gov.LimitOffset)
 	 */
-	public AdverseEvent[] findAdverseEvents(AdverseEventQuery query,
+	public DSET_AdverseEvent findAdverseEvents(AdverseEventQuery query,
 			LimitOffset limitAndOffset) throws RemoteException,
 			AdverseEventServiceException {
 		// basic parameters check first
@@ -155,7 +151,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 			for (gov.nih.nci.cabig.caaers.domain.AdverseEvent ae : list) {
 				gridList.add(domainToGridConverter.convertAdverseEvent(ae));
 			}
-			return gridList.toArray(new AdverseEvent[0]);
+			return new DSET_AdverseEvent(gridList.toArray(new AdverseEvent[0]));
 		} catch (Exception e) {
 			log.error(e, e);
 			throw new AdverseEventServiceException(e);
@@ -259,7 +255,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 	 * getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id,
 	 * ess.caaers.nci.nih.gov.TsDateTime)
 	 */
-	public AuditTrail[] getAuditTrailOfAdverseEvent(Id aeId, TsDateTime minDate)
+	public DSET_AuditTrail getAuditTrailOfAdverseEvent(Id aeId, TsDateTime minDate)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		Calendar cal = null;
@@ -281,7 +277,7 @@ public class AdverseEventAdvancedQueryImpl implements MessageSourceAware,
 		for (AuditHistory history : list) {
 			trail.add(domainToGridConverter.convert(history));
 		}
-		return trail.toArray(new AuditTrail[0]);
+		return new DSET_AuditTrail(trail.toArray(new AuditTrail[0]));
 	}
 
 	/**

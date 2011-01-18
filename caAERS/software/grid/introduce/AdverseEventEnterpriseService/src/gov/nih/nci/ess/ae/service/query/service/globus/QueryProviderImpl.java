@@ -28,7 +28,7 @@ public class QueryProviderImpl{
 
     public gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsResponse findAdverseEvents(gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsResponse boxedResult = new gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsResponse();
-    boxedResult.setAdverseEvent(impl.findAdverseEvents(params.getAdverseEvent().getAdverseEvent()));
+    boxedResult.setDSET_AdverseEvent(impl.findAdverseEvents(params.getAdverseEvent().getAdverseEvent()));
     return boxedResult;
   }
 

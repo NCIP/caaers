@@ -22,7 +22,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="99CC14AD-C3E3-B821-E040-BB89AD4336C2" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9A1C8BF8-0E46-247C-E040-BB89AD43338B" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns5:umlAttributeCollection/>
          <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -71,7 +71,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns15:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns16:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="99CC14AD-C3E3-B821-E040-BB89AD4336C2" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns16:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9A1C8BF8-0E46-247C-E040-BB89AD43338B" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns16:umlAttributeCollection/>
          <ns16:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns16:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -89,7 +89,7 @@
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns17:AdverseEvent" dimensionality="1" index="0" isArray="false" isRequired="false" name="adverseEvent" xmlns:ns17="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns18:AdverseEvent" dimensionality="1" isArray="true" xmlns:ns18="http://ess.caaers.nci.nih.gov"/>
+       <ns2:Output qName="ns18:DSET_AdverseEvent" dimensionality="1" isArray="false" xmlns:ns18="http://ess.caaers.nci.nih.gov"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="AdverseEventServiceException"/>
        </ns2:faultCollection>
@@ -106,7 +106,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns21:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns22:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="99CC14AD-C3E3-B821-E040-BB89AD4336C2" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns22:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9A1C8BF8-0E46-247C-E040-BB89AD43338B" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns22:umlAttributeCollection/>
          <ns22:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns22:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -177,7 +177,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns35:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns36:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="99CC14AD-C3E3-B821-E040-BB89AD4336C2" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns36:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9A1C8BF8-0E46-247C-E040-BB89AD43338B" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns36:umlAttributeCollection/>
          <ns36:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns36:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -196,7 +196,7 @@
         <ns2:InputParameter qName="ns37:AdverseEventQuery" dimensionality="1" index="0" isArray="false" isRequired="true" name="adverseEventQuery" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns38:LimitOffset" dimensionality="1" index="1" isArray="false" isRequired="true" name="limitOffset" xmlns:ns38="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns39:AdverseEvent" dimensionality="1" isArray="true" xmlns:ns39="http://ess.caaers.nci.nih.gov"/>
+       <ns2:Output qName="ns39:DSET_AdverseEvent" dimensionality="1" isArray="false" xmlns:ns39="http://ess.caaers.nci.nih.gov"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="AdverseEventServiceException"/>
        </ns2:faultCollection>
@@ -204,7 +204,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns40:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns41:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="99CC14AD-C3E3-B821-E040-BB89AD4336C2" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns41:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9A1C8BF8-0E46-247C-E040-BB89AD43338B" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns41:umlAttributeCollection/>
          <ns41:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns41:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -218,7 +218,7 @@
         <ns2:InputParameter qName="ns42:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="adverseEventIdentifier" xmlns:ns42="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns43:TsDateTime" dimensionality="1" index="1" isArray="false" isRequired="false" name="minDate" xmlns:ns43="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns44:AuditTrail" dimensionality="1" isArray="true" xmlns:ns44="http://ess.caaers.nci.nih.gov"/>
+       <ns2:Output qName="ns44:DSET_AuditTrail" dimensionality="1" isArray="false" xmlns:ns44="http://ess.caaers.nci.nih.gov"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="AdverseEventServiceException"/>
        </ns2:faultCollection>
@@ -239,7 +239,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns46:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns47:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="99CC14AD-C3E3-B821-E040-BB89AD4336C2" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns47:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9A1C8BF8-0E46-247C-E040-BB89AD43338B" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns47:umlAttributeCollection/>
          <ns47:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns47:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -259,8 +259,8 @@
       </ns2:Operation>
       <ns2:Operation description="Updates the expected adverse event records associated to a study." name="updateExpectedAdverseEventsForStudy">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns50:Id" dimensionality="1" index="0" isArray="true" isRequired="false" name="ctcOrMeddraCode" xmlns:ns50="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns51:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns51="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns50:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns50="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns51:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="ctcOrMeddraCode" xmlns:ns51="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="AdverseEventServiceException"/>
@@ -270,7 +270,7 @@
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns52:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns52="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns53:ExpectedAdverseEvent" dimensionality="1" isArray="true" xmlns:ns53="http://ess.caaers.nci.nih.gov"/>
+       <ns2:Output qName="ns53:DSET_ExpectedAdverseEvent" dimensionality="1" isArray="false" xmlns:ns53="http://ess.caaers.nci.nih.gov"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="AdverseEventServiceException"/>
        </ns2:faultCollection>

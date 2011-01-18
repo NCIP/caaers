@@ -40,13 +40,13 @@ public class AEProtocolProviderImpl{
 
     public gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyResponse updateExpectedAdverseEventsForStudy(gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyResponse();
-    impl.updateExpectedAdverseEventsForStudy(params.getCtcOrMeddraCode().getId(),params.getStudyId().getId());
+    impl.updateExpectedAdverseEventsForStudy(params.getStudyId().getId(),params.getCtcOrMeddraCode().getDSET_II());
     return boxedResult;
   }
 
     public gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyResponse getExpectedAdverseEventsForStudy(gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyResponse();
-    boxedResult.setExpectedAdverseEvent(impl.getExpectedAdverseEventsForStudy(params.getStudyId().getId()));
+    boxedResult.setDSET_ExpectedAdverseEvent(impl.getExpectedAdverseEventsForStudy(params.getStudyId().getId()));
     return boxedResult;
   }
 

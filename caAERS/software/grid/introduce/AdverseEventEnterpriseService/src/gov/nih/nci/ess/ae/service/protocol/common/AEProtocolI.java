@@ -33,12 +33,12 @@ public interface AEProtocolI {
   /**
    * Updates the expected adverse event records associated to a study.
    *
-   * @param ctcOrMeddraCode
    * @param studyId
+   * @param ctcOrMeddraCode
    * @throws AdverseEventServiceException
    *	
    */
-  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[] ctcOrMeddraCode,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId,_21090.org.iso.DSET_II ctcOrMeddraCode) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
   /**
    * Retrieves the expected adverse events associated to a study.
@@ -47,7 +47,7 @@ public interface AEProtocolI {
    * @throws AdverseEventServiceException
    *	
    */
-  public ess.caaers.nci.nih.gov.ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+  public ess.caaers.nci.nih.gov.DSET_ExpectedAdverseEvent getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
 
 }
 

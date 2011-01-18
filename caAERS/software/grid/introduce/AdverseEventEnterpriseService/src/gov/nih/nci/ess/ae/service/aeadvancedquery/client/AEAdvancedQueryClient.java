@@ -76,7 +76,7 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_AdverseEvent findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEventQuery adverseEventQuery,ess.caaers.nci.nih.gov.LimitOffset limitOffset) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"findAdverseEvents");
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsRequest();
@@ -87,11 +87,11 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
     limitOffsetContainer.setLimitOffset(limitOffset);
     params.setLimitOffset(limitOffsetContainer);
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.FindAdverseEventsResponse boxedResult = portType.findAdverseEvents(params);
-    return boxedResult.getAdverseEvent();
+    return boxedResult.getDSET_AdverseEvent();
     }
   }
 
-  public ess.caaers.nci.nih.gov.AuditTrail[] getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_AuditTrail getAuditTrailOfAdverseEvent(ess.caaers.nci.nih.gov.Id adverseEventIdentifier,ess.caaers.nci.nih.gov.TsDateTime minDate) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getAuditTrailOfAdverseEvent");
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest params = new gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventRequest();
@@ -102,7 +102,7 @@ public class AEAdvancedQueryClient extends AEAdvancedQueryClientBase implements 
     minDateContainer.setTsDateTime(minDate);
     params.setMinDate(minDateContainer);
     gov.nih.nci.ess.ae.service.aeadvancedquery.stubs.GetAuditTrailOfAdverseEventResponse boxedResult = portType.getAuditTrailOfAdverseEvent(params);
-    return boxedResult.getAuditTrail();
+    return boxedResult.getDSET_AuditTrail();
     }
   }
 

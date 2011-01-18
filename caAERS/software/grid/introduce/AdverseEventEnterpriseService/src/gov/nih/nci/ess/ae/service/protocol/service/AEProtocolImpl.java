@@ -47,14 +47,15 @@ public class AEProtocolImpl extends AEProtocolImplBase {
     return aeProtocolI.getCodingTerminologyForStudy(studyId);
   }
 
-  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[] ctcOrMeddraCode,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId,_21090.org.iso.DSET_II ctcOrMeddraCode) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	  initialize();
-	  aeProtocolI.updateExpectedAdverseEventsForStudy(ctcOrMeddraCode, studyId);
+	  aeProtocolI.updateExpectedAdverseEventsForStudy(studyId, ctcOrMeddraCode);
   }
 
-  public ess.caaers.nci.nih.gov.ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_ExpectedAdverseEvent getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 	  initialize();
 	  return aeProtocolI.getExpectedAdverseEventsForStudy(studyId);
+	  
   }
 
 }

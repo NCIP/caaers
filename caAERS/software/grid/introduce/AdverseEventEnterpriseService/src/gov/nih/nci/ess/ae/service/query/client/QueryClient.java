@@ -76,7 +76,7 @@ public class QueryClient extends QueryClientBase implements QueryI {
 		}
 	}
 
-  public ess.caaers.nci.nih.gov.AdverseEvent[] findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_AdverseEvent findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"findAdverseEvents");
     gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsRequest params = new gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsRequest();
@@ -84,7 +84,7 @@ public class QueryClient extends QueryClientBase implements QueryI {
     adverseEventContainer.setAdverseEvent(adverseEvent);
     params.setAdverseEvent(adverseEventContainer);
     gov.nih.nci.ess.ae.service.query.stubs.FindAdverseEventsResponse boxedResult = portType.findAdverseEvents(params);
-    return boxedResult.getAdverseEvent();
+    return boxedResult.getDSET_AdverseEvent();
     }
   }
 

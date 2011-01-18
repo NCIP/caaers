@@ -99,21 +99,21 @@ public class AEProtocolClient extends AEProtocolClientBase implements AEProtocol
     }
   }
 
-  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id[] ctcOrMeddraCode,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public void updateExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId,_21090.org.iso.DSET_II ctcOrMeddraCode) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"updateExpectedAdverseEventsForStudy");
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequest();
-    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestCtcOrMeddraCode ctcOrMeddraCodeContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestCtcOrMeddraCode();
-    ctcOrMeddraCodeContainer.setId(ctcOrMeddraCode);
-    params.setCtcOrMeddraCode(ctcOrMeddraCodeContainer);
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestStudyId studyIdContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestStudyId();
     studyIdContainer.setId(studyId);
     params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestCtcOrMeddraCode ctcOrMeddraCodeContainer = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyRequestCtcOrMeddraCode();
+    ctcOrMeddraCodeContainer.setDSET_II(ctcOrMeddraCode);
+    params.setCtcOrMeddraCode(ctcOrMeddraCodeContainer);
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateExpectedAdverseEventsForStudyResponse boxedResult = portType.updateExpectedAdverseEventsForStudy(params);
     }
   }
 
-  public ess.caaers.nci.nih.gov.ExpectedAdverseEvent[] getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+  public ess.caaers.nci.nih.gov.DSET_ExpectedAdverseEvent getExpectedAdverseEventsForStudy(ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getExpectedAdverseEventsForStudy");
     gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequest params = new gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyRequest();
@@ -121,7 +121,7 @@ public class AEProtocolClient extends AEProtocolClientBase implements AEProtocol
     studyIdContainer.setId(studyId);
     params.setStudyId(studyIdContainer);
     gov.nih.nci.ess.ae.service.protocol.stubs.GetExpectedAdverseEventsForStudyResponse boxedResult = portType.getExpectedAdverseEventsForStudy(params);
-    return boxedResult.getExpectedAdverseEvent();
+    return boxedResult.getDSET_ExpectedAdverseEvent();
     }
   }
 

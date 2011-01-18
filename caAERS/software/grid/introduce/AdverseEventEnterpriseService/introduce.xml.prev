@@ -6,7 +6,6 @@
    <ns2:SchemaElement type="AdverseEventQuery" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AdverseEventSummary" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AeTerminology" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="ANY" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AuditTrail" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="BiologicEntity" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Bl" xsi:type="ns2:SchemaElementType"/>
@@ -14,6 +13,10 @@
    <ns2:SchemaElement type="Cd" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Criteria" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DataRequirement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_AdverseEvent" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_AuditTrail" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_ExpectedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_II" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ExpectedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Id" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="LimitOffset" xsi:type="ns2:SchemaElementType"/>
@@ -257,7 +260,7 @@
      <ns31:Inputs>
       <ns31:Input qName="ns32:AdverseEvent" description="" isArray="false" name="adverseEvent" xmlns:ns32="http://ess.caaers.nci.nih.gov"/>
      </ns31:Inputs>
-     <ns31:Output qName="ns33:AdverseEvent" description="" isArray="true" xmlns:ns33="http://ess.caaers.nci.nih.gov"/>
+     <ns31:Output qName="ns33:DSET_AdverseEvent" description="" isArray="false" xmlns:ns33="http://ess.caaers.nci.nih.gov"/>
      <ns31:Exceptions>
       <ns31:Exception description="" name="AdverseEventServiceException" qname="ns34:AdverseEventServiceException" xmlns:ns34="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns31:Exceptions>
@@ -376,7 +379,7 @@
       <ns63:Input qName="ns64:AdverseEventQuery" description="" isArray="false" name="adverseEventQuery" xmlns:ns64="http://ess.caaers.nci.nih.gov"/>
       <ns63:Input qName="ns65:LimitOffset" description="" isArray="false" name="limitOffset" xmlns:ns65="http://ess.caaers.nci.nih.gov"/>
      </ns63:Inputs>
-     <ns63:Output qName="ns66:AdverseEvent" description="" isArray="true" xmlns:ns66="http://ess.caaers.nci.nih.gov"/>
+     <ns63:Output qName="ns66:DSET_AdverseEvent" description="" isArray="false" xmlns:ns66="http://ess.caaers.nci.nih.gov"/>
      <ns63:Exceptions>
       <ns63:Exception description="" name="AdverseEventServiceException" qname="ns67:AdverseEventServiceException" xmlns:ns67="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns63:Exceptions>
@@ -397,7 +400,7 @@
       <ns63:Input qName="ns70:Id" description="" isArray="false" name="adverseEventIdentifier" xmlns:ns70="http://ess.caaers.nci.nih.gov"/>
       <ns63:Input qName="ns71:TsDateTime" description="" isArray="false" name="minDate" xmlns:ns71="http://ess.caaers.nci.nih.gov"/>
      </ns63:Inputs>
-     <ns63:Output qName="ns72:AuditTrail" description="" isArray="true" xmlns:ns72="http://ess.caaers.nci.nih.gov"/>
+     <ns63:Output qName="ns72:DSET_AuditTrail" description="" isArray="false" xmlns:ns72="http://ess.caaers.nci.nih.gov"/>
      <ns63:Exceptions>
       <ns63:Exception description="" name="AdverseEventServiceException" qname="ns73:AdverseEventServiceException" xmlns:ns73="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns63:Exceptions>
@@ -442,8 +445,8 @@
     </ns75:Method>
     <ns75:Method description="Updates the expected adverse event records associated to a study." isImported="false" isProvided="false" name="updateExpectedAdverseEventsForStudy" xsi:type="ns75:MethodType">
      <ns75:Inputs>
-      <ns75:Input qName="ns83:Id" description="" isArray="true" name="ctcOrMeddraCode" xmlns:ns83="http://ess.caaers.nci.nih.gov"/>
-      <ns75:Input qName="ns84:Id" description="" isArray="false" name="studyId" xmlns:ns84="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns83:Id" description="" isArray="false" name="studyId" xmlns:ns83="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns84:DSET_II" description="" isArray="false" name="ctcOrMeddraCode" xmlns:ns84="http://ess.caaers.nci.nih.gov"/>
      </ns75:Inputs>
      <ns75:Output qName="void" description="" isArray="false"/>
      <ns75:Exceptions>
@@ -454,7 +457,7 @@
      <ns75:Inputs>
       <ns75:Input qName="ns86:Id" description="" isArray="false" name="studyId" xmlns:ns86="http://ess.caaers.nci.nih.gov"/>
      </ns75:Inputs>
-     <ns75:Output qName="ns87:ExpectedAdverseEvent" description="" isArray="true" xmlns:ns87="http://ess.caaers.nci.nih.gov"/>
+     <ns75:Output qName="ns87:DSET_ExpectedAdverseEvent" description="" isArray="false" xmlns:ns87="http://ess.caaers.nci.nih.gov"/>
      <ns75:Exceptions>
       <ns75:Exception description="" name="AdverseEventServiceException" qname="ns88:AdverseEventServiceException" xmlns:ns88="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns75:Exceptions>

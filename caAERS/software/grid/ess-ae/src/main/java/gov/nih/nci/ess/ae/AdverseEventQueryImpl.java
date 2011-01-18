@@ -1,6 +1,7 @@
 package gov.nih.nci.ess.ae;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
+import ess.caaers.nci.nih.gov.DSET_AdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.ess.ae.service.query.common.QueryI;
@@ -14,7 +15,10 @@ public class AdverseEventQueryImpl implements QueryI {
 	private GridToDomainObjectConverter gridToDomainObjectConverter;
 	private DomainToGridObjectConverter domainToGridObjectConverter;
 	
-	public AdverseEvent[] findAdverseEvents(AdverseEvent adverseEvent) {
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.ess.ae.service.query.common.QueryI#findAdverseEvents(ess.caaers.nci.nih.gov.AdverseEvent)
+	 */
+	public DSET_AdverseEvent findAdverseEvents(AdverseEvent adverseEvent) {
 		gov.nih.nci.cabig.caaers.domain.AdverseEvent caaersAe = gridToDomainObjectConverter.convertAdverseEvent(adverseEvent);
 		List<gov.nih.nci.cabig.caaers.domain.AdverseEvent> aes = adverseEventDao.findByExample(caaersAe);
 		// convert back to grid AES and return . 
@@ -23,9 +27,12 @@ public class AdverseEventQueryImpl implements QueryI {
 			AdverseEvent gridAe = domainToGridObjectConverter.convertAdverseEvent(ae);
 			aesToReturnList.add(gridAe);
 		}
-		return (AdverseEvent[]) aesToReturnList.toArray();
+		return new DSET_AdverseEvent((AdverseEvent[]) aesToReturnList.toArray());
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.ess.ae.service.query.common.QueryI#getAdverseEventData(ess.caaers.nci.nih.gov.Id)
+	 */
 	public AdverseEvent getAdverseEventData(Id adverseEventIdentifier) {
 		if (adverseEventIdentifier != null) {
 			Integer id = Integer.parseInt(adverseEventIdentifier.getExtension());

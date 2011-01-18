@@ -65,17 +65,17 @@
       <element name="UpdateExpectedAdverseEventsForStudyRequest">
         <complexType>
           <sequence>
-            <element name="ctcOrMeddraCode">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:Id" minOccurs="1" maxOccurs="unbounded" />
-                </sequence>
-              </complexType>
-            </element>
             <element name="studyId">
               <complexType>
                 <sequence>
                   <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="ctcOrMeddraCode">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -103,7 +103,7 @@
       <element name="GetExpectedAdverseEventsForStudyResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:ExpectedAdverseEvent" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:DSET_ExpectedAdverseEvent" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
