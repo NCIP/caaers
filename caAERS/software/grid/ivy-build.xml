@@ -39,6 +39,24 @@
 	================================================================== -->	
 	<target name="build-grid-services">		
 		<!-- First build CTMS grid services -->
+		<antcall target="build-ccts-grid-services" inheritAll="true" inheritRefs="true"/>
+		
+		<!-- Then build caAERS's own NES grid services -->
+		<antcall target="build-aees-service" inheritAll="true" inheritRefs="true"/>		
+		<copy todir="${lib.dir}">
+			<fileset dir="${aees.nes.service.dir}/build/lib" includes="*.jar"/>
+		</copy>	
+		<property name="aees.nes.service.built" value="true"/>
+	</target>
+	
+	<target name="build-aees-service" unless="aees.nes.service.built">
+		<echo message="Building Adverse Event Enterprise Service located in ${aees.nes.service.dir}, build file is ${aees.nes.service.dir}/build.xml" />
+		<subant target="all">
+			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
+		</subant>
+	</target>
+	
+	<target name="build-ccts-grid-services" unless="skip.ccts.build">
 		<subant target="all">
 			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/build.xml"/>
 		</subant>
@@ -47,16 +65,8 @@
 		</subant>
 		<subant target="all">
 			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
-		</subant>
-		<!-- Then build caAERS's own NES grid services -->
-		<echo message="Adverse Event Enterprise Service located in ${aees.nes.service.dir}, build file is ${aees.nes.service.dir}/build.xml" />
-		<subant target="all">
-			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
-		</subant>
-		<copy todir="${parent.dir}/grid/ess-ae/lib">
-			<fileset dir="${aees.nes.service.dir}/build/lib" includes="AdverseEventEnterpriseService-*.jar"/>
-		</copy> 		
-	</target>
+		</subant>		
+    </target>
 
 	<!-- ==============================================================
 		target: deploy-grid-services , deploys all grid services to working tomcat location ..
@@ -103,21 +113,7 @@
 			<fileset dir="${wsrf-root}/WEB-INF/lib" includes="spring*2.0.2.jar"/>
 			<fileset dir="${wsrf-root}/WEB-INF/lib" includes="spring-modules-jcr-0.6.jar"/>
 			<fileset dir="${wsrf-root}/WEB-INF/lib" includes="*.war"/>
-  	    </delete>			
-		
-		<!--
-		<delete file="${wsrf-root}/WEB-INF/lib/cog-jglobus-1.2.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/bouncycastle-jce-jdk13-125-cagrid1.0.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-axis-4.0.3-globus.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-axis.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-tomcat-4.0.3-globus.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-url-1.2.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-url.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cryptix-3.2-cagrid1.0.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cryptix-asn1-3.2-cagrid1.0.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cryptix-impl-3.2-cagrid1.0.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/puretls-4.0.3-globus.jar"/>-->
-	
+  	    </delete>
 	</target>
 	
 	<!-- ==============================================================

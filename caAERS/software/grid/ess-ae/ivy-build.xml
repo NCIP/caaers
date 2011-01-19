@@ -2,9 +2,9 @@
 	<property name="parent.dir" value="${basedir}/../.." />
 	<property file="${parent.dir}/build.properties" />
 	<import file="${parent.dir}/common.xml"/>
+	<property name="aees.nes.service.dir" value="${basedir}/../introduce/AdverseEventEnterpriseService"/>
 	
-	
-	<target name="module-specific-flow" depends="resolve,copy-ae-grid,common.aspectj-compile" />
+	<target name="module-specific-flow" depends="resolve,build-grid-service,common.aspectj-compile" />
 	
 	<!-- ========================================================================
 		target : jar-test
@@ -13,17 +13,19 @@
 	<target name="jar-test" depends="common.aspectj-compile-test, common.jar-test" />
 	
 
-	
-	<!-- this is a temp fix till we publish ae enter prise service jars , check them into lib folder if you have new stubs -->
-
-	<target name="copy-ae-grid">
+	<target name="build-grid-service">
+		<antcall target="build-aees-service" inheritAll="true" inheritRefs="true"/>		
 		<copy todir="${lib.dir}">
-			<fileset dir="lib" includes="**/*.*">
-				<exclude name=".svn"/>
-			</fileset>
+			<fileset dir="${aees.nes.service.dir}/build/lib" includes="*.jar"/>
 		</copy>
+		<property name="aees.nes.service.built" value="true"/>
 	</target>
 	
-	
+	<target name="build-aees-service" unless="aees.nes.service.built">
+		<echo message="Building Adverse Event Enterprise Service located in ${aees.nes.service.dir}, build file is ${aees.nes.service.dir}/build.xml" />
+		<subant target="all">
+			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
+		</subant>
+	</target>
 	
 </project>
