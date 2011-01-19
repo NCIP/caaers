@@ -118,20 +118,22 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     		searchResults = getResearchStaffTable(searchCriteriaMap);
     		searchResults.addAll(getInvestigatorTable(searchCriteriaMap));
     		
-    		for(UserAjaxableDomainObject uado : searchResults){
-    			if(StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())){
-    				resultsMap.put(uado.getUserName(), uado);
-    			}
-    		}
-    		List<UserAjaxableDomainObject> csmResults = getUserTable(searchCriteriaMap);
-    		for(UserAjaxableDomainObject uado : csmResults){
-    			if(resultsMap.containsKey(uado.getUserName())){
-    				//Do not add it to searchResults
-    			}else{
-    				searchResults.add(uado);
-    			}
-    		}
-    		return searchResults;
+			if(StringUtils.isNotEmpty(firstName) || StringUtils.isEmpty(lastName) || StringUtils.isEmpty(userName)){
+	    		for(UserAjaxableDomainObject uado : searchResults){
+	    			if(StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())){
+	    				resultsMap.put(uado.getUserName(), uado);
+	    			}
+	    		}
+	    		List<UserAjaxableDomainObject> csmResults = getUserTable(searchCriteriaMap);
+	    		for(UserAjaxableDomainObject uado : csmResults){
+	    			if(resultsMap.containsKey(uado.getUserName())){
+	    				//Do not add it to searchResults
+	    			}else{
+	    				searchResults.add(uado);
+	    			}
+	    		}
+			}
+			return searchResults;
     	}
     }
 	
@@ -286,7 +288,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         }
 
         try {
-            investigators = investigatorRepository.searchInvestigator(investigatorQuery);
+            investigators = investigatorRepository.searchInvestigator(investigatorQuery,searchCriteriaMap);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);

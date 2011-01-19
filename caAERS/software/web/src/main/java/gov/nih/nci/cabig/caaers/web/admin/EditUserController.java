@@ -2,7 +2,11 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
@@ -26,16 +30,65 @@ public class EditUserController extends UserController<UserCommand> {
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-		_User user = userRepository.getUserByLoginName(request.getParameter("userName"));
+		
+		String recordType = request.getParameter("recordType");
+		String userName = request.getParameter("userName");
+		String id = request.getParameter("id");
+		
 		UserCommand command = new UserCommand();
-		if(user.getCsmUser() != null){
- 			//Get all the suite role memberships for user
-			populateRoleMemberships(user,command);
-			populateSiteMap(command);
-			populateStudyMap(command);
+		LocalResearchStaff dto = new LocalResearchStaff();
+		
+		if("CSM_RECORD".equals(recordType)){
+			_User user = userRepository.getUserByLoginName(userName);
+			if(user.getCsmUser() != null){
+				dto.setFirstName(user.getCsmUser().getFirstName());
+				dto.setLastName(user.getCsmUser().getLastName());
+				dto.setEmailAddress(user.getCsmUser().getEmailId());
+	 			//Get all the suite role memberships for user
+				populateRoleMemberships(user,command);
+				populateSiteMap(command);
+				populateStudyMap(command);
+			}
+			command.setPerson(null);
+			command.setPersonType("Please Select");
+			command.setCreateAsUser(Boolean.TRUE);
+			command.setCreateAsPerson(Boolean.FALSE);
+			command.setResearchStaff(dto);
+			command.setUser(user);
+			command.buildRolesHelper();
+		}else if("RESEARCHSTAFF_RECORD".equals(recordType) || "INVESTIGATOR_RECORD".equals(recordType)){
+			Person p = personRepository.getById(Integer.parseInt(id));
+			dto.setFirstName(p.getFirstName());
+			dto.setMiddleName(p.getMiddleName());
+			dto.setLastName(p.getLastName());
+			dto.setEmailAddress(p.getEmailAddress());
+			if(p instanceof ResearchStaff){
+				dto.setNciIdentifier(((ResearchStaff)p).getNciIdentifier());
+				dto.setSiteResearchStaffs(((ResearchStaff)p).getSiteResearchStaffs());
+				command.setPersonType("ResearchStaff");
+			}
+			if(p instanceof Investigator){
+				dto.setNciIdentifier(((Investigator)p).getNciIdentifier());
+				command.setPersonType("Investigator");
+			}
+			command.setCreateAsPerson(Boolean.TRUE);
+			command.setPerson(p);
+			command.setResearchStaff(dto);
+			
+			if(p.getCaaersUser() != null){
+				_User user = userRepository.getUserByLoginName(p.getCaaersUser().getLoginName());
+				p.setCaaersUser(user);
+				command.setCreateAsUser(Boolean.TRUE);
+				command.setUser(user);
+				populateRoleMemberships(p.getCaaersUser(),command);
+				populateSiteMap(command);
+				populateStudyMap(command);
+			}else{
+				command.setCreateAsUser(Boolean.FALSE);
+				command.setUser(new _User());
+			}
+			command.buildRolesHelper();
 		}
-		command.setUser(user);
-		command.buildRolesHelper();
 		return command;
 	}
 	

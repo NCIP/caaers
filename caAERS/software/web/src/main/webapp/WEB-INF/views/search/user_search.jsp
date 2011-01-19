@@ -56,14 +56,13 @@
 			};						
 		
 			var myColumnDefs = [
-				{key:"externalId",      label:"",              	sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},			        			
-                {key:"firstName",       label:"First Name",    	sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"middleName",      label:"Middle Name",    sortable:true,      resizeable:true},
-                {key:"lastName",        label:"Last Name",     	sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"number",          label:"Person Identifier",     	sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"organization",    label:"Organization(s)",sortable:false,     resizeable:true},
-                {key:"userName",        label:"Username",    	sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"emailAddress",	label:"Email Address",  sortable:true,      resizeable:true, formatter: linkFormatter}
+				{key:"externalId",      label:"",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},			        			
+                {key:"firstName",       label:"First name",    	  sortable:true,      resizeable:true, formatter: linkFormatter},
+                {key:"middleName",      label:"Middle name",      sortable:true,      resizeable:true},
+                {key:"lastName",        label:"Last name",     	  sortable:true,      resizeable:true, formatter: linkFormatter},
+                {key:"number",          label:"Person identifier",sortable:true,      resizeable:true, formatter: linkFormatter},
+                {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true},
+                {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true, formatter: linkFormatter}
             ];
 
             var myFields = [
@@ -101,7 +100,7 @@
     		<div class="content">
     			<form:form name="searchForm" id="searchForm" method="post">
     				<caaers:message code="user.search.criteriaSection" var="criteriaSectionTitle"/>
-    				<chrome:box title="Search User" cssClass="mpaired" autopad="false">
+    				<chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
 						<div class="row">
 			                <div class="label"><caaers:message code="LBL_firstName"/>&nbsp; </div>
 			                <div class="value"><input id="propFn" name="firstName" type="text"/></div>
