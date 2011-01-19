@@ -129,13 +129,13 @@ public class UserRepositoryImpl implements UserRepository {
 	
     /**
      * Fetches the groups associated to users.  
-     * @param loginName
+     * @param csmUserId  - The csm Id of the user
      * @return
      */
-    public List<UserGroupType> getUserGroups(String loginName) {
+    public List<UserGroupType> getUserGroups(String csmUserId) {
     	List<UserGroupType> userGroups = new ArrayList<UserGroupType>();
     	try {
-			Set groups = userProvisioningManager.getGroups(loginName);
+			Set groups = userProvisioningManager.getGroups(csmUserId);
 			if(groups != null){
 				for(Object obj : groups){
 					Group group = (Group) obj;
@@ -144,7 +144,7 @@ public class UserRepositoryImpl implements UserRepository {
 				}
 			}
 		} catch (CSObjectNotFoundException e) {
-			logger.warn("unable to fetch groups for CSM user (" + loginName + "), something is wrong", e);
+			logger.warn("unable to fetch groups for CSM user (" + csmUserId + "), something is wrong", e);
 		}
     	return userGroups;
     }

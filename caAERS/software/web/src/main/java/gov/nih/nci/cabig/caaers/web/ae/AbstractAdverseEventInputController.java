@@ -105,10 +105,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     
     protected ReportRepository reportRepository;
     
-    protected _UserDao userDao;  //TODO : MD- rename this to UserDao
-    
     private Configuration configuration;
-    
+
+    private PersonDao personDao;
 
     protected StudyDeviceDao studyDeviceDao;
 
@@ -164,6 +163,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         
         
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
+        ControllerTools.registerDomainObjectEditor(binder, personDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
@@ -172,7 +172,6 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, labTermDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, interventionSiteDao);
-        ControllerTools.registerDomainObjectEditor(binder, userDao);
         ControllerTools.registerDomainObjectEditor(binder, studyDeviceDao);
         ControllerTools.registerDomainObjectEditor(binder, otherInterventionDao);
 
@@ -500,12 +499,6 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         this.studyConditionDao = studyConditionDao;
     }
     
-    @Required
-    public void setUserDao(_UserDao userDao) {
-		this.userDao = userDao;
-	}
-    
-    
 	@Required
 	public Configuration getConfiguration() {
 		return configuration;
@@ -552,5 +545,13 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public PersonDao getPersonDao() {
+        return personDao;
+    }
+
+    public void setPersonDao(PersonDao personDao) {
+        this.personDao = personDao;
     }
 }

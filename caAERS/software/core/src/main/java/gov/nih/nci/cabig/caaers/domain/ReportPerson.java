@@ -1,12 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -53,14 +50,14 @@ public abstract class ReportPerson extends PersonContact {
     
     
     @Transient
-	public User getUser() {
+	public Person getPerson() {
 		if(getResearchStaff() != null) return researchStaff;
 		return getInvestigator();
 	}
 	
-	public void setUser(User user) {
-		if(user instanceof ResearchStaff) setResearchStaff((ResearchStaff)user); 
-		else setInvestigator((Investigator)user);
+	public void setPerson(Person person) {
+		if(person instanceof ResearchStaff) setResearchStaff((ResearchStaff)person);
+		else setInvestigator((Investigator)person);
 	}
     
 

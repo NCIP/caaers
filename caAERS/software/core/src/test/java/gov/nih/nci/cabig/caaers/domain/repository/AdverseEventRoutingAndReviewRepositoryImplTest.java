@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
@@ -429,7 +428,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		Report report = Fixtures.createReport("testReport");
         Investigator investigator = Fixtures.createInvestigator("tester");
         investigator.setLoginId(null);
-        report.getPhysician().setUser(investigator);
+        report.getPhysician().setPerson(investigator);
 		report.setWorkflowId(1);
 		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
 		report.setStatus(ReportStatus.PENDING);
@@ -452,7 +451,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		Report report = Fixtures.createReport("testReport");
         Investigator investigator = Fixtures.createInvestigator("tester");
         investigator.setLoginId("hai");
-        report.getPhysician().setUser(investigator);
+        report.getPhysician().setPerson(investigator);
 		report.setWorkflowId(1);
 		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
 		report.setStatus(ReportStatus.PENDING);

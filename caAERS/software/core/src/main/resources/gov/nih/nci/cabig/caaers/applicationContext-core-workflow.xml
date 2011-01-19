@@ -46,7 +46,7 @@
    </bean>
    <bean id="workflowService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl" depends-on="expedited_domestic">
         <property name="jbpmTemplate" ref="jbpmTemplate"/>
-         <property name="processDefinitions">
+        <property name="processDefinitions">
             <list>
                 <ref local="reportingperiod_coordinatingcenter"/>
                 <ref local="expedited_domestic"/>
@@ -58,10 +58,10 @@
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
         <property name="reportDao" ref="reportDao" />
         <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
-        <property name="csmUserRepository" ref="csmUserRepository" />
         <property name="freeMarkerService" ref="freeMarkerService" />
         <property name="configuration" ref="configuration" />
         <property name="studyDao" ref="studyDao" />
+        <property name="userRepository" ref="userRepository" />
    </bean>
    
    <bean id="possibleTransitionsResolver" class="gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver"/>

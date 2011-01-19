@@ -127,9 +127,9 @@
             
             var id = $("staff").value;
             var selectElement = $("staff");
-            if (id == '' && ${validPersonnel}){
+            if (id == '' && ${editFlow}){
             	for (var i = 0; i < selectElement.options.length; i++) {
-   					if (selectElement.options[i].value == ${loggedInUserId}) {
+   					if (selectElement.options[i].value == ${reporterPersonId}) {
    						selectElement.selectedIndex = i;
    					}
    				}
@@ -137,11 +137,10 @@
 	        
 	        id = $("physician").value;
 	        selectElement = $("physician");
-	        if (id == '' && ${validPersonnel}){
+	        if (id == '' && ${editFlow}){
 	        	for(var i = 0; i < selectElement.options.length; i++){
-	        		if(selectElement.options[i].value == ${loggedInUserId}) {
+	        		if(selectElement.options[i].value == ${physicianPersonId}) {
 	        			selectElement.selectedIndex = i;
-	        			choosePhysician();
 	        		}
 	        	}
 	        }
@@ -188,16 +187,16 @@
             <div class="row">
                 <div class="label">Reporter</div>
                 <div class="value">
-                    <select id="staff" name="aeReport.reporter.caaersUser" class="required">
+                    <select id="staff" name="aeReport.reporter.person" class="required">
                         <option value="">Please select</option>
                         <optgroup label="Reporter">
                         <c:forEach var="researchStaff" items="${researchStaffList }">
-                        	<option value="${researchStaff.id }" ${researchStaff.id eq loggedInUserId ? 'SELECTED' : '' }>${researchStaff.firstName } ${researchStaff.lastName }</option>
+                        	<option value="${researchStaff.id }"  }>${researchStaff.firstName } ${researchStaff.lastName }</option>
                         </c:forEach>
                         </optgroup>
                         <optgroup label="Investigators">
                         <c:forEach var="investigator" items="${investigatorList }">
-                        	<option value="${investigator.id }" ${investigator.id eq loggedInUserId ? 'SELECTED' : '' }>${investigator.firstName } ${investigator.lastName }</option>
+                        	<option value="${investigator.id }" }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                         </optgroup>
                         <option value="">Enter manually</option>
@@ -219,10 +218,10 @@
         <div class="row">
                 <div class="label">Physician</div>
                 <div class="value">
-                    <select id="physician" name="aeReport.physician.caaersUser" class="required">
+                    <select id="physician" name="aeReport.physician.person" class="required">
                         <option value="">Please select</option>
                         <c:forEach var="investigator" items="${investigatorList }">
-                        	<option value="${investigator.id }" ${investigator.id eq loggedInUserId ? 'SELECTED' : '' }>${investigator.firstName } ${investigator.lastName }</option>
+                        	<option value="${investigator.id }"  }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                         <option value="">Enter manually</option>
                     </select>

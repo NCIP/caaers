@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner;
@@ -68,11 +68,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	private PossibleTransitionsResolver possibleTransitionsResolver;
 	
-	private CSMUserRepository csmUserRepository;
-	
 	private FreeMarkerService freeMarkerService;
 	
 	private Configuration configuration;
+
+    private UserRepository userRepository;
 	
 	private Logger log = Logger.getLogger(WorkflowServiceImpl.class);
 	
@@ -137,7 +137,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		TaskConfig taskConfig = wfConfig.findTaskConfig(taskNodeName);
 		if(taskConfig == null )  return possibleTransitions; // task is not configured
 		
-        List<UserGroupType> userGroupTypes = csmUserRepository.getUserGroups(loginId);  //CAAERS-4586
+        List<UserGroupType> userGroupTypes = userRepository.getUserByLoginName(loginId).getUserGroupTypes();  //CAAERS-4586
 		
         Map<String, Transition> filteredTransitionMap = new HashMap<String, Transition>();
 
@@ -181,7 +181,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Map<ReviewStatus, Boolean> allowedReviewStatusMap = new HashMap<ReviewStatus, Boolean>();
 		try{
 
-            List<UserGroupType> userGroupTypes = csmUserRepository.getUserGroups(loginId); //CAAERS-4586
+            List<UserGroupType> userGroupTypes = userRepository.getUserGroups(loginId); //CAAERS-4586
             //first fetch all the possible workflow configs.
             List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
             for(WorkflowConfig wc : workflowConfigList){
@@ -466,7 +466,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				people.addAll(participantCoordinators);
 				break;
 			case PHYSICIAN:
-				Person physician = report.getAeReport().getPhysician().getUser();
+				Person physician = report.getAeReport().getPhysician().getPerson();
 				if(physician != null && physician.isUser()){
 					people.add(physician);
 				}
@@ -476,7 +476,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				people.addAll(principalInvestigators);
 				break;
 			case REPORTER:
-				Person reporter = report.getAeReport().getReporter().getUser();
+				Person reporter = report.getAeReport().getReporter().getPerson();
 				if(reporter != null && reporter.isUser()){
 					people.add(reporter);
 				}
@@ -541,13 +541,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
-	public CSMUserRepository getCsmUserRepository() {
-		return csmUserRepository;
-	}
-	
-	public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
-		this.csmUserRepository = csmUserRepository;
-	}
+
 	
 	public FreeMarkerService getFreeMarkerService() {
 		return freeMarkerService;
@@ -576,5 +570,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public ReportDao getReportDao(){
 		return reportDao;
 	}
-	
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 }

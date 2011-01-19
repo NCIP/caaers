@@ -1,22 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.PersonDao;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,14 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
@@ -42,6 +31,8 @@ import org.springframework.validation.Errors;
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
     private PersonRepository personRepository;
+    private UserRepository userRepository;
+
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter", "ae/reporter");
@@ -67,14 +58,20 @@ public class ReporterTab extends AeTab {
     	
     	Set<ResearchStaff> researchStaffSet = new HashSet<ResearchStaff>();
     	Set<Investigator> investigatorSet = new HashSet<Investigator>();
-    	
-    	for(StudyPersonnel sPersonnel: command.getAssignment().getStudySite().getActiveStudyPersonnel()){
-    		if(sPersonnel.getSiteResearchStaff().getResearchStaff().isActive()){
-    			//researchStaffList.add(sPersonnel.getSiteResearchStaff().getResearchStaff());
-    			researchStaffSet.add(sPersonnel.getSiteResearchStaff().getResearchStaff());
-    		}
-    	}
-    	
+
+        HashSet<ResearchStaff> temporaryRsSet = new HashSet<ResearchStaff>();
+        for(SiteResearchStaff srs : command.getAssignment().getStudySite().getOrganization().getSiteResearchStaffs()){
+           ResearchStaff rs = srs.getResearchStaff();
+           if(!temporaryRsSet.contains(rs)){
+              if(rs.isUser()){
+                 _User user = userRepository.getUserByLoginName(rs.getCaaersUser().getLoginName());
+                 if(user.hasRole(UserGroupType.ae_reporter)) researchStaffSet.add(rs);
+              }
+
+           }
+           temporaryRsSet.add(rs);
+        }
+
     	for(StudyInvestigator sInvestigator: command.getAssignment().getStudySite().getActiveStudyInvestigators()){
     		//investigatorList.add(sInvestigator.getSiteInvestigator().getInvestigator());
     		investigatorSet.add(sInvestigator.getSiteInvestigator().getInvestigator());
@@ -103,10 +100,25 @@ public class ReporterTab extends AeTab {
         if(loginId != null){
            loggedInPerson =  personRepository.getByLoginId(loginId);
      	   refData.put("validPersonnel", loggedInPerson != null);
-           refData.put("loggedInUserId", loggedInPerson != null ? loggedInPerson.getId() : 0);
+           refData.put("loggedInPersonId", loggedInPerson != null ? loggedInPerson.getId() : 0);
 
         }
-    	
+
+        Person reporter = command.getAeReport().getReporter().getPerson();
+        Person physician = command.getAeReport().getPhysician().getPerson();
+
+        int reporterPersonId = (reporter != null) ? reporter.getId(): loggedInPerson.getId();
+        refData.put("reporterPersonId", reporterPersonId);
+        
+        refData.put("reporterIsResearchStaff", reporter != null && reporter instanceof ResearchStaff);
+        refData.put("reporterIsInvestigator", reporter != null && reporter instanceof Investigator);
+
+        int physicianPersonId = (physician != null) ? physician.getId() : 0;
+        refData.put("physicianPersonId", physicianPersonId);
+        
+        refData.put("physicianAPerson", physician != null);
+        refData.put("editFlow", command.getAeReport().getId() != null);
+
     	return refData;
     }
 
@@ -213,17 +225,7 @@ public class ReporterTab extends AeTab {
     	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
     	processReports(request, (EditExpeditedAdverseEventCommand)command);
     }
-    
-   
-    @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
-    	super.validate(command, commandBean, fieldGroups, errors);
-    	if(command.getWorkflowEnabled()){
-    		if(!command.getAeReport().getReporter().isUser()){
-    			errors.rejectValue("aeReport.reporter.user", "SAE_019","Reporter should be selected in the drop down");
-    		}
-    	}
-    }
+
 
     public PersonRepository getPersonRepository() {
         return personRepository;
@@ -231,5 +233,13 @@ public class ReporterTab extends AeTab {
 
     public void setPersonRepository(PersonRepository personRepository) {
         this.personRepository = personRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

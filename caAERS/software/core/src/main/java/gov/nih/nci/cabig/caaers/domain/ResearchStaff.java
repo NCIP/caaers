@@ -77,8 +77,12 @@ public abstract class ResearchStaff extends User {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (o == null || getClass() != o.getClass())
+
+        if (o == null)
 			return false;
+
+        if(!(o instanceof ResearchStaff)) return false;
+
 		if (!super.equals(o))
 			return false;
 		ResearchStaff that = (ResearchStaff) o;

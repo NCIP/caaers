@@ -338,6 +338,14 @@ public class _User extends AbstractMutableDomainObject{
     //==
 
     /**
+     * Will tell whether this user has the specific role.
+     * @param role - A UserGroupType to check
+     * @return  true, if the user is playing the role 
+     */
+    public boolean hasRole(UserGroupType role){
+        return roleMembershipMap.containsKey(role);
+    }
+    /**
      * Will copy the User details from the supplied User. If the input User is null, all the
      * role memberships of this user will be removed. 
      * @param u - User from which details to be copied. 

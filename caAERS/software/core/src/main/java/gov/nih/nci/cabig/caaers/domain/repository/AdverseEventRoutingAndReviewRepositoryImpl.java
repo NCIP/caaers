@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
@@ -313,7 +312,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
            Physician physician = report.getPhysician();
            if(physician != null){
-              User investigator = physician.getUser();
+              Person investigator = physician.getPerson();
               physicianHasLogin = ( (investigator != null) && StringUtils.isNotEmpty(investigator.getLoginId()));
            }
         }

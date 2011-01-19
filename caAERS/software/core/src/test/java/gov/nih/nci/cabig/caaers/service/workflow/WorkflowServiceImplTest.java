@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
@@ -46,7 +47,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	UserDao userDao;
 	AdverseEventReportingPeriodDao reportingPeriodDao;
 	PossibleTransitionsResolver possibleTransitionsResolver;
-	CSMUserRepository csmUserRepository;
+	UserRepository userRepository;
 	StudyDao studyDao;
 	Map<String, Object> variables = new HashMap<String, Object>();
 	
@@ -74,6 +75,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		TaskConfig tc = wfConfig.findTaskConfig("a1");
 		PersonAssignee a1 = new PersonAssignee();
 		r1  = new LocalResearchStaff();
+        r1.setCaaersUser(Fixtures.createUser("joel", "Joel"));
 		r1.setEmailAddress("joel@abcd.com");
 		r1.setLoginId("joel");
 		a1.setPerson(r1);
@@ -90,9 +92,9 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		configuration = registerMockFor(Configuration.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
 		possibleTransitionsResolver = registerMockFor(PossibleTransitionsResolver.class);
-		csmUserRepository = registerMockFor(CSMUserRepository.class);
+		userRepository = registerMockFor(UserRepository.class);
 		wfService.setPossibleTransitionsResolver(possibleTransitionsResolver);
-		wfService.setCsmUserRepository(csmUserRepository);
+		wfService.setUserRepository(userRepository);
 		
 		wfService.setStudyDao(studyDao);
 		wfService.setConfiguration(configuration);
