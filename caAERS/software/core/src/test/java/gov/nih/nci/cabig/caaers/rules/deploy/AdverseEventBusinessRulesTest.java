@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-import java.util.Date;
 import java.util.Calendar;
 
 public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
@@ -319,7 +318,20 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
     }
 
     public void testFieldNames() throws Exception {
-        
     }
-    
+
+    /**
+     *
+     * TEst the fix for NPE for ae.getAdverseEventCtcTerm().getCtcTerm() in AER_UK_CHK when Term is null
+     *
+     * */
+    public void testDuplicateCTCWithANullTerm() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(0).getAdverseEventCtcTerm().getCtcTerm().setId(3002);
+        aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().getCtcTerm().setId(3002);
+        aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().setCtcTerm(null);
+        ValidationErrors errors = fireRules(aeReport);
+        assertSameErrorCount(errors, 0);
+    }
+
 }

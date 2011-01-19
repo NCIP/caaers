@@ -307,8 +307,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         } else if (this.adverseEventTerm instanceof AdverseEventCtcTerm) {
             return getAdverseEventCtcTerm().getCtcTerm();
         } else {
-            throw new CaaersSystemException(
-                    "Cannot Return a Ctc Term you are probably using a Terminology different than Ctc");
+            throw new CaaersSystemException("Cannot Return a Ctc Term you are probably using a Terminology different than Ctc");
         }
     }
 
