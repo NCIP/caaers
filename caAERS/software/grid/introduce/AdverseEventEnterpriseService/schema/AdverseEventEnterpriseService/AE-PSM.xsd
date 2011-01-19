@@ -528,6 +528,31 @@
 			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
+	
+  <xs:element name="DSET_SolicitedAdverseEvent" type="ESS-AE:DSET_SolicitedAdverseEvent"></xs:element>
+  <xs:complexType name="DSET_SolicitedAdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="ESS-AE:COLL_SolicitedAdverseEvent">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-AE:SolicitedAdverseEvent" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="COLL_SolicitedAdverseEvent">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>
+	
+	<xs:complexType name="SolicitedAdverseEvent">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="LowLevelTerm" type="ESS-AE:LowLevelTerm"></xs:element>
+				<xs:element name="CtcTerm" type="ESS-AE:CtcTerm"></xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>	
 			
 <xs:element name="AdditionalInformation" type="ESS-AE:AdditionalInformation"/>
 	<xs:complexType name="TreatmentInformation">

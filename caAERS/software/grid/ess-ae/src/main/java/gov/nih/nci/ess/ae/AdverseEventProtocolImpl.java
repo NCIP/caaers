@@ -3,6 +3,7 @@ package gov.nih.nci.ess.ae;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import ess.caaers.nci.nih.gov.AeTerminology;
 import ess.caaers.nci.nih.gov.DSET_ExpectedAdverseEvent;
+import ess.caaers.nci.nih.gov.DSET_SolicitedAdverseEvent;
 import ess.caaers.nci.nih.gov.ExpectedAdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -35,6 +36,7 @@ import org.springframework.context.NoSuchMessageException;
 
 import _21090.org.iso.DSET_II;
 import _21090.org.iso.II;
+import _21090.org.iso.ST;
 
 /**
  * @author Denis G. Krylov
@@ -413,6 +415,22 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	 */
 	public final void setCtcTermDao(CtcTermDao ctcTermDao) {
 		this.ctcTermDao = ctcTermDao;
+	}
+
+	public void updateSolicitedAdverseEventsForStudyEpoch(Id studyId,
+			ST epochName, DSET_II ctcOrMeddraCode)
+			throws RemoteException,
+			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public DSET_SolicitedAdverseEvent getSolicitedAdverseEventsForStudyEpoch(
+			Id studyId, ST epochName)
+			throws RemoteException,
+			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -107,6 +107,65 @@
           </sequence>
         </complexType>
       </element>
+      <element name="UpdateSolicitedAdverseEventsForStudyEpochRequest">
+        <complexType>
+          <sequence>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="epochName">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="ctcOrMeddraCode">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateSolicitedAdverseEventsForStudyEpochResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetSolicitedAdverseEventsForStudyEpochRequest">
+        <complexType>
+          <sequence>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="epochName">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSolicitedAdverseEventsForStudyEpochResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:DSET_SolicitedAdverseEvent" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="AEProtocolResourceProperties">
         <complexType>
           <sequence />
@@ -139,6 +198,18 @@
   <message name="GetExpectedAdverseEventsForStudyResponse">
     <part name="parameters" element="tns:GetExpectedAdverseEventsForStudyResponse" />
   </message>
+  <message name="UpdateSolicitedAdverseEventsForStudyEpochRequest">
+    <part name="parameters" element="tns:UpdateSolicitedAdverseEventsForStudyEpochRequest" />
+  </message>
+  <message name="UpdateSolicitedAdverseEventsForStudyEpochResponse">
+    <part name="parameters" element="tns:UpdateSolicitedAdverseEventsForStudyEpochResponse" />
+  </message>
+  <message name="GetSolicitedAdverseEventsForStudyEpochRequest">
+    <part name="parameters" element="tns:GetSolicitedAdverseEventsForStudyEpochRequest" />
+  </message>
+  <message name="GetSolicitedAdverseEventsForStudyEpochResponse">
+    <part name="parameters" element="tns:GetSolicitedAdverseEventsForStudyEpochResponse" />
+  </message>
   <message name="AdverseEventServiceExceptionFaultMessage">
     <part name="fault" element="ns7:AdverseEventServiceException" />
   </message>
@@ -166,6 +237,16 @@
     <operation name="getExpectedAdverseEventsForStudy">
       <input message="tns:GetExpectedAdverseEventsForStudyRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/GetExpectedAdverseEventsForStudyRequest" />
       <output message="tns:GetExpectedAdverseEventsForStudyResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/GetExpectedAdverseEventsForStudyResponse" />
+      <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/AdverseEventServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="updateSolicitedAdverseEventsForStudyEpoch">
+      <input message="tns:UpdateSolicitedAdverseEventsForStudyEpochRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/UpdateSolicitedAdverseEventsForStudyEpochRequest" />
+      <output message="tns:UpdateSolicitedAdverseEventsForStudyEpochResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/UpdateSolicitedAdverseEventsForStudyEpochResponse" />
+      <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/AdverseEventServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="getSolicitedAdverseEventsForStudyEpoch">
+      <input message="tns:GetSolicitedAdverseEventsForStudyEpochRequest" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/GetSolicitedAdverseEventsForStudyEpochRequest" />
+      <output message="tns:GetSolicitedAdverseEventsForStudyEpochResponse" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/GetSolicitedAdverseEventsForStudyEpochResponse" />
       <fault name="AdverseEventServiceException" message="tns:AdverseEventServiceExceptionFaultMessage" wsa:Action="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/AEProtocol/AdverseEventServiceExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">

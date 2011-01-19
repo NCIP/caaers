@@ -26,6 +26,18 @@ public class AEProtocolProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.ae.service.protocol.stubs.UpdateSolicitedAdverseEventsForStudyEpochResponse updateSolicitedAdverseEventsForStudyEpoch(gov.nih.nci.ess.ae.service.protocol.stubs.UpdateSolicitedAdverseEventsForStudyEpochRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    gov.nih.nci.ess.ae.service.protocol.stubs.UpdateSolicitedAdverseEventsForStudyEpochResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateSolicitedAdverseEventsForStudyEpochResponse();
+    impl.updateSolicitedAdverseEventsForStudyEpoch(params.getStudyId().getId(),params.getEpochName().getST(),params.getCtcOrMeddraCode().getDSET_II());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.ae.service.protocol.stubs.GetSolicitedAdverseEventsForStudyEpochResponse getSolicitedAdverseEventsForStudyEpoch(gov.nih.nci.ess.ae.service.protocol.stubs.GetSolicitedAdverseEventsForStudyEpochRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
+    gov.nih.nci.ess.ae.service.protocol.stubs.GetSolicitedAdverseEventsForStudyEpochResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.GetSolicitedAdverseEventsForStudyEpochResponse();
+    boxedResult.setDSET_SolicitedAdverseEvent(impl.getSolicitedAdverseEventsForStudyEpoch(params.getStudyId().getId(),params.getEpochName().getST()));
+    return boxedResult;
+  }
+
     public gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse updateCodingTerminologyForStudy(gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyRequest params) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
     gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse boxedResult = new gov.nih.nci.ess.ae.service.protocol.stubs.UpdateCodingTerminologyForStudyResponse();
     impl.updateCodingTerminologyForStudy(params.getAeTerminology().getAeTerminology());

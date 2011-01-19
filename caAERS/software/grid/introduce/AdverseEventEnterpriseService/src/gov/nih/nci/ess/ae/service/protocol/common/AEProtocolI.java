@@ -13,6 +13,27 @@ import java.rmi.RemoteException;
 public interface AEProtocolI {
 
   /**
+   * Updates the solicited adverse event records associated to a study epoch.
+   *
+   * @param studyId
+   * @param epochName
+   * @param ctcOrMeddraCode
+   * @throws AdverseEventServiceException
+   *	
+   */
+  public void updateSolicitedAdverseEventsForStudyEpoch(ess.caaers.nci.nih.gov.Id studyId,_21090.org.iso.ST epochName,_21090.org.iso.DSET_II ctcOrMeddraCode) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+
+  /**
+   * Retrieves the solicited adverse event records associated to a study epoch.
+   *
+   * @param studyId
+   * @param epochName
+   * @throws AdverseEventServiceException
+   *	
+   */
+  public ess.caaers.nci.nih.gov.DSET_SolicitedAdverseEvent getSolicitedAdverseEventsForStudyEpoch(ess.caaers.nci.nih.gov.Id studyId,_21090.org.iso.ST epochName) throws RemoteException, gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException ;
+
+  /**
    * Updates the terminology system to be used for encoding adverse events on a study.
    *
    * @param aeTerminology

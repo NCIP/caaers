@@ -74,6 +74,14 @@ public class AEProtocolAuthorization implements PDP {
 	public void authorizeGetExpectedAdverseEventsForStudy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeUpdateSolicitedAdverseEventsForStudyEpoch(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetSolicitedAdverseEventsForStudyEpoch(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -96,6 +104,12 @@ public class AEProtocolAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getExpectedAdverseEventsForStudy")){
 			authorizeGetExpectedAdverseEventsForStudy(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSolicitedAdverseEventsForStudyEpoch")){
+			authorizeUpdateSolicitedAdverseEventsForStudyEpoch(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getSolicitedAdverseEventsForStudyEpoch")){
+			authorizeGetSolicitedAdverseEventsForStudyEpoch(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

@@ -17,6 +17,7 @@
    <ns2:SchemaElement type="DSET_AuditTrail" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DSET_ExpectedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DSET_II" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_SolicitedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ExpectedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Id" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="LimitOffset" xsi:type="ns2:SchemaElementType"/>
@@ -462,15 +463,36 @@
       <ns75:Exception description="" name="AdverseEventServiceException" qname="ns88:AdverseEventServiceException" xmlns:ns88="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
      </ns75:Exceptions>
     </ns75:Method>
+    <ns75:Method description="Updates the solicited adverse event records associated to a study epoch." isImported="false" isProvided="false" name="updateSolicitedAdverseEventsForStudyEpoch" xsi:type="ns75:MethodType">
+     <ns75:Inputs>
+      <ns75:Input qName="ns89:Id" description="" isArray="false" name="studyId" xmlns:ns89="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns90:ST" description="" isArray="false" name="epochName" xmlns:ns90="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns91:DSET_II" description="" isArray="false" name="ctcOrMeddraCode" xmlns:ns91="http://ess.caaers.nci.nih.gov"/>
+     </ns75:Inputs>
+     <ns75:Output qName="void" description="" isArray="false"/>
+     <ns75:Exceptions>
+      <ns75:Exception description="" name="AdverseEventServiceException" qname="ns92:AdverseEventServiceException" xmlns:ns92="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns75:Exceptions>
+    </ns75:Method>
+    <ns75:Method description="Retrieves the solicited adverse event records associated to a study epoch." isImported="false" isProvided="false" name="getSolicitedAdverseEventsForStudyEpoch" xsi:type="ns75:MethodType">
+     <ns75:Inputs>
+      <ns75:Input qName="ns93:Id" description="" isArray="false" name="studyId" xmlns:ns93="http://ess.caaers.nci.nih.gov"/>
+      <ns75:Input qName="ns94:ST" description="" isArray="false" name="epochName" xmlns:ns94="http://ess.caaers.nci.nih.gov"/>
+     </ns75:Inputs>
+     <ns75:Output qName="ns95:DSET_SolicitedAdverseEvent" description="" isArray="false" xmlns:ns95="http://ess.caaers.nci.nih.gov"/>
+     <ns75:Exceptions>
+      <ns75:Exception description="" name="AdverseEventServiceException" qname="ns96:AdverseEventServiceException" xmlns:ns96="http://service.ae.ess.nci.nih.gov/AdverseEventEnterpriseService/Management/types"/>
+     </ns75:Exceptions>
+    </ns75:Method>
    </ns75:Methods>
-   <ns89:ResourcePropertiesList xsi:type="ns89:ResourcePropertiesListType" xmlns:ns89="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+   <ns97:ResourcePropertiesList xsi:type="ns97:ResourcePropertiesListType" xmlns:ns97="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns90:Extensions xsi:type="ns90:ExtensionsType" xmlns:ns90="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns90:Extension name="cagrid_metadata" version="1.3" xsi:type="ns90:ExtensionType"/>
- </ns90:Extensions>
+ <ns98:Extensions xsi:type="ns98:ExtensionsType" xmlns:ns98="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns98:Extension name="cagrid_metadata" version="1.3" xsi:type="ns98:ExtensionType"/>
+ </ns98:Extensions>
 </ns1:ServiceDescription>
