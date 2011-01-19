@@ -6,12 +6,15 @@ import ess.caaers.nci.nih.gov.DSET_ExpectedAdverseEvent;
 import ess.caaers.nci.nih.gov.DSET_SolicitedAdverseEvent;
 import ess.caaers.nci.nih.gov.ExpectedAdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
+import ess.caaers.nci.nih.gov.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -60,6 +63,9 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 	private static final String NO_CTC_VERSION = "WS_AEMS_053";
 	private static final String NO_CTC_TERM = "WS_AEMS_054";
 	private static final String NO_CTC_OR_MEDDRA_CODES = "WS_AEMS_055";
+	private static final String NO_EPOCH_NAME = "WS_AEMS_056";
+	private static final String NO_EPOCH_FOUND = "WS_AEMS_057";
+	private static final String NO_ARMS = "WS_AEMS_058";
 	private DomainToGridObjectConverter domainToGridConverter;
 	private GridToDomainObjectConverter gridToDomainConverter;
 	private StudyRepository studyRepository;
@@ -286,7 +292,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 			DSET_II ctcOrMeddraCodeSet)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-		
+
 		Study study = getStudyByPrimaryId(studyId);
 		gov.nih.nci.cabig.caaers.domain.AeTerminology aeTerminology = study
 				.getAeTerminology();
@@ -294,11 +300,12 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 			raiseError(NO_AE_TERMINOLOGY);
 		}
 
-		if (ctcOrMeddraCodeSet==null) {
+		if (ctcOrMeddraCodeSet == null) {
 			raiseError(NO_CTC_OR_MEDDRA_CODES);
 		}
-		
-		II[] ctcOrMeddraCode = ctcOrMeddraCodeSet.getItem()!=null?ctcOrMeddraCodeSet.getItem():new II[0];
+
+		II[] ctcOrMeddraCode = ctcOrMeddraCodeSet.getItem() != null ? ctcOrMeddraCodeSet
+				.getItem() : new II[0];
 		study.getExpectedAECtcTerms().clear();
 		study.getExpectedAEMeddraLowLevelTerms().clear();
 		if (aeTerminology.getTerm() == Term.MEDDRA) {
@@ -422,15 +429,42 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public DSET_SolicitedAdverseEvent getSolicitedAdverseEventsForStudyEpoch(
 			Id studyId, ST epochName)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		Study study = getStudyByPrimaryId(studyId);
+		List<SolicitedAdverseEvent> list = new ArrayList<SolicitedAdverseEvent>();
+
+		String epochNameStr = h.value(epochName);
+		if (StringUtils.isBlank(epochNameStr)) {
+			raiseError(NO_EPOCH_NAME);
+		}
+		Epoch epoch = null;
+		for (Epoch ep : study.getEpochs()) {
+			if (epochNameStr.equals(ep.getName())) {
+				epoch = ep;
+			}
+		}
+		if (epoch == null) {
+			raiseError(NO_EPOCH_FOUND, epochNameStr);
+		}
+
+		Arm arm = CollectionUtils.firstElement(epoch.getArms());
+		if (arm == null) {
+			raiseError(NO_ARMS);
+		}
+
+		for (gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent ae : arm
+				.getSolicitedAdverseEvents()) {
+			list.add(domainToGridConverter.convert(ae));
+		}
+
+		return new DSET_SolicitedAdverseEvent(
+				list.toArray(new SolicitedAdverseEvent[0]));
 	}
 
 }

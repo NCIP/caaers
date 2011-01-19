@@ -118,4 +118,12 @@ public final class ISO21090Helper {
 		return i != null ? ST(i.toString()) : ST((String) null);
 	}
 
+	public static final String value(ST st) {
+		if (st != null) {
+			return st.getValue();
+		} else {
+			return null;
+		}
+	}
+
 }

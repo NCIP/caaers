@@ -5,6 +5,7 @@ import ess.caaers.nci.nih.gov.AdverseEventSeriousness;
 import ess.caaers.nci.nih.gov.AeTerminology;
 import ess.caaers.nci.nih.gov.AuditTrail;
 import ess.caaers.nci.nih.gov.AuditTrailValue;
+import ess.caaers.nci.nih.gov.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -167,7 +168,7 @@ public class DomainToGridObjectConverter {
 	 */
 	public ess.caaers.nci.nih.gov.LowLevelTerm convert(LowLevelTerm llt) {
 		final ess.caaers.nci.nih.gov.LowLevelTerm gridLlt = new ess.caaers.nci.nih.gov.LowLevelTerm();
-		if (llt!=null) {
+		if (llt != null) {
 			gridLlt.setMeddraCode(h.ST(llt.getMeddraCode()));
 			gridLlt.setMeddraTerm(h.ST(llt.getMeddraTerm()));
 		}
@@ -192,7 +193,7 @@ public class DomainToGridObjectConverter {
 	 */
 	public ess.caaers.nci.nih.gov.CtcTerm convert(CtcTerm ctcTerm) {
 		final ess.caaers.nci.nih.gov.CtcTerm gridTerm = new ess.caaers.nci.nih.gov.CtcTerm();
-		if (ctcTerm!=null) {
+		if (ctcTerm != null) {
 			gridTerm.setCtepTerm(h.CD(ctcTerm.getCtepTerm()));
 			gridTerm.setCtepCode(h.CD(ctcTerm.getCtepCode()));
 		}
@@ -251,13 +252,26 @@ public class DomainToGridObjectConverter {
 		if (aeTerminology.getTerm() != null) {
 			gridTerm.setTermCode(h.II(aeTerminology.getTerm().name()));
 		}
-		if (aeTerminology.getCtcVersion()!=null) {
-			gridTerm.setTermVersion(h.II(aeTerminology.getCtcVersion().getName()));
+		if (aeTerminology.getCtcVersion() != null) {
+			gridTerm.setTermVersion(h.II(aeTerminology.getCtcVersion()
+					.getName()));
 		}
-		if (aeTerminology.getMeddraVersion()!=null) {
+		if (aeTerminology.getMeddraVersion() != null) {
 			gridTerm.setMeddra(h.II(aeTerminology.getMeddraVersion().getName()));
-		}		
+		}
 		return gridTerm;
+	}
+
+	public SolicitedAdverseEvent convert(
+			gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent ae) {
+		SolicitedAdverseEvent gridAe = new SolicitedAdverseEvent();
+		if (ae.getCtcterm() != null) {
+			gridAe.setCtcTerm(convert(ae.getCtcterm()));
+		}
+		if (ae.getLowLevelTerm() != null) {
+			gridAe.setLowLevelTerm(convert(ae.getLowLevelTerm()));
+		}
+		return gridAe;
 	}
 
 }
