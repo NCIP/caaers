@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,9 +128,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		}catch(Exception e){
 			logger.warn("Error searching Investiagators from PO -- " + e.getMessage());
 		}
-		if(remoteInvestigators == null){
-			return investigatorDao.getLocalInvestigator(query);
-		}else{
+		if(CollectionUtils.isNotEmpty(remoteInvestigators)){
 			saveRemoteInvestigators(remoteInvestigators);
 			logger.info(remoteInvestigators.size() +" :::: Investigators fetched from PO");
 		}
@@ -225,91 +224,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	public Investigator getById(int id) {
 		return getInvestigatorDao().getInvestigatorById(id);
 	}
-
-/* MERGING the search results in java, would not allow us to security filer the results. Hence commented the below method and introduced saveRemoteInvestigators method.
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-    private List<Investigator> merge(List<Investigator> localList , List<Investigator> remoteList) {
-		for (Investigator remoteInvestigator:remoteList) {
-			//Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
-
-			Investigator inv = investigatorDao.getByExternalId(remoteInvestigator.getExternalId());
-			
-    		if (inv == null ) {
-    			try {
-    				
-    				List<SiteInvestigator> siList = remoteInvestigator.getSiteInvestigators();
-    				List<SiteInvestigator> siDBList = new ArrayList<SiteInvestigator>();
-    				for (SiteInvestigator si:siList) {
-    					Organization remoteOrganization = si.getOrganization();
-    					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    	    			if (organization == null) {
-    	    				organizationRepository.create(remoteOrganization);
-    	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    	    			} 
-    	    			SiteInvestigator dbSI = new SiteInvestigator();
-    	    			dbSI.setOrganization(organization);
-    	    			dbSI.setStartDate(DateUtils.today());
-    	    			dbSI.setInvestigator(remoteInvestigator);
-    	    			siDBList.add(dbSI);
-    	    			
-    				}
-    				remoteInvestigator.getSiteInvestigators().clear();
-    				remoteInvestigator.setSiteInvestigators(siDBList);
-    				
-    				save(remoteInvestigator,"URL");
-    				remoteInvestigator = investigatorDao.getByExternalId(remoteInvestigator.getExternalId());
-    			} catch (MailException e) {
-    				e.printStackTrace();
-    			}
-        		//this.investigatorDao.save(remoteInvestigator);
-        		localList.add(remoteInvestigator);
-        	} else {
-        		try {
-    				List<SiteInvestigator> siList = remoteInvestigator.getSiteInvestigators();
-    				
-    				for (SiteInvestigator si:siList) {
-    					Organization remoteOrganization = si.getOrganization();
-    					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    	    			if (organization == null) {
-    	    				organizationRepository.create(remoteOrganization);
-    	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    	    			} 
-    	    			SiteInvestigator siteInvestigator = new SiteInvestigator();
-    	    			siteInvestigator.setOrganization(organization);
-    	    			siteInvestigator.setStartDate(DateUtils.today());
-    	    			siteInvestigator.setInvestigator(remoteInvestigator);
-    	    			List<SiteInvestigator> siDBList = inv.getSiteInvestigators();
-    	    			boolean exists = false;
-    	    			for (SiteInvestigator sid:siDBList){
-    	    				if (sid.getOrganization().getNciInstituteCode().equals(organization.getNciInstituteCode())) {
-    	    					exists = true;
-    	    					break;
-    	    				}
-    	    			}
-    	    			if (!exists) {
-    	    				inv.addSiteInvestigator(siteInvestigator);
-    	    			}
-    	    			
-    	    			//siDBList.add(dbSI);
-    	    			
-    				}
-    				//inv.getSiteInvestigators().clear();
-    				//inv.setSiteInvestigators(siDBList);
-    				
-    				save(inv,"URL");
-    				
-    			} catch (MailException e) {
-    				e.printStackTrace();
-    			}
-        		// if it exist in local list , remote interceptor would have loaded the rest of the details .
-        		if (!localList.contains(inv)) {
-        			localList.add(inv);
-        		}
-        	}
-    	}
-		return localList;
-	}
-*/
 	
 	@Transactional(readOnly = false)
     public void convertToRemote(Investigator localInvestigator, Investigator remoteInvestigator){
