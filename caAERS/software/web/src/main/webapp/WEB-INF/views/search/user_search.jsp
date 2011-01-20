@@ -45,23 +45,28 @@
 		        var _id = oRecord.getData("id");
 		        var _recordType = oRecord.getData("recordType");
 		        var _userName = oRecord.getData("userName");
-		        elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
+		        elCell.title = _recordType;
+		        if(oData){
+		        	elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
+		        }
 			};
 
 			var linkFormatterWithNCI = function(elCell, oRecord, oColumn, oData) {
 		        var _nr = oRecord.getData("externalId");
+		        var _recordType = oRecord.getData("recordType");
 		        var _s = "";
 		        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />">';
 		        elCell.innerHTML = _s;
+		        elCell.title = _recordType;
 			};						
 		
 			var myColumnDefs = [
 				{key:"externalId",      label:"",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},			        			
                 {key:"firstName",       label:"First name",    	  sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"middleName",      label:"Middle name",      sortable:true,      resizeable:true},
+                {key:"middleName",      label:"Middle name",      sortable:true,      resizeable:true, formatter: linkFormatter},
                 {key:"lastName",        label:"Last name",     	  sortable:true,      resizeable:true, formatter: linkFormatter},
                 {key:"number",          label:"Person identifier",sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true},
+                {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true, formatter: linkFormatter},
                 {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true, formatter: linkFormatter}
             ];
 
