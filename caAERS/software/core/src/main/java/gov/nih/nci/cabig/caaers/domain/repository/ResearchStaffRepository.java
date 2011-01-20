@@ -218,7 +218,11 @@ public class ResearchStaffRepository {
         String organization = (String)searchCriteriaMap.get("organization");
         String nciIdentifier = (String)searchCriteriaMap.get("personIdentifier");
     	
-        if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(organization)){
+        if(StringUtils.isEmpty(firstName) 
+        		&& StringUtils.isEmpty(lastName) 
+        		&& StringUtils.isEmpty(organization) 
+        		&& StringUtils.isEmpty(nciIdentifier)){
+        	
         	return researchStaffDao.getSiteResearchStaff(query);
         }
     	if(StringUtils.isNotEmpty(firstName) && firstName.indexOf("%") != -1){
