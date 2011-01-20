@@ -29,28 +29,28 @@
 					 <div class="leftpanel">
 						<div class="row">
                       		<div class="label">First name</div>
-                      		<div class="value">${command.researchStaff.firstName}</div>
+                      		<div class="value">${command.firstName}</div>
 						</div>
 						<c:if test="${command.createAsPerson}">
 						<div class="row">
                             <div class="label">Middle name</div>
-                            <div class="value">${command.researchStaff.middleName}</div>
+                            <div class="value">${command.middleName}</div>
                         </div>
 						</c:if>	                      		
                         <div class="row">
                             <div class="label">Last name</div>
-                            <div class="value">${command.researchStaff.lastName}</div>
+                            <div class="value">${command.lastName}</div>
                         </div>
 					 </div>
 					 <div class="rightpanel">
 						<div class="row">
 							<div class="label">Email address</div>
-							<div class="value">${command.researchStaff.emailAddress}</div>
+							<div class="value">${command.emailAddress}</div>
 						</div>
 						<c:if test="${command.createAsUser}">
 							<div class="row">
                            		<div class="label">Username</div>
-                           		<div class="value">${command.user.loginName}</div>
+                           		<div class="value">${command.userName}</div>
                        		</div>									
 						</c:if>
 					 </div>
@@ -64,7 +64,7 @@
 	                		<th scope="col">Organization name</th>
 	                		<th scope="col">Assigned identifier</th>
 	            		</tr>
-	            		<c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="srs">
+	            		<c:forEach items="${command.sitePersonnel}" varStatus="status" var="srs">
 	            			<tr>
 								<td>${srs.organization.name}</td>
 								<td>${srs.organization.nciInstituteCode}</td>										                         

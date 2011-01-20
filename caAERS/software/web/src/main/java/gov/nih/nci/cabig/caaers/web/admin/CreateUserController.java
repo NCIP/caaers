@@ -1,11 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain._User;
-
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +24,12 @@ public class CreateUserController extends UserController<UserCommand>{
 		
 		ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
 		UserCommand command = (UserCommand)userCommand;
-
+		String mailSendIssue = "";
 		if(command.getCreateAsUser()){
             try {
     			createOrUpdateUser(request,command.getUser());
             }catch (MailException e) {
+            	mailSendIssue = ". But could not send email to the User";
                 logger.error("Could not send email to user.", e);
             }
             processRoleMemberships(command.getUser().getCsmUser(),command.getRoleMemberships());
@@ -44,13 +40,13 @@ public class CreateUserController extends UserController<UserCommand>{
         if (!errors.hasErrors()) {
         	String statusMessage = "";
         	if(command.getCreateAsPerson() && command.getCreateAsUser()){
-        		statusMessage = "Created " +command.getPersonType()+ " with login capability"; 
+        		statusMessage = "Created " +command.getPersonType()+ " with login capability"+mailSendIssue ; 
         	}
         	if(command.getCreateAsPerson() && !command.getCreateAsUser()){
         		statusMessage = "Created " +command.getPersonType()+ " without login capability";
         	}
         	if(!command.getCreateAsPerson() && command.getCreateAsUser()){
-        		statusMessage = "Created a User with login capability";
+        		statusMessage = "Created a User with login capability"+mailSendIssue;
         	}
             modelAndView.getModel().put("flashMessage", statusMessage);
         }
@@ -62,10 +58,6 @@ public class CreateUserController extends UserController<UserCommand>{
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		UserCommand command = new UserCommand();
-		command.setUser(new _User());
-        ResearchStaff rs = new LocalResearchStaff();
-        rs.setAddress(new Address());
-        command.setResearchStaff(rs);
         command.buildRolesHelper();
 		return command;
 	}
@@ -75,5 +67,4 @@ public class CreateUserController extends UserController<UserCommand>{
         if (isAjaxRequest(request)) return true;
         return super.suppressValidation(request, command); 
     }
-
 }

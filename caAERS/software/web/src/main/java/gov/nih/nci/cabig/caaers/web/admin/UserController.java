@@ -151,12 +151,12 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 		this.caaersSecurityFacade = (CaaersSecurityFacadeImpl)caaersSecurityFacade;
 	}
 
+
 	@Override
 	protected _User getPrimaryDomainObject(C command) {
-		// TODO Auto-generated method stub
-		return command.getUser();
+		return new _User();
 	}
-
+	
 	@Override
 	protected _UserDao getDao() {
 		return null;

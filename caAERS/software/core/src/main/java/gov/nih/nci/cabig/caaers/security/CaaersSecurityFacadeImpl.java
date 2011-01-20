@@ -109,7 +109,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	public void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships) {
 		
 		//Fetch all the existing groups of the Given User.
-		List<UserGroupType> userGroups = userRepository.getUserGroups(csmUser.getLoginName());
+		List<UserGroupType> userGroups = userRepository.getUserGroups(csmUser.getUserId().toString());
 		
 		//Erase all the existing SuiteRoleMemberships of the User
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());

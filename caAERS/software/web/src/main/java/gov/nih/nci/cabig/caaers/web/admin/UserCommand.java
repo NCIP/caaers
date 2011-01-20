@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -21,26 +20,28 @@ import java.util.Map;
  */
 public class UserCommand {
 	
-	//Attributes to capture Basic User details.
-	private _User user;
-	//List which will hold all the RoleMemberships of the user.
-	private List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
+	//Attributes used for UI rendering purpose.
+    boolean isPO = SecurityUtils.hasAuthorityOf(UserGroupType.person_and_organization_information_manager);
+    boolean isUA = SecurityUtils.hasAuthorityOf(UserGroupType.user_administrator);
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String emailAddress;
+	private String nciIdentifier;	
+	private String personType;
+	private List<SitePerson> sitePersonnel = new ArrayList<SitePerson>();
+	private String userName;
+	private HashMap<String, String> personTypeOptionsMap = new LinkedHashMap<String, String>();
+	private boolean createAsPerson = true;
+	private boolean createAsUser = true;
 	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
 	private Map<String,String> siteMap = new HashMap<String,String>();
 	private Map<String,String> studyMap = new HashMap<String,String>();
-	
-	private HashMap<String, String> personTypeOptionsMap = new LinkedHashMap<String, String>();
-	private String personType;
-	//ResearchStaff Class is used as a DTO here. 
-	private ResearchStaff researchStaff;
-	private Person person;
-	
-	private boolean createAsPerson = true;
-	private boolean createAsUser = true;
-	
-    boolean isPO = SecurityUtils.hasAuthorityOf(UserGroupType.person_and_organization_information_manager);
-    boolean isUA = SecurityUtils.hasAuthorityOf(UserGroupType.user_administrator);
 
+	//Attributes which will be processed to save data to db.
+	private _User user;
+	private Person person;
+	private List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
 	
 	public UserCommand() {
 		personTypeOptionsMap.put("", "Please select");
@@ -205,14 +206,6 @@ public class UserCommand {
 		this.personType = personType;
 	}
 
-	public ResearchStaff getResearchStaff() {
-		return researchStaff;
-	}
-
-	public void setResearchStaff(ResearchStaff researchStaff) {
-		this.researchStaff = researchStaff;
-	}
-
 	public HashMap<String, String> getPersonTypeOptionsMap() {
 		return personTypeOptionsMap;
 	}
@@ -243,5 +236,65 @@ public class UserCommand {
 
 	public void setCreateAsUser(boolean createAsUser) {
 		this.createAsUser = createAsUser;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getNciIdentifier() {
+		return nciIdentifier;
+	}
+
+	public void setNciIdentifier(String nciIdentifier) {
+		this.nciIdentifier = nciIdentifier;
+	}
+
+	public List<SitePerson> getSitePersonnel() {
+		return sitePersonnel;
+	}
+
+	public void setSitePersonnel(List<SitePerson> sitePersonnel) {
+		this.sitePersonnel = sitePersonnel;
+	}
+	
+	public void addSitePersonnel(SitePerson sitePerson){
+		getSitePersonnel().add(sitePerson);
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

@@ -106,9 +106,9 @@
 				divElement.toggle();
 				
 				if(divElement.visible()){
-					makeFieldRequired('user.loginName');	
+					makeFieldRequired('userName');	
 				}else {
-					makeFieldOptional('user.loginName');
+					makeFieldOptional('userName');
 				}
 			}
 
@@ -150,17 +150,17 @@
 			}
 
             function fireAction(_action, _index) {
-                if (_action == "removeSiteResearchStaff") {
-                    removeSiteResearchStaff(_index);
+                if (_action == "removePerson") {
+                    removeSitePerson(_index);
                 }
             }
             			
- 			function addSiteResearchStaff() {
-                ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0, 'Bottom');
+ 			function addSitePerson() {
+                ajaxCRUD._addItem('sitePerson', null, null, '_organizationsDIV', null, 0, 'Bottom');
             }
         
- 			function removeSiteResearchStaff(_index) {
-                ajaxCRUD._deleteItem('siteResearchStaff', _index, '_organizationsDIV', 0);
+ 			function removeSitePerson(_index) {
+                ajaxCRUD._deleteItem('sitePerson', _index, '_organizationsDIV', 0);
             }			 	
 	    	
     	</script>
@@ -190,23 +190,23 @@
 					<chrome:box title="Basic Details">
 							<div style="height:100px;">
 								 <div class="leftpanel">
-								 	<ui:row path="researchStaff.firstName">
-								 		<jsp:attribute name="label"><ui:label path="researchStaff.firstName" text="" labelProperty="firstName" required="true"/></jsp:attribute>
-								 		<jsp:attribute name="value"><ui:text path="researchStaff.firstName" required="true" title="First name"/></jsp:attribute>
+								 	<ui:row path="firstName">
+								 		<jsp:attribute name="label"><ui:label path="firstName" text="" labelProperty="firstName" required="true"/></jsp:attribute>
+								 		<jsp:attribute name="value"><ui:text path="firstName" required="true" title="First name"/></jsp:attribute>
 								 	</ui:row>
-	                        		<ui:row path="researchStaff.middleName">
-	                        			<jsp:attribute name="label"><ui:label path="researchStaff.middleName" text="" labelProperty="middleName" required="false"/></jsp:attribute>
-	                        			<jsp:attribute name="value"><ui:text path="researchStaff.middleName" required="false" title="Middle name"/></jsp:attribute>
+	                        		<ui:row path="middleName">
+	                        			<jsp:attribute name="label"><ui:label path="middleName" text="" labelProperty="middleName" required="false"/></jsp:attribute>
+	                        			<jsp:attribute name="value"><ui:text path="middleName" required="false" title="Middle name"/></jsp:attribute>
 	                        		</ui:row>
-									<ui:row path="researchStaff.lastName">
-										<jsp:attribute name="label"><ui:label path="researchStaff.lastName" text="" labelProperty="lastName" required="true"/></jsp:attribute>
-										<jsp:attribute name="value"><ui:text path="researchStaff.lastName" required="true" title="Last name"/></jsp:attribute>
+									<ui:row path="lastName">
+										<jsp:attribute name="label"><ui:label path="lastName" text="" labelProperty="lastName" required="true"/></jsp:attribute>
+										<jsp:attribute name="value"><ui:text path="lastName" required="true" title="Last name"/></jsp:attribute>
 									</ui:row>	                        		
 								 </div>
 								 <div class="rightpanel">
-								 	<ui:row path="researchStaff.emailAddress">
-								 		<jsp:attribute name="label"><ui:label path="researchStaff.emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
-								 		<jsp:attribute name="value"><ui:text path="researchStaff.emailAddress" required="true" title="Primary email" size="30"/></jsp:attribute>
+								 	<ui:row path="emailAddress">
+								 		<jsp:attribute name="label"><ui:label path="emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
+								 		<jsp:attribute name="value"><ui:text path="emailAddress" required="true" title="Primary email" size="30"/></jsp:attribute>
 								 	</ui:row>
 									<ui:checkbox path="createAsPerson" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
 									<ui:checkbox path="createAsUser" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
@@ -220,29 +220,29 @@
     						<jsp:attribute name="value"><ui:select path="personType" options="${command.personTypeOptionsMap}" title="Type of Person" required="${command.createAsPerson}"></ui:select></jsp:attribute>
     					</ui:row>
 						<ui:row path="researchStaff.nciIdentifier">
-							<jsp:attribute name="label"><ui:label path="researchStaff.nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
-							<jsp:attribute name="value"><ui:text path="researchStaff.nciIdentifier" title="Person Identifier" required="false"/></jsp:attribute>
+							<jsp:attribute name="label"><ui:label path="nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
+							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false"/></jsp:attribute>
 						</ui:row>		    					
                         <chrome:division>
 							<caaers:message code="researchstaff.details.organizations" var="rsOrganizations"/>
 		                    <div id="_organizationsDIV">
-		                        <c:set var="size" value="${fn:length(command.researchStaff.siteResearchStaffs)}" />
-		                        <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="rss">
+		                        <c:set var="size" value="${fn:length(command.sitePersonnel)}" />
+		                        <c:forEach items="${command.sitePersonnel}" varStatus="status" var="rss">
 		                            <c:set var="newIndex" value="${size - (status.index + 1)}" />
 		                            <researchStaff:oneSitePerson index="${newIndex}" collapsed="false" />
 		                        </c:forEach>
 		                    </div>
 	                        <c:if test="${hasRSCreate}">
-							    <div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+							    <div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSitePerson();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
 	                        </c:if>
 						</chrome:division>
     				</chrome:box>
     				
     				<chrome:box title="User Details" id="user-div" style="display:${command.createAsUser ? '' : 'none'}" >
     					<tags:instructions code="userRolesForUA" />
-    					<ui:row path="user.loginName">
-    						<jsp:attribute name="label"><ui:label path="user.loginName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
-    						<jsp:attribute name="value"><ui:text path="user.loginName" required="${command.createAsUser}" title="Username"/></jsp:attribute>
+    					<ui:row path="loginName">
+    						<jsp:attribute name="label"><ui:label path="userName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
+    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username"/></jsp:attribute>
     					</ui:row>
     						<div id="roles-div">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">
