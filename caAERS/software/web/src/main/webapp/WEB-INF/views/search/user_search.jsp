@@ -22,8 +22,9 @@
 		<script language="JavaScript">
 
 			function buildTable(form) {
-				var map = new Object();
+				showCoppaSearchDisclaimer();
 
+				var map = new Object();
 				map['firstName']=$('propFn').value;
 				map['lastName']=$('propLn').value;
 				map['userName']=$('propUn').value;
@@ -32,13 +33,14 @@
 				map['organization']=$('organization').value;	
 
 				$('indicator').className=''
-					user.getResults(map, ajaxCallBack);
+				user.getResults(map, ajaxCallBack);
 			    $('bigSearch').show();
 			}
 	
 			function ajaxCallBack(jsonResult) {
 			    $('indicator').className = 'indicator';
 			    initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
+			    hideCoppaSearchDisclaimer();
 			}
 
 			var linkFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -168,6 +170,7 @@
 							<div class="value" style="float:left;">
 						   		<tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler'); $('bigSearch').show();"/>
 						   		<tags:indicator id="indicator"/>
+						   		<span id="coppa-search-disclaimer" class="coppa-search-disclaimer" style="display:none;"><caaers:message code="coppa.search.message" /></span>
 							</div>
 						</div>
         
