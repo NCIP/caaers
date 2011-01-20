@@ -24,12 +24,10 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
@@ -54,6 +52,15 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	public UserController() {
         setCommandClass(UserCommand.class);
     }
+	
+	
+	@Override
+	protected ModelAndView processFinish(HttpServletRequest arg0,
+			HttpServletResponse arg1, Object arg2, BindException arg3)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
     @Override
     protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder) throws Exception {
@@ -86,6 +93,23 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
         }
     }
     
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        if (isAjaxRequest(request)) return true;
+        return super.suppressValidation(request, command); 
+    }
+    
+
+	@Override
+	protected _User getPrimaryDomainObject(C command) {
+		return new _User();
+	}
+	
+	@Override
+	protected _UserDao getDao() {
+		return null;
+	}
+    
     protected Object findInRequest(final HttpServletRequest request, final String attributName) {
         Object attr = request.getParameter(attributName);
         if (attr == null) {
@@ -93,32 +117,6 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
         }
         return attr;
     }
-	
-	@Override
-    protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
-		
-		UserCommand command = new UserCommand();
-		command.setUser(new _User());
-		return command;
-	}
-	
-	@Override
-	protected ModelAndView processFinish(HttpServletRequest request,HttpServletResponse response, Object userCommand, BindException errors) throws Exception {
-        UserCommand command = (UserCommand)userCommand;
-        _User user = command.getUser();
-        boolean isCreateMode = user.getCsmUser() == null || user.getCsmUser().getUserId() == null;
-        try {
-			createOrUpdateUser(request,user);
-        }catch (MailException e) {
-            logger.error("Could not send email to user.", e);
-        }
-        processRoleMemberships(user.getCsmUser(),command.getRoleMemberships());
-        String message = isCreateMode ? "created=OK" : "edited=OK";
-        ModelAndView modelAndView = new ModelAndView("redirect:editUser?userName=" + user.getLoginName() + "&" + message);
-        modelAndView.addAllObjects(errors.getModel());
-		return modelAndView;
-	}
-	
 	
 	/**
 	 * This method creates a User in CSM.
@@ -143,23 +141,10 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 		caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
 	}
 	
-	
-	
 	//Setter & Getters.
 	
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = (CaaersSecurityFacadeImpl)caaersSecurityFacade;
-	}
-
-
-	@Override
-	protected _User getPrimaryDomainObject(C command) {
-		return new _User();
-	}
-	
-	@Override
-	protected _UserDao getDao() {
-		return null;
 	}
 
 	public ProvisioningSessionFactory getProSessionFactory() {
@@ -198,4 +183,5 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	public void setPersonRepository(PersonRepository personRepository) {
 		this.personRepository = personRepository;
 	}
+
 }

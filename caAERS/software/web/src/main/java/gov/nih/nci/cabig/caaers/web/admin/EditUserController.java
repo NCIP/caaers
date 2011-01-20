@@ -19,8 +19,11 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 
@@ -28,6 +31,31 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public class EditUserController extends UserController<UserCommand> {
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ModelAndView processFinish(HttpServletRequest request,HttpServletResponse response, Object userCommand, BindException errors) throws Exception {
+		
+		ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
+		UserCommand command = (UserCommand)userCommand;
+        if (!errors.hasErrors()) {
+        	String statusMessage = "";
+        	if(command.getCreateAsPerson() && command.getCreateAsUser()){
+        		statusMessage = "Updated " +command.getPersonType()+ " with login capability"; 
+        	}
+        	if(command.getCreateAsPerson() && !command.getCreateAsUser()){
+        		statusMessage = "Updated " +command.getPersonType()+ " without login capability";
+        	}
+        	if(!command.getCreateAsPerson() && command.getCreateAsUser()){
+        		statusMessage = "Updated a User with login capability";
+        	}
+            modelAndView.getModel().put("flashMessage", statusMessage);
+        }
+        modelAndView.addAllObjects(errors.getModel());
+		return modelAndView;
+	}
+	
+	
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
@@ -37,6 +65,8 @@ public class EditUserController extends UserController<UserCommand> {
 		String id = request.getParameter("id");
 		
 		UserCommand command = new UserCommand();
+		command.setCreateMode(Boolean.FALSE);
+		command.setEditMode(Boolean.TRUE);
 		
 		if("CSM_RECORD".equals(recordType)){
 			_User user = userRepository.getUserByLoginName(userName);

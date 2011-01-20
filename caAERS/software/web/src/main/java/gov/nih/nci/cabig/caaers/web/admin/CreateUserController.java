@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.domain._User;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,13 +56,9 @@ public class CreateUserController extends UserController<UserCommand>{
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		UserCommand command = new UserCommand();
+		command.setCreateMode(Boolean.TRUE);
+		command.setEditMode(Boolean.FALSE);
         command.buildRolesHelper();
 		return command;
 	}
-	
-    @Override
-    protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        if (isAjaxRequest(request)) return true;
-        return super.suppressValidation(request, command); 
-    }
 }

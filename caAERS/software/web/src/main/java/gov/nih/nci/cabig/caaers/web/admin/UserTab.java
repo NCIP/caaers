@@ -146,46 +146,48 @@ public class UserTab extends TabWithFields<UserCommand>{
     	
     	super.validate(command, commandBean, fieldGroups, errors);
     	
-    	if(!command.getCreateAsPerson() && !command.getCreateAsUser()){
-    		errors.reject("USER_PERSON_001", "Either Create as Person or Create as User or both must be checked");
+    	if(command.getCreateMode()){
+        	if(!command.getCreateAsPerson() && !command.getCreateAsUser()){
+        		errors.reject("USER_PERSON_001", "Either Create as Person or Create as User or both must be checked");
+        	}
+            String em = command.getEmailAddress();
+            if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
+                errors.rejectValue("emailAddress", "USR_006", "Invalid email");
+            }
+            
+            if(command.getCreateAsPerson()){
+            	
+            	List<SitePerson> sitePersonnel = command.getSitePersonnel();
+            	if(CollectionUtils.isEmpty(sitePersonnel)){
+            		errors.reject("USR_005", "Provide at least one organization");
+            	}
+                
+            	Person person = personRepository.getByEmailAddress(em);
+                if(person != null){
+                	errors.rejectValue("emailAddress", "USR_010");
+                }
+                
+                for (int i=0; i<sitePersonnel.size(); i++){
+                    if ((sitePersonnel.get(i).getOrganization() == null || sitePersonnel.get(i).getOrganization().getId() == null)){
+                    	errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
+                    }
+                    String email = sitePersonnel.get(i).getEmailAddress();
+                    if ( email != null && !email.trim().equals("") && !GenericValidator.isEmail(email)){
+                    	errors.rejectValue(String.format("sitePersonnel[%d].emailAddress", i), "USR_006", "Invalid email");
+                    }
+                }
+            }
+            
+            if(command.getCreateAsUser()){
+            	if(StringUtils.isEmpty(command.getUserName())){
+            		errors.rejectValue("userName", "USR_014");
+            	}
+            	_User user = userRepository.getUserByLoginName(command.getUserName());
+            	if(user != null && user.getCsmUser() != null){
+            		errors.rejectValue("userName", "USR_001", "Username already taken");
+            	}
+            }
     	}
-        String em = command.getEmailAddress();
-        if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
-            errors.rejectValue("emailAddress", "USR_006", "Invalid email");
-        }
-        
-        if(command.getCreateAsPerson()){
-        	
-        	List<SitePerson> sitePersonnel = command.getSitePersonnel();
-        	if(CollectionUtils.isEmpty(sitePersonnel)){
-        		errors.reject("USR_005", "Provide at least one organization");
-        	}
-            
-        	Person person = personRepository.getByEmailAddress(em);
-            if(person != null){
-            	errors.rejectValue("emailAddress", "USR_010");
-            }
-            
-            for (int i=0; i<sitePersonnel.size(); i++){
-                if ((sitePersonnel.get(i).getOrganization() == null || sitePersonnel.get(i).getOrganization().getId() == null)){
-                	errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
-                }
-                String email = sitePersonnel.get(i).getEmailAddress();
-                if ( email != null && !email.trim().equals("") && !GenericValidator.isEmail(email)){
-                	errors.rejectValue(String.format("sitePersonnel[%d].emailAddress", i), "USR_006", "Invalid email");
-                }
-            }
-        }
-        
-        if(command.getCreateAsUser()){
-        	if(StringUtils.isEmpty(command.getUserName())){
-        		errors.rejectValue("userName", "USR_014");
-        	}
-        	_User user = userRepository.getUserByLoginName(command.getUserName());
-        	if(user != null && user.getCsmUser() != null){
-        		errors.rejectValue("userName", "USR_001", "Username already taken");
-        	}
-        }
     }
 
     /**

@@ -37,7 +37,9 @@ public class UserCommand {
 	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
 	private Map<String,String> siteMap = new HashMap<String,String>();
 	private Map<String,String> studyMap = new HashMap<String,String>();
-
+	private boolean createMode;
+	private boolean editMode;
+	
 	//Attributes which will be processed to save data to db.
 	private _User user;
 	private Person person;
@@ -296,5 +298,21 @@ public class UserCommand {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public boolean getCreateMode() {
+		return createMode;
+	}
+
+	public void setCreateMode(boolean createMode) {
+		this.createMode = createMode;
+	}
+
+	public boolean getEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
 	}
 }

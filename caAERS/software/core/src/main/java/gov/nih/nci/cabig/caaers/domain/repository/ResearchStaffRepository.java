@@ -7,17 +7,21 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
+import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -212,6 +216,7 @@ public class ResearchStaffRepository {
         String firstName = (String)searchCriteriaMap.get("firstName");
         String lastName = (String)searchCriteriaMap.get("lastName");
         String organization = (String)searchCriteriaMap.get("organization");
+        String nciIdentifier = (String)searchCriteriaMap.get("personIdentifier");
     	
         if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(organization)){
         	return researchStaffDao.getSiteResearchStaff(query);
@@ -223,10 +228,14 @@ public class ResearchStaffRepository {
     	if(StringUtils.isNotEmpty(lastName) && lastName.indexOf("%") != -1){
     		return researchStaffDao.getSiteResearchStaff(query);
     	}
-        
+    	if(StringUtils.isNotEmpty(nciIdentifier) && nciIdentifier.indexOf("%") != -1){
+    		return researchStaffDao.getSiteResearchStaff(query);
+    	}
+    	
         RemoteResearchStaff searchCriteria = new RemoteResearchStaff(); 
         searchCriteria.setFirstName(firstName);
         searchCriteria.setLastName(lastName);
+        searchCriteria.setNciIdentifier(nciIdentifier);
         if(StringUtils.isNotEmpty(organization)){
         	Organization org = organizationDao.getById(Integer.parseInt(organization));
         	SiteResearchStaff sr = new SiteResearchStaff();
