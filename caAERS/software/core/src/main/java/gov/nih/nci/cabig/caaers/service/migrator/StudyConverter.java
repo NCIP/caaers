@@ -985,6 +985,7 @@ public class StudyConverter {
             cteps.setCtepStudyDisease(new ArrayList<CtepStudyDiseaseType>());
 
             for (CtepStudyDisease ctepD : ctep) {
+                if (ctepD.isRetired()) continue;
                 CtepStudyDiseaseType ct = new CtepStudyDiseaseType();
 
                 ct.setDiseaseTerm(new DiseaseTermType());
@@ -997,13 +998,16 @@ public class StudyConverter {
 
             if (cteps.getCtepStudyDisease().size() > 0) studyDto.setCtepStudyDiseases(cteps);
 
-        } else if (meddra != null && meddra.size() > 0) {
+        }
 
+        if (meddra != null && meddra.size() > 0) {
             MeddraStudyDiseases meddras = new MeddraStudyDiseases();
             meddras.setMeddraStudyDisease(new ArrayList<MeddraStudyDiseaseType>());
 
             for (MeddraStudyDisease meddraD : meddra) {
+                if(meddraD.isRetired()) continue;
                 MeddraStudyDiseaseType md = new MeddraStudyDiseaseType();
+                md.setMeddraCode(meddraD.getTerm().getMeddraCode());
                 meddras.getMeddraStudyDisease().add(md);
             }
 

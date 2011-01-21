@@ -5,6 +5,7 @@ import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
@@ -146,6 +147,30 @@ public class StudyConverterTest extends AbstractTestCase {
 		 
 		 assertEquals(0, DateUtils.compareDate(now.toGregorianCalendar().getTime(), study.getStudySites().get(0).getStartDate()));
 	}
+
+    public void testStudyDiseaseMeddra() throws Exception {
+
+        Study study = new LocalStudy();
+        study.setShortTitle("Short Title test for export");
+        study.setPrimaryIdentifierValue("ST-x8");
+        study.setPhaseCode("Phase I Trial");
+
+        study.setAeTerminology(new AeTerminology());
+        study.getAeTerminology().setCtcVersion(new Ctc());
+        study.getAeTerminology().getCtcVersion().setId(3);
+
+        study.setDiseaseTerminology(new DiseaseTerminology());
+        study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
+        MeddraStudyDisease msd = new MeddraStudyDisease();
+        msd.setStudy(study);
+        msd.setTerm(new LowLevelTerm());
+        msd.getTerm().setMeddraCode("009911");
+        study.addMeddraStudyDisease(msd);
+
+        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
+
+        assertEquals("009911", studies.getStudy().get(0).getMeddraStudyDiseases().getMeddraStudyDisease().get(0).getMeddraCode());
+    }
 
     public void testExportStudy() throws Exception {
         Study study = new LocalStudy();

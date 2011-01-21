@@ -398,7 +398,6 @@
     <xs:complexType name="MeddraStudyDiseaseType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
-                
                 <xs:sequence>
                     <xs:element name="meddraCode" type="CustomStringType" />
                 </xs:sequence>
