@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.caaers.utils.AgentSpecificTermSorter;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -24,7 +26,10 @@ public class AgentEditController extends AgentController {
         AgentCommand c = new AgentCommand();
         c.setAgent(agent);
         c.setAgentSpecificTerms(new ArrayList<AgentSpecificTerm>());
-        c.getAgentSpecificTerms().addAll(service.getListByAgent(agent.getId()));
+        List<AgentSpecificTerm> agentSpecificTerms = new ArrayList<AgentSpecificTerm>();
+        agentSpecificTerms =    service.getListByAgent(agent.getId());
+        Collections.sort(agentSpecificTerms,new AgentSpecificTermSorter());
+        c.getAgentSpecificTerms().addAll(agentSpecificTerms);
 
         // need to determine the category of the first element in the previous list
         if (c.getAgentSpecificTerms().size() > 0) {

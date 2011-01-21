@@ -40,7 +40,7 @@ public class AgentSpecificTermDao extends GridIdentifiableDao<AgentSpecificTerm>
      * Get all AgentTerms for a specific agent
      */
     public List<AgentSpecificTerm> getByAgentID(Integer id) {
-        List<AgentSpecificTerm> results = getHibernateTemplate().find("from AgentSpecificTerm at where at.agent.id = ?", id);
+        List<AgentSpecificTerm> results = getHibernateTemplate().find("from AgentSpecificTerm  at where at.agent.id = ?", id);
         return results;
     }
 
