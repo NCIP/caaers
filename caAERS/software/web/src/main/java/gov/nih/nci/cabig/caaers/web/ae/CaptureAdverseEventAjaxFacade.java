@@ -189,6 +189,9 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         if (ctcTermID > 0) {
             for (ExpectedAECtcTerm t : command.getStudy().getExpectedAECtcTerms()) {
 
+                // return as expected when the term names match, regardless of the version #
+                if (ctcTerm.getTerm().equals(t.getCtcTerm().getTerm()) && !ctcTerm.isOtherRequired()) return ajaxOutput;
+
                 if (!t.getCtcTerm().getId().equals(ctcTermID)) continue;
 
                 if (!t.isOtherRequired()) {
@@ -212,7 +215,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
                         return ajaxOutput;
                     }
                 }
-
 
             }
         } else {
