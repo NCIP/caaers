@@ -406,7 +406,7 @@ public class StudyRepository {
     public void save(Study study){
     	associateSiteToWorkflowConfig(study.getStudySites());
     	//Provision instances an Investigator or ResearchStaff has access to in CSM
-    	provisionStudyTeam(study);
+    	//provisionStudyTeam(study);
     	//Save the study
         studyDao.save(study);
     }
@@ -416,30 +416,32 @@ public class StudyRepository {
      * @param study
      */
     public  void provisionStudyTeam(Study study){
-    	try{
-    		List<StudyOrganization> studyOrgs = study.getActiveStudyOrganizations();
-    		List<StudyInvestigator> studyInvs = null;
-    		List<StudyPersonnel> studyPersonnel = null;
-    		for(StudyOrganization studyOrg : studyOrgs){
-    			//Remove, add or update what instances an Investigator is entitled to.
-    			studyInvs = studyOrg.getStudyInvestigators();
-    			if(studyInvs != null){
-        			for(StudyInvestigator studyInv : studyInvs){
-    					caaersSecurityFacade.provisionStudies(studyInv);
-        			}
-    			}
-    			//Remove, add or update what instances an ResearchStaff is entitled to.
-    			studyPersonnel = studyOrg.getStudyPersonnels();
-    			if(studyPersonnel != null){
-    				for(StudyPersonnel studyPer : studyPersonnel){
-						caaersSecurityFacade.provisionStudies(studyPer);
-    				}
-    			}
-    		}
-    	}catch(CaaersUserProvisioningException ex){
-    		log.error("Exception while provisioning StudyTeam", ex);
-    		throw ex;
-    	}
+//Commented code below as we are not provision studies to CSM when a Person gets on the Study Team.
+//Retaining this code if at later point in time we have to add this feature back in caAERS.    	
+//    	try{
+//    		List<StudyOrganization> studyOrgs = study.getActiveStudyOrganizations();
+//    		List<StudyInvestigator> studyInvs = null;
+//    		List<StudyPersonnel> studyPersonnel = null;
+//    		for(StudyOrganization studyOrg : studyOrgs){
+//    			//Remove, add or update what instances an Investigator is entitled to.
+//    			studyInvs = studyOrg.getStudyInvestigators();
+//    			if(studyInvs != null){
+//        			for(StudyInvestigator studyInv : studyInvs){
+//    					caaersSecurityFacade.provisionStudies(studyInv);
+//        			}
+//    			}
+//    			//Remove, add or update what instances an ResearchStaff is entitled to.
+//    			studyPersonnel = studyOrg.getStudyPersonnels();
+//    			if(studyPersonnel != null){
+//    				for(StudyPersonnel studyPer : studyPersonnel){
+//						caaersSecurityFacade.provisionStudies(studyPer);
+//    				}
+//    			}
+//    		}
+//    	}catch(CaaersUserProvisioningException ex){
+//    		log.error("Exception while provisioning StudyTeam", ex);
+//    		throw ex;
+//    	}
     }
 
     @Required
