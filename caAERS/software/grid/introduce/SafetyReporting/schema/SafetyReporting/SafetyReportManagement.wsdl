@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns13="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportNotification/types" xmlns:ns16="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesEvaluation/types" xmlns:ns0="http://ess.caaers.nci.nih.gov/sr" xmlns:ns8="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportQuery/types" xmlns:ns1="uri:iso.org:21090" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns14="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportReview/types" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns10="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/types" xmlns:ns11="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionManagement/types" xmlns:ns17="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionQuery/types" xmlns:ns2="http://ess.caaers.nci.nih.gov" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns15="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportAdvancedQuery/types" xmlns:ns18="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportTransaction/types" xmlns:ns3="http://service.sr.ess.nci.nih.gov/SafetyReporting/types" xmlns:ns9="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns12="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesManagement/types" name="SafetyReportManagement" targetNamespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="./../wsrf/lifetime/WS-ResourceLifetime.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportNotification/types" schemaLocation="./SafetyReportNotificationTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesEvaluation/types" schemaLocation="./SafetyReportRulesEvaluationTypes.xsd" />
+      <import namespace="http://ess.caaers.nci.nih.gov/sr" schemaLocation="./SR.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <import namespace="uri:iso.org:21090" schemaLocation="./ISO_datatypes_Narrative.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportReview/types" schemaLocation="./SafetyReportReviewTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/types" schemaLocation="./SafetyReportManagementTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionManagement/types" schemaLocation="./SafetyReportDefinitionManagementTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionQuery/types" schemaLocation="./SafetyReportDefinitionQueryTypes.xsd" />
+      <import namespace="http://ess.caaers.nci.nih.gov" schemaLocation="./AE-PSM.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportAdvancedQuery/types" schemaLocation="./SafetyReportAdvancedQueryTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/types" schemaLocation="./SafetyReportingTypes.xsd" />
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesManagement/types" schemaLocation="./SafetyReportRulesManagementTypes.xsd" />
+      <element name="InitiateSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="studyIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subjectIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="patientIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="adverseEventIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="performedProductInvestigationResultIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="InitiateSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AssociateAEToSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportIdentifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="adverseEventIdentifiers">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AssociateAEToSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AssociateProblemToSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateProblemToSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociateAEFromSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociateAEFromSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociateProblemFromSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociateProblemFromSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateAdverseEventInformationInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateAdverseEventInformationInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateProblemInformationInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateProblemInformationInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateStudyToSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateStudyToSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateAdditionalInformationToSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateAdditionalInformationToSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateSubjectToSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AssociateSubjectToSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociateStudyFromSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociateStudyFromSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociatePersonFromSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DissociatePersonFromSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateAttributionInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateAttributionInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateInterventionInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateInterventionInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateLabTestResultsInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateLabTestResultsInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateOtherPossibleCausesInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateOtherPossibleCausesInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientClinicalMeasurementsInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientClinicalMeasurementsInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientDiseaseHistoryInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientDiseaseHistoryInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientConMedsInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientConMedsInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientPriorTherapiesInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientPriorTherapiesInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientDemographicsInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientDemographicsInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateReporterInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateReporterInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateHealthcareProviderInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateHealthcareProviderInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateSubmitterInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateSubmitterInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateProductProblemInformationInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateProductProblemInformationInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientStatusInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePatientStatusInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePlannedInterventionInformationInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdatePlannedInterventionInformationInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateNarrativeInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateNarrativeInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateTreatmentInformationInSafetyReportRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateTreatmentInformationInSafetyReportResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="SafetyReportManagementResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns9:CurrentTime" />
+            <element ref="ns9:TerminationTime" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="InitiateSafetyReportRequest">
+    <part name="parameters" element="tns:InitiateSafetyReportRequest" />
+  </message>
+  <message name="InitiateSafetyReportResponse">
+    <part name="parameters" element="tns:InitiateSafetyReportResponse" />
+  </message>
+  <message name="AssociateAEToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateAEToSafetyReportRequest" />
+  </message>
+  <message name="AssociateAEToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateAEToSafetyReportResponse" />
+  </message>
+  <message name="AssociateProblemToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateProblemToSafetyReportRequest" />
+  </message>
+  <message name="AssociateProblemToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateProblemToSafetyReportResponse" />
+  </message>
+  <message name="DissociateAEFromSafetyReportRequest">
+    <part name="parameters" element="tns:DissociateAEFromSafetyReportRequest" />
+  </message>
+  <message name="DissociateAEFromSafetyReportResponse">
+    <part name="parameters" element="tns:DissociateAEFromSafetyReportResponse" />
+  </message>
+  <message name="DissociateProblemFromSafetyReportRequest">
+    <part name="parameters" element="tns:DissociateProblemFromSafetyReportRequest" />
+  </message>
+  <message name="DissociateProblemFromSafetyReportResponse">
+    <part name="parameters" element="tns:DissociateProblemFromSafetyReportResponse" />
+  </message>
+  <message name="UpdateAdverseEventInformationInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateAdverseEventInformationInSafetyReportRequest" />
+  </message>
+  <message name="UpdateAdverseEventInformationInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateAdverseEventInformationInSafetyReportResponse" />
+  </message>
+  <message name="UpdateProblemInformationInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateProblemInformationInSafetyReportRequest" />
+  </message>
+  <message name="UpdateProblemInformationInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateProblemInformationInSafetyReportResponse" />
+  </message>
+  <message name="AssociateStudyToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateStudyToSafetyReportRequest" />
+  </message>
+  <message name="AssociateStudyToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateStudyToSafetyReportResponse" />
+  </message>
+  <message name="AssociateAdditionalInformationToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateAdditionalInformationToSafetyReportRequest" />
+  </message>
+  <message name="AssociateAdditionalInformationToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateAdditionalInformationToSafetyReportResponse" />
+  </message>
+  <message name="AssociateSubjectToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateSubjectToSafetyReportRequest" />
+  </message>
+  <message name="AssociateSubjectToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateSubjectToSafetyReportResponse" />
+  </message>
+  <message name="DissociateStudyFromSafetyReportRequest">
+    <part name="parameters" element="tns:DissociateStudyFromSafetyReportRequest" />
+  </message>
+  <message name="DissociateStudyFromSafetyReportResponse">
+    <part name="parameters" element="tns:DissociateStudyFromSafetyReportResponse" />
+  </message>
+  <message name="DissociatePersonFromSafetyReportRequest">
+    <part name="parameters" element="tns:DissociatePersonFromSafetyReportRequest" />
+  </message>
+  <message name="DissociatePersonFromSafetyReportResponse">
+    <part name="parameters" element="tns:DissociatePersonFromSafetyReportResponse" />
+  </message>
+  <message name="UpdateAttributionInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateAttributionInSafetyReportRequest" />
+  </message>
+  <message name="UpdateAttributionInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateAttributionInSafetyReportResponse" />
+  </message>
+  <message name="UpdateInterventionInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateInterventionInSafetyReportRequest" />
+  </message>
+  <message name="UpdateInterventionInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateInterventionInSafetyReportResponse" />
+  </message>
+  <message name="UpdateLabTestResultsInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateLabTestResultsInSafetyReportRequest" />
+  </message>
+  <message name="UpdateLabTestResultsInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateLabTestResultsInSafetyReportResponse" />
+  </message>
+  <message name="UpdateOtherPossibleCausesInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateOtherPossibleCausesInSafetyReportRequest" />
+  </message>
+  <message name="UpdateOtherPossibleCausesInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateOtherPossibleCausesInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePatientClinicalMeasurementsInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePatientClinicalMeasurementsInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePatientClinicalMeasurementsInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePatientClinicalMeasurementsInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePatientDiseaseHistoryInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePatientDiseaseHistoryInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePatientDiseaseHistoryInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePatientDiseaseHistoryInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePatientConMedsInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePatientConMedsInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePatientConMedsInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePatientConMedsInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePatientPriorTherapiesInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePatientPriorTherapiesInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePatientPriorTherapiesInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePatientPriorTherapiesInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePatientDemographicsInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePatientDemographicsInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePatientDemographicsInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePatientDemographicsInSafetyReportResponse" />
+  </message>
+  <message name="UpdateReporterInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateReporterInSafetyReportRequest" />
+  </message>
+  <message name="UpdateReporterInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateReporterInSafetyReportResponse" />
+  </message>
+  <message name="UpdateHealthcareProviderInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateHealthcareProviderInSafetyReportRequest" />
+  </message>
+  <message name="UpdateHealthcareProviderInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateHealthcareProviderInSafetyReportResponse" />
+  </message>
+  <message name="UpdateSubmitterInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateSubmitterInSafetyReportRequest" />
+  </message>
+  <message name="UpdateSubmitterInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateSubmitterInSafetyReportResponse" />
+  </message>
+  <message name="UpdateProductProblemInformationInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateProductProblemInformationInSafetyReportRequest" />
+  </message>
+  <message name="UpdateProductProblemInformationInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateProductProblemInformationInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePatientStatusInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePatientStatusInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePatientStatusInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePatientStatusInSafetyReportResponse" />
+  </message>
+  <message name="UpdatePlannedInterventionInformationInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdatePlannedInterventionInformationInSafetyReportRequest" />
+  </message>
+  <message name="UpdatePlannedInterventionInformationInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdatePlannedInterventionInformationInSafetyReportResponse" />
+  </message>
+  <message name="UpdateNarrativeInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateNarrativeInSafetyReportRequest" />
+  </message>
+  <message name="UpdateNarrativeInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateNarrativeInSafetyReportResponse" />
+  </message>
+  <message name="UpdateTreatmentInformationInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateTreatmentInformationInSafetyReportRequest" />
+  </message>
+  <message name="UpdateTreatmentInformationInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateTreatmentInformationInSafetyReportResponse" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="SafetyReportManagementPortType" wsrp:ResourceProperties="tns:SafetyReportManagementResourceProperties">
+    <operation name="initiateSafetyReport">
+      <input message="tns:InitiateSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/InitiateSafetyReportRequest" />
+      <output message="tns:InitiateSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/InitiateSafetyReportResponse" />
+    </operation>
+    <operation name="associateAEToSafetyReport">
+      <input message="tns:AssociateAEToSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateAEToSafetyReportRequest" />
+      <output message="tns:AssociateAEToSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateAEToSafetyReportResponse" />
+    </operation>
+    <operation name="associateProblemToSafetyReport">
+      <input message="tns:AssociateProblemToSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateProblemToSafetyReportRequest" />
+      <output message="tns:AssociateProblemToSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateProblemToSafetyReportResponse" />
+    </operation>
+    <operation name="dissociateAEFromSafetyReport">
+      <input message="tns:DissociateAEFromSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociateAEFromSafetyReportRequest" />
+      <output message="tns:DissociateAEFromSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociateAEFromSafetyReportResponse" />
+    </operation>
+    <operation name="dissociateProblemFromSafetyReport">
+      <input message="tns:DissociateProblemFromSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociateProblemFromSafetyReportRequest" />
+      <output message="tns:DissociateProblemFromSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociateProblemFromSafetyReportResponse" />
+    </operation>
+    <operation name="updateAdverseEventInformationInSafetyReport">
+      <input message="tns:UpdateAdverseEventInformationInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateAdverseEventInformationInSafetyReportRequest" />
+      <output message="tns:UpdateAdverseEventInformationInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateAdverseEventInformationInSafetyReportResponse" />
+    </operation>
+    <operation name="updateProblemInformationInSafetyReport">
+      <input message="tns:UpdateProblemInformationInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateProblemInformationInSafetyReportRequest" />
+      <output message="tns:UpdateProblemInformationInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateProblemInformationInSafetyReportResponse" />
+    </operation>
+    <operation name="associateStudyToSafetyReport">
+      <input message="tns:AssociateStudyToSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateStudyToSafetyReportRequest" />
+      <output message="tns:AssociateStudyToSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateStudyToSafetyReportResponse" />
+    </operation>
+    <operation name="associateAdditionalInformationToSafetyReport">
+      <input message="tns:AssociateAdditionalInformationToSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateAdditionalInformationToSafetyReportRequest" />
+      <output message="tns:AssociateAdditionalInformationToSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateAdditionalInformationToSafetyReportResponse" />
+    </operation>
+    <operation name="associateSubjectToSafetyReport">
+      <input message="tns:AssociateSubjectToSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateSubjectToSafetyReportRequest" />
+      <output message="tns:AssociateSubjectToSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/AssociateSubjectToSafetyReportResponse" />
+    </operation>
+    <operation name="dissociateStudyFromSafetyReport">
+      <input message="tns:DissociateStudyFromSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociateStudyFromSafetyReportRequest" />
+      <output message="tns:DissociateStudyFromSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociateStudyFromSafetyReportResponse" />
+    </operation>
+    <operation name="dissociatePersonFromSafetyReport">
+      <input message="tns:DissociatePersonFromSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociatePersonFromSafetyReportRequest" />
+      <output message="tns:DissociatePersonFromSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/DissociatePersonFromSafetyReportResponse" />
+    </operation>
+    <operation name="updateAttributionInSafetyReport">
+      <input message="tns:UpdateAttributionInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateAttributionInSafetyReportRequest" />
+      <output message="tns:UpdateAttributionInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateAttributionInSafetyReportResponse" />
+    </operation>
+    <operation name="updateInterventionInSafetyReport">
+      <input message="tns:UpdateInterventionInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateInterventionInSafetyReportRequest" />
+      <output message="tns:UpdateInterventionInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateInterventionInSafetyReportResponse" />
+    </operation>
+    <operation name="updateLabTestResultsInSafetyReport">
+      <input message="tns:UpdateLabTestResultsInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateLabTestResultsInSafetyReportRequest" />
+      <output message="tns:UpdateLabTestResultsInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateLabTestResultsInSafetyReportResponse" />
+    </operation>
+    <operation name="updateOtherPossibleCausesInSafetyReport">
+      <input message="tns:UpdateOtherPossibleCausesInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateOtherPossibleCausesInSafetyReportRequest" />
+      <output message="tns:UpdateOtherPossibleCausesInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateOtherPossibleCausesInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePatientClinicalMeasurementsInSafetyReport">
+      <input message="tns:UpdatePatientClinicalMeasurementsInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientClinicalMeasurementsInSafetyReportRequest" />
+      <output message="tns:UpdatePatientClinicalMeasurementsInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientClinicalMeasurementsInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePatientDiseaseHistoryInSafetyReport">
+      <input message="tns:UpdatePatientDiseaseHistoryInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientDiseaseHistoryInSafetyReportRequest" />
+      <output message="tns:UpdatePatientDiseaseHistoryInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientDiseaseHistoryInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePatientConMedsInSafetyReport">
+      <input message="tns:UpdatePatientConMedsInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientConMedsInSafetyReportRequest" />
+      <output message="tns:UpdatePatientConMedsInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientConMedsInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePatientPriorTherapiesInSafetyReport">
+      <input message="tns:UpdatePatientPriorTherapiesInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientPriorTherapiesInSafetyReportRequest" />
+      <output message="tns:UpdatePatientPriorTherapiesInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientPriorTherapiesInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePatientDemographicsInSafetyReport">
+      <input message="tns:UpdatePatientDemographicsInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientDemographicsInSafetyReportRequest" />
+      <output message="tns:UpdatePatientDemographicsInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientDemographicsInSafetyReportResponse" />
+    </operation>
+    <operation name="updateReporterInSafetyReport">
+      <input message="tns:UpdateReporterInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateReporterInSafetyReportRequest" />
+      <output message="tns:UpdateReporterInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateReporterInSafetyReportResponse" />
+    </operation>
+    <operation name="updateHealthcareProviderInSafetyReport">
+      <input message="tns:UpdateHealthcareProviderInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateHealthcareProviderInSafetyReportRequest" />
+      <output message="tns:UpdateHealthcareProviderInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateHealthcareProviderInSafetyReportResponse" />
+    </operation>
+    <operation name="updateSubmitterInSafetyReport">
+      <input message="tns:UpdateSubmitterInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateSubmitterInSafetyReportRequest" />
+      <output message="tns:UpdateSubmitterInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateSubmitterInSafetyReportResponse" />
+    </operation>
+    <operation name="updateProductProblemInformationInSafetyReport">
+      <input message="tns:UpdateProductProblemInformationInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateProductProblemInformationInSafetyReportRequest" />
+      <output message="tns:UpdateProductProblemInformationInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateProductProblemInformationInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePatientStatusInSafetyReport">
+      <input message="tns:UpdatePatientStatusInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientStatusInSafetyReportRequest" />
+      <output message="tns:UpdatePatientStatusInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePatientStatusInSafetyReportResponse" />
+    </operation>
+    <operation name="updatePlannedInterventionInformationInSafetyReport">
+      <input message="tns:UpdatePlannedInterventionInformationInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePlannedInterventionInformationInSafetyReportRequest" />
+      <output message="tns:UpdatePlannedInterventionInformationInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdatePlannedInterventionInformationInSafetyReportResponse" />
+    </operation>
+    <operation name="updateNarrativeInSafetyReport">
+      <input message="tns:UpdateNarrativeInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateNarrativeInSafetyReportRequest" />
+      <output message="tns:UpdateNarrativeInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateNarrativeInSafetyReportResponse" />
+    </operation>
+    <operation name="updateTreatmentInformationInSafetyReport">
+      <input message="tns:UpdateTreatmentInformationInSafetyReportRequest" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateTreatmentInformationInSafetyReportRequest" />
+      <output message="tns:UpdateTreatmentInformationInSafetyReportResponse" wsa:Action="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/UpdateTreatmentInformationInSafetyReportResponse" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Destroy">
+      <wsdl:input message="wns1:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
+      <wsdl:output message="wns1:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
+      <wsdl:fault message="wns1:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
+      <wsdl:fault message="wns1:ResourceUnknownFault" name="ResourceUnknownFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="SetTerminationTime">
+      <wsdl:input message="wns1:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
+      <wsdl:output message="wns1:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
+      <wsdl:fault message="wns1:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
+      <wsdl:fault message="wns1:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:fault message="wns1:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+

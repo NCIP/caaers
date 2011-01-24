@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.sr.ess.nci.nih.gov/SafetyReporting" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns13="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportNotification/types" xmlns:ns16="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesEvaluation/types" xmlns:ns0="http://ess.caaers.nci.nih.gov/sr" xmlns:ns8="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportQuery/types" xmlns:ns1="uri:iso.org:21090" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns14="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportReview/types" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns10="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/types" xmlns:ns11="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionManagement/types" xmlns:ns17="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionQuery/types" xmlns:ns2="http://ess.caaers.nci.nih.gov" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns15="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportAdvancedQuery/types" xmlns:ns18="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportTransaction/types" xmlns:ns3="http://service.sr.ess.nci.nih.gov/SafetyReporting/types" xmlns:ns9="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns12="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesManagement/types" name="SafetyReporting" targetNamespace="http://service.sr.ess.nci.nih.gov/SafetyReporting">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://service.sr.ess.nci.nih.gov/SafetyReporting" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportNotification/types" schemaLocation="./SafetyReportNotificationTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesEvaluation/types" schemaLocation="./SafetyReportRulesEvaluationTypes.xsd" />
+      <import namespace="http://ess.caaers.nci.nih.gov/sr" schemaLocation="./SR.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <import namespace="uri:iso.org:21090" schemaLocation="./ISO_datatypes_Narrative.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportReview/types" schemaLocation="./SafetyReportReviewTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportManagement/types" schemaLocation="./SafetyReportManagementTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionManagement/types" schemaLocation="./SafetyReportDefinitionManagementTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportDefinitionQuery/types" schemaLocation="./SafetyReportDefinitionQueryTypes.xsd" />
+      <import namespace="http://ess.caaers.nci.nih.gov" schemaLocation="./AE-PSM.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportAdvancedQuery/types" schemaLocation="./SafetyReportAdvancedQueryTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/types" schemaLocation="./SafetyReportingTypes.xsd" />
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
+      <import namespace="http://service.sr.ess.nci.nih.gov/SafetyReporting/SafetyReportRulesManagement/types" schemaLocation="./SafetyReportRulesManagementTypes.xsd" />
+      <element name="SafetyReportingResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns5:ServiceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="SafetyReportingPortType" wsrp:ResourceProperties="tns:SafetyReportingResourceProperties">
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns1:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns1:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+  </portType>
+</definitions>
+

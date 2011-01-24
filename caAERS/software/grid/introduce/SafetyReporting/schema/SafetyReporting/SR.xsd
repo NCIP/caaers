@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" jxb:version="1.0" targetNamespace="http://ess.caaers.nci.nih.gov/sr"
+	 xmlns:ESS-SR="http://ess.caaers.nci.nih.gov/sr" 
+	 xmlns:ESS-AE="http://ess.caaers.nci.nih.gov" 
+	 xmlns:ISO="uri:iso.org:21090" 
+	 xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	  >
+	<xs:import namespace="uri:iso.org:21090" schemaLocation="ISO_datatypes_Narrative.xsd"/>
+	<xs:import namespace="http://ess.caaers.nci.nih.gov" schemaLocation="AE-PSM.xsd"/>
+	
+	
+	<xs:complexType name="SafetyReportVersion">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SafetyReportVersion" type="ESS-SR:SafetyReportVersion"/>
+	
+	<xs:complexType name="SafetyReportFormat">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SafetyReportFormat" type="ESS-SR:SafetyReportFormat"/>
+
+	<xs:complexType name="PerformedProductInvestigationResult">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedProductInvestigationResult" type="ESS-SR:PerformedProductInvestigationResult"/>
+
+	<xs:complexType name="Person">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:BiologicEntity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Person" type="ESS-SR:Person"/>
+
+	<xs:complexType name="PerformedSubstanceAdministration">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedSubstanceAdministration" type="ESS-SR:PerformedSubstanceAdministration"/>
+
+	<xs:complexType name="RegulatoryApplication">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RegulatoryApplication" type="ESS-SR:RegulatoryApplication"/>
+
+	<xs:complexType name="PerformedClinicalResult">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedClinicalResult" type="ESS-SR:PerformedClinicalResult"/>
+
+	<xs:complexType name="OtherCause">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OtherCause" type="ESS-SR:OtherCause"/>
+
+	<xs:complexType name="PerformanceClinicalResult">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformanceClinicalResult" type="ESS-SR:PerformanceClinicalResult"/>
+		
+	<xs:complexType name="PerformedDiagnosis">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedDiagnosis" type="ESS-SR:PerformedDiagnosis"/>
+
+	<xs:complexType name="ReportSubmitter">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:BiologicEntity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReportSubmitter" type="ESS-SR:ReportSubmitter"/>
+	
+	<xs:complexType name="PerformedMedicalHistoryResult">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedMedicalHistoryResult" type="ESS-SR:PerformedMedicalHistoryResult"/>
+	
+	<xs:complexType name="DocumentAuthor">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:BiologicEntity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DocumentAuthor" type="ESS-SR:DocumentAuthor"/>
+	
+	<xs:complexType name="HealthcareProvider">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:BiologicEntity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="HealthcareProvider" type="ESS-SR:HealthcareProvider"/>						
+		
+	<xs:complexType name="SafetyReportNarrative">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SafetyReportNarrative" type="ESS-SR:SafetyReportNarrative"/>
+		
+	<xs:complexType name="PlannedIntervention">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PlannedIntervention" type="ESS-SR:PlannedIntervention"/>
+		
+	<xs:complexType name="PerformedActivity">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedActivity" type="ESS-SR:PerformedActivity"/>
+		
+	<xs:complexType name="ReportDefinition">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReportDefinition" type="ESS-SR:ReportDefinition"/>
+		
+	<xs:complexType name="ReportTerminology">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReportTerminology" type="ESS-SR:ReportTerminology"/>
+
+	<xs:complexType name="ReportingRule">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReportingRule" type="ESS-SR:ReportingRule"/>
+
+	<xs:complexType name="SafetyReportDefinitionNotification">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SafetyReportDefinitionNotification" type="ESS-SR:SafetyReportDefinitionNotification"/>
+
+	<xs:complexType name="SafetyReportReview">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SafetyReportReview" type="ESS-SR:SafetyReportReview"/>
+	
+  <xs:complexType abstract="true" name="COLL_SafetyReportVersion">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>	  
+  <xs:complexType name="DSET_SafetyReportVersion">
+    <xs:complexContent>
+      <xs:extension base="ESS-SR:COLL_SafetyReportVersion">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-SR:SafetyReportVersion" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DSET_SafetyReportVersion" type="ESS-SR:DSET_SafetyReportVersion"></xs:element>	
+	
+  <xs:element name="DSET_II" type="ISO:DSET_II"/>
+  
+				
+</xs:schema>
