@@ -97,7 +97,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	}
     	
     	//If Username is provided then we have to create CSMUSER for this person to be able to login to caAERS.
-    	if(! StringUtils.isEmpty(command.getUserName())){
+    	if(! StringUtils.isEmpty(command.getUserName()) && command.getCreateAsUser()){
     		command.setUser(buildUser(command));	
         }else{
         	if(command.getPerson() != null){
