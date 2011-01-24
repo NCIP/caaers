@@ -300,18 +300,18 @@
     		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/mandatoryFields"/>
     		</bean>
-    		<bean class="java.lang.String">
-	    		<constructor-arg value="/pages/admin/searchInvestigator"/>
-    		</bean>
-    		<bean class="java.lang.String">
-	    		<constructor-arg value="/pages/admin/createInvestigator"/>
-    		</bean>
-    		<bean class="java.lang.String">
-	    		<constructor-arg value="/pages/admin/searchResearchStaff"/>
-    		</bean>
-    		<bean class="java.lang.String">
-	    		<constructor-arg value="/pages/admin/createResearchStaff"/>
-    		</bean>
+<!--    		<bean class="java.lang.String">-->
+<!--	    		<constructor-arg value="/pages/admin/searchInvestigator"/>-->
+<!--    		</bean>-->
+<!--    		<bean class="java.lang.String">-->
+<!--	    		<constructor-arg value="/pages/admin/createInvestigator"/>-->
+<!--    		</bean>-->
+<!--    		<bean class="java.lang.String">-->
+<!--	    		<constructor-arg value="/pages/admin/searchResearchStaff"/>-->
+<!--    		</bean>-->
+<!--    		<bean class="java.lang.String">-->
+<!--	    		<constructor-arg value="/pages/admin/createResearchStaff"/>-->
+<!--    		</bean>-->
     		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/import"/>
     		</bean>
@@ -342,7 +342,9 @@
 			<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/createUser"/>
     		</bean>
-			    		
+			<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/searchUser"/>
+    		</bean>
 	    </list>
 	</property>
   </bean> 
@@ -620,13 +622,10 @@
 		<property name="personRepository" ref="personRepository" />
 	</bean>
 
-	<bean id="userSearchController"  name="/admin/searchUser" class="gov.nih.nci.cabig.caaers.web.search.SearchUserController"/>    
-
+	<bean name="/admin/searchUser"  id="userSearchController" class="gov.nih.nci.cabig.caaers.web.search.SearchUserController"/>    
 
     <!-- Validators -->
 
     <bean id="numInRangeValidator" class="gov.nih.nci.cabig.caaers.validation.validator.NumInRangeValidator" autowire-candidate="false"/>
-
-
 
 </beans>

@@ -1,8 +1,12 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
-<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" var="hasRSCreate"/>
-<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" var="hasRSUpdate"/>
-<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" var="hasRSRead"/>
+<csmauthz:accesscontrol var="hasRSCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" />
+<csmauthz:accesscontrol var="hasRSUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" />
+<csmauthz:accesscontrol var="hasRSRead"   objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ" />
+<csmauthz:accesscontrol var="investigatorCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
+<csmauthz:accesscontrol var="investigatorUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE"/>
+<csmauthz:accesscontrol var="userCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE"/>
+<csmauthz:accesscontrol var="userUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE"/>
 
 <html>
     <head>
@@ -208,8 +212,8 @@
 								 		<jsp:attribute name="label"><ui:label path="emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
 								 		<jsp:attribute name="value"><ui:text path="emailAddress" required="true" title="Primary email" size="30"/></jsp:attribute>
 								 	</ui:row>
-									<ui:checkbox path="createAsPerson" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
-									<ui:checkbox path="createAsUser" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
+									<ui:checkbox path="createAsPerson" disabled="${!command.PO}" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
+									<ui:checkbox path="createAsUser"  disabled="${!command.UA}" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
 								 </div>
 							</div>
     				</chrome:box>

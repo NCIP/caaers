@@ -21,22 +21,25 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		Key is an URL to the protected page. Value is an entity's fully qualified class name along with a request parameter name, which holds the entity's ID.
 	 -->
 	<util:map id="filterByURLAndEntityMap">
-		<entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:researchStaffId"/>
-		<entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:investigatorId"/>
+<!--		<entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:researchStaffId"/>-->
+<!--		<entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:investigatorId"/>-->
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:studyId" />
 		<entry key="/pages/study/export" value="gov.nih.nci.cabig.caaers.domain.Study:id" />
 		<entry key="/pages/admin/editOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:organizationId"/>
 	</util:map>
 	
 	<util:map id="filterByURLAndRoleListMap">		
-		<entry key="/pages/admin/createResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/pages/admin/editResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/pages/admin/searchResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/dwr/call/plaincall/search.getResearchStaffTable.dwr" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/pages/admin/createInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/pages/admin/searchInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>
-		<entry key="/dwr/call/plaincall/search.getInvestigatorTable.dwr" value="person_and_organization_information_manager,user_administrator,data_reader"/>
+        <entry key="/pages/admin/createUser" value="person_and_organization_information_manager,user_administrator,data_reader" />
+        <entry key="/pages/admin/editUser" value="person_and_organization_information_manager,user_administrator,data_reader" />
+        <entry key="/pages/admin/searchUser" value="person_and_organization_information_manager,user_administrator,data_reader" />
+<!--		<entry key="/pages/admin/createResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/pages/admin/editResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/pages/admin/searchResearchStaff" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/dwr/call/plaincall/search.getResearchStaffTable.dwr" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/pages/admin/createInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/pages/admin/editInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/pages/admin/searchInvestigator" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
+<!--		<entry key="/dwr/call/plaincall/search.getInvestigatorTable.dwr" value="person_and_organization_information_manager,user_administrator,data_reader"/>-->
 		<entry key="/pages/admin/searchOrganization" value="person_and_organization_information_manager,data_reader"/>
 		<entry key="/dwr/call/plaincall/search.getOrganizationTable.dwr" value="person_and_organization_information_manager,data_reader"/>
 		<entry key="/pages/admin/createOrganization" value="person_and_organization_information_manager,data_reader"/>
@@ -106,10 +109,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/dwr/call/plaincall/createParticipant.getParticipantTable.dwr" value="registrar" /> 
         <entry key="/dwr/call/plaincall/searchStudy.getTableForAssignParticipant.dwr" value="registrar" /> 
         <entry key="/pages/participant/create" value="subject_manager,registrar" /> 
-        <entry key="/pages/admin/createUser" value="person_and_organization_information_manager,user_administrator,data_reader" />
-        <entry key="/pages/admin/editUser" value="person_and_organization_information_manager,user_administrator,data_reader" />
-        <entry key="/pages/admin/searchUser" value="person_and_organization_information_manager,user_administrator,data_reader" />
- 		
 	</util:map>
 	
 
@@ -164,17 +163,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/happy" value="gov.nih.nci.cabig.caaers.domain.Notification:READ"/>
 		<entry key="/pages/admin/asaelSearch" value="gov.nih.nci.cabig.caaers.domain.Agent:READ"/>
 		<entry key="/pages/admin/asaelCreate" value="gov.nih.nci.cabig.caaers.domain.Agent:CREATE"/>
-        <entry key="/pages/admin/asaelEdit" value="gov.nih.nci.cabig.caaers.domain.Agent:UPDATE || gov.nih.nci.cabig.caaers.domain.Agent:READ" /> 
-        <entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
-        <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>
-        <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
-        <entry key="/pages/admin/viewInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>
-        <entry key="/pages/admin/import" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
+        <entry key="/pages/admin/asaelEdit" value="gov.nih.nci.cabig.caaers.domain.Agent:UPDATE || gov.nih.nci.cabig.caaers.domain.Agent:READ" />
+        
+		<entry key="/pages/admin/createUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:CREATE" />
+		<entry key="/pages/admin/editUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
+		<entry key="/pages/admin/searchUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
+         
+<!--        <entry key="/pages/admin/editInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>-->
+<!--        <entry key="/pages/admin/createInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:CREATE"/>-->
+<!--        <entry key="/pages/admin/searchInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>-->
+<!--        <entry key="/pages/admin/viewInvestigator" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ"/>-->
+<!--        <entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"/>-->
+<!--        <entry key="/pages/admin/createResearchStaff" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE"/>-->
+<!--        <entry key="/pages/admin/searchResearchStaff" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"/>-->
 
-        <entry key="/pages/admin/editResearchStaff" value="gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"/>
-        <entry key="/pages/admin/createResearchStaff" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE"/>
-        <entry key="/pages/admin/searchResearchStaff" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ"/>
-
+		<entry key="/pages/admin/import" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
         <entry key="/pages/admin/createIND" value="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:CREATE"/>
         <entry key="/pages/admin/searchIND" value="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:READ"/>
 
@@ -206,9 +209,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-		<entry key="/pages/admin/createUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:CREATE" />
-		<entry key="/pages/admin/editUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
-		<entry key="/pages/admin/searchUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
 
 	</util:map>
 
@@ -229,9 +229,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.study.PersonnelTab" value="gov.nih.nci.cabig.caaers.domain.StudyPersonnel:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.study.IdentifiersTab" value="gov.nih.nci.cabig.caaers.domain.Identifier:CREATE"/>
 
-
-
-        
           <!-- SUBJECT FLOW , READ (assumption : user with CREATE , UPDATE would automatically have READ ) -->
           <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.participant.AssignStudyTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
@@ -248,9 +245,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.participant.SelectStudyForParticipantTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.participant.CreateSubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE"/>
-
-
-
 
           <!-- AE FLOW , CREATE (assumption : user with CREATE would automatically have UPDATE )-->
           <entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
@@ -300,9 +294,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportReviewTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportSummaryTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.admin.ResearchStaffTab" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" />
+<!--          <entry key="gov.nih.nci.cabig.caaers.web.admin.ResearchStaffTab" value="gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE" />-->
           <entry key="gov.nih.nci.cabig.caaers.web.admin.AgentTab" value="gov.nih.nci.cabig.caaers.domain.Agent:READ" />
-          <entry key="gov.nih.nci.cabig.caaers.web.admin.InvestigatorTab" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
+<!--          <entry key="gov.nih.nci.cabig.caaers.web.admin.InvestigatorTab" value="gov.nih.nci.cabig.caaers.domain.Investigator:READ" />-->
           <entry key="gov.nih.nci.cabig.caaers.web.admin.OrganizationTab" value="gov.nih.nci.cabig.caaers.domain.Organization:READ" />
           <entry key="gov.nih.nci.cabig.caaers.web.admin.UserTab" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE" />
           

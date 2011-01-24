@@ -32,8 +32,8 @@ public class UserCommand {
 	private List<SitePerson> sitePersonnel = new ArrayList<SitePerson>();
 	private String userName;
 	private HashMap<String, String> personTypeOptionsMap = new LinkedHashMap<String, String>();
-	private boolean createAsPerson = true;
-	private boolean createAsUser = true;
+	private boolean createAsPerson = isPO;
+	private boolean createAsUser = isUA;
 	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
 	private Map<String,String> siteMap = new HashMap<String,String>();
 	private Map<String,String> studyMap = new HashMap<String,String>();
@@ -314,5 +314,13 @@ public class UserCommand {
 
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
+	}
+
+	public boolean getPO() {
+		return isPO;
+	}
+
+	public boolean getUA() {
+		return isUA;
 	}
 }
