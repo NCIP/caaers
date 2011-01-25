@@ -120,6 +120,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setResearchStaff(remoteResearchStaff);
 		siteResearchStaff.setOrganization(site);
+		siteResearchStaff.setStartDate(DateUtils.today());
 		SiteResearchStaffRole srs = new SiteResearchStaffRole();
 		srs.setRoleCode("caaers_study_cd");
 		srs.setStartDate(DateUtils.today());
@@ -148,6 +149,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 					siteResearchStaff.setResearchStaff(remoteResearchStaff);
 					siteResearchStaff.setOrganization(site);
+					siteResearchStaff.setStartDate(DateUtils.today());
 					SiteResearchStaffRole srs = new SiteResearchStaffRole();
 	    			srs.setRoleCode("caaers_study_cd");
 	    			srs.setStartDate(DateUtils.today());
@@ -156,7 +158,6 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 				}
 			}
-
 		}
 
 		return remoteResearchStaff;
