@@ -48,13 +48,14 @@
 
 
     <%-- CHECKING THE STATUS OF THE SITE-RESEARCH-STAFF--%>
-    <c:set var="activateButtonVisibility" value="true" />
+    <c:set var="activateButtonVisibility" value="${sp.siteResearchStaff.active}" />
+<%--     
     <c:forEach var="r" items="${sp.siteResearchStaff.siteResearchStaffRoles}" varStatus="i">
         <c:if test="${r.roleCode eq sp.roleCode}">
             <c:set var="activateButtonVisibility" value="${r.active}" />
         </c:if>
     </c:forEach>
-
+--%>
 
 
     <td style="border-left:none;">

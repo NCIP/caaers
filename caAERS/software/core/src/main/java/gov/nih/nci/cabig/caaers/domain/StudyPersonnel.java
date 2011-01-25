@@ -46,13 +46,15 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
      *  This will check the active date of the associated {@link gov.nih.nci.cabig.caaers.domain.SiteResearchStaff}
      */
     public void activate(){
-        Date d = getSiteResearchStaff().getActiveDate();
-        if (d.compareTo(DateUtils.today()) > 0) {
-            this.setStartDate(d);
-        } else this.startDate = DateUtils.today();
+        if (getSiteResearchStaff().getStartDate().compareTo(DateUtils.today()) > 0) {
+            this.setStartDate(getSiteResearchStaff().getStartDate());
+        } else {
+            this.setStartDate(DateUtils.today());
+        }
+        this.setEndDate(getSiteResearchStaff().getEndDate());
         this.endDate = null;
     }
-
+    
     @ManyToOne
     @JoinColumn(name = "site_research_staffs_id")
 	public SiteResearchStaff getSiteResearchStaff() {

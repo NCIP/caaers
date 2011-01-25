@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
@@ -171,6 +173,8 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
 	public void setFaxNumber(String faxNumber) {
 		this.faxNumber = faxNumber;
 	}
+	
+    @Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_date")
 	public Date getStartDate() {
 		return startDate;
@@ -179,6 +183,8 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	
+    @Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "end_date")
 	public Date getEndDate() {
 		return endDate;
