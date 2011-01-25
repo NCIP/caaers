@@ -189,17 +189,15 @@
                 <div class="value">
                     <select id="staff" name="aeReport.reporter.person" class="required">
                         <option value="">Please select</option>
-                        <optgroup label="Reporter">
                         <c:forEach var="researchStaff" items="${researchStaffList }">
                         	<option value="${researchStaff.id }"  }>${researchStaff.firstName } ${researchStaff.lastName }</option>
                         </c:forEach>
                         </optgroup>
-                        <optgroup label="Investigators">
                         <c:forEach var="investigator" items="${investigatorList }">
                         	<option value="${investigator.id }" }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                         </optgroup>
-                        <option value="">Enter manually</option>
+                        <option value="" style="font-style:italic"><i>Enter manually</i></option>
                     </select>
                 </div>
             </div>
@@ -223,7 +221,7 @@
                         <c:forEach var="investigator" items="${investigatorList }">
                         	<option value="${investigator.id }"  }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
-                        <option value="">Enter manually</option>
+                        <option value="" style="font-style:italic">Enter manually</option>
                     </select>
                 </div>
             </div>

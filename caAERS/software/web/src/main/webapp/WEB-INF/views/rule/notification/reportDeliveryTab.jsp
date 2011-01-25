@@ -88,9 +88,11 @@
 				<jsp:attribute name="singleFields">
 					<table width="100%" class="tablecontent">
 						<tr id="emails-table-head" class="emails-table-head">
-							<th width="35%" class="tableHeader">Name</th>
-							<th width="60%" class="tableHeader"><tags:requiredIndicator /> Role/EmailAddress</th>
-							<th width="5%" class="tableHeader">&nbsp;</th>
+                           <c:if test="${rdd.entityType ne 2 and rdd.entityType ne 3}">
+							    <th width="35%" class="tableHeader">Role/EmailAddress</th>
+                            </c:if>
+
+							<th width="65%" class="tableHeader">&nbsp;</th>
 						</tr>
 						<c:set var="pIndex">0</c:set>
 						<c:forEach items="${command.reportDefinition.deliveryDefinitions}" var="rdd" varStatus="status">

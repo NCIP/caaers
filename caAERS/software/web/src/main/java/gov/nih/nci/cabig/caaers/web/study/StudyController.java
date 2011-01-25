@@ -203,17 +203,17 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         if (isSummaryEnabled()) {
             List<ListValues> summary = new ArrayList<ListValues>();
             if (study.getShortTitle() != null) {
-                summary.add(new ListValues(getMessage("study.shortTitle", "Short title."), study.getShortTitle()));
+                summary.add(new ListValues(getMessage("LBL_study.shortTitle", "Short title."), study.getShortTitle()));
                 showSummary = true;
             }
 
             if (study.getPrimaryIdentifier() != null && study.getPrimaryIdentifier().getValue() != null) {
-                summary.add(new ListValues(getMessage("study.primaryIdentifier", "Primary identifier."), study.getPrimaryIdentifier().toString()));
+                summary.add(new ListValues(getMessage("LBL_study.primaryIdentifier", "Primary identifier."), study.getPrimaryIdentifier().toString()));
                 showSummary = true;
             }
 
             if (study.getPhaseCode() != null) {
-                summary.add(new ListValues(getMessage("study.phase", "Phase."), study.getPhaseCode().toString()));
+                summary.add(new ListValues(getMessage("LBL_study.phaseCode", "Phase."), study.getPhaseCode().toString()));
                 showSummary = true;
             }
 

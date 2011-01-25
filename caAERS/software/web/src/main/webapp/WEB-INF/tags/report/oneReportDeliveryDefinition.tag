@@ -23,19 +23,22 @@
 	 </c:if>
 	 
 	 <%-- Email recipient --%>
-	 <c:if test="${rdd.entityType eq 2}">
-	  <c:if test="${status.index eq 0 or status.index eq 3}">
-	 	  <td><tags:renderInputs field="${field}" /></td>
-	 	</c:if>
-	 </c:if>
-	 
-	 <%-- Role recipient --%>
-	 <c:if test="${rdd.entityType eq 3}">
-	   <c:if test="${status.index eq 0 or status.index eq 4}">
-	 	  <td><tags:renderInputs field="${field}" /></td>
-	 	</c:if>
-	 </c:if>
-	
+        <c:if test="${rdd.entityType eq 2}">
+         <c:if test="${status.index eq 3}">
+                  <td><tags:renderInputs field="${field}" /></td>
+                </c:if>
+        </c:if>
+
+        <%-- Role recipient --%>
+        <c:if test="${rdd.entityType eq 3}">
+          <c:if test="${status.index eq 4}">
+                  <td><tags:renderInputs field="${field}" /></td>
+                </c:if>
+        </c:if>
+
+
+
+
 	</c:forEach>
 	<td width="100px;" nowrap="true">
         <tags:button color="red" type="button" value="Delete" size="small" icon="x" onclick="javascript:fireDelete(${originalIndex},'${divisionClass}-${index}');"/>

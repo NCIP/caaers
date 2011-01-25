@@ -9,7 +9,7 @@ import java.util.Map;
 public class EditParticipantReviewParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 
     public EditParticipantReviewParticipantTab() {
-        super("Participant Review", "Review", "par/par_confirmation");
+        super("Participant Review", "Summary", "par/par_confirmation");
         addFieldDecorators(new SecurityObjectIdFieldDecorator(Participant.class), new ReadonlyFieldDecorator());
     }
     @Override
