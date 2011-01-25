@@ -45,6 +45,56 @@ public abstract class SafetyReportingEnterpriseServiceImplBase {
 	
 	
 	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.service.globus.resource.SafetyReportManagementResourceHome getSafetyReportManagementResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportManagementHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.service.globus.resource.SafetyReportManagementResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportquery.service.globus.resource.SafetyReportQueryResourceHome getSafetyReportQueryResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportQueryHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportquery.service.globus.resource.SafetyReportQueryResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreporttransaction.service.globus.resource.SafetyReportTransactionResourceHome getSafetyReportTransactionResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportTransactionHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreporttransaction.service.globus.resource.SafetyReportTransactionResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportdefinitionmanagement.service.globus.resource.SafetyReportDefinitionManagementResourceHome getSafetyReportDefinitionManagementResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportDefinitionManagementHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportdefinitionmanagement.service.globus.resource.SafetyReportDefinitionManagementResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportrulesmanagement.service.globus.resource.SafetyReportRulesManagementResourceHome getSafetyReportRulesManagementResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportRulesManagementHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportrulesmanagement.service.globus.resource.SafetyReportRulesManagementResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportnotification.service.globus.resource.SafetyReportNotificationResourceHome getSafetyReportNotificationResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportNotificationHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportnotification.service.globus.resource.SafetyReportNotificationResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportreview.service.globus.resource.SafetyReportReviewResourceHome getSafetyReportReviewResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportReviewHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportreview.service.globus.resource.SafetyReportReviewResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportadvancedquery.service.globus.resource.SafetyReportAdvancedQueryResourceHome getSafetyReportAdvancedQueryResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportAdvancedQueryHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportadvancedquery.service.globus.resource.SafetyReportAdvancedQueryResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportrulesevaluation.service.globus.resource.SafetyReportRulesEvaluationResourceHome getSafetyReportRulesEvaluationResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportRulesEvaluationHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportrulesevaluation.service.globus.resource.SafetyReportRulesEvaluationResourceHome)resource;
+	}
+	
+	public gov.nih.nci.ess.safetyreporting.service.safetyreportdefinitionquery.service.globus.resource.SafetyReportDefinitionQueryResourceHome getSafetyReportDefinitionQueryResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("safetyReportDefinitionQueryHome");
+		return (gov.nih.nci.ess.safetyreporting.service.safetyreportdefinitionquery.service.globus.resource.SafetyReportDefinitionQueryResourceHome)resource;
+	}
+	
 	
 	protected ResourceHome getResourceHome(String resourceKey) throws Exception {
 		MessageContext ctx = MessageContext.getCurrentContext();
