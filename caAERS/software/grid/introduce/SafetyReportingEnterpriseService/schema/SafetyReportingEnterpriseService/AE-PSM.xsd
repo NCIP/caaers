@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" jxb:version="1.0" targetNamespace="http://ess.caaers.nci.nih.gov"
+	 xmlns:ESS-AE="http://ess.caaers.nci.nih.gov" 
+	 xmlns:ISO="uri:iso.org:21090" 
+	 xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	  >
+	<xs:import namespace="uri:iso.org:21090" schemaLocation="ISO_datatypes_Narrative.xsd"/>
+	
+	<xs:complexType abstract="true" name="Entity">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdverseEventSeriousness">
+		<xs:sequence>
+			<xs:element name="code" type="ISO:CD"/>
+			<xs:element name="date" type="ISO:TS"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BiologicEntityIdentifier">
+		<xs:annotation>
+			<xs:documentation>The unique identification of a biologic entity in a specified context.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="effectiveDateRange" type="ISO:IVL_TS.DateTime">
+				<xs:annotation>
+					<xs:documentation>The date and time span for when the biologic entity identifier is active</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="identifier" type="ISO:II">
+				<xs:annotation>
+					<xs:documentation>The unique symbol that establishes identity of the	biologic entity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeCode" type="ISO:CD">
+				<xs:annotation>
+					<xs:documentation>A coded value specifying the kind of biologic entity identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType abstract="true" name="BiologicEntity">
+		<xs:annotation>
+			<xs:documentation>Any individual living (or previously living) being. For example, animal, human being.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="administrativeGenderCode" type="ISO:CD">
+				<xs:annotation>
+					<xs:documentation>A coded value specifying the physical or societal properties by which male is distinguished from female.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="birthDate" type="ISO:TS">
+				<xs:annotation>
+					<xs:documentation>The date (and time) on which the biologic entity is 	born.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deathDate" type="ISO:TS">
+				<xs:annotation>
+					<xs:documentation>The date (and time) on which the biologic entity died.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="biologicEntityIdentifier" type="ESS-AE:BiologicEntityIdentifier"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="BiologicEntity" type="ESS-AE:BiologicEntity"/>
+	<xs:complexType name="StudySubject">
+		<xs:annotation>
+			<xs:documentation>A physical entity which is the primary unit of operational and/or administrative 
+			interest in a study.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:BiologicEntity">
+				<xs:sequence>
+					<xs:element name="statusCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying the phase in the lifecycle of the study 
+							subject..</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="statusDate" type="ISO:TS">
+						<xs:annotation>
+							<xs:documentation>The date (and time) on which the status is assigned to the study
+							 subject..</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="StudySubject" type="ESS-AE:StudySubject"/>
+	<xs:complexType name="AdverseEvent">
+		<xs:annotation>
+			<xs:documentation>Any unfavorable and unintended sign, symptom, disease, or other
+			 medical occurrence with a temporal association
+			 with the use of a medical product, procedure or other therapy, or in 
+			 conjunction with a research study, regardless of causal relationship.
+			 </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity">
+				<xs:sequence>
+					<xs:element name="categoryCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying a classification of the adverse event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="duration" type="ISO:PQ">
+						<xs:annotation>
+							<xs:documentation>The length of time of an adverse even</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="endRelativeToReferenceCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying when this adverse event ended with 
+							respect to 	the sponsor-defined reference period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="expectedIndicator" type="ISO:BL">
+						<xs:annotation>
+							<xs:documentation>Specifies whether the specificity (nature), frequency, or severity of an adverse event 
+							is consistent with the applicable study documentation (e.g., investigator&apos;s brochure, protocol document, 
+							or consent document) or product labeling (package insert).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="gradeCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying the level of injury suffered by the subject for whom the event is reported.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="highlightedIndicator" type="ISO:BL">
+						<xs:annotation>
+							<xs:documentation>Specifies whether the adverse event or reaction term is a major concern 
+                    						 or reason for reporting the adverse event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="hospitalizationRequiredIndicator" type="ISO:BL">
+						<xs:annotation>
+							<xs:documentation>Specifies whether the subject requires hospitalization or prolongation of existing 
+                    							hospitalization as a result of the adverse event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="locationDescription" type="ISO:ST">
+						<xs:annotation>
+							<xs:documentation>The textual representation of the physical location of the subject when the adverse event began.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="occurrencePatternCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying the time recurrence by which an adverse event occurs.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="onsetDate" type="ISO:TS">
+						<xs:annotation>
+							<xs:documentation>The date (and time) on which an adverse event began.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="reportedDate" type="ISO:TS">
+						<xs:annotation>
+							<xs:documentation>The date (and time) on which an adverse event reported.</xs:documentation>
+						</xs:annotation>
+					</xs:element>					
+					<xs:element name="postReportUpdateDate" type="ISO:TS">
+						<xs:annotation>
+							<xs:documentation>The date (and time) on which the adverse event was updated after it had been submitted.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolutionDate" type="ISO:TS">
+						<xs:annotation>
+							<xs:documentation>The date (and time) when the adverse event ends or returns to baseline.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="severityCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying the intensity of the event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="probabilityCode" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation>The likelihood that an adverse event is related to a given thing in terms of "not related", "unlikely", "possible", "probable", or "definite"..</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="summary" type="ISO:ST">
+						<xs:annotation>
+							<xs:documentation>A description of the adverse event and the treatment of the event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="comment" type="ISO:ST">
+						<xs:annotation>
+							<xs:documentation>comment</xs:documentation>
+						</xs:annotation>
+					</xs:element>					
+					<xs:element name="unexpectedReasonCode" type="ISO:DSET_CD">
+						<xs:annotation>
+							<xs:documentation>A coded value specifying the representation of the criteria for
+							 determining whether an adverse event (experience or reaction) is considered unanticipated.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="result" type="ISO:CD">
+						<xs:annotation>
+							<xs:documentation> used to capture the AE term code, code system, display name, original text, etc.</xs:documentation>
+						</xs:annotation>
+					</xs:element>					
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="adverseEventSeriousness" type="ESS-AE:AdverseEventSeriousness">
+						<xs:annotation>
+							<xs:documentation>Degree or extent of the consequence suffered by the subject.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="1" minOccurs="0" name="adverseEventCtcTerm" type="ESS-AE:CtcTerm"/>
+					<xs:element minOccurs="0" maxOccurs="1" name="otherMeddra" type="ESS-AE:LowLevelTerm" />
+					
+					
+					
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdverseEvent" type="ESS-AE:AdverseEvent"/>
+	<xs:complexType name="DocumentIdentifier">
+		<xs:annotation>
+			<xs:documentation>The unique identification of a document in a specified context.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II">
+				<xs:annotation>
+					<xs:documentation>A unique symbol that establishes identity of the document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeCode" type="ISO:CD">
+				<xs:annotation>
+					<xs:documentation>A coded value specifying the kind of document identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="primaryIndicator" type="ISO:BL">
+				<xs:annotation>
+					<xs:documentation>Specifies whether this is the main or principal document identifier. .</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType abstract="true" name="Document">
+		<xs:annotation>
+			<xs:documentation>An organized representation of information in publishable, human-readable form
+			 (that persists over time)..</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="typeCode" type="ISO:CD">
+				<xs:annotation>
+					<xs:documentation>A coded value specifying the kind of document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="documentIdentifier" type="ESS-AE:DocumentIdentifier"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="StudyProtocolVersion">
+		<xs:annotation>
+			<xs:documentation>A plan at a particular point in time for a formal investigation to assess the utility, 
+			impact, pharmacological, physiological, and/or psychological effects of a particular treatment, procedure, 
+			drug, device, biologic, food product, cosmetic, care plan, or subject characteristic. .</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ESS-AE:Document">
+					<xs:sequence>
+						<xs:element name="accrualReportingMethodCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the technique that is used for reporting 
+								subject accrual data to the study sponsor.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="acronym" type="ISO:ST">
+							<xs:annotation>
+								<xs:documentation>The non-unique initials or abbreviated name used for identification of
+								 the study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="aeCodingSystem" type="ISO:CD"><!-- OID-->
+							<xs:annotation>
+								<xs:documentation>The coding system used for recording adverse events for a study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="amendmentGracePeriod" type="ISO:PQ.Time">
+							<xs:annotation>
+								<xs:documentation>The period of time during which sites can continue to accrue on an existing study version before they are required to switch to the new study version.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="companionCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the type of ancillary study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="conditionCodingSystem" type="ISO:CD"><!-- OID-->
+							<xs:annotation>
+								<xs:documentation>The coding system used for recording conditions that are the focus of a study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="designConfigurationCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying a trial pattern developed to compare treatment groups in a 
+								clinical pre-clinical trial.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="mandatoryIndicator" type="ISO:BL">
+							<xs:annotation>
+								<xs:documentation>Specifies whether the modifications contained in the study protocol version must be 
+								applied to all sites and subjects that want to continue participating in the study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="multiInstitutionIndicator" type="ISO:BL">
+							<xs:annotation>
+								<xs:documentation>Specifies whether a study is designed to be conducted at more than one site concurrently.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="participatingCountryCode" type="ISO:DSET_CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the countries from which participants will be, are intended to be, or have been recruited for the study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="participatingOrganizationTypeCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the kind of organizations planned to participate as study 
+								sites for this study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="periodicTargetAccrualNumber" type="ISO:INT.NonNeg"><!-- RTO INT.NONNEG-->
+							<xs:annotation>
+								<xs:documentation>A range of integers specifying the minimum and maximum number of subjects to be 
+								accrued per a specified amount of time.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="phaseCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the designation of approval phase for a study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="plannedDuration" type="ISO:PQ.Time">
+							<xs:annotation>
+								<xs:documentation>The intended period of time for the study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="plannedStudySubjectExperience" type="ISO:ST">
+							<xs:annotation>
+								<xs:documentation>A description of what the study subject can expect to experience over the course of
+								 the study, including the sequence and duration of activities.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="populationDescription" type="ISO:ST">
+							<xs:annotation>
+								<xs:documentation>The textual representation of the subject characteristics, including inclusion and 
+								exclusion criteria and describes the population for which the study may be generalized.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="primaryPurposeCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the type of study based upon the intent of the study&apos;s 
+								activities.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="purposeStatement" type="ISO:ST">
+							<xs:annotation>
+								<xs:documentation>A statement describing the overall rationale of the study. This field describes the
+								 contribution of this study to product development, i.e., what knowledge is being contributed from the
+								  conduct of this study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="responsiblePartyCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the type of entity who is legally responsible for the
+								 execution of the study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="studySchematic" type="ISO:ED">
+							<xs:annotation>
+								<xs:documentation>Diagram which outlines all study epochs, timing of randomization and duration 
+								of treatments.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="studySubjectTypeCode" type="ISO:CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the target entity of the study of investigation.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="targetAccrualNumberRange" type="ISO:INT.NonNeg"><!-- URG INT.NONNEG-->
+							<xs:annotation>
+								<xs:documentation>A range of integers specifying the minimum and maximum number of subjects to 
+								be accrued for the study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="targetAnatomicSiteCode" type="ISO:DSET_CD">
+							<xs:annotation>
+								<xs:documentation>A coded value specifying the anatomic location that is the focus of a study.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType abstract="true" name="Activity">
+		<xs:annotation>
+			<xs:documentation>Any action that can, in the context of a study, be planned, 
+			scheduled or performed.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II">
+				<xs:annotation>
+					<xs:documentation>A unique symbol that establishes identity of an activity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reasonCode" type="ISO:DSET_CD">
+				<xs:annotation>
+					<xs:documentation>A coded value specifying the motivation, cause, or rationale of an activity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PerformedActivity">
+		<xs:annotation>
+			<xs:documentation>An activity that is successfully or unsuccessfully completed.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Activity">
+				<xs:sequence>
+					<xs:element name="actualDateRange" type="ISO:IVL_TS.DateTime">
+						<xs:annotation>
+							<xs:documentation>The date and time span when this activity began and ended.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="delayDuration" type="ISO:IVL_TS.DateTime"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PerformedActivity" type="ESS-AE:PerformedActivity"/>
+	<xs:complexType name="AdditionalInformation">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="autopsyReport" type="ISO:BL"/>
+			<xs:element name="consults" type="ISO:BL"/>
+			<xs:element name="dischargeSummary" type="ISO:BL"/>
+			<xs:element name="flowCharts" type="ISO:BL"/>
+			<xs:element name="irbReport" type="ISO:BL"/>
+			<xs:element name="labReports" type="ISO:BL"/>
+			<xs:element name="oboForm" type="ISO:BL"/>
+			<xs:element name="other" type="ISO:BL"/>
+			<xs:element name="otherInformation" type="ISO:ST"/>
+			<xs:element name="pathologyReport" type="ISO:BL"/>
+			<xs:element name="progressNotes" type="ISO:BL"/>
+			<xs:element name="radiologyReports" type="ISO:BL"/>
+			<xs:element name="referralLetters" type="ISO:BL"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CtcTerm">
+		<xs:annotation>
+			<xs:documentation>An adverse event as described by the CTCAE..</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ctepCode" type="ISO:CD">
+				<xs:annotation>
+					<xs:documentation>A unique identifier within the CTCAE vocabulary that is assigned to a particular adverse event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ctepTerm" type="ISO:CD">
+				<xs:annotation>
+					<xs:documentation>The brief, written description of each adverse event listed in the CTCAE.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LowLevelTerm">
+		<xs:annotation>
+			<xs:documentation>Lowest level term (LLT) of the terminology, related to a single preferred term (PT) as a synonym, lexical variant, or quasi-synonym (Note: All PTs have an identical LLT).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="meddraCode" type="ISO:ST">
+				<xs:annotation>
+					<xs:documentation>.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="meddraTerm" type="ISO:ST">
+				<xs:annotation>
+					<xs:documentation>.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+			
+<xs:element name="AdditionalInformation" type="ESS-AE:AdditionalInformation"/>
+	<xs:complexType name="TreatmentInformation">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="treatmentDescription" type="ISO:ST"/>
+			<xs:element name="totalCourses" type="ISO:CD"/>
+			<xs:element name="firstCourseDate" type="ISO:TS"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+<xs:element name="TreatmentInformation" type="ESS-AE:TreatmentInformation"/>
+
+	<xs:complexType name="AdverseEventSummary">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="summary" type="ISO:ST"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+<xs:element name="AdverseEventSummary" type="ESS-AE:AdverseEventSummary"/>
+
+	<xs:complexType name="CaaersRule">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="ruleName" type="ISO:ST"/>
+			<xs:element name="ruleType" type="ISO:ST"/>
+			<xs:element name="attribute" type="ISO:ST"/>
+			<xs:element name="condition" type="ISO:ST"/>
+			<xs:element name="action" type="ISO:ST"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+<xs:element name="CaaersRule" type="ESS-AE:CaaersRule"/>
+<xs:element name="DataRequirement" type="ESS-AE:CaaersRule"/>
+	<xs:complexType name="ReviewProcess">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="comments" type="ISO:ST"/>
+			<xs:element name="reviewer" type="ISO:ST"/>
+			<xs:element name="status" type="ISO:ST"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+<xs:element name="ReviewProcess" type="ESS-AE:ReviewProcess"/>
+
+	<xs:complexType name="AuditTrail">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="ipAddress" type="ISO:ST"/>
+			<xs:element name="userName" type="ISO:ST"/>
+			<xs:element name="objectName" type="ISO:ST"/>
+			<xs:element name="objectId" type="ISO:ST"/>
+			<xs:element name="operation" type="ISO:ST"/>
+			<xs:element name="url" type="ISO:ST"/>
+			<xs:element name="recordedTime" type="ISO:TS"/>
+			<xs:element name="values" type="ESS-AE:AuditTrailValue"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditTrailValue">
+		<xs:sequence>
+			<xs:element name="identifier" type="ISO:II"/>
+			<xs:element name="ipAddress" type="ISO:ST"/>
+			<xs:element name="attributeName" type="ISO:ST"/>
+			<xs:element name="previousValue" type="ISO:ST"/>
+			<xs:element name="newValue" type="ISO:ST"/>
+			<xs:element name="version" type="ISO:ST"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+<xs:element name="AuditTrail" type="ESS-AE:AuditTrail"/>
+
+<xs:element name="LimitOffset" type="ESS-AE:LimitOffset"/>
+	<xs:complexType name="LimitOffset">
+		<xs:sequence>
+			<xs:element name="limit" type="ISO:INT"/>
+			<xs:element name="offset" type="ISO:INT"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AdverseEventQuery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="searchCriteria" type="ESS-AE:Criteria" maxOccurs="16" minOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Criteria" type="ESS-AE:Criteria"/>
+
+		<xs:complexType name="Criteria">
+			<xs:sequence>
+				<xs:element name="objectName" type="ISO:ST"/>
+				<xs:element name="attributeName" type="ISO:ST"/>
+				<xs:element name="predicate" type="ISO:ST"/>
+				<xs:element name="value" type="ISO:ST"/>
+			</xs:sequence>
+		</xs:complexType>
+
+     <xs:element name="Id">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ISO:II" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+     <xs:element name="Oid">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ISO:II" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+        
+    <xs:element name="Cd">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ISO:CD" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Bl">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ISO:BL" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="TsDateTime">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ISO:TS" />
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+
+
+<xs:element name="ANY" type="ISO:ANY"/>
+<xs:element name="ST" type="ISO:ST"/>
+
+	
+</xs:schema>
