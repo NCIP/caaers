@@ -13,6 +13,38 @@ import java.rmi.RemoteException;
 public interface SafetyReportManagementI {
 
   /**
+   * Provides the capability to associate adverse events to a safety report.
+   *
+   * @param adverseEventIdentifiers
+   * @param safetyReportIdentifier
+   * @throws SafetyReportingServiceException
+   *	
+   */
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateAdverseEventsToSafetyReport(_21090.org.iso.DSET_II adverseEventIdentifiers,ess.caaers.nci.nih.gov.Id safetyReportIdentifier) throws RemoteException, gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.types.SafetyReportingServiceException ;
+
+  public void associateProblemToSafetyReport() throws RemoteException ;
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion dissociateAdverseEventsFromSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportIdentifier,_21090.org.iso.DSET_II adverseEventIdentifiers) throws RemoteException, gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.types.SafetyReportingServiceException ;
+
+  public void dissociateProblemFromSafetyReport() throws RemoteException ;
+
+  /**
+   * Provides the capability to update the adverse event information in the safety report.
+   *
+   * @param safetyReportIdentifier
+   * @param adverseEvent
+   * @throws SafetyReportingServiceException
+   *	
+   */
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion updateAdverseEventInformationInSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportIdentifier,ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.types.SafetyReportingServiceException ;
+
+  public void updateProblemInformationInSafetyReport() throws RemoteException ;
+
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
+
+  /**
    * Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation.
    *
    * @param studyIdentifier
@@ -25,10 +57,6 @@ public interface SafetyReportManagementI {
    *	
    */
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion initiateSafetyReport(ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id patientIdentifier,_21090.org.iso.DSET_II adverseEventIdentifiers,_21090.org.iso.DSET_II problemIdentifiers,gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod adverseEventReportingPeriod) throws RemoteException, gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.types.SafetyReportingServiceException ;
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
 
 }
 
