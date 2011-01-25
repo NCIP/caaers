@@ -237,17 +237,10 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      * @param siteResearchStaff
      */
     public void syncStudyPersonnel(SiteResearchStaff siteResearchStaff){
-    	for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
-    		StudyPersonnel studyPersonnel =  findStudyPersonnel(siteResearchStaffRole);
-    		if(studyPersonnel == null){
-//    			studyPersonnel = new StudyPersonnel();
-//    			if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
-//    				addStudyPersonnel(studyPersonnel);
-//    			}
-    		}else{
-    			studyPersonnel.syncRole(siteResearchStaffRole);
-    		}
-    	}
+		StudyPersonnel studyPersonnel =  findStudyPersonnel(siteResearchStaff);
+		if(studyPersonnel != null){
+			studyPersonnel.syncDates();
+		}
     }
     
     /**
@@ -255,12 +248,10 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      * @param siteResearchStaffRole
      * @return
      */
-    public StudyPersonnel findStudyPersonnel(SiteResearchStaffRole siteResearchStaffRole){
+    public StudyPersonnel findStudyPersonnel(SiteResearchStaff siteResearchStaff){
     	for(StudyPersonnel studyPersonnel : this.getStudyPersonnelsInternal()){
-    		if(studyPersonnel.getSiteResearchStaff().getResearchStaff().equals(siteResearchStaffRole.getSiteResearchStaff().getResearchStaff())){
-    			if(studyPersonnel.getRoleCode().equals(siteResearchStaffRole.getRoleCode())){
-    				return studyPersonnel;
-    			}
+    		if(studyPersonnel.getSiteResearchStaff().equals(siteResearchStaff)){
+				return studyPersonnel;
     		}
     	}
     	return null;

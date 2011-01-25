@@ -197,15 +197,15 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         return true;
     }
     
-    @Transient
-    public void syncRole(SiteResearchStaffRole siteResearchStaffRole){
-    	if(this.getId() == null){
-    		this.setSiteResearchStaff(siteResearchStaffRole.getSiteResearchStaff());
-        	this.setStartDate(siteResearchStaffRole.getStartDate());
-        	this.setRoleCode(siteResearchStaffRole.getRoleCode());
-        	this.setEndDate(siteResearchStaffRole.getEndDate());
-    	}else if(isActive()){
-    		this.setEndDate(siteResearchStaffRole.getEndDate());
-    	}
-    }
+    
+    /**
+     * This method will take care of synchronizing the start and end dates.
+     *  By copying it from {@link SiteResearchStaff}
+     */
+    public void syncDates(){
+    	if(siteResearchStaff == null) return;
+    	
+    	startDate = siteResearchStaff.getStartDate();
+    	endDate = siteResearchStaff.getEndDate();
+    }    
 }
