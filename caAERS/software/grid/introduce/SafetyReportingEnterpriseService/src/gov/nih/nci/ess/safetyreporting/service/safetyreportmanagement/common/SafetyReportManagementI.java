@@ -12,6 +12,20 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportManagementI {
 
+  /**
+   * Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation.
+   *
+   * @param studyIdentifier
+   * @param subjectIdentifier
+   * @param patientIdentifier
+   * @param adverseEventIdentifiers
+   * @param problemIdentifiers
+   * @param adverseEventReportingPeriod
+   * @throws SafetyReportingServiceException
+   *	
+   */
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion initiateSafetyReport(ess.caaers.nci.nih.gov.Id studyIdentifier,ess.caaers.nci.nih.gov.Id subjectIdentifier,ess.caaers.nci.nih.gov.Id patientIdentifier,_21090.org.iso.DSET_II adverseEventIdentifiers,_21090.org.iso.DSET_II problemIdentifiers,gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod adverseEventReportingPeriod) throws RemoteException, gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.types.SafetyReportingServiceException ;
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
 
   public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;

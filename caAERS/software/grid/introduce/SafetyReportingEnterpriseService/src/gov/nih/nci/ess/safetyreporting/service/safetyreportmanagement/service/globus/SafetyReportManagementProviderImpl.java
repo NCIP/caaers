@@ -26,4 +26,10 @@ public class SafetyReportManagementProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.InitiateSafetyReportResponse initiateSafetyReport(gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.InitiateSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.InitiateSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.service.safetyreportmanagement.stubs.InitiateSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.initiateSafetyReport(params.getStudyIdentifier().getId(),params.getSubjectIdentifier().getId(),params.getPatientIdentifier().getId(),params.getAdverseEventIdentifiers().getDSET_II(),params.getProblemIdentifiers().getDSET_II(),params.getAdverseEventReportingPeriod().getAdverseEventReportingPeriod()));
+    return boxedResult;
+  }
+
 }
