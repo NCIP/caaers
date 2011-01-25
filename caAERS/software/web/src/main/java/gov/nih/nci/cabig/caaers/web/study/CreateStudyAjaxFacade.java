@@ -744,16 +744,19 @@ public class CreateStudyAjaxFacade {
 	}
 
     public AjaxOutput fetchSiteReseachStaffActiveRoles(int rsID){
-    	WebContext webCtx = WebContextFactory.get();
-        HttpServletRequest request = webCtx.getHttpServletRequest();
-        StudyCommand command = (StudyCommand)extractCommand();
-        SiteResearchStaff srs = siteResearchStaffDao.getById(rsID);
+    	//WebContext webCtx = WebContextFactory.get();
+        //HttpServletRequest request = webCtx.getHttpServletRequest();
+        //SiteResearchStaff srs = siteResearchStaffDao.getById(rsID);
+    	
+    	StudyCommand command = (StudyCommand)extractCommand();
     	AjaxOutput out = new AjaxOutput();
-        HashMap hm = new HashMap();
-        for (SiteResearchStaffRole role : srs.getSiteResearchStaffRoles()) {
-            if (role.isActive()) hm.put(role.getRoleCode(), command.getStudyPersonnelRoles().get(role.getRoleCode()));
-        }
-    	out.setObjectContent(hm);
+    	
+//    	HashMap hm = new HashMap();
+//        for (SiteResearchStaffRole role : srs.getSiteResearchStaffRoles()) {
+//            if (role.isActive()) hm.put(role.getRoleCode(), command.getStudyPersonnelRoles().get(role.getRoleCode()));
+//        }
+
+    	out.setObjectContent(command.getStudyPersonnelRoles());
     	return out;
     }
 
