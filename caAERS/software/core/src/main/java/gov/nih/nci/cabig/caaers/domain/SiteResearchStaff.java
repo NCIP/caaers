@@ -1,9 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -34,6 +37,8 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
     private String phoneNumber;
     private String faxNumber; 
     private Address address;
+    private Date startDate;
+    private Date endDate;
 
     @Deprecated
     private List<SiteResearchStaffRole> siteResearchStaffRoles;
@@ -166,6 +171,22 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
 	public void setFaxNumber(String faxNumber) {
 		this.faxNumber = faxNumber;
 	}
+	@Column(name = "start_date")
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	@Column(name = "end_date")
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}	
 	
 	@Embedded
 	public Address getAddress() {
@@ -185,15 +206,14 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
         }
     }
 
+	@Transient
+    public boolean isActive(){
+    	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
+    }
+
     @Transient
-    public boolean isActive() {
-    	
-    	if(siteResearchStaffRoles == null) return false;
-    	
-        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
-            if (srsr.isActive()) return true;
-        }
-        return false;
+    public boolean isInActive(){
+    	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
     }
     
 
@@ -210,13 +230,6 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
         if (dates.size() > 0) return dates.first(); else return null;
     }
 
-    @Transient
-    public void setEndDate(Date date) {
-        if (getSiteResearchStaffRoles() == null) return;
-        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
-            srsr.setEndDate(date);
-        }
-    }
 
     /**
      * Will return true if the SiteResearchStaff  is having an active role identified by the roleCodes.
