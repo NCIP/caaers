@@ -3,25 +3,41 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-  <!-- for testing, purge the log on each run -->
-  <appender name="file" class="org.apache.log4j.RollingFileAppender">
-	<param name="maxBackupIndex" value="20"/>
-    <param name="file" value="${catalina.home}/logs/caaers.log"/>
-	<param name="threshold" value="DEBUG"/>
-    <param name="append" value="true"/>
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="conversionPattern" value="caAERS-webapp-%d [%15t] %-5p %c %x: %m%n"/>
-    </layout>
-  </appender>
+    <!-- for testing, purge the log on each run -->
+    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+        <param name="maxBackupIndex" value="20"/>
+        <param name="file" value="${catalina.home}/logs/caaers.log"/>
+        <param name="threshold" value="DEBUG"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern" value="caAERS-webapp-%d [%15t] %-5p %c %x: %m%n"/>
+        </layout>
+    </appender>
 
-<!--	<logger name="gov.nih.nci"><level value="debug"/></logger>-->
-	<logger name="gov.nih.nci.cabig.caaers"><level value="info"/></logger>
-	<logger name="gov.nih.nci.cabig.caaers.domain.repository"><level value="info"/></logger>
-	<logger name="gov.nih.nci.cabig.caaers.web.listener"><level value="info"/></logger>
-	<logger name="gov.nih.nci.cabig.caaers.accesscontrol"><level value="info"/></logger>
-	<logger name="gov.nih.nci.cabig.caaers.security"><level value="info"/></logger>
-  <root>
-    <priority value="error"/>
-    <appender-ref ref="file"/>
-  </root>
+
+    <!--	<logger name="gov.nih.nci"><level value="debug"/></logger>-->
+    <logger name="gov.nih.nci.cabig.caaers"><level value="INFO"/></logger>
+    <logger name="gov.nih.nci.cabig.caaers.domain.repository"><level value="info"/></logger>
+    <logger name="gov.nih.nci.cabig.caaers.web.listener"><level value="info"/></logger>
+    <logger name="gov.nih.nci.cabig.caaers.accesscontrol"><level value="info"/></logger>
+    <logger name="gov.nih.nci.cabig.caaers.security"><level value="info"/></logger>
+
+    <appender name="hibernateFile" class="org.apache.log4j.RollingFileAppender">
+        <param name="maxBackupIndex" value="20"/>
+        <param name="file" value="${catalina.home}/logs/caaers.hibernate.log"/>
+        <param name="append" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.hibernate.SQL">
+        <level value="ALL" />
+        <appender-ref ref="hibernateFile"/>
+    </logger>
+
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="file"/>
+    </root>
 </log4j:configuration>
