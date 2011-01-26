@@ -125,7 +125,7 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:PerformedActivity">
 				<xs:sequence>					
-					<xs:element name="nameCode" type="ISO:CD"/>
+					
 					<xs:element name="methodCode" type="ISO:CD"/>
 					<xs:element name="description" type="ISO:ST"/>
 					<xs:element name="treatmentArm" type="ISO:ST"/>
@@ -141,6 +141,7 @@
 				<xs:sequence>					
 					<xs:element name="dose" type="ISO:PQ"/>
 					<xs:element name="periodDoseTotal" type="ISO:PQ"/>
+					<xs:element name="changeTypeCode" type="ISO:CD"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -170,7 +171,7 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:PerformedActivity">
 				<xs:sequence>					
-					<xs:element name="nameCode" type="ISO:CD"/>
+					
 					<xs:element name="result" type="ISO:ANY"/>
 					<xs:element name="infectiousAgent" type="ISO:ST"/>
 					<xs:element name="targetAnatomicSiteCode" type="ISO:CD"/>
@@ -357,12 +358,26 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
 				<xs:sequence>
-					<xs:element name="adverseEventOutcomeResult" type="ESS-SR:AdverseEventOutcomeResult"/>
-					<xs:element name="performedActivity" type="ESS-AE:PerformedActivity"/>
-					<xs:element name="performedProcedure" type="ESS-AE:PerformedActivity"/>
+					<!--
+					<xs:element name="causeOfDeath" type="ESS-SR:AdverseEventOutcomeResult"/>
+					<xs:element name="dateRemovedFromProtocol" type="ESS-AE:PerformedActivity"/>
+					<xs:element name="daysNotGiven" type="ESS-AE:PerformedProcedure"/>
+					<xs:element name="eventAbate" type="ESS-AE:AdverseEventOutcomeResult"/>
 					<xs:element name="summary" type="ISO:ST"/>
-					<xs:element name="occurrencePatternCode" type="ISO:ST"/>
+					<xs:element name="occurrencePatternCode" type="ISO:CD"/>
+					<xs:element name="eventTreatmentTime" type="ESS-AE:PerformedActivity"/>
+					<xs:element name="presentStatus" type="ESS-AE:AdverseEventOutcomeResult"/>
 					<xs:element name="performedSubstanceAdministration" type="ESS-SR:PerformedSubstanceAdministration"/>
+					<xs:element name="retreated" type="ISO:BL"/>
+					<xs:element name="statusDate" type="ESS-AE:AdverseEventOutcomeResult"/>
+					<xs:element name="studyDrugInterrupted" type="ESS-AE:AdverseEventOutcomeResult"/>
+					-->
+					<xs:element name="adverseEventOutcomeResult" type="ESS-SR:AdverseEventOutcomeResult" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="performedActivity" type="ESS-AE:PerformedActivity" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="summary" type="ISO:ST"/>
+					<xs:element name="occurrencePatternCode" type="ISO:CD"/>
+					<xs:element name="performedSubstanceAdministration" type="ESS-SR:PerformedSubstanceAdministration"/>
+					<xs:element name="retreated" type="ISO:BL"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -373,7 +388,7 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
 				<xs:sequence>
-					<xs:element name="result" type="ISO:ST"/>
+					<xs:element name="result" type="ISO:ANY"/>
 					<xs:element name="reportedDate" type="ISO:TS"/>
 					<xs:element name="typeCode" type="ISO:CD"/>
 				</xs:sequence>

@@ -428,6 +428,7 @@
 					</xs:element>
 					<xs:element name="delayDuration" type="ISO:PQ.Time"/>
 					<xs:element name="repetitionNumber" type="ISO:INT"/>
+					<xs:element name="nameCode" type="ISO:CD"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

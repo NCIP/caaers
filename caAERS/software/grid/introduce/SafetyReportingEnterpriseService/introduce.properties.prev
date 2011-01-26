@@ -1,8 +1,8 @@
 #Introduce Properties
-#Wed Jan 26 10:49:57 EST 2011
+#Wed Jan 26 12:35:49 EST 2011
 introduce.skeleton.services.list=SafetyReportingEnterpriseService,SafetyReportManagement
 introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.timestamp=1296056623974
+introduce.skeleton.timestamp=1296059846727
 introduce.skeleton.service.name=SafetyReportingEnterpriseService
 introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
 introduce.skeleton.destination.dir=/Users/akkalas/tech-workspace/caaers/grid/introduce/SafetyReportingEnterpriseService
