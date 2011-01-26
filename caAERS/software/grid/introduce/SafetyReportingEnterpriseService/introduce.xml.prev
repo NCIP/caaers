@@ -262,7 +262,7 @@
      <ns15:ImportInformation fromIntroduce="false" inputMessage="ns19:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns19:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns19="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
      <ns15:ProviderInformation providerClass="SetTerminationTimeProvider"/>
     </ns15:Method>
-    <ns15:Method description="" isImported="false" isProvided="false" name="initiateSafetyReport" xsi:type="ns15:MethodType">
+    <ns15:Method description="Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation." isImported="false" isProvided="false" name="initiateSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
       <ns15:Input qName="ns20:Id" description="" isArray="false" name="studyId" xmlns:ns20="http://ess.caaers.nci.nih.gov"/>
       <ns15:Input qName="ns21:Id" description="" isArray="false" name="subjectId" xmlns:ns21="http://ess.caaers.nci.nih.gov"/>
@@ -276,7 +276,7 @@
       <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns27:SafetyReportingServiceException" xmlns:ns27="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
-    <ns15:Method description="" isImported="false" isProvided="false" name="associateAdverseEventsToSafetyReport" xsi:type="ns15:MethodType">
+    <ns15:Method description="Provides the capability to associate adverse events to a safety report." isImported="false" isProvided="false" name="associateAdverseEventsToSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
       <ns15:Input qName="ns28:Id" description="" isArray="false" name="safetyReportId" xmlns:ns28="http://ess.caaers.nci.nih.gov"/>
       <ns15:Input qName="ns29:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns29="http://gov.nih.nci.ess.safetyreporting.types"/>
@@ -286,7 +286,7 @@
       <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns31:SafetyReportingServiceException" xmlns:ns31="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
-    <ns15:Method description="" isImported="false" isProvided="false" name="dissociateAdverseEventsFromSafetyReport" xsi:type="ns15:MethodType">
+    <ns15:Method description="Provides the capability to dissociate an adverse event from a safety report." isImported="false" isProvided="false" name="dissociateAdverseEventsFromSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
       <ns15:Input qName="ns32:Id" description="" isArray="false" name="safetyReportId" xmlns:ns32="http://ess.caaers.nci.nih.gov"/>
       <ns15:Input qName="ns33:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns33="http://gov.nih.nci.ess.safetyreporting.types"/>
@@ -296,7 +296,7 @@
       <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns35:SafetyReportingServiceException" xmlns:ns35="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
-    <ns15:Method description="" isImported="false" isProvided="false" name="updateAdverseEventInformationInSafetyReport" xsi:type="ns15:MethodType">
+    <ns15:Method description="Provides the capability to update the adverse event information in the safety report." isImported="false" isProvided="false" name="updateAdverseEventInformationInSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
       <ns15:Input qName="ns36:Id" description="" isArray="false" name="safetyReportId" xmlns:ns36="http://ess.caaers.nci.nih.gov"/>
       <ns15:Input qName="ns37:AdverseEvent" description="" isArray="false" name="adverseEvent" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>

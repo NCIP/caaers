@@ -76,6 +76,47 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
 		}
 	}
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"destroy");
+    return portType.destroy(params);
+    }
+  }
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setTerminationTime");
+    return portType.setTerminationTime(params);
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion initiateSafetyReport(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id subjectId,ess.caaers.nci.nih.gov.Id patientId,_21090.org.iso.DSET_II adverseEventIds,_21090.org.iso.DSET_II problemIds,gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod adverseEventReportingPeriod) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"initiateSafetyReport");
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestSubjectId subjectIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestSubjectId();
+    subjectIdContainer.setId(subjectId);
+    params.setSubjectId(subjectIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestPatientId patientIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestPatientId();
+    patientIdContainer.setId(patientId);
+    params.setPatientId(patientIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventIds adverseEventIdsContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventIds();
+    adverseEventIdsContainer.setDSET_II(adverseEventIds);
+    params.setAdverseEventIds(adverseEventIdsContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestProblemIds problemIdsContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestProblemIds();
+    problemIdsContainer.setDSET_II(problemIds);
+    params.setProblemIds(problemIdsContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventReportingPeriod adverseEventReportingPeriodContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventReportingPeriod();
+    adverseEventReportingPeriodContainer.setAdverseEventReportingPeriod(adverseEventReportingPeriod);
+    params.setAdverseEventReportingPeriod(adverseEventReportingPeriodContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse boxedResult = portType.initiateSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateAdverseEventsToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,_21090.org.iso.DSET_II adverseEventIds) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"associateAdverseEventsToSafetyReport");
@@ -117,47 +158,6 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
     adverseEventContainer.setAdverseEvent(adverseEvent);
     params.setAdverseEvent(adverseEventContainer);
     gov.nih.nci.ess.safetyreporting.management.stubs.UpdateAdverseEventInformationInSafetyReportResponse boxedResult = portType.updateAdverseEventInformationInSafetyReport(params);
-    return boxedResult.getSafetyReportVersion();
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"destroy");
-    return portType.destroy(params);
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"setTerminationTime");
-    return portType.setTerminationTime(params);
-    }
-  }
-
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion initiateSafetyReport(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id subjectId,ess.caaers.nci.nih.gov.Id patientId,_21090.org.iso.DSET_II adverseEventIds,_21090.org.iso.DSET_II problemIds,gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod adverseEventReportingPeriod) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"initiateSafetyReport");
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequest();
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestStudyId();
-    studyIdContainer.setId(studyId);
-    params.setStudyId(studyIdContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestSubjectId subjectIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestSubjectId();
-    subjectIdContainer.setId(subjectId);
-    params.setSubjectId(subjectIdContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestPatientId patientIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestPatientId();
-    patientIdContainer.setId(patientId);
-    params.setPatientId(patientIdContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventIds adverseEventIdsContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventIds();
-    adverseEventIdsContainer.setDSET_II(adverseEventIds);
-    params.setAdverseEventIds(adverseEventIdsContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestProblemIds problemIdsContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestProblemIds();
-    problemIdsContainer.setDSET_II(problemIds);
-    params.setProblemIds(problemIdsContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventReportingPeriod adverseEventReportingPeriodContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequestAdverseEventReportingPeriod();
-    adverseEventReportingPeriodContainer.setAdverseEventReportingPeriod(adverseEventReportingPeriod);
-    params.setAdverseEventReportingPeriod(adverseEventReportingPeriodContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse boxedResult = portType.initiateSafetyReport(params);
     return boxedResult.getSafetyReportVersion();
     }
   }

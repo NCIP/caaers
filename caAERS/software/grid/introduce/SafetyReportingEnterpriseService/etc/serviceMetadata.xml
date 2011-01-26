@@ -58,7 +58,7 @@
        <ns2:inputParameterCollection/>
        <ns2:faultCollection/>
       </ns2:Operation>
-      <ns2:Operation description="" name="initiateSafetyReport">
+      <ns2:Operation description="Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation." name="initiateSafetyReport">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns8:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns8="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns9:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="subjectId" xmlns:ns9="http://ess.caaers.nci.nih.gov"/>
@@ -72,7 +72,7 @@
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="" name="associateAdverseEventsToSafetyReport">
+      <ns2:Operation description="Provides the capability to associate adverse events to a safety report." name="associateAdverseEventsToSafetyReport">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns15:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns15="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns16:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns16="http://gov.nih.nci.ess.safetyreporting.types"/>
@@ -82,7 +82,7 @@
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="" name="dissociateAdverseEventsFromSafetyReport">
+      <ns2:Operation description="Provides the capability to dissociate an adverse event from a safety report." name="dissociateAdverseEventsFromSafetyReport">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns18:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns18="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns19:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns19="http://gov.nih.nci.ess.safetyreporting.types"/>
@@ -92,7 +92,7 @@
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="" name="updateAdverseEventInformationInSafetyReport">
+      <ns2:Operation description="Provides the capability to update the adverse event information in the safety report." name="updateAdverseEventInformationInSafetyReport">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns21:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns21="http://ess.caaers.nci.nih.gov"/>
         <ns2:InputParameter qName="ns22:AdverseEvent" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEvent" xmlns:ns22="http://ess.caaers.nci.nih.gov"/>
