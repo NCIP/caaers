@@ -46,6 +46,7 @@
    <ns2:SchemaElement type="SafetyReportReview" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="SafetyReportVersion" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="StudySubjectProtocolVersionRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TreatmentInformation" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./ISO_datatypes_Narrative.xsd" namespace="uri:iso.org:21090" packageName="_21090.org.iso" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="br" xsi:type="ns2:SchemaElementType"/>
@@ -92,7 +93,6 @@
    <ns2:SchemaElement type="ST" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="StudyProtocolVersion" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="StudySubject" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="TreatmentInformation" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="TsDateTime" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">

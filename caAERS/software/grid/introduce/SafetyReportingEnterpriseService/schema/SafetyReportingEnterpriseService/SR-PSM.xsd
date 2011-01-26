@@ -14,9 +14,9 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
 				<xs:sequence>
-					<xs:element name="timeCreated" type="ISO:IVL_TS.DateTime"/>
+					<xs:element name="timeCreated" type="ISO:TS"/>
 					<xs:element name="adverseEventResponseDescription" type="ESS-SR:AdverseEventResponseDescription"/>
-					<xs:element name="treatmentInformation" type="ESS-AE:TreatmentInformation"/>
+					<xs:element name="treatmentInformation" type="ESS-SR:TreatmentInformation"/>
 					<xs:element name="additionalInformation" type="ESS-AE:AdditionalInformation"/> 
 					<xs:element name="reporter" type="ESS-SR:ReportSubmitter"/>
 					<xs:element name="physician" type="ESS-SR:Physician"/>
@@ -60,8 +60,8 @@
 					<xs:element name="text" type="ISO:ST"/>
 					<xs:element name="meddraTerm" type="ISO:ST"/>
 					<xs:element name="meddraCode" type="ISO:ST"/>
-					<xs:element name="startDate" type="ISO:IVL_TS.DateTime"/>
-					<xs:element name="endDate" type="ISO:IVL_TS.DateTime"/>
+					<xs:element name="startDate" type="ISO:TS"/>
+					<xs:element name="endDate" type="ISO:TS"/>
 					<xs:element name="other" type="ISO:ST"/>
 				</xs:sequence>
 			</xs:extension>
@@ -73,7 +73,7 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-SR:Product">
 				<xs:sequence>					
-					<xs:element name="actualDateRange" type="ISO:IVL_TS.DateTime"/>
+					<xs:element name="actualDateRange" type="ISO:TS"/>
 					<xs:element name="stillTakingMedications" type="ISO:BL"/>
 				</xs:sequence>
 			</xs:extension>
@@ -105,7 +105,7 @@
 					<xs:element name="otherDeviceOperator" type="ESS-SR:Performer"/>
 					<xs:element name="reprocessorName" type="ISO:ST"/>
 					<xs:element name="reprocessorAddress" type="ISO:AD"/>
-					<xs:element name="returnedFromReprocessorDate" type="ISO:IVL_TS.DateTime"/>
+					<xs:element name="returnedFromReprocessorDate" type="ISO:TS"/>
 					<xs:element name="materialIdentifier" type="ESS-SR:MaterialIdentifier" minOccurs="1" maxOccurs="unbounded"/>
 					<xs:element name="materialName" type="ESS-SR:MaterialName" minOccurs="1" maxOccurs="unbounded"/>
 				</xs:sequence>
@@ -187,7 +187,7 @@
 	<xs:complexType name="PerformedObservationValue">
 		<xs:sequence>	
 			<xs:element name="value" type="ISO:ST"/>
-			<xs:element name="actualDateRange" type="ISO:IVL_TS.DateTime"/>
+			<xs:element name="actualDateRange" type="ISO:TS"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="PerformedObservationValue" type="ESS-SR:PerformedObservationValue"/>	
@@ -259,6 +259,18 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="DefinedSubjectActivityGroup" type="ESS-SR:DefinedSubjectActivityGroup"/>
+
+	<xs:complexType name="TreatmentInformation">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:PerformedActivity">
+				<xs:sequence>
+					<xs:element name="description" type="ISO:ST"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:element name="TreatmentInformation" type="ESS-SR:TreatmentInformation"/>
 	
 	<xs:complexType name="StudySubjectProtocolVersionRelationship">
 		<xs:complexContent>
@@ -334,7 +346,7 @@
 					<xs:element name="telecomAddress" type="ISO:BAG_TEL"/>
 					<xs:element name="primaryOccupationCode" type="ISO:CD"/>
 					<xs:element name="occupationDateRange" type="ISO:ST"/>
-					<xs:element name="deathIndicator" type="ISO:IVL_TS.DateTime"/>
+					<xs:element name="deathIndicator" type="ISO:TS"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -361,8 +373,9 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
 				<xs:sequence>
-					<xs:element name="result" type="ISO:ANY"/>
+					<xs:element name="result" type="ISO:ST"/>
 					<xs:element name="reportedDate" type="ISO:TS"/>
+					<xs:element name="typeCode" type="ISO:CD"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -422,7 +435,7 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
 				<xs:sequence>
-					<xs:element name="actualDateRange" type="ISO:IVL_TS.DateTime"/>
+					<xs:element name="actualDateRange" type="ISO:TS"/>
 					<xs:element name="result" type="ISO:ANY"/>
 					<xs:element name="targetAnatomicSiteCode" type="ISO:CD"/>
 				</xs:sequence>
