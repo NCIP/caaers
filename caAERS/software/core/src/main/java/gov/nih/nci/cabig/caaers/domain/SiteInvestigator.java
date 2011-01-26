@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -81,6 +83,8 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         this.emailAddress = emailAddress;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "start_date")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -89,6 +93,8 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 		this.startDate = startDate;
 	}
 	
+    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "end_date")
 	public Date getEndDate() {
 		return endDate;
 	}
