@@ -125,100 +125,27 @@
 		<constructor-arg value="wsrf-caaers"/>
 	</bean>	
 
-	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.ae.GridToDomainObjectConverter"
-		autowire="byType" />
-	<bean id="domainToGridObjectConverter" class="gov.nih.nci.ess.ae.DomainToGridObjectConverter"
-		autowire="byType" />
-	<bean id="adverseEventManagementImplTarget" class="gov.nih.nci.ess.ae.AdverseEventManagementImpl" autowire="byType" />		
-	<bean id="adverseEventQueryImplTarget" class="gov.nih.nci.ess.ae.AdverseEventQueryImpl" autowire="byType"/>
-	<bean id="adverseEventAssociateImplTarget" class="gov.nih.nci.ess.ae.AdverseEventAssociateImpl" autowire="byType" />
-	<bean id="adverseEventAdvancedQueryImplTarget" class="gov.nih.nci.ess.ae.AdverseEventAdvancedQueryImpl" autowire="byType" />
-	<bean id="adverseEventProtocolImplTarget" class="gov.nih.nci.ess.ae.AdverseEventProtocolImpl" autowire="byType" />
+	<bean id="safetyReportManagementTarget" class="gov.nih.nci.ess.sr.SafetyReportManagementImpl" autowire="byType" />		
 
 	<!-- Audit -->
-    <bean id="adverseEventManagementGridServiceUrl" class="java.lang.String">
-        <constructor-arg value="/wsrf-caaers/services/cagrid/Management"/>
-    </bean>
-    <bean id="adverseEventAssociateGridServiceUrl" class="java.lang.String">
-        <constructor-arg value="/wsrf-caaers/services/cagrid/Associate"/>
-    </bean>
-    <bean id="adverseEventAdvancedQueryGridServiceUrl" class="java.lang.String">
-        <constructor-arg value="/wsrf-caaers/services/cagrid/AdvancedQuery"/>
-    </bean>
-    <bean id="adverseEventProtocolGridServiceUrl" class="java.lang.String">
-        <constructor-arg value="/wsrf-caaers/services/cagrid/AEProtocol"/>
+    <bean id="safetyReportManagementGridServiceUrl" class="java.lang.String">
+        <constructor-arg value="/wsrf-caaers/services/cagrid/SafetyReportManagement"/>
     </bean>
     
-	<bean id="adverseEventManagementAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
-		<property name="fromUrl" ref="adverseEventManagementGridServiceUrl" />
+	<bean id="safetyReportManagementAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" ref="safetyReportManagementGridServiceUrl" />
 	</bean>
-	<bean id="adverseEventAssociateAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
-		<property name="fromUrl" ref="adverseEventAssociateGridServiceUrl" />
-	</bean>
-	<bean id="adverseEventAdvancedQueryAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
-		<property name="fromUrl" ref="adverseEventAdvancedQueryGridServiceUrl" />
-	</bean>	
-	<bean id="adverseEventProtocolAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
-		<property name="fromUrl" ref="adverseEventProtocolGridServiceUrl" />
-	</bean>	
-    
-	<bean id="adverseEventQueryImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+	 	
+	<bean id="safetyReportManagementImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="adverseEventQueryImplTarget"/></property> 
+		<property name="target"><ref local="safetyReportManagementImplTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
 				<value>runAsAutenticationProviderInterceptor</value>
-				<value>hibernateInterceptor</value> 
-			</list> 
-		</property> 
-	</bean>
-
-	<bean id="adverseEventManagementImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="adverseEventManagementImplTarget"/></property> 
-		<property name="interceptorNames"> 
-			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
-				<value>adverseEventManagementAuditInfoPopulatorInterceptor</value>				
+				<value>safetyReportManagementAuditInfoPopulatorInterceptor</value>				
 				<value>hibernateInterceptor</value> 
 			</list> 
 		</property> 
 	</bean>		
-
-	<bean id="adverseEventAssociateImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="adverseEventAssociateImplTarget"/></property> 
-		<property name="interceptorNames"> 
-			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
-				<value>adverseEventAssociateAuditInfoPopulatorInterceptor</value>				
-				<value>hibernateInterceptor</value> 
-			</list> 
-		</property> 
-	</bean>	
-
-	<bean id="adverseEventAdvancedQueryImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="adverseEventAdvancedQueryImplTarget"/></property> 
-		<property name="interceptorNames"> 
-			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
-				<value>adverseEventAdvancedQueryAuditInfoPopulatorInterceptor</value>				
-				<value>hibernateInterceptor</value> 
-			</list> 
-		</property> 
-	</bean>	
-
-	<bean id="adverseEventProtocolImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
-		<property name="proxyTargetClass"><value>true</value></property>
-		<property name="target"><ref local="adverseEventProtocolImplTarget"/></property> 
-		<property name="interceptorNames"> 
-			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
-				<value>adverseEventAdvancedQueryAuditInfoPopulatorInterceptor</value>				
-				<value>hibernateInterceptor</value> 
-			</list> 
-		</property> 
-	</bean>
 
 </beans>
