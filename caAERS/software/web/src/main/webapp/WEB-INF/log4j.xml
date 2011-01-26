@@ -32,7 +32,7 @@
     </appender>
 
     <logger name="org.hibernate.SQL">
-        <level value="ALL" />
+        <level value="INFO" />
         <appender-ref ref="hibernateFile"/>
     </logger>
 
