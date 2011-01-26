@@ -2,7 +2,7 @@
 <ivy-module version="1.4">
 		
     	<info organisation="gov.nih.nci.cabig.caaers"
-          	module="caaers-ess-ae"
+          	module="caaers-ess-sr"
           	status="integration" revision="${caaers.version}"/>
         
   

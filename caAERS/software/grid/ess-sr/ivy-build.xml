@@ -1,8 +1,8 @@
-<project name="caaers-ess-ae" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="caaers-ess-sr" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/../.." />
 	<property file="${parent.dir}/build.properties" />
 	<import file="${parent.dir}/common.xml"/>
-	<property name="aees.nes.service.dir" value="${basedir}/../introduce/AdverseEventEnterpriseService"/>
+	<property name="sres.nes.service.dir" value="${basedir}/../introduce/SafetyReportingEnterpriseService"/>
 	
 	<target name="module-specific-flow" depends="resolve,build-grid-service,common.aspectj-compile" />
 	
@@ -14,17 +14,17 @@
 	
 
 	<target name="build-grid-service">
-		<antcall target="build-aees-service" inheritAll="true" inheritRefs="true"/>		
+		<antcall target="build-sres-service" inheritAll="true" inheritRefs="true"/>		
 		<copy todir="${lib.dir}">
-			<fileset dir="${aees.nes.service.dir}/build/lib" includes="*.jar"/>
+			<fileset dir="${sres.nes.service.dir}/build/lib" includes="*.jar"/>
 		</copy>
-		<property name="aees.nes.service.built" value="true"/>
+		<property name="sres.nes.service.built" value="true"/>
 	</target>
 	
-	<target name="build-aees-service" unless="aees.nes.service.built">
-		<echo message="Building Adverse Event Enterprise Service located in ${aees.nes.service.dir}, build file is ${aees.nes.service.dir}/build.xml" />
+	<target name="build-sres-service" unless="sres.nes.service.built">
+		<echo message="Building SafetyReportingEnterpriseService located in ${sres.nes.service.dir}, build file is ${sres.nes.service.dir}/build.xml" />
 		<subant target="all">
-			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
+			<fileset dir="${sres.nes.service.dir}" includes="build.xml"/>
 		</subant>
 	</target>
 	
