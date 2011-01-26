@@ -181,8 +181,8 @@
    <ns2:SchemaElement type="ValueDomain" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./SafetyReportManagementTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types" packageName="gov.nih.nci.ess.safetyreporting.management.stubs.types" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="SafetyReportManagementReference" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="SafetyReportingServiceException" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SafetyReportManagementReference" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="../wsrf/lifetime/WS-ResourceLifetime.xsd" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" packageName="org.oasis.wsrf.lifetime" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CurrentTime" xsi:type="ns2:SchemaElementType"/>
@@ -276,11 +276,41 @@
       <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns27:SafetyReportingServiceException" xmlns:ns27="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
+    <ns15:Method description="" isImported="false" isProvided="false" name="associateAdverseEventsToSafetyReport" xsi:type="ns15:MethodType">
+     <ns15:Inputs>
+      <ns15:Input qName="ns28:Id" description="" isArray="false" name="safetyReportId" xmlns:ns28="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns29:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns29="http://gov.nih.nci.ess.safetyreporting.types"/>
+     </ns15:Inputs>
+     <ns15:Output qName="ns30:SafetyReportVersion" description="" isArray="false" xmlns:ns30="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Exceptions>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns31:SafetyReportingServiceException" xmlns:ns31="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+     </ns15:Exceptions>
+    </ns15:Method>
+    <ns15:Method description="" isImported="false" isProvided="false" name="dissociateAdverseEventsFromSafetyReport" xsi:type="ns15:MethodType">
+     <ns15:Inputs>
+      <ns15:Input qName="ns32:Id" description="" isArray="false" name="safetyReportId" xmlns:ns32="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns33:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns33="http://gov.nih.nci.ess.safetyreporting.types"/>
+     </ns15:Inputs>
+     <ns15:Output qName="ns34:SafetyReportVersion" description="" isArray="false" xmlns:ns34="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Exceptions>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns35:SafetyReportingServiceException" xmlns:ns35="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+     </ns15:Exceptions>
+    </ns15:Method>
+    <ns15:Method description="" isImported="false" isProvided="false" name="updateAdverseEventInformationInSafetyReport" xsi:type="ns15:MethodType">
+     <ns15:Inputs>
+      <ns15:Input qName="ns36:Id" description="" isArray="false" name="safetyReportId" xmlns:ns36="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns37:AdverseEvent" description="" isArray="false" name="adverseEvent" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>
+     </ns15:Inputs>
+     <ns15:Output qName="ns38:SafetyReportVersion" description="" isArray="false" xmlns:ns38="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Exceptions>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns39:SafetyReportingServiceException" xmlns:ns39="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+     </ns15:Exceptions>
+    </ns15:Method>
    </ns15:Methods>
-   <ns28:ResourcePropertiesList xsi:type="ns28:ResourcePropertiesListType" xmlns:ns28="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns28:ResourceProperty qName="ns29:CurrentTime" populateFromFile="false" register="false" xsi:type="ns28:ResourcePropertyType" xmlns:ns29="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns28:ResourceProperty qName="ns30:TerminationTime" populateFromFile="false" register="false" xsi:type="ns28:ResourcePropertyType" xmlns:ns30="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-   </ns28:ResourcePropertiesList>
+   <ns40:ResourcePropertiesList xsi:type="ns40:ResourcePropertiesListType" xmlns:ns40="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns40:ResourceProperty qName="ns41:CurrentTime" populateFromFile="false" register="false" xsi:type="ns40:ResourcePropertyType" xmlns:ns41="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns40:ResourceProperty qName="ns42:TerminationTime" populateFromFile="false" register="false" xsi:type="ns40:ResourcePropertyType" xmlns:ns42="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns40:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
@@ -289,7 +319,7 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns31:Extensions xsi:type="ns31:ExtensionsType" xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns31:Extension name="cagrid_metadata" version="1.3" xsi:type="ns31:ExtensionType"/>
- </ns31:Extensions>
+ <ns43:Extensions xsi:type="ns43:ExtensionsType" xmlns:ns43="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns43:Extension name="cagrid_metadata" version="1.3" xsi:type="ns43:ExtensionType"/>
+ </ns43:Extensions>
 </ns1:ServiceDescription>

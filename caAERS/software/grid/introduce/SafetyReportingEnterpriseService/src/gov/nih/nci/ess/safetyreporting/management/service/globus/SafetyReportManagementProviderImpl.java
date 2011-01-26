@@ -26,6 +26,24 @@ public class SafetyReportManagementProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdverseEventsToSafetyReportResponse associateAdverseEventsToSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdverseEventsToSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdverseEventsToSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdverseEventsToSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.associateAdverseEventsToSafetyReport(params.getSafetyReportId().getId(),params.getAdverseEventIds().getDSET_II()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.management.stubs.DissociateAdverseEventsFromSafetyReportResponse dissociateAdverseEventsFromSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.DissociateAdverseEventsFromSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.management.stubs.DissociateAdverseEventsFromSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.DissociateAdverseEventsFromSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.dissociateAdverseEventsFromSafetyReport(params.getSafetyReportId().getId(),params.getAdverseEventIds().getDSET_II()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.management.stubs.UpdateAdverseEventInformationInSafetyReportResponse updateAdverseEventInformationInSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.UpdateAdverseEventInformationInSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.management.stubs.UpdateAdverseEventInformationInSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.UpdateAdverseEventInformationInSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.updateAdverseEventInformationInSafetyReport(params.getSafetyReportId().getId(),params.getAdverseEvent().getAdverseEvent()));
+    return boxedResult;
+  }
+
     public gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse initiateSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse();
     boxedResult.setSafetyReportVersion(impl.initiateSafetyReport(params.getStudyId().getId(),params.getSubjectId().getId(),params.getPatientId().getId(),params.getAdverseEventIds().getDSET_II(),params.getProblemIds().getDSET_II(),params.getAdverseEventReportingPeriod().getAdverseEventReportingPeriod()));

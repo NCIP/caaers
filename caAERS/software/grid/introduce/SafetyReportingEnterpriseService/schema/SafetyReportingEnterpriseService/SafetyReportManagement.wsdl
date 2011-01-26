@@ -78,6 +78,87 @@
           </sequence>
         </complexType>
       </element>
+      <element name="AssociateAdverseEventsToSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="adverseEventIds">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AssociateAdverseEventsToSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DissociateAdverseEventsFromSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="adverseEventIds">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DissociateAdverseEventsFromSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateAdverseEventInformationInSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="adverseEvent">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:AdverseEvent" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateAdverseEventInformationInSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportManagementResourceProperties">
         <complexType>
           <sequence>
@@ -95,6 +176,24 @@
   <message name="InitiateSafetyReportResponse">
     <part name="parameters" element="tns:InitiateSafetyReportResponse" />
   </message>
+  <message name="AssociateAdverseEventsToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateAdverseEventsToSafetyReportRequest" />
+  </message>
+  <message name="AssociateAdverseEventsToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateAdverseEventsToSafetyReportResponse" />
+  </message>
+  <message name="DissociateAdverseEventsFromSafetyReportRequest">
+    <part name="parameters" element="tns:DissociateAdverseEventsFromSafetyReportRequest" />
+  </message>
+  <message name="DissociateAdverseEventsFromSafetyReportResponse">
+    <part name="parameters" element="tns:DissociateAdverseEventsFromSafetyReportResponse" />
+  </message>
+  <message name="UpdateAdverseEventInformationInSafetyReportRequest">
+    <part name="parameters" element="tns:UpdateAdverseEventInformationInSafetyReportRequest" />
+  </message>
+  <message name="UpdateAdverseEventInformationInSafetyReportResponse">
+    <part name="parameters" element="tns:UpdateAdverseEventInformationInSafetyReportResponse" />
+  </message>
   <message name="SafetyReportingServiceExceptionFaultMessage">
     <part name="fault" element="ns8:SafetyReportingServiceException" />
   </message>
@@ -107,6 +206,21 @@
     <operation name="initiateSafetyReport">
       <input message="tns:InitiateSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/InitiateSafetyReportRequest" />
       <output message="tns:InitiateSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/InitiateSafetyReportResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="associateAdverseEventsToSafetyReport">
+      <input message="tns:AssociateAdverseEventsToSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/AssociateAdverseEventsToSafetyReportRequest" />
+      <output message="tns:AssociateAdverseEventsToSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/AssociateAdverseEventsToSafetyReportResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="dissociateAdverseEventsFromSafetyReport">
+      <input message="tns:DissociateAdverseEventsFromSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/DissociateAdverseEventsFromSafetyReportRequest" />
+      <output message="tns:DissociateAdverseEventsFromSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/DissociateAdverseEventsFromSafetyReportResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="updateAdverseEventInformationInSafetyReport">
+      <input message="tns:UpdateAdverseEventInformationInSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/UpdateAdverseEventInformationInSafetyReportRequest" />
+      <output message="tns:UpdateAdverseEventInformationInSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/UpdateAdverseEventInformationInSafetyReportResponse" />
       <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/SafetyReportingServiceExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">
