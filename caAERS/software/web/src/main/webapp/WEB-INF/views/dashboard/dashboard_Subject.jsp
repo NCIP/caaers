@@ -1,5 +1,7 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
+<c:if test="${not empty roles.registration_qa_manager or not empty roles.subject_manager or not empty roles.registrar}">
+
   <chrome:boxIPhone title="Subjects (${fn:length(subjectList)})" style="width:700px;">
   	<jsp:body>
   		<form action = "dummy">
@@ -39,3 +41,5 @@
           </form>      
   	</jsp:body>               
   </chrome:boxIPhone>
+
+</c:if>
