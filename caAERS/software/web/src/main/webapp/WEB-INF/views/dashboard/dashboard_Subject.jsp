@@ -29,10 +29,11 @@
                          			</c:url>
 									 <a href="${url}"><strong>View\Edit</strong></a>
 
-                                    <c:url var="url" value="/pages/participant/assignParticipant" >
+                                     <c:url var="url" value="/pages/participant/assignParticipant"/>
 
-                         			</c:url>
-									 <a href="${url}"><strong>  Assign Study</strong></a>
+                                     <c:if test="${not empty roles.registration_qa_manager or not empty roles.registrar}">
+                                         <a href="${url}"><strong> Assign Study</strong></a>
+                                     </c:if>
                                  </td>
                            </tr>
                          </c:forEach>
