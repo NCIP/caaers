@@ -1,0 +1,11 @@
+#Introduce Properties
+#Wed Jan 26 10:24:40 EST 2011
+introduce.skeleton.services.list=SafetyReportingEnterpriseService,SafetyReportManagement
+introduce.skeleton.extensions=cagrid_metadata
+introduce.skeleton.timestamp=1296055360221
+introduce.skeleton.service.name=SafetyReportingEnterpriseService
+introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
+introduce.skeleton.destination.dir=/Users/akkalas/SafetyReportingEnterpriseService
+introduce.skeleton.namespace.domain=http\://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata
+introduce.soap.binding.excludes=\ 
