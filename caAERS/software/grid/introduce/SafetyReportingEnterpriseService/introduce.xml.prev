@@ -252,74 +252,60 @@
      <ns15:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
      <ns15:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns15:Method>
-    <ns15:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns15:MethodType">
-     <ns15:Output qName="void" isArray="false"/>
-     <ns15:ImportInformation fromIntroduce="false" inputMessage="ns18:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns18:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns18="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
-     <ns15:ProviderInformation providerClass="DestroyProvider"/>
-    </ns15:Method>
-    <ns15:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns15:MethodType">
-     <ns15:Output qName="void" isArray="false"/>
-     <ns15:ImportInformation fromIntroduce="false" inputMessage="ns19:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns19:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns19="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
-     <ns15:ProviderInformation providerClass="SetTerminationTimeProvider"/>
-    </ns15:Method>
     <ns15:Method description="Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation." isImported="false" isProvided="false" name="initiateSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
-      <ns15:Input qName="ns20:Id" description="" isArray="false" name="studyId" xmlns:ns20="http://ess.caaers.nci.nih.gov"/>
-      <ns15:Input qName="ns21:Id" description="" isArray="false" name="subjectId" xmlns:ns21="http://ess.caaers.nci.nih.gov"/>
-      <ns15:Input qName="ns22:Id" description="" isArray="false" name="patientId" xmlns:ns22="http://ess.caaers.nci.nih.gov"/>
-      <ns15:Input qName="ns23:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns23="http://gov.nih.nci.ess.safetyreporting.types"/>
-      <ns15:Input qName="ns24:DSET_II" description="" isArray="false" name="problemIds" xmlns:ns24="http://gov.nih.nci.ess.safetyreporting.types"/>
-      <ns15:Input qName="ns25:AdverseEventReportingPeriod" description="" isArray="false" name="adverseEventReportingPeriod" xmlns:ns25="http://gov.nih.nci.ess.safetyreporting.types"/>
+      <ns15:Input qName="ns18:Id" description="" isArray="false" name="studyId" xmlns:ns18="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns19:Id" description="" isArray="false" name="subjectId" xmlns:ns19="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns20:Id" description="" isArray="false" name="patientId" xmlns:ns20="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns21:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns21="http://gov.nih.nci.ess.safetyreporting.types"/>
+      <ns15:Input qName="ns22:DSET_II" description="" isArray="false" name="problemIds" xmlns:ns22="http://gov.nih.nci.ess.safetyreporting.types"/>
+      <ns15:Input qName="ns23:AdverseEventReportingPeriod" description="" isArray="false" name="adverseEventReportingPeriod" xmlns:ns23="http://gov.nih.nci.ess.safetyreporting.types"/>
      </ns15:Inputs>
-     <ns15:Output qName="ns26:SafetyReportVersion" description="" isArray="false" xmlns:ns26="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Output qName="ns24:SafetyReportVersion" description="" isArray="false" xmlns:ns24="http://gov.nih.nci.ess.safetyreporting.types"/>
      <ns15:Exceptions>
-      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns27:SafetyReportingServiceException" xmlns:ns27="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns25:SafetyReportingServiceException" xmlns:ns25="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
     <ns15:Method description="Provides the capability to associate adverse events to a safety report." isImported="false" isProvided="false" name="associateAdverseEventsToSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
-      <ns15:Input qName="ns28:Id" description="" isArray="false" name="safetyReportId" xmlns:ns28="http://ess.caaers.nci.nih.gov"/>
-      <ns15:Input qName="ns29:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns29="http://gov.nih.nci.ess.safetyreporting.types"/>
+      <ns15:Input qName="ns26:Id" description="" isArray="false" name="safetyReportId" xmlns:ns26="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns27:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns27="http://gov.nih.nci.ess.safetyreporting.types"/>
      </ns15:Inputs>
-     <ns15:Output qName="ns30:SafetyReportVersion" description="" isArray="false" xmlns:ns30="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Output qName="ns28:SafetyReportVersion" description="" isArray="false" xmlns:ns28="http://gov.nih.nci.ess.safetyreporting.types"/>
      <ns15:Exceptions>
-      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns31:SafetyReportingServiceException" xmlns:ns31="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns29:SafetyReportingServiceException" xmlns:ns29="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
     <ns15:Method description="Provides the capability to dissociate an adverse event from a safety report." isImported="false" isProvided="false" name="dissociateAdverseEventsFromSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
-      <ns15:Input qName="ns32:Id" description="" isArray="false" name="safetyReportId" xmlns:ns32="http://ess.caaers.nci.nih.gov"/>
-      <ns15:Input qName="ns33:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns33="http://gov.nih.nci.ess.safetyreporting.types"/>
+      <ns15:Input qName="ns30:Id" description="" isArray="false" name="safetyReportId" xmlns:ns30="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns31:DSET_II" description="" isArray="false" name="adverseEventIds" xmlns:ns31="http://gov.nih.nci.ess.safetyreporting.types"/>
      </ns15:Inputs>
-     <ns15:Output qName="ns34:SafetyReportVersion" description="" isArray="false" xmlns:ns34="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Output qName="ns32:SafetyReportVersion" description="" isArray="false" xmlns:ns32="http://gov.nih.nci.ess.safetyreporting.types"/>
      <ns15:Exceptions>
-      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns35:SafetyReportingServiceException" xmlns:ns35="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns33:SafetyReportingServiceException" xmlns:ns33="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
     <ns15:Method description="Provides the capability to update the adverse event information in the safety report." isImported="false" isProvided="false" name="updateAdverseEventInformationInSafetyReport" xsi:type="ns15:MethodType">
      <ns15:Inputs>
-      <ns15:Input qName="ns36:Id" description="" isArray="false" name="safetyReportId" xmlns:ns36="http://ess.caaers.nci.nih.gov"/>
-      <ns15:Input qName="ns37:AdverseEvent" description="" isArray="false" name="adverseEvent" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns34:Id" description="" isArray="false" name="safetyReportId" xmlns:ns34="http://ess.caaers.nci.nih.gov"/>
+      <ns15:Input qName="ns35:AdverseEvent" description="" isArray="false" name="adverseEvent" xmlns:ns35="http://ess.caaers.nci.nih.gov"/>
      </ns15:Inputs>
-     <ns15:Output qName="ns38:SafetyReportVersion" description="" isArray="false" xmlns:ns38="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Output qName="ns36:SafetyReportVersion" description="" isArray="false" xmlns:ns36="http://gov.nih.nci.ess.safetyreporting.types"/>
      <ns15:Exceptions>
-      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns39:SafetyReportingServiceException" xmlns:ns39="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns37:SafetyReportingServiceException" xmlns:ns37="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
    </ns15:Methods>
-   <ns40:ResourcePropertiesList xsi:type="ns40:ResourcePropertiesListType" xmlns:ns40="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns40:ResourceProperty qName="ns41:CurrentTime" populateFromFile="false" register="false" xsi:type="ns40:ResourcePropertyType" xmlns:ns41="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns40:ResourceProperty qName="ns42:TerminationTime" populateFromFile="false" register="false" xsi:type="ns40:ResourcePropertyType" xmlns:ns42="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-   </ns40:ResourcePropertiesList>
+   <ns38:ResourcePropertiesList xsi:type="ns38:ResourcePropertiesListType" xmlns:ns38="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
-    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
     <ns3:Secure xsi:type="ns3:Secure"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns43:Extensions xsi:type="ns43:ExtensionsType" xmlns:ns43="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns43:Extension name="cagrid_metadata" version="1.3" xsi:type="ns43:ExtensionType"/>
- </ns43:Extensions>
+ <ns39:Extensions xsi:type="ns39:ExtensionsType" xmlns:ns39="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns39:Extension name="cagrid_metadata" version="1.3" xsi:type="ns39:ExtensionType"/>
+ </ns39:Extensions>
 </ns1:ServiceDescription>

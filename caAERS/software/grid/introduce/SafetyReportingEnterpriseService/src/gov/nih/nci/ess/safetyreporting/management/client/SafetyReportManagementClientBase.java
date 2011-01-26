@@ -83,25 +83,6 @@ public abstract class SafetyReportManagementClientBase extends ServiceSecurityCl
 		return port;
 	}
 	
-	public org.oasis.wsrf.lifetime.DestroyResponse destroy() throws RemoteException {
-        synchronized (portTypeMutex) {
-            org.oasis.wsrf.lifetime.Destroy params = new org.oasis.wsrf.lifetime.Destroy();
-            configureStubSecurity((Stub) portType, "destroy");
-            return portType.destroy(params);
-        }
-    }
-
-
-    public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(Calendar terminationTime)
-        throws RemoteException {
-        synchronized (portTypeMutex) {
-            configureStubSecurity((Stub) portType, "setTerminationTime");
-            org.oasis.wsrf.lifetime.SetTerminationTime params = new org.oasis.wsrf.lifetime.SetTerminationTime(
-                terminationTime);
-            return portType.setTerminationTime(params);
-
-        }
-    }
     
 
 }

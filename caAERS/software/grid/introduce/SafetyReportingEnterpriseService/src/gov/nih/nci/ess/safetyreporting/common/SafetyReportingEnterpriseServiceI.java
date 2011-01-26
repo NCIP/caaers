@@ -15,7 +15,6 @@ public interface SafetyReportingEnterpriseServiceI {
   public static final String SPRING_CLASSPATH_EXPRESSION = "springClasspathExpression";
   public static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-nes-sr.xml";
 
-
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;

@@ -90,7 +90,6 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  */
 public abstract class SafetyReportManagementResourceBase extends ReflectionResource implements Resource
                                                   ,SecureResource
-                                                  ,RemoveCallback
                                                   {
 
 	static final Log logger = LogFactory.getLog(SafetyReportManagementResourceBase.class);
@@ -128,15 +127,6 @@ public abstract class SafetyReportManagementResourceBase extends ReflectionResou
 	
 	
 	
-	/**
-	 * 
-	 * @see org.globus.wsrf.ResourceLifetime#setTerminationTime(java.util.Calendar)
-	 */
-	public void setTerminationTime(Calendar time) {
-	    super.setTerminationTime(time);	
-
-	}
-
 
 
 	    //Getters/Setters for ResourceProperties
@@ -356,8 +346,6 @@ public abstract class SafetyReportManagementResourceBase extends ReflectionResou
 	
 
 
-    public void remove() throws ResourceException {
-    }
 
 	
 	

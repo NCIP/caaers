@@ -12,10 +12,6 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportManagementI {
 
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
-
   /**
    * Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation.
    *

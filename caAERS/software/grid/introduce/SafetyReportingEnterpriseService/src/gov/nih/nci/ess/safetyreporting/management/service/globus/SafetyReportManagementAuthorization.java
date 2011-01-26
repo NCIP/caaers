@@ -59,14 +59,6 @@ public class SafetyReportManagementAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeDestroy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
-	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
 	public void authorizeInitiateSafetyReport(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
@@ -92,12 +84,6 @@ public class SafetyReportManagementAuthorization implements PDP {
 		}
 		if(operation.getLocalPart().equals("getServiceSecurityMetadata")){
 			authorizeGetServiceSecurityMetadata(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("destroy")){
-			authorizeDestroy(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("setTerminationTime")){
-			authorizeSetTerminationTime(peerSubject, context, operation);
 			return true;
 		} else if(operation.getLocalPart().equals("initiateSafetyReport")){
 			authorizeInitiateSafetyReport(peerSubject, context, operation);
