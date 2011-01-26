@@ -206,6 +206,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	SiteResearchStaff srs = null;
     	for(SitePerson sitePerson : command.getSitePersonnel()){
     		srs = new SiteResearchStaff();
+    		srs.setStartDate(DateUtils.today());
     		srs.setPhoneNumber(sitePerson.getPhoneNumber());
     		srs.setFaxNumber(sitePerson.getFaxNumber());
     		srs.setEmailAddress(sitePerson.getEmailAddress());
@@ -231,6 +232,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	SiteInvestigator siteInv = null;
     	for(SitePerson sitePerson : command.getSitePersonnel()){
     		siteInv = new SiteInvestigator();
+    		siteInv.setStartDate(DateUtils.today());
     		siteInv.setOrganization(sitePerson.getOrganization());
     		siteInv.setEmailAddress(sitePerson.getEmailAddress());
     		inv.addSiteInvestigator(siteInv);
