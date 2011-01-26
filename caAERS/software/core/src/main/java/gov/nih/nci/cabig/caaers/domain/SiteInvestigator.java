@@ -44,7 +44,12 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 
     private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
 
-    @ManyToOne
+    public SiteInvestigator() {
+		super();
+		this.setStartDate(DateUtils.today());
+	}
+
+	@ManyToOne
     @JoinColumn(name = "investigator_id", nullable = false)
     public Investigator getInvestigator() {
         return investigator;

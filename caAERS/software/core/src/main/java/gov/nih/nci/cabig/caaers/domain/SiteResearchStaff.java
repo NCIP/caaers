@@ -48,7 +48,12 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
     private Boolean associateAllStudies;
     
     
-    ///LOGIC
+    public SiteResearchStaff() {
+		super();
+		this.setStartDate(DateUtils.today());
+	}
+
+	///LOGIC
     public SiteResearchStaffRole findSiteResearchStaffRole(SiteResearchStaffRole other){
     	for(SiteResearchStaffRole role : siteResearchStaffRoles){
     		if(StringUtils.equals(role.getRoleCode(), other.getRoleCode())) return role;
