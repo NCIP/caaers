@@ -20,10 +20,12 @@ public class ParticipantInputCommand {
 
     protected HashMap<String, Boolean> emptyFieldNameMap;
 
+/*
     protected ResearchStaff loggedinResearchStaff;
     protected Investigator loggedinInvestigator;
     protected Set<Organization> loggedInOrganizations;
-    
+*/
+
     protected Participant participant;
     private Study study;
     protected StudyParticipantAssignment assignment;
@@ -282,6 +284,7 @@ public class ParticipantInputCommand {
         this.unidentifiedMode = unidentifiedMode;
     }
 
+/*
     public ResearchStaff getLoggedinResearchStaff() {
         return loggedinResearchStaff;
     }
@@ -305,6 +308,7 @@ public class ParticipantInputCommand {
     public void setLoggedInOrganizations(Set<Organization> loggedInOrganizations) {
         this.loggedInOrganizations = loggedInOrganizations;
     }
+*/
 
     public boolean isHasParUpdate() {
         return hasParUpdate;

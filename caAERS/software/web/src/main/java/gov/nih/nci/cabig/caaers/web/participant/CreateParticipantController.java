@@ -104,8 +104,10 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
         c.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
 
+/*
         c.setLoggedinResearchStaff(rsDao.getByLoginId(SecurityUtils.getUserLoginName()));
         c.setLoggedinInvestigator(investigatorDao.getByLoginId(SecurityUtils.getUserLoginName()));
+*/
 
         return c;
     }
