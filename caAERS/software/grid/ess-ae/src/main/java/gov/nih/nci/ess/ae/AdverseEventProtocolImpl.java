@@ -314,14 +314,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 				raiseError(NO_MEDDRA_VERSION);
 			}
 			for (II id : ctcOrMeddraCode) {
-				LowLevelTerm term = CollectionUtils
-						.firstElement(lowLevelTermDao
-								.getByMeddraCodeandVersion(id.getExtension(),
-										meddraVersion.getId()));
-				if (term == null) {
-					raiseError(NO_MEDDRA_TERM, id.getExtension(),
-							meddraVersion.getName());
-				}
+				LowLevelTerm term = findLowLevelTerm(meddraVersion, id);
 				addLowLevelTermToStudy(study, term);
 			}
 		} else {
@@ -330,12 +323,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 				raiseError(NO_CTC_VERSION);
 			}
 			for (II id : ctcOrMeddraCode) {
-				CtcTerm term = CollectionUtils.firstElement(ctcTermDao
-						.getByCtepCodeandVersion(id.getExtension(),
-								ctcVer.getId()));
-				if (term == null) {
-					raiseError(NO_CTC_TERM, id.getExtension(), ctcVer.getName());
-				}
+				CtcTerm term = findCtcTerm(ctcVer, id);
 				addCtcTermToStudy(study, term);
 			}
 		}
@@ -364,6 +352,32 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 		ExpectedAEMeddraLowLevelTerm studyllt = new ExpectedAEMeddraLowLevelTerm();
 		studyllt.setLowLevelTerm(llt);
 		study.addExpectedAEMeddraLowLevelTerm(studyllt);
+
+	}
+
+	private void addLowLevelTermToArm(Arm arm, LowLevelTerm llt) {
+		for (gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent ae : arm
+				.getSolicitedAdverseEvents()) {
+			if (llt.equals(ae.getLowLevelTerm())) {
+				return;
+			}
+		}
+		gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent solicitedAe = new gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent();
+		solicitedAe.setLowLevelTerm(llt);
+		arm.getSolicitedAdverseEvents().add(solicitedAe);
+
+	}
+
+	private void addCtcTermToArm(Arm arm, CtcTerm ctcTerm) {
+		for (gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent ae : arm
+				.getSolicitedAdverseEvents()) {
+			if (ctcTerm.equals(ae.getCtcterm())) {
+				return;
+			}
+		}
+		gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent solicitedAe = new gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent();
+		solicitedAe.setCtcterm(ctcTerm);
+		arm.getSolicitedAdverseEvents().add(solicitedAe);
 
 	}
 
@@ -424,22 +438,120 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 		this.ctcTermDao = ctcTermDao;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nih.nci.ess.ae.service.protocol.common.AEProtocolI#
+	 * updateSolicitedAdverseEventsForStudyEpoch(ess.caaers.nci.nih.gov.Id,
+	 * _21090.org.iso.ST, _21090.org.iso.DSET_II)
+	 */
 	public void updateSolicitedAdverseEventsForStudyEpoch(Id studyId,
-			ST epochName, DSET_II ctcOrMeddraCode)
+			ST epochName, DSET_II ctcOrMeddraCodeSet)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-		// TODO Auto-generated method stub
+
+		String epochNameStr = h.value(epochName);
+		Study study = getStudyByPrimaryId(studyId);
+		Arm arm = getArm(epochNameStr, study);
+
+		gov.nih.nci.cabig.caaers.domain.AeTerminology aeTerminology = study
+				.getAeTerminology();
+		if (aeTerminology == null || aeTerminology.getTerm() == null) {
+			raiseError(NO_AE_TERMINOLOGY);
+		}
+
+		if (ctcOrMeddraCodeSet == null) {
+			raiseError(NO_CTC_OR_MEDDRA_CODES);
+		}
+		II[] ctcOrMeddraCode = ctcOrMeddraCodeSet.getItem() != null ? ctcOrMeddraCodeSet
+				.getItem() : new II[0];
+		arm.getSolicitedAdverseEvents().clear();
+		if (aeTerminology.getTerm() == Term.MEDDRA) {
+			MeddraVersion meddraVersion = aeTerminology.getMeddraVersion();
+			if (meddraVersion == null) {
+				raiseError(NO_MEDDRA_VERSION);
+			}
+			for (II id : ctcOrMeddraCode) {
+				LowLevelTerm term = findLowLevelTerm(meddraVersion, id);
+				addLowLevelTermToArm(arm, term);
+			}
+		} else {
+			Ctc ctcVer = aeTerminology.getCtcVersion();
+			if (ctcVer == null) {
+				raiseError(NO_CTC_VERSION);
+			}
+			for (II id : ctcOrMeddraCode) {
+				CtcTerm term = findCtcTerm(ctcVer, id);
+				addCtcTermToArm(arm, term);
+			}
+		}
+		studyRepository.save(study);
 
 	}
 
+	/**
+	 * @param ctcVer
+	 * @param id
+	 * @return
+	 */
+	private CtcTerm findCtcTerm(Ctc ctcVer, II id) {
+		CtcTerm term = CollectionUtils.firstElement(ctcTermDao
+				.getByCtepCodeandVersion(id.getExtension(),
+						ctcVer.getId()));
+		if (term == null) {
+			raiseError(NO_CTC_TERM, id.getExtension(), ctcVer.getName());
+		}
+		return term;
+	}
+
+	/**
+	 * @param meddraVersion
+	 * @param id
+	 * @return
+	 */
+	private LowLevelTerm findLowLevelTerm(MeddraVersion meddraVersion, II id) {
+		LowLevelTerm term = CollectionUtils
+				.firstElement(lowLevelTermDao
+						.getByMeddraCodeandVersion(id.getExtension(),
+								meddraVersion.getId()));
+		if (term == null) {
+			raiseError(NO_MEDDRA_TERM, id.getExtension(),
+					meddraVersion.getName());
+		}
+		return term;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nih.nci.ess.ae.service.protocol.common.AEProtocolI#
+	 * getSolicitedAdverseEventsForStudyEpoch(ess.caaers.nci.nih.gov.Id,
+	 * _21090.org.iso.ST)
+	 */
 	public DSET_SolicitedAdverseEvent getSolicitedAdverseEventsForStudyEpoch(
 			Id studyId, ST epochName)
 			throws RemoteException,
 			gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException {
-		Study study = getStudyByPrimaryId(studyId);
-		List<SolicitedAdverseEvent> list = new ArrayList<SolicitedAdverseEvent>();
-
 		String epochNameStr = h.value(epochName);
+		Study study = getStudyByPrimaryId(studyId);
+		Arm arm = getArm(epochNameStr, study);
+
+		List<SolicitedAdverseEvent> list = new ArrayList<SolicitedAdverseEvent>();
+		for (gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent ae : arm
+				.getSolicitedAdverseEvents()) {
+			list.add(domainToGridConverter.convert(ae));
+		}
+
+		return new DSET_SolicitedAdverseEvent(
+				list.toArray(new SolicitedAdverseEvent[0]));
+	}
+
+	/**
+	 * @param epochNameStr
+	 * @param study
+	 * @return
+	 */
+	private Arm getArm(String epochNameStr, Study study) {
 		if (StringUtils.isBlank(epochNameStr)) {
 			raiseError(NO_EPOCH_NAME);
 		}
@@ -457,14 +569,7 @@ public class AdverseEventProtocolImpl implements MessageSourceAware,
 		if (arm == null) {
 			raiseError(NO_ARMS);
 		}
-
-		for (gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent ae : arm
-				.getSolicitedAdverseEvents()) {
-			list.add(domainToGridConverter.convert(ae));
-		}
-
-		return new DSET_SolicitedAdverseEvent(
-				list.toArray(new SolicitedAdverseEvent[0]));
+		return arm;
 	}
 
 }
