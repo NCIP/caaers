@@ -4,7 +4,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
     <!-- for testing, purge the log on each run -->
-    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+    <appender name="caAERSLogFile" class="org.apache.log4j.RollingFileAppender">
         <param name="maxBackupIndex" value="20"/>
         <param name="file" value="${catalina.home}/logs/caaers.log"/>
         <param name="threshold" value="DEBUG"/>
@@ -13,15 +13,7 @@
             <param name="conversionPattern" value="caAERS-webapp-%d [%15t] %-5p %c %x: %m%n"/>
         </layout>
     </appender>
-
-
-    <!--	<logger name="gov.nih.nci"><level value="debug"/></logger>-->
-    <logger name="gov.nih.nci.cabig.caaers"><level value="INFO"/></logger>
-    <logger name="gov.nih.nci.cabig.caaers.domain.repository"><level value="info"/></logger>
-    <logger name="gov.nih.nci.cabig.caaers.web.listener"><level value="info"/></logger>
-    <logger name="gov.nih.nci.cabig.caaers.accesscontrol"><level value="info"/></logger>
-    <logger name="gov.nih.nci.cabig.caaers.security"><level value="info"/></logger>
-
+    
     <appender name="hibernateFile" class="org.apache.log4j.RollingFileAppender">
         <param name="maxBackupIndex" value="20"/>
         <param name="file" value="${catalina.home}/logs/caaers.hibernate.log"/>
@@ -31,13 +23,44 @@
         </layout>
     </appender>
 
-    <logger name="org.hibernate.SQL">
+	<logger name="gov.nih.nci.cabig.caaers">
+        <level value="INFO"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
+	<logger name="gov.nih.nci.cabig.caaers.domain.repository">
+        <level value="INFO"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
+	<logger name="gov.nih.nci.cabig.caaers.web.listener">
+        <level value="INFO"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
+	<logger name="gov.nih.nci.cabig.caaers.accesscontrol">
+        <level value="INFO"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>    
+	<logger name="gov.nih.nci.cabig.caaers.security">
+        <level value="DEBUG"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
+    
+	<logger name="org.hibernate.SQL">
         <level value="INFO" />
         <appender-ref ref="hibernateFile"/>
     </logger>
 
-    <root>
-        <priority value="ERROR"/>
-        <appender-ref ref="file"/>
-    </root>
+	<root>
+	  <level value="INFO"/>
+	  	<!-- no appender, output will be swallowed (I think) -->
+	</root>
+
+	<!--
+			Log Levels Reference
+			TRACE
+			DEBUG
+			INFO
+			WARN
+			ERROR
+			FATAL 
+	 -->
 </log4j:configuration>

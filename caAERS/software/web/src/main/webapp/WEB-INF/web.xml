@@ -309,5 +309,16 @@
 
         <!-- JAWR config end -->
     
+    	 <!-- Servlet which loads the log4j change monitor -->
+		<servlet>
+			<servlet-name>log4jConfigLoader</servlet-name>
+			<servlet-class>gov.nih.nci.cabig.caaers.web.utils.Log4jConfigLoader</servlet-class>
+			    <init-param>
+      				<param-name>log4j-init-file</param-name>
+      				<param-value>WEB-INF/log4j.xml</param-value>
+    			</init-param>
+			<load-on-startup>1</load-on-startup>   
+		</servlet>
+    
 </web-app>
 	
