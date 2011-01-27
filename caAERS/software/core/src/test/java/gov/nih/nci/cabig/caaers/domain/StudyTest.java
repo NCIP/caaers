@@ -202,8 +202,7 @@ public class StudyTest extends TestCase {
 	
 
 
-    public void testGetStudyTherapies(){
-        
+    public void testGetStudyTherapies() {
         study.getStudyDevices().add(new StudyDevice()) ;
         OtherIntervention oi = new OtherIntervention();
         oi.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
@@ -212,5 +211,20 @@ public class StudyTest extends TestCase {
         assertEquals(2, study.getStudyTherapies().size());
         assertEquals(StudyTherapyType.DEVICE, study.getStudyTherapies().get(0).getStudyTherapyType());
     }
-	
+
+    public void testCheckExpectedAEUniquenessAllUnique() {
+        ExpectedAECtcTerm aae1 = new ExpectedAECtcTerm(); CtcTerm ctcT1 = new CtcTerm(); ctcT1.setId(1); aae1.setTerm(ctcT1); study.addExpectedAECtcTerm(aae1);
+        ExpectedAECtcTerm aae2 = new ExpectedAECtcTerm(); CtcTerm ctcT2 = new CtcTerm(); ctcT2.setId(2); aae2.setTerm(ctcT2); study.addExpectedAECtcTerm(aae2);
+        AbstractExpectedAE ese = study.checkExpectedAEUniqueness();
+        assertNull(ese);
+    }
+
+    public void testCheckExpectedAEUniquenessCtcDuplicates() {
+        Fixtures.createCtcV3Terminology(study);
+        ExpectedAECtcTerm aae1 = new ExpectedAECtcTerm(); CtcTerm ctcT1 = new CtcTerm(); ctcT1.setId(1); aae1.setTerm(ctcT1); study.addExpectedAECtcTerm(aae1);
+        ExpectedAECtcTerm aae2 = new ExpectedAECtcTerm(); aae2.setTerm(ctcT1); study.addExpectedAECtcTerm(aae2);
+        AbstractExpectedAE ese = study.checkExpectedAEUniqueness();
+        assertSame(ese, aae2);
+    }
+
 }
