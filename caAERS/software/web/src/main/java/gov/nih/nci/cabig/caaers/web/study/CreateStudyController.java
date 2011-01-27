@@ -82,9 +82,10 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         OrganizationAssignedIdentifier sponsorIdentifier = new OrganizationAssignedIdentifier();
         sponsorIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
         study.addIdentifier(sponsorIdentifier);
+        sponsorIdentifier.setPrimaryIndicator(true);
 
         OrganizationAssignedIdentifier ccIdentifier = new OrganizationAssignedIdentifier();
-        ccIdentifier.setPrimaryIndicator(true);
+        ccIdentifier.setPrimaryIndicator(false);
         ccIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         study.addIdentifier(ccIdentifier);
         study.addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
