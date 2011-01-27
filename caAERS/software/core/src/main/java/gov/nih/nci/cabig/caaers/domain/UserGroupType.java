@@ -5,6 +5,8 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +60,32 @@ public enum UserGroupType implements CodedEnum<Integer> {
         register(this);
 
     }
+
+    //will return all the roles that are not scoped. 
+    public static List<UserGroupType> getUnScopedRoles(){
+        return Arrays.asList(new UserGroupType[]{
+                system_administrator, business_administrator, data_importer,ae_rule_and_report_manager 
+        });
+    }
+
+    //will return all the roles that are site scoped.
+    public static List<UserGroupType> getSiteScopedRoles(){
+        return Arrays.asList(new UserGroupType[]{
+             subject_manager, registration_qa_manager, data_importer, study_site_participation_administrator,
+             study_team_administrator, supplemental_study_information_manager, study_creator, study_qa_manager,
+             user_administrator, person_and_organization_information_manager
+        });
+    }
+
+
+    //will return all the roles that are site and study scoped.
+    public static List<UserGroupType> getStudyScopedRoles(){
+        return Arrays.asList(new UserGroupType[]{
+                data_analyst, data_reader, lab_data_user, lab_impact_calendar_notifier, ae_study_data_reviewer, ae_reporter,
+                ae_expedited_report_reviewer, registrar, study_calendar_template_builder, study_subject_calendar_manager
+        });
+    }
+
 
     public String getCsmName() {
         return csmName;

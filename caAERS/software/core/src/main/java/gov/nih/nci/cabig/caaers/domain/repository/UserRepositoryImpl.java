@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.dao._UserDao;
+import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
@@ -276,6 +277,10 @@ public class UserRepositoryImpl implements UserRepository {
 
         }
 
+    }
+
+    public List<_User> search(UserQuery query) {
+        return (List<_User>)userDao.search(query);
     }
 
     public void setUserDao(_UserDao userDao) {

@@ -26,8 +26,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.GenericValidator;
-import org.apache.cxf.common.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -83,27 +83,12 @@ public class UserTab extends TabWithFields<UserCommand>{
     
     @Override
     public void onBind(HttpServletRequest request, UserCommand command, Errors errors) {
-        super.onBind(request, command, errors);
-        
-        if(methodInvocationRequest(request)) return;
-        
-    	//Based on Person type create the right concrete class and set to the Person attribute in the command for later processing
-    	if("ResearchStaff".equals(command.getPersonType())){
-    		command.setPerson(buildResearchStaff(command));
-    	}else if("Investigator".equals(command.getPersonType())){
-    		command.setPerson(buildInvestigator(command));
-    	}else{
-    		command.setPerson(null);
-    	}
-    	
-    	//If Username is provided then we have to create CSMUSER for this person to be able to login to caAERS.
-    	if(! StringUtils.isEmpty(command.getUserName()) && command.getCreateAsUser()){
-    		command.setUser(buildUser(command));	
-        }else{
-        	if(command.getPerson() != null){
-        		command.getPerson().setCaaersUser(null);
-        	}
-        }
+        String linkType = request.getParameter("linkType");
+        if(StringUtils.isNotEmpty(linkType) || methodInvocationRequest(request)) return;
+
+        bindPerson(command);
+        bindUser(command);
+
     }
     
     @SuppressWarnings("unchecked")
@@ -190,13 +175,34 @@ public class UserTab extends TabWithFields<UserCommand>{
     	}
     }
 
+
+    private void bindPerson(UserCommand command){
+      if(command.getCreateAsPerson()){
+        if(StringUtils.equals("ResearchStaff", command.getPersonType())){
+            command.setPerson(buildResearchStaff(command));
+        }else if (StringUtils.equals("Investigator", command.getPersonType())){
+            command.setPerson(buildInvestigator(command));
+        }
+      }
+
+    }
+
+    private void bindUser(UserCommand command){
+       if(command.getCreateAsUser()){
+           buildUser(command);
+       }
+    }
+
     /**
      * This method builds a LocalResearchStaff instance from the command object
      * @param command
      * @return
      */
 	private ResearchStaff buildResearchStaff(UserCommand command){
-    	LocalResearchStaff rs = new LocalResearchStaff();
+        if(command.getPerson() == null){
+           command.setPerson(new LocalResearchStaff());
+        }
+        ResearchStaff rs = (ResearchStaff) command.getPerson();
     	rs.setFirstName(command.getFirstName());
     	rs.setMiddleName(command.getMiddleName());
     	rs.setLastName(command.getLastName());
@@ -212,6 +218,8 @@ public class UserTab extends TabWithFields<UserCommand>{
     		srs.setEmailAddress(sitePerson.getEmailAddress());
     		srs.setOrganization(sitePerson.getOrganization());
     		srs.setAddress(sitePerson.getAddress());
+            srs.setStartDate(sitePerson.getStartDate());
+            srs.setEndDate(sitePerson.getEndDate());
     		rs.addSiteResearchStaff(srs);
     	}
     	return rs;
@@ -223,7 +231,10 @@ public class UserTab extends TabWithFields<UserCommand>{
 	 * @return
 	 */
 	private Investigator buildInvestigator(UserCommand command){
-    	LocalInvestigator inv = new LocalInvestigator();
+        if(command.getPerson() == null){
+            command.setPerson(new LocalInvestigator());
+        }
+    	Investigator inv = (Investigator)command.getPerson();
     	inv.setFirstName(command.getFirstName());
     	inv.setMiddleName(command.getMiddleName());
     	inv.setLastName(command.getLastName());
@@ -235,6 +246,8 @@ public class UserTab extends TabWithFields<UserCommand>{
     		siteInv.setStartDate(DateUtils.today());
     		siteInv.setOrganization(sitePerson.getOrganization());
     		siteInv.setEmailAddress(sitePerson.getEmailAddress());
+            siteInv.setStartDate(sitePerson.getStartDate());
+            siteInv.setEndDate(sitePerson.getEndDate());
     		inv.addSiteInvestigator(siteInv);
     	}
     	return inv;
@@ -246,7 +259,10 @@ public class UserTab extends TabWithFields<UserCommand>{
 	 * @return
 	 */
     private _User buildUser(UserCommand command){
-    	_User user = new _User();
+    	if(command.getUser() == null){
+            command.setUser(new _User());
+        }
+        _User user = command.getUser();
     	user.setLoginName(command.getUserName());
     	user.getCsmUser().setLoginName(command.getUserName());
     	user.getCsmUser().setFirstName(command.getFirstName());

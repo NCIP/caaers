@@ -50,4 +50,8 @@ public class SiteResearchStaffQuery extends AbstractQuery {
         andWhere("lower(cu.loginName) LIKE :" + USER_NAME);
         setParameter(USER_NAME, searchString);
     }
+
+    public void excludeUsers(){
+        andWhere("rs.caaersUser is null");
+    }
 }

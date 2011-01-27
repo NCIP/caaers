@@ -56,9 +56,15 @@ public class CreateUserController extends UserController<UserCommand>{
 	@Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		UserCommand command = new UserCommand();
+
+        command.setCreateAsPerson(command.getPO());
+        command.setCreateAsUser(command.getUA());
+
 		command.setCreateMode(Boolean.TRUE);
 		command.setEditMode(Boolean.FALSE);
+
         command.buildRolesHelper();
-		return command;
+
+        return command;
 	}
 }

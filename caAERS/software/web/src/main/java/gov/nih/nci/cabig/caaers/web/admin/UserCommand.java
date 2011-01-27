@@ -28,12 +28,12 @@ public class UserCommand {
 	private String lastName;
 	private String emailAddress;
 	private String nciIdentifier;	
-	private String personType;
+	private String personType = "";
 	private List<SitePerson> sitePersonnel = new ArrayList<SitePerson>();
 	private String userName;
 	private HashMap<String, String> personTypeOptionsMap = new LinkedHashMap<String, String>();
-	private boolean createAsPerson = isPO;
-	private boolean createAsUser = isUA;
+	private boolean createAsPerson;
+	private boolean createAsUser;
 	private List<SuiteRoleMembershipHelper> roleMembershipHelper = new ArrayList<SuiteRoleMembershipHelper>();
 	private Map<String,String> siteMap = new HashMap<String,String>();
 	private Map<String,String> studyMap = new HashMap<String,String>();
@@ -43,8 +43,13 @@ public class UserCommand {
 	//Attributes which will be processed to save data to db.
 	private _User user;
 	private Person person;
+
+    private Integer personId;
+    private Integer userId;
+    
 	private List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
-	
+    
+
 	public UserCommand() {
 		personTypeOptionsMap.put("", "Please select");
 		personTypeOptionsMap.put("Investigator", "Investigator");
@@ -323,4 +328,20 @@ public class UserCommand {
 	public boolean getUA() {
 		return isUA;
 	}
+
+    public Integer getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }

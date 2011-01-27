@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import java.util.Arrays;
+
 public class InvestigatorQuery extends AbstractQuery {
 
     private static String queryString = "SELECT distinct i from Investigator i";
@@ -54,15 +56,23 @@ public class InvestigatorQuery extends AbstractQuery {
         setParameter(NCI_CODE, searchString);
     }
     public void filterByLoginId(final String loginId) {
+        join("i.caaersUser u");
         String searchString = "%" + loginId.trim().toLowerCase() + "%";
-        andWhere(String.format("lower(i.loginId) LIKE :%s", LOGIN_ID));
+        andWhere(String.format("lower(u.loginName) LIKE :%s", LOGIN_ID));
         setParameter(LOGIN_ID, searchString);
     }
     
-    public void filterByExactLoginId(final String loginId) {
-    	 String searchString = loginId.trim().toLowerCase();
-         andWhere(String.format("lower(i.loginId) = :%s", LOGIN_ID));
-         setParameter(LOGIN_ID, searchString);
+    public void filterByExactLoginId(final String... loginIds) {
+         join("i.caaersUser u");
+         if(loginIds.length > 1){
+            andWhere("u.loginName in (:loginIds)");
+            setParameterList("loginIds", Arrays.asList(loginIds));
+         }else{
+            String searchString = loginIds[0].trim().toLowerCase();
+            andWhere(String.format("lower(u.loginName) = :%s", LOGIN_ID));
+            setParameter(LOGIN_ID, searchString);
+         }
+
     }
     
     public void filterByOrganization(final String organization) {
@@ -76,5 +86,10 @@ public class InvestigatorQuery extends AbstractQuery {
         String searchString = "%" + value.toLowerCase() + "%";
         andWhere("lower(cu.loginName) LIKE :" + USER_NAME);
         setParameter(USER_NAME, searchString);
-    }    
+    }
+
+
+    public void excludeUsers(){
+        andWhere("i.caaersUser is null");
+    }
 }

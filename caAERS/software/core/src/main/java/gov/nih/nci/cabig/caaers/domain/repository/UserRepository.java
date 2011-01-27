@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
 
@@ -22,5 +23,9 @@ public interface UserRepository {
      * @param user
      */
     public void provisionUser(_User user);
+
+    public List<_User> search(UserQuery query);
+
+    
 
 }

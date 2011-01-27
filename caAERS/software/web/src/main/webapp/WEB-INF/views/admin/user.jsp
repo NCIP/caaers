@@ -165,7 +165,39 @@
         
  			function removeSitePerson(_index) {
                 ajaxCRUD._deleteItem('sitePerson', _index, '_organizationsDIV', 0);
-            }			 	
+            }
+
+            /* Will show the popup, where the user is allowed to Search */
+            function showLinkPopup(popupRequestType){
+               var url = "searchUser?popupRequest=true&popupRequestType=#{requestType}&subview".interpolate({requestType:popupRequestType});
+                AE.popupWin = new Window({className:"alphacube",
+                    destroyOnClose:true,
+                    title:"",
+                    url: url,
+                    width: 900,
+                    height: 500,
+                    recenterAuto:true});
+                AE.popupWin.showCenter(true);
+            }
+            
+            /* Will refresh the page after linking */
+            function updateAfterLinking(_linkedId, _linkedUserName, _linkedRecordType, _linkType){
+                var _id = ${requestScope.id} + '';
+                var _recordType = '${requestScope.recordType}';
+                var _userName = '${requestScope.userName}';
+                var url = "editUser?id=#{id}&linkType=#{linkType}&userName=#{userName}&recordType=#{recordType}&linkedId=#{linkedId}&linkedRecordType=#{linkedRecordType}&linkedUserName=#{linkedUserName}".interpolate(
+                 {
+                     id:_id,
+                     linkType:_linkType,
+                     linkedId :_linkedId,
+                     linkedRecordType:_linkedRecordType,
+                     linkedUserName:_linkedUserName,
+                     userName:_userName,
+                     recordType:_recordType
+                 });
+
+                window.location = url;
+            }
 	    	
     	</script>
     	<tags:dwrJavascriptLink objects="user,createStudy"/>
@@ -221,11 +253,17 @@
     				<chrome:box title="Person Details" id="person-div" style="display:${command.createAsPerson ? '' : 'none'}" >
     					<ui:row path="personType">
     						<jsp:attribute name="label"><ui:label path="personType" text="" labelProperty="personType" required="${command.createAsPerson}"/></jsp:attribute>
-    						<jsp:attribute name="value"><ui:select path="personType" options="${command.personTypeOptionsMap}" title="Type of Person" required="${command.createAsPerson}"></ui:select></jsp:attribute>
+    						<jsp:attribute name="value"><ui:select path="personType" options="${command.personTypeOptionsMap}" title="Type of Person" required="${command.createAsPerson}" readonly="${command.editMode && not empty command.person}"></ui:select></jsp:attribute>
     					</ui:row>
 						<ui:row path="researchStaff.nciIdentifier">
 							<jsp:attribute name="label"><ui:label path="nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
-							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false"/></jsp:attribute>
+							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false"/>
+                                <c:if test="${command.editMode && empty command.person}">
+                                     <caaers:message code="LBL_link.person" var="linkaperson" text="Link a person" />
+                                     <tags:button value="${linkaperson}" color="blue" icon="search" onclick="showLinkPopup('person')" size="small" type="button"/>
+                                </c:if>
+
+                            </jsp:attribute>
 						</ui:row>		    					
                         <chrome:division>
 							<caaers:message code="researchstaff.details.organizations" var="rsOrganizations"/>
@@ -244,7 +282,14 @@
     					<tags:instructions code="userRolesForUA" />
     					<ui:row path="loginName">
     						<jsp:attribute name="label"><ui:label path="userName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
-    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username"/></jsp:attribute>
+    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${command.editMode and (not empty command.userName)}"/>
+
+                                <c:if test="${command.editMode and empty command.userName}">
+                                    <caaers:message code="LBL_link.user" var="linkauser" text="Link a user" />
+                                    <tags:button value="${linkauser}" color="blue" icon="search" onclick="showLinkPopup('user')" size="small" type="button"/>
+                                </c:if>
+
+                            </jsp:attribute>
     					</ui:row>
     						<div id="roles-div">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">

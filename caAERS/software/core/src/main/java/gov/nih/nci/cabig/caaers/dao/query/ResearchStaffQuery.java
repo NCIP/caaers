@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import java.util.Arrays;
+
 /**
  * @author Saurabh Agrawal
  * @author Biju Joseph
@@ -63,15 +65,24 @@ public class ResearchStaffQuery extends AbstractQuery {
 
 
     public void filterByLoginId(final String loginId) {
+        join("rs.caaersUser u");
         String searchString = "%" + loginId.trim().toLowerCase() + "%";
-        andWhere(String.format("lower(rs.loginId) LIKE :%s", LOGIN_ID));
+        andWhere(String.format("lower(u.loginName) LIKE :%s", LOGIN_ID));
         setParameter(LOGIN_ID, searchString);
     }
 
-    public void filterByExactLoginId(final String loginId) {
-        String searchString = loginId.trim().toLowerCase();
-        andWhere(String.format("lower(rs.loginId) = :%s", LOGIN_ID));
-        setParameter(LOGIN_ID, searchString);
+    public void filterByExactLoginId(final String... loginIds) {
+        join("rs.caaersUser u");
+        if(loginIds.length > 1){
+          andWhere("u.loginName in (:loginIds)");
+          setParameterList("loginIds", Arrays.asList(loginIds));
+
+        }else{
+          String searchString = loginIds[0].trim().toLowerCase();
+          andWhere(String.format("lower(u.loginName) = :%s", LOGIN_ID));
+          setParameter(LOGIN_ID, searchString);
+        }
+
     }
     
     public void filterByNciIdentifier(final String nciIdentifier) {

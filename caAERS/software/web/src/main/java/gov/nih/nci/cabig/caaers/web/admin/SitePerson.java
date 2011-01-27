@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Person;
 
+import java.util.Date;
+
 public class SitePerson {
 	
 	private Integer id;
@@ -13,6 +15,9 @@ public class SitePerson {
 	private Organization organization;
 	private Person person;
 	private Address address;
+    private Date startDate;
+    private Date endDate;
+    
 	
 	public Integer getId() {
 		return id;
@@ -67,4 +72,20 @@ public class SitePerson {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 }

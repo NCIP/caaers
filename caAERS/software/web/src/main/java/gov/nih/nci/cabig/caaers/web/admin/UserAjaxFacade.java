@@ -1,20 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.dao.query.*;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
@@ -27,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,6 +36,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 	private StudyDao studyDao;
 	private InvestigatorRepository investigatorRepository;
 	private ResearchStaffRepository researchStaffRepository;
+    private PersonRepository personRepository;
 	private static final Log log = LogFactory.getLog(UserAjaxFacade.class);
 	
 	@Override
@@ -139,32 +132,58 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 	
     /**
      * This method is invoked from the user_search.jsp to fetch csm users for the given search criteria  
-     * @param firstName
-     * @param lastName
-     * @param userName
-     * @param request
+     * @param searchCriteriaMap
      * @return
      */
     @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getUserTable(HashMap searchCriteriaMap) {
-    	List<User> csmUserList = userRepository.searchCsmUser((String)searchCriteriaMap.get("firstName"), 
-    															(String)searchCriteriaMap.get("lastName"), 
+    	List<UserAjaxableDomainObject> ajaxableUserList = new ArrayList<UserAjaxableDomainObject>();
+        if(!StringUtils.equals("person", (String)searchCriteriaMap.get("linkType"))){
+            List<User> csmUserList = userRepository.searchCsmUser((String)searchCriteriaMap.get("firstName"),
+    															(String)searchCriteriaMap.get("lastName"),
     															(String)searchCriteriaMap.get("userName"));
-    	
-		List<UserAjaxableDomainObject> ajaxableUserList = new ArrayList<UserAjaxableDomainObject>();
-		UserAjaxableDomainObject ajaxableUser = null;
-		for(User csmUser : csmUserList){
-			ajaxableUser = new UserAjaxableDomainObject();
-			ajaxableUser.setId(csmUser.getUserId().intValue());
-			ajaxableUser.setFirstName(csmUser.getFirstName());
-			ajaxableUser.setLastName(csmUser.getLastName());
-			ajaxableUser.setNumber("");
-			ajaxableUser.setExternalId("");
-			ajaxableUser.setUserName(csmUser.getLoginName());
-			ajaxableUser.setEmailAddress(csmUser.getEmailId());
-			ajaxableUser.setRecordType("CSM_RECORD");
-			ajaxableUserList.add(ajaxableUser);
-		}
+
+
+            if(StringUtils.equals("user", (String)searchCriteriaMap.get("linkType"))){
+                if(CollectionUtils.isNotEmpty(csmUserList)){
+                   HashMap<String, User> userMap = new HashMap<String, User>();
+                   for(User csmUser : csmUserList){
+                      userMap.put(csmUser.getLoginName(),csmUser);
+                   }
+
+                   ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+                   rsQuery.filterByExactLoginId(userMap.keySet().toArray(new String[]{}));
+
+                   List<ResearchStaff> staffs = personRepository.searchLocalResearchStaff(rsQuery);
+                   for(ResearchStaff rs : staffs){
+                       userMap.remove(rs.getLoginId());
+                   }
+
+                   InvestigatorQuery invQuery = new InvestigatorQuery();
+                   invQuery.filterByExactLoginId(userMap.keySet().toArray(new String[]{}));
+                   List<Investigator> investigators = personRepository.searchLocalInvestigator(invQuery);
+                   for(Investigator inv : investigators){
+                       userMap.remove(inv.getLoginId());
+                   }
+                   csmUserList = new ArrayList<User>(userMap.values());
+                }
+
+            }
+
+            UserAjaxableDomainObject ajaxableUser = null;
+            for(User csmUser : csmUserList){
+                ajaxableUser = new UserAjaxableDomainObject();
+                ajaxableUser.setId(csmUser.getUserId().intValue());
+                ajaxableUser.setFirstName(csmUser.getFirstName());
+                ajaxableUser.setLastName(csmUser.getLastName());
+                ajaxableUser.setNumber("");
+                ajaxableUser.setExternalId("");
+                ajaxableUser.setUserName(csmUser.getLoginName());
+                ajaxableUser.setEmailAddress(csmUser.getEmailId());
+                ajaxableUser.setRecordType("CSM_RECORD");
+                ajaxableUserList.add(ajaxableUser);
+            }
+        }
 		return ajaxableUserList;
 	}
     
@@ -172,31 +191,35 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getResearchStaffTable(HashMap searchCriteriaMap) {
         
-        List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
+        List<SiteResearchStaff> siteResearchStaffs = null;
         siteResearchStaffs = constructExecuteSiteResearchStaffQuery(searchCriteriaMap);
-
         Set<UserAjaxableDomainObject> set = new HashSet<UserAjaxableDomainObject>();
-        for (SiteResearchStaff srs : siteResearchStaffs) {
-            UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
-            rsado.setRecordType("RESEARCHSTAFF_RECORD");
-            rsado.setFirstName(srs.getResearchStaff().getFirstName());
-            rsado.setLastName(srs.getResearchStaff().getLastName());
-            rsado.setMiddleName(srs.getResearchStaff().getMiddleName());
-            rsado.setEmailAddress(srs.getResearchStaff().getEmailAddress());
-            rsado.setUserName(srs.getResearchStaff().getCaaersUser() != null ? srs.getResearchStaff().getCaaersUser().getLoginName() : "");
-            
-            StringBuffer sb = new StringBuffer("");
-            for (SiteResearchStaff site : srs.getResearchStaff().getSiteResearchStaffs()) {
-                sb.append(site.getOrganization().getName() + "<br>");
-            }
-            rsado.setOrganization(sb.toString());
 
-            rsado.setId(srs.getResearchStaff().getId());
-            rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
-            rsado.setExternalId(srs.getResearchStaff().getExternalId() != null ? srs.getResearchStaff().getExternalId().trim() : "");
-            rsado.setActive(srs.isActive() ? "Active" : "Inactive");
-            set.add(rsado);
+        if(!StringUtils.equals("user", (String) searchCriteriaMap.get("linkType"))){
+
+            for (SiteResearchStaff srs : siteResearchStaffs) {
+                UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
+                rsado.setRecordType("RESEARCHSTAFF_RECORD");
+                rsado.setFirstName(srs.getResearchStaff().getFirstName());
+                rsado.setLastName(srs.getResearchStaff().getLastName());
+                rsado.setMiddleName(srs.getResearchStaff().getMiddleName());
+                rsado.setEmailAddress(srs.getResearchStaff().getEmailAddress());
+                rsado.setUserName(srs.getResearchStaff().getCaaersUser() != null ? srs.getResearchStaff().getCaaersUser().getLoginName() : "");
+
+                StringBuffer sb = new StringBuffer("");
+                for (SiteResearchStaff site : srs.getResearchStaff().getSiteResearchStaffs()) {
+                    sb.append(site.getOrganization().getName() + "<br>");
+                }
+                rsado.setOrganization(sb.toString());
+
+                rsado.setId(srs.getResearchStaff().getId());
+                rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
+                rsado.setExternalId(srs.getResearchStaff().getExternalId() != null ? srs.getResearchStaff().getExternalId().trim() : "");
+                rsado.setActive(srs.isActive() ? "Active" : "Inactive");
+                set.add(rsado);
+            } 
         }
+
         return new ArrayList<UserAjaxableDomainObject>(set);
     }
     
@@ -221,7 +244,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("userName"))){
         	query.filterByUserName((String)searchCriteriaMap.get("userName"));
         }        
-        
+        if(searchCriteriaMap.get("linkType") != null) {
+            query.excludeUsers();
+        }
+
         try {
             siteResearchStaffs = researchStaffRepository.getSiteResearchStaff(query,searchCriteriaMap);
         }
@@ -237,30 +263,32 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getInvestigatorTable(HashMap searchCriteriaMap) {
 
-        List<Investigator> investigators = new ArrayList<Investigator>();
+        List<Investigator> investigators = null;
         investigators = constructExecuteInvestigatorQuery(searchCriteriaMap);
-
         List<UserAjaxableDomainObject> inv = new ArrayList<UserAjaxableDomainObject>();
-        for (Investigator i : investigators) {
-            UserAjaxableDomainObject invAdo = new UserAjaxableDomainObject();
-            invAdo.setRecordType("INVESTIGATOR_RECORD");
-            invAdo.setFirstName(i.getFirstName());
-            invAdo.setLastName(i.getLastName());
-            invAdo.setMiddleName(i.getMiddleName());
-            invAdo.setEmailAddress(i.getEmailAddress());
-            invAdo.setUserName(i.getCaaersUser() != null ? i.getCaaersUser().getLoginName() : "");
-            
-            StringBuffer sb = new StringBuffer();
-            for (SiteInvestigator si : i.getSiteInvestigators()) {
-                sb.append(si.getOrganization().getName() + "<br>");
-            }
-            invAdo.setOrganization(sb.toString());
+        if(!StringUtils.equals("user", (String) searchCriteriaMap.get("linkType"))){
 
-            invAdo.setId(i.getId());
-            invAdo.setActive(i.isActive() ? "Active" : "Inactive");
-            invAdo.setNumber(i.getNciIdentifier() != null ? i.getNciIdentifier() : "");
-            invAdo.setExternalId(i.getExternalId() != null ? i.getExternalId().trim() : "");
-            inv.add(invAdo);
+            for (Investigator i : investigators) {
+                UserAjaxableDomainObject invAdo = new UserAjaxableDomainObject();
+                invAdo.setRecordType("INVESTIGATOR_RECORD");
+                invAdo.setFirstName(i.getFirstName());
+                invAdo.setLastName(i.getLastName());
+                invAdo.setMiddleName(i.getMiddleName());
+                invAdo.setEmailAddress(i.getEmailAddress());
+                invAdo.setUserName(i.getCaaersUser() != null ? i.getCaaersUser().getLoginName() : "");
+
+                StringBuffer sb = new StringBuffer();
+                for (SiteInvestigator si : i.getSiteInvestigators()) {
+                    sb.append(si.getOrganization().getName() + "<br>");
+                }
+                invAdo.setOrganization(sb.toString());
+
+                invAdo.setId(i.getId());
+                invAdo.setActive(i.isActive() ? "Active" : "Inactive");
+                invAdo.setNumber(i.getNciIdentifier() != null ? i.getNciIdentifier() : "");
+                invAdo.setExternalId(i.getExternalId() != null ? i.getExternalId().trim() : "");
+                inv.add(invAdo);
+            }
         }
         return inv;
     }
@@ -286,6 +314,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("userName"))){
         	investigatorQuery.filterByUserName((String)searchCriteriaMap.get("userName"));
         }
+        if(searchCriteriaMap.get("linkType") != null) {
+            investigatorQuery.excludeUsers();
+        }
+        
 
         try {
             investigators = investigatorRepository.searchInvestigator(investigatorQuery,searchCriteriaMap);
@@ -364,4 +396,12 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 			ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
 	}
+
+    public PersonRepository getPersonRepository() {
+        return personRepository;
+    }
+
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 }
