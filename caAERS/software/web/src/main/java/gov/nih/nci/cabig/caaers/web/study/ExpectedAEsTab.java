@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.utils.ExpectedAETermSorter;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,9 @@ public class ExpectedAEsTab extends StudyTab {
         boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
         if (isCTCStudy) {
             command.getStudy().getAeTerminology().getCtcVersion().getCategories();
+            Collections.sort(command.getStudy().getExpectedAECtcTerms(), new ExpectedAETermSorter());
+        } else {
+            Collections.sort(command.getStudy().getExpectedAEMeddraLowLevelTerms(), new ExpectedAETermSorter());
         }
         return super.referenceData(request, command);
     }
