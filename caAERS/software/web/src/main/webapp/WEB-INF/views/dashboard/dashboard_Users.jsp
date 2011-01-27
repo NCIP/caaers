@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
-<c:if test="${not empty roles.ae_reporter}">
+<c:if test="${not empty roles.user_administrator}">
 
 <chrome:boxIPhone title="Users (${fn:length(users)})" style="width:700px;">
 <jsp:body>
