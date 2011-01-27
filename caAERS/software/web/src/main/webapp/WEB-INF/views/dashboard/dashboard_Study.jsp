@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
+<c:if test="${not empty roles.ae_reporter}">
 
 <c:if test="${not empty roles.study_creator or not empty roles.study_qa_manager or not empty roles.supplemental_study_information_manager or not empty roles.study_team_administrator or not empty roles.study_site_participation_administrator}">
 
@@ -33,4 +34,4 @@
   	</jsp:body>               
    </chrome:boxIPhone>
 
-</c:if>
+    </c:if>
