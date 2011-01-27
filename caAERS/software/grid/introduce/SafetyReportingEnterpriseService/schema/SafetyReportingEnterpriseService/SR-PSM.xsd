@@ -23,15 +23,15 @@
 					<xs:element name="participantHistory" type="ESS-SR:ParticipantHistory"/>
 					<xs:element name="diseaseHistory" type="ESS-SR:PerformedDiagnosis"/>
 					<xs:element name="reportingPeriod" type="ESS-SR:AdverseEventReportingPeriod"/>
-					<xs:element name="adverseEvent" type="ESS-AE:AdverseEvent" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="lab" type="ESS-SR:PerformedObservation" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="device" type="ESS-SR:Device" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="radiationIntervention" type="ESS-SR:PerformedSubstanceAdministration" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="surgeryIntervention" type="ESS-SR:PerformedProcedure" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="concomitantMedication" type="ESS-SR:ConcomitantAgent" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="otherCause" type="ESS-SR:OtherCause" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="priorTherapy" type="ESS-SR:PriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="preExistingCondition" type="ESS-SR:PreExistingCondition" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="adverseEvents" type="ESS-AE:AdverseEvent" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="labs" type="ESS-SR:PerformedObservation" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="devices" type="ESS-SR:Device" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="radiationInterventions" type="ESS-SR:PerformedSubstanceAdministration" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="surgeryInterventions" type="ESS-SR:PerformedProcedure" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="concomitantMedications" type="ESS-SR:ConcomitantAgent" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="otherCauses" type="ESS-SR:OtherCause" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="priorTherapies" type="ESS-SR:PriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="preExistingConditions" type="ESS-SR:PreExistingCondition" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
