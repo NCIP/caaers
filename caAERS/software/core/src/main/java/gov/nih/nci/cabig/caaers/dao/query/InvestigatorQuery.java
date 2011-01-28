@@ -21,7 +21,8 @@ public class InvestigatorQuery extends AbstractQuery {
         orderBy("i.id");
     }
     
-    public void filterByDifferentInvestigatorId(Integer id){
+    
+    public void excludeHavingId(Integer id){
     	if(id == null) return;
     	andWhere(" i.id != :iid");
     	setParameter("iid", id);

@@ -69,7 +69,35 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
         
         return person;
     }
-    
+
+
+    /**
+     * Get the person who has specified person identifier
+     *
+     * @param personIdentifier
+     *                The person identifier of the person.
+     * @return The person.
+     */
+    @SuppressWarnings("unchecked")
+	public Person getByPersonIdentifier(String personIdentifier) {
+
+    	Person person = null;
+
+    	List<ResearchStaff> rsList = getHibernateTemplate().find("from ResearchStaff where nciIdentifier= ?", personIdentifier);
+    	if(rsList != null && rsList.size() > 0){
+    		person = rsList.get(0);
+    		return person;
+    	}
+
+        List<Investigator> invList = getHibernateTemplate().find("from Investigator where nciIdentifier= ?", personIdentifier);
+        if(invList != null && invList.size() > 0){
+        	person = invList.get(0);
+        	return person;
+        }
+
+        return person;
+    }
+
     /**
      * Get the person who has specified email address.
      * 
@@ -78,6 +106,7 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
      * @return The person.
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
 	public Person getByLoginId(String loginName) {
     	
     	Person person = null;

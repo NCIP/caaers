@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
@@ -125,12 +127,101 @@ public class UserTab extends TabWithFields<UserCommand>{
         modelAndView.getModel().put("indexes", indexes);
         return modelAndView;
     }
+
+    private void createNewPersonValidation(final UserCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors){
+        String em = command.getEmailAddress() ;
+        Person person = personRepository.getByEmailAddress(em);
+        if(person != null)errors.rejectValue("emailAddress", "USR_010");
+
+        if(StringUtils.isNotEmpty(command.getNciIdentifier())){
+            person = personRepository.getByPersonIdentifier(command.getNciIdentifier());
+            if(person != null) errors.rejectValue("nciIdentifier", "USR_018" );
+        }
+
+        List<SitePerson> sitePersonnel = command.getSitePersonnel();
+        if(CollectionUtils.isEmpty(sitePersonnel)){
+            errors.reject("USR_005", "Provide at least one organization");
+        }
+
+        for (int i=0; i<sitePersonnel.size(); i++){
+            if ((sitePersonnel.get(i).getOrganization() == null || sitePersonnel.get(i).getOrganization().getId() == null)){
+                errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
+            }
+            String email = sitePersonnel.get(i).getEmailAddress();
+            if ( email != null && !email.trim().equals("") && !GenericValidator.isEmail(email)){
+                errors.rejectValue(String.format("sitePersonnel[%d].emailAddress", i), "USR_006", "Invalid email");
+            }
+        }
+
+    }
+
+
+    private void editPersonValidation(final UserCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors){
+        String em = command.getEmailAddress();
+        Person existingPerson = command.getPerson();
+
+        ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+        rsQuery.setFiltered(true);
+        rsQuery.filterByEmailAddress(em);
+        if(existingPerson instanceof ResearchStaff) rsQuery.excludeHavingId(command.getPerson().getId());
+        List<ResearchStaff> existingStaffs = personRepository.searchLocalResearchStaff(rsQuery);
+        if(CollectionUtils.isNotEmpty(existingStaffs)){
+           errors.rejectValue("emailAddress", "USR_010");
+        }
+
+        InvestigatorQuery invQuery = new InvestigatorQuery();
+        invQuery.setFiltered(true);
+        invQuery.filterByEmailAddress(em);
+        if(existingPerson instanceof Investigator) invQuery.excludeHavingId(command.getPerson().getId());
+        List<Investigator> existingInvs = personRepository.searchLocalInvestigator(invQuery);
+        if(CollectionUtils.isNotEmpty(existingInvs)){
+           errors.rejectValue("emailAddress", "USR_010");
+        }
+
+
+        rsQuery = new ResearchStaffQuery();
+        rsQuery.setFiltered(true);
+        rsQuery.filterByNciIdentifier(command.getNciIdentifier());
+        if(existingPerson instanceof ResearchStaff) rsQuery.excludeHavingId(command.getPerson().getId());
+        existingStaffs = personRepository.searchLocalResearchStaff(rsQuery);
+        if(CollectionUtils.isNotEmpty(existingStaffs)){
+           errors.rejectValue("nciIdentifier", "USR_018" );
+        }
+
+        invQuery = new InvestigatorQuery();
+        invQuery.setFiltered(true);
+        invQuery.filterByNciIdentifier(command.getNciIdentifier());
+        if(existingPerson instanceof Investigator) invQuery.excludeHavingId(command.getPerson().getId());
+        existingInvs = personRepository.searchLocalInvestigator(invQuery);
+        if(CollectionUtils.isNotEmpty(existingInvs)){
+           errors.rejectValue("nciIdentifier", "USR_018" );
+        }
+
+
+
+        List<SitePerson> sitePersonnel = command.getSitePersonnel();
+        if(CollectionUtils.isEmpty(sitePersonnel)){
+            errors.reject("USR_005", "Provide at least one organization");
+        }
+
+        for (int i=0; i<sitePersonnel.size(); i++){
+            if ((sitePersonnel.get(i).getOrganization() == null || sitePersonnel.get(i).getOrganization().getId() == null)){
+                errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
+            }
+            String email = sitePersonnel.get(i).getEmailAddress();
+            if ( email != null && !email.trim().equals("") && !GenericValidator.isEmail(email)){
+                errors.rejectValue(String.format("sitePersonnel[%d].emailAddress", i), "USR_006", "Invalid email");
+            }
+        }
+
+    }
+
+
     
     @Override
     protected void validate(final UserCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
     	
-    	super.validate(command, commandBean, fieldGroups, errors);
-    	
+
     	if(command.getCreateMode()){
         	if(!command.getCreateAsPerson() && !command.getCreateAsUser()){
         		errors.reject("USER_PERSON_001", "Either Create as Person or Create as User or both must be checked");
@@ -139,39 +230,40 @@ public class UserTab extends TabWithFields<UserCommand>{
             if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
                 errors.rejectValue("emailAddress", "USR_006", "Invalid email");
             }
-            
-            if(command.getCreateAsPerson()){
-            	
-            	List<SitePerson> sitePersonnel = command.getSitePersonnel();
-            	if(CollectionUtils.isEmpty(sitePersonnel)){
-            		errors.reject("USR_005", "Provide at least one organization");
-            	}
-                
-            	Person person = personRepository.getByEmailAddress(em);
-                if(person != null){
-                	errors.rejectValue("emailAddress", "USR_010");
-                }
-                
-                for (int i=0; i<sitePersonnel.size(); i++){
-                    if ((sitePersonnel.get(i).getOrganization() == null || sitePersonnel.get(i).getOrganization().getId() == null)){
-                    	errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
-                    }
-                    String email = sitePersonnel.get(i).getEmailAddress();
-                    if ( email != null && !email.trim().equals("") && !GenericValidator.isEmail(email)){
-                    	errors.rejectValue(String.format("sitePersonnel[%d].emailAddress", i), "USR_006", "Invalid email");
+
+            if(command.getCreateMode()){
+                //another person should not be present.
+               if(command.getCreateAsPerson() && em != null){
+                    createNewPersonValidation(command, commandBean, fieldGroups, errors);     
+               }
+
+
+            }else if(command.getEditMode()){
+                //there should not be another person with the same details.
+                if(command.getCreateAsPerson()){
+                    Person person = command.getPerson();
+                    if(person != null){
+                       editPersonValidation(command, commandBean, fieldGroups, errors);
+                    }else{
+                        //creating new person
+                       createNewPersonValidation(command, commandBean, fieldGroups, errors);
                     }
                 }
+
             }
-            
-            if(command.getCreateAsUser()){
-            	if(StringUtils.isEmpty(command.getUserName())){
-            		errors.rejectValue("userName", "USR_014");
-            	}
-            	_User user = userRepository.getUserByLoginName(command.getUserName());
-            	if(user != null && user.getCsmUser() != null){
-            		errors.rejectValue("userName", "USR_001", "Username already taken");
-            	}
-            }
+
+
+           if(command.getCreateAsUser()){
+                if(StringUtils.isEmpty(command.getUserName())){
+                    errors.rejectValue("userName", "USR_014");
+                }
+                _User user = userRepository.getUserByLoginName(command.getUserName());
+                if(user != null && user.getCsmUser() != null){
+                    errors.rejectValue("userName", "USR_001", "Username already taken");
+                }
+           }
+
+
     	}
     }
 

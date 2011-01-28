@@ -33,6 +33,13 @@ public class ResearchStaffQuery extends AbstractQuery {
         orderBy("rs.id");
     }
 
+    public void excludeHavingId(Integer id){
+        if(id != null){
+            andWhere("rs.id != :rsId");
+            setParameter("rsId", id);
+        }
+    }
+
     public void filterByOrganizationName(final String name) {
         String searchString = "%" + name.toLowerCase() + "%";
         andWhere("lower(srs.organization.name) LIKE :" + ORGANIZATION_NAME);

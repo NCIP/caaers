@@ -41,6 +41,10 @@ public class PersonRepository {
 	public Person getByEmailAddress(String emailAddress){
 		return personDao.getByEmailAddress(emailAddress);
 	}
+
+    public Person getByPersonIdentifier(String personIdentifier){
+        return personDao.getByPersonIdentifier(personIdentifier);
+    }
 	
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
