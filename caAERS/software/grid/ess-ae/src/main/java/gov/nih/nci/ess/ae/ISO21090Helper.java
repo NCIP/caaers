@@ -17,6 +17,7 @@ import _21090.org.iso.ENXP;
 import _21090.org.iso.EntityNamePartType;
 import _21090.org.iso.II;
 import _21090.org.iso.INT;
+import _21090.org.iso.IVL_TSDateTime;
 import _21090.org.iso.NullFlavor;
 import _21090.org.iso.PQ;
 import _21090.org.iso.PQTime;
@@ -80,7 +81,19 @@ public final class ISO21090Helper {
 		dateTime.setValue(s);
 		return dateTime;
 	}
-
+	
+	public static final IVL_TSDateTime IVL_TSDateTime(TSDateTime high) {
+		IVL_TSDateTime iv = new IVL_TSDateTime();
+		iv.setHigh(high);
+		return iv;
+	}
+	
+	public static final IVL_TSDateTime IVL_TSDateTime(TSDateTime low , TSDateTime high) {
+		IVL_TSDateTime iv = new IVL_TSDateTime();
+		if (low != null)  iv.setLow(low);
+		if (high != null)  iv.setHigh(high);
+		return iv;
+	}
 	public static final ST ST(String s) {
 		ST st = new ST();
 		if (s != null) {
