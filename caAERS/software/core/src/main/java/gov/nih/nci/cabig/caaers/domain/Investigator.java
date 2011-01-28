@@ -194,7 +194,12 @@ public abstract class Investigator extends User {
     	return getFullName();
     }
     
-
+    public SiteInvestigator findSiteInvestigatorById(Integer id){
+        for(SiteInvestigator si : getSiteInvestigators()){
+            if(si.getId() != null && si.getId().equals(id)) return si;
+        }
+        return null;
+    }
     
 	public SiteInvestigator findSiteInvestigator(SiteInvestigator other){
 		for(SiteInvestigator siteInvestigator : getSiteInvestigators()){

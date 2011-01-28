@@ -282,6 +282,13 @@ public abstract class ResearchStaff extends User {
 
     }
 
+    public SiteResearchStaff findSiteResearchStaffById(Integer id){
+        for(SiteResearchStaff srs : getSiteResearchStaffs()) {
+            if(srs.getId() != null && srs.getId().equals(id)) return srs;
+        }
+        return null;
+    }
+
 
     /**
      * Will copy into this Person, the details from the input Person

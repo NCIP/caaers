@@ -302,7 +302,12 @@ public class UserTab extends TabWithFields<UserCommand>{
     	rs.setAddress(new Address());
     	SiteResearchStaff srs = null;
     	for(SitePerson sitePerson : command.getSitePersonnel()){
-    		srs = new SiteResearchStaff();
+            if(sitePerson.getId() != null){
+                srs = rs.findSiteResearchStaffById(sitePerson.getId());
+            }else{
+                srs = new SiteResearchStaff();
+            }
+
     		srs.setStartDate(DateUtils.today());
     		srs.setPhoneNumber(sitePerson.getPhoneNumber());
     		srs.setFaxNumber(sitePerson.getFaxNumber());
@@ -333,7 +338,13 @@ public class UserTab extends TabWithFields<UserCommand>{
     	inv.setNciIdentifier(command.getNciIdentifier());
     	SiteInvestigator siteInv = null;
     	for(SitePerson sitePerson : command.getSitePersonnel()){
-    		siteInv = new SiteInvestigator();
+            if(sitePerson.getId() != null){
+               siteInv = inv.findSiteInvestigatorById(sitePerson.getId());
+            }
+            else{
+               siteInv = new SiteInvestigator();
+            }
+
     		siteInv.setStartDate(DateUtils.today());
     		siteInv.setOrganization(sitePerson.getOrganization());
     		siteInv.setEmailAddress(sitePerson.getEmailAddress());
