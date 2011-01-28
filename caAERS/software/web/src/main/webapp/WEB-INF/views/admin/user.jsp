@@ -182,9 +182,9 @@
             
             /* Will refresh the page after linking */
             function updateAfterLinking(_linkedId, _linkedUserName, _linkedRecordType, _linkType){
-                var _id = ${requestScope.id} + '';
-                var _recordType = '${requestScope.recordType}';
-                var _userName = '${requestScope.userName}';
+                var _id = ${param.id} + '';
+                var _recordType = '${param.recordType}';
+                var _userName = '${param.userName}';
                 var url = "editUser?id=#{id}&linkType=#{linkType}&userName=#{userName}&recordType=#{recordType}&linkedId=#{linkedId}&linkedRecordType=#{linkedRecordType}&linkedUserName=#{linkedUserName}".interpolate(
                  {
                      id:_id,
