@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
@@ -343,5 +344,9 @@ public class UserCommand {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getToDay(){
+        return DateUtils.formatDate(DateUtils.today());
     }
 }
