@@ -28,28 +28,28 @@
 				<div style="height:100px;">
 					 <div class="leftpanel">
 						<div class="row">
-                      		<div class="label">First name</div>
+                      		<div class="label"><caaers:message code="LBL_firstName" />/div>
                       		<div class="value">${command.firstName}</div>
 						</div>
 						<c:if test="${command.createAsPerson}">
 						<div class="row">
-                            <div class="label">Middle name</div>
+                            <div class="label"><caaers:message code="LBL_middleName" /></div>
                             <div class="value">${command.middleName}</div>
                         </div>
 						</c:if>	                      		
                         <div class="row">
-                            <div class="label">Last name</div>
+                            <div class="label"><caaers:message code="LBL_lastName" /></div>
                             <div class="value">${command.lastName}</div>
                         </div>
 					 </div>
 					 <div class="rightpanel">
 						<div class="row">
-							<div class="label">Email address</div>
+							<div class="label"><caaers:message code="LBL_emailAddress" /></div>
 							<div class="value">${command.emailAddress}</div>
 						</div>
 						<c:if test="${command.createAsUser}">
 							<div class="row">
-                           		<div class="label">Username</div>
+                           		<div class="label"><caaers:message code="LBL_loginId" /></div>
                            		<div class="value">${command.userName}</div>
                        		</div>									
 						</c:if>
@@ -58,11 +58,12 @@
 			</chrome:box>
 			
 			<c:if test="${command.createAsPerson}">
-				<chrome:box title="Associated Organizations">
+                <caaers:message code="LBL_researchStaff.review.associated.organziation" var="assOrgs" text="Associated Organizations" />
+				<chrome:box title="${assOrgs}">
 					<table class="tablecontent" width="100%" >
 						<tr>
-	                		<th scope="col">Organization name</th>
-	                		<th scope="col">Assigned identifier</th>
+	                		<th scope="col"><tags:message key="LBL_researchStaff.review.organziation"/></th>
+	                		<th scope="col"><tags:message key="LBL_researchStaff.review.organziation.id"/></th>
 	            		</tr>
 	            		<c:forEach items="${command.sitePersonnel}" varStatus="status" var="srs">
 	            			<tr>

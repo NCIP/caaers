@@ -56,6 +56,7 @@ public class _User extends AbstractMutableDomainObject{
        setCsmUser(csmUser);
     }
 
+    @Transient
     public boolean isActive(){
         for(RoleMembership rm : roleMembershipMap.values()){
             if(rm.isActive()) return true;

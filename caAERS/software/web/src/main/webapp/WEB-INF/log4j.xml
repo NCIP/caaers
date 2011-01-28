@@ -51,7 +51,7 @@
 
 	<root>
 	  <level value="INFO"/>
-	  	<!-- no appender, output will be swallowed (I think) -->
+	  	<appender-ref ref="caAERSLogFile"/>
 	</root>
 
 	<!--
