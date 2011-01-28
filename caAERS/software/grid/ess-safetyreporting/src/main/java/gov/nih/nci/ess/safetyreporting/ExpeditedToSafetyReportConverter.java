@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
@@ -37,8 +38,11 @@ import gov.nih.nci.ess.safetyreporting.types.PerformedObservationValue;
 import gov.nih.nci.ess.safetyreporting.types.PerformedProcedure;
 import gov.nih.nci.ess.safetyreporting.types.PerformedSubstanceAdministration;
 import gov.nih.nci.ess.safetyreporting.types.Person;
+import gov.nih.nci.ess.safetyreporting.types.PreExistingCondition;
+import gov.nih.nci.ess.safetyreporting.types.PriorTherapy;
 import gov.nih.nci.ess.safetyreporting.types.ReportSubmitter;
 import gov.nih.nci.ess.safetyreporting.types.ResearchStaff;
+import gov.nih.nci.ess.safetyreporting.types.SAEPriorTherapy;
 import gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion;
 import gov.nih.nci.ess.safetyreporting.types.StudySubjectProtocolVersionRelationship;
 import gov.nih.nci.ess.safetyreporting.types.TreatmentInformation;
@@ -113,28 +117,85 @@ public class ExpeditedToSafetyReportConverter {
 		if (expeditedAEReport.getOtherCauses()!=null) {
 			populateOtherCauses(safetyReport,expeditedAEReport);
 		}
+		if (expeditedAEReport.getSaeReportPriorTherapies()!=null) {
+			populatePriorTherapies(safetyReport,expeditedAEReport);
+		}
+		if (expeditedAEReport.getSaeReportPreExistingConditions()!=null) {
+			populatePreExistingConditions(safetyReport,expeditedAEReport);
+		}
 		return safetyReport;
 	}
-	/*
-	private void populatePriorTherapies(SafetyReportVersion safetyReport,ExpeditedAdverseEventReport expeditedAEReport) {
-		List<SAEReportPriorTherapy> pts = expeditedAEReport.getSaeReportPriorTherapies();
-		PriorTherapy gpt = null;
+	private void populatePreExistingConditions(SafetyReportVersion safetyReport,ExpeditedAdverseEventReport expeditedAEReport) {
+		List<gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition> pcs = expeditedAEReport.getSaeReportPreExistingConditions();
+		PreExistingCondition gpc = null;
 		int ct = -1;
-		for (SAEReportPriorTherapy pt:pts) {
-			gpt = new PriorTherapy();
+		for (gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition pc:pcs) {
+			gpc = convertPreExistingCondition(pc);
+			safetyReport.setPreExistingConditions(ct++, gpc);
+		}
+	}
+	private PreExistingCondition convertPreExistingCondition(gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition pc) {
+		PreExistingCondition gpc = new PreExistingCondition();
+
+		if(pc.getPreExistingCondition().getText()!=null) {
+			gpc.setText(h.ST(pc.getPreExistingCondition().getText()));
+		}
+		if(pc.getPreExistingCondition().getMeddraHlgt()!=null) {
+			gpc.setText(h.ST(pc.getPreExistingCondition().getMeddraHlgt()));
+		}
+		if(pc.getPreExistingCondition().getMeddraLlt()!=null) {
+			gpc.setText(h.ST(pc.getPreExistingCondition().getMeddraLlt()));
+		}
+		if(pc.getPreExistingCondition().getMeddraLltCode()!=null) {
+			gpc.setText(h.ST(pc.getPreExistingCondition().getMeddraLltCode()));
+		}
+		if(pc.getOther()!=null) {
+			gpc.setText(h.ST(pc.getOther()));
+		}
+		return gpc;
+	}
+	
+	private void populatePriorTherapies(SafetyReportVersion safetyReport,ExpeditedAdverseEventReport expeditedAEReport) {
+		List<gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy> pts = expeditedAEReport.getSaeReportPriorTherapies();
+		SAEPriorTherapy gpt = null;
+		int ct = -1;
+		for (gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy pt:pts) {
 			gpt = convertPriorTherapy(pt);
 			safetyReport.setPriorTherapies(ct++, gpt);
 		}
 	}
-	private PriorTherapy convertPriorTherapy(SAEReportPriorTherapy pt) {
+	private SAEPriorTherapy convertPriorTherapy(gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy pt) {
+		SAEPriorTherapy gspt = new SAEPriorTherapy();
 		PriorTherapy gpt = new PriorTherapy();
+		
 		if(pt.getPriorTherapy().getText()!=null) {
-			gpt.setText(h.ST(pt.getName()));
+			gpt.setText(h.ST(pt.getPriorTherapy().getText()));
 		}
-		if(pt.getPriorTherapy().getMeddraTerm())
-		return gpt;
+		if(pt.getPriorTherapy().getMeddraCode() !=null) {
+			gpt.setMeddraCode(h.ST(pt.getPriorTherapy().getMeddraCode()));
+		}
+		if(pt.getPriorTherapy().getMeddraTerm() !=null) {
+			gpt.setMeddraCode(h.ST(pt.getPriorTherapy().getMeddraTerm()));
+		}
+		gspt.setPriorTherapy(gpt);
+		if(pt.getStartDate() !=null) {
+			gspt.setStartDate(convert(pt.getStartDate().toDate()));
+		}
+		if(pt.getEndDate() !=null) {
+			gspt.setEndDate(convert(pt.getEndDate().toDate()));
+		}
+		if(pt.getOther() !=null) {
+			gspt.setOther(h.ST(pt.getOther()));
+		}
+		int ct = -1;
+		for (PriorTherapyAgent pta:pt.getPriorTherapyAgents()) {
+			if (pta.getName()!=null){
+				gspt.setPriorTherapyAgents(ct++, h.ST(pta.getName()));
+			}
+		}
+		return gspt;
 	}
-	*/
+	
 	private void populateOtherCauses(SafetyReportVersion safetyReport,ExpeditedAdverseEventReport expeditedAEReport) {
 		List<gov.nih.nci.cabig.caaers.domain.OtherCause> ocs = expeditedAEReport.getOtherCauses();
 		OtherCause goc = null;
