@@ -291,7 +291,10 @@ public class UserTab extends TabWithFields<UserCommand>{
      */
 	private ResearchStaff buildResearchStaff(UserCommand command){
         if(command.getPerson() == null){
-           command.setPerson(new LocalResearchStaff());
+           ResearchStaff rs = new LocalResearchStaff();
+           rs.setAddress(new Address());
+           command.setPerson(rs);
+
         }
         ResearchStaff rs = (ResearchStaff) command.getPerson();
     	rs.setFirstName(command.getFirstName());
@@ -306,6 +309,7 @@ public class UserTab extends TabWithFields<UserCommand>{
                 srs = rs.findSiteResearchStaffById(sitePerson.getId());
             }else{
                 srs = new SiteResearchStaff();
+                rs.addSiteResearchStaff(srs);
             }
 
     		srs.setStartDate(DateUtils.today());
@@ -316,7 +320,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     		srs.setAddress(sitePerson.getAddress());
             srs.setStartDate(sitePerson.getStartDate());
             srs.setEndDate(sitePerson.getEndDate());
-    		rs.addSiteResearchStaff(srs);
+
     	}
     	return rs;
     }
@@ -328,7 +332,8 @@ public class UserTab extends TabWithFields<UserCommand>{
 	 */
 	private Investigator buildInvestigator(UserCommand command){
         if(command.getPerson() == null){
-            command.setPerson(new LocalInvestigator());
+            Investigator inv = new LocalInvestigator();
+            command.setPerson(inv);
         }
     	Investigator inv = (Investigator)command.getPerson();
     	inv.setFirstName(command.getFirstName());
@@ -343,6 +348,7 @@ public class UserTab extends TabWithFields<UserCommand>{
             }
             else{
                siteInv = new SiteInvestigator();
+               inv.addSiteInvestigator(siteInv);
             }
 
     		siteInv.setStartDate(DateUtils.today());
@@ -350,7 +356,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     		siteInv.setEmailAddress(sitePerson.getEmailAddress());
             siteInv.setStartDate(sitePerson.getStartDate());
             siteInv.setEndDate(sitePerson.getEndDate());
-    		inv.addSiteInvestigator(siteInv);
+
     	}
     	return inv;
     }
@@ -366,10 +372,9 @@ public class UserTab extends TabWithFields<UserCommand>{
         }
         _User user = command.getUser();
     	user.setLoginName(command.getUserName());
-    	user.getCsmUser().setLoginName(command.getUserName());
-    	user.getCsmUser().setFirstName(command.getFirstName());
-    	user.getCsmUser().setLastName(command.getLastName());
-    	user.getCsmUser().setEmailId(command.getEmailAddress());
+    	user.setFirstName(command.getFirstName());
+    	user.setLastName(command.getLastName());
+    	user.setEmailAddress(command.getEmailAddress());
     	user.getCsmUser().setStartDate(DateUtils.today());
 	
     	if(command.getRoleMemberships() != null && command.getRoleMemberships().size() > 0){
