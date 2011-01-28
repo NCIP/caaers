@@ -306,7 +306,9 @@
 		                            <researchStaff:oneSitePerson index="${newIndex}" collapsed="false" />
 		                        </c:forEach>
 		                    </div>
-							<div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSitePerson();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+                            <c:if test="${command.PO}">
+                                <div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSitePerson();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+                            </c:if>
 						</chrome:division>
     				</chrome:box>
     				
