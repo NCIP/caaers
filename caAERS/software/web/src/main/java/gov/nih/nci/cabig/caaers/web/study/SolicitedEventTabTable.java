@@ -10,13 +10,9 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.utils.CustomLinkedSet;
+import gov.nih.nci.cabig.caaers.utils.SolicitedAdverseEventSorter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This table is used for rendering check boxes in Solicited AE Tab in Create/Edit Study Flow.
@@ -164,11 +160,22 @@ public class SolicitedEventTabTable{
 	}
 
 
-	private Set<SolicitedAdverseEvent> buildConsolidatedListOfSolicitedAEs( List<Epoch> listOfEpochs ) {
-		for (Epoch epoch : listOfEpochs)
-			consolidatedListOfSolicitedAEsForAllEpochs.addAll(getSolicitedAEsForEpoch(epoch));
-		return consolidatedListOfSolicitedAEsForAllEpochs;
-	}
+    private Set<SolicitedAdverseEvent> buildConsolidatedListOfSolicitedAEs(List<Epoch> listOfEpochs) {
+        for (Epoch epoch : listOfEpochs) {
+            consolidatedListOfSolicitedAEsForAllEpochs.addAll(getSolicitedAEsForEpoch(epoch));
+        }
+
+        SolicitedAdverseEvent[] solicitedAdverseEvents = consolidatedListOfSolicitedAEsForAllEpochs.toArray(new SolicitedAdverseEvent[0]);
+        Arrays.sort(solicitedAdverseEvents, new SolicitedAdverseEventSorter());
+        Set<SolicitedAdverseEvent> tempConsolidatedListOfSolicitedAEsForAllEpochs = new TreeSet<SolicitedAdverseEvent>(new SolicitedAdverseEventSorter());
+        for (int i = 0; i < solicitedAdverseEvents.length; i++) {
+            tempConsolidatedListOfSolicitedAEsForAllEpochs.add(solicitedAdverseEvents[i]);
+        }
+
+        consolidatedListOfSolicitedAEsForAllEpochs.clear();
+        consolidatedListOfSolicitedAEsForAllEpochs.addAll(tempConsolidatedListOfSolicitedAEsForAllEpochs);
+        return consolidatedListOfSolicitedAEsForAllEpochs;
+    }
 
 	private boolean doEpochExpectSolicitedAE( Epoch epoch, SolicitedAdverseEvent solicitedAE )
 	{
