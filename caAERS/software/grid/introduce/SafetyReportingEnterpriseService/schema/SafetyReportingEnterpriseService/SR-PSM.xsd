@@ -30,10 +30,8 @@
 					<xs:element name="surgeryInterventions" type="ESS-SR:PerformedProcedure" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="concomitantMedications" type="ESS-SR:ConcomitantAgent" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="otherCauses" type="ESS-SR:OtherCause" minOccurs="0" maxOccurs="unbounded"/>
-					<!--
-					<xs:element name="priorTherapies" type="ESS-SR:PriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="priorTherapies" type="ESS-SR:SAEPriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="preExistingConditions" type="ESS-SR:PreExistingCondition" minOccurs="0" maxOccurs="unbounded"/>
-					-->
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -54,7 +52,22 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="PreExistingCondition" type="ESS-SR:PreExistingCondition"/>
-	
+
+	<xs:complexType name="SAEPriorTherapy">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity">
+				<xs:sequence>					
+					<xs:element name="priorTherapy" type="ESS-SR:PriorTherapy"/>
+					<xs:element name="startDate" type="ISO:TS"/>
+					<xs:element name="endDate" type="ISO:TS"/>
+					<xs:element name="other" type="ISO:ST"/>
+					<xs:element name="priorTherapyAgents" type="ISO:ST" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SAEPriorTherapy" type="ESS-SR:SAEPriorTherapy"/>
+		
 	<xs:complexType name="PriorTherapy">
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
@@ -62,9 +75,6 @@
 					<xs:element name="text" type="ISO:ST"/>
 					<xs:element name="meddraTerm" type="ISO:ST"/>
 					<xs:element name="meddraCode" type="ISO:ST"/>
-					<xs:element name="startDate" type="ISO:TS"/>
-					<xs:element name="endDate" type="ISO:TS"/>
-					<xs:element name="other" type="ISO:ST"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

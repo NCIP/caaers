@@ -38,6 +38,7 @@
    <ns2:SchemaElement type="ReportSubmitter" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ReportTerminology" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ResearchStaff" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SAEPriorTherapy" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="SafetyReportDefinitionNotification" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="SafetyReportFormat" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="SafetyReportNarrative" xsi:type="ns2:SchemaElementType"/>
