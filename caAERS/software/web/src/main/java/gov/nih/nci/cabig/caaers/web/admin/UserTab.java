@@ -324,7 +324,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	}
     	return rs;
     }
-    
+
 	/**
 	 * This method builds a LocalInvestigator instance from the command object
 	 * @param command
@@ -360,7 +360,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	}
     	return inv;
     }
-	
+
 	/**
 	 * This method builds a _User instance from the command object
 	 * @param command
@@ -376,7 +376,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	user.setLastName(command.getLastName());
     	user.setEmailAddress(command.getEmailAddress());
     	user.getCsmUser().setStartDate(DateUtils.today());
-	
+
     	if(command.getRoleMemberships() != null && command.getRoleMemberships().size() > 0){
     		command.getRoleMemberships().clear();
     	}
@@ -404,7 +404,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     	}
     	if(command.getPerson() != null){
     		command.getPerson().setCaaersUser(user);
-    	} 
+    	}
     	return user;
     }
     

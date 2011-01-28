@@ -23,6 +23,10 @@ public class RoleMembership {
         organizationNCICodes = new HashSet<String>();
         studyIdentifiers = new HashSet<String>();
     }
+
+    public boolean isActive(){
+      return  allSite || allStudy || (!organizationNCICodes.isEmpty() ) || (!studyIdentifiers.isEmpty());
+    }
     public boolean isAllSite() {
         return allSite;
     }

@@ -244,8 +244,40 @@
 								 		<jsp:attribute name="label"><ui:label path="emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
 								 		<jsp:attribute name="value"><ui:text path="emailAddress" required="true" title="Primary email" size="30"/></jsp:attribute>
 								 	</ui:row>
-									<ui:checkbox path="createAsPerson" disabled="${!command.PO}" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
-									<ui:checkbox path="createAsUser"  disabled="${!command.UA}" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
+                                    <c:if test="${not empty command.person}">
+                                        <div class="row">
+                                            <form:hidden path="createAsPerson" />
+                                            <c:if test="${command.PO}">
+                                               <c:if test="${command.person.active}">
+                                                    <tags:button value="Deactivate Person" color="red" type="button" size="small" onclick="deActivatePerson()" />
+                                               </c:if>
+                                               <c:if test="${not command.person.active}">
+                                                   <tags:button value="Activate Person" color="green" type="button" size="small" onclick="activatePerson()" />
+                                               </c:if>
+                                            </c:if>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${not empty command.user}">
+                                        <form:hidden path="createAsUser" />
+                                        <div class="row">
+                                            <c:if test="${command.UA}">
+                                                <c:if test="${command.user.locked}">
+                                                  <tags:button value="Unlock User" color="blue" type="button" size="small" onclick="unlockUser()" />  
+                                                </c:if>
+                                                <c:if test="${command.user.active}">
+                                                  <tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />  
+                                                </c:if>
+
+                                            </c:if>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${ empty command.person}">
+                                        <ui:checkbox path="createAsPerson" disabled="${!command.PO}" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
+                                    </c:if>
+                                    <c:if test="${ empty command.user}">
+                                        <ui:checkbox path="createAsUser"  disabled="${!command.UA}" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
+                                    </c:if>
+									
 								 </div>
 							</div>
     				</chrome:box>

@@ -168,6 +168,8 @@ public class EditUserController extends UserController<UserCommand> {
 					sitePerson.setPhoneNumber(srs.getPhoneNumber());
 					sitePerson.setFaxNumber(srs.getFaxNumber());
 					sitePerson.setEmailAddress(srs.getEmailAddress());
+                    sitePerson.setStartDate(srs.getStartDate());
+                    sitePerson.setEndDate(srs.getEndDate());
 					command.addSitePersonnel(sitePerson);
 				}
             }else if(person instanceof Investigator) {
@@ -181,6 +183,8 @@ public class EditUserController extends UserController<UserCommand> {
 					sitePerson.setOrganization(siteInv.getOrganization());
 					sitePerson.setPerson(siteInv.getInvestigator());
 					sitePerson.setEmailAddress(siteInv.getEmailAddress());
+                    sitePerson.setStartDate(siteInv.getStartDate());
+                    sitePerson.setEndDate(siteInv.getEndDate());
 					command.addSitePersonnel(sitePerson);
 				}
             }

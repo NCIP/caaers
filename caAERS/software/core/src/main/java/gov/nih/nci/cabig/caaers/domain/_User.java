@@ -56,6 +56,13 @@ public class _User extends AbstractMutableDomainObject{
        setCsmUser(csmUser);
     }
 
+    public boolean isActive(){
+        for(RoleMembership rm : roleMembershipMap.values()){
+            if(rm.isActive()) return true;
+        }
+        return false;
+    }
+
     public RoleMembership findRoleMembership(UserGroupType role){
         RoleMembership roleMembership = roleMembershipMap.get(role);
         if(roleMembership == null) {
