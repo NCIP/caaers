@@ -1,8 +1,10 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:if test="${not empty roles.ae_reporter or not empty roles.ae_expedited_report_reviewer}">
 
-<chrome:boxIPhone title="Task Notifications" style="width:700px;">
-    <div id="tasksNotifications" class="scrollerTask">
+<chrome:boxIPhone style="width:700px;">
+<jsp:attribute name="title"><caaers:message code="dashboard.taskNotifications" /></jsp:attribute>
+<jsp:body>
+    <div id="tasksNotifications" class="<c:if test="${fn:length(taskNotifications) > 4}">scrollerTask</c:if>">
         <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
             <tr class="taskTitleRow">
                 <th nowrap>Date Created</th>
@@ -25,16 +27,22 @@
                     <%--<td valign="top"><select name="s101"><option value="-">Please select</select></td>--%>
                 </tr>
             </c:forEach>
+            <c:if test="${fn:length(taskNotifications) == 0}">
+                <tr><td colspan="5"><caaers:message code="dashboard.noResults" /></td></tr>
+            </c:if>
         </table>
-        </div>
+    </div>
+</jsp:body>
 </chrome:boxIPhone>
 
 <script>
     var link = "<c:url value='/pages/study/edit?studyId=${study.id}' />";
 </script>
 
-<chrome:boxIPhone title="Report Activity" style="width:700px;">
+<chrome:boxIPhone style="width:700px;">
+    <jsp:attribute name="title"><caaers:message code="dashboard.safetyReports" /></jsp:attribute>
 <jsp:body>
+<c:if test="${fn:length(reportActivity) > 0}">
 <table width="100%">
 <tr>
     <td valign="top">
@@ -226,12 +234,6 @@
 
     </script>
 
-<div class="subheader">
-    <table width='100%' cellpadding="0" cellspacing="0"><tr>
-    <td><h3 class='blue'>REPORT ACTIVITY ( ${fn:length(reportActivity)} )</h3>
-    <td align="right"><!--<img src='../images/iphone2/scroll-down_off.png' id="downTwo" class="nextTwo"><img src='../images/iphone2/scroll-up_off.png' id="upTwo" class="prevTwo">-->
-    </tr></table>
-</div>
 <div id="ticker-container">
 <div id="reportActivity" class="scroller">
 
@@ -262,7 +264,7 @@
                 <b style="color:yellow;">Course: </b> Cycle #: ${rvDTO.periodCycle}&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
             </span>
             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                <td><b>${index.count})&nbsp;&nbsp;</b>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />">${rvDTO.reportName}</a></td>
+                <td>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />" style="text-decoration:underline; color:blue; font-weight:normal;">${rvDTO.reportName}</a></td>
                 <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn ne null}">
                     <td align="right"><i>Due on:</i></td>
                     <td align="left">
@@ -287,6 +289,10 @@
     </td>
 <tr>
 </table>
+</c:if>
+<c:if test="${fn:length(reportActivity) == 0}">
+    <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%"><tr><td colspan="5"><caaers:message code="dashboard.noResults" /></td></tr></table>
+</c:if>
 </jsp:body>
 </chrome:boxIPhone>
 

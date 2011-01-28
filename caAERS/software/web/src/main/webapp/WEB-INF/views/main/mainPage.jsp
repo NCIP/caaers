@@ -91,7 +91,7 @@
     .calendar tbody .reportActivity {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
     .calendar tbody .pastDue {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
     tr.last { border-bottom : 1px black solid; }
-    .scroller { height: 150px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
+    .scroller { height: 180px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scrollerTask { height: 227px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scroller h4 { color: #933; display: inline; }
     .scroller div { height: 22px; padding: 8px; margin-top: -1px; }

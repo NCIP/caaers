@@ -25,6 +25,7 @@ public class UsersDashboardController extends DashboardController {
         UserAjaxableDomainObject ajaxableUser = null;
         for (User csmUser : csmUserList) {
             ajaxableUser = new UserAjaxableDomainObject();
+            ajaxableUser.setId(csmUser.getUserId().intValue());
             ajaxableUser.setFirstName(csmUser.getFirstName());
             ajaxableUser.setLastName(csmUser.getLastName());
             ajaxableUser.setUserName(csmUser.getLoginName());
