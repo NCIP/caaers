@@ -112,16 +112,16 @@ public class EditUserController extends UserController<UserCommand> {
             }else if(StringUtils.equals(linkType, "user")){
                 user = userRepository.getUserByLoginName(linkedUserName);
             }
-        }else {
-            //normal edit. 
-            if(StringUtils.equals("CSM_RECORD", recordType)){
-                 user = userRepository.getUserByLoginName(userName);
-            }else if(StringUtils.equals("RESEARCHSTAFF_RECORD", recordType) ||
-                     StringUtils.equals("INVESTIGATOR_RECORD", recordType)){
-                Integer personId = Integer.parseInt(id);
-                person = personRepository.getById(personId);
-                user = person.getCaaersUser();
-            }
+        }
+
+        //normal edit.
+        if(StringUtils.equals("CSM_RECORD", recordType)){
+             user = userRepository.getUserByLoginName(userName);
+        }else if(StringUtils.equals("RESEARCHSTAFF_RECORD", recordType) ||
+                 StringUtils.equals("INVESTIGATOR_RECORD", recordType)){
+            Integer personId = Integer.parseInt(id);
+            person = personRepository.getById(personId);
+            user = person.getCaaersUser();
         }
 
         if(user != null){
