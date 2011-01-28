@@ -85,8 +85,7 @@ public class UserTab extends TabWithFields<UserCommand>{
     
     @Override
     public void onBind(HttpServletRequest request, UserCommand command, Errors errors) {
-        String linkType = request.getParameter("linkType");
-        if(StringUtils.isNotEmpty(linkType) || methodInvocationRequest(request)) return;
+        if(methodInvocationRequest(request)) return;
 
         bindPerson(command);
         bindUser(command);
