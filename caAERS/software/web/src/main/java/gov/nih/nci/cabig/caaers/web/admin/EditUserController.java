@@ -123,7 +123,10 @@ public class EditUserController extends UserController<UserCommand> {
                      StringUtils.equals("INVESTIGATOR_RECORD", recordType)){
                 Integer personId = Integer.parseInt(id);
                 person = personRepository.getById(personId);
-                user = person.getCaaersUser();
+                _User u = person.getCaaersUser();
+                if(u != null){
+                    user = userRepository.getUserByLoginName(u.getLoginName());
+                }
             }
             
         }
