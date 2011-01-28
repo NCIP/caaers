@@ -7,7 +7,7 @@
     <div id="dashboardUsers" class="<c:if test="${fn:length(users) > 9}">scrollerTask</c:if>">
         <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
             <tr class="taskTitleRow">
-                <th>User ID
+                <th>Username
                 <th>First Name
                 <th>Last Name
                 <th>Email
