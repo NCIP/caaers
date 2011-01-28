@@ -1,7 +1,14 @@
 package gov.nih.nci.ess.ae;
 
+
+
+import org.apache.axis.types.URI;
+import org.apache.axis.types.URI.MalformedURIException;
+
+import _21090.org.iso.AD;
 import _21090.org.iso.ADXP;
 import _21090.org.iso.AddressPartType;
+import _21090.org.iso.BAG_TEL;
 import _21090.org.iso.BL;
 import _21090.org.iso.CD;
 import _21090.org.iso.ED;
@@ -9,19 +16,35 @@ import _21090.org.iso.EDText;
 import _21090.org.iso.ENXP;
 import _21090.org.iso.EntityNamePartType;
 import _21090.org.iso.II;
+import _21090.org.iso.INT;
 import _21090.org.iso.NullFlavor;
+import _21090.org.iso.PQ;
+import _21090.org.iso.PQTime;
 import _21090.org.iso.ST;
+import _21090.org.iso.TEL;
 import _21090.org.iso.TSDateTime;
+
+import com.semanticbits.coppasimulator.util.StringUtilities;
 
 /**
  * @author Denis G. Krylov
  * 
  */
 public final class ISO21090Helper {
+	
+	static final String SEMICOLON = ":";
+	static final String X_TEXT_FAX = "x-text-fax";
+	static final String TEL = "tel";
+	static final String MAILTO = "mailto";
 
+	
 	private ISO21090Helper() {
 	}
-
+	public static PQTime PQTime(Double days) {
+		PQTime p = new PQTime();
+		p.setValue(days);
+		return p;
+	}
 	public static final II II(String ext) {
 		II ii = new II();
 		if (ext != null) {
@@ -74,6 +97,7 @@ public final class ISO21090Helper {
 		en.setType(type);
 		return en;
 	}
+	
 
 	public static final ADXP ADXP(String s, AddressPartType typ) {
 		ADXP ad = new ADXP();
@@ -81,7 +105,28 @@ public final class ISO21090Helper {
 		ad.setValue(s);
 		return ad;
 	}
-
+	
+	public static final PQ PQ(Double value, String units) {
+		PQ pq = new PQ();
+		pq.setValue(value);
+		pq.setUnit(units);
+		return pq;
+	}
+	
+	public static final PQ PQ(String text) {
+		PQ pq = new PQ();
+		pq.setOriginalText(EDText(text));
+		return pq;
+	}
+	
+	
+	public static final TEL TEL(String s) throws MalformedURIException {
+		URI uri = new URI(s);
+		TEL tel = new TEL();
+		tel.setValue(uri);
+		return tel;
+	}
+	
 	public static final ED ED(String s) {
 		ED ed = new ED();
 		ed.setValue(s);
@@ -117,6 +162,53 @@ public final class ISO21090Helper {
 	public static final ST ST(Integer i) {
 		return i != null ? ST(i.toString()) : ST((String) null);
 	}
+	
+	public INT INT(Integer i) {
+		return i != null ? INT(i) : null;
+	}
+	
+	public static AD AD(String street , String city, String state, String zip, String country){
+		AD ad = new AD();
+		int ct = -1;
+		if (!StringUtilities.isBlank(city)) {			
+			ad.setPart(ct++, ADXP(city, AddressPartType.CTY));
+		}
+		if (!StringUtilities.isBlank(country)) {	
+			//the string passed in for country is actually the code.
+			ad.setPart(ct++, ADXP(city, AddressPartType.CNT));
+		}	
+		if (!StringUtilities.isBlank(street)) {			
+			ad.setPart(ct++, ADXP(city, AddressPartType.AL));
+		}	
+		if (!StringUtilities.isBlank(state)) {			
+			ad.setPart(ct++, ADXP(city, AddressPartType.STA));
+		}
+		if (!StringUtilities.isBlank(zip)) {			
+			ad.setPart(ct++, ADXP(city, AddressPartType.ZIP));
+		}
+		return ad;
+	}
+	
+	public static BAG_TEL BAG_TEL(String email , String phone , String fax)  {
+		BAG_TEL bagTel = new BAG_TEL();
+		int ct = -1;
+		try {
+			if (!StringUtilities.isBlank(email)) {
+					bagTel.setItem(ct++, TEL(MAILTO + SEMICOLON + email));
+			}
+			if (!StringUtilities.isBlank(phone)) {
+				bagTel.setItem(ct++, TEL(TEL + SEMICOLON + phone));
+			}
+			if (!StringUtilities.isBlank(fax)) {
+				bagTel.setItem(ct++, TEL(X_TEXT_FAX + SEMICOLON + fax));
+			}
+		} catch (MalformedURIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bagTel;
+	}
+	
 
 	public static final String value(ST st) {
 		if (st != null) {
