@@ -70,11 +70,11 @@
                                 <div class="value"><ui:text path="sitePersonnel[${index}].faxNumber" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label"><ui:label path="sitePersonnel[${index}].startDate" labelProperty="start.date" text=""/></div>
+                                <div class="label"><ui:label path="sitePersonnel[${index}].startDate" labelProperty="start.date" text="Start date"/></div>
                                 <div class="value"><ui:date path="sitePersonnel[${index}].startDate" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label"><ui:label path="sitePersonnel[${index}].endDate" labelProperty="end.date" text=""/></div>
+                                <div class="label"><ui:label path="sitePersonnel[${index}].endDate" labelProperty="end.date" text="End date"/></div>
                                 <div class="value"><ui:date path="sitePersonnel[${index}].endDate" readonly="${readOnly || !hasRSCreate}"/></div>
                             </div>
                         </div>

@@ -101,12 +101,11 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
     /**
      * Get the person who has specified email address.
      * 
-     * @param loginId
+     * @param loginName
      *                The loginId of the person.
      * @return The person.
      */
     @SuppressWarnings("unchecked")
-    @Deprecated
 	public Person getByLoginId(String loginName) {
     	
     	Person person = null;
