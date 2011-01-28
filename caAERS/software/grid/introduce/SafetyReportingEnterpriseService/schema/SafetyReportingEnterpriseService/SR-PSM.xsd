@@ -30,8 +30,10 @@
 					<xs:element name="surgeryInterventions" type="ESS-SR:PerformedProcedure" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="concomitantMedications" type="ESS-SR:ConcomitantAgent" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="otherCauses" type="ESS-SR:OtherCause" minOccurs="0" maxOccurs="unbounded"/>
+					<!--
 					<xs:element name="priorTherapies" type="ESS-SR:PriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="preExistingConditions" type="ESS-SR:PreExistingCondition" minOccurs="0" maxOccurs="unbounded"/>
+					-->
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -73,7 +75,7 @@
 		<xs:complexContent>
 			<xs:extension base="ESS-SR:Product">
 				<xs:sequence>					
-					<xs:element name="actualDateRange" type="ISO:TS"/>
+					<xs:element name="actualDateRange" type="ISO:IVL_TS.DateTime"/>
 					<xs:element name="stillTakingMedications" type="ISO:BL"/>
 				</xs:sequence>
 			</xs:extension>
@@ -99,14 +101,14 @@
 					<xs:element name="typeCode" type="ISO:CD"/>
 					<xs:element name="performedProcedure" type="ESS-SR:PerformedProcedure" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="lotNumberText" type="ISO:ST"/>
-					<xs:element name="manufacturerCity" type="ISO:AD"/>
+					<xs:element name="manufacturerCityState" type="ISO:AD"/>
 					<xs:element name="manufacturerName" type="ISO:ST"/>
-					<xs:element name="manufacturerState" type="ISO:AD"/>
-					<xs:element name="otherDeviceOperator" type="ESS-SR:Performer"/>
+					<xs:element name="otherDeviceOperator" type="ISO:ST"/>
 					<xs:element name="reprocessorName" type="ISO:ST"/>
-					<xs:element name="reprocessorAddress" type="ISO:AD"/>
+					<xs:element name="reprocessorAddress" type="ISO:ST"/>
 					<xs:element name="returnedFromReprocessorDate" type="ISO:TS"/>
-					<xs:element name="materialIdentifier" type="ESS-SR:MaterialIdentifier" minOccurs="1" maxOccurs="unbounded"/>
+					<xs:element name="catalogNumber" type="ISO:II" />
+					<xs:element name="modelNumber" type="ISO:II" />
 					<xs:element name="materialName" type="ESS-SR:MaterialName" minOccurs="1" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
@@ -142,6 +144,8 @@
 					<xs:element name="dose" type="ISO:PQ"/>
 					<xs:element name="periodDoseTotal" type="ISO:PQ"/>
 					<xs:element name="changeTypeCode" type="ISO:CD"/>
+					<xs:element name="adjustment" type="ISO:ST"/>
+					<xs:element name="daysElapsed" type="ISO:ST"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -156,16 +160,7 @@
 	</xs:complexType>
 	<xs:element name="MaterialName" type="ESS-SR:MaterialName"/>	
 	
-	<xs:complexType name="MaterialIdentifier">
-		<xs:complexContent>
-			<xs:extension base="ESS-AE:Entity">
-				<xs:sequence>					
-					<xs:element name="typeCode" type="ISO:CD"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:element name="MaterialIdentifier" type="ESS-SR:MaterialIdentifier"/>
+
 		
 	<xs:complexType name="PerformedObservation">
 		<xs:complexContent>
@@ -196,9 +191,10 @@
 	<xs:complexType name="PerformedObservationCategory">
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
-				<xs:sequence>					
+				<xs:sequence>	
+					<xs:element name="name" type="ISO:ST"/>				
 					<xs:element name="terms" type="ESS-SR:PerformedObservationTerm" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="performedObservationVersion" type="ESS-SR:PerformedObservationVersion"/>
+					<xs:element name="performedObservationVersion" type="ISO:ST"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -217,17 +213,7 @@
 	</xs:complexType>
 	<xs:element name="PerformedObservationTerm" type="ESS-SR:PerformedObservationTerm"/>	
 
-	<xs:complexType name="PerformedObservationVersion">
-		<xs:complexContent>
-			<xs:extension base="ESS-AE:Entity">
-				<xs:sequence>					
-					<xs:element name="name" type="ISO:ST"/>
-					<xs:element name="performedObservationCategory" type="ESS-SR:PerformedObservationCategory" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:element name="PerformedObservationVersion" type="ESS-SR:PerformedObservationVersion"/>
+
 	
 
 			

@@ -10,15 +10,15 @@ http\://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyR
 http\://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/service=gov.nih.nci.ess.safetyreporting.management.stubs.service
 http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
 
-http\://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/types=gov.nih.nci.ess.safetyreporting.stubs.types
 http\://gov.nih.nci.ess.safetyreporting.types=gov.nih.nci.ess.safetyreporting.types
+http\://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/types=gov.nih.nci.ess.safetyreporting.stubs.types
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 uri\:iso.org\:21090=_21090.org.iso
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 http\://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types=gov.nih.nci.ess.safetyreporting.management.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 http\://ess.caaers.nci.nih.gov=ess.caaers.nci.nih.gov
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 
 
 

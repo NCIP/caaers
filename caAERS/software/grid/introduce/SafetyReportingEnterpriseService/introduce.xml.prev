@@ -11,7 +11,6 @@
    <ns2:SchemaElement type="DSET_II" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DSET_SafetyReportVersion" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="HealthCareProvider" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="MaterialIdentifier" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="MaterialName" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="OtherCause" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ParticipantHistory" xsi:type="ns2:SchemaElementType"/>
@@ -23,7 +22,6 @@
    <ns2:SchemaElement type="PerformedObservationCategory" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="PerformedObservationTerm" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="PerformedObservationValue" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="PerformedObservationVersion" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="PerformedProcedure" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="PerformedProductInvestigationResult" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="PerformedSubstanceAdministration" xsi:type="ns2:SchemaElementType"/>

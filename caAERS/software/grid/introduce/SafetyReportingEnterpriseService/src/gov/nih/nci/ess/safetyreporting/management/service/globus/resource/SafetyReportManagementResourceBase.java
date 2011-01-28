@@ -129,7 +129,7 @@ public abstract class SafetyReportManagementResourceBase extends ReflectionResou
 	
 
 
-	    //Getters/Setters for ResourceProperties
+	
 
 
 	
