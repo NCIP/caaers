@@ -95,7 +95,9 @@ public class UserTab extends TabWithFields<UserCommand>{
     @SuppressWarnings("unchecked")
 	public ModelAndView addSitePerson(HttpServletRequest request, Object object, Errors errors) {
         UserCommand  command = (UserCommand)object;
-        command.addSitePersonnel(new SitePerson());
+        SitePerson sp = new SitePerson();
+        sp.setStartDate(DateUtils.today());
+        command.addSitePersonnel(sp);
 
         ModelAndView modelAndView = new ModelAndView("admin/ajax/sitePersonnelSection");
         modelAndView.getModel().put("indexes", new Integer[]{command.getSitePersonnel().size() - 1});

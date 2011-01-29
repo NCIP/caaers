@@ -21,17 +21,11 @@
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:READ" var="hasSRSRRead"/>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole:UPDATE" var="hasSRSRUpdate"/>
 
-<chrome:division id="sitePerson_${index}" collapsable="true" collapsed="false" title="&nbsp;${orgName}">
-    <jsp:attribute name="titleFragment">
-        <c:if test="${not empty siteResearchStaff.id}">
-            <c:if test="${siteResearchStaff.inActive}">
-                <tags:button value="Activate" color="green" size="small" type="button" onclick="activateSitePerson(${index}, ${siteResearchStaff.id})"/>
-            </c:if>
-            <c:if test="${siteResearchStaff.active}">
-                <tags:button value="Deactiate" color="red" size="small" type="button" onclick="deActivateSitePerson(${index}, ${siteResearchStaff.id})"/>
-            </c:if>
-        </c:if>
-    </jsp:attribute>
+<chrome:division id="sitePerson_${index}" collapsable="true" collapsed="false"
+                 enableDelete="${command.sitePersonnel[index].id== null && !readOnly}"
+                 title="&nbsp;${orgName}"
+                 deleteParams="'removeSitePerson', ${index}">
+
     <jsp:body>
                 <c:if test="${hasRSCreate}">
                 <c:if test="${!readOnly && empty orgName}">

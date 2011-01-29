@@ -156,7 +156,7 @@
 			}
 
             function fireAction(_action, _index) {
-                if (_action == "removePerson") {
+                if (_action == "removeSitePerson") {
                     removeSitePerson(_index);
                 }
             }
