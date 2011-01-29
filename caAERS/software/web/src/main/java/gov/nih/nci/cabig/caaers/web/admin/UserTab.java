@@ -290,7 +290,7 @@ public class UserTab extends TabWithFields<UserCommand>{
      * @return
      */
 	private ResearchStaff buildResearchStaff(UserCommand command){
-        if(command.getPerson() == null){
+        if(command.getPerson() == null || command.getPerson().getId() == null){
            ResearchStaff rs = new LocalResearchStaff();
            rs.setAddress(new Address());
            command.setPerson(rs);
@@ -331,7 +331,7 @@ public class UserTab extends TabWithFields<UserCommand>{
 	 * @return
 	 */
 	private Investigator buildInvestigator(UserCommand command){
-        if(command.getPerson() == null){
+        if(command.getPerson() == null || command.getPerson().getId() == null){
             Investigator inv = new LocalInvestigator();
             command.setPerson(inv);
         }
@@ -367,7 +367,7 @@ public class UserTab extends TabWithFields<UserCommand>{
 	 * @return
 	 */
     private _User buildUser(UserCommand command){
-    	if(command.getUser() == null){
+    	if(command.getUser() == null || command.getUser().getId() == null){
             command.setUser(new _User());
         }
         _User user = command.getUser();
