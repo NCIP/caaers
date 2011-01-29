@@ -22,8 +22,10 @@
 			div.row div.value { margin-left:14em; }
 			.rightpanel { width:54% }
         </style>
-            
-    	<script type="text/javascript">
+
+        <tags:dwrJavascriptLink objects="user,createStudy"/>
+
+        <script type="text/javascript">
 
 			ajaxCRUD = new AJAX_CRUD_HELPER();
 			var sitesCount = new Array();
@@ -200,20 +202,40 @@
             }
 
             function deActivatePerson(){
+  
               //will put todays date as end date on all the site researchstaff end dates.
-              $$("date").each(_el){
-                  var d = el.value;
-                  var _today = Calendar.parseDate('${command.toDay}')
-                  if(d == ''){
-                     el.value = _today;
-                  }else{
-                      
+              $$('.date').each(function (_el){
+                  var val = _el.value;
+                  if( (val == '') || _el.name.indexOf('endDate') > 0){
+                      _el.value = '${command.toDay}';
                   }
-                }
+                  
+              });
+              alert('<caaers:message code="MSG_deactivate_effect" text="Please click Save to complete deactivation" />');
             }
-	    	
+	    	function activatePerson(){
+              $$('.date').each(function (_el){
+                  var val = _el.value;
+                  if( _el.name.indexOf('endDate') > 0){
+                      _el.value = '';
+                  }
+
+              });
+              alert('<caaers:message code="MSG_activate_effect" text="Please click Save to complete activation" />');
+            }
+
+            function deActivateUser(){
+                
+            }
+
+            function unlockUser(){
+               user.unlockUser(function(){
+                   alert('<caaers:message code="MSG_user.unlocked" text="User account unlocked" />');
+                   $('unlock-btn-div').hide();
+               });
+            }
     	</script>
-    	<tags:dwrJavascriptLink objects="user,createStudy"/>
+
     
     	<div class="tabpane">
     		
@@ -263,10 +285,10 @@
                                             <div class="value">
                                                  <c:if test="${command.PO}">
                                                <c:if test="${command.person.active}">
-                                                    <tags:button value="Deactivate Person" color="red" type="button" size="small" onclick="deActivatePerson()" />
+                                                    <tags:button value="Deactivate Person" color="red" type="button" size="small" onclick="javascript:deActivatePerson()" />
                                                </c:if>
                                                <c:if test="${not command.person.active}">
-                                                   <tags:button value="Activate Person" color="green" type="button" size="small" onclick="activatePerson()" />
+                                                   <tags:button value="Activate Person" color="green" type="button" size="small" onclick="javascript:activatePerson()" />
                                                </c:if>
                                             </c:if>
                                             </div>
@@ -278,10 +300,10 @@
                                             <div class="value">
                                                 <c:if test="${command.UA}">
                                                 <c:if test="${command.user.locked}">
-                                                  <tags:button value="Unlock User" color="blue" type="button" size="small" onclick="unlockUser()" />
+                                                  <div id="unlock-btn-div"><tags:button value="Unlock User" color="blue" type="button" size="small" onclick="unlockUser()" /></div>
                                                 </c:if>
                                                 <c:if test="${command.user.active}">
-                                                  <tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />
+                                                  <%--<tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />--%>
                                                 </c:if>
 
                                             </c:if>
@@ -306,8 +328,8 @@
     					</ui:row>
 						<ui:row path="researchStaff.nciIdentifier">
 							<jsp:attribute name="label"><ui:label path="nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
-							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false"/>
-                                <c:if test="${command.editMode && empty command.person}">
+							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false" readonly="${not command.PO}"/>
+                                <c:if test="${command.editMode and  empty command.person and command.PO}">
                                      <caaers:message code="LBL_link.person" var="linkaperson" text="Link a person" />
                                      <tags:button value="${linkaperson}" color="blue" icon="search" onclick="showLinkPopup('person')" size="small" type="button"/>
                                 </c:if>
@@ -320,7 +342,7 @@
 		                        <c:set var="size" value="${fn:length(command.sitePersonnel)}" />
 		                        <c:forEach items="${command.sitePersonnel}" varStatus="status" var="rss">
 		                            <c:set var="newIndex" value="${size - (status.index + 1)}" />
-		                            <researchStaff:oneSitePerson index="${newIndex}" collapsed="false" />
+		                            <researchStaff:oneSitePerson index="${newIndex}" collapsed="false" readOnly="${not command.PO}" />
 		                        </c:forEach>
 		                    </div>
                             <c:if test="${command.PO}">
@@ -333,9 +355,9 @@
     					<tags:instructions code="userRolesForUA" />
     					<ui:row path="loginName">
     						<jsp:attribute name="label"><ui:label path="userName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
-    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${command.editMode and (not empty command.userName)}"/>
+    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${ (command.editMode and (not empty command.userName) ) or  (not command.UA)}"/>
 
-                                <c:if test="${command.editMode and empty command.userName}">
+                                <c:if test="${command.editMode and (empty command.userName) and command.PO}">
                                     <caaers:message code="LBL_link.user" var="linkauser" text="Link a user" />
                                     <tags:button value="${linkauser}" color="blue" icon="search" onclick="showLinkPopup('user')" size="small" type="button"/>
                                 </c:if>

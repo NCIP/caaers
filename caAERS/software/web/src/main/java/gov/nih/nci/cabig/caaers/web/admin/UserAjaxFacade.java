@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class UserAjaxFacade extends AbstractAjaxFacade {
 
-	private static Class<?>[] CONTROLLERS = {};
+	private static Class<?>[] CONTROLLERS = {EditUserController.class};
 	private UserRepository userRepository; 
 	private OrganizationRepository organizationRepository;
 	private StudyDao studyDao;
@@ -361,6 +361,12 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
          });
          return studies;
      }
+
+    public void unlockUser(){
+        UserCommand command = (UserCommand) extractCommand();
+        _User user = command.getUser();
+        getUserRepository().unlockUser(user);
+    }
     
 	public UserRepository getUserRepository() {
 		return userRepository;

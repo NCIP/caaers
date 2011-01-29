@@ -28,7 +28,7 @@
 				<div style="height:100px;">
 					 <div class="leftpanel">
 						<div class="row">
-                      		<div class="label"><caaers:message code="LBL_firstName" />/div>
+                      		<div class="label"><caaers:message code="LBL_firstName" /></div>
                       		<div class="value">${command.firstName}</div>
 						</div>
 						<c:if test="${command.createAsPerson}">
