@@ -65,6 +65,7 @@ public class EditUserController extends UserController<UserCommand> {
 
             if(command.getPerson() != null){
                 personRepository.save(command.getPerson());
+                getEventFactory().publishEntityModifiedEvent(command.getPerson());
             }
 
         	StringBuilder statusMessage = new StringBuilder();

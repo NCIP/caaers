@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -37,7 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Monish
  *
  */
-public class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, gov.nih.nci.cabig.caaers.domain._User, _UserDao>  {
+public abstract class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, gov.nih.nci.cabig.caaers.domain._User, _UserDao>  {
 	
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";	
 	protected CaaersSecurityFacadeImpl caaersSecurityFacade;
@@ -46,21 +47,13 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 	protected ProvisioningSessionFactory proSessionFactory;
 	protected OrganizationRepository organizationRepository;
 	protected StudyRepository studyRepository;
-	private OrganizationDao organizationDao;	
+	private OrganizationDao organizationDao;
+    private EventFactory eventFactory;
 	
 	
 	public UserController() {
         setCommandClass(UserCommand.class);
     }
-	
-	
-	@Override
-	protected ModelAndView processFinish(HttpServletRequest arg0,
-			HttpServletResponse arg1, Object arg2, BindException arg3)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
     @Override
     protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder) throws Exception {
@@ -117,13 +110,12 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
         }
         return attr;
     }
-	
-	/**
-	 * This method creates a User in CSM.
-	 * @param request
-	 * @param csmUser
-	 * @return
-	 */
+
+    /**
+     * Will create or modify CSM User
+     * @param request
+     * @param user
+     */
 	protected void createOrUpdateUser(HttpServletRequest request,_User user){
 		
 		userRepository.createOrUpdateUser(user, ResetPasswordController.getURL(request.getScheme(), 
@@ -184,4 +176,11 @@ public class UserController<C extends UserCommand> extends AutomaticSaveAjaxable
 		this.personRepository = personRepository;
 	}
 
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

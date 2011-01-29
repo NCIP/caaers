@@ -34,20 +34,21 @@ public class CreateUserController extends UserController<UserCommand>{
 		}
 		if(command.getCreateAsPerson()){
 			personRepository.save(command.getPerson());
+            getEventFactory().publishEntityModifiedEvent(command.getPerson());
 		}
-        if (!errors.hasErrors()) {
-        	String statusMessage = "";
-        	if(command.getCreateAsPerson() && command.getCreateAsUser()){
-        		statusMessage = "Created " +command.getPersonType()+ " with login capability"+mailSendIssue ; 
-        	}
-        	if(command.getCreateAsPerson() && !command.getCreateAsUser()){
-        		statusMessage = "Created " +command.getPersonType()+ " without login capability";
-        	}
-        	if(!command.getCreateAsPerson() && command.getCreateAsUser()){
-        		statusMessage = "Created a User with login capability"+mailSendIssue;
-        	}
-            modelAndView.getModel().put("flashMessage", statusMessage);
+
+        String statusMessage = "";
+        if(command.getCreateAsPerson() && command.getCreateAsUser()){
+            statusMessage = "Created " +command.getPersonType()+ " with login capability"+mailSendIssue ;
         }
+        if(command.getCreateAsPerson() && !command.getCreateAsUser()){
+            statusMessage = "Created " +command.getPersonType()+ " without login capability";
+        }
+        if(!command.getCreateAsPerson() && command.getCreateAsUser()){
+            statusMessage = "Created a User with login capability"+mailSendIssue;
+        }
+        modelAndView.getModel().put("flashMessage", statusMessage);
+
         modelAndView.addAllObjects(errors.getModel());
 		return modelAndView;
 	}
