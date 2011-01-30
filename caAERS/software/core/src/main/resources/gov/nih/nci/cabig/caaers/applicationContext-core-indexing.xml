@@ -50,6 +50,12 @@
                                 "/>
             <aop:before pointcut-ref="QuerySecurityFilterAspectPointCut" method="applyFilter"/>
         </aop:aspect>
+        <aop:aspect ref="csmUserListFilterAspect">
+            <aop:pointcut id="csmUserFilterAspectPointCut"
+                          expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.UserRepositoryImpl.searchCsmUser(String, String, String))"/>
+            <aop:after-returning pointcut-ref="csmUserFilterAspectPointCut" method="applyFilter" returning="list"/>
+        </aop:aspect>
+
     </aop:config>
 
 
@@ -446,7 +452,10 @@
     <!-- END PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
 
     <!-- Pluggable Query Filterer implementation -->
-
+    <bean id="csmUserListFilterAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.CSMUserListFilterAspect" >
+        <property name="userRepository" ref="userRepository" />
+    </bean>
+    
     <bean id="querySecurityFilterAspect"
           class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.QuerySecurityFilterAspect">
         <property name="querySecurityFilterDispatcher" ref="querySecurityFilterDispatcher"/>

@@ -75,11 +75,25 @@
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="sitePersonnel[${index}].startDate" labelProperty="start.date" text="Start date"/></div>
-                                <div class="value"><ui:date path="sitePersonnel[${index}].startDate" readonly="${readOnly || !hasRSCreate}"/></div>
+                                <div class="value">
+                                    <c:if test="${ not (readOnly or not hasRSCreate)}">
+                                        <ui:date path="sitePersonnel[${index}].startDate"/>
+                                    </c:if>
+                                    <c:if test="${ (readOnly or not hasRSCreate)}">
+                                        <tags:formatDate value="${command.sitePersonnel[index].startDate}"/>
+                                    </c:if>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="label"><ui:label path="sitePersonnel[${index}].endDate" labelProperty="end.date" text="End date"/></div>
-                                <div class="value"><ui:date path="sitePersonnel[${index}].endDate" readonly="${readOnly || !hasRSCreate}"/></div>
+                                <div class="value">
+                                    <c:if test="${ not (readOnly or not hasRSCreate)}">
+                                        <ui:date path="sitePersonnel[${index}].endDate" />
+                                    </c:if>
+                                    <c:if test="${ (readOnly or not hasRSCreate)}">
+                                        <tags:formatDate value="${command.sitePersonnel[index].endDate}"/>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                         <div class="rightpanel">
