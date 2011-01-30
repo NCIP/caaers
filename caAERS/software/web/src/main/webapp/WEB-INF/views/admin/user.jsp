@@ -399,13 +399,19 @@
 										</span>
 									</jsp:attribute>
                                     <jsp:body>
-									${roleMembership.suiteRole.description}<br>
-									<ui:checkbox path="roleMembershipHelper[${index.index}].checked" onclick="updateRoleSummary('${index.index}');"/>&nbsp;&nbsp;Grant this user the ${roleMembership.suiteRole.displayName} role.<br><br>
+									${roleMembership.suiteRole.description}
+
+                                        <br>
+                                        <ui:checkbox path="roleMembershipHelper[${index.index}].checked"  disabled="${not command.UA}" onclick="updateRoleSummary('${index.index}');"/>&nbsp;&nbsp;Grant this user the ${roleMembership.suiteRole.displayName} role.
+                                        <br><br>
+
 									<div id="membershipDiv-${index.index}" style="display:${roleMembership.checked ? '' : 'none'}">
 									<c:if test="${roleMembership.scoped}">
-										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')"/>&nbsp;&nbsp;All Site access.<br><br>
+
+										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA}" />&nbsp;&nbsp;All Site access.<br><br>
 											<div class="row" id="roleMembershipHelper[${index.index}]-siteSelector" style="display:${roleMembership.allSiteAccess ? 'none' : ''}">
-												<div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
+												<c:if test="${command.UA}">
+                                                <div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
 												<div class="value">
 													<ui:autocompleter path="roleMembershipHelper[${index.index}].selectedSiteForDisplay"
 														initialDisplayValue="Begin typing here..." enableClearButton="true">
@@ -434,8 +440,10 @@
 													</ui:autocompleter>
 													<form:hidden path="roleMembershipHelper[${index.index}].nciCode" id="roleMembershipHelper[${index.index}].nciCode"/>
 													<tags:button  disabled="true" cssClass="foo" id="addSite_btn[${index.index}]" color="blue" value="Add" icon="Add" type="button" onclick="addSite('roleMembershipHelper[${index.index}]', '${index.index}')" size="small"/>
-												</div>	
-												<div class="value">
+												</div>
+                                                </c:if>
+
+                                                <div class="value">
 													<script>sitesCount[${index.index}] = ${fn:length(roleMembership.sites)};</script>
 													<table id="roleMembershipHelper[${index.index}]-sitesTable">
 														<tbody>
@@ -449,9 +457,10 @@
 																		${command.siteMap[site]}
 																	<input class='roleMembershipHelper[${index.index}]' type='hidden' id='roleMembershipHelper[${index.index}].sites' name='roleMembershipHelper[${index.index}].sites' value='${site}' /><td>
 																	<td>
+                                                                        <c:if test="${command.UA}">
 																		<a href="javascript:removeSite('roleMembershipHelper[${index.index}]-site-${site}','${index.index}');">
        																	<img src="/caaers/images/buttons/button_icons/small/trash.gif" border="0" alt="delete"></a>
-       																	
+       																	</c:if>
 																	</td>
 																</tr>	
 															</c:forEach>
@@ -461,9 +470,10 @@
 							            	</div>
 										
 										<c:if test="${roleMembership.studyScoped}">
-											<ui:checkbox path="roleMembershipHelper[${index.index}].allStudyAccess" onclick="showHideDiv(${index.index},'studySelector')"/>&nbsp;&nbsp;All Study access.<br><br>
+											<ui:checkbox path="roleMembershipHelper[${index.index}].allStudyAccess" onclick="showHideDiv(${index.index},'studySelector')" disabled="${not command.UA}"/>&nbsp;&nbsp;All Study access.<br><br>
 												<div class="row" id="roleMembershipHelper[${index.index}]-studySelector" style="display:${roleMembership.allStudyAccess ? 'none' : ''}">
-													<div class="label"><caaers:message code="LBL_Study"/>&nbsp; </div>
+													<c:if test="${command.UA}">
+                                                    <div class="label"><caaers:message code="LBL_Study"/>&nbsp; </div>
 													<div class="value">
 														<ui:autocompleter path="roleMembershipHelper[${index.index}].selectedStudyForDisplay"
 															initialDisplayValue="Begin typing here..." enableClearButton="true">
@@ -498,6 +508,7 @@
 														<form:hidden path="roleMembershipHelper[${index.index}].studyId" id="roleMembershipHelper[${index.index}].studyId"/>
 														<tags:button disabled="true" cssClass="foo" id="addStudy_btn[${index.index}]" color="blue" value="Add" icon="Add" type="button" onclick="addStudy('roleMembershipHelper[${index.index}]','${index.index}')" size="small"/>
 													</div>
+                                                    </c:if>
 													<div class="value">
 														<script>studiesCount[${index.index}] = ${fn:length(roleMembership.studies)};</script>
 														<table id="roleMembershipHelper[${index.index}]-studiesTable">
@@ -513,8 +524,10 @@
 																		<input class='roleMembershipHelper[${index.index}]' type='hidden' id='roleMembershipHelper[${index.index}].studies' name='roleMembershipHelper[${index.index}].studies' value='${study}' />
 																		<td>
 																		<td>
+                                                                        <c:if test="${command.UA}">
 																			<a href="javascript:removeStudy('roleMembershipHelper[${index.index}]-study-${study}','${index.index}');">
 	       																	<img src="/caaers/images/buttons/button_icons/small/trash.gif" border="0" alt="delete"></a>
+                                                                        </c:if>
 																		</td>
 																	</tr>	
 																</c:forEach>
