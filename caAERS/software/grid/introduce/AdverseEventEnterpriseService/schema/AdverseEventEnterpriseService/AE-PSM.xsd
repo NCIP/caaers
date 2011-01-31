@@ -442,6 +442,9 @@
 							<xs:documentation>The date and time span when this activity began and ended.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
+					<xs:element name="delayDuration" type="ISO:PQ.Time"/>
+					<xs:element name="repetitionNumber" type="ISO:INT"/>
+					<xs:element name="nameCode" type="ISO:CD"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
