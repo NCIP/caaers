@@ -274,7 +274,7 @@ function isValidUSPhoneNumber(areaCode, prefixNumber, suffixNumber) {
 // Check that a string contains only letters and numbers
 function isAlphanumeric(string, ignoreWhiteSpace) {
     if (string.search) {
-        if ((ignoreWhiteSpace && string.search(/[^\w\s]/) != -1) || (!ignoreWhiteSpace && string.search(/\W/) != -1)) return false;
+        if ((ignoreWhiteSpace && string.search(/[^\w\s\-'\.]/) != -1) || (!ignoreWhiteSpace && string.search(/\W/) != -1)) return false;
     }
     return true;
 }
