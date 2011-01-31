@@ -25,7 +25,7 @@
     <div class="row">
         <div class="label"><input type='radio' name='other${index}' id="radioDevice${index}" value="0" onclick="toggleDeviceOrOther(${index})" checked="true">&nbsp;Device</div>
         <div class="value">
-            <ui:autocompleter path="study.studyDevices[${index}].device" initialDisplayValue="Begin typing here..." size="50" title="Study Device">
+            <ui:autocompleter path="study.studyDevices[${index}].device" initialDisplayValue="Begin typing here..." size="40" title="Study Device">
                           <jsp:attribute name="populatorJS">
                               function(autocompleter, text){
                                   createStudy.fetchDevicesByText(text, function(values) {
@@ -77,38 +77,38 @@
     <div id="study.studyDevices[${index}].otherDevice" style="display:${command.study.studyDevices[index].otherDevice ? 'inline' : 'none'};">
         <div class="row">
             <div class="label">Common name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="40" readonly="${!empty command.study.studyDevices[index].id}"/></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="30" readonly="${!empty command.study.studyDevices[index].id}"/></div>
         </div>
         <div class="row">
             <div class="label">Brand name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherBrandName" size="40" readonly="${!empty command.study.studyDevices[index].id}"/></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherBrandName" size="30" readonly="${!empty command.study.studyDevices[index].id}"/></div>
         </div>
         <div class="row">
             <div class="label">Device type</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherDeviceType" size="40" readonly="${!empty command.study.studyDevices[index].id}"/></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherDeviceType" size="30" readonly="${!empty command.study.studyDevices[index].id}"/></div>
         </div>
     </div>
 </td>    
 <td valign="top">
     <div class="row">
         <div class="label">Catalog number</div>
-        <div class="value"><ui:text path="study.studyDevices[${index}].catalogNumber" size="40"/></div>
+        <div class="value"><ui:text path="study.studyDevices[${index}].catalogNumber" size="30"/></div>
     </div>
     <div class="row">
         <div class="label">Manufacturer name</div>
-        <div class="value"><ui:text path="study.studyDevices[${index}].manufacturerName" size="40"/></div>
+        <div class="value"><ui:text path="study.studyDevices[${index}].manufacturerName" size="30"/></div>
     </div>
     <div class="row">
         <div class="label">Manufacturer city</div>
-        <div class="value"><ui:text path="study.studyDevices[${index}].manufacturerCity" size="40"/></div>
+        <div class="value"><ui:text path="study.studyDevices[${index}].manufacturerCity" size="30"/></div>
     </div>
     <div class="row">
         <div class="label">Manufacturer state</div>
-        <div class="value"><ui:text path="study.studyDevices[${index}].manufacturerState" size="40"/></div>
+        <div class="value"><ui:text path="study.studyDevices[${index}].manufacturerState" size="30"/></div>
     </div>
     <div class="row">
         <div class="label">Model number</div>
-        <div class="value"><ui:text path="study.studyDevices[${index}].modelNumber" size="40"/></div>
+        <div class="value"><ui:text path="study.studyDevices[${index}].modelNumber" size="30"/></div>
     </div>
 </td>
 </tr>
