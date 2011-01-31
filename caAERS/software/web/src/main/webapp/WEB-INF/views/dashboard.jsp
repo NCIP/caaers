@@ -19,9 +19,11 @@
         </c:if>
 
 
+<%--
         <c:if test="${not empty roles.user_administrator}">
             <jsp:include page="/pages/dashboard/users" />
         </c:if>
+--%>
 
     </td>
     <td valign="top">
