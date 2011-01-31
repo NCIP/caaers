@@ -30,9 +30,13 @@
 			ajaxCRUD = new AJAX_CRUD_HELPER();
 			var sitesCount = new Array();
 			var studiesCount = new Array();
-		
-	    	Event.observe(window, "load", function() {
-	    	});
+            AE.sitePersonOrgs = new Array();
+            <c:forEach items="${command.sitePersonnel}" var="sp">
+               <c:if test="${not empty sp.organization}">
+                 AE.sitePersonOrgs.push(${empty sp.organization.id ? 0 : sp.organization.id});  
+               </c:if>
+            </c:forEach>
+
 
 	    	var tableRow = "<tr id='#{trId}'><td>#{selectedChoiceForDisplay}<input type='hidden' id='#{fldName}' name='#{fldName}' value='#{identifier}' /></td><td>#{deleteBtn}</td></tr>";
 	    	

@@ -14,7 +14,7 @@
 
 <%@attribute name="siteResearchStaff" type="gov.nih.nci.cabig.caaers.domain.SiteResearchStaff" %>
 
-<c:set var="orgName" value="${command.sitePersonnel[index].organization}" />
+<c:set var="orgName" value="${command.sitePersonnel[index].organization.fullName}" />
 <c:set var="editMode" value="${command.person.id > 0}" />
 
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE" var="hasRSCreate"/>
@@ -37,7 +37,13 @@
                                             <jsp:attribute name="embededJS"></jsp:attribute>
                                             <jsp:attribute name="populatorJS">
                                                 function(autocompleter, text) {
-                                                    createStudy.restrictOrganizations(text, false, function(values) { autocompleter.setChoices(values);})
+                                                    createStudy.restrictOrganizations(text, false, function(values) {
+                                                        var actualValues = new Array();
+                                                        for(var i = 0; i< values.length; i++){
+                                                           if(AE.sitePersonOrgs.indexOf(values[i].id) < 0) actualValues.push(values[i]);
+                                                        }
+                                                        autocompleter.setChoices(actualValues);
+                                                     })
                                                 }
                                             </jsp:attribute>
                                             <jsp:attribute name="selectorJS">
