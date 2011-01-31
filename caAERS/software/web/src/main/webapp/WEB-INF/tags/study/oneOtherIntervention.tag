@@ -14,11 +14,11 @@
 <chrome:division collapsable="true" collapsed="${collapsed}" id="oi_${index}" title="&nbsp;${title}" enableDelete="true" deleteParams="'removeOtherIntervention', '${index}'">
     <div class="row">
         <div class="label">Intervention type</div>
-        <div class="value"><ui:select options="${studyTherapyTypes}" path="study.otherInterventions[${index}].studyTherapyType" /></div>
+        <div class="value"><ui:select options="${studyTherapyTypes}" path="study.otherInterventions[${index}].studyTherapyType" readonly="${!empty otherIntervention.id}"/></div>
     </div>
     <div class="row">
         <div class="label">Name</div>
-        <div class="value"><ui:text path="study.otherInterventions[${index}].name" size="40" /></div>
+        <div class="value"><ui:text path="study.otherInterventions[${index}].name" size="40"  readonly="${!empty otherIntervention.id}"/></div>
     </div>
     <div class="row">
         <div class="label">Description</div>
