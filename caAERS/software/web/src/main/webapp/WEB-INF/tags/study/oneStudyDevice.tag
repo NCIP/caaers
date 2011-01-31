@@ -45,7 +45,8 @@
                                     var _fieldHelper = 'study.studyDevices[' + ${index} + '].device.autocompleter';
                                     if (_fieldHelper + '.commonName') $(_fieldHelper + '.commonName').innerHTML = selectedChoice.commonName; 
                                     if (_fieldHelper + '.brandName') $(_fieldHelper + '.brandName').innerHTML = selectedChoice.brandName;
-                                    if (_fieldHelper + '.type') $(_fieldHelper + '.type').innerHTML = selectedChoice.type; 
+                                    if (_fieldHelper + '.type') $(_fieldHelper + '.type').innerHTML = selectedChoice.type;
+                                    $("titleOf_StudyDevice_${index}").innerHTML = selectedChoice.commonName + ", " + selectedChoice.brandName;
                                 }
                             }
                          </jsp:attribute>
