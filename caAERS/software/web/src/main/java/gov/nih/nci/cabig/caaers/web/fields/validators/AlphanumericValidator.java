@@ -48,7 +48,7 @@ public class AlphanumericValidator extends FieldValidator {
         if (fieldValue != null) {
             if (minLength > 0 && fieldValue.toString().length() < minLength) minLengthOK = false; else minLengthOK = true;
             if (maxLength > 0 && fieldValue.toString().length() > maxLength) maxLengthOK = false; else maxLengthOK = true;
-            return (minLengthOK && maxLengthOK && fieldValue.toString().matches("^[a-zA-Z0-9_ -'\\.]*$"));
+            return (minLengthOK && maxLengthOK && fieldValue.toString().matches("^[a-zA-Z0-9_ ]*$"));
         }
         return true;
     }
