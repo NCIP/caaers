@@ -29,11 +29,13 @@ public class ExpectedAEsTab extends StudyTab {
 
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
+        boolean isAjax = request.getParameter(StudyController.AJAX_SUBVIEW_PARAMETER) != null;
+
         if (isCTCStudy) {
             command.getStudy().getAeTerminology().getCtcVersion().getCategories();
-            Collections.sort(command.getStudy().getExpectedAECtcTerms(), new ExpectedAETermSorter());
+            if (!isAjax) Collections.sort(command.getStudy().getExpectedAECtcTerms(), new ExpectedAETermSorter());
         } else {
-            Collections.sort(command.getStudy().getExpectedAEMeddraLowLevelTerms(), new ExpectedAETermSorter());
+            if (!isAjax) Collections.sort(command.getStudy().getExpectedAEMeddraLowLevelTerms(), new ExpectedAETermSorter());
         }
         return super.referenceData(request, command);
     }
