@@ -18,9 +18,12 @@ public class AlphanumericValidatorTest extends TestCase {
         assertTrue(v.isValid("sample String 8 j 99 6"));
         assertFalse(v.isValid("sample String 8="));
         assertFalse(v.isValid(" ="));
-        assertFalse(v.isValid("- "));
+        assertTrue(v.isValid("-"));
+        assertTrue(v.isValid(" "));
+        assertTrue(v.isValid("- "));
+        assertTrue(v.isValid("-' "));
         assertTrue(v.isValid("_"));
-        assertFalse(v.isValid("'"));
+        assertTrue(v.isValid("'"));
         assertFalse(v.isValid("\""));
 
         v = new AlphanumericValidator(1, 1);
@@ -41,6 +44,13 @@ public class AlphanumericValidatorTest extends TestCase {
         assertFalse(v.isValid("ad"));
         assertTrue(v.isValid("abde"));
         assertTrue(v.isValid("abde80934jhkd87j"));
+
+
+        AlphanumericValidator v1 = new AlphanumericValidator(2,8);
+         assertTrue(v1.isValid("aaa-'bc"));
+         assertTrue(v1.isValid("nn."));
+
+
 
     }
 }
