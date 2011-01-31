@@ -17,7 +17,7 @@
 
 <c:set var="readOnly" value="${_agentName ne 'no-agent-name'}" />
 
-<chrome:division id="sa-section-${index}" title="${_agentName}" cssClass="sa-section" 
+<chrome:division id="sa-section-${index}" title="${_agentName ne 'no-agent-name' ? _agentName : ' '}" cssClass="sa-section"
 	collapsable="true" collapsed="${_agentName ne 'no-agent-name'}" enableDelete="true" deleteParams="${deleteParams}">
 
 <c:set var="_agentField" value="${fieldGroups[mainGroup].fields[0]}" />
