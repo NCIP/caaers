@@ -34,6 +34,17 @@
         ${_agentField.displayName}
 	</jsp:attribute>
 	<jsp:attribute name="value">
+
+        <%--
+            Somehow the Agent name is pointing to the property StudyAgent.agentName which retrieves otherAgent's values when Agent is null, causing
+            issue CAAERS-4618
+        --%>
+        <c:set var="agentNamePath" value="study.studyAgents[${index}].agent" />
+        <c:if test="${not empty studyAgent.agent}">
+            <c:set var="agentNamePath" value="study.studyAgents[${index}].agent.name" />
+        </c:if>
+        <%----%>
+
 		<ui:autocompleter path="${_agentField.propertyName}" 
 			required="${_agentField.required}" 
 			validationJSClass="${_agentField.validatorClassName}" 
@@ -42,7 +53,7 @@
 			title="${field.displayName}"
 			enableClearButton="${_agentField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here..." 
-			displayNamePath="study.studyAgents[${index}].agentName" >
+			displayNamePath="${agentNamePath}" >
 			<jsp:attribute name="populatorJS"> 
 			 function(autocompleter, text) {
          		createStudy.matchAgents(text, function(values) {
