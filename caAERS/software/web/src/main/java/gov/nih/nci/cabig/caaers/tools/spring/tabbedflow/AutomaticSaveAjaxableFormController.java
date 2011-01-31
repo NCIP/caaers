@@ -66,10 +66,12 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
      * @param errors
      * @param page
      */
-    public void populateSaveConfirmationMessage( Map refdata, HttpServletRequest request, Object oCommand, Errors errors, int page){
-    	   if(!errors.hasErrors() && !refdata.containsKey("flashMessage")){
-           	    if(page == WebUtils.getPreviousPage(request)) refdata.put("flashMessage", "Information saved successfully"); 
-           }
+    public void populateSaveConfirmationMessage(Map refdata, HttpServletRequest request, Object oCommand, Errors errors, int page) {
+        if (!errors.hasErrors() && !refdata.containsKey("flashMessage")) {
+            // page == 0 is not considered because every flow will have just CONTINUE button on the 1st page.
+            if (page == WebUtils.getPreviousPage(request) && page > 0)
+                refdata.put("flashMessage", "Information saved successfully");
+        }
     }
     
     @Override
