@@ -28,7 +28,7 @@
         <appender-ref ref="caAERSLogFile"/>
     </logger>
 	<logger name="gov.nih.nci.cabig.caaers.domain.repository">
-        <level value="ERROR"/>
+        <level value="INFO"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
 	<logger name="gov.nih.nci.cabig.caaers.web.listener">
