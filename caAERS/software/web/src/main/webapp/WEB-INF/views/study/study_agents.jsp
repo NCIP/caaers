@@ -127,7 +127,7 @@ function toggleAgentOrOther(index) {
 <%--<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">--%>
     <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studyAgents)}">
 
-    <div style="padding-left:20px;">
+    <div style="padding-left:0px;">
     <p id="instructions"></p>
         <div align="left">
             <tags:indicator id="_SA_indicator" />
