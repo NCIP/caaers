@@ -644,6 +644,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="Phase I Trial"/>
             <xs:enumeration value="Phase I/II Trial"/>
+            <xs:enumeration value="Phase II/III Trial"/>
             <xs:enumeration value="Phase II Trial"/>
             <xs:enumeration value="Phase III Trial"/>
             <xs:enumeration value="Phase IV Trial"/>
