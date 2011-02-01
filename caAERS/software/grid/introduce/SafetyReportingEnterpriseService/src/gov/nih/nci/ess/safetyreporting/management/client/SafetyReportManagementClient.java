@@ -76,15 +76,6 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
 		}
 	}
 
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateProblemToSafetyReport() throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"associateProblemToSafetyReport");
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest();
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportResponse boxedResult = portType.associateProblemToSafetyReport(params);
-    return boxedResult.getSafetyReportVersion();
-    }
-  }
-
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion initiateSafetyReport(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id subjectId,ess.caaers.nci.nih.gov.Id patientId,_21090.org.iso.DSET_II adverseEventIds,_21090.org.iso.DSET_II problemIds,gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod adverseEventReportingPeriod) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"initiateSafetyReport");
@@ -153,6 +144,15 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
     adverseEventContainer.setAdverseEvent(adverseEvent);
     params.setAdverseEvent(adverseEventContainer);
     gov.nih.nci.ess.safetyreporting.management.stubs.UpdateAdverseEventInformationInSafetyReportResponse boxedResult = portType.updateAdverseEventInformationInSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateProblemToSafetyReport() throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"associateProblemToSafetyReport");
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportResponse boxedResult = portType.associateProblemToSafetyReport(params);
     return boxedResult.getSafetyReportVersion();
     }
   }

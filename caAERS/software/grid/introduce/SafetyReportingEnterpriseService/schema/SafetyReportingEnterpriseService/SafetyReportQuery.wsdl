@@ -32,6 +32,73 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <element name="QuerySafetyReportsRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportVersion">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="QuerySafetyReportsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:DSET_SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSafetyReportsRequest">
+        <complexType>
+          <sequence>
+            <element name="dSET_II">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSafetyReportsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:DSET_SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ViewSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="desiredFormat">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ViewSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportFormat" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportQueryResourceProperties">
         <complexType>
           <sequence>
@@ -43,12 +110,48 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="QuerySafetyReportsRequest">
+    <part name="parameters" element="tns:QuerySafetyReportsRequest" />
+  </message>
+  <message name="QuerySafetyReportsResponse">
+    <part name="parameters" element="tns:QuerySafetyReportsResponse" />
+  </message>
+  <message name="GetSafetyReportsRequest">
+    <part name="parameters" element="tns:GetSafetyReportsRequest" />
+  </message>
+  <message name="GetSafetyReportsResponse">
+    <part name="parameters" element="tns:GetSafetyReportsResponse" />
+  </message>
+  <message name="ViewSafetyReportRequest">
+    <part name="parameters" element="tns:ViewSafetyReportRequest" />
+  </message>
+  <message name="ViewSafetyReportResponse">
+    <part name="parameters" element="tns:ViewSafetyReportResponse" />
+  </message>
+  <message name="SafetyReportingServiceExceptionFaultMessage">
+    <part name="fault" element="ns8:SafetyReportingServiceException" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="SafetyReportQueryPortType" wsrp:ResourceProperties="tns:SafetyReportQueryResourceProperties">
+    <operation name="querySafetyReports">
+      <input message="tns:QuerySafetyReportsRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/QuerySafetyReportsRequest" />
+      <output message="tns:QuerySafetyReportsResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/QuerySafetyReportsResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="getSafetyReports">
+      <input message="tns:GetSafetyReportsRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/GetSafetyReportsRequest" />
+      <output message="tns:GetSafetyReportsResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/GetSafetyReportsResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="viewSafetyReport">
+      <input message="tns:ViewSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/ViewSafetyReportRequest" />
+      <output message="tns:ViewSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/ViewSafetyReportResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />

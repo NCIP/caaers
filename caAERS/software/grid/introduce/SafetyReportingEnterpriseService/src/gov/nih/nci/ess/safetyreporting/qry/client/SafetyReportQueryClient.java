@@ -76,6 +76,45 @@ public class SafetyReportQueryClient extends SafetyReportQueryClientBase impleme
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.DSET_SafetyReportVersion querySafetyReports(gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion safetyReportVersion) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"querySafetyReports");
+    gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsRequest params = new gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsRequest();
+    gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsRequestSafetyReportVersion safetyReportVersionContainer = new gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsRequestSafetyReportVersion();
+    safetyReportVersionContainer.setSafetyReportVersion(safetyReportVersion);
+    params.setSafetyReportVersion(safetyReportVersionContainer);
+    gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsResponse boxedResult = portType.querySafetyReports(params);
+    return boxedResult.getDSET_SafetyReportVersion();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.DSET_SafetyReportVersion getSafetyReports(_21090.org.iso.DSET_II dSET_II) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getSafetyReports");
+    gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsRequest params = new gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsRequest();
+    gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsRequestDSET_II dSET_IIContainer = new gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsRequestDSET_II();
+    dSET_IIContainer.setDSET_II(dSET_II);
+    params.setDSET_II(dSET_IIContainer);
+    gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsResponse boxedResult = portType.getSafetyReports(params);
+    return boxedResult.getDSET_SafetyReportVersion();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportFormat viewSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,_21090.org.iso.ST desiredFormat) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"viewSafetyReport");
+    gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequestSafetyReportId();
+    safetyReportIdContainer.setId(safetyReportId);
+    params.setSafetyReportId(safetyReportIdContainer);
+    gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequestDesiredFormat desiredFormatContainer = new gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequestDesiredFormat();
+    desiredFormatContainer.setST(desiredFormat);
+    params.setDesiredFormat(desiredFormatContainer);
+    gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportResponse boxedResult = portType.viewSafetyReport(params);
+    return boxedResult.getSafetyReportFormat();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");

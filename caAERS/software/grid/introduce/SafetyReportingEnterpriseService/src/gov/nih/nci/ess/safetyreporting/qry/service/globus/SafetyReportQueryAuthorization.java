@@ -66,6 +66,18 @@ public class SafetyReportQueryAuthorization implements PDP {
 	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeQuerySafetyReports(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetSafetyReports(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeViewSafetyReport(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -82,6 +94,15 @@ public class SafetyReportQueryAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("setTerminationTime")){
 			authorizeSetTerminationTime(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("querySafetyReports")){
+			authorizeQuerySafetyReports(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getSafetyReports")){
+			authorizeGetSafetyReports(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("viewSafetyReport")){
+			authorizeViewSafetyReport(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

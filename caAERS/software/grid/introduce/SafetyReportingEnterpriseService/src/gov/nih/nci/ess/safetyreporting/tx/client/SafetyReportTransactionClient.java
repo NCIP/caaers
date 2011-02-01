@@ -76,6 +76,60 @@ public class SafetyReportTransactionClient extends SafetyReportTransactionClient
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion amendSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id amendmentId,_21090.org.iso.ST reasonForAmend) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"amendSafetyReport");
+    gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequestSafetyReportId();
+    safetyReportIdContainer.setId(safetyReportId);
+    params.setSafetyReportId(safetyReportIdContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequestAmendmentId amendmentIdContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequestAmendmentId();
+    amendmentIdContainer.setId(amendmentId);
+    params.setAmendmentId(amendmentIdContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequestReasonForAmend reasonForAmendContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequestReasonForAmend();
+    reasonForAmendContainer.setST(reasonForAmend);
+    params.setReasonForAmend(reasonForAmendContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportResponse boxedResult = portType.amendSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion submitSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id submitterId,_21090.org.iso.DSET_II additionalRecipientIds) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"submitSafetyReport");
+    gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequestSafetyReportId();
+    safetyReportIdContainer.setId(safetyReportId);
+    params.setSafetyReportId(safetyReportIdContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequestSubmitterId submitterIdContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequestSubmitterId();
+    submitterIdContainer.setId(submitterId);
+    params.setSubmitterId(submitterIdContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequestAdditionalRecipientIds additionalRecipientIdsContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequestAdditionalRecipientIds();
+    additionalRecipientIdsContainer.setDSET_II(additionalRecipientIds);
+    params.setAdditionalRecipientIds(additionalRecipientIdsContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportResponse boxedResult = portType.submitSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion withdrawSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id withdrawerId,_21090.org.iso.ST reasonForWithdraw) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"withdrawSafetyReport");
+    gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequestSafetyReportId();
+    safetyReportIdContainer.setId(safetyReportId);
+    params.setSafetyReportId(safetyReportIdContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequestWithdrawerId withdrawerIdContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequestWithdrawerId();
+    withdrawerIdContainer.setId(withdrawerId);
+    params.setWithdrawerId(withdrawerIdContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequestReasonForWithdraw reasonForWithdrawContainer = new gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequestReasonForWithdraw();
+    reasonForWithdrawContainer.setST(reasonForWithdraw);
+    params.setReasonForWithdraw(reasonForWithdrawContainer);
+    gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportResponse boxedResult = portType.withdrawSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");

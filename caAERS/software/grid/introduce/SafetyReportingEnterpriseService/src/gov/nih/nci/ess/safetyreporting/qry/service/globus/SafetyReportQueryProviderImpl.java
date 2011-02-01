@@ -26,4 +26,22 @@ public class SafetyReportQueryProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsResponse querySafetyReports(gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsResponse boxedResult = new gov.nih.nci.ess.safetyreporting.qry.stubs.QuerySafetyReportsResponse();
+    boxedResult.setDSET_SafetyReportVersion(impl.querySafetyReports(params.getSafetyReportVersion().getSafetyReportVersion()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsResponse getSafetyReports(gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsResponse boxedResult = new gov.nih.nci.ess.safetyreporting.qry.stubs.GetSafetyReportsResponse();
+    boxedResult.setDSET_SafetyReportVersion(impl.getSafetyReports(params.getDSET_II().getDSET_II()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportResponse viewSafetyReport(gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.qry.stubs.ViewSafetyReportResponse();
+    boxedResult.setSafetyReportFormat(impl.viewSafetyReport(params.getSafetyReportId().getId(),params.getDesiredFormat().getST()));
+    return boxedResult;
+  }
+
 }
