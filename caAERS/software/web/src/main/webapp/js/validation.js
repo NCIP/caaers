@@ -315,6 +315,10 @@ var ValidationManager = {
         };
     },
 
+    hasState: function(inputField, state) {
+        return (Element.hasClassName(inputField, state));
+    },
+
     setInvalidState: function(inputField) {
         if (Element.hasClassName(inputField, "mandatory") || Element.hasClassName(inputField, "required") || Element.hasClassName(inputField, "validField") || Element.hasClassName(inputField, "valueOK")) {
             Element.removeClassName(inputField, "validField");

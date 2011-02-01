@@ -56,7 +56,17 @@
             NAME_FIELDS.each(function(field) {
             	if(user[field] != null) {
                     updateFieldValue(prefix + '.' + field, user[field]);
-                    ValidationManager.setNormalState($(prefix + '.' + field));
+
+                    var isRequired = ValidationManager.hasState(prefix + '.' + field, 'required') ||
+                                     ValidationManager.hasState(prefix + '.' + field, 'mandatory') ||
+                                     ValidationManager.hasState(prefix + '.' + field, 'valueOK') ||
+                                     ValidationManager.hasState(prefix + '.' + field, 'validField');
+
+                    if (isRequired && user[field] != "")
+                        ValidationManager.setNormalState($(prefix + '.' + field));
+                    else {
+                        ValidationManager.setInvalidState($(prefix + '.' + field));
+                    }
                 }
             })
             
