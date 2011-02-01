@@ -32,6 +32,80 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <element name="CreateSafetyReportDefinitionNotificationRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportDefinitionNotification">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reportDefinitionId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateSafetyReportDefinitionNotificationResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateSafetyReportDefinitionNotificationRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportDefinitionNotification">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateSafetyReportDefinitionNotificationResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateSafetyReportDefinitionNotificationRequest">
+        <complexType>
+          <sequence>
+            <element name="notificationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reasonForDeactivation">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateSafetyReportDefinitionNotificationResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportNotificationResourceProperties">
         <complexType>
           <sequence>
@@ -43,12 +117,48 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="CreateSafetyReportDefinitionNotificationRequest">
+    <part name="parameters" element="tns:CreateSafetyReportDefinitionNotificationRequest" />
+  </message>
+  <message name="CreateSafetyReportDefinitionNotificationResponse">
+    <part name="parameters" element="tns:CreateSafetyReportDefinitionNotificationResponse" />
+  </message>
+  <message name="UpdateSafetyReportDefinitionNotificationRequest">
+    <part name="parameters" element="tns:UpdateSafetyReportDefinitionNotificationRequest" />
+  </message>
+  <message name="UpdateSafetyReportDefinitionNotificationResponse">
+    <part name="parameters" element="tns:UpdateSafetyReportDefinitionNotificationResponse" />
+  </message>
+  <message name="DeactivateSafetyReportDefinitionNotificationRequest">
+    <part name="parameters" element="tns:DeactivateSafetyReportDefinitionNotificationRequest" />
+  </message>
+  <message name="DeactivateSafetyReportDefinitionNotificationResponse">
+    <part name="parameters" element="tns:DeactivateSafetyReportDefinitionNotificationResponse" />
+  </message>
+  <message name="SafetyReportingServiceExceptionFaultMessage">
+    <part name="fault" element="ns8:SafetyReportingServiceException" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="SafetyReportNotificationPortType" wsrp:ResourceProperties="tns:SafetyReportNotificationResourceProperties">
+    <operation name="createSafetyReportDefinitionNotification">
+      <input message="tns:CreateSafetyReportDefinitionNotificationRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/CreateSafetyReportDefinitionNotificationRequest" />
+      <output message="tns:CreateSafetyReportDefinitionNotificationResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/CreateSafetyReportDefinitionNotificationResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="updateSafetyReportDefinitionNotification">
+      <input message="tns:UpdateSafetyReportDefinitionNotificationRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/UpdateSafetyReportDefinitionNotificationRequest" />
+      <output message="tns:UpdateSafetyReportDefinitionNotificationResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/UpdateSafetyReportDefinitionNotificationResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="deactivateSafetyReportDefinitionNotification">
+      <input message="tns:DeactivateSafetyReportDefinitionNotificationRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/DeactivateSafetyReportDefinitionNotificationRequest" />
+      <output message="tns:DeactivateSafetyReportDefinitionNotificationResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/DeactivateSafetyReportDefinitionNotificationResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />

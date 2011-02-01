@@ -26,4 +26,22 @@ public class SafetyReportNotificationProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationResponse createSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationResponse boxedResult = new gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationResponse();
+    boxedResult.setSafetyReportDefinitionNotification(impl.createSafetyReportDefinitionNotification(params.getSafetyReportDefinitionNotification().getSafetyReportDefinitionNotification(),params.getReportDefinitionId().getId()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationResponse updateSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationResponse boxedResult = new gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationResponse();
+    boxedResult.setSafetyReportDefinitionNotification(impl.updateSafetyReportDefinitionNotification(params.getSafetyReportDefinitionNotification().getSafetyReportDefinitionNotification()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationResponse deactivateSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationResponse boxedResult = new gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationResponse();
+    boxedResult.setSafetyReportDefinitionNotification(impl.deactivateSafetyReportDefinitionNotification(params.getNotificationId().getId(),params.getReasonForDeactivation().getST()));
+    return boxedResult;
+  }
+
 }

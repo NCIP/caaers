@@ -66,6 +66,18 @@ public class SafetyReportNotificationAuthorization implements PDP {
 	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeCreateSafetyReportDefinitionNotification(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateSafetyReportDefinitionNotification(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeDeactivateSafetyReportDefinitionNotification(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -82,6 +94,15 @@ public class SafetyReportNotificationAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("setTerminationTime")){
 			authorizeSetTerminationTime(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createSafetyReportDefinitionNotification")){
+			authorizeCreateSafetyReportDefinitionNotification(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSafetyReportDefinitionNotification")){
+			authorizeUpdateSafetyReportDefinitionNotification(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deactivateSafetyReportDefinitionNotification")){
+			authorizeDeactivateSafetyReportDefinitionNotification(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;
