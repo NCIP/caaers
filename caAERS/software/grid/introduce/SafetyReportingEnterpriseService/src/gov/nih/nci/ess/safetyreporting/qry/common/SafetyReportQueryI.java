@@ -12,15 +12,15 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportQueryI {
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
+
   public gov.nih.nci.ess.safetyreporting.types.DSET_SafetyReportVersion querySafetyReports(gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion safetyReportVersion) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
   public gov.nih.nci.ess.safetyreporting.types.DSET_SafetyReportVersion getSafetyReports(_21090.org.iso.DSET_II dSET_II) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportFormat viewSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,_21090.org.iso.ST desiredFormat) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
 
 }
 

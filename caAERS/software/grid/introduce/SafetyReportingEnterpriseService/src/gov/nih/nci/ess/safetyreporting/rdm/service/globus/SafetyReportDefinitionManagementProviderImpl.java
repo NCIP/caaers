@@ -26,4 +26,40 @@ public class SafetyReportDefinitionManagementProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionResponse createSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionResponse();
+    boxedResult.setReportDefinition(impl.createSafetyReportDefinition(params.getReportDefinition().getReportDefinition()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsResponse updateSafetyReportDefinitionDetails(gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsResponse();
+    boxedResult.setReportDefinition(impl.updateSafetyReportDefinitionDetails(params.getReportDefinition().getReportDefinition()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsResponse updateSafetyReportDefinitionDeliveryDetails(gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsResponse();
+    boxedResult.setReportDefinition(impl.updateSafetyReportDefinitionDeliveryDetails(params.getReportDefinition().getReportDefinition()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsResponse updateSafetyReportDefinitionMandatoryFields(gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsResponse();
+    boxedResult.setReportDefinition(impl.updateSafetyReportDefinitionMandatoryFields(params.getReportDefinition().getReportDefinition()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionResponse deactivateSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionResponse();
+    boxedResult.setReportDefinition(impl.deactivateSafetyReportDefinition(params.getReportDefinitionId().getId(),params.getReasonForDeactivation().getST()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyResponse updateSafetyReportTerminologyForStudy(gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyResponse();
+    boxedResult.setBl(impl.updateSafetyReportTerminologyForStudy(params.getReportDefinitionId().getId(),params.getStudyId().getId(),params.getReportTerminologyId().getId()));
+    return boxedResult;
+  }
+
 }

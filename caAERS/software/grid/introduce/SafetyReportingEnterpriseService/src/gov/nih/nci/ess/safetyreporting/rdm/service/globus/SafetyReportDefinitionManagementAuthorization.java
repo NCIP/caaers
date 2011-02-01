@@ -66,6 +66,30 @@ public class SafetyReportDefinitionManagementAuthorization implements PDP {
 	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeCreateSafetyReportDefinition(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateSafetyReportDefinitionDetails(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateSafetyReportDefinitionDeliveryDetails(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateSafetyReportDefinitionMandatoryFields(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeDeactivateSafetyReportDefinition(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateSafetyReportTerminologyForStudy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -82,6 +106,24 @@ public class SafetyReportDefinitionManagementAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("setTerminationTime")){
 			authorizeSetTerminationTime(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createSafetyReportDefinition")){
+			authorizeCreateSafetyReportDefinition(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSafetyReportDefinitionDetails")){
+			authorizeUpdateSafetyReportDefinitionDetails(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSafetyReportDefinitionDeliveryDetails")){
+			authorizeUpdateSafetyReportDefinitionDeliveryDetails(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSafetyReportDefinitionMandatoryFields")){
+			authorizeUpdateSafetyReportDefinitionMandatoryFields(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deactivateSafetyReportDefinition")){
+			authorizeDeactivateSafetyReportDefinition(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSafetyReportTerminologyForStudy")){
+			authorizeUpdateSafetyReportTerminologyForStudy(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

@@ -76,6 +76,87 @@ public class SafetyReportDefinitionManagementClient extends SafetyReportDefiniti
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition createSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createSafetyReportDefinition");
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionRequest params = new gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionRequest();
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionRequestReportDefinition reportDefinitionContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionRequestReportDefinition();
+    reportDefinitionContainer.setReportDefinition(reportDefinition);
+    params.setReportDefinition(reportDefinitionContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.CreateSafetyReportDefinitionResponse boxedResult = portType.createSafetyReportDefinition(params);
+    return boxedResult.getReportDefinition();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition updateSafetyReportDefinitionDetails(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateSafetyReportDefinitionDetails");
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsRequest params = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsRequest();
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsRequestReportDefinition reportDefinitionContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsRequestReportDefinition();
+    reportDefinitionContainer.setReportDefinition(reportDefinition);
+    params.setReportDefinition(reportDefinitionContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDetailsResponse boxedResult = portType.updateSafetyReportDefinitionDetails(params);
+    return boxedResult.getReportDefinition();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition updateSafetyReportDefinitionDeliveryDetails(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateSafetyReportDefinitionDeliveryDetails");
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsRequest params = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsRequest();
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsRequestReportDefinition reportDefinitionContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsRequestReportDefinition();
+    reportDefinitionContainer.setReportDefinition(reportDefinition);
+    params.setReportDefinition(reportDefinitionContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionDeliveryDetailsResponse boxedResult = portType.updateSafetyReportDefinitionDeliveryDetails(params);
+    return boxedResult.getReportDefinition();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition updateSafetyReportDefinitionMandatoryFields(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateSafetyReportDefinitionMandatoryFields");
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsRequest params = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsRequest();
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsRequestReportDefinition reportDefinitionContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsRequestReportDefinition();
+    reportDefinitionContainer.setReportDefinition(reportDefinition);
+    params.setReportDefinition(reportDefinitionContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportDefinitionMandatoryFieldsResponse boxedResult = portType.updateSafetyReportDefinitionMandatoryFields(params);
+    return boxedResult.getReportDefinition();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition deactivateSafetyReportDefinition(ess.caaers.nci.nih.gov.Id reportDefinitionId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"deactivateSafetyReportDefinition");
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequest params = new gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequest();
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequestReportDefinitionId reportDefinitionIdContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequestReportDefinitionId();
+    reportDefinitionIdContainer.setId(reportDefinitionId);
+    params.setReportDefinitionId(reportDefinitionIdContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequestReasonForDeactivation reasonForDeactivationContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionRequestReasonForDeactivation();
+    reasonForDeactivationContainer.setST(reasonForDeactivation);
+    params.setReasonForDeactivation(reasonForDeactivationContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.DeactivateSafetyReportDefinitionResponse boxedResult = portType.deactivateSafetyReportDefinition(params);
+    return boxedResult.getReportDefinition();
+    }
+  }
+
+  public ess.caaers.nci.nih.gov.Bl updateSafetyReportTerminologyForStudy(ess.caaers.nci.nih.gov.Id reportDefinitionId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id reportTerminologyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateSafetyReportTerminologyForStudy");
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequest params = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequest();
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequestReportDefinitionId reportDefinitionIdContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequestReportDefinitionId();
+    reportDefinitionIdContainer.setId(reportDefinitionId);
+    params.setReportDefinitionId(reportDefinitionIdContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequestReportTerminologyId reportTerminologyIdContainer = new gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyRequestReportTerminologyId();
+    reportTerminologyIdContainer.setId(reportTerminologyId);
+    params.setReportTerminologyId(reportTerminologyIdContainer);
+    gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyResponse boxedResult = portType.updateSafetyReportTerminologyForStudy(params);
+    return boxedResult.getBl();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");
