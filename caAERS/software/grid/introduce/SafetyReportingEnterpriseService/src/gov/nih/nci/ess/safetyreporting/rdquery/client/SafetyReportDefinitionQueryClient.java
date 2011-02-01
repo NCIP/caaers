@@ -76,6 +76,30 @@ public class SafetyReportDefinitionQueryClient extends SafetyReportDefinitionQue
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.DSET_ReportDefinition querySafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"querySafetyReportDefinition");
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionRequest params = new gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionRequest();
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionRequestReportDefinition reportDefinitionContainer = new gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionRequestReportDefinition();
+    reportDefinitionContainer.setReportDefinition(reportDefinition);
+    params.setReportDefinition(reportDefinitionContainer);
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionResponse boxedResult = portType.querySafetyReportDefinition(params);
+    return boxedResult.getDSET_ReportDefinition();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition getSafetyReportDefinition(ess.caaers.nci.nih.gov.Id reportDefinitionId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getSafetyReportDefinition");
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionRequest params = new gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionRequest();
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionRequestReportDefinitionId reportDefinitionIdContainer = new gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionRequestReportDefinitionId();
+    reportDefinitionIdContainer.setId(reportDefinitionId);
+    params.setReportDefinitionId(reportDefinitionIdContainer);
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionResponse boxedResult = portType.getSafetyReportDefinition(params);
+    return boxedResult.getReportDefinition();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");

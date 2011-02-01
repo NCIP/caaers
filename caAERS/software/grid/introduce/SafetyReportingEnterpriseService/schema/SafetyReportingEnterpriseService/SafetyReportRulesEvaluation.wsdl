@@ -32,6 +32,47 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <element name="EvaluateAgainstSafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="adverseEventId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="problemId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="EvaluateAgainstSafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:DSET_ReportDefinition" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportRulesEvaluationResourceProperties">
         <complexType>
           <sequence>
@@ -43,12 +84,26 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="EvaluateAgainstSafetyReportingRulesRequest">
+    <part name="parameters" element="tns:EvaluateAgainstSafetyReportingRulesRequest" />
+  </message>
+  <message name="EvaluateAgainstSafetyReportingRulesResponse">
+    <part name="parameters" element="tns:EvaluateAgainstSafetyReportingRulesResponse" />
+  </message>
+  <message name="SafetyReportingServiceExceptionFaultMessage">
+    <part name="fault" element="ns8:SafetyReportingServiceException" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="SafetyReportRulesEvaluationPortType" wsrp:ResourceProperties="tns:SafetyReportRulesEvaluationResourceProperties">
+    <operation name="evaluateAgainstSafetyReportingRules">
+      <input message="tns:EvaluateAgainstSafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesEvaluation/EvaluateAgainstSafetyReportingRulesRequest" />
+      <output message="tns:EvaluateAgainstSafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesEvaluation/EvaluateAgainstSafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesEvaluation/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />

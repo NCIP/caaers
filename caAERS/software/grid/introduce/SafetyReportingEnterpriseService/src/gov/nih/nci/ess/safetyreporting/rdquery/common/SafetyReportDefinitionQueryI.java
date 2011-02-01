@@ -12,6 +12,10 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportDefinitionQueryI {
 
+  public gov.nih.nci.ess.safetyreporting.types.DSET_ReportDefinition querySafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition getSafetyReportDefinition(ess.caaers.nci.nih.gov.Id reportDefinitionId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
 
   public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;

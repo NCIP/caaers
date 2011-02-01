@@ -76,6 +76,20 @@ public class SafetyReportReviewClient extends SafetyReportReviewClientBase imple
 		}
 	}
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"destroy");
+    return portType.destroy(params);
+    }
+  }
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setTerminationTime");
+    return portType.setTerminationTime(params);
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview createSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.types.SafetyReportReview safetyReportReview,ess.caaers.nci.nih.gov.Id reportDefinitionId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createSafetyReportReviewProcess");
@@ -163,20 +177,6 @@ public class SafetyReportReviewClient extends SafetyReportReviewClientBase imple
     params.setComments(commentsContainer);
     gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportResponse boxedResult = portType.reviewSafetyReport(params);
     return boxedResult.getSafetyReportReview();
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"destroy");
-    return portType.destroy(params);
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"setTerminationTime");
-    return portType.setTerminationTime(params);
     }
   }
 

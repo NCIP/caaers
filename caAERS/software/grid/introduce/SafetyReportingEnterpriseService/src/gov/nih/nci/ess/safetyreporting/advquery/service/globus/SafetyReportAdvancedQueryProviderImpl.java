@@ -26,4 +26,10 @@ public class SafetyReportAdvancedQueryProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataResponse getSafetyReportSummaryData(gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataRequest params) throws RemoteException {
+    gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataResponse boxedResult = new gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataResponse();
+    impl.getSafetyReportSummaryData();
+    return boxedResult;
+  }
+
 }

@@ -26,4 +26,10 @@ public class SafetyReportRulesEvaluationProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesResponse evaluateAgainstSafetyReportingRules(gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesResponse boxedResult = new gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesResponse();
+    boxedResult.setDSET_ReportDefinition(impl.evaluateAgainstSafetyReportingRules(params.getAdverseEventId().getId(),params.getProblemId().getId(),params.getStudyId().getId(),params.getOrganizationId().getId()));
+    return boxedResult;
+  }
+
 }

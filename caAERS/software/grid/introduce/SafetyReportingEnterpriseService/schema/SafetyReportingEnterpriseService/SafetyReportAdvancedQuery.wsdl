@@ -32,6 +32,16 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <element name="GetSafetyReportSummaryDataRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetSafetyReportSummaryDataResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
       <element name="SafetyReportAdvancedQueryResourceProperties">
         <complexType>
           <sequence>
@@ -43,12 +53,22 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="GetSafetyReportSummaryDataRequest">
+    <part name="parameters" element="tns:GetSafetyReportSummaryDataRequest" />
+  </message>
+  <message name="GetSafetyReportSummaryDataResponse">
+    <part name="parameters" element="tns:GetSafetyReportSummaryDataResponse" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="SafetyReportAdvancedQueryPortType" wsrp:ResourceProperties="tns:SafetyReportAdvancedQueryResourceProperties">
+    <operation name="getSafetyReportSummaryData">
+      <input message="tns:GetSafetyReportSummaryDataRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportAdvancedQuery/GetSafetyReportSummaryDataRequest" />
+      <output message="tns:GetSafetyReportSummaryDataResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportAdvancedQuery/GetSafetyReportSummaryDataResponse" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />

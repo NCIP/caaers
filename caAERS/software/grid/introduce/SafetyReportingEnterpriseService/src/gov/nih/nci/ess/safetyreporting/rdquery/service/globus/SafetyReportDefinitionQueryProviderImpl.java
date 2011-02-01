@@ -26,4 +26,16 @@ public class SafetyReportDefinitionQueryProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionResponse querySafetyReportDefinition(gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdquery.stubs.QuerySafetyReportDefinitionResponse();
+    boxedResult.setDSET_ReportDefinition(impl.querySafetyReportDefinition(params.getReportDefinition().getReportDefinition()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionResponse getSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionResponse();
+    boxedResult.setReportDefinition(impl.getSafetyReportDefinition(params.getReportDefinitionId().getId()));
+    return boxedResult;
+  }
+
 }

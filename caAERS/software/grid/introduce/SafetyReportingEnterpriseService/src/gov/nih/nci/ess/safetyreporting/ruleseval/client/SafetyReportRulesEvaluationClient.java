@@ -76,6 +76,27 @@ public class SafetyReportRulesEvaluationClient extends SafetyReportRulesEvaluati
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.DSET_ReportDefinition evaluateAgainstSafetyReportingRules(ess.caaers.nci.nih.gov.Id adverseEventId,ess.caaers.nci.nih.gov.Id problemId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"evaluateAgainstSafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestAdverseEventId adverseEventIdContainer = new gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestAdverseEventId();
+    adverseEventIdContainer.setId(adverseEventId);
+    params.setAdverseEventId(adverseEventIdContainer);
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestProblemId problemIdContainer = new gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestProblemId();
+    problemIdContainer.setId(problemId);
+    params.setProblemId(problemIdContainer);
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesResponse boxedResult = portType.evaluateAgainstSafetyReportingRules(params);
+    return boxedResult.getDSET_ReportDefinition();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");
