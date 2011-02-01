@@ -76,6 +76,20 @@ public class SafetyReportDefinitionManagementClient extends SafetyReportDefiniti
 		}
 	}
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"destroy");
+    return portType.destroy(params);
+    }
+  }
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setTerminationTime");
+    return portType.setTerminationTime(params);
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.ReportDefinition createSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createSafetyReportDefinition");
@@ -154,20 +168,6 @@ public class SafetyReportDefinitionManagementClient extends SafetyReportDefiniti
     params.setReportTerminologyId(reportTerminologyIdContainer);
     gov.nih.nci.ess.safetyreporting.rdm.stubs.UpdateSafetyReportTerminologyForStudyResponse boxedResult = portType.updateSafetyReportTerminologyForStudy(params);
     return boxedResult.getBl();
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"destroy");
-    return portType.destroy(params);
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"setTerminationTime");
-    return portType.setTerminationTime(params);
     }
   }
 

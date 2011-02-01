@@ -76,6 +76,125 @@ public class SafetyReportRulesManagementClient extends SafetyReportRulesManageme
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule createOrganizationSafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createOrganizationSafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesRequestReportingRule reportingRuleContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesRequestReportingRule();
+    reportingRuleContainer.setReportingRule(reportingRule);
+    params.setReportingRule(reportingRuleContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateOrganizationSafetyReportingRulesResponse boxedResult = portType.createOrganizationSafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule updateOrganizationSafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateOrganizationSafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesRequestReportingRule reportingRuleContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesRequestReportingRule();
+    reportingRuleContainer.setReportingRule(reportingRule);
+    params.setReportingRule(reportingRuleContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateOrganizationSafetyReportingRulesResponse boxedResult = portType.updateOrganizationSafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule deactivateOrganizationSafetyReportingRules(ess.caaers.nci.nih.gov.Id organizationId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"deactivateOrganizationSafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesRequestReasonForDeactivation reasonForDeactivationContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesRequestReasonForDeactivation();
+    reasonForDeactivationContainer.setST(reasonForDeactivation);
+    params.setReasonForDeactivation(reasonForDeactivationContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateOrganizationSafetyReportingRulesResponse boxedResult = portType.deactivateOrganizationSafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule createStudySafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createStudySafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequestReportingRule reportingRuleContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequestReportingRule();
+    reportingRuleContainer.setReportingRule(reportingRule);
+    params.setReportingRule(reportingRuleContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.CreateStudySafetyReportingRulesResponse boxedResult = portType.createStudySafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule updateStudySafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateStudySafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequestReportingRule reportingRuleContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequestReportingRule();
+    reportingRuleContainer.setReportingRule(reportingRule);
+    params.setReportingRule(reportingRuleContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.UpdateStudySafetyReportingRulesResponse boxedResult = portType.updateStudySafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule deactivateStudySafetyReportingRules(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"deactivateStudySafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequestReasonForDeactivation reasonForDeactivationContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesRequestReasonForDeactivation();
+    reasonForDeactivationContainer.setST(reasonForDeactivation);
+    params.setReasonForDeactivation(reasonForDeactivationContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.DeactivateStudySafetyReportingRulesResponse boxedResult = portType.deactivateStudySafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
+  public void querySafetyReportingRules() throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"querySafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesResponse boxedResult = portType.querySafetyReportingRules(params);
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.ReportingRule getSafetyReportingRules(ess.caaers.nci.nih.gov.Id ruleId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getSafetyReportingRules");
+    gov.nih.nci.ess.safetyreporting.rules.stubs.GetSafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.GetSafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.GetSafetyReportingRulesRequestRuleId ruleIdContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.GetSafetyReportingRulesRequestRuleId();
+    ruleIdContainer.setId(ruleId);
+    params.setRuleId(ruleIdContainer);
+    gov.nih.nci.ess.safetyreporting.rules.stubs.GetSafetyReportingRulesResponse boxedResult = portType.getSafetyReportingRules(params);
+    return boxedResult.getReportingRule();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");

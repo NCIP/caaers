@@ -66,6 +66,38 @@ public class SafetyReportRulesManagementAuthorization implements PDP {
 	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeCreateOrganizationSafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateOrganizationSafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeDeactivateOrganizationSafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeCreateStudySafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateStudySafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeDeactivateStudySafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeQuerySafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetSafetyReportingRules(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -82,6 +114,30 @@ public class SafetyReportRulesManagementAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("setTerminationTime")){
 			authorizeSetTerminationTime(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createOrganizationSafetyReportingRules")){
+			authorizeCreateOrganizationSafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateOrganizationSafetyReportingRules")){
+			authorizeUpdateOrganizationSafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deactivateOrganizationSafetyReportingRules")){
+			authorizeDeactivateOrganizationSafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createStudySafetyReportingRules")){
+			authorizeCreateStudySafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateStudySafetyReportingRules")){
+			authorizeUpdateStudySafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deactivateStudySafetyReportingRules")){
+			authorizeDeactivateStudySafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("querySafetyReportingRules")){
+			authorizeQuerySafetyReportingRules(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getSafetyReportingRules")){
+			authorizeGetSafetyReportingRules(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

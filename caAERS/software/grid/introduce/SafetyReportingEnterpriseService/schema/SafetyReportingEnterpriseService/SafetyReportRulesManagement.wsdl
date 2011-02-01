@@ -32,6 +32,219 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <element name="CreateOrganizationSafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="reportingRule">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateOrganizationSafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateOrganizationSafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="reportingRule">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateOrganizationSafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateOrganizationSafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reasonForDeactivation">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateOrganizationSafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateStudySafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="reportingRule">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateStudySafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateStudySafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="reportingRule">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateStudySafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateStudySafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reasonForDeactivation">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateStudySafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="QuerySafetyReportingRulesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="QuerySafetyReportingRulesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetSafetyReportingRulesRequest">
+        <complexType>
+          <sequence>
+            <element name="ruleId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSafetyReportingRulesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportRulesManagementResourceProperties">
         <complexType>
           <sequence>
@@ -43,12 +256,102 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="CreateOrganizationSafetyReportingRulesRequest">
+    <part name="parameters" element="tns:CreateOrganizationSafetyReportingRulesRequest" />
+  </message>
+  <message name="CreateOrganizationSafetyReportingRulesResponse">
+    <part name="parameters" element="tns:CreateOrganizationSafetyReportingRulesResponse" />
+  </message>
+  <message name="UpdateOrganizationSafetyReportingRulesRequest">
+    <part name="parameters" element="tns:UpdateOrganizationSafetyReportingRulesRequest" />
+  </message>
+  <message name="UpdateOrganizationSafetyReportingRulesResponse">
+    <part name="parameters" element="tns:UpdateOrganizationSafetyReportingRulesResponse" />
+  </message>
+  <message name="DeactivateOrganizationSafetyReportingRulesRequest">
+    <part name="parameters" element="tns:DeactivateOrganizationSafetyReportingRulesRequest" />
+  </message>
+  <message name="DeactivateOrganizationSafetyReportingRulesResponse">
+    <part name="parameters" element="tns:DeactivateOrganizationSafetyReportingRulesResponse" />
+  </message>
+  <message name="CreateStudySafetyReportingRulesRequest">
+    <part name="parameters" element="tns:CreateStudySafetyReportingRulesRequest" />
+  </message>
+  <message name="CreateStudySafetyReportingRulesResponse">
+    <part name="parameters" element="tns:CreateStudySafetyReportingRulesResponse" />
+  </message>
+  <message name="UpdateStudySafetyReportingRulesRequest">
+    <part name="parameters" element="tns:UpdateStudySafetyReportingRulesRequest" />
+  </message>
+  <message name="UpdateStudySafetyReportingRulesResponse">
+    <part name="parameters" element="tns:UpdateStudySafetyReportingRulesResponse" />
+  </message>
+  <message name="DeactivateStudySafetyReportingRulesRequest">
+    <part name="parameters" element="tns:DeactivateStudySafetyReportingRulesRequest" />
+  </message>
+  <message name="DeactivateStudySafetyReportingRulesResponse">
+    <part name="parameters" element="tns:DeactivateStudySafetyReportingRulesResponse" />
+  </message>
+  <message name="QuerySafetyReportingRulesRequest">
+    <part name="parameters" element="tns:QuerySafetyReportingRulesRequest" />
+  </message>
+  <message name="QuerySafetyReportingRulesResponse">
+    <part name="parameters" element="tns:QuerySafetyReportingRulesResponse" />
+  </message>
+  <message name="GetSafetyReportingRulesRequest">
+    <part name="parameters" element="tns:GetSafetyReportingRulesRequest" />
+  </message>
+  <message name="GetSafetyReportingRulesResponse">
+    <part name="parameters" element="tns:GetSafetyReportingRulesResponse" />
+  </message>
+  <message name="SafetyReportingServiceExceptionFaultMessage">
+    <part name="fault" element="ns8:SafetyReportingServiceException" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="SafetyReportRulesManagementPortType" wsrp:ResourceProperties="tns:SafetyReportRulesManagementResourceProperties">
+    <operation name="createOrganizationSafetyReportingRules">
+      <input message="tns:CreateOrganizationSafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/CreateOrganizationSafetyReportingRulesRequest" />
+      <output message="tns:CreateOrganizationSafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/CreateOrganizationSafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="updateOrganizationSafetyReportingRules">
+      <input message="tns:UpdateOrganizationSafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/UpdateOrganizationSafetyReportingRulesRequest" />
+      <output message="tns:UpdateOrganizationSafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/UpdateOrganizationSafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="deactivateOrganizationSafetyReportingRules">
+      <input message="tns:DeactivateOrganizationSafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/DeactivateOrganizationSafetyReportingRulesRequest" />
+      <output message="tns:DeactivateOrganizationSafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/DeactivateOrganizationSafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="createStudySafetyReportingRules">
+      <input message="tns:CreateStudySafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/CreateStudySafetyReportingRulesRequest" />
+      <output message="tns:CreateStudySafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/CreateStudySafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="updateStudySafetyReportingRules">
+      <input message="tns:UpdateStudySafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/UpdateStudySafetyReportingRulesRequest" />
+      <output message="tns:UpdateStudySafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/UpdateStudySafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="deactivateStudySafetyReportingRules">
+      <input message="tns:DeactivateStudySafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/DeactivateStudySafetyReportingRulesRequest" />
+      <output message="tns:DeactivateStudySafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/DeactivateStudySafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="querySafetyReportingRules">
+      <input message="tns:QuerySafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/QuerySafetyReportingRulesRequest" />
+      <output message="tns:QuerySafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/QuerySafetyReportingRulesResponse" />
+    </operation>
+    <operation name="getSafetyReportingRules">
+      <input message="tns:GetSafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/GetSafetyReportingRulesRequest" />
+      <output message="tns:GetSafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/GetSafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
