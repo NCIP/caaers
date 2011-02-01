@@ -249,13 +249,14 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     protected C save(C command, Errors errors) {
 
         if(errors.hasErrors()) return null;
-        
         command.save();
+
+/*
         if(eventFactory != null && command.isMustFireEvent()){
            eventFactory.publishEntityModifiedEvent(command.getStudy());
         }
+*/
 
-        
         return null;
     }
     
