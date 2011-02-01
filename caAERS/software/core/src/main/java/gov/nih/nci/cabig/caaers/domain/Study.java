@@ -30,12 +30,7 @@ import javax.persistence.Transient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 /**
  * Domain object representing Study(Protocol)
@@ -1255,6 +1250,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @OneToMany
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'ctep'")
@@ -1272,6 +1268,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @OneToMany
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than once")
