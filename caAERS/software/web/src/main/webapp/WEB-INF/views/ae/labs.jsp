@@ -200,7 +200,7 @@
     	
     	<c:if test="${not empty configuration.map.labViewerBaseUrl}">
     		<c:if test="${_studySitePerson || _ccPerson}">
-				<p>View this person's details in <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso" target="_labviewer">lab viewer</a>.</p>
+				<p>View this person's details in <a href="${configuration.map.labViewerBaseUrl}/lablist.action?studySubjectGridId=${command.assignment.gridId}" class="sso" target="_labviewer">lab viewer</a>.</p>
 			</c:if>		 
 		</c:if>
     </jsp:attribute>
