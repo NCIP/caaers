@@ -128,7 +128,11 @@ public class GridServicesAuthorizationHelper {
 	public boolean authorizedLabConsumer(){
 		String gridIdentity = SecurityManager.getManager().getCaller();
 		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		List<UserGroupType> roles = userRepository.getUserGroups(userName);
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
+		if(csmUser == null){
+			return false;
+		}
+		List<UserGroupType> roles = userRepository.getUserGroups(csmUser.getUserId().toString());
 		if(roles.contains(UserGroupType.lab_data_user)){
 			return true;
 		}else{
