@@ -66,6 +66,26 @@ public class SafetyReportReviewAuthorization implements PDP {
 	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeCreateSafetyReportReviewProcess(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateSafetyReportReviewProcess(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeDeactivateSafetyReportReviewProcess(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetSafetyReportReviewProcess(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeReviewSafetyReport(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -82,6 +102,21 @@ public class SafetyReportReviewAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("setTerminationTime")){
 			authorizeSetTerminationTime(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createSafetyReportReviewProcess")){
+			authorizeCreateSafetyReportReviewProcess(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateSafetyReportReviewProcess")){
+			authorizeUpdateSafetyReportReviewProcess(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deactivateSafetyReportReviewProcess")){
+			authorizeDeactivateSafetyReportReviewProcess(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getSafetyReportReviewProcess")){
+			authorizeGetSafetyReportReviewProcess(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("reviewSafetyReport")){
+			authorizeReviewSafetyReport(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

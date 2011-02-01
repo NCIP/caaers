@@ -26,4 +26,34 @@ public class SafetyReportReviewProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessResponse createSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessResponse boxedResult = new gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessResponse();
+    boxedResult.setSafetyReportReview(impl.createSafetyReportReviewProcess(params.getSafetyReportReview().getSafetyReportReview(),params.getReportDefinitionId().getId(),params.getStudyId().getId(),params.getOrganizationId().getId()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessResponse updateSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessResponse boxedResult = new gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessResponse();
+    boxedResult.setSafetyReportReview(impl.updateSafetyReportReviewProcess(params.getSafetyReportReview().getSafetyReportReview(),params.getStudyId().getId(),params.getOrganizationId().getId()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessResponse deactivateSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessResponse boxedResult = new gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessResponse();
+    boxedResult.setBl(impl.deactivateSafetyReportReviewProcess(params.getReviewProcessId().getId(),params.getReasonForDeactivation().getST()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessResponse getSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessResponse boxedResult = new gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessResponse();
+    boxedResult.setSafetyReportReview(impl.getSafetyReportReviewProcess(params.getReviewProcessId().getId()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportResponse reviewSafetyReport(gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportResponse();
+    boxedResult.setSafetyReportReview(impl.reviewSafetyReport(params.getReviewProcessId().getId(),params.getReviewDispostion().getST(),params.getReviewerid().getId(),params.getTimeOdReview().getTsDateTime(),params.getComments().getST()));
+    return boxedResult;
+  }
+
 }

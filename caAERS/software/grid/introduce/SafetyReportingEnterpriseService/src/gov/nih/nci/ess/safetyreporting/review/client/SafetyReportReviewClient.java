@@ -76,6 +76,96 @@ public class SafetyReportReviewClient extends SafetyReportReviewClientBase imple
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview createSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.types.SafetyReportReview safetyReportReview,ess.caaers.nci.nih.gov.Id reportDefinitionId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createSafetyReportReviewProcess");
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequest params = new gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequest();
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestSafetyReportReview safetyReportReviewContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestSafetyReportReview();
+    safetyReportReviewContainer.setSafetyReportReview(safetyReportReview);
+    params.setSafetyReportReview(safetyReportReviewContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestReportDefinitionId reportDefinitionIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestReportDefinitionId();
+    reportDefinitionIdContainer.setId(reportDefinitionId);
+    params.setReportDefinitionId(reportDefinitionIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.CreateSafetyReportReviewProcessResponse boxedResult = portType.createSafetyReportReviewProcess(params);
+    return boxedResult.getSafetyReportReview();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview updateSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.types.SafetyReportReview safetyReportReview,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateSafetyReportReviewProcess");
+    gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequest params = new gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequest();
+    gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequestSafetyReportReview safetyReportReviewContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequestSafetyReportReview();
+    safetyReportReviewContainer.setSafetyReportReview(safetyReportReview);
+    params.setSafetyReportReview(safetyReportReviewContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequestOrganizationId organizationIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessRequestOrganizationId();
+    organizationIdContainer.setId(organizationId);
+    params.setOrganizationId(organizationIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.UpdateSafetyReportReviewProcessResponse boxedResult = portType.updateSafetyReportReviewProcess(params);
+    return boxedResult.getSafetyReportReview();
+    }
+  }
+
+  public ess.caaers.nci.nih.gov.Bl deactivateSafetyReportReviewProcess(ess.caaers.nci.nih.gov.Id reviewProcessId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"deactivateSafetyReportReviewProcess");
+    gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequest params = new gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequest();
+    gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequestReviewProcessId reviewProcessIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequestReviewProcessId();
+    reviewProcessIdContainer.setId(reviewProcessId);
+    params.setReviewProcessId(reviewProcessIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequestReasonForDeactivation reasonForDeactivationContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessRequestReasonForDeactivation();
+    reasonForDeactivationContainer.setST(reasonForDeactivation);
+    params.setReasonForDeactivation(reasonForDeactivationContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.DeactivateSafetyReportReviewProcessResponse boxedResult = portType.deactivateSafetyReportReviewProcess(params);
+    return boxedResult.getBl();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview getSafetyReportReviewProcess(ess.caaers.nci.nih.gov.Id reviewProcessId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getSafetyReportReviewProcess");
+    gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessRequest params = new gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessRequest();
+    gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessRequestReviewProcessId reviewProcessIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessRequestReviewProcessId();
+    reviewProcessIdContainer.setId(reviewProcessId);
+    params.setReviewProcessId(reviewProcessIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.GetSafetyReportReviewProcessResponse boxedResult = portType.getSafetyReportReviewProcess(params);
+    return boxedResult.getSafetyReportReview();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview reviewSafetyReport(ess.caaers.nci.nih.gov.Id reviewProcessId,_21090.org.iso.ST reviewDispostion,ess.caaers.nci.nih.gov.Id reviewerid,ess.caaers.nci.nih.gov.TsDateTime timeOdReview,_21090.org.iso.ST comments) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"reviewSafetyReport");
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestReviewProcessId reviewProcessIdContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestReviewProcessId();
+    reviewProcessIdContainer.setId(reviewProcessId);
+    params.setReviewProcessId(reviewProcessIdContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestReviewDispostion reviewDispostionContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestReviewDispostion();
+    reviewDispostionContainer.setST(reviewDispostion);
+    params.setReviewDispostion(reviewDispostionContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestReviewerid revieweridContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestReviewerid();
+    revieweridContainer.setId(reviewerid);
+    params.setReviewerid(revieweridContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestTimeOdReview timeOdReviewContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestTimeOdReview();
+    timeOdReviewContainer.setTsDateTime(timeOdReview);
+    params.setTimeOdReview(timeOdReviewContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestComments commentsContainer = new gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportRequestComments();
+    commentsContainer.setST(comments);
+    params.setComments(commentsContainer);
+    gov.nih.nci.ess.safetyreporting.review.stubs.ReviewSafetyReportResponse boxedResult = portType.reviewSafetyReport(params);
+    return boxedResult.getSafetyReportReview();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");

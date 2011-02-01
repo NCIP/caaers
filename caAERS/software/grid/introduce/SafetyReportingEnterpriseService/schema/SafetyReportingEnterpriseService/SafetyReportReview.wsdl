@@ -32,6 +32,176 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" schemaLocation="./SafetyReportTransactionTypes.xsd" />
       <import namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" schemaLocation="./SafetyReportQueryTypes.xsd" />
+      <element name="CreateSafetyReportReviewProcessRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportReview">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SafetyReportReview" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reportDefinitionId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateSafetyReportReviewProcessResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportReview" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateSafetyReportReviewProcessRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportReview">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SafetyReportReview" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="studyId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="organizationId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateSafetyReportReviewProcessResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportReview" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateSafetyReportReviewProcessRequest">
+        <complexType>
+          <sequence>
+            <element name="reviewProcessId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reasonForDeactivation">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeactivateSafetyReportReviewProcessResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns2:Bl" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSafetyReportReviewProcessRequest">
+        <complexType>
+          <sequence>
+            <element name="reviewProcessId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSafetyReportReviewProcessResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportReview" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ReviewSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="reviewProcessId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reviewDispostion">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reviewerid">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="timeOdReview">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:TsDateTime" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="comments">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ReviewSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportReview" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportReviewResourceProperties">
         <complexType>
           <sequence>
@@ -43,12 +213,70 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="CreateSafetyReportReviewProcessRequest">
+    <part name="parameters" element="tns:CreateSafetyReportReviewProcessRequest" />
+  </message>
+  <message name="CreateSafetyReportReviewProcessResponse">
+    <part name="parameters" element="tns:CreateSafetyReportReviewProcessResponse" />
+  </message>
+  <message name="UpdateSafetyReportReviewProcessRequest">
+    <part name="parameters" element="tns:UpdateSafetyReportReviewProcessRequest" />
+  </message>
+  <message name="UpdateSafetyReportReviewProcessResponse">
+    <part name="parameters" element="tns:UpdateSafetyReportReviewProcessResponse" />
+  </message>
+  <message name="DeactivateSafetyReportReviewProcessRequest">
+    <part name="parameters" element="tns:DeactivateSafetyReportReviewProcessRequest" />
+  </message>
+  <message name="DeactivateSafetyReportReviewProcessResponse">
+    <part name="parameters" element="tns:DeactivateSafetyReportReviewProcessResponse" />
+  </message>
+  <message name="GetSafetyReportReviewProcessRequest">
+    <part name="parameters" element="tns:GetSafetyReportReviewProcessRequest" />
+  </message>
+  <message name="GetSafetyReportReviewProcessResponse">
+    <part name="parameters" element="tns:GetSafetyReportReviewProcessResponse" />
+  </message>
+  <message name="ReviewSafetyReportRequest">
+    <part name="parameters" element="tns:ReviewSafetyReportRequest" />
+  </message>
+  <message name="ReviewSafetyReportResponse">
+    <part name="parameters" element="tns:ReviewSafetyReportResponse" />
+  </message>
+  <message name="SafetyReportingServiceExceptionFaultMessage">
+    <part name="fault" element="ns8:SafetyReportingServiceException" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="SafetyReportReviewPortType" wsrp:ResourceProperties="tns:SafetyReportReviewResourceProperties">
+    <operation name="createSafetyReportReviewProcess">
+      <input message="tns:CreateSafetyReportReviewProcessRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/CreateSafetyReportReviewProcessRequest" />
+      <output message="tns:CreateSafetyReportReviewProcessResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/CreateSafetyReportReviewProcessResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="updateSafetyReportReviewProcess">
+      <input message="tns:UpdateSafetyReportReviewProcessRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/UpdateSafetyReportReviewProcessRequest" />
+      <output message="tns:UpdateSafetyReportReviewProcessResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/UpdateSafetyReportReviewProcessResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="deactivateSafetyReportReviewProcess">
+      <input message="tns:DeactivateSafetyReportReviewProcessRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/DeactivateSafetyReportReviewProcessRequest" />
+      <output message="tns:DeactivateSafetyReportReviewProcessResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/DeactivateSafetyReportReviewProcessResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="getSafetyReportReviewProcess">
+      <input message="tns:GetSafetyReportReviewProcessRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/GetSafetyReportReviewProcessRequest" />
+      <output message="tns:GetSafetyReportReviewProcessResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/GetSafetyReportReviewProcessResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="reviewSafetyReport">
+      <input message="tns:ReviewSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/ReviewSafetyReportRequest" />
+      <output message="tns:ReviewSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/ReviewSafetyReportResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />

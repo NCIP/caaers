@@ -12,6 +12,16 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportReviewI {
 
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview createSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.types.SafetyReportReview safetyReportReview,ess.caaers.nci.nih.gov.Id reportDefinitionId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview updateSafetyReportReviewProcess(gov.nih.nci.ess.safetyreporting.types.SafetyReportReview safetyReportReview,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  public ess.caaers.nci.nih.gov.Bl deactivateSafetyReportReviewProcess(ess.caaers.nci.nih.gov.Id reviewProcessId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview getSafetyReportReviewProcess(ess.caaers.nci.nih.gov.Id reviewProcessId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportReview reviewSafetyReport(ess.caaers.nci.nih.gov.Id reviewProcessId,_21090.org.iso.ST reviewDispostion,ess.caaers.nci.nih.gov.Id reviewerid,ess.caaers.nci.nih.gov.TsDateTime timeOdReview,_21090.org.iso.ST comments) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
 
   public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
