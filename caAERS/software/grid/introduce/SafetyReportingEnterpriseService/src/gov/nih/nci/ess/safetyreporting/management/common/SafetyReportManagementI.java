@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportManagementI {
 
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateProblemToSafetyReport() throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
   /**
    * Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation.
    *

@@ -188,6 +188,33 @@
    <ns2:SchemaElement type="TerminationNotification" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="TerminationTime" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportQueryTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery/types" packageName="gov.nih.nci.ess.safetyreporting.qry.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportQueryReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportTransactionTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction/types" packageName="gov.nih.nci.ess.safetyreporting.tx.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportTransactionReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportDefinitionManagementTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportDefinitionManagement/types" packageName="gov.nih.nci.ess.safetyreporting.rdm.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportDefinitionManagementReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportRulesManagementTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/types" packageName="gov.nih.nci.ess.safetyreporting.rules.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportRulesManagementReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportNotificationTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification/types" packageName="gov.nih.nci.ess.safetyreporting.notification.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportNotificationReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportReviewTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview/types" packageName="gov.nih.nci.ess.safetyreporting.review.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportReviewReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportAdvancedQueryTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportAdvancedQuery/types" packageName="gov.nih.nci.ess.safetyreporting.advquery.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportAdvancedQueryReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportRulesEvaluationTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesEvaluation/types" packageName="gov.nih.nci.ess.safetyreporting.ruleseval.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportRulesEvaluationReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./SafetyReportDefinitionQueryTypes.xsd" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportDefinitionQuery/types" packageName="gov.nih.nci.ess.safetyreporting.rdquery.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="SafetyReportDefinitionQueryReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
  </ns2:Namespaces>
  <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns3:Service name="SafetyReportingEnterpriseService" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService" packageName="gov.nih.nci.ess.safetyreporting" xsi:type="ns3:ServiceType">
@@ -295,16 +322,338 @@
       <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns37:SafetyReportingServiceException" xmlns:ns37="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
      </ns15:Exceptions>
     </ns15:Method>
+    <ns15:Method description="" isImported="false" isProvided="false" name="associateProblemToSafetyReport" xsi:type="ns15:MethodType">
+     <ns15:Inputs/>
+     <ns15:Output qName="ns38:SafetyReportVersion" description="" isArray="false" xmlns:ns38="http://gov.nih.nci.ess.safetyreporting.types"/>
+     <ns15:Exceptions>
+      <ns15:Exception description="" name="SafetyReportingServiceException" qname="ns39:SafetyReportingServiceException" xmlns:ns39="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/types"/>
+     </ns15:Exceptions>
+    </ns15:Method>
    </ns15:Methods>
-   <ns38:ResourcePropertiesList xsi:type="ns38:ResourcePropertiesListType" xmlns:ns38="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+   <ns40:ResourcePropertiesList xsi:type="ns40:ResourcePropertiesListType" xmlns:ns40="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
     <ns3:Secure xsi:type="ns3:Secure"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
+  <ns3:Service name="SafetyReportQuery" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportQuery" packageName="gov.nih.nci.ess.safetyreporting.qry" xsi:type="ns3:ServiceType">
+   <ns41:Methods xsi:type="ns41:MethodsType" xmlns:ns41="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns41:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns41:MethodType">
+     <ns41:Output qName="ns42:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns42="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns43:MethodSecurity xsi:type="ns43:MethodSecurity" xmlns:ns43="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns43:SecuritySetting xsi:type="ns43:SecuritySetting">None</ns43:SecuritySetting>
+      <ns43:MethodAuthorization xsi:type="ns43:MethodAuthorization">
+       <ns43:NoAuthorization xsi:type="ns43:NoAuthorization"/>
+      </ns43:MethodAuthorization>
+     </ns43:MethodSecurity>
+     <ns41:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns41:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns41:Method>
+    <ns41:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns41:MethodType">
+     <ns41:Output qName="void" isArray="false"/>
+     <ns41:ImportInformation fromIntroduce="false" inputMessage="ns44:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns44:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns44="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns41:ProviderInformation providerClass="DestroyProvider"/>
+    </ns41:Method>
+    <ns41:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns41:MethodType">
+     <ns41:Output qName="void" isArray="false"/>
+     <ns41:ImportInformation fromIntroduce="false" inputMessage="ns45:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns45:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns45="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns41:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns41:Method>
+   </ns41:Methods>
+   <ns46:ResourcePropertiesList xsi:type="ns46:ResourcePropertiesListType" xmlns:ns46="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns46:ResourceProperty qName="ns47:CurrentTime" populateFromFile="false" register="false" xsi:type="ns46:ResourcePropertyType" xmlns:ns47="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns46:ResourceProperty qName="ns48:TerminationTime" populateFromFile="false" register="false" xsi:type="ns46:ResourcePropertyType" xmlns:ns48="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns46:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportTransaction" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportTransaction" packageName="gov.nih.nci.ess.safetyreporting.tx" xsi:type="ns3:ServiceType">
+   <ns49:Methods xsi:type="ns49:MethodsType" xmlns:ns49="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns49:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns49:MethodType">
+     <ns49:Output qName="ns50:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns50="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns51:MethodSecurity xsi:type="ns51:MethodSecurity" xmlns:ns51="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns51:SecuritySetting xsi:type="ns51:SecuritySetting">None</ns51:SecuritySetting>
+      <ns51:MethodAuthorization xsi:type="ns51:MethodAuthorization">
+       <ns51:NoAuthorization xsi:type="ns51:NoAuthorization"/>
+      </ns51:MethodAuthorization>
+     </ns51:MethodSecurity>
+     <ns49:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns49:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns49:Method>
+    <ns49:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns49:MethodType">
+     <ns49:Output qName="void" isArray="false"/>
+     <ns49:ImportInformation fromIntroduce="false" inputMessage="ns52:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns52:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns52="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns49:ProviderInformation providerClass="DestroyProvider"/>
+    </ns49:Method>
+    <ns49:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns49:MethodType">
+     <ns49:Output qName="void" isArray="false"/>
+     <ns49:ImportInformation fromIntroduce="false" inputMessage="ns53:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns53:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns53="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns49:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns49:Method>
+   </ns49:Methods>
+   <ns54:ResourcePropertiesList xsi:type="ns54:ResourcePropertiesListType" xmlns:ns54="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns54:ResourceProperty qName="ns55:CurrentTime" populateFromFile="false" register="false" xsi:type="ns54:ResourcePropertyType" xmlns:ns55="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns54:ResourceProperty qName="ns56:TerminationTime" populateFromFile="false" register="false" xsi:type="ns54:ResourcePropertyType" xmlns:ns56="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns54:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportDefinitionManagement" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportDefinitionManagement" packageName="gov.nih.nci.ess.safetyreporting.rdm" xsi:type="ns3:ServiceType">
+   <ns57:Methods xsi:type="ns57:MethodsType" xmlns:ns57="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns57:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns57:MethodType">
+     <ns57:Output qName="ns58:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns58="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns59:MethodSecurity xsi:type="ns59:MethodSecurity" xmlns:ns59="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns59:SecuritySetting xsi:type="ns59:SecuritySetting">None</ns59:SecuritySetting>
+      <ns59:MethodAuthorization xsi:type="ns59:MethodAuthorization">
+       <ns59:NoAuthorization xsi:type="ns59:NoAuthorization"/>
+      </ns59:MethodAuthorization>
+     </ns59:MethodSecurity>
+     <ns57:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns57:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns57:Method>
+    <ns57:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns57:MethodType">
+     <ns57:Output qName="void" isArray="false"/>
+     <ns57:ImportInformation fromIntroduce="false" inputMessage="ns60:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns60:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns60="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns57:ProviderInformation providerClass="DestroyProvider"/>
+    </ns57:Method>
+    <ns57:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns57:MethodType">
+     <ns57:Output qName="void" isArray="false"/>
+     <ns57:ImportInformation fromIntroduce="false" inputMessage="ns61:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns61:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns61="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns57:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns57:Method>
+   </ns57:Methods>
+   <ns62:ResourcePropertiesList xsi:type="ns62:ResourcePropertiesListType" xmlns:ns62="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns62:ResourceProperty qName="ns63:CurrentTime" populateFromFile="false" register="false" xsi:type="ns62:ResourcePropertyType" xmlns:ns63="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns62:ResourceProperty qName="ns64:TerminationTime" populateFromFile="false" register="false" xsi:type="ns62:ResourcePropertyType" xmlns:ns64="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns62:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportRulesManagement" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement" packageName="gov.nih.nci.ess.safetyreporting.rules" xsi:type="ns3:ServiceType">
+   <ns65:Methods xsi:type="ns65:MethodsType" xmlns:ns65="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns65:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns65:MethodType">
+     <ns65:Output qName="ns66:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns66="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns67:MethodSecurity xsi:type="ns67:MethodSecurity" xmlns:ns67="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns67:SecuritySetting xsi:type="ns67:SecuritySetting">None</ns67:SecuritySetting>
+      <ns67:MethodAuthorization xsi:type="ns67:MethodAuthorization">
+       <ns67:NoAuthorization xsi:type="ns67:NoAuthorization"/>
+      </ns67:MethodAuthorization>
+     </ns67:MethodSecurity>
+     <ns65:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns65:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns65:Method>
+    <ns65:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns65:MethodType">
+     <ns65:Output qName="void" isArray="false"/>
+     <ns65:ImportInformation fromIntroduce="false" inputMessage="ns68:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns68:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns68="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns65:ProviderInformation providerClass="DestroyProvider"/>
+    </ns65:Method>
+    <ns65:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns65:MethodType">
+     <ns65:Output qName="void" isArray="false"/>
+     <ns65:ImportInformation fromIntroduce="false" inputMessage="ns69:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns69:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns69="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns65:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns65:Method>
+   </ns65:Methods>
+   <ns70:ResourcePropertiesList xsi:type="ns70:ResourcePropertiesListType" xmlns:ns70="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns70:ResourceProperty qName="ns71:CurrentTime" populateFromFile="false" register="false" xsi:type="ns70:ResourcePropertyType" xmlns:ns71="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns70:ResourceProperty qName="ns72:TerminationTime" populateFromFile="false" register="false" xsi:type="ns70:ResourcePropertyType" xmlns:ns72="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns70:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportNotification" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportNotification" packageName="gov.nih.nci.ess.safetyreporting.notification" xsi:type="ns3:ServiceType">
+   <ns73:Methods xsi:type="ns73:MethodsType" xmlns:ns73="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns73:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns73:MethodType">
+     <ns73:Output qName="ns74:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns74="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns75:MethodSecurity xsi:type="ns75:MethodSecurity" xmlns:ns75="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns75:SecuritySetting xsi:type="ns75:SecuritySetting">None</ns75:SecuritySetting>
+      <ns75:MethodAuthorization xsi:type="ns75:MethodAuthorization">
+       <ns75:NoAuthorization xsi:type="ns75:NoAuthorization"/>
+      </ns75:MethodAuthorization>
+     </ns75:MethodSecurity>
+     <ns73:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns73:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns73:Method>
+    <ns73:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns73:MethodType">
+     <ns73:Output qName="void" isArray="false"/>
+     <ns73:ImportInformation fromIntroduce="false" inputMessage="ns76:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns76:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns76="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns73:ProviderInformation providerClass="DestroyProvider"/>
+    </ns73:Method>
+    <ns73:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns73:MethodType">
+     <ns73:Output qName="void" isArray="false"/>
+     <ns73:ImportInformation fromIntroduce="false" inputMessage="ns77:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns77:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns77="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns73:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns73:Method>
+   </ns73:Methods>
+   <ns78:ResourcePropertiesList xsi:type="ns78:ResourcePropertiesListType" xmlns:ns78="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns78:ResourceProperty qName="ns79:CurrentTime" populateFromFile="false" register="false" xsi:type="ns78:ResourcePropertyType" xmlns:ns79="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns78:ResourceProperty qName="ns80:TerminationTime" populateFromFile="false" register="false" xsi:type="ns78:ResourcePropertyType" xmlns:ns80="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns78:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportReview" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportReview" packageName="gov.nih.nci.ess.safetyreporting.review" xsi:type="ns3:ServiceType">
+   <ns81:Methods xsi:type="ns81:MethodsType" xmlns:ns81="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns81:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns81:MethodType">
+     <ns81:Output qName="ns82:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns82="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns83:MethodSecurity xsi:type="ns83:MethodSecurity" xmlns:ns83="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns83:SecuritySetting xsi:type="ns83:SecuritySetting">None</ns83:SecuritySetting>
+      <ns83:MethodAuthorization xsi:type="ns83:MethodAuthorization">
+       <ns83:NoAuthorization xsi:type="ns83:NoAuthorization"/>
+      </ns83:MethodAuthorization>
+     </ns83:MethodSecurity>
+     <ns81:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns81:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns81:Method>
+    <ns81:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns81:MethodType">
+     <ns81:Output qName="void" isArray="false"/>
+     <ns81:ImportInformation fromIntroduce="false" inputMessage="ns84:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns84:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns84="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns81:ProviderInformation providerClass="DestroyProvider"/>
+    </ns81:Method>
+    <ns81:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns81:MethodType">
+     <ns81:Output qName="void" isArray="false"/>
+     <ns81:ImportInformation fromIntroduce="false" inputMessage="ns85:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns85:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns85="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns81:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns81:Method>
+   </ns81:Methods>
+   <ns86:ResourcePropertiesList xsi:type="ns86:ResourcePropertiesListType" xmlns:ns86="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns86:ResourceProperty qName="ns87:CurrentTime" populateFromFile="false" register="false" xsi:type="ns86:ResourcePropertyType" xmlns:ns87="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns86:ResourceProperty qName="ns88:TerminationTime" populateFromFile="false" register="false" xsi:type="ns86:ResourcePropertyType" xmlns:ns88="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns86:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportAdvancedQuery" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportAdvancedQuery" packageName="gov.nih.nci.ess.safetyreporting.advquery" xsi:type="ns3:ServiceType">
+   <ns89:Methods xsi:type="ns89:MethodsType" xmlns:ns89="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns89:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns89:MethodType">
+     <ns89:Output qName="ns90:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns90="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns91:MethodSecurity xsi:type="ns91:MethodSecurity" xmlns:ns91="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns91:SecuritySetting xsi:type="ns91:SecuritySetting">None</ns91:SecuritySetting>
+      <ns91:MethodAuthorization xsi:type="ns91:MethodAuthorization">
+       <ns91:NoAuthorization xsi:type="ns91:NoAuthorization"/>
+      </ns91:MethodAuthorization>
+     </ns91:MethodSecurity>
+     <ns89:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns89:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns89:Method>
+    <ns89:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns89:MethodType">
+     <ns89:Output qName="void" isArray="false"/>
+     <ns89:ImportInformation fromIntroduce="false" inputMessage="ns92:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns92:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns92="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns89:ProviderInformation providerClass="DestroyProvider"/>
+    </ns89:Method>
+    <ns89:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns89:MethodType">
+     <ns89:Output qName="void" isArray="false"/>
+     <ns89:ImportInformation fromIntroduce="false" inputMessage="ns93:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns93:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns93="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns89:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns89:Method>
+   </ns89:Methods>
+   <ns94:ResourcePropertiesList xsi:type="ns94:ResourcePropertiesListType" xmlns:ns94="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns94:ResourceProperty qName="ns95:CurrentTime" populateFromFile="false" register="false" xsi:type="ns94:ResourcePropertyType" xmlns:ns95="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns94:ResourceProperty qName="ns96:TerminationTime" populateFromFile="false" register="false" xsi:type="ns94:ResourcePropertyType" xmlns:ns96="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns94:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportRulesEvaluation" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesEvaluation" packageName="gov.nih.nci.ess.safetyreporting.ruleseval" xsi:type="ns3:ServiceType">
+   <ns97:Methods xsi:type="ns97:MethodsType" xmlns:ns97="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns97:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns97:MethodType">
+     <ns97:Output qName="ns98:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns98="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns99:MethodSecurity xsi:type="ns99:MethodSecurity" xmlns:ns99="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns99:SecuritySetting xsi:type="ns99:SecuritySetting">None</ns99:SecuritySetting>
+      <ns99:MethodAuthorization xsi:type="ns99:MethodAuthorization">
+       <ns99:NoAuthorization xsi:type="ns99:NoAuthorization"/>
+      </ns99:MethodAuthorization>
+     </ns99:MethodSecurity>
+     <ns97:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns97:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns97:Method>
+    <ns97:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns97:MethodType">
+     <ns97:Output qName="void" isArray="false"/>
+     <ns97:ImportInformation fromIntroduce="false" inputMessage="ns100:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns100:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns100="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns97:ProviderInformation providerClass="DestroyProvider"/>
+    </ns97:Method>
+    <ns97:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns97:MethodType">
+     <ns97:Output qName="void" isArray="false"/>
+     <ns97:ImportInformation fromIntroduce="false" inputMessage="ns101:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns101:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns101="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns97:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns97:Method>
+   </ns97:Methods>
+   <ns102:ResourcePropertiesList xsi:type="ns102:ResourcePropertiesListType" xmlns:ns102="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns102:ResourceProperty qName="ns103:CurrentTime" populateFromFile="false" register="false" xsi:type="ns102:ResourcePropertyType" xmlns:ns103="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns102:ResourceProperty qName="ns104:TerminationTime" populateFromFile="false" register="false" xsi:type="ns102:ResourcePropertyType" xmlns:ns104="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns102:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="SafetyReportDefinitionQuery" namespace="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportDefinitionQuery" packageName="gov.nih.nci.ess.safetyreporting.rdquery" xsi:type="ns3:ServiceType">
+   <ns105:Methods xsi:type="ns105:MethodsType" xmlns:ns105="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns105:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns105:MethodType">
+     <ns105:Output qName="ns106:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns106="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns107:MethodSecurity xsi:type="ns107:MethodSecurity" xmlns:ns107="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns107:SecuritySetting xsi:type="ns107:SecuritySetting">None</ns107:SecuritySetting>
+      <ns107:MethodAuthorization xsi:type="ns107:MethodAuthorization">
+       <ns107:NoAuthorization xsi:type="ns107:NoAuthorization"/>
+      </ns107:MethodAuthorization>
+     </ns107:MethodSecurity>
+     <ns105:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns105:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns105:Method>
+    <ns105:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns105:MethodType">
+     <ns105:Output qName="void" isArray="false"/>
+     <ns105:ImportInformation fromIntroduce="false" inputMessage="ns108:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns108:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns108="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns105:ProviderInformation providerClass="DestroyProvider"/>
+    </ns105:Method>
+    <ns105:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns105:MethodType">
+     <ns105:Output qName="void" isArray="false"/>
+     <ns105:ImportInformation fromIntroduce="false" inputMessage="ns109:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns109:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns109="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns105:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns105:Method>
+   </ns105:Methods>
+   <ns110:ResourcePropertiesList xsi:type="ns110:ResourcePropertiesListType" xmlns:ns110="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns110:ResourceProperty qName="ns111:CurrentTime" populateFromFile="false" register="false" xsi:type="ns110:ResourcePropertyType" xmlns:ns111="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns110:ResourceProperty qName="ns112:TerminationTime" populateFromFile="false" register="false" xsi:type="ns110:ResourcePropertyType" xmlns:ns112="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns110:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
  </ns3:Services>
- <ns39:Extensions xsi:type="ns39:ExtensionsType" xmlns:ns39="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns39:Extension name="cagrid_metadata" version="1.3" xsi:type="ns39:ExtensionType"/>
- </ns39:Extensions>
+ <ns113:Extensions xsi:type="ns113:ExtensionsType" xmlns:ns113="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns113:Extension name="cagrid_metadata" version="1.3" xsi:type="ns113:ExtensionType"/>
+ </ns113:Extensions>
 </ns1:ServiceDescription>

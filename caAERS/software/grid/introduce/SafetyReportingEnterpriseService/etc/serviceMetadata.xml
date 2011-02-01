@@ -22,7 +22,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B220FE3-6EAD-60D5-E040-BB89AD432866" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns5:umlAttributeCollection/>
          <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -41,7 +41,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns6:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns7:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B220FE3-6EAD-60D5-E040-BB89AD432866" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns7:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns7:umlAttributeCollection/>
          <ns7:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns7:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -94,20 +94,279 @@
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
+      <ns2:Operation description="" name="associateProblemToSafetyReport">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns24:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns24="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="SafetyReportingServiceException"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection/>
     </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportQuery">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns25:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns26:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns26:umlAttributeCollection/>
+         <ns26:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns26:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns26:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns26:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportTransaction">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns27:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns28:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns28="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns28:umlAttributeCollection/>
+         <ns28:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns28:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns28:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns28:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportDefinitionManagement">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns29:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns30:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns30="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns30:umlAttributeCollection/>
+         <ns30:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns30:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns30:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns30:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportRulesManagement">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns31:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns32:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns32:umlAttributeCollection/>
+         <ns32:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns32:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns32:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns32:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportNotification">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns33:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns34:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns34:umlAttributeCollection/>
+         <ns34:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns34:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns34:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns34:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportReview">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns35:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns36:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns36:umlAttributeCollection/>
+         <ns36:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns36:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns36:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns36:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportAdvancedQuery">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns37:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns37="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns38:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns38="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns38:umlAttributeCollection/>
+         <ns38:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns38:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns38:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns38:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportRulesEvaluation">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns39:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns39="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns40:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns40:umlAttributeCollection/>
+         <ns40:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns40:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns40:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns40:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="SafetyReportDefinitionQuery">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns41:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns42:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9B362D9C-74EE-629B-E040-BB89AD4356B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns42="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns42:umlAttributeCollection/>
+         <ns42:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns42:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns42:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns42:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns24:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns25:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns43:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns43="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns44:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns44="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns26:ResearchCenter displayName="" shortName="" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns26:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
-   <ns26:pointOfContactCollection>
-    <ns26:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
-   </ns26:pointOfContactCollection>
-  </ns26:ResearchCenter>
+  <ns45:ResearchCenter displayName="" shortName="" xmlns:ns45="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns45:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+   <ns45:pointOfContactCollection>
+    <ns45:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+   </ns45:pointOfContactCollection>
+  </ns45:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>
