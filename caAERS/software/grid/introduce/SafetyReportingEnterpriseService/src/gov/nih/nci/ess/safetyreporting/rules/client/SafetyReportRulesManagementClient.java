@@ -76,6 +76,20 @@ public class SafetyReportRulesManagementClient extends SafetyReportRulesManageme
 		}
 	}
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"destroy");
+    return portType.destroy(params);
+    }
+  }
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setTerminationTime");
+    return portType.setTerminationTime(params);
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.ReportingRule createOrganizationSafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createOrganizationSafetyReportingRules");
@@ -175,11 +189,15 @@ public class SafetyReportRulesManagementClient extends SafetyReportRulesManageme
     }
   }
 
-  public void querySafetyReportingRules() throws RemoteException {
+  public gov.nih.nci.ess.safetyreporting.types.DSET_ReportingRule querySafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"querySafetyReportingRules");
     gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequest params = new gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequest();
+    gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequestReportingRule reportingRuleContainer = new gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequestReportingRule();
+    reportingRuleContainer.setReportingRule(reportingRule);
+    params.setReportingRule(reportingRuleContainer);
     gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesResponse boxedResult = portType.querySafetyReportingRules(params);
+    return boxedResult.getDSET_ReportingRule();
     }
   }
 
@@ -192,20 +210,6 @@ public class SafetyReportRulesManagementClient extends SafetyReportRulesManageme
     params.setRuleId(ruleIdContainer);
     gov.nih.nci.ess.safetyreporting.rules.stubs.GetSafetyReportingRulesResponse boxedResult = portType.getSafetyReportingRules(params);
     return boxedResult.getReportingRule();
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"destroy");
-    return portType.destroy(params);
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"setTerminationTime");
-    return portType.setTerminationTime(params);
     }
   }
 

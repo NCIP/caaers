@@ -217,12 +217,22 @@
       </element>
       <element name="QuerySafetyReportingRulesRequest">
         <complexType>
-          <sequence />
+          <sequence>
+            <element name="reportingRule">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ReportingRule" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
         </complexType>
       </element>
       <element name="QuerySafetyReportingRulesResponse">
         <complexType>
-          <sequence />
+          <sequence>
+            <element ref="ns0:DSET_ReportingRule" minOccurs="1" maxOccurs="1" />
+          </sequence>
         </complexType>
       </element>
       <element name="GetSafetyReportingRulesRequest">
@@ -346,6 +356,7 @@
     <operation name="querySafetyReportingRules">
       <input message="tns:QuerySafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/QuerySafetyReportingRulesRequest" />
       <output message="tns:QuerySafetyReportingRulesResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/QuerySafetyReportingRulesResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/SafetyReportingServiceExceptionFaultMessage" />
     </operation>
     <operation name="getSafetyReportingRules">
       <input message="tns:GetSafetyReportingRulesRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportRulesManagement/GetSafetyReportingRulesRequest" />

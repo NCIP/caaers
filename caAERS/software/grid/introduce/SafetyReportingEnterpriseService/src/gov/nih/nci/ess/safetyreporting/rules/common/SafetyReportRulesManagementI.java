@@ -12,6 +12,10 @@ import java.rmi.RemoteException;
  */
 public interface SafetyReportRulesManagementI {
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
+
   public gov.nih.nci.ess.safetyreporting.types.ReportingRule createOrganizationSafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
   public gov.nih.nci.ess.safetyreporting.types.ReportingRule updateOrganizationSafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
@@ -24,13 +28,9 @@ public interface SafetyReportRulesManagementI {
 
   public gov.nih.nci.ess.safetyreporting.types.ReportingRule deactivateStudySafetyReportingRules(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
-  public void querySafetyReportingRules() throws RemoteException ;
+  public gov.nih.nci.ess.safetyreporting.types.DSET_ReportingRule querySafetyReportingRules(gov.nih.nci.ess.safetyreporting.types.ReportingRule reportingRule) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
   public gov.nih.nci.ess.safetyreporting.types.ReportingRule getSafetyReportingRules(ess.caaers.nci.nih.gov.Id ruleId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
 
 }
 

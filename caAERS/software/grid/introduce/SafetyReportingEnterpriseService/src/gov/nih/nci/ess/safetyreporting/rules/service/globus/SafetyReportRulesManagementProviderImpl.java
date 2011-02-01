@@ -62,9 +62,9 @@ public class SafetyReportRulesManagementProviderImpl{
     return boxedResult;
   }
 
-    public gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesResponse querySafetyReportingRules(gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequest params) throws RemoteException {
+    public gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesResponse querySafetyReportingRules(gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesResponse boxedResult = new gov.nih.nci.ess.safetyreporting.rules.stubs.QuerySafetyReportingRulesResponse();
-    impl.querySafetyReportingRules();
+    boxedResult.setDSET_ReportingRule(impl.querySafetyReportingRules(params.getReportingRule().getReportingRule()));
     return boxedResult;
   }
 

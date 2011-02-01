@@ -537,7 +537,42 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="DSET_SafetyReportVersion" type="ESS-SR:DSET_SafetyReportVersion"></xs:element>	
+  
+  <xs:complexType abstract="true" name="COLL_ReportingRule">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>	  
+  <xs:complexType name="DSET_ReportingRule">
+    <xs:complexContent>
+      <xs:extension base="ESS-SR:COLL_ReportingRule">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-SR:ReportingRule" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="COLL_ReportDefinition">
+    <xs:complexContent>
+      <xs:extension base="ISO:ANY" />
+    </xs:complexContent>
+  </xs:complexType>	  
+  <xs:complexType name="DSET_ReportDefinition">
+    <xs:complexContent>
+      <xs:extension base="ESS-SR:COLL_ReportDefinition">
+        <xs:sequence>
+          <xs:element name="item" type="ESS-SR:ReportDefinition" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    
+  <xs:element name="DSET_ReportingRule" type="ESS-SR:DSET_ReportingRule"></xs:element>	
+  
+  <xs:element name="DSET_ReportDefinition" type="ESS-SR:DSET_ReportDefinition"></xs:element>
+   
+  <xs:element name="DSET_SafetyReportVersion" type="ESS-SR:DSET_SafetyReportVersion"></xs:element>
 	
   <xs:element name="DSET_II" type="ISO:DSET_II"/>
   
