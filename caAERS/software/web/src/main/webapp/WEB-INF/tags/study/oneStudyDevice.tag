@@ -46,7 +46,7 @@
                                     if (_fieldHelper + '.commonName') $(_fieldHelper + '.commonName').innerHTML = selectedChoice.commonName; 
                                     if (_fieldHelper + '.brandName') $(_fieldHelper + '.brandName').innerHTML = selectedChoice.brandName;
                                     if (_fieldHelper + '.type') $(_fieldHelper + '.type').innerHTML = selectedChoice.type;
-                                    $("titleOf_StudyDevice_${index}").innerHTML = selectedChoice.commonName + ", " + selectedChoice.brandName;
+                                    updateDeviceBoxTitle("titleOf_StudyDevice_${index}", selectedChoice.commonName, selectedChoice.brandName, selectedChoice.type);
                                 }
                             }
                          </jsp:attribute>
@@ -78,7 +78,7 @@
     <div id="study.studyDevices[${index}].otherDevice" style="display:${command.study.studyDevices[index].otherDevice ? 'inline' : 'none'};">
         <div class="row">
             <div class="label">Common name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="30" readonly="${!empty command.study.studyDevices[index].id}"/></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="30" readonly="${!empty command.study.studyDevices[index].id}" /></div>
         </div>
         <div class="row">
             <div class="label">Brand name</div>
@@ -115,3 +115,15 @@
 </tr>
 </table>
 </chrome:division>
+
+<script>
+    Event.observe('study.studyDevices[${index}].otherCommonName', 'keyup', function() {
+        updateDeviceBoxTitleFromOther(${index});
+    });
+    Event.observe('study.studyDevices[${index}].otherBrandName', 'keyup', function() {
+        updateDeviceBoxTitleFromOther(${index});
+    });
+    Event.observe('study.studyDevices[${index}].otherDeviceType', 'keyup', function() {
+        updateDeviceBoxTitleFromOther(${index});
+    });
+</script>

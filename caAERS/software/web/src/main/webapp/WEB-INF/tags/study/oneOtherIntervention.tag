@@ -25,3 +25,9 @@
         <div class="value"><ui:textarea path="study.otherInterventions[${index}].description" cols="40" rows="3" /></div>
     </div>
 </chrome:division>
+
+<script>
+    Event.observe('study.otherInterventions[${index}].name', 'keyup', function() {
+        updateOtherInterventionBoxTitle('titleOf_oi_${index}', $('study.otherInterventions[${index}].name').value);
+    });
+</script>

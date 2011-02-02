@@ -64,6 +64,28 @@ function fireAction(action, index) {
 
 // ----------------------------------------------------------------------------------------------------------------
 
+function updateDeviceBoxTitleFromOther(index) {
+    updateDeviceBoxTitle("titleOf_StudyDevice_" + index, $("study.studyDevices[" + index + "].otherCommonName").value, $("study.studyDevices[" + index + "].otherBrandName").value, $("study.studyDevices[" + index + "].otherDeviceType").value);
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+function updateDeviceBoxTitle(id, _commonName, _brandName, _type) {
+    var s = "";
+    if (_commonName != null && _commonName.trim() != '') s += (_commonName + ", ");
+    if (_brandName != null && _brandName.trim() != '') s += (_brandName + ", ");
+    if (_type != null && _type.trim() != '') s += (_type + ", ");
+    $(id).innerHTML = s.substring(0, s.length - 2);
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+function updateOtherInterventionBoxTitle(id, _name) {
+    $(id).innerHTML = _name
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
 function toggleDeviceOrOther(index) {
     var deviceRadioSelected = $("radioDevice" + index).checked
     var idPrefix = 'study.studyDevices[' + index + '].';
