@@ -69,6 +69,9 @@ public class EditStudyController extends StudyController<StudyCommand> {
         return command;
     }
 
+    /**
+     * Flow pages build
+     * */
     @Override
     public FlowFactory<StudyCommand> getFlowFactory() {
         return new FlowFactory<StudyCommand>() {

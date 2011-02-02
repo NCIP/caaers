@@ -96,7 +96,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
  
     
     //----- Create/Edit/Save/Delete operations (tasks) ----------------- 
-    
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addMetastaticDiseaseSite(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	ModelAndView modelAndView = new ModelAndView("par/ajax/metastaticDiseaseSiteFormSection");
@@ -115,6 +117,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return modelAndView;
     }
     
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removeMetastaticDiseaseSite(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	ModelAndView modelAndView = new ModelAndView("par/ajax/metastaticDiseaseSiteFormSection");
@@ -133,6 +138,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     }
     
     
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addPreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantPreExistingCondition> preConditions = command.getAssignment().getPreExistingConditions();
@@ -151,6 +159,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return modelAndView;
     }
     
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removePreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantPreExistingCondition> preConditions = command.getAssignment().getPreExistingConditions();
@@ -172,6 +183,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
     
     
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantConcomitantMedication> conmeds = command.getAssignment().getConcomitantMedications();
@@ -192,6 +206,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return modelAndView;
     }
     
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removeConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantConcomitantMedication> conmeds = command.getAssignment().getConcomitantMedications();
@@ -212,6 +229,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     }
     
     
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addPriorTherapy(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantPriorTherapy> priorTherapies = command.getAssignment().getPriorTherapies();
@@ -234,6 +254,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return modelAndView;
     }
     
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removePriorTherapy(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantPriorTherapy> priorTherapies = command.getAssignment().getPriorTherapies();
@@ -254,6 +277,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return modelAndView;
     }
     
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addPriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	StudyParticipantPriorTherapy priorTherapy = command.getAssignment().getPriorTherapies().get(command.getParentIndex());
@@ -274,6 +300,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return modelAndView;
     }
     
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removePriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors){
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	StudyParticipantPriorTherapy priorTherapy = command.getAssignment().getPriorTherapies().get(command.getParentIndex());
@@ -336,8 +365,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	return baselinePerformanceOptions;
     }
     
-  
-   
+    /**
+     * Determines which method to invoce for te AJAX call
+     * */
     @Override
     public String getMethodName(HttpServletRequest request) {
     	String currentItem = request.getParameter("currentItem");
@@ -385,6 +415,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         WebUtils.populateErrorFieldNames(command.getEmptyFieldNameMap(), errors);
     }
 
+    /**
+     * Validates Subject's Disease Information
+     * */
     public void validateDiseaseInformation(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	Date todaysDate = new Date();
 
@@ -403,6 +436,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     }
 
     
+    /**
+     * Validates Subject's Pre Existing Conditions
+     * */
     protected void validatePreExistingConditions(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
         // check PreExistingConditions duplicates
         List list = command.getAssignment().getPreExistingConditions();
@@ -422,6 +458,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         }
     }
 
+    /**
+     * Validates Subject's Metastatic Diseases
+     * */
     protected void validateMetastaticDiseases(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
         List list;
         Set<StudyParticipantMetastaticDiseaseSite> set;
@@ -442,6 +481,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         }
     }
 
+    /**
+     * Validates Subject's Prior Therapies
+     * */
     protected void validatePriorTherapies(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
         // check PriorTherapies duplicates
         List list = command.getAssignment().getPriorTherapies();
@@ -508,6 +550,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         if (hasDuplicateAg) errors.reject("PTA_UK_ERR", null, "");
     }
 
+    /**
+     * Validates Subject's Con Meds
+     * */
     protected void validateConcomitantMedications(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	int i = 0;
     	Set<String> set = new HashSet<String>();
@@ -538,6 +583,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         }
     }
 
+    /**
+     * Remoce all items from the collection
+     * */
     public ModelAndView removeAllPriorTherapyAgents(HttpServletRequest request , Object cmd, Errors errors){
 
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;

@@ -33,6 +33,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Participant Creation Flow Controller
+ * */
 public class CreateParticipantController extends AutomaticSaveAjaxableFormController<ParticipantInputCommand, Participant, ParticipantDao> {
 
     private static Log log = LogFactory.getLog(CreateParticipantController.class);
@@ -62,6 +65,10 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public CreateParticipantController() {
     }
 
+    /**
+     * Determines whether the subject acts in deidentified mode.
+     * This mode doesn't show subject names.
+     * */
     public boolean getUnidentifiedMode(){
         boolean unidentifiedMode;
         if (configuration.get(Configuration.UNIDENTIFIED_MODE) == null) unidentifiedMode = false;
@@ -69,6 +76,9 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         return unidentifiedMode;
     }
 
+    /**
+     * Building Flow pages.
+     * */
     @Override
     public FlowFactory<ParticipantInputCommand> getFlowFactory() {
         return new FlowFactory<ParticipantInputCommand>() {
@@ -127,17 +137,22 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
     }
 
-    protected Object findInRequest(final HttpServletRequest request, final String attributName) {
-        Object attr = request.getParameter(attributName);
+    /**
+     * Looking if the request contains the needed attribute.
+     * @param   attributeName needed attribute name
+     * @return  The needed attribute if found, if the attribute is not found returns null.
+     * */
+    // ToDo this should be moved to a super Controller
+    protected Object findInRequest(final HttpServletRequest request, final String attributeName) {
+        Object attr = request.getParameter(attributeName);
         if (attr == null) {
-            attr = request.getAttribute(attributName);
+            attr = request.getAttribute(attributeName);
         }
         return attr;
     }
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object cmd) {
-    	
     	ParticipantInputCommand command = (ParticipantInputCommand) cmd;
     	
         // supress validation when target page is less than current page.

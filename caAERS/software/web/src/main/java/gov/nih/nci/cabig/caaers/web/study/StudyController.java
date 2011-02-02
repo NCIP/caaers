@@ -103,7 +103,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     }
 
     /**
-     * Shows the Study Summary on top of the page while navigating the flow
+     * If true - Shows the Study Summary on top of the page while navigating the flow
      * 
      */
     protected boolean isSummaryEnabled() {

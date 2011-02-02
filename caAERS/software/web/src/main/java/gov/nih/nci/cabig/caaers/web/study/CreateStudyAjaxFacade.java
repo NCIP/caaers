@@ -72,6 +72,9 @@ public class CreateStudyAjaxFacade {
     private StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
 
+    /**
+     * Retrieves StudySite's Investigators for the autocompleter through AJAX
+     * */
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
         String[] arr = new String[] { text };
         StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
@@ -90,6 +93,9 @@ public class CreateStudyAjaxFacade {
                         }, "id", "investigator.firstName", "investigator.lastName", "investigator.externalId");
     }
 
+    /**
+     * Retrieves StudySite's ResearchStaffs for the autocompleter through AJAX
+     * */
     public List<ResearchStaff> matchResearch(final String text, final int indexId) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
@@ -102,6 +108,9 @@ public class CreateStudyAjaxFacade {
         return ObjectTools.reduceAll(researchStaffs, "id", "firstName", "lastName", "externalId");
     }
 
+    /**
+     * Retrieves Site's ResearchStaffs for the autocompleter through AJAX
+     * */
     public List<SiteResearchStaff> matchSiteResearchStaff(final String text, final int indexId) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
@@ -120,6 +129,9 @@ public class CreateStudyAjaxFacade {
                         }, "id", "researchStaff.firstName", "researchStaff.lastName", "researchStaff.externalId");
     }
 
+    /**
+     * Retrieves Study object from the HTTP Session
+     * */
     private StudyCommand getStudyFromSession(final HttpServletRequest request) {
 
         StudyCommand command = (StudyCommand) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
@@ -140,13 +152,18 @@ public class CreateStudyAjaxFacade {
 
     }
 
+    /*
+    * Retrieves the Study Command Object
+    * */
     private StudyCommand getStudyCommand(final HttpServletRequest request) {
         StudyCommand command = getStudyFromSession(request);
         request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, command);
         return command;
     }
 
-
+    /**
+     * Retrieves Sites for the autocompleter through AJAX
+     * */
     public List<StudySiteAjaxableDomainObject> matchSites(final String text, final Integer studyId){
     	if(studyId == null) 
     		return new ArrayList<StudySiteAjaxableDomainObject>();
@@ -158,6 +175,9 @@ public class CreateStudyAjaxFacade {
     	
     }
     
+    /**
+     * Retrieves Agents for the autocompleter through AJAX
+     * */
     public List<Agent> matchAgents(final String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         agents = RankBasedSorterUtils.sort(agents , text, new Serializer<Agent>(){
@@ -168,6 +188,9 @@ public class CreateStudyAjaxFacade {
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
 
+    /**
+     * Retrieves INDs for the autocompleter through AJAX
+     * */
     public List<InvestigationalNewDrug> matchINDs(final String text) {
         List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByIds(new String[] { text });
         inds = RankBasedSorterUtils.sort(inds , text, new Serializer<InvestigationalNewDrug>(){
@@ -222,6 +245,9 @@ public class CreateStudyAjaxFacade {
         return new ArrayList(organizations);
     }
 
+    /**
+     * Retrieves Organizations for the autocompleter through AJAX
+     * */
     public List<Organization> matchOrganization(final String text) {
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
@@ -238,6 +264,9 @@ public class CreateStudyAjaxFacade {
         return text.split("\\s+");
     }
 
+    /**
+     * Retrieves Disease Categories based on the parent category and text to match
+     * */
     public List<DiseaseCategory> matchDiseaseCategories(final String text, final Integer categoryId) {
         List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getBySubname(extractSubnames(text), categoryId);
         diseaseCategories =  RankBasedSorterUtils.sort(diseaseCategories , text, new Serializer<DiseaseCategory>(){
@@ -248,16 +277,25 @@ public class CreateStudyAjaxFacade {
         return diseaseCategories;
     }
 
+    /**
+     * Retrieves Disease Categories based on the parent category
+     * */
     public List<DiseaseCategory> matchDiseaseCategoriesByParentId(final Integer parentCategoryId) {
         List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getByParentId(parentCategoryId);
         return diseaseCategories;
     }
 
+    /**
+     * Retrieves Disease Terms based on the category
+     * */
     public List<DiseaseTerm> matchDiseaseTermsByCategoryId(final Integer categoryId) {
         List<DiseaseTerm> diseaseTerms = diseaseTermDao.getByCategoryId(categoryId);
         return diseaseTerms;
     }
 
+    /**
+     * Add Solicited AE items to the collection
+     * */
     public String addSolicitedAE(String listOfTermIDs[], String listOfTerms[]) {
         
         HttpServletRequest request = getHttpServletRequest();
@@ -270,6 +308,9 @@ public class CreateStudyAjaxFacade {
         return getOutputFromJsp(url);
     }
 
+    /**
+     * Generate the next order number for Epochs
+     * */
     private int generateNextEpochOrderNumber() {
     	StudyCommand command = getStudyCommand(getHttpServletRequest());
     	List<Epoch> listOfEpochs = command.getStudy().getEpochs();
@@ -277,6 +318,9 @@ public class CreateStudyAjaxFacade {
     }
     
     
+    /**
+     * Add a study Site through AJAX
+     * */
     public String addStudySite(final int index) {
         HttpServletRequest request = getHttpServletRequest();
         getStudyCommand(request);
@@ -285,11 +329,17 @@ public class CreateStudyAjaxFacade {
         return getOutputFromJsp(url);
     }
 
+    /**
+     * Delete a study Site through AJAX
+     * */
     public boolean deleteStudySite(final int index) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         return command.getStudy().getStudySites().remove(index) != null;
     }
 
+    /**
+     * Add a study Identifier through AJAX
+     * */
     public String addIdentifier(final int index, final int type) {
         HttpServletRequest request = getHttpServletRequest();
         StudyCommand command = getStudyCommand(request);
@@ -309,12 +359,18 @@ public class CreateStudyAjaxFacade {
 
     }
 
+    /**
+     * Delete a study Identifier through AJAX
+     * */
     public boolean deleteIdentifier(final int index) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         return command.getStudy().getIdentifiersLazy().remove(index) != null;
     }
 
 
+    /**
+     * Add a study Investigator through AJAX
+     * */
     public String addInvestigator(final int index) {
         HttpServletRequest request = getHttpServletRequest();
         getStudyCommand(request);
@@ -323,6 +379,9 @@ public class CreateStudyAjaxFacade {
         return getOutputFromJsp(url);
     }
 
+    /**
+     * Add a study Personnel through AJAX
+     * */
     public String addStudyPersonnel(final int index) {
         HttpServletRequest request = getHttpServletRequest();
         getStudyCommand(request);
@@ -376,6 +435,9 @@ public class CreateStudyAjaxFacade {
         return new AjaxOutput(changes);
     }
 
+    /**
+     * Create the list of elements to be deleted
+     * */
     private List<IndexChange> createDeleteChangeList(int indexToDelete, int length, String displayName) {
         List<IndexChange> changes = new ArrayList<IndexChange>();
         changes.add(new IndexChange(indexToDelete, null));
@@ -387,6 +449,9 @@ public class CreateStudyAjaxFacade {
         return changes;
     }
     
+    /**
+     * Create the list of elements to be deleted
+     * */
     private List<IndexChange> createDeleteChangeList(int indexToDelete, List<? extends Retireable> list, String displayName, boolean softDeleted) {
         List<IndexChange> changes = new ArrayList<IndexChange>();
         changes.add(new IndexChange(indexToDelete, softDeleted ? indexToDelete : null));
@@ -403,12 +468,18 @@ public class CreateStudyAjaxFacade {
         return changes;
     }
 
+    /**
+     * Save the study if the Study is a persistent Object already
+     * */
     private void saveIfAlreadyPersistent(Study study) {
         if (study.getId() != null) {
             this.studyRepository.save(study);
         }
     }
 
+    /**
+     * Set the HTTP Request Attributes for the AJAX calls
+     * */
     private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex, final String subview) {
         request.setAttribute(AJAX_INDEX_PARAMETER, index);
         request.setAttribute(AJAX_SUBVIEW_PARAMETER, subview);
@@ -416,6 +487,9 @@ public class CreateStudyAjaxFacade {
         request.setAttribute("listEditorIndex", listEditorIndex);
     }
 
+    /**
+     * Build the HTML content for the AJAX calls
+     */
     private String getOutputFromJsp(final String jspResource) {
         String html = "Error in rendering...";
         try {
@@ -428,6 +502,9 @@ public class CreateStudyAjaxFacade {
         return html;
     }
 
+    /**
+     * Get the flow current page relative to the context
+     * */
     private String getCurrentPageContextRelative(final WebContext webContext) {
         String contextPath = webContext.getHttpServletRequest().getContextPath();
         String page = webContext.getCurrentPage();
@@ -540,7 +617,10 @@ public class CreateStudyAjaxFacade {
     public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository) {
         this.studySearchableAjaxableDomainObjectRepository = studySearchableAjaxableDomainObjectRepository;
     }
-    
+
+    /**
+     * Replace the controller command object
+     * */
     protected void saveCommand(Object cmd) {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
@@ -557,6 +637,9 @@ public class CreateStudyAjaxFacade {
         }
     }
 
+    /**
+     * Retrieve the controller command object
+     * */
     protected Object extractCommand() {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
@@ -589,6 +672,9 @@ public class CreateStudyAjaxFacade {
         }
     }
 
+    /**
+     * Build the queryString from the Map
+     * */
     private String createQueryString(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -597,6 +683,9 @@ public class CreateStudyAjaxFacade {
         return sb.toString().substring(0, sb.length() - 1);
     }
 
+    /**
+     * Build the HTML for the AJAX call
+     * */
     protected String renderAjaxView(String viewName, Integer studyId, Map<String, String> params) {
         WebContext webContext = WebContextFactory.get();
 
@@ -616,6 +705,9 @@ public class CreateStudyAjaxFacade {
         }
     }
 
+    /**
+     * Remove an expected term from the Study
+     * */
     public AjaxOutput removeStudyTerm(int _index) {
         Study study = ((StudyCommand)extractCommand()).getStudy();
         
@@ -638,7 +730,7 @@ public class CreateStudyAjaxFacade {
     }
 
     /**
-     *
+     * Add an expected AE to the Study
      */
     public AjaxOutput addExpectedAE(int[] listOfTermIDs) {
 

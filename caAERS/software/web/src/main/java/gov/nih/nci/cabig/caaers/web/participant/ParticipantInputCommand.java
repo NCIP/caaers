@@ -73,6 +73,9 @@ public class ParticipantInputCommand {
         this.participant = participant;
     }
 
+    /**
+     * Initializes all command's fields
+     * */
     void init() {
     };
     /**

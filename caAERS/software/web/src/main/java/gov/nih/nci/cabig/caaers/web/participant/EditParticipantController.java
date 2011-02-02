@@ -74,6 +74,9 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         return true;
     }
 
+    /**
+     * Building Flow Pages.
+     * */
     @Override
     public FlowFactory<T> getFlowFactory() {
         return new FlowFactory<T>() {

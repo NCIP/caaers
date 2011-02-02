@@ -49,6 +49,9 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         return refdata;
     }
 
+    /**
+     * Search Studies through an AJAX call from the UI
+     * */
     public ModelAndView searchStudies(HttpServletRequest request, Object cmd, Errors error) {
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         return new ModelAndView(getAjaxViewName(request), map);

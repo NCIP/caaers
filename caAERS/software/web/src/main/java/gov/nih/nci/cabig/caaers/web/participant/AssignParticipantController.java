@@ -55,6 +55,9 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         return referenceData;
     }
 
+    /**
+     * Build the flow pages
+     * */
     @Override
     public FlowFactory<AssignParticipantStudyCommand> getFlowFactory() {
         return new FlowFactory<AssignParticipantStudyCommand>() {

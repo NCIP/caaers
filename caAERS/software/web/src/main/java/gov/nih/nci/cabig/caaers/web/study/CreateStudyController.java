@@ -21,6 +21,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CreateStudyController extends StudyController<StudyCommand> {
 
+    /**
+     * Flow pages build
+     * */
     @Override
     public FlowFactory<StudyCommand> getFlowFactory() {
         return new FlowFactory<StudyCommand>() {

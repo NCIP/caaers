@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
+import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -121,6 +122,9 @@ public class CreateParticipantAjaxFacade {
 */
     }
 
+    /**
+     * Builds Participant table fro AJAX calls
+     * */
     public Object buildParticipant(final TableModel model, final Collection participants) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
@@ -169,24 +173,36 @@ public class CreateParticipantAjaxFacade {
         return model.assemble();
     }
 
+    /**
+     * Add Ethnicity column to the AJAX table
+     * */
     private void addEthnicity(TableModel model) {
         Column colummEthnicity = model.getColumnInstance();
         colummEthnicity.setProperty("ethnicity");
         model.addColumn(colummEthnicity);
     }
 
+    /**
+     * Add Race column to the AJAX table
+     * */
     private void addRace(TableModel model) {
         Column colummRace = model.getColumnInstance();
         colummRace.setProperty("race");
         model.addColumn(colummRace);
     }
 
+    /**
+     * Add Gender column to the AJAX table
+     * */
     private void addGender(TableModel model) {
         Column colummGender = model.getColumnInstance();
         colummGender.setProperty("gender");
         model.addColumn(colummGender);
     }
 
+    /**
+     * Add Last Name column to the AJAX table
+     * */
     private void addLastName(TableModel model) {
         Column columnLastName = model.getColumnInstance();
         columnLastName.setProperty("lastName");
@@ -195,6 +211,9 @@ public class CreateParticipantAjaxFacade {
         model.addColumn(columnLastName);
     }
 
+    /**
+     * Add First Name column to the AJAX table
+     * */
     private void addFirstName(TableModel model) {
         Column columnFirstName = model.getColumnInstance();
         columnFirstName.setProperty("firstName");
@@ -203,6 +222,9 @@ public class CreateParticipantAjaxFacade {
         model.addColumn(columnFirstName);
     }
 
+    /**
+     * Add Primarr Identifier column to the AJAX table
+     * */
     private void addPrimaryIdentifier(TableModel model) {
         Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setSortable(true);
@@ -213,6 +235,9 @@ public class CreateParticipantAjaxFacade {
 
     }
 
+    /**
+     * Builds and executes the HQL for Subject Search
+     * */
     @SuppressWarnings("finally")
     private List<ParticipantAjaxableDomainObject> constructExecuteParticipantQuery(final String searchType, final String searchText) {
     	
@@ -251,7 +276,9 @@ public class CreateParticipantAjaxFacade {
 
     }
 
-
+    /**
+     * Retrieves the Command of the AJAX Caller Flow
+     * */
     private NewParticipantCommand getParticipantCommand(final HttpServletRequest request) {
         NewParticipantCommand newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(CREATE_PARTICIPANT_REPLACED_FORM_NAME);
         if (newParticipantCommand == null) {
@@ -269,6 +296,9 @@ public class CreateParticipantAjaxFacade {
         return newParticipantCommand;
     }
 
+    /**
+     * Retrieving Organizations for the Autocompleter fields through AJAX
+     * */
     public List<Organization> matchOrganization(final String text) {
         //List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
     	List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text));
@@ -280,10 +310,16 @@ public class CreateParticipantAjaxFacade {
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
 
+    /**
+     * Split the String by RegEx
+     * */
     private String[] extractSubnames(final String text) {
         return text.split("\\s+");
     }
 
+    /**
+     * Add a new Identifier to the Subject through an AJAX call
+     * */
     public String addIdentifier(final int index, final int type) {
         HttpServletRequest request = getHttpServletRequest();
         NewParticipantCommand newParticipantCommand = getParticipantCommand(request);
@@ -307,11 +343,17 @@ public class CreateParticipantAjaxFacade {
         return html;
     }
 
+    /*
+    * Delete an identifier from the Subject
+    * */
     public boolean deleteIdentifier(final int index) {
         NewParticipantCommand newParticipantCommand = getParticipantCommand(getHttpServletRequest());
         return newParticipantCommand.getParticipant().getIdentifiers().remove(index) != null;
     }
 
+    /**
+     * Build the HTML output for the AJAX call
+     * */
     private String getOutputFromJsp(final String jspResource) {
         String html = "Error in rendering...";
         try {
@@ -324,6 +366,9 @@ public class CreateParticipantAjaxFacade {
         return html;
     }
 
+    /**
+     * Get the current page of the flow relative to the context
+     * */
     private String getCurrentPageContextRelative(final WebContext webContext) {
         String contextPath = webContext.getHttpServletRequest().getContextPath();
         String page = webContext.getCurrentPage();

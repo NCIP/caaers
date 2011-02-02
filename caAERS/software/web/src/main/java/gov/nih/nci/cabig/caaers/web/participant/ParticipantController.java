@@ -169,9 +169,8 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     }
 
     /**
-     * Override this in sub controller if summary is needed
-     *
-     * @return
+     * Determines whether the flow needs to display the summary on the top of the page.
+     * @return true if Summary is needed
      */
     protected boolean isSummaryEnabled() {
         return false;

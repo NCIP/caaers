@@ -17,6 +17,9 @@ import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+/**
+ * Class responssible for AJAX calls from Assign Subject Controller
+ * */
 public class AssignParticipantAjaxFacade {
     public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
     private static final Log log = LogFactory.getLog(AssignParticipantAjaxFacade.class);
@@ -29,7 +32,7 @@ public class AssignParticipantAjaxFacade {
     private ParticipantDao participantDao;
 
     /**
-     *
+     * Add one Prior Therapy item to the collection
      * @param
      * @return
      */
@@ -74,6 +77,9 @@ public class AssignParticipantAjaxFacade {
     	
     }
 
+    /**
+     * Builds the HTML content to be returned to the AJAX caller
+     * */
     private String getOutputFromJsp(final String jspResource) {
         String html = "Error in rendering...";
         try {
@@ -86,10 +92,16 @@ public class AssignParticipantAjaxFacade {
         return html;
     }
 
+    /**
+     * Builds the HTML content to be returned to the AJAX caller
+     * */
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
         return renderIndexedAjaxView(viewName, index, null, aeReportId);
     }
 
+    /**
+     * Builds the HTML content to be returned to the AJAX caller
+     * */
     private String renderIndexedAjaxView(String viewName, int index, Integer parentIndex, Integer aeReportId) {
         Map<String, String> params = new LinkedHashMap<String, String>(); 
         params.put("index", Integer.toString(index));
@@ -97,6 +109,9 @@ public class AssignParticipantAjaxFacade {
         return renderAjaxView(viewName, aeReportId, params);
     }
 
+    /**
+     * Builds the HTML content to be returned to the AJAX caller
+     * */
     private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
         WebContext webContext = WebContextFactory.get();
 
@@ -117,6 +132,9 @@ public class AssignParticipantAjaxFacade {
         }
     }
 
+    /**
+     * Extract the AJAX caller Command
+     * */
     private AssignParticipantStudyCommand extractCommand() {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
@@ -137,6 +155,9 @@ public class AssignParticipantAjaxFacade {
         }
     }
 
+    /**
+     * Get the current page of the flow relative to the context
+     * */
     private String getCurrentPageContextRelative(WebContext webContext) {
         String contextPath = webContext.getHttpServletRequest().getContextPath();
         String page = webContext.getCurrentPage();
@@ -152,7 +173,10 @@ public class AssignParticipantAjaxFacade {
     }
 
 
-    // TODO: there's got to be a library version of this somewhere
+    /**
+     * Create the HTTP Query String from the passsed hash
+     * @param params map to build HTTP query string from
+     * */
     private String createQueryString(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {

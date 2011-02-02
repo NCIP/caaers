@@ -162,8 +162,10 @@ public class AgentsTab extends StudyTab {
         }
         return map;
     }
-    
-    //creates the IND lookup field. 
+
+    /**
+     * Creates the IND lookup field.
+     * */
     private InputFieldGroup createINDFieldGroup(StudyCommand command, int studyAgentIndex){
     	//based on the fact that UI only supports one IND field for an agent, by default one field will be created.
     	 InputFieldGroup indFieldGroup = new DefaultInputFieldGroup("ind" + studyAgentIndex);
@@ -280,6 +282,9 @@ public class AgentsTab extends StudyTab {
         this.agentSpecificAdverseEventListService = agentSpecificAdverseEventListService;
     }
 
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addStudyDevice(HttpServletRequest request, Object object, Errors errors) {
         StudyCommand command = (StudyCommand)object;
         List<StudyDevice> studyDevices = command.getStudy().getStudyDevices();
@@ -295,6 +300,9 @@ public class AgentsTab extends StudyTab {
         return modelAndView;
     }
 
+    /**
+     * Add an item to the collection through AJAX
+     * */
     public ModelAndView addOtherIntervention(HttpServletRequest request, Object object, Errors errors) {
         StudyCommand command = (StudyCommand)object;
         List<OtherIntervention> list = command.getStudy().getOtherInterventions();
@@ -310,6 +318,9 @@ public class AgentsTab extends StudyTab {
         return modelAndView;
     }
 
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removeOtherIntervention(HttpServletRequest request, Object object, Errors errors) {
         StudyCommand command = (StudyCommand)object;
         List<OtherIntervention> list = command.getStudy().getOtherInterventions();
@@ -344,6 +355,9 @@ public class AgentsTab extends StudyTab {
         return modelAndView;
     }
 
+    /**
+     * Remove an item from the collection through AJAX
+     * */
     public ModelAndView removeStudyDevice(HttpServletRequest request, Object object, Errors errors) {
         StudyCommand command = (StudyCommand)object;
         List<StudyDevice> list = command.getStudy().getStudyDevices();

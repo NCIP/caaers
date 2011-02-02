@@ -18,6 +18,9 @@ public abstract class AbstractAjaxFacade {
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
     public static final String AJAX_REQUEST = "_isAjax";
 
+    /**
+     * Build the HTML content for the AJAX call
+     * */
     protected String getOutputFromJsp(final String jspResource) {
         String html = "Error in rendering...";
         try {
@@ -30,6 +33,9 @@ public abstract class AbstractAjaxFacade {
         return html;
     }
 
+    /**
+     * Extract the Command object from the AJAX caller Flow
+     * */
     protected Object extractCommand() {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
@@ -50,6 +56,9 @@ public abstract class AbstractAjaxFacade {
         }
     }
 
+    /**
+     * Get the current page of the flow relative to the context
+     * */
     protected String getCurrentPageContextRelative(WebContext webContext) {
         String contextPath = webContext.getHttpServletRequest().getContextPath();
         String page = webContext.getCurrentPage();
@@ -64,6 +73,10 @@ public abstract class AbstractAjaxFacade {
         }
     }
 
+    /**
+     * Create the HTTP Query String from the passsed hash
+     * @param params map to build HTTP query string from
+     * */
     protected String createQueryString(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {
