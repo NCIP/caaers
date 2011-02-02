@@ -11,10 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -65,6 +62,7 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "investigationalNewDrug")
     @Cascade( { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
         return studyAgentINDAssociations;
     }

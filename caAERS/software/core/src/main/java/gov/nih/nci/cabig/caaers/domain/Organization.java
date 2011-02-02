@@ -18,10 +18,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the Organization domain object associated with the Adverse event report.
@@ -150,6 +147,7 @@ public abstract class Organization extends AbstractMutableDomainObject {
     @OrderBy
     // order by ID for testing consistency
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
     }
@@ -175,6 +173,7 @@ public abstract class Organization extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<SiteInvestigator> getSiteInvestigators() {
         return siteInvestigators;
     }
@@ -185,6 +184,7 @@ public abstract class Organization extends AbstractMutableDomainObject {
     
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SiteResearchStaff> getSiteResearchStaffs() {
 		return siteResearchStaffs;
 	}
@@ -196,6 +196,7 @@ public abstract class Organization extends AbstractMutableDomainObject {
     // Cascade limited to DELETE, Fix for #11452
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportDefinition> getReportDefinitions() {
         return reportDefinitions;
     }

@@ -36,13 +36,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the Adverse Event domain object associated with the Adverse event report.
@@ -185,6 +179,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'CA'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<CourseAgentAttribution> getCourseAgentAttributions() {
         if (courseAgentAttributions == null) courseAgentAttributions = new ArrayList<CourseAgentAttribution>();
@@ -200,6 +195,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'CM'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<ConcomitantMedicationAttribution> getConcomitantMedicationAttributions() {
         if (concomitantMedicationAttributions == null) {
@@ -218,6 +214,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'OC'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<OtherCauseAttribution> getOtherCauseAttributions() {
         if (otherCauseAttributions == null) {
@@ -235,6 +232,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'DH'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<DiseaseAttribution> getDiseaseAttributions() {
         if (diseaseAttributions == null) {
@@ -252,6 +250,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'SI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<SurgeryAttribution> getSurgeryAttributions() {
         if (surgeryAttributions == null) {
@@ -269,6 +268,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'RI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<RadiationAttribution> getRadiationAttributions() {
         if (radiationAttributions == null) {
@@ -286,6 +286,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'DV'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<DeviceAttribution> getDeviceAttributions() {
         if (deviceAttributions == null) {
@@ -690,6 +691,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable=false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Outcome> getOutcomes() {
         if (outcomes == null) outcomes = new ArrayList<Outcome>();
         return outcomes;

@@ -11,10 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * The purpose of this class is to capture the customizations applied on a workflow template, in the current
@@ -61,6 +58,7 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	@OneToMany
     @JoinColumn(name = "workflow_config_id", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<TaskConfig> getTaskConfigs() {
 		return taskConfigs;
 	}

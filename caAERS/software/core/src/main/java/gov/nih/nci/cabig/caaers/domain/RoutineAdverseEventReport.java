@@ -18,12 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the RoutineAdverseEventReport domain object.
@@ -160,6 +155,7 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
             // Manually-managing PERSIST cascades due to cascade ordering issue
             CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<AdverseEvent> getAdverseEventsInternal() {
         return lazyListHelper.getInternalList(AdverseEvent.class);
     }

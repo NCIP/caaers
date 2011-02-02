@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class CtcCategory extends AbstractImmutableDomainObject {
 
     @OneToMany(mappedBy = "category")
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // by ID for consistency
     public List<CtcTerm> getTerms() {
         return terms;

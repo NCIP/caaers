@@ -21,10 +21,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "site_research_staffs")
@@ -93,6 +90,7 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
     
     @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SiteResearchStaffRole> getSiteResearchStaffRoles() {
 		return siteResearchStaffRoles;
 	}
@@ -119,6 +117,7 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
 
     @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<StudyPersonnel> getStudyPersonnels() {
 		return studyPersonnels;
 	}

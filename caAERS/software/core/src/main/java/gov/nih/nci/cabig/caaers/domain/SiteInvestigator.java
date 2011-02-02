@@ -18,10 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the SiteInvestigator domain object associated with the Adverse event
@@ -57,6 +54,7 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "siteInvestigator", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyInvestigator> getStudyInvestigators() {
         return studyInvestigators;
     }

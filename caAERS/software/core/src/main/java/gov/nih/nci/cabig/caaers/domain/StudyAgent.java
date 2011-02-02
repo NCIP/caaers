@@ -6,12 +6,12 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the StudyAgent domain object associated with the Adverse event report.
@@ -63,6 +63,7 @@ public class StudyAgent extends StudyIntervention {
 
     @OneToMany(mappedBy = "studyAgent", fetch = FetchType.LAZY)
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
         return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
     }

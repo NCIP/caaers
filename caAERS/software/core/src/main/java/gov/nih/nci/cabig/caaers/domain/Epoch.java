@@ -15,10 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "epochs")
@@ -55,6 +52,7 @@ public class Epoch extends AbstractMutableRetireableDomainObject {
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "epoch_id", nullable = false)
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Arm> getArms() {
         return arms;
     }

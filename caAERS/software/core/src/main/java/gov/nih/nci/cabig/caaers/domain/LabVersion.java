@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
 
 /**
  * This class represents the LabVersion domain object associated with the Adverse event report.
@@ -42,6 +43,7 @@ public class LabVersion extends AbstractImmutableDomainObject {
     @OrderBy
     // by ID for consistency
     @Cascade(value = { CascadeType.LOCK })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<LabCategory> getCategories() {
         return categories;
     }

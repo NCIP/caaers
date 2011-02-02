@@ -23,10 +23,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * This class encapsulates all types of organizations associated with a Study
@@ -99,6 +96,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     @OneToMany(mappedBy = "studyOrganization")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @UniqueObjectInCollection(message = "Duplicates found in StudyInvestigator list")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyInvestigator> getStudyInvestigatorsInternal() {
         return lazyListHelper.getInternalList(StudyInvestigator.class);
     }
@@ -123,6 +121,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     @OneToMany(mappedBy = "studyOrganization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @UniqueObjectInCollection(message = "Duplicates found in StudyPersonnel list")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyPersonnel> getStudyPersonnelsInternal() {
         return lazyListHelper.getInternalList(StudyPersonnel.class);
     }

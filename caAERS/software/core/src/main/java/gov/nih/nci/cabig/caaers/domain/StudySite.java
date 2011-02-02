@@ -18,10 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.MapKey;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the StudySite domain object associated with the Adverse event report.
@@ -73,6 +70,7 @@ public class StudySite extends StudyOrganization {
 
     @OneToMany(mappedBy = "studySite")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantAssignment> getStudyParticipantAssignments() {
         return studyParticipantAssignments;
     }
@@ -88,6 +86,7 @@ public class StudySite extends StudyOrganization {
 
     @OneToMany(mappedBy = "studySite")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<StudySiteWorkflowConfig> getStudySiteWorkflowConfigs() {
     	if(studySiteWorkflowConfigs == null) studySiteWorkflowConfigs = new ArrayList<StudySiteWorkflowConfig>();
 		return studySiteWorkflowConfigs;

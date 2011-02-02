@@ -19,10 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the StudyParticipantDiseaseHistory domain object associated with the StudyParticipantAssignment.
@@ -152,6 +149,7 @@ public class StudyParticipantDiseaseHistory extends AbstractMutableDomainObject 
     @OneToMany
     @JoinColumn(name = "spa_disease_history_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantMetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
         return listHelper.getInternalList(StudyParticipantMetastaticDiseaseSite.class);
     }

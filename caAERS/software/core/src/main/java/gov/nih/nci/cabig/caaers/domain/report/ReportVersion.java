@@ -27,11 +27,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 /**
  * Every report has a report version
@@ -298,6 +294,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     @OneToMany
     @JoinColumn(name="report_version_id" ,nullable=false)
     @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportContent> getContents() {
 		return contents;
 	}
@@ -307,6 +304,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
     @OneToMany(mappedBy="reportVersion")
     @Cascade(value={CascadeType.SAVE_UPDATE, CascadeType.REMOVE, CascadeType.EVICT, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportedAdverseEvent> getReportedAdversEvents() {
 		return reportedAdversEvents;
 	}
@@ -338,7 +336,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_version_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<ReportTracking> getReportTrackingsInternal() {
 		return reportTrackings;
 	}

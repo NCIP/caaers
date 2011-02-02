@@ -16,10 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "arms")
@@ -62,6 +59,7 @@ public class Arm  extends AbstractMutableDomainObject {
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "arm_id", nullable=false)
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SolicitedAdverseEvent> getSolicitedAdverseEvents() {
 		return solicitedAdverseEvents;
 	}

@@ -371,6 +371,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyDevice> getStudyDevices() {
         return this.studyDevices;
     }
@@ -387,6 +388,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<OtherIntervention> getOtherInterventions() {
         return this.otherInterventions;
     }
@@ -642,6 +644,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "STU_ID")
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Identifier> getIdentifiers() {
         return lazyListHelper.getInternalList(Identifier.class);
     }
@@ -665,6 +668,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyAgent> getStudyAgentsInternal() {
         return lazyListHelper.getInternalList(StudyAgent.class);
     }
@@ -679,6 +683,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Where(clause = "term_type = 'ctep'")
     @OrderBy
     @UniqueObjectInCollection(message = "Duplicates found in CtepStudyDiseases list")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<CtepStudyDisease> getCtepStudyDiseases() {
         return ctepStudyDiseases;
@@ -699,6 +704,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Where(clause = "term_type = 'meddra'")
     @OrderBy
     @UniqueObjectInCollection(message = "Duplicates found in MeddraStudyDiseases list")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
     public List<MeddraStudyDisease> getMeddraStudyDiseases() {
         return meddraStudyDiseases;
@@ -834,6 +840,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicates found in StudyOrganizations list")
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
     }
@@ -851,6 +858,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<TreatmentAssignment> getTreatmentAssignmentsInternal() {
         return lazyListHelper.getInternalList(TreatmentAssignment.class);
     }
@@ -997,6 +1005,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Deprecated
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportFormat> getReportFormats() {
         return reportFormats;
     }
@@ -1136,6 +1145,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name="study_id", nullable = false)
     @OrderBy("epochOrder")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Epoch> getEpochs() {
 		return epochs;
 	}
@@ -1236,6 +1246,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Where(clause = "term_type = 'dcp'")
     @OrderBy
     @UniqueObjectInCollection(message = "Duplicate - Same condition is associated to the study more than ones")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyCondition> getStudyConditions() {
         return studyConditions;
     }
@@ -1250,10 +1261,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @OneToMany
-    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'ctep'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ExpectedAECtcTerm> getExpectedAECtcTerms() {
         return expectedAECTCTerms;
     }
@@ -1272,7 +1283,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than once")
-    @Where(clause = "term_type = 'meddra'")    
+    @Where(clause = "term_type = 'meddra'")
     public List<ExpectedAEMeddraLowLevelTerm> getExpectedAEMeddraLowLevelTerms() {
         return expectedAEMeddraTerms;
     }

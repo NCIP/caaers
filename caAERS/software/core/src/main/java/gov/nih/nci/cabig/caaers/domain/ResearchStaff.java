@@ -27,10 +27,7 @@ import javax.persistence.Transient;
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Factory;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * 
@@ -135,6 +132,7 @@ public abstract class ResearchStaff extends User {
 
 	@OneToMany(mappedBy = "researchStaff", fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SiteResearchStaff> getSiteResearchStaffsInternal() {
 		return lazyListHelper.getInternalList(SiteResearchStaff.class);
 	}

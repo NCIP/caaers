@@ -20,12 +20,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OrderBy;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 /**
  * @author Krikor Krumlian
@@ -170,6 +165,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause = "start_date desc")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
     	return reportingPeriods;
     }
@@ -190,6 +186,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
         return preExistingConditions;
     }
@@ -200,6 +197,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantConcomitantMedication> getConcomitantMedications() {
         return concomitantMedications;
     }
@@ -210,6 +208,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantPriorTherapy> getPriorTherapies() {
         return priorTherapies;
     }
@@ -230,6 +229,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause = "lab_date desc")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<LabLoad> getLabLoads() {
 
         if (labLoads == null) labLoads = new ArrayList<LabLoad>();

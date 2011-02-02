@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import org.hibernate.annotations.Fetch;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class DiseaseCategory extends AbstractImmutableDomainObject {
 
     @OneToMany(mappedBy = "category")
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // by ID for consistency
     public List<DiseaseTerm> getTerms() {
         return terms;
@@ -49,6 +51,7 @@ public class DiseaseCategory extends AbstractImmutableDomainObject {
     }
 
     @OneToMany(mappedBy = "parentCategory", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<DiseaseCategory> getChildCategories() {
         return childCategories;
     }

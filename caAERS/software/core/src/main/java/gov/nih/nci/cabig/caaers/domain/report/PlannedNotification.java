@@ -21,10 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * This class represent the details that which is to be used while creating the actual
@@ -81,6 +78,7 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
     @OneToMany
     @JoinColumn(name = "plnf_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Recipient> getRecipients() {
 
         return recipients;
@@ -96,6 +94,7 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
     @OneToMany
     @JoinColumn(name = "plnf_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<NotificationAttachment> getAttachments() {
         return attachments;
     }

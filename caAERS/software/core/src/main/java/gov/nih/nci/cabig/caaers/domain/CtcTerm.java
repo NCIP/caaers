@@ -13,10 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the CtcTerm domain object associated with the Adverse event report.
@@ -124,6 +121,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     @Cascade(value={CascadeType.ALL})
     @OrderBy("grade")
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<CtcGrade> getContextualGrades() {
         return contextualGrades;
     }

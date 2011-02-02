@@ -29,12 +29,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the Reporting Period associated to StudyParticipant Associations
@@ -142,6 +137,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<AdverseEvent> getAdverseEvents() {
     	if (adverseEvents == null) adverseEvents = new ArrayList<AdverseEvent>();
         return adverseEvents;
@@ -328,6 +324,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ExpeditedAdverseEventReport> getAeReports() {
     	if(this.aeReports == null) this.aeReports = new ArrayList<ExpeditedAdverseEventReport>();
     	return aeReports;
@@ -377,6 +374,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     @JoinColumn(name = "rp_id", nullable = true)
     @IndexColumn(name = "list_index", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportingPeriodReviewComment> getReviewCommentsInternal() {
     	if(reviewComments == null) reviewComments = new ArrayList<ReportingPeriodReviewComment>();
 		return reviewComments;

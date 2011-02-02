@@ -21,11 +21,7 @@ import org.apache.commons.collections.functors.InstantiateFactory;
 import org.apache.commons.collections.list.LazyList;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -114,6 +110,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild imp
     @JoinColumn(name = "treatment_id", nullable = false)
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<CourseAgent> getCourseAgentsInternal() {
         return courseAgentsInternal;
     }

@@ -22,10 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections15.Factory;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the Investigator domain object associated with the Adverse event report.
@@ -132,6 +129,7 @@ public abstract class Investigator extends User {
 
     @OneToMany(mappedBy = "investigator", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<SiteInvestigator> getSiteInvestigatorsInternal() {
         return lazyListHelper.getInternalList(SiteInvestigator.class);
     }

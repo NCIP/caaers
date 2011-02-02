@@ -10,10 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "wf_transition_configs")
@@ -32,6 +29,7 @@ public class TransitionConfig extends AbstractMutableDomainObject {
 	@OneToMany
     @JoinColumn(name = "transition_config_id", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<TransitionOwner> getOwners() {
 		return owners;
 	}

@@ -22,11 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 /**
  * This class represents the Participant domain object associated with the Adverse event report.
@@ -264,6 +260,7 @@ public class Participant extends Person {
     // order by ID for testing consistency
     @Cascade(value = {CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicate Assignement found in Assignments list")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantAssignment> getAssignments() {
         return assignments;
     }
@@ -328,6 +325,7 @@ public class Participant extends Person {
     @Cascade({CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
     @UniqueObjectInCollection(message = "Duplicate Identifier found in Identifiers list")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Identifier> getIdentifiers() {
         return lazyListHelper.getInternalList(Identifier.class);
     }

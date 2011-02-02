@@ -18,10 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -151,6 +148,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     @OneToMany
     @JoinColumn(name = "disease_history_id")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
         return listHelper.getInternalList(MetastaticDiseaseSite.class);
     }

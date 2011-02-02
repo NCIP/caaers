@@ -194,6 +194,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "rct_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<PlannedNotification> getPlannedNotificationsInternal() {
         return lazyListHelper.getInternalList(PlannedNotification.class);
     }
@@ -215,6 +216,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "rct_id")
     @Cascade(value = { CascadeType.ALL })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportDeliveryDefinition> getDeliveryDefinitionsInternal() {
         return lazyListHelper.getInternalList(ReportDeliveryDefinition.class);
     }
@@ -236,6 +238,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "rct_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportMandatoryFieldDefinition> getMandatoryFields() {
         return mandatoryFields;
     }

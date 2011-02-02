@@ -13,11 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+
 /**
  * This class will capture the customizations applied for each task.
  * Eg: - Applicablblity , Status to which this node corresponds to, list of assignees and notification recipients
@@ -75,6 +72,7 @@ public class TaskConfig extends AbstractMutableDomainObject{
 	@OneToMany
     @JoinColumn(name = "task_config_id", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<Assignee> getAssignees(){
 		return assignees;
 	}
@@ -91,6 +89,7 @@ public class TaskConfig extends AbstractMutableDomainObject{
 	@OneToMany
     @JoinColumn(name = "task_config_id", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<TransitionConfig> getTransitions() {
 		return transitions;
 	}
