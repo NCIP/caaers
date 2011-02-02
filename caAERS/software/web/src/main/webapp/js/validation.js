@@ -315,6 +315,15 @@ var ValidationManager = {
         };
     },
 
+    isRequired: function(inputField) {
+        var isRequired = ValidationManager.hasState(inputField, 'required') ||
+                         ValidationManager.hasState(inputField, 'mandatory') ||
+                         ValidationManager.hasState(inputField, 'valueOK') ||
+                         ValidationManager.hasState(inputField, 'validField');
+
+        return isRequired;
+    },
+
     hasState: function(inputField, state) {
         return (Element.hasClassName(inputField, state));
     },

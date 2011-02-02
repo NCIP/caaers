@@ -51,47 +51,30 @@
         function updatePhysicianFromInvestigator(investigator) {
             updateUserData('aeReport.physician', investigator);
         }
-        
+
         function updateUserData(prefix, user) {
             NAME_FIELDS.each(function(field) {
             	if(user[field] != null) {
                     updateFieldValue(prefix + '.' + field, user[field]);
-
-                    var isRequired = ValidationManager.hasState(prefix + '.' + field, 'required') ||
-                                     ValidationManager.hasState(prefix + '.' + field, 'mandatory') ||
-                                     ValidationManager.hasState(prefix + '.' + field, 'valueOK') ||
-                                     ValidationManager.hasState(prefix + '.' + field, 'validField');
-
-                    if (isRequired && user[field] != "")
-                        ValidationManager.setNormalState($(prefix + '.' + field));
-                    else {
-                        ValidationManager.setInvalidState($(prefix + '.' + field));
-                    }
                 }
             })
             
             if(user['emailAddress'] != null) {
                 updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]',user['emailAddress']);
-                ValidationManager.setNormalState($(prefix + '.contactMechanisms[e-mail]'));
             }else{
             	updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]', '');
-            	ValidationManager.setNormalState($(prefix + '.contactMechanisms[e-mail]'));
             }
 
             if(user['phoneNumber'] != null) {
                 updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
-                ValidationManager.setNormalState($(prefix + '.contactMechanisms[phone]'));
             }else{
             	updateFieldValue(prefix + '.' + 'contactMechanisms[phone]', '');
-            	ValidationManager.setNormalState($(prefix + '.contactMechanisms[phone]'));
             }
 
             if(user['faxNumber'] != null) {
                 updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
-                ValidationManager.setNormalState($(prefix + '.contactMechanisms[fax]'));
             }else{
             	updateFieldValue(prefix + '.' + 'contactMechanisms[fax]', '');
-            	ValidationManager.setNormalState($(prefix + '.contactMechanisms[fax]'));
             }
             
             if(user['address'] != null){
@@ -99,19 +82,11 @@
             	updateFieldValue(prefix + '.' + 'address.city', user['address'].city);
             	updateFieldValue(prefix + '.' + 'address.state', user['address'].state);
             	updateFieldValue(prefix + '.' + 'address.zip', user['address'].zip);
-            	ValidationManager.setNormalState($(prefix + '.address.street'));
-            	ValidationManager.setNormalState($(prefix + '.address.city'));
-            	ValidationManager.setNormalState($(prefix + '.address.state'));
-            	ValidationManager.setNormalState($(prefix + '.address.zip'));
             }else{
             	updateFieldValue(prefix + '.' + 'address.street', '');
             	updateFieldValue(prefix + '.' + 'address.city', '');
             	updateFieldValue(prefix + '.' + 'address.state', '');
             	updateFieldValue(prefix + '.' + 'address.zip', '');
-            	ValidationManager.setNormalState($(prefix + '.address.street'));
-            	ValidationManager.setNormalState($(prefix + '.address.city'));
-            	ValidationManager.setNormalState($(prefix + '.address.state'));
-            	ValidationManager.setNormalState($(prefix + '.address.zip'));
             }
         }
 
@@ -129,6 +104,7 @@
 			if (f){
 				f.value = value;
 			}
+            ValidationManager.doFieldValidation(f);
         }
 
         Event.observe(window, "load", function() {
