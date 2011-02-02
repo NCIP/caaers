@@ -14,8 +14,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
- * This class represents the StudyParticipantPreExistingCondition domain object associated with the StudyParticipantAssignment
+ * This class represents the StudyParticipantPreExistingCondition domain object associated with the StudyParticipantAssignment.
  *
  * @author Sameer Sawant
  */
@@ -23,14 +24,23 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "spa_pre_existing_conds")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_spa_pre_existing_conds_id")})
 public class StudyParticipantPreExistingCondition extends AbstractMutableDomainObject {
+    
+    /** The pre existing condition. */
     private PreExistingCondition preExistingCondition;
 
+    /** The assignment. */
     private StudyParticipantAssignment assignment;
 
+    /** The other. */
     private String other;
 
     // //// LOGIC
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         if (getPreExistingCondition() != null) {
@@ -44,35 +54,68 @@ public class StudyParticipantPreExistingCondition extends AbstractMutableDomainO
 
     // //// BOUND PROPERTIES
 
+    /**
+     * Gets the pre existing condition.
+     *
+     * @return the pre existing condition
+     */
     @ManyToOne
     public PreExistingCondition getPreExistingCondition() {
         return preExistingCondition;
     }
 
+    /**
+     * Sets the pre existing condition.
+     *
+     * @param preExistingCondition the new pre existing condition
+     */
     public void setPreExistingCondition(PreExistingCondition preExistingCondition) {
         this.preExistingCondition = preExistingCondition;
     }
 
+    /**
+     * Gets the other.
+     *
+     * @return the other
+     */
     public String getOther() {
         return other;
     }
 
+    /**
+     * Sets the other.
+     *
+     * @param other the new other
+     */
     public void setOther(String other) {
         this.other = other;
     }
 
+    /**
+     * Gets the assignment.
+     *
+     * @return the assignment
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.LOCK})
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }
 
+    /**
+     * Sets the assignment.
+     *
+     * @param assignment the new assignment
+     */
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.assignment = assignment;
     }
 
 
     ///OBJECT METHODS
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -85,6 +128,9 @@ public class StudyParticipantPreExistingCondition extends AbstractMutableDomainO
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -108,6 +154,12 @@ public class StudyParticipantPreExistingCondition extends AbstractMutableDomainO
     }
 
 
+    /**
+     * Creates the assignment pre existing condition.
+     *
+     * @param saeReportPreExistingCondition the sae report pre existing condition
+     * @return the study participant pre existing condition
+     */
     public static StudyParticipantPreExistingCondition createAssignmentPreExistingCondition(SAEReportPreExistingCondition saeReportPreExistingCondition) {
         if (saeReportPreExistingCondition != null) {
             StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = new StudyParticipantPreExistingCondition();

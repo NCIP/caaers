@@ -10,11 +10,21 @@ import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+ 
 /**
+ * A factory for creating AENotification objects.
+ *
  * @author Biju Joseph
  */
 public class AENotificationFactory {
 
+    /**
+     * Creates a new AENotification object.
+     *
+     * @param aeReport the ae report
+     * @return the ae notification
+     * @throws Exception the exception
+     */
     public AeNotification createAENotificationForExpeditedAdverseEventReport(final ExpeditedAdverseEventReport aeReport) throws Exception {
         AeNotification aeNotification = new AeNotification();
         aeNotification.setRegistrationGridId(aeReport.getAssignment().getGridId());
@@ -27,6 +37,13 @@ public class AENotificationFactory {
 
     }
 
+    /**
+     * Creates a new AENotification object.
+     *
+     * @param roReport the ro report
+     * @return the ae notification
+     * @throws Exception the exception
+     */
     public AeNotification createAENotificationForRoutineAdverseEventReport(final RoutineAdverseEventReport roReport) throws Exception {
         AeNotification aeNotification = new AeNotification();
         aeNotification.setRegistrationGridId(roReport.getAssignment().getGridId());
@@ -38,6 +55,13 @@ public class AENotificationFactory {
         return aeNotification;
     }
     
+    /**
+     * Gets the xml date.
+     *
+     * @param date the date
+     * @return the xml date
+     * @throws Exception the exception
+     */
     private XMLGregorianCalendar getXmlDate(Date date) throws Exception {
     	GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(date);

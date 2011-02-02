@@ -10,12 +10,22 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+ 
+/**
+ * The Class LowLevelTerm.
+ */
 @Entity
 @Table(name = "meddra_llt")
 public class LowLevelTerm extends AbstractMeddraDomainObject {
 
+    /** The preferred term. */
     private PreferredTerm preferredTerm;
     
+    /**
+     * Gets the preferred term.
+     *
+     * @return the preferred term
+     */
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "meddra_pt_id")
     @Cascade(value = { CascadeType.LOCK })
@@ -23,10 +33,20 @@ public class LowLevelTerm extends AbstractMeddraDomainObject {
     	return preferredTerm;
     }
     
+    /**
+     * Sets the preferred term.
+     *
+     * @param preferredTerm the new preferred term
+     */
     public void setPreferredTerm(PreferredTerm preferredTerm){
     	this.preferredTerm = preferredTerm;
     }
 
+    /**
+     * Gets the full name.
+     *
+     * @return the full name
+     */
     @Transient
     public String getFullName() {
     	if(getMeddraTerm() == null) 

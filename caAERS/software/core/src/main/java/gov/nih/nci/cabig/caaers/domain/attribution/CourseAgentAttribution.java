@@ -7,12 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+ 
 /**
+ * The Class CourseAgentAttribution.
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @DiscriminatorValue("CA")
 public class CourseAgentAttribution extends AdverseEventAttribution<CourseAgent> {
+    
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+     */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override
@@ -20,6 +27,9 @@ public class CourseAgentAttribution extends AdverseEventAttribution<CourseAgent>
         return super.getCause();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#copy()
+     */
     @Override
     public CourseAgentAttribution copy() {
         return super.copy();

@@ -16,12 +16,25 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.collections.CollectionUtils;
 
+ 
 /**
+ * A factory for creating Report objects.
+ *
  * @author Biju Joseph
  */
 public class ReportFactory {
+	
+	/** The now factory. */
 	private NowFactory nowFactory;
     
+    /**
+     * Creates a new Report object.
+     *
+     * @param reportDefinition the report definition
+     * @param aeReport the ae report
+     * @param baseDate the base date
+     * @return the report
+     */
     public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Date baseDate) {
         assert reportDefinition != null : "ReportDefinition must be not null. Unable to create a Report";
         assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
@@ -42,6 +55,12 @@ public class ReportFactory {
     }
     
     
+    /**
+     * Adds the scheduled notifications.
+     *
+     * @param reportDefinition the report definition
+     * @param report the report
+     */
     public void addScheduledNotifications(ReportDefinition reportDefinition, Report report){
     	//Note : there is a change in busineess requirement, that at firing time only we generate the message/recipients
     	//So only one Scheduled Notification per Planned Notification. 
@@ -75,6 +94,11 @@ public class ReportFactory {
   
 
 
+    /**
+     * Sets the now factory.
+     *
+     * @param nowFactory the new now factory
+     */
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }

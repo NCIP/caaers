@@ -24,6 +24,7 @@ import javax.persistence.Transient;
 import org.apache.commons.collections15.Factory;
 import org.hibernate.annotations.*;
 
+ 
 /**
  * This class represents the Investigator domain object associated with the Adverse event report.
  * 
@@ -38,16 +39,36 @@ import org.hibernate.annotations.*;
 @GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
 public abstract class Investigator extends User {
 	
+	/** The id. */
 	protected Integer id;
+	
+	/** The nci identifier. */
 	protected String nciIdentifier;
+	
+	/** The lazy list helper. */
 	protected final LazyListHelper lazyListHelper;
+	
+	/** The external id. */
 	protected String externalId;
+	
+	/** The status. */
 	protected String status;
+	
+	/** The external investigators. */
 	protected List<Investigator> externalInvestigators = new ArrayList<Investigator>();
+	
+	/** The allowed to login. */
 	protected Boolean allowedToLogin = Boolean.TRUE;
+	
+	/** The was login id null. */
 	protected boolean wasLoginIdNull = true;
+	
+	/** The was login disallowed. */
 	protected boolean wasLoginDisallowed = true;
 	
+    /**
+     * Instantiates a new investigator.
+     */
     public Investigator() {
         lazyListHelper = new LazyListHelper();
 
@@ -55,16 +76,25 @@ public abstract class Investigator extends User {
         lazyListHelper.add(SiteInvestigator.class, new SiteInvestigatorFactory(this));
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject#getId()
+     */
     @Id 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="id-generator")
     public Integer getId() {
         return id;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject#setId(java.lang.Integer)
+     */
     public void setId(Integer id) {
         this.id = id;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.Person#getCaaersUser()
+     */
     @OneToOne
     @JoinColumn(name = "user_id")	
 	public _User getCaaersUser() {
@@ -73,11 +103,19 @@ public abstract class Investigator extends User {
     
     // business methods
 
+    /**
+     * Adds the site investigator.
+     *
+     * @param siteInvestigator the site investigator
+     */
     public void addSiteInvestigator(final SiteInvestigator siteInvestigator) {
         getSiteInvestigators().add(siteInvestigator);
         siteInvestigator.setInvestigator(this);
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.Person#getLastFirst()
+     */
     @Transient
     public String getLastFirst() {
         StringBuilder name = new StringBuilder();
@@ -94,6 +132,9 @@ public abstract class Investigator extends User {
         return name.toString();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.Person#getFullName()
+     */
     @Transient
     public String getFullName() {
         StringBuilder name = new StringBuilder();
@@ -118,15 +159,30 @@ public abstract class Investigator extends User {
     // bean methods
  
 
+    /**
+     * Gets the nci identifier.
+     *
+     * @return the nci identifier
+     */
     @Transient
     public String getNciIdentifier() {
         return nciIdentifier;
     }
 
+    /**
+     * Sets the nci identifier.
+     *
+     * @param nciIdentifier the new nci identifier
+     */
     public void setNciIdentifier(final String nciIdentifier) {
         this.nciIdentifier = nciIdentifier;
     }
 
+    /**
+     * Gets the site investigators internal.
+     *
+     * @return the site investigators internal
+     */
     @OneToMany(mappedBy = "investigator", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -134,39 +190,77 @@ public abstract class Investigator extends User {
         return lazyListHelper.getInternalList(SiteInvestigator.class);
     }
 
+    /**
+     * Sets the site investigators internal.
+     *
+     * @param investigators the new site investigators internal
+     */
     public void setSiteInvestigatorsInternal(final List<SiteInvestigator> investigators) {
         lazyListHelper.setInternalList(SiteInvestigator.class, investigators);
     }
 
+    /**
+     * Gets the site investigators.
+     *
+     * @return the site investigators
+     */
     @Transient
     public List<SiteInvestigator> getSiteInvestigators() {
         return lazyListHelper.getLazyList(SiteInvestigator.class);
     }
 
+    /**
+     * Sets the site investigators.
+     *
+     * @param investigators the new site investigators
+     */
     public void setSiteInvestigators(final List<SiteInvestigator> investigators) {
         setSiteInvestigatorsInternal(investigators);
     }
     
+    /**
+     * Gets the external id.
+     *
+     * @return the external id
+     */
     @Transient
 	public String getExternalId() {
 		return externalId;
 	}
 
+	/**
+	 * Sets the external id.
+	 *
+	 * @param externalId the new external id
+	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
  
+	/**
+	 * Gets the external investigators.
+	 *
+	 * @return the external investigators
+	 */
 	@Transient
 	public List<Investigator> getExternalInvestigators() {
 		return externalInvestigators;
 	}
 
+	/**
+	 * Sets the external investigators.
+	 *
+	 * @param externalInvestigators the new external investigators
+	 */
 	public void setExternalInvestigators(List<Investigator> externalInvestigators) {
 		this.externalInvestigators = externalInvestigators;
 	}
 	
     // /OBJECT METHODS
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,6 +274,9 @@ public abstract class Investigator extends User {
         return true && super.equals(o);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -187,11 +284,20 @@ public abstract class Investigator extends User {
         return result;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
     	return getFullName();
     }
     
+    /**
+     * Find site investigator by id.
+     *
+     * @param id the id
+     * @return the site investigator
+     */
     public SiteInvestigator findSiteInvestigatorById(Integer id){
         for(SiteInvestigator si : getSiteInvestigators()){
             if(si.getId() != null && si.getId().equals(id)) return si;
@@ -199,6 +305,12 @@ public abstract class Investigator extends User {
         return null;
     }
     
+	/**
+	 * Find site investigator.
+	 *
+	 * @param other the other
+	 * @return the site investigator
+	 */
 	public SiteInvestigator findSiteInvestigator(SiteInvestigator other){
 		for(SiteInvestigator siteInvestigator : getSiteInvestigators()){
 			if(siteInvestigator.getOrganization().equals(other.getOrganization())){
@@ -210,8 +322,9 @@ public abstract class Investigator extends User {
 	
 	/**
 	 * This method return a siteInvestigator for a given Organization.
-	 * @param organization
-	 * @return
+	 *
+	 * @param organization the organization
+	 * @return the site investigator
 	 */
 	public SiteInvestigator findSiteInvestigator(Organization organization){
 		for(SiteInvestigator siteInvestigator : getSiteInvestigators()){
@@ -222,16 +335,31 @@ public abstract class Investigator extends User {
 		return null;
 	}
     
+	/**
+	 * Gets the allowed to login.
+	 *
+	 * @return the allowed to login
+	 */
 	@Transient
     @Column(name = "allowed_to_login")
 	public Boolean getAllowedToLogin() {
 		return allowedToLogin;
 	}
 
+	/**
+	 * Sets the allowed to login.
+	 *
+	 * @param allowedToLogin the new allowed to login
+	 */
 	public void setAllowedToLogin(Boolean allowedToLogin) {
 		this.allowedToLogin = allowedToLogin;
 	}
 
+    /**
+     * Checks if is active.
+     *
+     * @return true, if is active
+     */
     @Transient
     public boolean isActive() {
         for (SiteInvestigator si : this.getSiteInvestigators()) {
@@ -240,25 +368,48 @@ public abstract class Investigator extends User {
         return false;
     }
     
+    /**
+     * Gets the was login id null.
+     *
+     * @return the was login id null
+     */
     @Transient
     public boolean getWasLoginIdNull() {
 		return wasLoginIdNull;
 	}
+    
+    /**
+     * Sets the was login id null.
+     *
+     * @param wasLoginIdNull the new was login id null
+     */
     public void setWasLoginIdNull(boolean wasLoginIdNull) {
 		this.wasLoginIdNull = wasLoginIdNull;
 	}
     
+    /**
+     * Gets the was login disallowed.
+     *
+     * @return the was login disallowed
+     */
     @Transient
     public boolean getWasLoginDisallowed() {
 		return wasLoginDisallowed;
 	}
+    
+    /**
+     * Sets the was login disallowed.
+     *
+     * @param wasLoginDisallowed the new was login disallowed
+     */
     public void setWasLoginDisallowed(boolean wasLoginDisallowed) {
 		this.wasLoginDisallowed = wasLoginDisallowed;
 	}
 
     /**
      * All the SiteInvestigator where the investigator is active.
-     * @return
+     *
+     * @return the active site investigators
      */
     @Transient
     public List<SiteInvestigator> getActiveSiteInvestigators(){
@@ -271,14 +422,26 @@ public abstract class Investigator extends User {
 
 
     //Inner Class used instead of InstantiateFactory
+    /**
+     * A factory for creating SiteInvestigator objects.
+     */
     class SiteInvestigatorFactory implements Factory<SiteInvestigator>{
 
-    	Investigator investigator;
+    	/** The investigator. */
+	    Investigator investigator;
 
-    	public SiteInvestigatorFactory(Investigator investegator){
+    	/**
+	     * Instantiates a new site investigator factory.
+	     *
+	     * @param investegator the investegator
+	     */
+	    public SiteInvestigatorFactory(Investigator investegator){
     		this.investigator=investegator;
     	}
 
+		/* (non-Javadoc)
+		 * @see org.apache.commons.collections15.Factory#create()
+		 */
 		public SiteInvestigator create() {
 			SiteInvestigator siteInvestigator = new SiteInvestigator();
 			siteInvestigator.setInvestigator(investigator);

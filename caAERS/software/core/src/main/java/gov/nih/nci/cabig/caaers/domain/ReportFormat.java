@@ -12,9 +12,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+ 
 /**
- * Domain object representing Report Format
- * 
+ * Domain object representing Report Format.
+ *
  * @author Srini Akkala
  */
 @Entity
@@ -22,32 +23,57 @@ import org.hibernate.annotations.Type;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_format_id") })
 public class ReportFormat extends AbstractMutableDomainObject implements StudyChild {
 
+    /** The study. */
     private Study study;
+    
+    /** The report format type. */
     private ReportFormatType reportFormatType;
 
+    /**
+     * Instantiates a new report format.
+     */
     public ReportFormat() {
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#getStudy()
+     */
     @ManyToOne
     @JoinColumn(name = "study_id", nullable = false)
     public Study getStudy() {
         return study;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#setStudy(gov.nih.nci.cabig.caaers.domain.Study)
+     */
     public void setStudy(final Study study) {
         this.study = study;
     }
 
+    /**
+     * Gets the report format type.
+     *
+     * @return the report format type
+     */
     @Column(name = "REPORT_FORMAT_TYPE")
     @Type(type = "reportFormatType")
     public ReportFormatType getReportFormatType() {
         return reportFormatType;
     }
 
+    /**
+     * Sets the report format type.
+     *
+     * @param reportFormatType the new report format type
+     */
     public void setReportFormatType(final ReportFormatType reportFormatType) {
         this.reportFormatType = reportFormatType;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -57,6 +83,9 @@ public class ReportFormat extends AbstractMutableDomainObject implements StudyCh
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

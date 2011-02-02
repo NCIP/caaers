@@ -13,6 +13,7 @@ import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 
+ 
 /**
  * This class represents the Agent domain object associated with the Adverse event report.
  * 
@@ -24,42 +25,81 @@ import java.io.Serializable;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_agents_id") })
 public class Agent extends AbstractIdentifiableDomainObject implements Serializable {
 
+    /** The name. */
     private String name;
 
+    /** The description. */
     private String description;
 
+    /** The nsc number. */
     private String nscNumber;
 
+    /** The display name. */
     private String displayName;
 
+    /**
+     * Gets the description.
+     *
+     * @return the description
+     */
     @Column(name = "description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description.
+     *
+     * @param description the new description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Column(name = "name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
   
+    /**
+     * Gets the nsc number.
+     *
+     * @return the nsc number
+     */
     @Column(name = "nsc")
     public String getNscNumber() {
         return nscNumber;
     }
 
+    /**
+     * Sets the nsc number.
+     *
+     * @param nsc the new nsc number
+     */
     public void setNscNumber(String nsc) {
         this.nscNumber = nsc;
     }
     
+    /**
+     * Gets the display name.
+     *
+     * @return the display name
+     */
     @Transient
     public String getDisplayName(){
     	if(StringUtils.isNotEmpty(nscNumber)){
@@ -68,10 +108,18 @@ public class Agent extends AbstractIdentifiableDomainObject implements Serializa
     	return name;
     }
     
+    /**
+     * Sets the display name.
+     *
+     * @param displayName the new display name
+     */
     public void setDisplayName(String displayName){
     	this.displayName = displayName;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -85,6 +133,9 @@ public class Agent extends AbstractIdentifiableDomainObject implements Serializa
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     public int hashCode() {
         int result;
         result = (name != null ? name.hashCode() : 0);

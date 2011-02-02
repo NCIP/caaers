@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.*;
 
+ 
 /**
  * This class represents the RoutineAdverseEventReport domain object.
  * 
@@ -29,28 +30,48 @@ import org.hibernate.annotations.*;
 @Table(name = "ae_routine_reports")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_routine_reports_id") })
 public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
+    
+    /** The assignment. */
     private StudyParticipantAssignment assignment;
 
+    /** The start date. */
     private Date startDate;
 
+    /** The end date. */
     private Date endDate;
 
 
+    /** The treatment assignment. */
     private TreatmentAssignment treatmentAssignment;
 
+    /** The lazy list helper. */
     private LazyListHelper lazyListHelper;
 
+    /**
+     * Instantiates a new routine adverse event report.
+     */
     public RoutineAdverseEventReport() {
         lazyListHelper = new LazyListHelper();
 
     }
 
+    /**
+     * Adds the report child lazy list.
+     *
+     * @param <T> the generic type
+     * @param klass the klass
+     */
     private <T extends RoutineAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
         lazyListHelper.add(klass, new RoutineAdverseEventReportChildFactory<T>(klass, this));
     }
 
     // //// LOGIC
 
+    /**
+     * Gets the notification message.
+     *
+     * @return the notification message
+     */
     @Transient
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
@@ -66,6 +87,11 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         }
     }
 
+    /**
+     * Checks if is notification message possible.
+     *
+     * @return true, if is notification message possible
+     */
     @Transient
     public boolean isNotificationMessagePossible() {
         if (getAdverseEventsInternal().size() < 1) return false;
@@ -74,17 +100,32 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
                         && ae.getAdverseEventCtcTerm().getCtcTerm() != null;
     }
 
+    /**
+     * Gets the participant.
+     *
+     * @return the participant
+     */
     @Transient
     public Participant getParticipant() {
         return getAssignment() == null ? null : getAssignment().getParticipant();
     }
 
+    /**
+     * Gets the study.
+     *
+     * @return the study
+     */
     @Transient
     public Study getStudy() {
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
     }
 
+    /**
+     * Gets the summary.
+     *
+     * @return the summary
+     */
     @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
@@ -95,6 +136,11 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return summary;
     }
 
+    /**
+     * Gets the participant summary line.
+     *
+     * @return the participant summary line
+     */
     @Transient
     public String getParticipantSummaryLine() {
         Participant participant = getParticipant();
@@ -104,6 +150,11 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return sb.toString();
     }
 
+    /**
+     * Gets the study summary line.
+     *
+     * @return the study summary line
+     */
     @Transient
     public String getStudySummaryLine() {
         Study study = getStudy();
@@ -113,22 +164,42 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return sb.toString();
     }
 
+    /**
+     * Append primary identifier.
+     *
+     * @param ided the ided
+     * @param sb the sb
+     */
     private void appendPrimaryIdentifier(IdentifiableByAssignedIdentifers ided, StringBuilder sb) {
         if (ided.getPrimaryIdentifier() != null) {
             sb.append(" (").append(ided.getPrimaryIdentifier().getValue()).append(')');
         }
     }
 
+    /**
+     * Adds the adverse event.
+     *
+     * @param adverseEvent the adverse event
+     */
     public void addAdverseEvent(AdverseEvent adverseEvent) {
         getAdverseEventsInternal().add(adverseEvent);
     }
 
-    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    /**
+     * Gets the adverse events.
+     *
+     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
+     */
     @Transient
     public List<AdverseEvent> getAdverseEvents() {
         return lazyListHelper.getLazyList(AdverseEvent.class);
     }
 
+    /**
+     * Sets the adverse events.
+     *
+     * @param adverseEvents the new adverse events
+     */
     @Transient
     public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
         setAdverseEventsInternal(adverseEvents);
@@ -137,17 +208,32 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     // //// BEAN PROPERTIES
 
     //@ManyToOne(fetch = FetchType.LAZY)
+    /**
+     * Gets the assignment.
+     *
+     * @return the assignment
+     */
     @Transient
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }
 
+    /**
+     * Sets the assignment.
+     *
+     * @param assignment the new assignment
+     */
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.assignment = assignment;
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the adverse events internal.
+     *
+     * @return the adverse events internal
+     */
     @OneToMany
     @JoinColumn(name = "routine_report_id", nullable = true)
     @IndexColumn(name = "routine_list_index")
@@ -160,28 +246,58 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return lazyListHelper.getInternalList(AdverseEvent.class);
     }
 
+    /**
+     * Sets the adverse events internal.
+     *
+     * @param adverseEvents the new adverse events internal
+     */
     @SuppressWarnings("unchecked")
     protected void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
         lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
     }
 
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * Sets the end date.
+     *
+     * @param endDate the new end date
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     public Date getStartDate() {
         return startDate;
     }
 
+    /**
+     * Sets the start date.
+     *
+     * @param startDate the new start date
+     */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
 
+    /**
+     * Gets the treatment assignment.
+     *
+     * @return the treatment assignment
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
     @Cascade(value = { CascadeType.LOCK })
@@ -189,6 +305,11 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return treatmentAssignment;
     }
 
+    /**
+     * Sets the treatment assignment.
+     *
+     * @param treatmentAssignment the new treatment assignment
+     */
     public void setTreatmentAssignment(TreatmentAssignment treatmentAssignment) {
         this.treatmentAssignment = treatmentAssignment;
     }

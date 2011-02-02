@@ -31,8 +31,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.hibernate.annotations.*;
 
+ 
 /**
- * This class represents the Reporting Period associated to StudyParticipant Associations
+ * This class represents the Reporting Period associated to StudyParticipant Associations.
  *
  * @author Sameer Sawant
  * @author Biju Joseph
@@ -42,44 +43,88 @@ import org.hibernate.annotations.*;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_reporting_periods_id") })
 public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomainObject implements WorkflowAware, Serializable{
 	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5343583772734352886L;
 
+	/** The Constant BASELINE_REPORTING_TYPE. */
 	private static final String BASELINE_REPORTING_TYPE = "Baseline";
 	
+	/** The description. */
 	private String description;
+	
+	/** The cycle number. */
 	private Integer cycleNumber;
+	
+	/** The workflow id. */
 	private Integer workflowId;
+	
+	/** The review status. */
 	private ReviewStatus reviewStatus;
+	
+	/** The treatment assignment. */
 	private TreatmentAssignment treatmentAssignment;
+	
+	/** The treatment assignment description. */
 	private String treatmentAssignmentDescription;
+	
+	/** The epoch. */
 	private Epoch epoch;
+	
+	/** The start date. */
 	private Date startDate;
+	
+	/** The end date. */
 	private Date endDate;
+	
+	/** The assignment. */
 	private StudyParticipantAssignment assignment;
+	
+	/** The adverse events. */
 	private List<AdverseEvent> adverseEvents;
+	
+	/** The ae reports. */
 	private List<ExpeditedAdverseEventReport> aeReports;
+	
+	/** The name. */
 	private String name;
+	
+	/** The formatter. */
 	private SimpleDateFormat formatter;
+	
+	/** The baseline reporting type. */
 	private boolean baselineReportingType;
 	
 	// This holds the total number of reports within all the ExpeditedReport generated in this reporting period
+	/** The number of reports. */
 	private int numberOfReports;
 	
 	// This gives the Data Entry Status for ths reporing Period
+	/** The data entry status. */
 	private String dataEntryStatus;
 	
 	// This gives the Report Status for the reporting Period
+	/** The report status. */
 	private String reportStatus;
 	
+	/** The review comments. */
 	private List<ReportingPeriodReviewComment> reviewComments;
 	
+	/** The active ae reports. */
 	private List<ExpeditedAdverseEventReport> activeAeReports;
 	
+	/**
+	 * Instantiates a new adverse event reporting period.
+	 */
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
     }
 	
 	//LOGIC
+	/**
+	 * Adds the adverse event.
+	 *
+	 * @param adverseEvent the adverse event
+	 */
 	public void addAdverseEvent(AdverseEvent adverseEvent){
     	getAdverseEvents().add(adverseEvent);
     	adverseEvent.setReportingPeriod(this);
@@ -87,17 +132,32 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 	
 	// BEAN PROPERTIES
     
-    @Transient
+    /**
+	 * Gets the participant.
+	 *
+	 * @return the participant
+	 */
+	@Transient
     public Participant getParticipant() {
         return getAssignment() == null ? null : getAssignment().getParticipant();
     }
 
+    /**
+     * Gets the study.
+     *
+     * @return the study
+     */
     @Transient
     public Study getStudy() {
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
     }
     
+    /**
+     * Gets the summary.
+     *
+     * @return the summary
+     */
     @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
@@ -108,6 +168,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return summary;
     }
     
+    /**
+     * Gets the participant summary line.
+     *
+     * @return the participant summary line
+     */
     @Transient
     public String getParticipantSummaryLine() {
         Participant participant = getParticipant();
@@ -117,6 +182,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return sb.toString();
     }
 
+    /**
+     * Gets the study summary line.
+     *
+     * @return the study summary line
+     */
     @Transient
     public String getStudySummaryLine() {
         Study study = getStudy();
@@ -126,6 +196,12 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return sb.toString();
     }
     
+    /**
+     * Append primary identifier.
+     *
+     * @param ided the ided
+     * @param sb the sb
+     */
     private void appendPrimaryIdentifier(IdentifiableByAssignedIdentifers ided, StringBuilder sb) {
         if (ided.getPrimaryIdentifier() != null) {
             sb.append(" (").append(ided.getPrimaryIdentifier().getValue()).append(')');
@@ -134,6 +210,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
    
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the adverse events.
+     *
+     * @return the adverse events
+     */
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
@@ -143,10 +224,20 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return adverseEvents;
     }
 
+    /**
+     * Sets the adverse events.
+     *
+     * @param adverseEvents the new adverse events
+     */
     public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
         this.adverseEvents = adverseEvents;
     }
     
+    /**
+     * Gets the evaluated adverse events.
+     *
+     * @return the evaluated adverse events
+     */
     @Transient
     public List<AdverseEvent> getEvaluatedAdverseEvents(){
     	List<AdverseEvent> evaluatedAdverseEvents = new ArrayList<AdverseEvent>();
@@ -162,11 +253,12 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
-     * This method returnes all the adverse events whose attributes are populated with some values. The attributes of adverse events 
+     * This method returnes all the adverse events whose attributes are populated with some values. The attributes of adverse events
      * that are checked for some values are the ones that take part in rules. These attributes are namely - grade, Hospitalization,
      * expected, participant at risk, attribution, outcome identifier. If the grade is null or normal or not evaluated then its considered
      * to be not populated. Also if hospitalization has value NONE then its considered to be not populated.
-     * @return
+     *
+     * @return the populated adverse events
      */
     @Transient
     public List<AdverseEvent> getPopulatedAdverseEvents(){
@@ -183,8 +275,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     
     /**
      * This method will return a a sorted list containing the evaluated adverse events + adverse events associated to data collection, that got modified.
+     *
+     * @return the reportable adverse events
      * @see AdverseEventComprator#compare(AdverseEvent, AdverseEvent)
-     * @return
      */
     @Transient
     public List<AdverseEvent> getReportableAdverseEvents(){
@@ -199,7 +292,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     /**
      * This method will return the adverse events that are graded, but not yet associated to any
      * expedited data collection.
-     * @return
+     *
+     * @return the non expedited adverse events
      */
     @Transient
     public List<AdverseEvent> getNonExpeditedAdverseEvents(){
@@ -215,8 +309,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     /**
      * This method will return a a sorted list containing the newly added evaluated adverse events + adverse events associated to data collection, that got modified +
      * adverse events associated to data collection that are not reported.
-     * 
-     * @return
+     *
+     * @return the modified reportable adverse events
      */
     @Transient
     public List<AdverseEvent> getModifiedReportableAdverseEvents(){
@@ -228,9 +322,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
-     * This return the modified adverse events that are associated to an expedited data collection
-     * 
-     * @return
+     * This return the modified adverse events that are associated to an expedited data collection.
+     *
+     * @return the modified expedited adverse events
      */
     @Transient
     public List<AdverseEvent> getModifiedExpeditedAdverseEvents(){
@@ -242,32 +336,67 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     
+    /**
+     * Gets the assignment.
+     *
+     * @return the assignment
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(value={CascadeType.MERGE, CascadeType.LOCK})
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }
 
+    /**
+     * Sets the assignment.
+     *
+     * @param assignment the new assignment
+     */
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.assignment = assignment;
     }
     
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * Sets the end date.
+     *
+     * @param endDate the new end date
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     public Date getStartDate() {
         return startDate;
     }
 
+    /**
+     * Sets the start date.
+     *
+     * @param startDate the new start date
+     */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
     
+    /**
+     * Gets the treatment assignment.
+     *
+     * @return the treatment assignment
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
     @Cascade(value = { CascadeType.LOCK })
@@ -275,53 +404,105 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return treatmentAssignment;
     }
 
+    /**
+     * Sets the treatment assignment.
+     *
+     * @param treatmentAssignment the new treatment assignment
+     */
     public void setTreatmentAssignment(TreatmentAssignment treatmentAssignment) {
         this.treatmentAssignment = treatmentAssignment;
     }
     
+    /**
+     * Gets the description.
+     *
+     * @return the description
+     */
     public String getDescription(){
     	return description;
     }
     
+    /**
+     * Sets the description.
+     *
+     * @param description the new description
+     */
     public void setDescription(String description){
     	this.description = description;
     }
 
+    /**
+     * Gets the cycle number.
+     *
+     * @return the cycle number
+     */
     public Integer getCycleNumber() {
 		return cycleNumber;
 	}
     
+    /**
+     * Sets the cycle number.
+     *
+     * @param cycleNumber the new cycle number
+     */
     public void setCycleNumber(Integer cycleNumber) {
 		this.cycleNumber = cycleNumber;
 	}
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware#getWorkflowId()
+     */
     public Integer getWorkflowId() {
     	return workflowId;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware#setWorkflowId(java.lang.Integer)
+     */
     public void setWorkflowId(Integer workflowId){
     	this.workflowId = workflowId;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware#getReviewStatus()
+     */
     @Column(name = "review_status_code")
     @Type(type = "reviewStatus")
     public ReviewStatus getReviewStatus() {
         return reviewStatus;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware#setReviewStatus(gov.nih.nci.cabig.caaers.domain.ReviewStatus)
+     */
     public void setReviewStatus(ReviewStatus reviewStatus){
     	this.reviewStatus = reviewStatus;
     }
     
+    /**
+     * Gets the epoch.
+     *
+     * @return the epoch
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     public Epoch getEpoch(){
     	return epoch;
     }
     
+    /**
+     * Sets the epoch.
+     *
+     * @param epoch the new epoch
+     */
     public void setEpoch(Epoch epoch){
     	this.epoch = epoch;
     }
     
+    /**
+     * Gets the ae reports.
+     *
+     * @return the ae reports
+     */
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -333,7 +514,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     /**
      * This method returns a list of expedited aeReports that are active. An Expedited AeReport
      * is active if it has atleast on report in non-withdrawn state.
-     * @return
+     *
+     * @return the active ae reports
      */
     @Transient
     public List<ExpeditedAdverseEventReport> getActiveAeReports() {
@@ -351,8 +533,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     /**
      * If any report associated to expedited AeReport is in non-withdrawn state,
      * the expedited aeReport is considered to be an active report.
-     * @param aeReport
-     * @return
+     *
+     * @param aeReport the ae report
+     * @return the boolean
      */
     private Boolean isAeReportActive(ExpeditedAdverseEventReport aeReport){
     	for(Report report: aeReport.getReports()){
@@ -364,12 +547,22 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	return false;
     }
     
+    /**
+     * Sets the ae reports.
+     *
+     * @param aeReports the new ae reports
+     */
     public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
 		this.aeReports = aeReports;
 	}
     
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the review comments internal.
+     *
+     * @return the review comments internal
+     */
     @OneToMany
     @JoinColumn(name = "rp_id", nullable = true)
     @IndexColumn(name = "list_index", nullable = false)
@@ -380,11 +573,21 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 		return reviewComments;
 	}
     
+    /**
+     * Sets the review comments internal.
+     *
+     * @param reviewComments the new review comments internal
+     */
     public void setReviewCommentsInternal(List<ReportingPeriodReviewComment> reviewComments) {
 		this.reviewComments = reviewComments;
 	}
 
     //http://opensource.atlassian.com/projects/hibernate/browse/HHH-2802
+    /**
+     * Gets the review comments.
+     *
+     * @return the review comments
+     */
     @Transient
     public List<ReportingPeriodReviewComment> getReviewComments() {
     	ArrayList<ReportingPeriodReviewComment> comments = new ArrayList<ReportingPeriodReviewComment>(getReviewCommentsInternal());
@@ -392,10 +595,20 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return comments;
 	}
 
+    /**
+     * Sets the review comments.
+     *
+     * @param reviewComments the new review comments
+     */
     public void setReviewComments(List<ReportingPeriodReviewComment> reviewComments) {
 		this.reviewComments = reviewComments;
 	}
     
+    /**
+     * Adds the ae report.
+     *
+     * @param aeReport the ae report
+     */
     public void addAeReport(ExpeditedAdverseEventReport aeReport){
     	if(aeReport == null) return;
     	aeReport.setReportingPeriod(this);
@@ -403,6 +616,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	
     }
     
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
     	
@@ -418,10 +636,20 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 		return name;
 	}
     
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
 		this.name = name;
 	}
     
+    /**
+     * Checks if is baseline reporting type.
+     *
+     * @return true, if is baseline reporting type
+     */
     @Transient
     public boolean isBaselineReportingType(){
     	if(this.getEpoch() != null)
@@ -429,6 +657,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	return false;
     }
     
+    /**
+     * Gets the number of reports.
+     *
+     * @return the number of reports
+     */
     @Transient
     public int getNumberOfReports(){
     	int count = 0;
@@ -441,6 +674,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	return count;
     }
         
+    /**
+     * Gets the number of a es.
+     *
+     * @return the number of a es
+     */
     @Transient
     public int getNumberOfAEs(){
     	int count = 0;
@@ -449,14 +687,19 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	return count;
     }
     
+    /**
+     * Gets the data entry status.
+     *
+     * @return the data entry status
+     */
     @Transient
     public String getDataEntryStatus(){
     	return "In-progress";
     }
     
     /**
-     * Will tell the combined submission status of individual expedited reports
-     * 
+     * Will tell the combined submission status of individual expedited reports.
+     *
      * @return {@link ReportStatus}.COMPLETED -When all reports are submitted sucessfully or (withdrawn), {@link ReportStatus}.PENDING when any of the report is pending,inprocess or failed.
      */
     @Transient
@@ -484,8 +727,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
-     * This returns the string that is used as a name in ProcessInstance and TaskInstance (workflow related tables)
-     * 
+     * This returns the string that is used as a name in ProcessInstance and TaskInstance (workflow related tables).
+     *
      * @return String
      */
     @Transient
@@ -494,9 +737,10 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
-     *  Checks whether a different AE with the same term is avilable in this reporting period
-     * @param otherAE
-     * @return
+     * Checks whether a different AE with the same term is avilable in this reporting period.
+     *
+     * @param otherAE the other ae
+     * @return true, if successful
      */
     public boolean hasDiffrentAEWithSameTerm(AdverseEvent otherAE){
     	for(AdverseEvent ae : getAdverseEvents()){
@@ -508,18 +752,29 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	return false;
     }
 
+    /**
+     * Gets the treatment assignment description.
+     *
+     * @return the treatment assignment description
+     */
     @Column(name = "treatment_assignment_desc")
     public String getTreatmentAssignmentDescription() {
         return treatmentAssignmentDescription;
     }
 
+    /**
+     * Sets the treatment assignment description.
+     *
+     * @param treatmentAssignmentDescription the new treatment assignment description
+     */
     public void setTreatmentAssignmentDescription(String treatmentAssignmentDescription) {
         this.treatmentAssignmentDescription = treatmentAssignmentDescription;
     }
     
     /**
-     * This method will return the earliest graded date, of reportable adverse event
-     * @return
+     * This method will return the earliest graded date, of reportable adverse event.
+     *
+     * @return the earliest adverse event graded date
      */
     @Transient
     public Date getEarliestAdverseEventGradedDate(){
@@ -527,14 +782,21 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
-     * This method will return the earliest post submission updated date of report-able adverse events. 
-     * @return
+     * This method will return the earliest post submission updated date of report-able adverse events.
+     *
+     * @return the earliest post submission updated date
      */
     @Transient
     public Date getEarliestPostSubmissionUpdatedDate(){
     	return AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(getReportableAdverseEvents());
     }
     
+    /**
+     * Find earliest post submission updated date.
+     *
+     * @param adverseEvents the adverse events
+     * @return the date
+     */
     public static Date findEarliestPostSubmissionUpdatedDate(List<AdverseEvent> adverseEvents){
     	Date d = null;
     	for(AdverseEvent ae : adverseEvents){
@@ -550,6 +812,12 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     
+    /**
+     * Find earliest graded date.
+     *
+     * @param adverseEvents the adverse events
+     * @return the date
+     */
     public static Date findEarliestGradedDate(List<AdverseEvent> adverseEvents){
     	Date d = null;
     	for(AdverseEvent ae : adverseEvents){
@@ -565,9 +833,10 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
-     * This method finds the adverse event, defined in this reporting period, identified by the ID
-     * @param id
-     * @return
+     * This method finds the adverse event, defined in this reporting period, identified by the ID.
+     *
+     * @param id the id
+     * @return the adverse event
      */
     public AdverseEvent findAdverseEventById(Integer id){
     	for(AdverseEvent ae : getAdverseEvents()){
@@ -578,8 +847,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     
     /**
      * Will return the {@link ExpeditedAdverseEventReport} associated to this course, identified by id.
-     * @param id
-     * @return
+     *
+     * @param id the id
+     * @return the expedited adverse event report
      */
     public ExpeditedAdverseEventReport findExpeditedAdverseEventReport(Integer id){
     	for(ExpeditedAdverseEventReport aeReport : getAeReports()){
@@ -592,6 +862,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      * This method sets the retired indicator attribute of the reporting period. It overrides the superclass method so that we can
      * take cascading actions. Incase a reporting period (course) is retired (retired_indicator = true), then all the adverse events in the
      * course should also be retied.
+     *
+     * @param retiredIndicator the new retired indicator
      */
     @Override
     public void setRetiredIndicator(Boolean retiredIndicator){

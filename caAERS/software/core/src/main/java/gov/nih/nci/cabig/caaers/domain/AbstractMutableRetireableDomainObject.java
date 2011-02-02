@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
 
+ 
 /**
  * The domain objects that are retire-able (soft delete-able) should subclass this class. 
  * @author Biju Joseph
@@ -17,6 +18,7 @@ import org.apache.commons.lang.BooleanUtils;
 @MappedSuperclass
 public class AbstractMutableRetireableDomainObject extends AbstractMutableDomainObject implements Retireable {
 	
+    /** The retired indicator. */
     protected Boolean retiredIndicator = false;//if true, means soft deleted. 
     
     /* (non-Javadoc)
@@ -49,16 +51,18 @@ public class AbstractMutableRetireableDomainObject extends AbstractMutableDomain
     }
     
     /**
-     * This utility method could be used to mark the retired flag of a collection of {@link Retireable} objects
-     * @param retireables
+     * This utility method could be used to mark the retired flag of a collection of {@link Retireable} objects.
+     *
+     * @param retireables the retireables
      */
     public static void retire(Retireable...retireables){
     	for(Retireable retireable : retireables) retireable.retire();
     }
     
     /**
-     * This utility method could be used to mark the retired flag of a collection of {@link Retireable} objects
-     * @param retireables
+     * This utility method could be used to mark the retired flag of a collection of {@link Retireable} objects.
+     *
+     * @param retireables the retireables
      */
     public static void retire(Collection<? extends Retireable> retireables){
     	 if(retireables == null || retireables.isEmpty()) return;

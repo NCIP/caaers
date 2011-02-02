@@ -12,19 +12,31 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
+ 
 /**
- * Class to hold application wide defined devices
- * @author Ion C. Olaru
+ * Class to hold application wide defined devices.
  *
- * */
+ * @author Ion C. Olaru
+ */
 @Entity
 @Table(name = "devices")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_devices_id")})
 public class Device extends AbstractMutableDomainObject implements Serializable {
+    
+    /** The brand name. */
     String brandName;
+    
+    /** The common name. */
     String commonName;
+    
+    /** The type. */
     String type;
 
+    /**
+     * Gets the display name.
+     *
+     * @return the display name
+     */
     @Transient
     public String getDisplayName() {
         StringBuilder sb = new StringBuilder();
@@ -43,6 +55,9 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
         return sb.toString();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -54,8 +69,11 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
     }
 
     /**
-     * A null value of a String field is considered to be equal to an empty String value of the same field
-     * */
+     * A null value of a String field is considered to be equal to an empty String value of the same field.
+     *
+     * @param obj the obj
+     * @return true, if successful
+     */
     @Override
     public boolean equals(Object obj) {
     	boolean found = false;
@@ -70,27 +88,57 @@ public class Device extends AbstractMutableDomainObject implements Serializable 
         return true;
     }
     
+    /**
+     * Gets the brand name.
+     *
+     * @return the brand name
+     */
     public String getBrandName() {
         return brandName;
     }
 
+    /**
+     * Sets the brand name.
+     *
+     * @param brandName the new brand name
+     */
     public void setBrandName(String brandName) {
         this.brandName = brandName;
     }
 
+    /**
+     * Gets the common name.
+     *
+     * @return the common name
+     */
     public String getCommonName() {
         return commonName;
     }
 
+    /**
+     * Sets the common name.
+     *
+     * @param commonName the new common name
+     */
     public void setCommonName(String commonName) {
         this.commonName = commonName;
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
     @Column(name = "device_type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the type.
+     *
+     * @param type the new type
+     */
     public void setType(String type) {
         this.type = type;
     }

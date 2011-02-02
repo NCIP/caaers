@@ -32,6 +32,7 @@ import org.springframework.mail.MailException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+ 
 /**
  * This is the repository class for managing the research staff domain object.
  *
@@ -41,18 +42,44 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ResearchStaffRepository {
 
+    /** The caaers security facade. */
     private CaaersSecurityFacade caaersSecurityFacade;
+    
+    /** The research staff dao. */
     private ResearchStaffDao researchStaffDao;
+    
+    /** The site research staff dao. */
     private SiteResearchStaffDao siteResearchStaffDao;
+    
+    /** The research staff converter dao. */
     private ResearchStaffConverterDao researchStaffConverterDao;
+    
+    /** The organization repository. */
     private OrganizationRepository organizationRepository;
+    
+    /** The organization dao. */
     private OrganizationDao organizationDao;
+    
+    /** The authentication mode. */
     private String authenticationMode;
+    
+    /** The Constant logger. */
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
+    
+    /** The study repository. */
     private StudyRepository studyRepository;
+    
+    /** The coppa mode for auto completers. */
     private boolean coppaModeForAutoCompleters;
+    
+    /** The event factory. */
     private EventFactory eventFactory;
     
+	/**
+	 * Gets the all.
+	 *
+	 * @return the all
+	 */
 	public List<ResearchStaff> getAll() {
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
         return getResearchStaff(researchStaffQuery);
@@ -62,7 +89,7 @@ public class ResearchStaffRepository {
      * Saves or update the research staff.
      *
      * @param researchStaff the research staff
-     * @throws CaaersSystemException if research staff can not be created.
+     * @param changeURL the change url
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void save(ResearchStaff researchStaff, String changeURL) {
@@ -92,10 +119,21 @@ public class ResearchStaffRepository {
     }
     
     
+    /**
+     * Evict.
+     *
+     * @param researchStaff the research staff
+     */
     public void evict(ResearchStaff researchStaff){
     	researchStaffDao.evict(researchStaff);
     }
     
+    /**
+     * Convert to remote.
+     *
+     * @param localResearchStaff the local research staff
+     * @param remoteResearchStaff the remote research staff
+     */
     @Transactional(readOnly = false)
     public void convertToRemote(ResearchStaff localResearchStaff, ResearchStaff remoteResearchStaff){
     	ConverterResearchStaff conRStaff = researchStaffConverterDao.getById(localResearchStaff.getId());
@@ -112,25 +150,46 @@ public class ResearchStaffRepository {
     	researchStaffConverterDao.save(conRStaff);
     }
 
+    /**
+     * Gets the by id.
+     *
+     * @param id the id
+     * @return the by id
+     */
     public ResearchStaff getById(final int id) {
         ResearchStaff researchStaff = researchStaffDao.getById(id);
         initialize(researchStaff);
         return researchStaff;
     }
+    
+    /**
+     * Search research staff.
+     *
+     * @param query the query
+     * @return the list
+     */
     public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
         return researchStaffDao.searchResearchStaff(query);
     }
 
     /**
-     * This method will populate the CSM roles associated to this research staff. 
-     * @param researchStaff
-     * @return
+     * This method will populate the CSM roles associated to this research staff.
+     *
+     * @param researchStaff the research staff
+     * @return the research staff
      */
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
         //researchStaff.setUserGroupTypes(((CaaersSecurityFacadeImpl)caaersSecurityFacade).getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
         return researchStaff;
     }
     
+    /**
+     * Gets the site research staff by subnames.
+     *
+     * @param subnames the subnames
+     * @param site the site
+     * @return the site research staff by subnames
+     */
     @Transactional(readOnly = false)
     public List<SiteResearchStaff> getSiteResearchStaffBySubnames(final String[] subnames, final int site) {
     	
@@ -153,6 +212,13 @@ public class ResearchStaffRepository {
     	return siteResearchStaffDao.getBySubnames(subnames, site);
     }
     
+    /**
+     * Gets the by subnames.
+     *
+     * @param subnames the subnames
+     * @param site the site
+     * @return the by subnames
+     */
     @Transactional(readOnly = false)
     public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
     	List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(subnames, site);
@@ -165,6 +231,12 @@ public class ResearchStaffRepository {
     	return merge (researchStaffs,remoteResearchStaffs);
     }
 
+    /**
+     * Gets the research staff.
+     *
+     * @param query the query
+     * @return the research staff
+     */
     @Transactional(readOnly = false)
     public List<ResearchStaff> getResearchStaff(final ResearchStaffQuery query){
     	//Get all the RS from caAERS DB
@@ -192,6 +264,12 @@ public class ResearchStaffRepository {
     	return merge (researchStaffs,remoteResearchStaffs);
     }
     
+    /**
+     * Gets the site research staff.
+     *
+     * @param query the query
+     * @return the site research staff
+     */
     @Transactional(readOnly = false)
     public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query){
     	//Get all the RS from caAERS DB
@@ -200,6 +278,13 @@ public class ResearchStaffRepository {
     }
     
     
+    /**
+     * Gets the site research staff.
+     *
+     * @param query the query
+     * @param searchCriteriaMap the search criteria map
+     * @return the site research staff
+     */
     @SuppressWarnings("unchecked")
 	@Transactional(readOnly = false)
     public List<SiteResearchStaff> getSiteResearchStaff(SiteResearchStaffQuery query,HashMap searchCriteriaMap){
@@ -257,6 +342,11 @@ public class ResearchStaffRepository {
         return sRsList;
     }
     
+    /**
+     * Save remote research staff.
+     *
+     * @param remoteList the remote list
+     */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private void saveRemoteResearchStaff(List<ResearchStaff> remoteList){
 		for (ResearchStaff remoteResearchStaff:remoteList) {
@@ -327,6 +417,13 @@ public class ResearchStaffRepository {
         eventFactory.publishEntityModifiedEvent(new LocalResearchStaff(), false);
     }
     
+    /**
+     * Merge.
+     *
+     * @param localList the local list
+     * @param remoteList the remote list
+     * @return the list
+     */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<ResearchStaff> merge(List<ResearchStaff> localList , List<ResearchStaff> remoteList) {
 		for (ResearchStaff remoteResearchStaff:remoteList) {
@@ -369,6 +466,13 @@ public class ResearchStaffRepository {
 		return localList;
 	}
     
+    /**
+     * Gets the by nci identifier.
+     *
+     * @param subnames the subnames
+     * @param site the site
+     * @return the by nci identifier
+     */
     @Transactional(readOnly = false)
     public List<ResearchStaff> getByNciIdentifier(final String[] subnames, final int site){
     	List<ResearchStaff> researchStaffs = researchStaffDao.getByNciIdentifier(subnames,site);
@@ -378,24 +482,50 @@ public class ResearchStaffRepository {
     	return merge (researchStaffs,remoteResearchStaffs);
     }
 
+    /**
+     * Gets the remote research staff.
+     *
+     * @param researchStaff the research staff
+     * @return the remote research staff
+     */
     public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
     	return researchStaffDao.getRemoteResearchStaff(researchStaff);
     }
 
+    /**
+     * Sets the research staff dao.
+     *
+     * @param researchStaffDao the new research staff dao
+     */
     @Required
     public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
         this.researchStaffDao = researchStaffDao;
     }
 
+    /**
+     * Gets the authentication mode.
+     *
+     * @return the authentication mode
+     */
     @Required
     public String getAuthenticationMode() {
         return authenticationMode;
     }
 
+    /**
+     * Sets the authentication mode.
+     *
+     * @param authenticationMode the new authentication mode
+     */
     public void setAuthenticationMode(String authenticationMode) {
         this.authenticationMode = authenticationMode;
     }
 
+    /**
+     * Sets the research staff converter dao.
+     *
+     * @param researchStaffConverterDao the new research staff converter dao
+     */
     @Required
 	public void setResearchStaffConverterDao(
 			ResearchStaffConverterDao researchStaffConverterDao) {
@@ -403,43 +533,88 @@ public class ResearchStaffRepository {
 	}
 
 	
+	/**
+	 * Sets the organization repository.
+	 *
+	 * @param organizationRepository the new organization repository
+	 */
 	@Required
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
 	
+	/**
+	 * Sets the organization dao.
+	 *
+	 * @param organizationDao the new organization dao
+	 */
 	@Required
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
 	}
 
+	/**
+	 * Sets the study repository.
+	 *
+	 * @param studyRepository the new study repository
+	 */
 	@Required
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
 	}
 
+    /**
+     * Gets the site research staff dao.
+     *
+     * @return the site research staff dao
+     */
     public SiteResearchStaffDao getSiteResearchStaffDao() {
         return siteResearchStaffDao;
     }
 
+    /**
+     * Sets the site research staff dao.
+     *
+     * @param siteResearchStaffDao the new site research staff dao
+     */
     public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
         this.siteResearchStaffDao = siteResearchStaffDao;
     }
     
+    /**
+     * Sets the coppa mode for auto completers.
+     *
+     * @param coppaModeForAutoCompleters the new coppa mode for auto completers
+     */
     public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
 		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
 	}
 
+	/**
+	 * Sets the caaers security facade.
+	 *
+	 * @param caaersSecurityFacade the new caaers security facade
+	 */
 	public void setCaaersSecurityFacade(
 			CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 
+    /**
+     * Gets the event factory.
+     *
+     * @return the event factory
+     */
     public EventFactory getEventFactory() {
         return eventFactory;
     }
 
+    /**
+     * Sets the event factory.
+     *
+     * @param eventFactory the new event factory
+     */
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
     }

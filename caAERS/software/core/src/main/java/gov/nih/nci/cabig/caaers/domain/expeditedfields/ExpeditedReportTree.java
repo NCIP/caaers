@@ -14,25 +14,38 @@ import java.util.*;
 
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 
+ 
 /**
- * Tree representing most of the properties in the
+ * Tree representing most of the properties in the.
+ *
  * {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport} model. <p/> Internal nodes in
  * the tree may represent a subproperty of their parent node, or may indicate a logical grouping
  * (section) of their children. In the latter case, the {@link #getPropertyName propertyName}
  * property will be null.
- * 
  * @author Rhett Sutphin
  * @author Ion C. Olaru
  * @author Biju Joseph
  */
 public class ExpeditedReportTree extends PropertylessNode {
+    
+    /** The sections. */
     private Map<ExpeditedReportSection, TreeNode> sections;
+    
+    /** The message source. */
     private MessageSource messageSource;
 
+    /**
+     * Instantiates a new expedited report tree.
+     */
     public ExpeditedReportTree() {
         this(null);
     }
 
+    /**
+     * Instantiates a new expedited report tree.
+     *
+     * @param messageSource the message source
+     */
     public ExpeditedReportTree(MessageSource messageSource) {
         setMessageSource(messageSource);
         initialize();
@@ -267,6 +280,9 @@ public class ExpeditedReportTree extends PropertylessNode {
         );
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode#add(gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode[])
+     */
     @Override
     public TreeNode add(TreeNode... subnodes) {
         super.add(subnodes);
@@ -278,15 +294,32 @@ public class ExpeditedReportTree extends PropertylessNode {
         return this;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.expeditedfields.PropertylessNode#getPropertyName()
+     */
     @Override
     public String getPropertyName() {
         return null;
     }
 
+    /**
+     * Verify properties present.
+     *
+     * @param nodePropertyName the node property name
+     * @param report the report
+     * @return the list
+     */
     public List<UnsatisfiedProperty> verifyPropertiesPresent(String nodePropertyName, ExpeditedAdverseEventReport report) {
         return verifyPropertiesPresent(Collections.singleton(nodePropertyName), report);
     }
 
+    /**
+     * Verify properties present.
+     *
+     * @param nodePropertyNames the node property names
+     * @param report the report
+     * @return the list
+     */
     public List<UnsatisfiedProperty> verifyPropertiesPresent(Collection<String> nodePropertyNames, ExpeditedAdverseEventReport report) {
         List<TreeNode> propertyNodes = new LinkedList<TreeNode>();
         for (String propertyName : nodePropertyNames) {
@@ -298,6 +331,13 @@ public class ExpeditedReportTree extends PropertylessNode {
         return verifyNodesSatisfied(propertyNodes, report);
     }
 
+    /**
+     * Verify nodes satisfied.
+     *
+     * @param propertyNodes the property nodes
+     * @param report the report
+     * @return the list
+     */
     public List<UnsatisfiedProperty> verifyNodesSatisfied(Collection<TreeNode> propertyNodes, ExpeditedAdverseEventReport report) {
         if (log.isDebugEnabled()) {
             log.debug("Examining report for satisfaction of " + propertyNodes);
@@ -314,6 +354,12 @@ public class ExpeditedReportTree extends PropertylessNode {
         return unsatisfied;
     }
 
+    /**
+     * Gets the node for section.
+     *
+     * @param section the section
+     * @return the node for section
+     */
     public TreeNode getNodeForSection(ExpeditedReportSection section) {
         TreeNode node = sections.get(section);
         if (node == null && log.isDebugEnabled()) {
@@ -322,6 +368,12 @@ public class ExpeditedReportTree extends PropertylessNode {
         return node;
     }
 
+    /**
+     * Gets the section for node.
+     *
+     * @param node the node
+     * @return the section for node
+     */
     public ExpeditedReportSection getSectionForNode(TreeNode node) {
         if (node == null) throw new NullPointerException("No node provided");
         if (node instanceof SectionNode) return ((SectionNode) node).getSection();
@@ -331,6 +383,12 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     // //// TREE CONSTRUCTION HELPERS
 
+    /**
+     * Creates the person block.
+     *
+     * @param person the person
+     * @return the tree node
+     */
     private TreeNode createPersonBlock(String person) {
         return property(person, StringUtils.capitalize(person) + " details", 
         		property("title", getMessage("LBL_aeReport." + person + ".title", "Position title")),
@@ -353,34 +411,78 @@ public class ExpeditedReportTree extends PropertylessNode {
     }
 
 */
-    private static TreeNode contactField(String contactType, String displayName) {
+    /**
+ * Contact field.
+ *
+ * @param contactType the contact type
+ * @param displayName the display name
+ * @return the tree node
+ */
+private static TreeNode contactField(String contactType, String displayName) {
         return property("contactMechanisms[" + contactType + ']', displayName);
     }
 
+    /**
+     * Participant measure.
+     *
+     * @param baseName the base name
+     * @return the tree node
+     */
     private TreeNode participantMeasure(String baseName) {
         return property(baseName, StringUtils.capitalize(baseName),
                 property("quantity",  getMessage("LBL_aeReport.participantHistory." + baseName + ".quantity", "Quantity")),
                 property("unit", getMessage("LBL_aeReport.participantHistory.measure.units", "Units")));
     }
 
+    /**
+     * Dosage.
+     *
+     * @param baseName the base name
+     * @param displayName the display name
+     * @return the tree node
+     */
     private static TreeNode dosage(String baseName, String displayName) {
         return property(baseName, displayName, property("amount", "Amount"), property("units","Units")
         // ,property("route", "Route")
         );
     }
 
+    /**
+     * Lab value.
+     *
+     * @param baseName the base name
+     * @param displayName the display name
+     * @return the tree node
+     */
     private static TreeNode labValue(String baseName, String displayName) {
         return property(baseName, displayName, property("value", "Value"), property("date", "Date"));
     }
 
+    /**
+     * Gets the message source.
+     *
+     * @return the message source
+     */
     public MessageSource getMessageSource() {
         return messageSource;
     }
 
+    /**
+     * Sets the message source.
+     *
+     * @param messageSource the new message source
+     */
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
+    /**
+     * Gets the message.
+     *
+     * @param label the label
+     * @param defaultMessage the default message
+     * @return the message
+     */
     public String getMessage(String label, String defaultMessage) {
         if (getMessageSource() == null) return defaultMessage;
         return getMessageSource().getMessage(label, null, defaultMessage, Locale.getDefault());

@@ -37,18 +37,37 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+ 
+/**
+ * The Class UserRepositoryImpl.
+ */
 public class UserRepositoryImpl implements UserRepository {
 
+	/** The logger. */
 	private Logger logger = Logger.getLogger(UserRepositoryImpl.class);
+	
+	/** The user dao. */
 	private _UserDao userDao;
+	
+	/** The user provisioning manager. */
 	private UserProvisioningManager userProvisioningManager;
+    
+    /** The provisioning session factory. */
     private ProvisioningSessionFactory provisioningSessionFactory;
     
+    /** The mail sender. */
     private MailSender mailSender;
+    
+    /** The authentication mode. */
     private String authenticationMode;
+    
+    /** The message source. */
     private MessageSource messageSource;
     
 	
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#searchCsmUser(java.lang.String, java.lang.String, java.lang.String)
+     */
     @SuppressWarnings("unchecked")
 	public List searchCsmUser(String firstName, String lastName, String userName) {
     	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
@@ -61,11 +80,17 @@ public class UserRepositoryImpl implements UserRepository {
     	return userProvisioningManager.getObjects(userSearchCriteria);	
 	}
 	
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#save(gov.nih.nci.cabig.caaers.domain._User)
+     */
     @Transactional(readOnly = false)
     public void save(_User user){
     	userDao.save(user);
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#createOrUpdateUser(gov.nih.nci.cabig.caaers.domain._User, java.lang.String)
+     */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
 	public void createOrUpdateUser(_User user,String changeURL){
 		if(user.getCsmUser().getUserId() == null){
@@ -107,9 +132,10 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     /**
-     * Will fetch the user from the DB, along with the CSM related information properly populated. 
-     * @param loginName
-     * @return
+     * Will fetch the user from the DB, along with the CSM related information properly populated.
+     *
+     * @param loginName the login name
+     * @return the user by login name
      */
     @Transactional(readOnly = true)
 	public _User getUserByLoginName(String loginName) {
@@ -176,9 +202,10 @@ public class UserRepositoryImpl implements UserRepository {
 	}	
 	
     /**
-     * Fetches the groups associated to users.  
+     * Fetches the groups associated to users.
+     *
      * @param csmUserId  - The csm Id of the user
-     * @return
+     * @return the user groups
      */
     public List<UserGroupType> getUserGroups(String csmUserId) {
     	List<UserGroupType> userGroups = new ArrayList<UserGroupType>();
@@ -197,6 +224,11 @@ public class UserRepositoryImpl implements UserRepository {
     	return userGroups;
     }
     
+    /**
+     * Update csm user.
+     *
+     * @param user the user
+     */
     @Transactional(readOnly = false)
     protected void updateCSMUser(_User user){
         try {
@@ -206,6 +238,11 @@ public class UserRepositoryImpl implements UserRepository {
         }    	
     }
     
+    /**
+     * Creates the csm user.
+     *
+     * @param user the user
+     */
     @Transactional(readOnly = false)
     protected void createCSMUser(_User user){
     	gov.nih.nci.security.authorization.domainobjects.User dbCsmUser = userProvisioningManager.getUser(user.getLoginName());
@@ -220,11 +257,17 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#unlockUser(gov.nih.nci.cabig.caaers.domain._User)
+     */
     public void unlockUser(_User user){
     	user.unlock();
     	save(user);
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#userChangePassword(gov.nih.nci.cabig.caaers.domain._User, java.lang.String, int)
+     */
     public void userChangePassword(_User user, String password, int maxHistorySize) {
         user.resetToken();
         user.setPasswordLastSet(new Timestamp(new Date().getTime()));
@@ -234,11 +277,20 @@ public class UserRepositoryImpl implements UserRepository {
         save(user);
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#loginIDInUse(java.lang.String)
+     */
     public boolean loginIDInUse(String loginId) {
     	if(userProvisioningManager.getUser(loginId) != null ) return true;
 		return false;
     }
     
+	/**
+	 * Encrypt string.
+	 *
+	 * @param string the string
+	 * @return the string
+	 */
 	public String encryptString(String string){
     	try{
     		return new StringEncrypter().encrypt(string);
@@ -247,6 +299,9 @@ public class UserRepositoryImpl implements UserRepository {
     	}
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#sendUserEmail(java.lang.String, java.lang.String, java.lang.String)
+     */
     public void sendUserEmail(String emailAddress, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(emailAddress);
@@ -256,6 +311,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
     
+    /**
+     * Send create account email.
+     *
+     * @param user the user
+     * @param changeURL the change url
+     */
     protected void sendCreateAccountEmail(_User user, String changeURL){
 
         String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null,"Your new caAERS account", Locale.getDefault());
@@ -269,6 +330,11 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
     
+    /**
+     * Send update account email.
+     *
+     * @param user the user
+     */
     protected void sendUpdateAccountEmail(_User user){
     	if ("local".equals(getAuthenticationMode())) {
     		sendUserEmail(user.getCsmUser().getEmailId(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
@@ -276,9 +342,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Will provision in SuiteCSM all the roles. 
+     * Will provision in SuiteCSM all the roles.
      *
-     * @param user
+     * @param user the user
      */
     public void provisionUser(_User user) {
 
@@ -326,47 +392,100 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#search(gov.nih.nci.cabig.caaers.dao.query.UserQuery)
+     */
     public List<_User> search(UserQuery query) {
         return (List<_User>)userDao.search(query);
     }
 
+    /**
+     * Sets the user dao.
+     *
+     * @param userDao the new user dao
+     */
     public void setUserDao(_UserDao userDao) {
 		this.userDao = userDao;
 	}
 
+	/**
+	 * Sets the user provisioning manager.
+	 *
+	 * @param userProvisioningManager the new user provisioning manager
+	 */
 	public void setUserProvisioningManager(
 			UserProvisioningManager userProvisioningManager) {
 		this.userProvisioningManager = userProvisioningManager;
 	}
 
+	/**
+	 * Sets the mail sender.
+	 *
+	 * @param mailSender the new mail sender
+	 */
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
 
+	/**
+	 * Gets the authentication mode.
+	 *
+	 * @return the authentication mode
+	 */
 	public String getAuthenticationMode() {
 		return authenticationMode;
 	}
 
+	/**
+	 * Sets the authentication mode.
+	 *
+	 * @param authenticationMode the new authentication mode
+	 */
 	public void setAuthenticationMode(String authenticationMode) {
 		this.authenticationMode = authenticationMode;
 	}
 
+	/**
+	 * Gets the message source.
+	 *
+	 * @return the message source
+	 */
 	public MessageSource getMessageSource() {
 		return messageSource;
 	}
 
+	/**
+	 * Sets the message source.
+	 *
+	 * @param messageSource the new message source
+	 */
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
 
+	/**
+	 * Gets the mail sender.
+	 *
+	 * @return the mail sender
+	 */
 	public MailSender getMailSender() {
 		return mailSender;
 	}
 
+    /**
+     * Gets the provisioning session factory.
+     *
+     * @return the provisioning session factory
+     */
     public ProvisioningSessionFactory getProvisioningSessionFactory() {
         return provisioningSessionFactory;
     }
 
+    /**
+     * Sets the provisioning session factory.
+     *
+     * @param provisioningSessionFactory the new provisioning session factory
+     */
     public void setProvisioningSessionFactory(ProvisioningSessionFactory provisioningSessionFactory) {
         this.provisioningSessionFactory = provisioningSessionFactory;
     }

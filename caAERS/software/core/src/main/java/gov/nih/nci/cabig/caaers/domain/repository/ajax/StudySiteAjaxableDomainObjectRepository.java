@@ -6,8 +6,18 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import java.util.ArrayList;
 import java.util.List;
 
+ 
+/**
+ * The Class StudySiteAjaxableDomainObjectRepository.
+ */
 public class StudySiteAjaxableDomainObjectRepository extends AbstractAjaxableDomainObjectRepository{
 	
+	/**
+	 * Find study sites.
+	 *
+	 * @param query the query
+	 * @return the list
+	 */
 	public List<StudySiteAjaxableDomainObject> findStudySites(StudySiteAjaxableDomainObjectQuery query){
 		List<Object[]> objects = super.find(query);
 		List<StudySiteAjaxableDomainObject> results = new ArrayList<StudySiteAjaxableDomainObject>();

@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
 /**
  * This class represents the INDHolder domain object associated with the Adverse event report.
  * 
@@ -31,18 +32,35 @@ import org.hibernate.annotations.Parameter;
 @DiscriminatorValue("dtype")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ind_holders_id") })
 public abstract class INDHolder extends AbstractMutableDomainObject {
+    
+    /** The investigational new drug. */
     private InvestigationalNewDrug investigationalNewDrug;
 
+    /**
+     * Gets the investigational new drug.
+     *
+     * @return the investigational new drug
+     */
     @OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinColumn(name = "drug_id")
     public InvestigationalNewDrug getInvestigationalNewDrug() {
         return investigationalNewDrug;
     }
 
+    /**
+     * Sets the investigational new drug.
+     *
+     * @param invDrug the new investigational new drug
+     */
     public void setInvestigationalNewDrug(InvestigationalNewDrug invDrug) {
         investigationalNewDrug = invDrug;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public abstract String getName();
 

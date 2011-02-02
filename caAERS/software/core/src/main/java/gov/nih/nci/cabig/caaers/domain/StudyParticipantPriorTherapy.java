@@ -21,8 +21,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
- * This class represents the StudyParticipantPriorTherapy domain object associated with the StudyParticipantAssignment
+ * This class represents the StudyParticipantPriorTherapy domain object associated with the StudyParticipantAssignment.
  *
  * @author Sameer Sawant
  */
@@ -30,19 +31,29 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "spa_prior_therapies")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_spa_prior_therapies_id")})
 public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
+    
+    /** The assignment. */
     private StudyParticipantAssignment assignment;
 
+    /** The prior therapy. */
     private PriorTherapy priorTherapy;
 
+    /** The other. */
     private String other;
 
+    /** The start date. */
     private DateValue startDate;
 
+    /** The end date. */
     private DateValue endDate;
 
+    /** The prior therapy agents. */
     private List<StudyParticipantPriorTherapyAgent> priorTherapyAgents = new ArrayList<StudyParticipantPriorTherapyAgent>();
 
 
+    /**
+     * Instantiates a new study participant prior therapy.
+     */
     public StudyParticipantPriorTherapy() {
         this.startDate = new DateValue();
         this.endDate = new DateValue();
@@ -51,6 +62,11 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
 
     // //// LOGIC
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         if (getPriorTherapy() != null) {
@@ -64,23 +80,48 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
 
     // //// BOUND PROPERTIES
 
+    /**
+     * Gets the other.
+     *
+     * @return the other
+     */
     public String getOther() {
         return other;
     }
 
+    /**
+     * Sets the other.
+     *
+     * @param other the new other
+     */
     public void setOther(String other) {
         this.other = other;
     }
 
+    /**
+     * Gets the prior therapy.
+     *
+     * @return the prior therapy
+     */
     @ManyToOne
     public PriorTherapy getPriorTherapy() {
         return priorTherapy;
     }
 
+    /**
+     * Sets the prior therapy.
+     *
+     * @param priorTherapy the new prior therapy
+     */
     public void setPriorTherapy(PriorTherapy priorTherapy) {
         this.priorTherapy = priorTherapy;
     }
 
+    /**
+     * Adds the prior therapy agent.
+     *
+     * @param priorTherapyAgent the prior therapy agent
+     */
     public void addPriorTherapyAgent(StudyParticipantPriorTherapyAgent priorTherapyAgent) {
         if (getPriorTherapyAgents() == null) {
             priorTherapyAgents = new ArrayList<StudyParticipantPriorTherapyAgent>();
@@ -89,6 +130,11 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         if (priorTherapyAgent != null) priorTherapyAgent.setPriorTherapy(this);
     }
 
+    /**
+     * Adds the unique prior therapy agent.
+     *
+     * @param newAgent the new agent
+     */
     public void addUniquePriorTherapyAgent(StudyParticipantPriorTherapyAgent newAgent) {
         if (newAgent == null || newAgent.getChemoAgent() == null) return;
 
@@ -106,6 +152,8 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     /**
+     * Gets the prior therapy agents.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -114,12 +162,22 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return priorTherapyAgents;
     }
 
+    /**
+     * Sets the prior therapy agents.
+     *
+     * @param priorTherapyAgents the new prior therapy agents
+     */
     public void setPriorTherapyAgents(List<StudyParticipantPriorTherapyAgent> priorTherapyAgents) {
         this.priorTherapyAgents = priorTherapyAgents;
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the prior therapy agents internal.
+     *
+     * @return the prior therapy agents internal
+     */
     @OneToMany
     @JoinColumn(name = "spa_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -129,10 +187,20 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return priorTherapyAgents;
     }
 
+    /**
+     * Sets the prior therapy agents internal.
+     *
+     * @param priorTherapyAgentsInternal the new prior therapy agents internal
+     */
     protected void setPriorTherapyAgentsInternal(List<StudyParticipantPriorTherapyAgent> priorTherapyAgentsInternal) {
         this.priorTherapyAgents = priorTherapyAgentsInternal;
     }
 
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
@@ -144,10 +212,20 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return endDate;
     }
 
+    /**
+     * Sets the end date.
+     *
+     * @param endDate the new end date
+     */
     public void setEndDate(DateValue endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
@@ -159,22 +237,40 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return startDate;
     }
 
+    /**
+     * Sets the start date.
+     *
+     * @param startDate the new start date
+     */
     public void setStartDate(DateValue startDate) {
         this.startDate = startDate;
     }
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
+    /**
+     * Gets the assignment.
+     *
+     * @return the assignment
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.LOCK})
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }
 
+    /**
+     * Sets the assignment.
+     *
+     * @param assignment the new assignment
+     */
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.assignment = assignment;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -187,6 +283,9 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -209,6 +308,12 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return true;
     }
 
+    /**
+     * Creates the assignment prior therapy.
+     *
+     * @param saeReportPriorTherapy the sae report prior therapy
+     * @return the study participant prior therapy
+     */
     public static StudyParticipantPriorTherapy createAssignmentPriorTherapy(SAEReportPriorTherapy saeReportPriorTherapy) {
         if (saeReportPriorTherapy != null) {
             StudyParticipantPriorTherapy studyParticipantPriorTherapy = new StudyParticipantPriorTherapy();

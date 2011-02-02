@@ -14,6 +14,10 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
+/**
+ * The Class TransitionOwner.
+ */
 @Entity
 @Table(name = "wf_transition_owners")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -21,17 +25,41 @@ import org.hibernate.annotations.Parameter;
 @DiscriminatorValue("dtype")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_wf_transition_owners_id")})
 public abstract class TransitionOwner extends AbstractMutableDomainObject {
+	
+	/** The name. */
 	private String name;
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * Checks if is role.
+	 *
+	 * @return true, if is role
+	 */
 	@Transient
 	public abstract boolean isRole();
+	
+	/**
+	 * Checks if is user.
+	 *
+	 * @return true, if is user
+	 */
 	@Transient
 	public abstract boolean isUser();
 }

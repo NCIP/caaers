@@ -13,6 +13,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the Outcome domain object associated with the Adverse event report.
  *
@@ -24,39 +25,77 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_outcomes_id")})
 public class Outcome extends AbstractMutableDomainObject {
 
+    /** The outcome type. */
     private OutcomeType outcomeType;
 
+    /** The date. */
     private Date date;
 
+    /** The other. */
     private String other;
 
+    /**
+     * Gets the outcome type.
+     *
+     * @return the outcome type
+     */
     @Column(name = "outcome_type_code")
     @Type(type = "outcomeType")
     public OutcomeType getOutcomeType() {
         return outcomeType;
     }
 
+    /**
+     * Sets the outcome type.
+     *
+     * @param outcomeType the new outcome type
+     */
     public void setOutcomeType(OutcomeType outcomeType) {
         this.outcomeType = outcomeType;
     }
 
+    /**
+     * Gets the date.
+     *
+     * @return the date
+     */
     @Column(name = "incident_date")
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets the date.
+     *
+     * @param date the new date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * Gets the other.
+     *
+     * @return the other
+     */
     public String getOther() {
         return other;
     }
 
+    /**
+     * Sets the other.
+     *
+     * @param other the new other
+     */
     public void setOther(String other) {
         this.other = other;
     }
 
+    /**
+     * Copy.
+     *
+     * @return the outcome
+     */
     public Outcome copy() {
         Outcome outcome = new Outcome();
         BeanUtils.copyProperties(this, outcome, new String[]{"id", "gridId", "version"});

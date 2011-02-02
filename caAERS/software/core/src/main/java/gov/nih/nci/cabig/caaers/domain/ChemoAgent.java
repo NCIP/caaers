@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+ 
 /**
  * This class represents the ChemoAgent domain object associated with the Adverse event report.
  * 
@@ -13,30 +14,62 @@ import javax.persistence.Transient;
  */
 @Entity
 public class ChemoAgent extends AbstractImmutableDomainObject {
+    
+    /** The name. */
     private String name;
+    
+    /** The generic name. */
     private String genericName;
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }
     
+    /**
+     * Gets the generic name.
+     *
+     * @return the generic name
+     */
     public String getGenericName() {
 		return genericName;
 	}
     
+    /**
+     * Sets the generic name.
+     *
+     * @param genericName the new generic name
+     */
     public void setGenericName(String genericName) {
 		this.genericName = genericName;
 	}
     
+    /**
+     * Gets the full name.
+     *
+     * @return the full name
+     */
     @Transient
     public String getFullName(){
     	return name + " (" + genericName + ")";
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -45,6 +78,9 @@ public class ChemoAgent extends AbstractImmutableDomainObject {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -57,6 +93,9 @@ public class ChemoAgent extends AbstractImmutableDomainObject {
         return true;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
     	return getFullName();

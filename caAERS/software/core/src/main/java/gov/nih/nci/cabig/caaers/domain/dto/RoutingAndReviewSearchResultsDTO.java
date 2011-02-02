@@ -8,23 +8,49 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+ 
+
 /**
- * 
- * @author biju
+ * The Class RoutingAndReviewSearchResultsDTO.
  *
+ * @author biju
  */
 public class RoutingAndReviewSearchResultsDTO {
+	
+	/** The participant. */
 	private Participant participant;
+	
+	/** The study. */
 	private Study study;
+	
+	/** The header. */
 	private String header;
+	
+	/** The study centric. */
 	private boolean studyCentric;
+	
+	/** The participant centric. */
 	private boolean participantCentric;
 	
 	
+	/** The result map. */
 	Map<String, RoutingAndReviewSearchResultDTO> resultMap;
+	
+	/** The filtered result map. */
 	Map<String, RoutingAndReviewSearchResultDTO> filteredResultMap;
+	
+	/** The study to dto list map. */
 	Map<Integer, List<AdverseEventReportingPeriodDTO>> studyToDTOListMap;
 
+	/**
+	 * Instantiates a new routing and review search results dto.
+	 *
+	 * @param studyCentric the study centric
+	 * @param participantCentric the participant centric
+	 * @param participant the participant
+	 * @param study the study
+	 * @param list the list
+	 */
 	public RoutingAndReviewSearchResultsDTO(boolean studyCentric, boolean participantCentric, Participant participant, Study study, List<AdverseEventReportingPeriodDTO> list) {
 		super();
 		this.participant = participant;
@@ -46,6 +72,11 @@ public class RoutingAndReviewSearchResultsDTO {
 			populateNeitherStudyNorParticipantCentricResults(list);
 	}
 	
+	/**
+	 * Populate neither study nor participant centric results.
+	 *
+	 * @param list the list
+	 */
 	public void populateNeitherStudyNorParticipantCentricResults(List<AdverseEventReportingPeriodDTO> list){
 		//First populate a map with
 		for(AdverseEventReportingPeriodDTO rpDTO:list){
@@ -88,6 +119,11 @@ public class RoutingAndReviewSearchResultsDTO {
 		}
 	}
 	
+	/**
+	 * Populate results.
+	 *
+	 * @param list the list
+	 */
 	public void populateResults(List<AdverseEventReportingPeriodDTO> list){
 		for(AdverseEventReportingPeriodDTO rpDTO : list){
 			if(studyCentric){
@@ -122,12 +158,12 @@ public class RoutingAndReviewSearchResultsDTO {
 	}
 	
 	/**
-	 * This will go through the original search results, 
+	 * This will go through the original search results,
 	 * Will pick the first entry in the result, then loops through it,
 	 * Will only add the RoutingAndReviewSearchResultDTO, starting from startIndex, till endIndex.
-	 * 
-	 * @param startIndex
-	 * @param endIndex
+	 *
+	 * @param startIndex the start index
+	 * @param endIndex the end index
 	 */
 	public void filterResultMap(int startIndex, int endIndex){
 		int i = 0;
@@ -156,66 +192,147 @@ public class RoutingAndReviewSearchResultsDTO {
 		}
 	}
 	
+	/**
+	 * Gets the participant.
+	 *
+	 * @return the participant
+	 */
 	public Participant getParticipant() {
 		return participant;
 	}
 
+	/**
+	 * Sets the participant.
+	 *
+	 * @param participant the new participant
+	 */
 	public void setParticipant(Participant participant) {
 		this.participant = participant;
 	}
 
+	/**
+	 * Gets the study.
+	 *
+	 * @return the study
+	 */
 	public Study getStudy() {
 		return study;
 	}
 
+	/**
+	 * Sets the study.
+	 *
+	 * @param study the new study
+	 */
 	public void setStudy(Study study) {
 		this.study = study;
 	}
 
+	/**
+	 * Gets the header.
+	 *
+	 * @return the header
+	 */
 	public String getHeader() {
 		return header;
 	}
 
+	/**
+	 * Sets the header.
+	 *
+	 * @param header the new header
+	 */
 	public void setHeader(String header) {
 		this.header = header;
 	}
 
+	/**
+	 * Checks if is study centric.
+	 *
+	 * @return true, if is study centric
+	 */
 	public boolean isStudyCentric() {
 		return studyCentric;
 	}
 
+	/**
+	 * Sets the study centric.
+	 *
+	 * @param studyCentric the new study centric
+	 */
 	public void setStudyCentric(boolean studyCentric) {
 		this.studyCentric = studyCentric;
 	}
     
+	/**
+	 * Gets the result map.
+	 *
+	 * @return the result map
+	 */
 	public Map<String, RoutingAndReviewSearchResultDTO> getResultMap() {
 		return resultMap;
 	}
+	
+	/**
+	 * Sets the result map.
+	 *
+	 * @param resultMap the result map
+	 */
 	public void setResultMap(
 			Map<String, RoutingAndReviewSearchResultDTO> resultMap) {
 		this.resultMap = resultMap;
 	}
 	
+	/**
+	 * Gets the filtered result map.
+	 *
+	 * @return the filtered result map
+	 */
 	public Map<String, RoutingAndReviewSearchResultDTO> getFilteredResultMap(){
 		return filteredResultMap;
 	}
 	
+	/**
+	 * Sets the filtered result map.
+	 *
+	 * @param filteredResultMap the filtered result map
+	 */
 	public void setFilteredResultMap(Map<String, RoutingAndReviewSearchResultDTO> filteredResultMap){
 		this.filteredResultMap = filteredResultMap;
 	}
 	
+	/**
+	 * Gets the study to dto list map.
+	 *
+	 * @return the study to dto list map
+	 */
 	public Map<Integer, List<AdverseEventReportingPeriodDTO>> getStudyToDTOListMap(){
 		return studyToDTOListMap;
 	}
 	
+	/**
+	 * Sets the study to dto list map.
+	 *
+	 * @param studyToDTOListMap the study to dto list map
+	 */
 	public void setStudyToDTOListMap(Map<Integer, List<AdverseEventReportingPeriodDTO>> studyToDTOListMap){
 		this.studyToDTOListMap = studyToDTOListMap;
 	}
 	
+	/**
+	 * Gets the result count.
+	 *
+	 * @return the result count
+	 */
 	public int getResultCount(){
 		return resultMap.size();
 	}
 	
+	/**
+	 * Gets the total result count.
+	 *
+	 * @return the total result count
+	 */
 	public int getTotalResultCount(){
 		int totalNumberOfResult = 0;
 		if(resultMap != null){

@@ -7,20 +7,60 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import java.util.HashMap;
 import java.util.List;
 
+ 
+/**
+ * The Interface InvestigatorRepository.
+ */
 public interface InvestigatorRepository {
+  
   /**
-   * This method will create or modify an investigator in the system. 
-   * @param investigator
-   * @param changeURL
+   * This method will create or modify an investigator in the system.
+   *
+   * @param investigator the investigator
+   * @param changeURL the change url
+   * @return the investigator
    */
   public Investigator save(Investigator  investigator, String changeURL);
+  
+  /**
+   * Search investigator.
+   *
+   * @param query the query
+   * @return the list
+   */
   public List<Investigator> searchInvestigator(final InvestigatorQuery query);
+  
+  /**
+   * Search investigator.
+   *
+   * @param query the query
+   * @param searchCriteriaMap the search criteria map
+   * @return the list
+   */
   public List<Investigator> searchInvestigator(InvestigatorQuery query,HashMap searchCriteriaMap);
+  
+  /**
+   * Gets the by subnames.
+   *
+   * @param subnames the subnames
+   * @param siteId the site id
+   * @return the by subnames
+   */
   public List<SiteInvestigator> getBySubnames(final String[] subnames,int siteId);
+  
+  /**
+   * Convert to remote.
+   *
+   * @param localInvestigator the local investigator
+   * @param remoteInvestigator the remote investigator
+   */
   public void convertToRemote(Investigator localInvestigator, Investigator remoteInvestigator);
+
 /**
- * @param id
- * @return
+ * Gets the by id.
+ *
+ * @param id the id
+ * @return the by id
  */
 public Investigator getById(int id);
 }

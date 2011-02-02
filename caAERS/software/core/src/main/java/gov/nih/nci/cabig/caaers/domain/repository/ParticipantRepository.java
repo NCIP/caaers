@@ -12,19 +12,25 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+ 
 /**
+ * The Class ParticipantRepository.
+ *
  * @author Biju Joseph
  */
 @Transactional(readOnly = true)
 public class ParticipantRepository {
 
+    /** The participant dao. */
     private ParticipantDao participantDao;
+    
+    /** The log. */
     private static Log log = LogFactory.getLog(ParticipantRepository.class);
 
     /**
-     * Checks if participant exist for given identifiers
+     * Checks if participant exist for given identifiers.
      *
-     * @param identifiers
+     * @param identifiers the identifiers
      * @return true, if any participant exists for given identifiers, false otherwise
      */
     public boolean checkIfParticipantExistsForGivenIdentifiers(List<Identifier> identifiers) {
@@ -56,12 +62,17 @@ public class ParticipantRepository {
      *
      * @param participant object
      * @return List of Participant objects based on the sample participant object
-     * @throws Runtime exception
+     * @throws Exception the exception
      */
     public List<Participant> search(Participant participant) throws Exception {
         return participantDao.searchByExample(participant);
     }
 
+    /**
+     * Gets the all.
+     *
+     * @return the all
+     */
     public List<Participant> getAll() {
         ParticipantQuery q = new ParticipantQuery();
         q.joinStudy();
@@ -80,11 +91,22 @@ public class ParticipantRepository {
         return participantDao.searchParticipant(query);
     }
 
+    /**
+     * Sets the participant dao.
+     *
+     * @param participantDao the new participant dao
+     */
     @Required
     public void setParticipantDao(final ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
 
+    /**
+     * Gets the participant by id.
+     *
+     * @param id the id
+     * @return the participant by id
+     */
     public Participant getParticipantById(int id) {
         return participantDao.getParticipantById(id);
     }

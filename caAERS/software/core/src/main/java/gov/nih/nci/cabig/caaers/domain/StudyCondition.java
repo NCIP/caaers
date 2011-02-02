@@ -9,7 +9,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+ 
 /**
+ * The Class StudyCondition.
  *
  * @author Ion C. Olaru
  */
@@ -18,6 +20,9 @@ import org.hibernate.annotations.CascadeType;
 @DiscriminatorValue("dcp")
 public class StudyCondition extends AbstractStudyDisease<Condition> {
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease#getTerm()
+     */
     @ManyToOne(optional=false)
     @JoinColumn(name = "term_id", nullable = false)
     @Override
@@ -26,12 +31,18 @@ public class StudyCondition extends AbstractStudyDisease<Condition> {
         return super.getTerm();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease#getTermName()
+     */
     @Override
     @Transient
     public String getTermName() {
         return getTerm().getConditionName();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (!(obj instanceof StudyCondition)) return false;
@@ -43,6 +54,9 @@ public class StudyCondition extends AbstractStudyDisease<Condition> {
         }
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
     	// TODO Auto-generated method stub

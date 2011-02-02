@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
 /**
  * This class represents the StudyPersonnel domain object associated with the Adverse event report.
  * 
@@ -28,10 +29,19 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_personnel_id") })
 public class StudyPersonnel extends AbstractMutableRetireableDomainObject implements StudyOrganizationChild {
 
+    /** The role code. */
     private String roleCode;
+    
+    /** The site research staff. */
     private SiteResearchStaff siteResearchStaff;
+    
+    /** The study organization. */
     private StudyOrganization studyOrganization;
+    
+    /** The start date. */
     private Date startDate;
+    
+    /** The end date. */
     private Date endDate;
     
     /**
@@ -55,61 +65,113 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         this.endDate = null;
     }
     
+    /**
+     * Gets the site research staff.
+     *
+     * @return the site research staff
+     */
     @ManyToOne
     @JoinColumn(name = "site_research_staffs_id")
 	public SiteResearchStaff getSiteResearchStaff() {
 		return siteResearchStaff;
 	}
 
+	/**
+	 * Sets the site research staff.
+	 *
+	 * @param siteResearchStaff the new site research staff
+	 */
 	public void setSiteResearchStaff(SiteResearchStaff siteResearchStaff) {
 		this.siteResearchStaff = siteResearchStaff;
 	}
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyOrganizationChild#getStudyOrganization()
+     */
     @ManyToOne
     @JoinColumn(name = "study_sites_id")
     public StudyOrganization getStudyOrganization() {
         return studyOrganization;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyOrganizationChild#setStudyOrganization(gov.nih.nci.cabig.caaers.domain.StudyOrganization)
+     */
     public void setStudyOrganization(StudyOrganization studyOrganization) {
         this.studyOrganization = studyOrganization;
     }
 
+    /**
+     * Gets the role code.
+     *
+     * @return the role code
+     */
     @Column(name = "role_code")
     public String getRoleCode() {
         return roleCode;
     }
 
+    /**
+     * Sets the role code.
+     *
+     * @param roleCode the new role code
+     */
     public void setRoleCode(String roleCode) {
         this.roleCode = roleCode;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="start_date")
     public Date getStartDate() {
 		return startDate;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.StudyOrganizationChild#setStartDate(java.util.Date)
+	 */
 	public void setStartDate(Date termStartDate) {
 		this.startDate = termStartDate;
 	}
 	
+	/**
+	 * Gets the end date.
+	 *
+	 * @return the end date
+	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="end_date")
 	public Date getEndDate() {
 		return endDate;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.StudyOrganizationChild#setEndDate(java.util.Date)
+	 */
 	public void setEndDate(Date termEndDate) {
 		this.endDate = termEndDate;
 	}
 
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
 	@Transient
     public boolean isActive(){
     	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
     
 
+    /**
+     * Checks if is in active.
+     *
+     * @return true, if is in active
+     */
     @Transient
     public boolean isInActive(){
     	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
@@ -117,8 +179,9 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     
     /**
      * Returns the email address associtated to {@link SiteResearchStaff}.
-     * If email addres not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned. 
-     * @return
+     * If email addres not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned.
+     *
+     * @return the email address
      */
     @Transient
     public String getEmailAddress(){
@@ -135,7 +198,8 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     /**
      * Returns the phone number associated to {@link SiteResearchStaff}.
      * If the phone number not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned.
-     * @return
+     *
+     * @return the phone number
      */
     @Transient
     public String getPhoneNumber(){
@@ -152,7 +216,8 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     /**
      * Returns the fax number associated to {@link SiteResearchStaff}
      * If the fax number not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned.
-     * @return
+     *
+     * @return the fax number
      */
     @Transient
     public String getFaxNumber(){
@@ -167,6 +232,9 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     }
 
     // /OBJECT METHODS
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -177,6 +245,9 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

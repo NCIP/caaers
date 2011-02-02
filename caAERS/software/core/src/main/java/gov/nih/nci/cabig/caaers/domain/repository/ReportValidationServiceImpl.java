@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
+ 
 /**
  * Provides method to validate the completeness of a {@link gov.nih.nci.cabig.caaers.domain.report.Report}
  * @author Sameer Sawant
@@ -30,15 +31,18 @@ import java.util.*;
  */
 public class ReportValidationServiceImpl implements ReportValidationService{
 	
+	/** The expedited report tree. */
 	private ExpeditedReportTree expeditedReportTree;
 
+    /** The evaluation service. */
     private EvaluationService evaluationService;
 
     /**
      * Checks if the {@link gov.nih.nci.cabig.caaers.domain.report.Report} can be submitted, based on the mandatory section
-     * and other instantiated sections. 
-     * @param report
-     * @return
+     * and other instantiated sections.
+     *
+     * @param report the report
+     * @return the report submittability
      */
 	public ReportSubmittability isSubmittable(Report report) {
 
@@ -48,13 +52,14 @@ public class ReportValidationServiceImpl implements ReportValidationService{
     }
 	
 	/**
-     * Will tell whether all the mandatory field for this report is duly filled.
-     * Internally this will call the validate method for each element having children in the {@link ExpeditedReportTree}
-     *
-     * @param reportSections - The sections that are to be validated. 
-     * @param mandatorySections - The sections which are marked mandatory in mandatory section rules. 
-     * @return ErrorMessages
-     */
+	 * Will tell whether all the mandatory field for this report is duly filled.
+	 * Internally this will call the validate method for each element having children in the {@link ExpeditedReportTree}
+	 *
+	 * @param report the report
+	 * @param reportSections - The sections that are to be validated.
+	 * @param mandatorySections - The sections which are marked mandatory in mandatory section rules.
+	 * @return ErrorMessages
+	 */
     public ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> reportSections, Collection<ExpeditedReportSection> mandatorySections) {
 
         ReportSubmittability messages = new ReportSubmittability();
@@ -137,8 +142,12 @@ public class ReportValidationServiceImpl implements ReportValidationService{
     }
 
     /**
-        Will check if the {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport} has the values for elements
-        associated with the section. 
+     * Will check if the {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport} has the values for elements
+     * associated with the section.
+     *
+     * @param aeReport the ae report
+     * @param section the section
+     * @return true, if is element present in section
      */
     protected boolean isElementPresentInSection(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection section){
         TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
@@ -160,6 +169,15 @@ public class ReportValidationServiceImpl implements ReportValidationService{
         return false;
     }
 
+    /**
+     * Validate.
+     *
+     * @param aeReport the ae report
+     * @param mandatoryFields the mandatory fields
+     * @param selfReferencedMandatoryFields the self referenced mandatory fields
+     * @param section the section
+     * @param messages the messages
+     */
     @SuppressWarnings("unchecked")
     private void validate(
             ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, List<String> selfReferencedMandatoryFields , ExpeditedReportSection section,
@@ -201,11 +219,21 @@ public class ReportValidationServiceImpl implements ReportValidationService{
 
     }
 
+    /**
+     * Sets the expedited report tree.
+     *
+     * @param expeditedReportTree the new expedited report tree
+     */
     @Required
     public void setExpeditedReportTree(final ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
     }
 
+    /**
+     * Sets the evaluation service.
+     *
+     * @param evaluationService the new evaluation service
+     */
     @Required
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;

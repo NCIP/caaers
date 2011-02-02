@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the SAEReportPriorTherapy domain object associated with the Adverse event
  * report.
@@ -32,12 +33,24 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_prior_therapies_id")})
 public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElementChild {
 
+    /** The prior therapy. */
     private PriorTherapy priorTherapy;
+    
+    /** The other. */
     private String other;
+    
+    /** The start date. */
     private DateValue startDate;
+    
+    /** The end date. */
     private DateValue endDate;
+    
+    /** The lazy list helper. */
     private LazyListHelper lazyListHelper;
 
+    /**
+     * Instantiates a new sAE report prior therapy.
+     */
     public SAEReportPriorTherapy() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(PriorTherapyAgent.class);
@@ -45,15 +58,33 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         this.endDate = new DateValue();
     }
 
+    /**
+     * Adds the report child lazy list.
+     *
+     * @param <T> the generic type
+     * @param klass the klass
+     */
     private <T> void addReportChildLazyList(Class<T> klass) {
         lazyListHelper.add(klass, new SAEReportPriorTherapyFactory<T>(klass, this));
     }
     
+    /**
+     * Equals.
+     *
+     * @param priorTherapy the prior therapy
+     * @param other the other
+     * @return true, if successful
+     */
     public boolean equals(PriorTherapy priorTherapy, String other){
     	return StringUtils.equals(this.other, other) && ObjectUtils.equals(this.priorTherapy, priorTherapy);
     }
     // //// LOGIC
     
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         if (getPriorTherapy() != null) {
@@ -67,29 +98,56 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
 
     // //// BOUND PROPERTIES
 
+    /**
+     * Gets the other.
+     *
+     * @return the other
+     */
     public String getOther() {
         return other;
     }
 
+    /**
+     * Sets the other.
+     *
+     * @param other the new other
+     */
     public void setOther(String other) {
         this.other = other;
     }
 
+    /**
+     * Gets the prior therapy.
+     *
+     * @return the prior therapy
+     */
     @ManyToOne
     public PriorTherapy getPriorTherapy() {
         return priorTherapy;
     }
 
+    /**
+     * Sets the prior therapy.
+     *
+     * @param priorTherapy the new prior therapy
+     */
     public void setPriorTherapy(PriorTherapy priorTherapy) {
         this.priorTherapy = priorTherapy;
     }
 
+    /**
+     * Adds the prior therapy agent.
+     *
+     * @param priorTherapyAgent the prior therapy agent
+     */
     public void addPriorTherapyAgent(PriorTherapyAgent priorTherapyAgent) {
         getPriorTherapyAgentsInternal().add(priorTherapyAgent);
         if (priorTherapyAgent != null) priorTherapyAgent.setSaeReportPriorTherapy(this);
     }
 
     /**
+     * Gets the prior therapy agents.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -100,6 +158,11 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the prior therapy agents internal.
+     *
+     * @return the prior therapy agents internal
+     */
     @OneToMany
     @JoinColumn(name = "ae_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -109,10 +172,20 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return lazyListHelper.getInternalList(PriorTherapyAgent.class);
     }
 
+    /**
+     * Sets the prior therapy agents internal.
+     *
+     * @param priorTherapyAgentsInternal the new prior therapy agents internal
+     */
     public void setPriorTherapyAgentsInternal(List<PriorTherapyAgent> priorTherapyAgentsInternal) {
         lazyListHelper.setInternalList(PriorTherapyAgent.class, priorTherapyAgentsInternal);
     }
 
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
@@ -124,10 +197,20 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return endDate;
     }
 
+    /**
+     * Sets the end date.
+     *
+     * @param endDate the new end date
+     */
     public void setEndDate(DateValue endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
@@ -139,10 +222,18 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return startDate;
     }
 
+    /**
+     * Sets the start date.
+     *
+     * @param startDate the new start date
+     */
     public void setStartDate(DateValue startDate) {
         this.startDate = startDate;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -155,6 +246,9 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -178,6 +272,12 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     }
 
 
+    /**
+     * Creates the sae report prior therapy.
+     *
+     * @param studyParticipantPriorTherapy the study participant prior therapy
+     * @return the sAE report prior therapy
+     */
     public static SAEReportPriorTherapy createSAEReportPriorTherapy(StudyParticipantPriorTherapy studyParticipantPriorTherapy) {
         if (studyParticipantPriorTherapy != null) {
             SAEReportPriorTherapy saeReportPriorTherapy = copyBasicProperties(studyParticipantPriorTherapy);
@@ -190,6 +290,12 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return null;
     }
 
+    /**
+     * Copy basic properties.
+     *
+     * @param object the object
+     * @return the sAE report prior therapy
+     */
     private static SAEReportPriorTherapy copyBasicProperties(Object object) {
         SAEReportPriorTherapy saeReportPriorTherapy = new SAEReportPriorTherapy();
         BeanUtils.copyProperties(object, saeReportPriorTherapy, new String[]{"id", "gridId",
@@ -197,6 +303,11 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return saeReportPriorTherapy;
     }
 
+    /**
+     * Copy.
+     *
+     * @return the sAE report prior therapy
+     */
     public SAEReportPriorTherapy copy() {
         SAEReportPriorTherapy saeReportPriorTherapy = copyBasicProperties(this);
         for (PriorTherapyAgent priorTherapyAgent : this.getPriorTherapyAgents()) {

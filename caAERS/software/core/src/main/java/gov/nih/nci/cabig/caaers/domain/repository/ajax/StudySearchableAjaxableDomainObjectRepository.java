@@ -15,25 +15,53 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+ 
 /**
+ * The Class StudySearchableAjaxableDomainObjectRepository.
+ *
+ * @param <T> the generic type
  * @author Biju Joseph
  */
 
 @Transactional(readOnly = true)
 public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearchableAjaxableDomainObject> extends AbstractAjaxableDomainObjectRepository {
 
+	/** The study repository. */
 	private StudyRepository studyRepository;
 	
+    /**
+     * Find studies.
+     *
+     * @param query the query
+     * @return the list
+     */
     public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query) {
         return findStudies(query, null, null);
 
     }
     
+    /**
+     * Find studies.
+     *
+     * @param query the query
+     * @param type the type
+     * @param text the text
+     * @return the list
+     */
     @Transactional(readOnly = false)
     public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query,String type, String text) {
     	return findStudies(query, type, text,false);
     }
     
+	/**
+	 * Find studies.
+	 *
+	 * @param query the query
+	 * @param type the type
+	 * @param text the text
+	 * @param searchInCOPPA the search in coppa
+	 * @return the list
+	 */
 	@Transactional(readOnly = false)
     public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query,String type, String text,boolean searchInCOPPA) {
 
@@ -73,10 +101,20 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
 
   
 
+    /**
+     * Gets the object class.
+     *
+     * @return the object class
+     */
     protected Class getObjectClass() {
         return StudySearchableAjaxableDomainObject.class;
     }
     
+	/**
+	 * Sets the study repository.
+	 *
+	 * @param studyRepository the new study repository
+	 */
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
 	}

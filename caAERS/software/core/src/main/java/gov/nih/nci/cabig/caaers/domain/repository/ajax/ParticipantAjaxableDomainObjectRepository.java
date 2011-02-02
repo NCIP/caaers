@@ -12,17 +12,33 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 
+ 
 /**
+ * The Class ParticipantAjaxableDomainObjectRepository.
+ *
+ * @param <T> the generic type
  * @author Biju Joseph
  */
 
 @Transactional(readOnly = true)
 public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjaxableDomainObject> extends AbstractAjaxableDomainObjectRepository {
     
+	/**
+	 * Gets the data for filtering.
+	 *
+	 * @param query the query
+	 * @return the data for filtering
+	 */
 	public List<Object[]> getDataForFiltering(ParticipantAjaxableDomainObjectQuery query) {
     	return super.find(query);
     }
     
+	/**
+	 * Find participants.
+	 *
+	 * @param query the query
+	 * @return the list
+	 */
 	public List<T> findParticipants(ParticipantAjaxableDomainObjectQuery query) {
 		
 		//System.out.println(query.getQueryString());
@@ -58,6 +74,12 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
 
     }
     
+    /**
+     * Update additional properties.
+     *
+     * @param participantAjaxableDomainObject the participant ajaxable domain object
+     * @param o the o
+     */
     protected void updateAdditionalProperties(T participantAjaxableDomainObject, Object[] o) {
     	if (o[7] != null && (Boolean) o[7]) {
             participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
@@ -132,7 +154,12 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
         }
     }  
     */
-    protected Class getObjectClass() {
+    /**
+ * Gets the object class.
+ *
+ * @return the object class
+ */
+protected Class getObjectClass() {
         return ParticipantAjaxableDomainObject.class;
     }
     

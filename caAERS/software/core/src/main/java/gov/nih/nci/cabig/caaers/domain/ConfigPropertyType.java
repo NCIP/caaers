@@ -6,6 +6,7 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import java.io.Serializable;
 
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
+ 
 /**
  * This object represents a ConfigPropertyType.
  * 
@@ -13,29 +14,60 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  *
  */
 public enum ConfigPropertyType implements CodedEnum<Integer>, Serializable {
+	
+	/** The REPOR t_ group. */
 	REPORT_GROUP(1, "Report Definition Group"),
+	
+	/** The RESEARC h_ staf f_ rol e_ type. */
 	RESEARCH_STAFF_ROLE_TYPE(2, "ResearchStaff role types"),
+	
+	/** The INVESTIGATO r_ rol e_ type. */
 	INVESTIGATOR_ROLE_TYPE(3, "Investigator role types"),
+	
+	/** The REPOR t_ rol e_ type. */
 	REPORT_ROLE_TYPE(4, "Expedited Adverse Event Reporting Roles"),
+	
+	/** The UNKNOWN. */
 	UNKNOWN(100,"Unknown");
 	
+	/** The code. */
 	private Integer code;
+	
+	/** The display name. */
 	private String displayName;
 	
+	/**
+	 * Instantiates a new config property type.
+	 *
+	 * @param code the code
+	 * @param displayName the display name
+	 */
 	private ConfigPropertyType(Integer code, String displayName) {
 		this.code = code;
 		this.displayName = displayName;
 		register(this);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.ctms.domain.CodedEnum#getCode()
+	 */
 	public Integer getCode() {
 		return code;
 	}
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.ctms.domain.CodedEnum#getDisplayName()
+     */
     public String getDisplayName() {
 		return displayName;
 	}
 	
+	/**
+	 * Gets the by code.
+	 *
+	 * @param code the code
+	 * @return the by code
+	 */
 	public static ConfigPropertyType getByCode(int code) {
 	    return getByClassAndCode(ConfigPropertyType.class, code);
 	}

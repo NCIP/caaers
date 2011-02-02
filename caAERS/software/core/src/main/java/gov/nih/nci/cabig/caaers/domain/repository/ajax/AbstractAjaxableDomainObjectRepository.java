@@ -15,14 +15,19 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+ 
 /**
+ * The Class AbstractAjaxableDomainObjectRepository.
+ *
  * @author Biju Joseph
  */
 public abstract class AbstractAjaxableDomainObjectRepository extends HibernateDaoSupport {
+    
+    /** The log. */
     protected final Log log = LogFactory.getLog(getClass());
 
     /**
-     * Search for objects using query
+     * Search for objects using query.
      *
      * @param query The query for finding organizations.
      * @return The list of organizations.
@@ -56,6 +61,13 @@ public abstract class AbstractAjaxableDomainObjectRepository extends HibernateDa
 
     }
 
+    /**
+     * Gets the object by id.
+     *
+     * @param ajaxableDomainObjects the ajaxable domain objects
+     * @param id the id
+     * @return the object by id
+     */
     protected AbstractAjaxableDomainObject getObjectById(List<? extends AbstractAjaxableDomainObject> ajaxableDomainObjects,
                                                          Integer id) {
 

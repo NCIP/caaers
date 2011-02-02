@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+ 
 /**
  * This class represents the MeddraStudyDisease domain object associated with the Adverse event
  * report.
@@ -18,8 +19,12 @@ import javax.persistence.Transient;
 @DiscriminatorValue("meddra")
 public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -2191830866356536610L;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease#getTerm()
+     */
     @ManyToOne
     @JoinColumn(name = "term_id")
     @Override
@@ -27,12 +32,18 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
         return super.getTerm();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease#getTermName()
+     */
     @Override
     @Transient
     public String getTermName() {
         return getTerm().getFullName();
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,6 +58,9 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
         return true;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -55,6 +69,9 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
         return result;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
     	return this.getTermName();

@@ -38,6 +38,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 
+ 
 /**
  * This class represents the Adverse Event domain object associated with the Adverse event report.
  *
@@ -51,75 +52,115 @@ import org.hibernate.annotations.*;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_adverse_events_id")})
 public class AdverseEvent extends AbstractMutableRetireableDomainObject implements ExpeditedAdverseEventReportChild , Serializable{
    
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 782543033828114683L;
 
+	/** The adverse event term. */
 	private AbstractAdverseEventTerm adverseEventTerm;
 
+    /** The details for other. */
     private String detailsForOther;
 
+    /** The grade. */
     private Grade grade;
 
+    /** The hospitalization. */
     private Hospitalization hospitalization;
 
+    /** The expected. */
     private Boolean expected; // false assignment removed cause that is not default for RoutineAEs
 
+    /** The attribution summary. */
     private Attribution attributionSummary;
 
+    /** The comments. */
     private String comments;
 
+    /** The start date. */
     private Date startDate;
 
+    /** The end date. */
     private Date endDate;
 
+    /** The low level term. */
     private LowLevelTerm lowLevelTerm;
 
+    /** The report. */
     private ExpeditedAdverseEventReport report;
 
+    /** The course agent attributions. */
     private List<CourseAgentAttribution> courseAgentAttributions;
 
+    /** The concomitant medication attributions. */
     private List<ConcomitantMedicationAttribution> concomitantMedicationAttributions;
 
+    /** The other cause attributions. */
     private List<OtherCauseAttribution> otherCauseAttributions;
 
+    /** The disease attributions. */
     private List<DiseaseAttribution> diseaseAttributions;
 
+    /** The surgery attributions. */
     private List<SurgeryAttribution> surgeryAttributions;
 
+    /** The radiation attributions. */
     private List<RadiationAttribution> radiationAttributions;
 
+    /** The device attributions. */
     private List<DeviceAttribution> deviceAttributions;
 
+    /** The outcomes. */
     private List<Outcome> outcomes;
 
+    /** The reporting period. */
     private AdverseEventReportingPeriod reportingPeriod;
 
+    /** The solicited. */
     private Boolean solicited;
 
+    /** The serious. */
     private OutcomeType serious;
 
+    /** The requires reporting. */
     private Boolean requiresReporting;
 
+    /** The display expected. */
     private String displayExpected;
 
+    /** The event approximate time. */
     private TimeValue eventApproximateTime;
 
+    /** The event location. */
     private String eventLocation;
     
+    /** The graded date. */
     private Date gradedDate;
     
+    /** The post submission updated date. */
     private Date postSubmissionUpdatedDate;
     
+    /** The signature. */
     private String signature;
     
+    /** The reported. */
     private Boolean reported;
     
+    /** The participant at risk. */
     private Boolean participantAtRisk;
     
+    /**
+     * Instantiates a new adverse event.
+     */
     public AdverseEvent() {
         solicited = false;
     }
 
     ///LOGIC
+    /**
+     * Adds the outcome.
+     *
+     * @param o the o
+     */
     public void addOutcome(Outcome o) {
         this.getOutcomes().add(o);
     }
@@ -140,29 +181,50 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     // //// BOUND PROPERTIES
     // annotated to EAGER as LAZY was not working properly in oracle , 
     // dont make it LAZY , oracle is giving problems.
+    /**
+     * Gets the low level term.
+     *
+     * @return the low level term
+     */
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "low_level_term_id")
     public LowLevelTerm getLowLevelTerm() {
         return lowLevelTerm;
     }
 
+    /**
+     * Sets the low level term.
+     *
+     * @param lowLevelTerm the new low level term
+     */
     public void setLowLevelTerm(LowLevelTerm lowLevelTerm) {
         this.lowLevelTerm = lowLevelTerm;
     }
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild#getReport()
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(insertable = false, updatable = false, nullable = true)
     public ExpeditedAdverseEventReport getReport() {
         return report;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild#setReport(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport)
+     */
     public void setReport(ExpeditedAdverseEventReport report) {
         this.report = report;
     }
 
 
+    /**
+     * Gets the reporting period.
+     *
+     * @return the reporting period
+     */
     @ManyToOne
     @JoinColumn(name = "reporting_period_id", nullable = true)
     @Cascade(value = {CascadeType.LOCK, CascadeType.EVICT})
@@ -170,10 +232,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return reportingPeriod;
     }
 
+    /**
+     * Sets the reporting period.
+     *
+     * @param reportingPeriod the new reporting period
+     */
     public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
         this.reportingPeriod = reportingPeriod;
     }
 
+    /**
+     * Gets the course agent attributions.
+     *
+     * @return the course agent attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -186,10 +258,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return courseAgentAttributions;
     }
 
+    /**
+     * Sets the course agent attributions.
+     *
+     * @param courseAgentAttributions the new course agent attributions
+     */
     public void setCourseAgentAttributions(List<CourseAgentAttribution> courseAgentAttributions) {
         this.courseAgentAttributions = courseAgentAttributions;
     }
 
+    /**
+     * Gets the concomitant medication attributions.
+     *
+     * @return the concomitant medication attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -204,11 +286,21 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return concomitantMedicationAttributions;
     }
 
+    /**
+     * Sets the concomitant medication attributions.
+     *
+     * @param concomitantMedicationAttributions the new concomitant medication attributions
+     */
     public void setConcomitantMedicationAttributions(
             List<ConcomitantMedicationAttribution> concomitantMedicationAttributions) {
         this.concomitantMedicationAttributions = concomitantMedicationAttributions;
     }
 
+    /**
+     * Gets the other cause attributions.
+     *
+     * @return the other cause attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -223,10 +315,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return otherCauseAttributions;
     }
 
+    /**
+     * Sets the other cause attributions.
+     *
+     * @param otherCauseAttributions the new other cause attributions
+     */
     public void setOtherCauseAttributions(List<OtherCauseAttribution> otherCauseAttributions) {
         this.otherCauseAttributions = otherCauseAttributions;
     }
 
+    /**
+     * Gets the disease attributions.
+     *
+     * @return the disease attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -241,10 +343,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return diseaseAttributions;
     }
 
+    /**
+     * Sets the disease attributions.
+     *
+     * @param diseaseAttributions the new disease attributions
+     */
     public void setDiseaseAttributions(List<DiseaseAttribution> diseaseAttributions) {
         this.diseaseAttributions = diseaseAttributions;
     }
 
+    /**
+     * Gets the surgery attributions.
+     *
+     * @return the surgery attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -259,10 +371,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return surgeryAttributions;
     }
 
+    /**
+     * Sets the surgery attributions.
+     *
+     * @param surgeryAttributions the new surgery attributions
+     */
     public void setSurgeryAttributions(List<SurgeryAttribution> surgeryAttributions) {
         this.surgeryAttributions = surgeryAttributions;
     }
 
+    /**
+     * Gets the radiation attributions.
+     *
+     * @return the radiation attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -277,10 +399,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return radiationAttributions;
     }
 
+    /**
+     * Sets the radiation attributions.
+     *
+     * @param radiationAttributions the new radiation attributions
+     */
     public void setRadiationAttributions(List<RadiationAttribution> radiationAttributions) {
         this.radiationAttributions = radiationAttributions;
     }
 
+    /**
+     * Gets the device attributions.
+     *
+     * @return the device attributions
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -295,11 +427,21 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return deviceAttributions;
     }
 
+    /**
+     * Sets the device attributions.
+     *
+     * @param deviceAttributions the new device attributions
+     */
     public void setDeviceAttributions(List<DeviceAttribution> deviceAttributions) {
         this.deviceAttributions = deviceAttributions;
     }
 
 
+    /**
+     * Gets the ctc term.
+     *
+     * @return the ctc term
+     */
     @Deprecated
     @Transient
     public CtcTerm getCtcTerm() {
@@ -312,12 +454,22 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         }
     }
 
+    /**
+     * Sets the ctc term.
+     *
+     * @param ctcTerm the new ctc term
+     */
     @Deprecated
     @Transient
     public void setCtcTerm(CtcTerm ctcTerm) {
         getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
     }
 
+    /**
+     * Gets the meddra term.
+     *
+     * @return the meddra term
+     */
     @Transient
     public LowLevelTerm getMeddraTerm() {
         if (this.adverseEventTerm == null) {
@@ -329,11 +481,21 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         }
     }
 
+    /**
+     * Sets the meddra term.
+     *
+     * @param meddraTerm the new meddra term
+     */
     @Transient
     public void setMeddraTerm(LowLevelTerm meddraTerm) {
         getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(meddraTerm);
     }
 
+    /**
+     * Gets the adverse event ctc term.
+     *
+     * @return the adverse event ctc term
+     */
     @Transient
     public AdverseEventCtcTerm getAdverseEventCtcTerm() {
         if (adverseEventTerm == null) {
@@ -346,12 +508,22 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return (AdverseEventCtcTerm) adverseEventTerm;
     }
 
+    /**
+     * Sets the adverse event ctc term.
+     *
+     * @param adverseEventCtcTerm the new adverse event ctc term
+     */
     @Transient
     public void setAdverseEventCtcTerm(AdverseEventCtcTerm adverseEventCtcTerm) {
         // this.adverseEventCtcTerm = adverseEventCtcTerm;
         setAdverseEventTerm(adverseEventCtcTerm);
     }
 
+    /**
+     * Gets the adverse event meddra low level term.
+     *
+     * @return the adverse event meddra low level term
+     */
     @Transient
     public AdverseEventMeddraLowLevelTerm getAdverseEventMeddraLowLevelTerm() {
         if (adverseEventTerm == null) {
@@ -363,48 +535,98 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return (AdverseEventMeddraLowLevelTerm) adverseEventTerm;
     }
 
+    /**
+     * Sets the adverse event meddra low level term.
+     *
+     * @param adverseEventMeddraLowLevelTerm the new adverse event meddra low level term
+     */
     @Transient
     public void setAdverseEventMeddraLowLevelTerm(AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
         // this.adverseEventCtcTerm = adverseEventCtcTerm;
         setAdverseEventTerm(adverseEventMeddraLowLevelTerm);
     }
 
+    /**
+     * Gets the adverse event term.
+     *
+     * @return the adverse event term
+     */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public AbstractAdverseEventTerm getAdverseEventTerm() {
         return adverseEventTerm;
     }
 
+    /**
+     * Sets the adverse event term.
+     *
+     * @param adverseEventTerm the new adverse event term
+     */
     public void setAdverseEventTerm(AbstractAdverseEventTerm adverseEventTerm) {
         this.adverseEventTerm = adverseEventTerm;
     }
 
+    /**
+     * Gets the details for other.
+     *
+     * @return the details for other
+     */
     public String getDetailsForOther() {
         return detailsForOther;
     }
 
+    /**
+     * Sets the details for other.
+     *
+     * @param detailsForOther the new details for other
+     */
     public void setDetailsForOther(String detailsForOther) {
         this.detailsForOther = detailsForOther;
     }
 
+    /**
+     * Gets the grade.
+     *
+     * @return the grade
+     */
     @Type(type = "grade")
     @Column(name = "grade_code")
     public Grade getGrade() {
         return grade;
     }
 
+    /**
+     * Sets the grade.
+     *
+     * @param grade the new grade
+     */
     public void setGrade(Grade grade) {
         this.grade = grade;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     public Date getStartDate() {
         return startDate;
     }
 
+    /**
+     * Sets the start date.
+     *
+     * @param startDate the new start date
+     */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
     
+    /**
+     * Gets the start date as string.
+     *
+     * @return the start date as string
+     */
     @Transient
     public String getStartDateAsString(){
     	try {
@@ -413,33 +635,69 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 			return null;
 		}
     }
+    
+    /**
+     * Sets the start date as string.
+     *
+     * @param startDate the new start date as string
+     */
     @Transient
     public void setStartDateAsString(String startDate) {
     }
     
 
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     public Date getEndDate() {
         return endDate;
     }
 
+    /**
+     * Sets the end date.
+     *
+     * @param endDate the new end date
+     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the hospitalization.
+     *
+     * @return the hospitalization
+     */
     @Type(type = "hospitalization")
     @Column(name = "hospitalization_code")
     public Hospitalization getHospitalization() {
         return hospitalization;
     }
 
+    /**
+     * Sets the hospitalization.
+     *
+     * @param hospitalization the new hospitalization
+     */
     public void setHospitalization(Hospitalization hospitalization) {
         this.hospitalization = hospitalization;
     }
 
+    /**
+     * Gets the expected.
+     *
+     * @return the expected
+     */
     public Boolean getExpected() {
         return expected;
     }
 
+    /**
+     * Sets the expected.
+     *
+     * @param expected the new expected
+     */
     public void setExpected(Boolean expected) {
         this.expected = expected;
     }
@@ -455,20 +713,40 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return expected;
     }
 
+    /**
+     * Gets the attribution summary.
+     *
+     * @return the attribution summary
+     */
     @Type(type = "attribution")
     @Column(name = "attribution_summary_code")
     public Attribution getAttributionSummary() {
         return attributionSummary;
     }
 
+    /**
+     * Sets the attribution summary.
+     *
+     * @param attributionSummary the new attribution summary
+     */
     public void setAttributionSummary(Attribution attributionSummary) {
         this.attributionSummary = attributionSummary;
     }
 
+    /**
+     * Gets the comments.
+     *
+     * @return the comments
+     */
     public String getComments() {
         return comments;
     }
 
+    /**
+     * Sets the comments.
+     *
+     * @param comments the new comments
+     */
     public void setComments(String comments) {
         this.comments = comments;
     }
@@ -477,7 +755,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     /**
      * Will return all the attributions.
      *
-     * @return
+     * @return the adverse event attributions
      */
     @Transient
     public List<AdverseEventAttribution<?>> getAdverseEventAttributions() {
@@ -493,7 +771,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     /**
-     * This method will tell if the specified attributions exists
+     * This method will tell if the specified attributions exists.
+     *
+     * @param attributions the attributions
+     * @return true, if is attributed with
      */
     @Transient
     public boolean isAttributedWith(Attribution... attributions) {
@@ -507,6 +788,13 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     }
 
+    /**
+     * Contains attribution.
+     *
+     * @param attributionList the attribution list
+     * @param attributions the attributions
+     * @return true, if successful
+     */
     public  boolean containsAttribution(
             List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList,
             Attribution... attributions) {
@@ -520,6 +808,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return false;
     }
     
+    /**
+     * Checks if is all course agent attribution provided.
+     *
+     * @return true, if is all course agent attribution provided
+     */
     @Transient
     public boolean isAllCourseAgentAttributionProvided(){
     	if(courseAgentAttributions == null || courseAgentAttributions.isEmpty()) return false;
@@ -530,6 +823,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
     
     
+    /**
+     * Checks if is all con med attribution provided.
+     *
+     * @return true, if is all con med attribution provided
+     */
     @Transient
     public boolean isAllConMedAttributionProvided(){
     	if(concomitantMedicationAttributions == null || concomitantMedicationAttributions.isEmpty()) return false;
@@ -539,6 +837,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return true;
     }
     
+    /**
+     * Checks if is all other cause attribution provided.
+     *
+     * @return true, if is all other cause attribution provided
+     */
     @Transient
     public boolean isAllOtherCauseAttributionProvided(){
     	if(otherCauseAttributions == null || otherCauseAttributions.isEmpty()) return false;
@@ -548,6 +851,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return true;
     }
     
+    /**
+     * Checks if is all device attribution provided.
+     *
+     * @return true, if is all device attribution provided
+     */
     @Transient
     public boolean isAllDeviceAttributionProvided(){
     	if(deviceAttributions == null || deviceAttributions.isEmpty()) return false;
@@ -557,6 +865,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return true;
     }
     
+    /**
+     * Checks if is all surgery attribution provided.
+     *
+     * @return true, if is all surgery attribution provided
+     */
     @Transient
     public boolean isAllSurgeryAttributionProvided(){
     	if(surgeryAttributions == null || surgeryAttributions.isEmpty()) return false;
@@ -566,6 +879,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return true;
     }
     
+    /**
+     * Checks if is all radiation attribution provided.
+     *
+     * @return true, if is all radiation attribution provided
+     */
     @Transient
     public boolean isAllRadiationAttributionProvided(){
     	if(radiationAttributions == null || radiationAttributions.isEmpty()) return false;
@@ -575,6 +893,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return true;
     }
     
+    /**
+     * Checks if is all disease attribution provided.
+     *
+     * @return true, if is all disease attribution provided
+     */
     @Transient
     public boolean isAllDiseaseAttributionProvided(){
     	if(diseaseAttributions == null || diseaseAttributions.isEmpty()) return false;
@@ -585,6 +908,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     }
 
+    /**
+     * Gets the display grade.
+     *
+     * @return the display grade
+     */
     @Transient
     public String getDisplayGrade() {
         if (grade == null) return "";
@@ -607,6 +935,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return "";
     }
 
+    /**
+     * Gets the display expected.
+     *
+     * @return the display expected
+     */
     @Transient
     public String getDisplayExpected() {
         displayExpected = "";
@@ -615,27 +948,46 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return displayExpected;
     }
 
+    /**
+     * Sets the display expected.
+     */
     public void setDisplayExpected() {
         this.displayExpected = displayExpected;
     }
 
+    /**
+     * Gets the display serious.
+     *
+     * @return the display serious
+     */
     @Transient
     public String getDisplaySerious() {
         if (serious != null) return serious.getDisplayName();
         return "";
     }
 
+    /**
+     * Sets the display serious.
+     *
+     * @param igonre the new display serious
+     */
     public void setDisplaySerious(String igonre) {
 
     }
 
+    /**
+     * Sets the solicited.
+     *
+     * @param solicited the new solicited
+     */
     public void setSolicited(Boolean solicited) {
         this.solicited = solicited;
     }
     
     /**
      * This method will return the display name of this adverse event.
-     * @return
+     *
+     * @return the display name
      */
     @Transient
     public String getDisplayName(){
@@ -650,19 +1002,39 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return name.toString();
     }
 
+    /**
+     * Gets the solicited.
+     *
+     * @return the solicited
+     */
     public Boolean getSolicited() {
         return solicited;
     }
 
+    /**
+     * Gets the requires reporting.
+     *
+     * @return the requires reporting
+     */
     public Boolean getRequiresReporting() {
         return requiresReporting;
     }
 
+    /**
+     * Sets the requires reporting.
+     *
+     * @param requiresReporting the new requires reporting
+     */
     public void setRequiresReporting(Boolean requiresReporting) {
         this.requiresReporting = requiresReporting;
     }
 
 
+    /**
+     * Gets the event approximate time.
+     *
+     * @return the event approximate time
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "hour", column = @Column(name = "event_time_hour")),
@@ -674,20 +1046,40 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return eventApproximateTime;
     }
 
+    /**
+     * Sets the event approximate time.
+     *
+     * @param eventApproximateTime the new event approximate time
+     */
     public void setEventApproximateTime(TimeValue eventApproximateTime) {
         this.eventApproximateTime = eventApproximateTime;
     }
 
+    /**
+     * Gets the event location.
+     *
+     * @return the event location
+     */
     public String getEventLocation() {
         return eventLocation;
     }
 
+    /**
+     * Sets the event location.
+     *
+     * @param eventLocation the new event location
+     */
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
 
     //  This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the outcomes.
+     *
+     * @return the outcomes
+     */
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable=false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -697,39 +1089,76 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return outcomes;
     }
 
+    /**
+     * Sets the outcomes.
+     *
+     * @param outcomes the new outcomes
+     */
     public void setOutcomes(List<Outcome> outcomes) {
         this.outcomes = outcomes;
     }
 
+    /**
+     * Gets the serious.
+     *
+     * @return the serious
+     */
     @Transient
     public OutcomeType getSerious() {
         return serious;
     }
 
+    /**
+     * Sets the serious.
+     *
+     * @param serious the new serious
+     */
     public void setSerious(OutcomeType serious) {
         this.serious = serious;
     }
     
     
+    /**
+     * Gets the graded date.
+     *
+     * @return the graded date
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getGradedDate() {
 		return gradedDate;
 	}
 
+	/**
+	 * Sets the graded date.
+	 *
+	 * @param gradedDate the new graded date
+	 */
 	public void setGradedDate(Date gradedDate) {
 		this.gradedDate = gradedDate;
 	}
 	
+	/**
+	 * Gets the post submission updated date.
+	 *
+	 * @return the post submission updated date
+	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getPostSubmissionUpdatedDate() {
 		return postSubmissionUpdatedDate;
 	}
+	
+	/**
+	 * Sets the post submission updated date.
+	 *
+	 * @param postSubmissionUpdatedDate the new post submission updated date
+	 */
 	public void setPostSubmissionUpdatedDate(Date postSubmissionUpdatedDate) {
 		this.postSubmissionUpdatedDate = postSubmissionUpdatedDate;
 	}
 	
 	/**
-	 * This method will set the graded, date if gradedDate is empty, and grade is set, and is not {@link Grade#NOT_EVALUATED} or 
+	 * This method will set the graded, date if gradedDate is empty, and grade is set, and is not {@link Grade#NOT_EVALUATED} or.
+	 *
 	 * {@link Grade#NORMAL}.
 	 */
 	public void initailzeGradedDate(){
@@ -738,12 +1167,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 		}
 	}
 	
+	/**
+	 * Initialize post submission updated date.
+	 */
 	public void initializePostSubmissionUpdatedDate(){
 		if(postSubmissionUpdatedDate == null && grade != null && grade.getCode() > Grade.NORMAL.getCode() && isModified() ){
 			postSubmissionUpdatedDate = new Date();
 		}
 	}
 
+	/**
+	 * Copy.
+	 *
+	 * @return the adverse event
+	 */
 	public AdverseEvent copy() {
         AdverseEvent adverseEvent = new AdverseEvent();
         org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
@@ -770,6 +1207,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
 
+    /**
+     * Adds the adverse event attribution.
+     *
+     * @param adverseEventAttribution the adverse event attribution
+     */
     public void addAdverseEventAttribution(AdverseEventAttribution adverseEventAttribution) {
         if (adverseEventAttribution != null) {
 
@@ -806,8 +1248,9 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
     
     /**
-     * This method returns true, if this AE is part of a submitted Amendable report. 
-     * @return
+     * This method returns true, if this AE is part of a submitted Amendable report.
+     *
+     * @return true, if is submitted on an amendable report
      */
     @Transient
     public boolean isSubmittedOnAnAmendableReport(){
@@ -894,6 +1337,13 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     * @return value of the field or empty string if not found
     * 
     * */
+    /**
+     * Signature field value.
+     *
+     * @param field the field
+     * @param signature the signature
+     * @return the string
+     */
     @Transient
     public String signatureFieldValue(String field, String signature) {
         String[] s = signature.split("(\\$\\$){1}");
@@ -934,6 +1384,12 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     * @param fields - list of ruleable fields
     *  
     * */
+    /**
+     * Checks if is ruleable fields modified.
+     *
+     * @param fields the fields
+     * @return true, if is ruleable fields modified
+     */
     @Transient
     public boolean isRuleableFieldsModified(List<String> fields) {
         String currentSignature = getCurrentSignature();
@@ -943,25 +1399,46 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return false;
     }
 
+    /**
+     * Gets the signature.
+     *
+     * @return the signature
+     */
     public String getSignature() {
 		return signature;
 	}
 
+	/**
+	 * Sets the signature.
+	 *
+	 * @param signature the new signature
+	 */
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
 	
+	/**
+	 * Gets the reported.
+	 *
+	 * @return the reported
+	 */
 	public Boolean getReported() {
 		return reported;
 	}
 	
+	/**
+	 * Sets the reported.
+	 *
+	 * @param reported the new reported
+	 */
 	public void setReported(Boolean reported) {
 		this.reported = reported;
 	}
 	
 	/**
-	 * Checks whether the signature persisted is different than the one newly calculated
-	 * @return
+	 * Checks whether the signature persisted is different than the one newly calculated.
+	 *
+	 * @return true, if is modified
 	 */
 	@Transient
 	public boolean isModified(){
@@ -1014,7 +1491,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	
 	/**
 	 * This method will list the names of all active reports that are associated to this expeidted data collection.
-	 * @return
+	 *
+	 * @return the associated report names
 	 */
 	@Transient
 	public List<String> getAssociatedReportNames(){
@@ -1027,6 +1505,9 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 		return reportNames;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
     public String toString() {
     	StringBuilder sb = new StringBuilder();
@@ -1040,14 +1521,29 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	return sb.toString();
     }
 
+	/**
+	 * Sets the participant at risk.
+	 *
+	 * @param participantAtRisk the new participant at risk
+	 */
 	public void setParticipantAtRisk(Boolean participantAtRisk) {
 		this.participantAtRisk = participantAtRisk;
 	}
 
+	/**
+	 * Gets the participant at risk.
+	 *
+	 * @return the participant at risk
+	 */
 	public Boolean getParticipantAtRisk() {
 		return participantAtRisk;
 	}
 
+    /**
+     * Gets the outcomes signature.
+     *
+     * @return the outcomes signature
+     */
     @Transient
     public String getOutcomesSignature() {
         StringBuffer sb = new StringBuffer("");

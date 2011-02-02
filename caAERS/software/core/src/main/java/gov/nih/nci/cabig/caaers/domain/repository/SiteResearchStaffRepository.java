@@ -31,6 +31,9 @@ import org.springframework.mail.MailException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * The Class SiteResearchStaffRepository.
+ */
 @Transactional(readOnly = true)
 public class SiteResearchStaffRepository {
 }

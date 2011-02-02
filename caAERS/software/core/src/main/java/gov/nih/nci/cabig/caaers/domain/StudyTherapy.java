@@ -14,8 +14,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+ 
 /**
- * Domain object representing Study Therapy
+ * Domain object representing Study Therapy.
  *
  * @author Saurabh Agrawal
  */
@@ -25,9 +26,15 @@ import org.hibernate.annotations.Type;
 @Deprecated
 public class StudyTherapy extends AbstractMutableDomainObject implements StudyChild {
 
+    /** The study. */
     private Study study;
+    
+    /** The study therapy type. */
     private StudyTherapyType studyTherapyType;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#getStudy()
+     */
     @ManyToOne
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.EVICT})
@@ -35,28 +42,53 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
         return study;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#setStudy(gov.nih.nci.cabig.caaers.domain.Study)
+     */
     public void setStudy(final Study study) {
         this.study = study;
     }
 
+    /**
+     * Gets the study therapy type.
+     *
+     * @return the study therapy type
+     */
     @Column(name = "STUDY_THERAPY_TYPE")
     @Type(type = "studyTherapyType")
     public StudyTherapyType getStudyTherapyType() {
         return studyTherapyType;
     }
 
+    /**
+     * Sets the study therapy type.
+     *
+     * @param studyTherapyType the new study therapy type
+     */
     public void setStudyTherapyType(final StudyTherapyType studyTherapyType) {
         this.studyTherapyType = studyTherapyType;
     }
 
+    /**
+     * Instantiates a new study therapy.
+     */
     public StudyTherapy() {
     }
 
+    /**
+     * Instantiates a new study therapy.
+     *
+     * @param s the s
+     * @param therapyType the therapy type
+     */
     public StudyTherapy(Study s, StudyTherapyType therapyType){
         this.study = s;
         this.studyTherapyType = therapyType;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -66,6 +98,9 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

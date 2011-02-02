@@ -7,12 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+ 
 /**
+ * The Class RadiationAttribution.
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @DiscriminatorValue("RI")
 public class RadiationAttribution extends AdverseEventAttribution<RadiationIntervention> {
+    
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+     */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override
@@ -20,6 +27,9 @@ public class RadiationAttribution extends AdverseEventAttribution<RadiationInter
         return super.getCause();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#copy()
+     */
     @Override
     public RadiationAttribution copy() {
         return super.copy();

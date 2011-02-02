@@ -44,28 +44,50 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+ 
 /**
+ * The Class ReportRepositoryImpl.
+ *
  * @author Biju Joseph
  */
 @Transactional(readOnly = false)
 public class ReportRepositoryImpl implements ReportRepository {
 
+    /** The Constant log. */
     private static final Log log = LogFactory.getLog(ReportRepositoryImpl.class);
+    
+    /** The report dao. */
     private ReportDao reportDao;
+    
+    /** The report definition dao. */
     private ReportDefinitionDao reportDefinitionDao;
+    
+    /** The study dao. */
     private StudyDao studyDao;
+    
+    /** The scheduler service. */
     private SchedulerService schedulerService;
+    
+    /** The report withdrawal service. */
     private ReportWithdrawalService reportWithdrawalService;
 
+    /** The report factory. */
     private ReportFactory reportFactory;
+    
+    /** The now factory. */
     private NowFactory nowFactory;
+    
+    /** The configuration. */
     private Configuration configuration;
+    
+    /** The adverse event routing and review repository. */
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
 
 	/**
-	 * This method will amend/unamend/withdraw/create the reports. 
-	 * @param aeReport- The expedited report
+	 * This method will amend/unamend/withdraw/create the reports.
+	 *
+	 * @param aeReport the ae report
 	 * @param toAmendList - The list of reports to amend
 	 * @param toUnAmendList - The list of reports to unamend
 	 * @param toWithdrawList - The list of reports to withdraw
@@ -121,8 +143,12 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
     
     /**
-     * This method will return true, if same category (group-organization) report definition is 
-     * available in the report definitions list
+     * This method will return true, if same category (group-organization) report definition is
+     * available in the report definitions list.
+     *
+     * @param report the report
+     * @param reportDefinitionList the report definition list
+     * @return true, if is getting replaced
      */
     protected boolean isGettingReplaced(Report report, List<ReportDefinition> reportDefinitionList){
     	if(CollectionUtils.isEmpty(reportDefinitionList)) return false;
@@ -135,8 +161,9 @@ public class ReportRepositoryImpl implements ReportRepository {
     
     /**
      * Will find the external report to be withdrawn, and will withdraw that report from the system.
-     * @param aeReport
-     * @param report
+     *
+     * @param aeReport the ae report
+     * @param report the report
      */
     @Transactional(readOnly = false)
     public void withdrawExternalReport(ExpeditedAdverseEventReport aeReport, Report report) {
@@ -146,6 +173,9 @@ public class ReportRepositoryImpl implements ReportRepository {
 		}
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.ReportRepository#withdrawReport(gov.nih.nci.cabig.caaers.domain.report.Report)
+     */
     @Transactional(readOnly = false)
     public void withdrawReport(Report report) {
         assert !report.getStatus().equals(ReportStatus.WITHDRAWN) : "Cannot withdraw a report that is already withdrawn";
@@ -158,6 +188,11 @@ public class ReportRepositoryImpl implements ReportRepository {
     
 
     /**
+     * Creates the report.
+     *
+     * @param reportDefinition the report definition
+     * @param aeReport the ae report
+     * @return the report
      * {@inheritDoc}
      */
 
@@ -207,6 +242,9 @@ public class ReportRepositoryImpl implements ReportRepository {
         return report;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.ReportRepository#createChildReports(gov.nih.nci.cabig.caaers.domain.report.Report)
+     */
     public List<Report> createChildReports(Report report) {
     	
     	List<Report> instantiatedReports = null;
@@ -230,6 +268,11 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
 
     /**
+     * Creates the and amend report.
+     *
+     * @param repDef the rep def
+     * @param toAmend the to amend
+     * @param useDefaultVersion the use default version
      * {@inheritDoc}
      * This method will amend the toAmend report,by making its status to {@link ReportStatus#AMENDED}.
      * Then creates a new report, based on the {@link ReportDefinition}, also copies the external ticket number
@@ -258,6 +301,10 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
     
     /**
+     * Find report deliveries.
+     *
+     * @param aReport the a report
+     * @return the list
      * {@inheritDoc}
      */
     public List<ReportDelivery> findReportDeliveries(Report aReport) {
@@ -307,7 +354,8 @@ public class ReportRepositoryImpl implements ReportRepository {
     
     /**
      * This method will un-amend, an amended report.
-     * @param report
+     *
+     * @param report the report
      */
     public void unAmendReport(Report report){
     	
@@ -324,7 +372,9 @@ public class ReportRepositoryImpl implements ReportRepository {
     
     
    /**
-    * This method will amend the report, by setting the report status to {@link ReportStatus#AMENDED}
+    * This method will amend the report, by setting the report status to {@link ReportStatus#AMENDED}.
+    *
+    * @param report the report
     */
     public void amendReport(Report report){
     	report.setDueOn(null);
@@ -335,46 +385,91 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
     
     
+    /**
+     * Sets the study dao.
+     *
+     * @param studyDao the new study dao
+     */
     @Required
     public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
     
+    /**
+     * Sets the report dao.
+     *
+     * @param reportDao the new report dao
+     */
     @Required
     public void setReportDao(final ReportDao reportDao) {
         this.reportDao = reportDao;
     }
 
+    /**
+     * Sets the scheduler service.
+     *
+     * @param schedulerService the new scheduler service
+     */
     @Required
     public void setSchedulerService(final SchedulerService schedulerService) {
         this.schedulerService = schedulerService;
     }
 
+    /**
+     * Sets the report factory.
+     *
+     * @param reportFactory the new report factory
+     */
     @Required
     public void setReportFactory(final ReportFactory reportFactory) {
         this.reportFactory = reportFactory;
     }
 
+    /**
+     * Sets the now factory.
+     *
+     * @param nowFactory the new now factory
+     */
     @Required
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
     
+    /**
+     * Sets the report definition dao.
+     *
+     * @param reportDefinitionDao the new report definition dao
+     */
     @Required
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
   
+    /**
+     * Sets the report withdrawal service.
+     *
+     * @param reportWithdrawalService the new report withdrawal service
+     */
     @Required
     public void setReportWithdrawalService(ReportWithdrawalService reportWithdrawalService) {
 		this.reportWithdrawalService = reportWithdrawalService;
 	}
     
+    /**
+     * Sets the configuration.
+     *
+     * @param configuration the new configuration
+     */
     @Required
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
     
+    /**
+     * Sets the adverse event routing and review repository.
+     *
+     * @param adverseEventRoutingAndReviewRepository the new adverse event routing and review repository
+     */
     @Required
     public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository){
     	this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;

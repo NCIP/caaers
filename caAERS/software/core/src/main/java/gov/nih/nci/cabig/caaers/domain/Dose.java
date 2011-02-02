@@ -6,6 +6,7 @@ import javax.persistence.Transient;
 
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the Dose domain object associated with the Adverse event report.
  *
@@ -13,14 +14,23 @@ import org.springframework.beans.BeanUtils;
  */
 @Embeddable
 public class Dose {
+    
+    /** The amount. */
     private String amount;
 
+    /** The units. */
     private String units; // TODO: source from caDSR
 
+    /** The route. */
     private String route; // caDSR?
 
     // //// LOGIC
 
+    /**
+     * Gets the display name.
+     *
+     * @return the display name
+     */
     @Transient
     public String getDisplayName() {
         StringBuilder sb = new StringBuilder().append(getAmount());
@@ -31,35 +41,68 @@ public class Dose {
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the amount.
+     *
+     * @return the amount
+     */
     @Column(name = "dose_amount")
     public String getAmount() {
         return amount;
     }
 
+    /**
+     * Sets the amount.
+     *
+     * @param amount the new amount
+     */
     public void setAmount(String amount) {
         this.amount = amount;
     }
 
+    /**
+     * Gets the units.
+     *
+     * @return the units
+     */
     @Column(name = "dose_units")
     public String getUnits() {
         return units;
     }
 
+    /**
+     * Sets the units.
+     *
+     * @param units the new units
+     */
     public void setUnits(String units) {
         this.units = units;
     }
 
+    /**
+     * Gets the route.
+     *
+     * @return the route
+     */
     @Column(name = "dose_route")
     public String getRoute() {
         return route;
     }
 
+    /**
+     * Sets the route.
+     *
+     * @param route the new route
+     */
     public void setRoute(String route) {
         this.route = route;
     }
 
     // //// OBJECT METHODS
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,6 +117,9 @@ public class Dose {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result;
@@ -84,6 +130,11 @@ public class Dose {
     }
 
 
+    /**
+     * Copy.
+     *
+     * @return the dose
+     */
     public Dose copy() {
         Dose anotherDose = new Dose();
         BeanUtils.copyProperties(this, anotherDose);

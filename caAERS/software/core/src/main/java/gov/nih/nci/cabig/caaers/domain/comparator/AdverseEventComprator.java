@@ -7,19 +7,27 @@ import java.util.Comparator;
 
 import org.apache.commons.lang.BooleanUtils;
 
+ 
+/**
+ * The Class AdverseEventComprator.
+ */
 public class AdverseEventComprator implements Comparator<AdverseEvent>{
 	
+	/** The Constant DEFAULT_ADVERSE_EVENT_COMPARATOR. */
 	public static final AdverseEventComprator DEFAULT_ADVERSE_EVENT_COMPARATOR = new AdverseEventComprator(); 
 	
 	/**
 	 * Sort the AE's according to the following
-           a. Descending by Reporting Required (Yes, then No)
-           b. Descending by grade (highest grade 1st)
-           c. Descending by Attribution (definite, probable, possible, unlikely, unrelated)
-           d. Descending by Hospitalization (Yes, then No)
-           e. Ascending by Expected (No, then Yes) 
-           
+	 * a. Descending by Reporting Required (Yes, then No)
+	 * b. Descending by grade (highest grade 1st)
+	 * c. Descending by Attribution (definite, probable, possible, unlikely, unrelated)
+	 * d. Descending by Hospitalization (Yes, then No)
+	 * e. Ascending by Expected (No, then Yes)
 	 * Returns 1 if ae2 is greater ae1, 0 if they are equal , -1 if ae1 is greater than ae2.
+	 *
+	 * @param ae1 the ae1
+	 * @param ae2 the ae2
+	 * @return the int
 	 */
 	public int compare(AdverseEvent ae1, AdverseEvent ae2) {
 		if(ae1 == null && ae2 == null) return 0;

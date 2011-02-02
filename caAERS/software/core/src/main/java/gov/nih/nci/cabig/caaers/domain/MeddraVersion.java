@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+ 
 /**
  * This class represents the MeddraVersion domain object associated with the Adverse event report.
  * 
@@ -16,14 +17,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "meddra_versions")
 public class MeddraVersion extends AbstractImmutableDomainObject {
+    
+    /** The name. */
     private String name;
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }

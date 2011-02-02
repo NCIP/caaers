@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.*;
 
+ 
 /**
  * This class represents the SiteInvestigator domain object associated with the Adverse event
  * report.
@@ -32,26 +33,51 @@ import org.hibernate.annotations.*;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_site_investigators_id") })
 public class SiteInvestigator extends AbstractMutableDomainObject {
 
+    /** The organization. */
     private Organization organization;
+    
+    /** The investigator. */
     private Investigator investigator;
+    
+    /** The email address. */
     private String emailAddress;
+    
+    /** The start date. */
     private Date startDate;
+    
+    /** The end date. */
     private Date endDate;
+    
+    /** The status. */
     private String status;
 
+    /** The study investigators. */
     private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
 
+    /**
+     * Instantiates a new site investigator.
+     */
     public SiteInvestigator() {
 		super();
 		this.setStartDate(DateUtils.today());
 	}
 
+	/**
+	 * Gets the investigator.
+	 *
+	 * @return the investigator
+	 */
 	@ManyToOne
     @JoinColumn(name = "investigator_id", nullable = false)
     public Investigator getInvestigator() {
         return investigator;
     }
 
+    /**
+     * Gets the study investigators.
+     *
+     * @return the study investigators
+     */
     @OneToMany(mappedBy = "siteInvestigator", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -59,64 +85,127 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         return studyInvestigators;
     }
 
+    /**
+     * Sets the study investigators.
+     *
+     * @param studyInvestigators the new study investigators
+     */
     public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
         this.studyInvestigators = studyInvestigators;
     }
 
+    /**
+     * Sets the investigator.
+     *
+     * @param investigator the new investigator
+     */
     public void setInvestigator(Investigator investigator) {
         this.investigator = investigator;
     }
 
+    /**
+     * Gets the organization.
+     *
+     * @return the organization
+     */
     @ManyToOne
     @JoinColumn(name = "site_id")
     public Organization getOrganization() {
         return organization;
     }
 
+    /**
+     * Sets the organization.
+     *
+     * @param organization the new organization
+     */
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
 
+    /**
+     * Gets the email address.
+     *
+     * @return the email address
+     */
     @Column(name = "email_address")
     public String getEmailAddress() {
         return emailAddress;
     }
 
+    /**
+     * Sets the email address.
+     *
+     * @param emailAddress the new email address
+     */
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     @Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_date")
 	public Date getStartDate() {
 		return startDate;
 	}
 
+	/**
+	 * Sets the start date.
+	 *
+	 * @param startDate the new start date
+	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 	
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     @Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "end_date")
 	public Date getEndDate() {
 		return endDate;
 	}
 
+	/**
+	 * Sets the end date.
+	 *
+	 * @param endDate the new end date
+	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
 	@Transient
     public boolean isActive(){
     	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
 
+    /**
+     * Checks if is in active.
+     *
+     * @return true, if is in active
+     */
     @Transient
     public boolean isInActive(){
     	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
     }    
 
     // /OBJECT METHODS
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -127,6 +216,9 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -149,8 +241,9 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
     }
     
     /**
-     * This method will return a status text for display purpose's. 
-     * @return
+     * This method will return a status text for display purpose's.
+     *
+     * @return the status
      */
     @Transient
     public String getStatus(){
@@ -170,6 +263,9 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
     	return status;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
     	return String.valueOf(investigator);

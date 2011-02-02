@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.domain.meddra;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * The Class SystemOrganClass.
+ */
 @Entity
 @Table(name = "meddra_soc")
 public class SystemOrganClass extends AbstractMeddraDomainObject {

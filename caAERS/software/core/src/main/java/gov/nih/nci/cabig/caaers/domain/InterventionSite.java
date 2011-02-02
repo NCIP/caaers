@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 import javax.persistence.Entity;
 
+ 
 /**
  * This class represents the InterventionSite domain object associated with the Adverse event
  * report.
@@ -12,12 +13,24 @@ import javax.persistence.Entity;
  */
 @Entity
 public class InterventionSite extends AbstractImmutableDomainObject {
+    
+    /** The name. */
     private String name;
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }

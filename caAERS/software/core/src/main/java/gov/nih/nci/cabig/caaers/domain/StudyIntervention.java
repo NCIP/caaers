@@ -7,17 +7,25 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
+ 
 /**
- * The parent class for all study interventions
+ * The parent class for all study interventions.
+ *
  * @author: Biju Joseph
  * @author Ion C. Olaru
  */
 @MappedSuperclass
 public abstract class StudyIntervention extends AbstractMutableRetireableDomainObject implements StudyChild {
 
+    /** The study. */
     private Study study;
+    
+    /** The study therapy type. */
     private StudyTherapyType studyTherapyType;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#getStudy()
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
     @Cascade(value = {CascadeType.EVICT})
@@ -25,20 +33,36 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
         return study;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#setStudy(gov.nih.nci.cabig.caaers.domain.Study)
+     */
     public void setStudy(Study study) {
         this.study = study;
     }
 
+    /**
+     * Gets the study therapy type.
+     *
+     * @return the study therapy type
+     */
     @Type(type = "studyTherapyType")
     @Column(name = "study_therapy_type")
     public StudyTherapyType getStudyTherapyType() {
         return studyTherapyType;
     }
 
+    /**
+     * Sets the study therapy type.
+     *
+     * @param studyTherapyType the new study therapy type
+     */
     public void setStudyTherapyType(StudyTherapyType studyTherapyType) {
         this.studyTherapyType = studyTherapyType;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o) {
         if(o == null) return false;
@@ -53,6 +77,9 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result = getStudy() != null ? getStudy().hashCode() : 0;

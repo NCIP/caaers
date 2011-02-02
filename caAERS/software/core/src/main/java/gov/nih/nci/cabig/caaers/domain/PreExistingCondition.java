@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
 /**
  * This class represents the PreExistingCondition domain object associated with the Adverse event
  * report.
@@ -19,46 +20,91 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "pre_existing_conditions")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_pre_existing_conditions_id") })
 public class PreExistingCondition extends AbstractImmutableDomainObject {
+    
+    /** The text. */
     private String text;
 
+    /** The meddra llt. */
     private String meddraLlt; // MedDRA v9.0 Lower Level Term (LLT)
 
+    /** The meddra llt code. */
     private String meddraLltCode; // MedDRA v9.0 LLT/CTEP Provisional Code
 
+    /** The meddra hlgt. */
     private String meddraHlgt; // MedDRA v9.0 High Level Group Term (HLGT)/CTEP Condition Category
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Column(name = "condition_text")
     public String getText() {
         return text;
     }
 
+    /**
+     * Sets the text.
+     *
+     * @param text the new text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Gets the meddra llt code.
+     *
+     * @return the meddra llt code
+     */
     @Column(name = "meddra_llt_code")
     public String getMeddraLltCode() {
         return meddraLltCode;
     }
 
+    /**
+     * Sets the meddra llt code.
+     *
+     * @param meddraLltCode the new meddra llt code
+     */
     public void setMeddraLltCode(String meddraLltCode) {
         this.meddraLltCode = meddraLltCode;
     }
 
+    /**
+     * Gets the meddra hlgt.
+     *
+     * @return the meddra hlgt
+     */
     @Column(name = "meddra_hlgt")
     public String getMeddraHlgt() {
         return meddraHlgt;
     }
 
+    /**
+     * Sets the meddra hlgt.
+     *
+     * @param meddraHlgt the new meddra hlgt
+     */
     public void setMeddraHlgt(String meddraHlgt) {
         this.meddraHlgt = meddraHlgt;
     }
 
+    /**
+     * Gets the meddra llt.
+     *
+     * @return the meddra llt
+     */
     @Column(name = "meddra_llt")
     public String getMeddraLlt() {
         return meddraLlt;
     }
 
+    /**
+     * Sets the meddra llt.
+     *
+     * @param meddraLlt the new meddra llt
+     */
     public void setMeddraLlt(String meddraLlt) {
         this.meddraLlt = meddraLlt;
     }
@@ -66,7 +112,10 @@ public class PreExistingCondition extends AbstractImmutableDomainObject {
     
     ///OBJECT METHODS
     
-	@Override
+	/* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -80,6 +129,9 @@ public class PreExistingCondition extends AbstractImmutableDomainObject {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

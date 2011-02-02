@@ -8,7 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+ 
 /**
+ * The Class CaaersFieldsTree.
+ *
  * @author Sameer Sawant
  * @author Ion C. Olaru
  * @author Biju Joseph
@@ -18,10 +21,21 @@ import java.util.Map;
  */
 public class CaaersFieldsTree extends PropertylessNode {
 
+	/** The sections. */
 	private Map<TabSection, TreeNode> sections;
+    
+    /** The message source. */
     private MessageSource messageSource;
+    
+    /** The expedited report tree. */
     private ExpeditedReportTree expeditedReportTree;
 
+	/**
+	 * Instantiates a new caaers fields tree.
+	 *
+	 * @param messageSource the message source
+	 * @param expeditedReportTree the expedited report tree
+	 */
 	public CaaersFieldsTree(MessageSource messageSource, ExpeditedReportTree expeditedReportTree) {
         this.messageSource = messageSource;
         this.expeditedReportTree = expeditedReportTree;
@@ -67,6 +81,9 @@ public class CaaersFieldsTree extends PropertylessNode {
        if(expeditedReportTree != null) expeditedReportTree.initialize();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode#add(gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode[])
+     */
     @Override
     public TreeNode add(TreeNode... subnodes) {
         super.add(subnodes);
@@ -78,10 +95,23 @@ public class CaaersFieldsTree extends PropertylessNode {
         return this;
     }
 
+    /**
+     * Section.
+     *
+     * @param section the section
+     * @param children the children
+     * @return the tree node
+     */
     public static TreeNode section(TabSection section, TreeNode... children) {
         return new TabSectionNode(section).add(children);
     }
 
+    /**
+     * Gets the node for section.
+     *
+     * @param section the section
+     * @return the node for section
+     */
     public TreeNode getNodeForSection(TabSection section) {
         TreeNode node = sections.get(section);
         if (node == null && log.isDebugEnabled()) {
@@ -90,28 +120,58 @@ public class CaaersFieldsTree extends PropertylessNode {
         return node;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.expeditedfields.PropertylessNode#getPropertyName()
+     */
     @Override
     public String getPropertyName() {
         return null;
     }
 
+    /**
+     * Gets the message.
+     *
+     * @param label the label
+     * @param defaultMessage the default message
+     * @return the message
+     */
     public String getMessage(String label, String defaultMessage) {
         if (getMessageSource() == null) return defaultMessage;
         return getMessageSource().getMessage(label, null, defaultMessage, Locale.getDefault());
     }
 
+    /**
+     * Gets the message source.
+     *
+     * @return the message source
+     */
     public MessageSource getMessageSource() {
         return messageSource;
     }
 
+    /**
+     * Sets the message source.
+     *
+     * @param messageSource the new message source
+     */
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
+    /**
+     * Gets the expedited report tree.
+     *
+     * @return the expedited report tree
+     */
     public ExpeditedReportTree getExpeditedReportTree() {
         return expeditedReportTree;
     }
 
+    /**
+     * Sets the expedited report tree.
+     *
+     * @param expeditedReportTree the new expedited report tree
+     */
     public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
     }

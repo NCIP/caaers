@@ -24,6 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+ 
 /**
  * This class contains the details of the notification, that is to be send out.
  * 
@@ -41,51 +42,92 @@ public abstract class ScheduledNotification extends AbstractMutableDomainObject 
                 Serializable {
 
     
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7953320109252988556L;
 
+	/** The delivery status. */
 	protected DeliveryStatus deliveryStatus;
 
+    /** The created on. */
     protected Date createdOn;
 
+    /** The scheduled on. */
     protected Date scheduledOn;
 
+    /** The planed notificaiton. */
     protected PlannedNotification planedNotificaiton;
 
+    /** The body. */
     protected String body;
 
+    /**
+     * Instantiates a new scheduled notification.
+     */
     public ScheduledNotification() {
         deliveryStatus = DeliveryStatus.CREATED;
     }
 
+    /**
+     * Gets the delivery status.
+     *
+     * @return the delivery status
+     */
     @Type(type = "deliveryStatus")
     @Column(name = "DELIVERY_STATUS_CODE")
     public DeliveryStatus getDeliveryStatus() {
         return deliveryStatus;
     }
 
+    /**
+     * Sets the delivery status.
+     *
+     * @param deliveryStatus the new delivery status
+     */
     public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
     }
 
+    /**
+     * Gets the created on.
+     *
+     * @return the created on
+     */
     @Temporal(value = TemporalType.TIMESTAMP)
     public Date getCreatedOn() {
         return createdOn;
     }
 
+    /**
+     * Sets the created on.
+     *
+     * @param createdOn the new created on
+     */
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
 
+    /**
+     * Gets the scheduled on.
+     *
+     * @return the scheduled on
+     */
     @Temporal(value = TemporalType.TIMESTAMP)
     public Date getScheduledOn() {
         return scheduledOn;
     }
 
+    /**
+     * Sets the scheduled on.
+     *
+     * @param scheduledOn the new scheduled on
+     */
     public void setScheduledOn(Date scheduledOn) {
         this.scheduledOn = scheduledOn;
     }
 
     /**
+     * Gets the planed notificaiton.
+     *
      * @return the planedNotificaiton
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -95,14 +137,17 @@ public abstract class ScheduledNotification extends AbstractMutableDomainObject 
     }
 
     /**
-     * @param planedNotificaiton
-     *                the planedNotificaiton to set
+     * Sets the planed notificaiton.
+     *
+     * @param planedNotificaiton the planedNotificaiton to set
      */
     public void setPlanedNotificaiton(PlannedNotification planedNotificaiton) {
         this.planedNotificaiton = planedNotificaiton;
     }
 
     /**
+     * Gets the body.
+     *
      * @return the bodyContent
      */
     public String getBody() {
@@ -110,13 +155,19 @@ public abstract class ScheduledNotification extends AbstractMutableDomainObject 
     }
 
     /**
-     * @param bodyContent
-     *                the bodyContent to set
+     * Sets the body.
+     *
+     * @param bodyContent the bodyContent to set
      */
     public void setBody(String bodyContent) {
         this.body = bodyContent;
     }
     
+    /**
+     * Checks if is active.
+     *
+     * @return the boolean
+     */
     @Transient
     public Boolean isActive(){
     	if(deliveryStatus != null && deliveryStatus == DeliveryStatus.CREATED)

@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.*;
 
+ 
 /**
  * The purpose of this class is to capture the customizations applied on a workflow template, in the current
  * instance. 
@@ -24,37 +25,81 @@ import org.hibernate.annotations.*;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_workflow_configuration_id")})
 public class WorkflowConfig extends AbstractMutableDomainObject{
 	
+	/** The name. */
 	private String name; // a customized name for this workflow
+	
+	/** The workflow definition name. */
 	private String workflowDefinitionName; // the workflow definition name (used in getting the workflow definition file)
+	
+	/** The task configs. */
 	private List<TaskConfig> taskConfigs; //list of the tasks that are applicable in the workflow (configured by the admin)
+	
+	/** The default assignee. */
 	private String defaultAssignee; //loginId of the user, who will be the default assignee,
 							 		//when the Role (assignee) cannot be derived.
-	private Boolean enabled;
+	/** The enabled. */
+		 							private Boolean enabled;
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * Gets the workflow definition name.
+	 *
+	 * @return the workflow definition name
+	 */
 	public String getWorkflowDefinitionName() {
 		return workflowDefinitionName;
 	}
 	
+	/**
+	 * Sets the workflow definition name.
+	 *
+	 * @param workflowDefinitionName the new workflow definition name
+	 */
 	public void setWorkflowDefinitionName(String workflowDefinitionName) {
 		this.workflowDefinitionName = workflowDefinitionName;
 	}
 	
+	/**
+	 * Gets the default assignee.
+	 *
+	 * @return the default assignee
+	 */
 	public String getDefaultAssignee() {
 		return defaultAssignee;
 	}
 	
+	/**
+	 * Sets the default assignee.
+	 *
+	 * @param defaultAssignee the new default assignee
+	 */
 	public void setDefaultAssignee(String defaultAssignee) {
 		this.defaultAssignee = defaultAssignee;
 	}
 	
 	
+	/**
+	 * Gets the task configs.
+	 *
+	 * @return the task configs
+	 */
 	@OneToMany
     @JoinColumn(name = "workflow_config_id", nullable = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -63,24 +108,50 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 		return taskConfigs;
 	}
 	
+	/**
+	 * Sets the task configs.
+	 *
+	 * @param taskConfigs the new task configs
+	 */
 	public void setTaskConfigs(List<TaskConfig> taskConfigs) {
 		this.taskConfigs = taskConfigs;
 	}
 	
+	/**
+	 * Adds the task configs.
+	 *
+	 * @param taskConfig the task config
+	 */
 	public void addTaskConfigs(TaskConfig taskConfig){
 		if(taskConfigs == null) this.taskConfigs = new ArrayList<TaskConfig>();
 		taskConfigs.add(taskConfig);
 	}
 	
+	/**
+	 * Gets the enabled.
+	 *
+	 * @return the enabled
+	 */
 	public Boolean getEnabled() {
 		return enabled;
 	}
 	
+	/**
+	 * Sets the enabled.
+	 *
+	 * @param enabled the new enabled
+	 */
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 	
 
+	/**
+	 * Checks if is task active.
+	 *
+	 * @param name the name
+	 * @return true, if is task active
+	 */
 	@Transient
 	public boolean isTaskActive(String name){
 		for(TaskConfig tc: getTaskConfigs()){
@@ -92,8 +163,9 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	
 	/**
 	 * This method returns the task configuration, identified by the <b>taskNodeName</b>.
-	 * @param taskNodeName
-	 * @return
+	 *
+	 * @param taskNodeName the task node name
+	 * @return the task config
 	 */
 	public TaskConfig findTaskConfig(String taskNodeName){
 		for(TaskConfig taskConfig : getTaskConfigs()){
@@ -103,6 +175,9 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,6 +193,9 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 		return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

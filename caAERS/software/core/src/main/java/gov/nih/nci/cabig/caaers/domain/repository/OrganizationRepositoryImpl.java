@@ -22,21 +22,35 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 
+ 
 /**
+ * The Class OrganizationRepositoryImpl.
+ *
  * @author Srini Akala
  * @author Monish Dombla
- *
  */
 
 @Transactional
 public class OrganizationRepositoryImpl implements OrganizationRepository {
 
+	/** The log. */
 	private Logger log = Logger.getLogger(getClass());
+    
+    /** The organization dao. */
     private OrganizationDao organizationDao;
+    
+    /** The organization converter dao. */
     private OrganizationConverterDao organizationConverterDao;
+    
+    /** The coppa mode for auto completers. */
     private boolean coppaModeForAutoCompleters;
+    
+    /** The event factory. */
     private EventFactory eventFactory;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#createOrUpdate(gov.nih.nci.cabig.caaers.domain.Organization)
+     */
     public void createOrUpdate(Organization organization) {
         if (organization.getId() == null) {
             create(organization);
@@ -49,9 +63,9 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
      * Create a new organization. Note that this method must be used when entering a new
      * organization (not {@link OrganizationDao#save}). As written, it is not suitable for updating
      * an existing organization.
-     * 
-     * @param site
-     * @throws CaaersSystemException
+     *
+     * @param site the site
+     * @throws CaaersSystemException the caaers system exception
      */
     public void create(Organization site) throws CaaersSystemException {
     	organizationDao.save(site);
@@ -60,8 +74,9 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     
     /**
      * This method is used in the Import Organizations flow. This will avoid calls to COPPA when importing Organization_Codes.txt from CTEP.
-     * @param organization
-     * @throws CaaersSystemException
+     *
+     * @param organization the organization
+     * @throws CaaersSystemException the caaers system exception
      */
     public void saveImportedOrganization(Organization organization)  throws CaaersSystemException{
         if (organization.getId() == null) {
@@ -71,19 +86,29 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
         }
     }
 
+    /**
+     * Sets the organization dao.
+     *
+     * @param organizationDao the new organization dao
+     */
     @Required
     public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
 
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getOrganizationsHavingStudySites(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)
+     */
     public List<Organization> getOrganizationsHavingStudySites(OrganizationFromStudySiteQuery query ) {
         return organizationDao.getOrganizationsHavingStudySites(query);
     }
     
     /**
      * This method converts a LocalOrganization to a RemoteOrganization.
-     * 
+     *
+     * @param localOrganization the local organization
+     * @param remoteOrganization the remote organization
      */
  	public void convertToRemote(Organization localOrganization,
 			Organization remoteOrganization) {
@@ -98,11 +123,17 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 		organizationConverterDao.save(conOrg);
 	}
  	
- 	public List<Organization> getLocalOrganizations(final OrganizationQuery query){
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getLocalOrganizations(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)
+	  */
+	 public List<Organization> getLocalOrganizations(final OrganizationQuery query){
  		return organizationDao.getLocalOrganizations(query);
  	}
  	
- 	@SuppressWarnings("unchecked")
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#searchRemoteOrganization(java.lang.String, java.lang.String)
+	  */
+	 @SuppressWarnings("unchecked")
 	public List<Organization> searchRemoteOrganization(String coppaSearchText, String sType){
  		//List organizations =  organizationDao.getLocalOrganizations(query);
  		Organization searchCriteria = new RemoteOrganization();
@@ -116,7 +147,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     	return remoteOrganizations;
  	}
  	
- 	@SuppressWarnings("unchecked")
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getApplicableOrganizationsFromStudySites(java.lang.String, java.lang.Integer)
+	  */
+	 @SuppressWarnings("unchecked")
  	public List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId){
  		OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
  		if(StringUtils.isNotBlank(text))
@@ -127,7 +161,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  		return organizations;
  	}
  	
- 	@SuppressWarnings("unchecked")
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#searchOrganization(gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery)
+	  */
+	 @SuppressWarnings("unchecked")
 	public List<Organization> searchOrganization(final OrganizationQuery query){
  		List organizations =  organizationDao.getLocalOrganizations(query);
  		// to get remote organizations ...
@@ -150,11 +187,17 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     	return organizations;
  	}
  	
- 	public List<Organization> restrictBySubnames(final String[] subnames) {
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#restrictBySubnames(java.lang.String[])
+	  */
+	 public List<Organization> restrictBySubnames(final String[] subnames) {
          return restrictBySubnames(subnames, false);
     }
 
- 	public List<StudyOrganization> getApplicableOrganizationsFromStudyOrganizations(final String text, Integer studyId) {
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getApplicableOrganizationsFromStudyOrganizations(java.lang.String, java.lang.Integer)
+	  */
+	 public List<StudyOrganization> getApplicableOrganizationsFromStudyOrganizations(final String text, Integer studyId) {
          StudyOrganizationsQuery query = new StudyOrganizationsQuery();
 
          if(text != null && !text.equals(""))
@@ -167,7 +210,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
          return organizations;
     }
 
- 	public List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering) {
+ 	/* (non-Javadoc)
+	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#restrictBySubnames(java.lang.String[], boolean)
+	  */
+	 public List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering) {
  		String text = subnames[0];
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
@@ -188,7 +234,14 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  		return mergeOrgs (localOrganizations,remoteOrganizations);
  	}
  	
- 	private List<Organization> mergeOrgs(List<Organization> localList , List<Organization> remoteList) {
+ 	/**
+	  * Merge orgs.
+	  *
+	  * @param localList the local list
+	  * @param remoteList the remote list
+	  * @return the list
+	  */
+	 private List<Organization> mergeOrgs(List<Organization> localList , List<Organization> remoteList) {
     		for (Organization remoteOrganization:remoteList) {
         		Organization org = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
         		if (org == null ) {
@@ -203,22 +256,37 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     	return localList;
 	}
 
+	/**
+	 * Sets the organization converter dao.
+	 *
+	 * @param organizationConverterDao the new organization converter dao
+	 */
 	public void setOrganizationConverterDao(
 			OrganizationConverterDao organizationConverterDao) {
 		this.organizationConverterDao = organizationConverterDao;
 	}
 
+	/**
+	 * Sets the coppa mode for auto completers.
+	 *
+	 * @param coppaModeForAutoCompleters the new coppa mode for auto completers
+	 */
 	public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
 		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
 	}
 	
 	/**
 	 * This method will fetch all the organizations in caAERS database.
+	 *
+	 * @return the all organizations
 	 */
 	public List<Organization> getAllOrganizations() {
 		return organizationDao.getAll();
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getAllNciInstitueCodes()
+	 */
 	public List<Organization> getAllNciInstitueCodes() {
 		return null;
 	}
@@ -237,6 +305,11 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 		organizationDao.evict(org);		
 	}
 
+	/**
+	 * Sets the event factory.
+	 *
+	 * @param eventFactory the new event factory
+	 */
 	public void setEventFactory(EventFactory eventFactory) {
 		this.eventFactory = eventFactory;
 	}

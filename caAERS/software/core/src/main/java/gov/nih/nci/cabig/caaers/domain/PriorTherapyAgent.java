@@ -13,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the PriorTherapyAgent domain object associated with the Adverse event
  * report.
@@ -23,12 +24,20 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "prior_therapy_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_prior_therapy_agents_id")})
 public class PriorTherapyAgent extends AbstractMutableDomainObject {
+    
+    /** The sae report prior therapy. */
     private SAEReportPriorTherapy saeReportPriorTherapy;
 
+    /** The chemo agent. */
     private ChemoAgent chemoAgent;
 
     // //// LOGIC
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         if (getChemoAgent() != null) {
@@ -40,28 +49,51 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
 
     // //// BOUND PROPERTIES
 
+    /**
+     * Gets the chemo agent.
+     *
+     * @return the chemo agent
+     */
     @ManyToOne
     @JoinColumn(name = "chemo_agent_id")
     public ChemoAgent getChemoAgent() {
         return chemoAgent;
     }
 
+    /**
+     * Sets the chemo agent.
+     *
+     * @param agent the new chemo agent
+     */
     public void setChemoAgent(ChemoAgent agent) {
         this.chemoAgent = agent;
     }
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
+    /**
+     * Gets the sae report prior therapy.
+     *
+     * @return the sae report prior therapy
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ae_prior_therapy_id", insertable = false, updatable = false, nullable = false)
     public SAEReportPriorTherapy getSaeReportPriorTherapy() {
         return saeReportPriorTherapy;
     }
 
+    /**
+     * Sets the sae report prior therapy.
+     *
+     * @param saeReportPriorTherapy the new sae report prior therapy
+     */
     public void setSaeReportPriorTherapy(SAEReportPriorTherapy saeReportPriorTherapy) {
         this.saeReportPriorTherapy = saeReportPriorTherapy;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -72,6 +104,9 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -89,6 +124,12 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
 
     // /OBJECT Methods
 
+    /**
+     * Creates the sae report prior therapy agent.
+     *
+     * @param studyParticipantPriorTherapyAgent the study participant prior therapy agent
+     * @return the prior therapy agent
+     */
     public static PriorTherapyAgent createSaeReportPriorTherapyAgent(StudyParticipantPriorTherapyAgent studyParticipantPriorTherapyAgent) {
 
 
@@ -101,6 +142,12 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
 
     }
 
+    /**
+     * Copy.
+     *
+     * @param object the object
+     * @return the prior therapy agent
+     */
     private static PriorTherapyAgent copy(Object object) {
         PriorTherapyAgent priorTherapyAgent = new PriorTherapyAgent();
         BeanUtils.copyProperties(object, priorTherapyAgent, new String[]{"id", "gridId",
@@ -108,6 +155,11 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
         return priorTherapyAgent;
     }
 
+    /**
+     * Copy.
+     *
+     * @return the prior therapy agent
+     */
     public PriorTherapyAgent copy() {
         return copy(this);
 

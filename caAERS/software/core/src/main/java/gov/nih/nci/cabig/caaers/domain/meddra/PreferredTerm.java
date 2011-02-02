@@ -9,12 +9,22 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+ 
+/**
+ * The Class PreferredTerm.
+ */
 @Entity
 @Table(name = "meddra_pt")
 public class PreferredTerm extends AbstractMeddraDomainObject {
 
+    /** The high level terms. */
     private HighLevelTerm highLevelTerms;
 
+    /**
+     * Gets the high level terms.
+     *
+     * @return the high level terms
+     */
     @ManyToOne
     @JoinTable(name = "meddra_hlt_pt", joinColumns = { @JoinColumn(name = "meddra_pt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_hlt_id") })
     @Cascade(value = { CascadeType.LOCK })
@@ -22,6 +32,11 @@ public class PreferredTerm extends AbstractMeddraDomainObject {
         return highLevelTerms;
     }
 
+    /**
+     * Sets the high level terms.
+     *
+     * @param highLevelTerms the new high level terms
+     */
     public void setHighLevelTerms(HighLevelTerm highLevelTerms) {
         this.highLevelTerms = highLevelTerms;
     }

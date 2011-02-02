@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.*;
 
+ 
 /**
  * This class represents the CtcTerm domain object associated with the Adverse event report.
  * 
@@ -24,17 +25,37 @@ import org.hibernate.annotations.*;
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class CtcTerm extends AbstractImmutableDomainObject {
 
+    /** The term. */
     private String term;
+    
+    /** The select. */
     private String select;
+    
+    /** The ctep term. */
     private String ctepTerm;
+    
+    /** The ctep code. */
     private String ctepCode;
+    
+    /** The category. */
     private CtcCategory category;
+    
+    /** The other required. */
     private boolean otherRequired;
+    
+    /** The contextual grades. */
     private List<CtcGrade> contextualGrades;
+    
+    /** The definition. */
     private String definition;
 
     // //// LOGIC
 
+    /**
+     * Gets the full name.
+     *
+     * @return the full name
+     */
     @Transient
     public String getFullName() {
     	 if (select == null) {
@@ -45,6 +66,11 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         
     }
 
+    /**
+     * Gets the full name with med dra.
+     *
+     * @return the full name with med dra
+     */
     @Transient
     public String getFullNameWithMedDRA() {
         if (select == null) {
@@ -54,6 +80,11 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         }
     }
 
+    /**
+     * Gets the grades.
+     *
+     * @return the grades
+     */
     @Transient
     public List<CodedGrade> getGrades() {
         if (getContextualGrades() == null || getContextualGrades().size() == 0) {
@@ -66,57 +97,122 @@ public class CtcTerm extends AbstractImmutableDomainObject {
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the term.
+     *
+     * @return the term
+     */
     public String getTerm() {
         return term;
     }
 
+    /**
+     * Sets the term.
+     *
+     * @param term the new term
+     */
     public void setTerm(String term) {
         this.term = term;
     }
 
+    /**
+     * Gets the select.
+     *
+     * @return the select
+     */
     @Column(name = "select_ae")
     public String getSelect() {
         return select;
     }
 
+    /**
+     * Sets the select.
+     *
+     * @param select the new select
+     */
     public void setSelect(String select) {
         this.select = select;
     }
 
+    /**
+     * Gets the ctep term.
+     *
+     * @return the ctep term
+     */
     public String getCtepTerm() {
         return ctepTerm;
     }
 
+    /**
+     * Sets the ctep term.
+     *
+     * @param ctepTerm the new ctep term
+     */
     public void setCtepTerm(String ctepTerm) {
         this.ctepTerm = ctepTerm;
     }
 
+    /**
+     * Gets the ctep code.
+     *
+     * @return the ctep code
+     */
     public String getCtepCode() {
         return ctepCode;
     }
 
+    /**
+     * Sets the ctep code.
+     *
+     * @param ctepCode the new ctep code
+     */
     public void setCtepCode(String ctepCode) {
         this.ctepCode = ctepCode;
     }
 
+    /**
+     * Gets the category.
+     *
+     * @return the category
+     */
     @ManyToOne
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public CtcCategory getCategory() {
         return category;
     }
 
+    /**
+     * Sets the category.
+     *
+     * @param category the new category
+     */
     public void setCategory(CtcCategory category) {
         this.category = category;
     }
 
+    /**
+     * Checks if is other required.
+     *
+     * @return true, if is other required
+     */
     public boolean isOtherRequired() {
         return otherRequired;
     }
 
+    /**
+     * Sets the other required.
+     *
+     * @param otherRequired the new other required
+     */
     public void setOtherRequired(boolean otherRequired) {
         this.otherRequired = otherRequired;
     }
 
+    /**
+     * Gets the contextual grades.
+     *
+     * @return the contextual grades
+     */
     @OneToMany(mappedBy = "term")
     @Cascade(value={CascadeType.ALL})
     @OrderBy("grade")
@@ -126,15 +222,30 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         return contextualGrades;
     }
 
+    /**
+     * Sets the contextual grades.
+     *
+     * @param contextualGrades the new contextual grades
+     */
     public void setContextualGrades(List<CtcGrade> contextualGrades) {
         this.contextualGrades = contextualGrades;
     }
 
+    /**
+     * Gets the definition.
+     *
+     * @return the definition
+     */
     @Column(name = "term_definition")
     public String getDefinition() {
         return definition;
     }
 
+    /**
+     * Sets the definition.
+     *
+     * @param definition the new definition
+     */
     public void setDefinition(String definition) {
         this.definition = definition;
     }

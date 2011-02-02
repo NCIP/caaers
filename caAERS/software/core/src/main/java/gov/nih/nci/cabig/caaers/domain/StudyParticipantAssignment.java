@@ -22,7 +22,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.annotations.*;
 
+ 
 /**
+ * The Class StudyParticipantAssignment.
+ *
  * @author Krikor Krumlian
  */
 @Entity
@@ -31,47 +34,84 @@ import org.hibernate.annotations.*;
 @Where(clause = "load_status > 0")
 public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
+    /** The participant. */
     private Participant participant;
+    
+    /** The study site. */
     private StudySite studySite;
 
+    /** The date of enrollment. */
     private Date dateOfEnrollment;
 
 
     //private List<RoutineAdverseEventReport> aeRoutineReports;
 
+    /** The lab loads. */
     private List<LabLoad> labLoads;
 
+    /** The load status. */
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
+    /** The study subject identifier. */
     private String studySubjectIdentifier;
 
+    /** The start date of first course. */
     private Date startDateOfFirstCourse;
 
+    /** The reporting periods. */
     private List<AdverseEventReportingPeriod> reportingPeriods;
 
+    /** The pre existing conditions. */
     private List<StudyParticipantPreExistingCondition> preExistingConditions;
+    
+    /** The concomitant medications. */
     private List<StudyParticipantConcomitantMedication> concomitantMedications;
+    
+    /** The prior therapies. */
     private List<StudyParticipantPriorTherapy> priorTherapies;
+    
+    /** The disease history. */
     private StudyParticipantDiseaseHistory diseaseHistory;
+    
+    /** The baseline performance. */
     private String baselinePerformance;
 
+    /**
+     * Instantiates a new study participant assignment.
+     *
+     * @param participant the participant
+     * @param studySite the study site
+     */
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
         this.studySite = studySite;
         this.dateOfEnrollment = new Date();
     }
 
+    /**
+     * Instantiates a new study participant assignment.
+     */
     public StudyParticipantAssignment() {
     }
 
     // //// LOGIC
 
 
+    /**
+     * Adds the routine report.
+     *
+     * @param routineReport the routine report
+     */
     public void addRoutineReport(RoutineAdverseEventReport routineReport) {
         routineReport.setAssignment(this);
         getAeRoutineReports().add(routineReport);
     }
 
+    /**
+     * Adds the reporting period.
+     *
+     * @param reportingPeriod the reporting period
+     */
     public void addReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
         if (reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
         if (reportingPeriod != null) {
@@ -80,6 +120,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         }
     }
 
+    /**
+     * Adds the pre existing condition.
+     *
+     * @param preExistingCondition the pre existing condition
+     */
     public void addPreExistingCondition(StudyParticipantPreExistingCondition preExistingCondition) {
         if (preExistingConditions == null)
             preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
@@ -89,6 +134,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         }
     }
 
+    /**
+     * Adds the concomitant medication.
+     *
+     * @param concomitantMedication the concomitant medication
+     */
     public void addConcomitantMedication(StudyParticipantConcomitantMedication concomitantMedication) {
         if (concomitantMedications == null)
             concomitantMedications = new ArrayList<StudyParticipantConcomitantMedication>();
@@ -98,6 +148,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         }
     }
 
+    /**
+     * Adds the prior therapy.
+     *
+     * @param priorTherapy the prior therapy
+     */
     public void addPriorTherapy(StudyParticipantPriorTherapy priorTherapy) {
         if (priorTherapies == null) priorTherapies = new ArrayList<StudyParticipantPriorTherapy>();
         if (priorTherapy != null) {
@@ -108,10 +163,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Sets the study site.
+     *
+     * @param studySite the new study site
+     */
     public void setStudySite(StudySite studySite) {
         this.studySite = studySite;
     }
 
+    /**
+     * Gets the study site.
+     *
+     * @return the study site
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_site_id")
     @Cascade({CascadeType.LOCK})
@@ -119,10 +184,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return studySite;
     }
 
+    /**
+     * Sets the participant.
+     *
+     * @param participant the new participant
+     */
     public void setParticipant(Participant participant) {
         this.participant = participant;
     }
 
+    /**
+     * Gets the participant.
+     *
+     * @return the participant
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
     @Cascade({CascadeType.LOCK})
@@ -130,15 +205,30 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return participant;
     }
 
+    /**
+     * Sets the date of enrollment.
+     *
+     * @param dateOfEnrollment the new date of enrollment
+     */
     public void setDateOfEnrollment(Date dateOfEnrollment) {
         this.dateOfEnrollment = dateOfEnrollment;
     }
 
+    /**
+     * Gets the date of enrollment.
+     *
+     * @return the date of enrollment
+     */
     @Column(name = "date_of_enrollment")
     public Date getDateOfEnrollment() {
         return dateOfEnrollment;
     }
 
+    /**
+     * Gets the ae reports.
+     *
+     * @return the ae reports
+     */
     @Transient
     public List<ExpeditedAdverseEventReport> getAeReports() {
         ArrayList<ExpeditedAdverseEventReport> aeReports = new ArrayList<ExpeditedAdverseEventReport>();
@@ -152,16 +242,31 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return aeReports;
     }
 
+    /**
+     * Gets the ae routine reports.
+     *
+     * @return the ae routine reports
+     */
     @Transient
     public List<RoutineAdverseEventReport> getAeRoutineReports() {
 //        if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
         return new ArrayList<RoutineAdverseEventReport>();
     }
 
+    /**
+     * Sets the ae routine reports.
+     *
+     * @param aeRoutineReports the new ae routine reports
+     */
     public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
 //        this.aeRoutineReports = aeRoutineReports;
     }
 
+    /**
+     * Gets the reporting periods.
+     *
+     * @return the reporting periods
+     */
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause = "start_date desc")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -170,6 +275,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	return reportingPeriods;
     }
     
+    /**
+     * Gets the active reporting periods.
+     *
+     * @return the active reporting periods
+     */
     @Transient
     public List<AdverseEventReportingPeriod> getActiveReportingPeriods(){
     	List<AdverseEventReportingPeriod> activeReportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
@@ -180,10 +290,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	return activeReportingPeriods;
     }
 
+    /**
+     * Sets the reporting periods.
+     *
+     * @param reportingPeriods the new reporting periods
+     */
     public void setReportingPeriods(List<AdverseEventReportingPeriod> reportingPeriods) {
         this.reportingPeriods = reportingPeriods;
     }
 
+    /**
+     * Gets the pre existing conditions.
+     *
+     * @return the pre existing conditions
+     */
     @OneToMany(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -191,10 +311,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return preExistingConditions;
     }
 
+    /**
+     * Sets the pre existing conditions.
+     *
+     * @param preExistingConditions the new pre existing conditions
+     */
     public void setPreExistingConditions(List<StudyParticipantPreExistingCondition> preExistingConditions) {
         this.preExistingConditions = preExistingConditions;
     }
 
+    /**
+     * Gets the concomitant medications.
+     *
+     * @return the concomitant medications
+     */
     @OneToMany(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -202,10 +332,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return concomitantMedications;
     }
 
+    /**
+     * Sets the concomitant medications.
+     *
+     * @param concomitantMedications the new concomitant medications
+     */
     public void setConcomitantMedications(List<StudyParticipantConcomitantMedication> concomitantMedications) {
         this.concomitantMedications = concomitantMedications;
     }
 
+    /**
+     * Gets the prior therapies.
+     *
+     * @return the prior therapies
+     */
     @OneToMany(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -213,20 +353,40 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return priorTherapies;
     }
 
+    /**
+     * Sets the prior therapies.
+     *
+     * @param priorTherapies the new prior therapies
+     */
     public void setPriorTherapies(List<StudyParticipantPriorTherapy> priorTherapies) {
         this.priorTherapies = priorTherapies;
     }
 
+    /**
+     * Gets the disease history.
+     *
+     * @return the disease history
+     */
     @OneToOne(mappedBy = "assignment")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public StudyParticipantDiseaseHistory getDiseaseHistory() {
         return diseaseHistory;
     }
 
+    /**
+     * Sets the disease history.
+     *
+     * @param diseaseHistory the new disease history
+     */
     public void setDiseaseHistory(StudyParticipantDiseaseHistory diseaseHistory) {
         this.diseaseHistory = diseaseHistory;
     }
 
+    /**
+     * Gets the lab loads.
+     *
+     * @return the lab loads
+     */
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause = "lab_date desc")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -238,39 +398,77 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     }
 
+    /**
+     * Sets the lab loads.
+     *
+     * @param labLoads the new lab loads
+     */
     public void setLabLoads(List<LabLoad> labLoads) {
 
         this.labLoads = labLoads;
 
     }
 
+    /**
+     * Gets the load status.
+     *
+     * @return the load status
+     */
     public Integer getLoadStatus() {
         return loadStatus;
     }
 
+    /**
+     * Sets the load status.
+     *
+     * @param loadStatus the new load status
+     */
     public void setLoadStatus(Integer loadStatus) {
         this.loadStatus = loadStatus;
     }
 
+    /**
+     * Gets the start date of first course.
+     *
+     * @return the start date of first course
+     */
     @Column(name = "first_course_date")
     public Date getStartDateOfFirstCourse() {
         return startDateOfFirstCourse;
     }
 
+    /**
+     * Sets the start date of first course.
+     *
+     * @param startDateOfFirstCourse the new start date of first course
+     */
     public void setStartDateOfFirstCourse(Date startDateOfFirstCourse) {
         this.startDateOfFirstCourse = startDateOfFirstCourse;
     }
 
+    /**
+     * Gets the baseline performance.
+     *
+     * @return the baseline performance
+     */
     public String getBaselinePerformance() {
         return baselinePerformance;
     }
 
+    /**
+     * Sets the baseline performance.
+     *
+     * @param baselinePerformance the new baseline performance
+     */
     public void setBaselinePerformance(String baselinePerformance) {
         this.baselinePerformance = baselinePerformance;
     }
 
     // //// OBJECT METHODS
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -287,6 +485,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result;
@@ -296,15 +497,30 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return result;
     }
 
+    /**
+     * Gets the study subject identifier.
+     *
+     * @return the study subject identifier
+     */
     public String getStudySubjectIdentifier() {
         return studySubjectIdentifier;
     }
 
+    /**
+     * Sets the study subject identifier.
+     *
+     * @param studySubjectIdentifier the new study subject identifier
+     */
     public void setStudySubjectIdentifier(final String studySubjectIdentifier) {
         this.studySubjectIdentifier = studySubjectIdentifier;
     }
 
 
+    /**
+     * Synchronize medical history from report to assignment.
+     *
+     * @param expeditedAdverseEventReport the expedited adverse event report
+     */
     public void synchronizeMedicalHistoryFromReportToAssignment(ExpeditedAdverseEventReport expeditedAdverseEventReport) {
         if (expeditedAdverseEventReport == null) {
             return;
@@ -327,6 +543,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         synchronizeBaselinePerformance(expeditedAdverseEventReport.getParticipantHistory().getBaselinePerformanceStatus());
     }
 
+    /**
+     * Synchronize baseline performance.
+     *
+     * @param baselinePerformanceStatus the baseline performance status
+     */
     private void synchronizeBaselinePerformance(String baselinePerformanceStatus) {
         if (StringUtils.isNotEmpty(baselinePerformanceStatus))
             this.setBaselinePerformance(baselinePerformanceStatus);
@@ -334,8 +555,10 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     /**
      * Will return the Prior therapy equal to the one provided, if any
-      Accordingly to business rules, 2 prior therapies are equals if they have the same name, othername, startDate.YEAR, startDate.MONTH
-     * @param priorTherapy
+     * Accordingly to business rules, 2 prior therapies are equals if they have the same name, othername, startDate.YEAR, startDate.MONTH
+     *
+     * @param priorTherapy the prior therapy
+     * @return the study participant prior therapy
      */
     public StudyParticipantPriorTherapy containsPriorTherapy(SAEReportPriorTherapy priorTherapy) {
         if (priorTherapy == null) return null;
@@ -380,6 +603,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     * In the process of synchronization only non-repeating objects are cloned from AE Flow to Participant Flow. The existing PTs are updated copying
     * all other information which is not included in the equal rule.   
     * */
+    /**
+     * Syncrhonize prior therapies.
+     *
+     * @param saeReportPriorTherapies the sae report prior therapies
+     */
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
             StudyParticipantPriorTherapy spaPT = containsPriorTherapy(saeReportPriorTherapy);
@@ -397,10 +625,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
             }
         }
     }
+    
     /**
-     * Will return true, if the {@link ConcomitantMedication} is associated to this assignment via {@link StudyParticipantConcomitantMedication}
-     * @param concomitantMedication
-     * @return
+     * Will return true, if the {@link ConcomitantMedication} is associated to this assignment via {@link StudyParticipantConcomitantMedication}.
+     *
+     * @param concomitantMedication the concomitant medication
+     * @return true, if successful
      */
     public boolean containsConcomitantMedication(ConcomitantMedication concomitantMedication){
     	if(concomitantMedication == null || concomitantMedication.getAgentName() == null) return true;
@@ -410,6 +640,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	}
     	return false;
     }
+    
+    /**
+     * Syncrhonize concomitant medication.
+     *
+     * @param saeReportConcomitantMedications the sae report concomitant medications
+     */
     private void syncrhonizeConcomitantMedication(final List<ConcomitantMedication> saeReportConcomitantMedications) {
 
         for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
@@ -420,10 +656,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         }
 
     }
+    
     /**
-     * Will return true, if the {@link MetastaticDiseaseSite} is associated to the assignment via {@link StudyParticipantMetastaticDiseaseSite}
-     * @param metastaticDiseaseSite
-     * @return
+     * Will return true, if the {@link MetastaticDiseaseSite} is associated to the assignment via {@link StudyParticipantMetastaticDiseaseSite}.
+     *
+     * @param metastaticDiseaseSite the metastatic disease site
+     * @return true, if successful
      */
     public boolean containsMetastaticDiseaseSite(MetastaticDiseaseSite metastaticDiseaseSite){
     	if(metastaticDiseaseSite == null ) return true;
@@ -434,6 +672,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	return false;
     }
     
+    /**
+     * Syncrhonize disease history.
+     *
+     * @param saeReportDiseaseHistory the sae report disease history
+     */
     private void syncrhonizeDiseaseHistory(final DiseaseHistory saeReportDiseaseHistory) {
 
         // Disease name
@@ -467,10 +710,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
 
     }
+    
     /**
-     * Will return true, if the {@link PreExistingCondition} is associated to this assignment via, {@link StudyParticipantPreExistingCondition}
-     * @param saePreCond
-     * @return
+     * Will return true, if the {@link PreExistingCondition} is associated to this assignment via, {@link StudyParticipantPreExistingCondition}.
+     *
+     * @param saePreCond the sae pre cond
+     * @return true, if successful
      */
     public boolean containsPreExistingCondition(SAEReportPreExistingCondition saePreCond){
     	if(saePreCond == null) return true;
@@ -479,6 +724,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	}
     	return false;
     }
+    
+    /**
+     * Syncrhonize pre existing condition.
+     *
+     * @param saeReportPreExistingConditions the sae report pre existing conditions
+     */
     private void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
@@ -490,6 +741,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     }
     
+    /**
+     * Gets the max cycle number.
+     *
+     * @return the max cycle number
+     */
     @Transient
     public Integer getMaxCycleNumber() {
     	Integer maxCycleNumber = null;
@@ -503,6 +759,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	return maxCycleNumber;
     }
 
+	/**
+	 * Gets the reporting period.
+	 *
+	 * @param courseStartDate the course start date
+	 * @return the reporting period
+	 */
 	@Transient
 	public AdverseEventReportingPeriod getReportingPeriod(Date courseStartDate) {
 		for (AdverseEventReportingPeriod p : getActiveReportingPeriods()) {

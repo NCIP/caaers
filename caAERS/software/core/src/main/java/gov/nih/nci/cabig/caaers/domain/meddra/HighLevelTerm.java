@@ -9,12 +9,22 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+ 
+/**
+ * The Class HighLevelTerm.
+ */
 @Entity
 @Table(name = "meddra_hlt")
 public class HighLevelTerm extends AbstractMeddraDomainObject {
 
+    /** The high level group terms. */
     private HighLevelGroupTerm highLevelGroupTerms;
 
+    /**
+     * Gets the high level group terms.
+     *
+     * @return the high level group terms
+     */
     @ManyToOne
     @JoinTable(name = "meddra_hlgt_hlt", joinColumns = { @JoinColumn(name = "meddra_hlt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_hlgt_id") })
     @Cascade(value = { CascadeType.LOCK })
@@ -22,6 +32,11 @@ public class HighLevelTerm extends AbstractMeddraDomainObject {
         return highLevelGroupTerms;
     }
 
+    /**
+     * Sets the high level group terms.
+     *
+     * @param highLevelGroupTerms the new high level group terms
+     */
     public void setHighLevelGroupTerms(HighLevelGroupTerm highLevelGroupTerms) {
         this.highLevelGroupTerms = highLevelGroupTerms;
     }

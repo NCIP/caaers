@@ -10,14 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 
+ 
 /*
 * @author Ion C. Olaru
 * 
 * */
+/**
+ * The Class ReportVersionRepository.
+ */
 public class ReportVersionRepository {
 
+    /** The report version dao. */
     private ReportVersionDao reportVersionDao;
 
+    /**
+     * Update in process reports.
+     */
     @Transactional(readOnly = false)
     public void updateInProcessReports() {
         List<ReportVersion> rvs = reportVersionDao.getAllInProcessReports();
@@ -41,6 +49,11 @@ public class ReportVersionRepository {
         }
     }
 
+    /**
+     * Gets the past due.
+     *
+     * @return the past due
+     */
     public List<ReportVersion> getPastDue() {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
         q.andWhere("rv.dueOn < :tomorrow");
@@ -57,6 +70,11 @@ public class ReportVersionRepository {
         return l;
     }
 
+    /**
+     * Gets the report activity.
+     *
+     * @return the report activity
+     */
     public List<ReportVersion> getReportActivity() {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
         q.orderBy("coalesce(rv.submittedOn, rv.dueOn, rv.withdrawnOn)");
@@ -81,10 +99,21 @@ public class ReportVersionRepository {
         return l;
     }
 
+    /**
+     * Gets the all submitted reports in last given number of days.
+     *
+     * @param days the days
+     * @return the all submitted reports in last given number of days
+     */
     public List<ReportVersion> getAllSubmittedReportsInLastGivenNumberOfDays(int days) {
         return reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(days);
     }
 
+    /**
+     * Sets the report version dao.
+     *
+     * @param reportVersionDao the new report version dao
+     */
     public void setReportVersionDao(ReportVersionDao reportVersionDao) {
         this.reportVersionDao = reportVersionDao;
     }

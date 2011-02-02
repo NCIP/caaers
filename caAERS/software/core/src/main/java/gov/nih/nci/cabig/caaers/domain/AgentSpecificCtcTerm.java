@@ -6,16 +6,22 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 
+ 
 /**
+ * The Class AgentSpecificCtcTerm.
+ *
  * @author Ion C. Olaru
- * 
  */
 @Entity
 @DiscriminatorValue("ctep")
 public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
 
+    /** The other meddra term. */
     private LowLevelTerm otherMeddraTerm;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#getTerm()
+     */
     @OneToOne
     @JoinColumn(name = "term_id")
     @Override
@@ -23,6 +29,9 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
         return super.getTerm();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#getFullName()
+     */
     @Override
     @Transient
     public String getFullName() {
@@ -31,6 +40,8 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
     }
 
     /**
+     * Gets the ctc term.
+     *
      * @return CtcTerm
      */
     @Transient
@@ -39,6 +50,8 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
     }
 
     /**
+     * Sets the ctc term.
+     *
      * @param ctcTerm The CTC term
      */
     @Transient
@@ -46,17 +59,26 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
         super.setTerm(ctcTerm);
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#copy()
+     */
     @Override
     public AgentSpecificCtcTerm copy() {
         return (AgentSpecificCtcTerm) super.copy();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#isMedDRA()
+     */
     @Override
     @Transient
     public boolean isMedDRA() {
     	return false;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#isOtherRequired()
+     */
     @Override
     @Transient
     public boolean isOtherRequired() {
@@ -64,12 +86,22 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
         return getTerm().isOtherRequired();
     }
 
+    /**
+     * Gets the other meddra term.
+     *
+     * @return the other meddra term
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "low_level_term_id")
     public LowLevelTerm getOtherMeddraTerm() {
         return otherMeddraTerm;
     }
 
+    /**
+     * Sets the other meddra term.
+     *
+     * @param otherMeddraTerm the new other meddra term
+     */
     public void setOtherMeddraTerm(LowLevelTerm otherMeddraTerm) {
         this.otherMeddraTerm = otherMeddraTerm;
     }

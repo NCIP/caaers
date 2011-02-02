@@ -11,23 +11,31 @@ import javax.persistence.Transient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+ 
 /**
- * Subclass of
- * {@link AbstractMutableDomainObject> that implements {@link gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers}.
+ * Subclass of.
  *
+ * {@link AbstractMutableDomainObject> that implements {@link gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers}.
  * @author Rhett Sutphin
  */
 @MappedSuperclass
 public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDomainObject
         implements IdentifiableByAssignedIdentifers {
+    
+    /** The Constant log. */
     private static final Log log = LogFactory.getLog(AbstractIdentifiableDomainObject.class);
 
+    /** The identifiers. */
     private List<Identifier> identifiers = new ArrayList<Identifier>();
 
+    /** The primary identifier value. */
     private String primaryIdentifierValue;
 
     // //// LOGIC
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers#getPrimaryIdentifier()
+     */
     @Transient
     public Identifier getPrimaryIdentifier() {
         if (log.isDebugEnabled()) {
@@ -48,6 +56,11 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
      * 
      * @See CreateAdverseEventAjaxFacade #matchParticipants, matchStudies
      */
+    /**
+     * Sets the primary identifier value.
+     *
+     * @param primaryIdentifierValue the new primary identifier value
+     */
     @Transient
     public void setPrimaryIdentifierValue(String primaryIdentifierValue) {
         this.primaryIdentifierValue = primaryIdentifierValue;
@@ -57,6 +70,11 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
      * Used as a property that survive Reduction
      * 
      * @See CreateAdverseEventAjaxFacade #matchParticipants, matchStudies
+     */
+    /**
+     * Gets the primary identifier value.
+     *
+     * @return the primary identifier value
      */
     @Transient
     public String getPrimaryIdentifierValue() {
@@ -69,6 +87,9 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
         return this.primaryIdentifierValue;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers#getSecondaryIdentifiers()
+     */
     @Transient
     public List<Identifier> getSecondaryIdentifiers() {
         Identifier primary = getPrimaryIdentifier();
@@ -77,6 +98,11 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
         return others;
     }
 
+    /**
+     * Adds the identifier.
+     *
+     * @param newIdentifier the new identifier
+     */
     public void addIdentifier(final Identifier newIdentifier) {
         getIdentifiers().add(newIdentifier);
     }
@@ -85,12 +111,17 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 
     /**
      * Subclasses will need to override this method to attach an appropriate JoinColumn annotation.
+     *
+     * @return the identifiers
      */
     @Transient
     public List<Identifier> getIdentifiers() {
         return identifiers;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers#setIdentifiers(java.util.List)
+     */
     public void setIdentifiers(final List<Identifier> identifiers) {
         this.identifiers = identifiers;
     }
@@ -101,6 +132,9 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
     * and set the rest to false
     *
     */
+    /**
+     * First primary indicator in identifiers.
+     */
     @Transient
     public void firstPrimaryIndicatorInIdentifiers() {
 

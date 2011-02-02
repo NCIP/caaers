@@ -15,6 +15,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
 /**
  * This class represents the TreatmentAssignment domain object associated with the Adverse event
  * report. Domain object representing Study Therapy
@@ -26,18 +27,27 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_treatment_assignment_id") })
 public class TreatmentAssignment extends AbstractMutableRetireableDomainObject implements StudyChild, Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3837235599935227241L;
 
+	/** The study. */
 	private Study study;
 
+    /** The code. */
     private String code;
 
+    /** The dose level order. */
     private Integer doseLevelOrder;
 
+    /** The description. */
     private String description;
 
+    /** The comments. */
     private String comments;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#getStudy()
+     */
     @ManyToOne
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.EVICT})
@@ -45,37 +55,78 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         return study;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.StudyChild#setStudy(gov.nih.nci.cabig.caaers.domain.Study)
+     */
     public void setStudy(final Study study) {
         this.study = study;
     }
 
+    /**
+     * Instantiates a new treatment assignment.
+     */
     public TreatmentAssignment() {
     }
 
+    /**
+     * Gets the code.
+     *
+     * @return the code
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Sets the code.
+     *
+     * @param code the new code
+     */
     public void setCode(String code) {
         this.code = code;
     }
 
+    /**
+     * Gets the dose level order.
+     *
+     * @return the dose level order
+     */
     public Integer getDoseLevelOrder() {
         return doseLevelOrder;
     }
 
+    /**
+     * Sets the dose level order.
+     *
+     * @param doseLevelOrder the new dose level order
+     */
     public void setDoseLevelOrder(Integer doseLevelOrder) {
         this.doseLevelOrder = doseLevelOrder;
     }
 
+    /**
+     * Gets the description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description.
+     *
+     * @param description the new description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the escaped description.
+     *
+     * @return the escaped description
+     */
     @Transient
     /**
      * The below function is only used for UI purpose
@@ -84,20 +135,38 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         return StringEscapeUtils.escapeJavaScript(description);
     }
 
+    /**
+     * Gets the html escaped description.
+     *
+     * @return the html escaped description
+     */
     @Transient
     public String getHtmlEscapedDescription() {
         String descriptionHtml = StringUtils.replace(description, "\r\n", "<br>" );
         return StringEscapeUtils.escapeJavaScript(descriptionHtml);
     }
 
+    /**
+     * Gets the comments.
+     *
+     * @return the comments
+     */
     public String getComments() {
         return comments;
     }
 
+    /**
+     * Sets the comments.
+     *
+     * @param comments the new comments
+     */
     public void setComments(String comments) {
         this.comments = comments;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -109,6 +178,9 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

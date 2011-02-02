@@ -14,18 +14,30 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
+/**
+ * The Class PasswordPolicy.
+ */
 @Entity
 @Table(name = "password_policy")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_password_policy_id") })
 @Validatable
 public class PasswordPolicy extends AbstractMutableDomainObject {
 
+    /** The Constant TOKEN_TIMEOUT_MS. */
     private static final long TOKEN_TIMEOUT_MS = 48 * 60 * 60 * 1000;
 
+    /** The password creation policy. */
     private PasswordCreationPolicy passwordCreationPolicy;
 
+    /** The login policy. */
     private LoginPolicy loginPolicy;
 
+    /**
+     * Gets the password creation policy.
+     *
+     * @return the password creation policy
+     */
     @Embedded
     @AttributeOverrides( {
             @AttributeOverride(name = "minPasswordAge", column = @Column(name = "cn_min_age")),
@@ -41,10 +53,20 @@ public class PasswordPolicy extends AbstractMutableDomainObject {
         return passwordCreationPolicy;
     }
 
+    /**
+     * Sets the password creation policy.
+     *
+     * @param passwordCreationPolicy the new password creation policy
+     */
     public void setPasswordCreationPolicy(PasswordCreationPolicy passwordCreationPolicy) {
         this.passwordCreationPolicy = passwordCreationPolicy;
     }
 
+    /**
+     * Gets the login policy.
+     *
+     * @return the login policy
+     */
     @Embedded
     @AttributeOverrides( {
             @AttributeOverride(name = "allowedFailedLoginAttempts", column = @Column(name = "ln_allowed_attempts")),
@@ -54,15 +76,28 @@ public class PasswordPolicy extends AbstractMutableDomainObject {
         return loginPolicy;
     }
 
+    /**
+     * Sets the login policy.
+     *
+     * @param loginPolicy the new login policy
+     */
     public void setLoginPolicy(LoginPolicy loginPolicy) {
         this.loginPolicy = loginPolicy;
     }
 
+    /**
+     * Gets the token timeout.
+     *
+     * @return the token timeout
+     */
     @Transient
     public long getTokenTimeout() {
         return TOKEN_TIMEOUT_MS;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return loginPolicy.toString() + "\n" + passwordCreationPolicy.toString();
     }

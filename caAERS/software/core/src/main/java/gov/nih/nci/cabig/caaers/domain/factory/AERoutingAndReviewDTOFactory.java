@@ -17,16 +17,29 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
+ 
+
 /**
- * The purpose of this class is to obtain an {@link AdverseEventReportingPeriodDTO} object from an {@link AdverseEventReportingPeriod}
- * @author Biju Joseph
+ * The purpose of this class is to obtain an {@link AdverseEventReportingPeriodDTO} object from an {@link AdverseEventReportingPeriod}.
  *
+ * @author Biju Joseph
  */
 public class AERoutingAndReviewDTOFactory {
 	
+	/** The log. */
 	private static Logger log = Logger.getLogger(AERoutingAndReviewDTOFactory.class);
+	
+	/** The adverse event routing and review repository. */
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
+	/**
+	 * Creates a new AERoutingAndReviewDTO object.
+	 *
+	 * @param rp the rp
+	 * @param userId the user id
+	 * @param courseWorkflowEnabled the course workflow enabled
+	 * @return the adverse event reporting period dto
+	 */
 	public AdverseEventReportingPeriodDTO createAdverseEventEvalutionPeriodDTO(AdverseEventReportingPeriod rp, String userId, Boolean courseWorkflowEnabled){
 		if(rp == null) return null;
 		AdverseEventReportingPeriodDTO dto = new AdverseEventReportingPeriodDTO();
@@ -59,6 +72,13 @@ public class AERoutingAndReviewDTOFactory {
 		return dto;
 	}
 	
+	/**
+	 * Creates a new AERoutingAndReviewDTO object.
+	 *
+	 * @param aeReport the ae report
+	 * @param userId the user id
+	 * @return the expedited adverse event report dto
+	 */
 	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport, String userId){
 		if(aeReport == null) return null;
 		ExpeditedAdverseEventReportDTO dto = new ExpeditedAdverseEventReportDTO();
@@ -72,6 +92,12 @@ public class AERoutingAndReviewDTOFactory {
 		return dto;
 	}
 	
+	/**
+	 * Creates a new AERoutingAndReviewDTO object.
+	 *
+	 * @param comments the comments
+	 * @return the list< review comments dt o>
+	 */
 	protected List<ReviewCommentsDTO> createReviewComments(List<? extends ReviewComment> comments){
 		List<ReviewCommentsDTO> commentDtos = new ArrayList<ReviewCommentsDTO>();
 		if(comments != null){
@@ -86,9 +112,11 @@ public class AERoutingAndReviewDTOFactory {
 	}
 	
 	/**
-	 * @param aeReport
-	 * @param userId
-	 * @return
+	 * Creates a new AERoutingAndReviewDTO object.
+	 *
+	 * @param aeReport the ae report
+	 * @param userId the user id
+	 * @return the list< report dt o>
 	 * @author dkrylov
 	 * @author Biju Joseph
 	 */
@@ -128,9 +156,20 @@ public class AERoutingAndReviewDTOFactory {
 		return reportDTOs;
 	}
 	
+	/**
+	 * Gets the adverse event routing and review repository.
+	 *
+	 * @return the adverse event routing and review repository
+	 */
 	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
 		return adverseEventRoutingAndReviewRepository;
 	}
+	
+	/**
+	 * Sets the adverse event routing and review repository.
+	 *
+	 * @param adverseEventRoutingAndReviewRepository the new adverse event routing and review repository
+	 */
 	public void setAdverseEventRoutingAndReviewRepository(
 			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;

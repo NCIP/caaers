@@ -10,6 +10,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+ 
 /**
  * This class represents the CTC terminology associated to the adverse event.
  *
@@ -18,8 +19,9 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @DiscriminatorValue("ctep")
 public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
+    
     /**
-     * Refers to the associated CTC terminology {@link CtcTerm}
+     * Refers to the associated CTC terminology {@link CtcTerm}.
      *
      * @return AdverseEventCtcTerm The CTC term
      */
@@ -31,6 +33,9 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
         return super.getTerm();
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#getFullName()
+     */
     @Override
     @Transient
     public String getFullName() {
@@ -64,9 +69,8 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     }
 
     /**
-     * Get CTC term associated to the adverse event
+     * Get CTC term associated to the adverse event.
      *
-     * @param
      * @return CtcTerm
      */
     @Transient
@@ -75,7 +79,7 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     }
 
     /**
-     * Set CTC term associated to the adverse event
+     * Set CTC term associated to the adverse event.
      *
      * @param ctcTerm The CTC term
      */
@@ -84,6 +88,9 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
         super.setTerm(ctcTerm);
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#isOtherRequired()
+     */
     @Override
     @Transient
     public boolean isOtherRequired() {
@@ -91,11 +98,17 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
         return getTerm().isOtherRequired();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#copy()
+     */
     @Override
     public AdverseEventCtcTerm copy() {
         return (AdverseEventCtcTerm) super.copy();
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#isMedDRA()
+     */
     @Override
     @Transient
     public boolean isMedDRA() {

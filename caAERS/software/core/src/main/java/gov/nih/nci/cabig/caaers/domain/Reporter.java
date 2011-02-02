@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+ 
 /**
  * This class represents the Reporter domain object associated with the Adverse event report.
  *
@@ -12,6 +13,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("R")
 public class Reporter extends ReportPerson {
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.ReportPerson#copy()
+     */
     @Override
     public Reporter copy() {
         return (Reporter) super.copy();    //To change body of overridden methods use File | Settings | File Templates.
@@ -19,7 +23,8 @@ public class Reporter extends ReportPerson {
     
     /**
      * This method will copy a user, and set it as the referenced user of this reporter.
-     * @param person
+     *
+     * @param person the person
      */
     public void copy(Person person){
     	if(person == null) return;

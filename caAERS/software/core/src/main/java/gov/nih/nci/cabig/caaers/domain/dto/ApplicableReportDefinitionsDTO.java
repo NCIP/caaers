@@ -15,21 +15,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+ 
+
 /**
- * 
- * @author Biju Joseph
+ * The Class ApplicableReportDefinitionsDTO.
  *
+ * @author Biju Joseph
  */
 public class ApplicableReportDefinitionsDTO implements Serializable{
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1905414999906152610L;
+	
+	/** The organization type map. */
 	Map<Organization, LinkedHashMap<String, List<ReportDefinition>>> organizationTypeMap;
 	
 	
+	/**
+	 * Instantiates a new applicable report definitions dto.
+	 */
 	public ApplicableReportDefinitionsDTO(){
 		organizationTypeMap = new LinkedHashMap<Organization, LinkedHashMap<String,List<ReportDefinition>>>();
 	}
 	
+	/**
+	 * Adds the report definition.
+	 *
+	 * @param rd the rd
+	 */
 	public void addReportDefinition(ReportDefinition rd){
 		LinkedHashMap<String, List<ReportDefinition>> typeMap = organizationTypeMap.get(rd.getOrganization());
 		
@@ -47,10 +60,20 @@ public class ApplicableReportDefinitionsDTO implements Serializable{
 	}
 	
 	
+	/**
+	 * Gets the organizations.
+	 *
+	 * @return the organizations
+	 */
 	public Collection<Organization> getOrganizations(){
 		return organizationTypeMap.keySet();
 	}
 	
+	/**
+	 * Gets the report definitions.
+	 *
+	 * @return the report definitions
+	 */
 	public List<ReportDefinition> getReportDefinitions(){
 		List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
 		for(Organization org : getOrganizations()){
@@ -63,17 +86,39 @@ public class ApplicableReportDefinitionsDTO implements Serializable{
 		return reportDefinitions;
 	}
 	
+	/**
+	 * Gets the reports by organization.
+	 *
+	 * @param org the org
+	 * @return the reports by organization
+	 */
 	public HashMap<String, List<ReportDefinition>> getReportsByOrganization(Organization org){
 		return organizationTypeMap.get(org);
 	}
 	
+	/**
+	 * Gets the organization type map.
+	 *
+	 * @return the organization type map
+	 */
 	public Map<Organization, LinkedHashMap<String, List<ReportDefinition>>> getOrganizationTypeMap() {
 		return organizationTypeMap;
 	}
+	
+	/**
+	 * Sets the organization type map.
+	 *
+	 * @param organizationTypeMap the organization type map
+	 */
 	public void setOrganizationTypeMap(Map<Organization, LinkedHashMap<String, List<ReportDefinition>>> organizationTypeMap) {
 		this.organizationTypeMap = organizationTypeMap;
 	}
 	
+	/**
+	 * Gets the report definition map.
+	 *
+	 * @return the report definition map
+	 */
 	public Map<Integer, ReportDefinition> getReportDefinitionMap(){
 		Map<Integer, ReportDefinition> reportDefinitionMap = new LinkedHashMap<Integer, ReportDefinition>();
 		for(ReportDefinition reportDefinition : getReportDefinitions()){

@@ -23,7 +23,11 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
+ * The Class AdverseEventAttribution.
+ *
+ * @param <T> the generic type
  * @author Rhett Sutphin
  */
 @Entity
@@ -35,32 +39,62 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_attributions_id")})
 public abstract class AdverseEventAttribution<T extends DomainObject> extends AbstractMutableDomainObject {
 
+    /** The cause. */
     private T cause;
+    
+    /** The attribution. */
     private Attribution attribution;
+    
+    /** The adverse event. */
     private AdverseEvent adverseEvent;
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the adverse event.
+     *
+     * @return the adverse event
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(insertable = false, updatable = false, nullable = false)
     public AdverseEvent getAdverseEvent() {
         return adverseEvent;
     }
 
+    /**
+     * Sets the adverse event.
+     *
+     * @param adverseEvent the new adverse event
+     */
     public void setAdverseEvent(AdverseEvent adverseEvent) {
         this.adverseEvent = adverseEvent;
     }
 
+    /**
+     * Gets the attribution.
+     *
+     * @return the attribution
+     */
     @Type(type = "attribution")
     @Column(name = "attribution_code")
     public Attribution getAttribution() {
         return attribution;
     }
 
+    /**
+     * Sets the attribution.
+     *
+     * @param attribution the new attribution
+     */
     public void setAttribution(Attribution attribution) {
         this.attribution = attribution;
     }
 
+    /**
+     * Gets the cause.
+     *
+     * @return the cause
+     */
     @Transient
     /*
      * this is only transient here -- subclasses need to override it and specify what it refers to
@@ -70,10 +104,21 @@ public abstract class AdverseEventAttribution<T extends DomainObject> extends Ab
         return cause;
     }
 
+    /**
+     * Sets the cause.
+     *
+     * @param cause the new cause
+     */
     public void setCause(T cause) {
         this.cause = cause;
     }
 
+    /**
+     * Copy.
+     *
+     * @param <R> the generic type
+     * @return the r
+     */
     public <R extends AdverseEventAttribution> R copy() {
         R adverseEventAttribution = (R) BeanUtils.instantiateClass(getClass());
         BeanUtils.copyProperties(this, adverseEventAttribution, new String[]{"id", "gridId", "version", "adverseEvent"});

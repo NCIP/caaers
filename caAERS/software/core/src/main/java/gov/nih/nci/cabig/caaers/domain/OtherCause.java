@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the OtherCause domain object associated with the Adverse event report.
  *
@@ -17,17 +18,32 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "other_causes")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_other_causes_id")})
 public class OtherCause extends AbstractExpeditedReportCollectionElementChild {
+    
+    /** The text. */
     private String text;
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Column(name = "cause_text")
     public String getText() {
         return text;
     }
 
+    /**
+     * Sets the text.
+     *
+     * @param text the new text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -37,6 +53,9 @@ public class OtherCause extends AbstractExpeditedReportCollectionElementChild {
     }
 
     ///OBJECT METHODS
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -54,6 +73,11 @@ public class OtherCause extends AbstractExpeditedReportCollectionElementChild {
         return true;
     }
 
+    /**
+     * Copy.
+     *
+     * @return the other cause
+     */
     public OtherCause copy() {
         OtherCause otherCause = new OtherCause();
         BeanUtils.copyProperties(this, otherCause, new String[]{"id", "gridId",

@@ -13,6 +13,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 
+ 
 /**
  * This class represents the LabVersion domain object associated with the Adverse event report.
  * 
@@ -25,20 +26,38 @@ import org.hibernate.annotations.Fetch;
 @Entity
 @Table(name = "lab_versions")
 public class LabVersion extends AbstractImmutableDomainObject {
+    
+    /** The name. */
     private String name;
 
+    /** The categories. */
     private List<LabCategory> categories;
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the categories.
+     *
+     * @return the categories
+     */
     @OneToMany(mappedBy = "labVersion")
     @OrderBy
     // by ID for consistency
@@ -48,6 +67,11 @@ public class LabVersion extends AbstractImmutableDomainObject {
         return categories;
     }
 
+    /**
+     * Sets the categories.
+     *
+     * @param categories the new categories
+     */
     public void setCategories(List<LabCategory> categories) {
         this.categories = categories;
     }

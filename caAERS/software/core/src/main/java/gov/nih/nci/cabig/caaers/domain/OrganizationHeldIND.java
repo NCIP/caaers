@@ -7,21 +7,40 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+ 
+/**
+ * The Class OrganizationHeldIND.
+ */
 @Entity
 @DiscriminatorValue("ORG")
 public class OrganizationHeldIND extends INDHolder {
+    
+    /** The organization. */
     private Organization organization;
 
+    /**
+     * Gets the organization.
+     *
+     * @return the organization
+     */
     @ManyToOne(optional = false, fetch=FetchType.LAZY)
     @JoinColumn(name = "org_id", nullable = false)
     public Organization getOrganization() {
         return organization;
     }
 
+    /**
+     * Sets the organization.
+     *
+     * @param organization the new organization
+     */
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.INDHolder#getName()
+     */
     @Override
     @Transient
     public String getName() {

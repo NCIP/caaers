@@ -30,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the ExpeditedAdverseEventReport domain object.
  *
@@ -43,28 +44,53 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_reports_id")})
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  Serializable{
    
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3747213703166595074L;
+	
+	/** The created at. */
 	private Timestamp createdAt;
+    
+    /** The lazy list helper. */
     private LazyListHelper lazyListHelper;
 
+    /** The response description. */
     private AdverseEventResponseDescription responseDescription;
+    
+    /** The treatment information. */
     private TreatmentInformation treatmentInformation;
+    
+    /** The additional information. */
     private AdditionalInformation additionalInformation;
 
 
+    /** The reporter. */
     private Reporter reporter;
+    
+    /** The physician. */
     private Physician physician;
+    
+    /** The participant history. */
     private ParticipantHistory participantHistory;
+    
+    /** The disease history. */
     private DiseaseHistory diseaseHistory;
+    
+    /** The reporting period. */
     private AdverseEventReportingPeriod reportingPeriod;
 
+    /** The reports. */
     private List<Report> reports;
+    
+    /** The Constant log. */
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
     
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
+    /**
+     * Instantiates a new expedited adverse event report.
+     */
     public ExpeditedAdverseEventReport() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(AdverseEvent.class);
@@ -78,12 +104,23 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         addReportChildLazyList(SAEReportPreExistingCondition.class);
     }
 
+    /**
+     * Adds the report child lazy list.
+     *
+     * @param <T> the generic type
+     * @param klass the klass
+     */
     private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
         lazyListHelper.add(klass, new ExpeditedAdverseEventReportChildFactory<T>(klass, this));
     }
 
     ////// LOGIC
 
+    /**
+     * Gets the notification message.
+     *
+     * @return the notification message
+     */
     @Transient
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
@@ -109,6 +146,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         }
     }
 
+    /**
+     * Checks if is notification message possible.
+     *
+     * @return true, if is notification message possible
+     */
     @Transient
     public boolean isNotificationMessagePossible() {
         if (getAdverseEventsInternal().size() < 1) return false;
@@ -116,17 +158,32 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return ae != null && ae.getGrade() != null && ae.getAdverseEventTerm().getTerm() != null;
     }
 
+    /**
+     * Gets the participant.
+     *
+     * @return the participant
+     */
     @Transient
     public Participant getParticipant() {
         return getAssignment() == null ? null : getAssignment().getParticipant();
     }
 
+    /**
+     * Gets the study.
+     *
+     * @return the study
+     */
     @Transient
     public Study getStudy() {
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
     }
     
+    /**
+     * Gets the study site.
+     *
+     * @return the study site
+     */
     @Transient
     public StudySite getStudySite() {
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
@@ -134,6 +191,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
     
+    /**
+     * Gets the summary.
+     *
+     * @return the summary
+     */
     @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
@@ -157,6 +219,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return summary;
     }
 
+    /**
+     * Summary line.
+     *
+     * @param participant the participant
+     * @return the string
+     */
     private String summaryLine(Participant participant) {
         if (participant == null) return null;
         StringBuilder sb = new StringBuilder();
@@ -165,6 +233,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return sb.toString();
     }
 
+    /**
+     * Summary line.
+     *
+     * @param study the study
+     * @return the string
+     */
     private String summaryLine(Study study) {
         if (study == null) return null;
         StringBuilder sb = new StringBuilder();
@@ -173,18 +247,31 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return sb.toString();
     }
 
+    /**
+     * Append primary identifier.
+     *
+     * @param ided the ided
+     * @param sb the sb
+     */
     private void appendPrimaryIdentifier(IdentifiableByAssignedIdentifers ided, StringBuilder sb) {
         if (ided.getPrimaryIdentifier() != null) {
             sb.append(" (").append(ided.getPrimaryIdentifier().getValue()).append(')');
         }
     }
 
+    /**
+     * Adds the adverse event.
+     *
+     * @param adverseEvent the adverse event
+     */
     public void addAdverseEvent(AdverseEvent adverseEvent) {
         getAdverseEventsInternal().add(adverseEvent);
         if (adverseEvent != null) adverseEvent.setReport(this);
     }
 
     /**
+     * Gets the adverse events.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -193,8 +280,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * List of adverse events that are not retired
-     * @return
+     * List of adverse events that are not retired.
+     *
+     * @return the active adverse events
      */
     @Transient
     public List<AdverseEvent> getActiveAdverseEvents(){
@@ -208,7 +296,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     /**
      * List of active adverse events, that are modified.
-     * @return
+     *
+     * @return the active modified adverse events
      */
     @Transient
     public List<AdverseEvent> getActiveModifiedAdverseEvents(){
@@ -224,7 +313,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /**
      * This method will return all the adverse events,which got modified.
      * It is obtained by comparing the saved signature and newly calculated signature.
-     * @return
+     *
+     * @return the modified adverse events
      */
     @Transient
     public List<AdverseEvent> getModifiedAdverseEvents(){
@@ -238,9 +328,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
+     * Gets the modified adverse events.
+     *
+     * @param ruleableFields the ruleable fields
+     * @return the modified adverse events
      * @author Ion C. Olaru
      * This method will return all the adverse events, which have at least one ruleable field modified
-     *
      */
     @Transient
     public List<AdverseEvent> getModifiedAdverseEvents(List<String> ruleableFields) {
@@ -254,12 +347,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
 
+    /**
+     * Adds the lab.
+     *
+     * @param lab the lab
+     */
     public void addLab(Lab lab) {
         getLabsInternal().add(lab);
         if (lab != null) lab.setReport(this);
     }
 
     /**
+     * Gets the labs.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -267,12 +367,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getLazyList(Lab.class);
     }
 
+    /**
+     * Adds the medical device.
+     *
+     * @param medicalDevice the medical device
+     */
     public void addMedicalDevice(MedicalDevice medicalDevice) {
         getMedicalDevicesInternal().add(medicalDevice);
         if (medicalDevice != null) medicalDevice.setReport(this);
     }
 
     /**
+     * Gets the medical devices.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -281,12 +388,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
 
+    /**
+     * Adds the radiation intervention.
+     *
+     * @param radiationIntervention the radiation intervention
+     */
     public void addRadiationIntervention(RadiationIntervention radiationIntervention) {
         getRadiationInterventionsInternal().add(radiationIntervention);
         if (radiationIntervention != null) radiationIntervention.setReport(this);
     }
 
     /**
+     * Gets the radiation interventions.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -294,12 +408,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getLazyList(RadiationIntervention.class);
     }
 
+    /**
+     * Adds the surgery intervention.
+     *
+     * @param surgeryIntervention the surgery intervention
+     */
     public void addSurgeryIntervention(SurgeryIntervention surgeryIntervention) {
         getSurgeryInterventionsInternal().add(surgeryIntervention);
         if (surgeryIntervention != null) surgeryIntervention.setReport(this);
     }
 
     /**
+     * Gets the surgery interventions.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -308,12 +429,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
 
+    /**
+     * Adds the concomitant medication.
+     *
+     * @param concomitantMedication the concomitant medication
+     */
     public void addConcomitantMedication(ConcomitantMedication concomitantMedication) {
         getConcomitantMedicationsInternal().add(concomitantMedication);
         if (concomitantMedication != null) concomitantMedication.setReport(this);
     }
 
     /**
+     * Gets the concomitant medications.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -321,12 +449,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getLazyList(ConcomitantMedication.class);
     }
 
+    /**
+     * Adds the sae report pre existing condition.
+     *
+     * @param sAEReportPreExistingCondition the s ae report pre existing condition
+     */
     public void addSaeReportPreExistingCondition(SAEReportPreExistingCondition sAEReportPreExistingCondition) {
         getSaeReportPreExistingConditionsInternal().add(sAEReportPreExistingCondition);
         if (sAEReportPreExistingCondition != null) sAEReportPreExistingCondition.setReport(this);
     }
 
     /**
+     * Gets the sae report pre existing conditions.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -335,12 +470,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getLazyList(SAEReportPreExistingCondition.class);
     }
 
+    /**
+     * Adds the sae report prior therapies.
+     *
+     * @param saeReportPriorTherapy the sae report prior therapy
+     */
     public void addSaeReportPriorTherapies(SAEReportPriorTherapy saeReportPriorTherapy) {
         getSaeReportPriorTherapiesInternal().add(saeReportPriorTherapy);
         if (saeReportPriorTherapy != null) saeReportPriorTherapy.setReport(this);
     }
 
     /**
+     * Gets the sae report prior therapies.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -350,12 +492,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
 
+    /**
+     * Adds the other cause.
+     *
+     * @param otherCause the other cause
+     */
     public void addOtherCause(OtherCause otherCause) {
         getOtherCausesInternal().add(otherCause);
         if (otherCause != null) otherCause.setReport(this);
     }
 
     /**
+     * Gets the other causes.
+     *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
@@ -367,17 +516,32 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     ////// BEAN PROPERTIES
 
+    /**
+     * Gets the assignment.
+     *
+     * @return the assignment
+     */
     @Transient
     public StudyParticipantAssignment getAssignment() {
         return reportingPeriod.getAssignment();
     }
 
+    /**
+     * Sets the assignment.
+     *
+     * @param assignment the new assignment
+     */
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.reportingPeriod.setAssignment(assignment);
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the adverse events internal.
+     *
+     * @return the adverse events internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = true)
     @IndexColumn(name = "list_index", nullable = false)
@@ -390,6 +554,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(AdverseEvent.class);
     }
 
+    /**
+     * Sets the adverse events internal.
+     *
+     * @param adverseEvents the new adverse events internal
+     */
     @SuppressWarnings("unchecked")
     protected void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
         lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
@@ -397,6 +566,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the labs internal.
+     *
+     * @return the labs internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -406,12 +580,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(Lab.class);
     }
 
+    /**
+     * Sets the labs internal.
+     *
+     * @param labsInternal the new labs internal
+     */
     protected void setLabsInternal(List<Lab> labsInternal) {
         lazyListHelper.setInternalList(Lab.class, labsInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the medical devices internal.
+     *
+     * @return the medical devices internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -421,12 +605,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(MedicalDevice.class);
     }
 
+    /**
+     * Sets the medical devices internal.
+     *
+     * @param medicalDevicesInternal the new medical devices internal
+     */
     protected void setMedicalDevicesInternal(List<MedicalDevice> medicalDevicesInternal) {
         lazyListHelper.setInternalList(MedicalDevice.class, medicalDevicesInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the radiation interventions internal.
+     *
+     * @return the radiation interventions internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -436,12 +630,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(RadiationIntervention.class);
     }
 
+    /**
+     * Sets the radiation interventions internal.
+     *
+     * @param radiationInterventionsInternal the new radiation interventions internal
+     */
     protected void setRadiationInterventionsInternal(List<RadiationIntervention> radiationInterventionsInternal) {
         lazyListHelper.setInternalList(RadiationIntervention.class, radiationInterventionsInternal);
     }
 
     //  This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the surgery interventions internal.
+     *
+     * @return the surgery interventions internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -451,12 +655,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(SurgeryIntervention.class);
     }
 
+    /**
+     * Sets the surgery interventions internal.
+     *
+     * @param surgeryInterventionsInternal the new surgery interventions internal
+     */
     protected void setSurgeryInterventionsInternal(List<SurgeryIntervention> surgeryInterventionsInternal) {
         lazyListHelper.setInternalList(SurgeryIntervention.class, surgeryInterventionsInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the concomitant medications internal.
+     *
+     * @return the concomitant medications internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -466,12 +680,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(ConcomitantMedication.class);
     }
 
+    /**
+     * Sets the concomitant medications internal.
+     *
+     * @param concomitantMedicationsInternal the new concomitant medications internal
+     */
     protected void setConcomitantMedicationsInternal(List<ConcomitantMedication> concomitantMedicationsInternal) {
         lazyListHelper.setInternalList(ConcomitantMedication.class, concomitantMedicationsInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the sae report pre existing conditions internal.
+     *
+     * @return the sae report pre existing conditions internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -481,12 +705,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(SAEReportPreExistingCondition.class);
     }
 
+    /**
+     * Sets the sae report pre existing conditions internal.
+     *
+     * @param saeReportPreExistingConditionInternal the new sae report pre existing conditions internal
+     */
     protected void setSaeReportPreExistingConditionsInternal(List<SAEReportPreExistingCondition> saeReportPreExistingConditionInternal) {
         lazyListHelper.setInternalList(SAEReportPreExistingCondition.class, saeReportPreExistingConditionInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the other causes internal.
+     *
+     * @return the other causes internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -496,12 +730,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(OtherCause.class);
     }
 
+    /**
+     * Sets the other causes internal.
+     *
+     * @param otherCausesInternal the new other causes internal
+     */
     protected void setOtherCausesInternal(List<OtherCause> otherCausesInternal) {
         lazyListHelper.setInternalList(OtherCause.class, otherCausesInternal);
     }
 
     //  This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    /**
+     * Gets the sae report prior therapies internal.
+     *
+     * @return the sae report prior therapies internal
+     */
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -511,12 +755,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(SAEReportPriorTherapy.class);
     }
 
+    /**
+     * Sets the sae report prior therapies internal.
+     *
+     * @param saeReportPriorTherapiesInternal the new sae report prior therapies internal
+     */
     public void setSaeReportPriorTherapiesInternal(
             List<SAEReportPriorTherapy> saeReportPriorTherapiesInternal) {
         lazyListHelper.setInternalList(SAEReportPriorTherapy.class, saeReportPriorTherapiesInternal);
     }
 
 
+    /**
+     * Gets the treatment information.
+     *
+     * @return the treatment information
+     */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public TreatmentInformation getTreatmentInformation() {
@@ -524,11 +778,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return treatmentInformation;
     }
 
+    /**
+     * Sets the treatment information.
+     *
+     * @param treatmentInformation the new treatment information
+     */
     public void setTreatmentInformation(TreatmentInformation treatmentInformation) {
         this.treatmentInformation = treatmentInformation;
         if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
 
+    /**
+     * Gets the additional information.
+     *
+     * @return the additional information
+     */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public AdditionalInformation getAdditionalInformation() {
@@ -536,11 +800,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return additionalInformation;
     }
 
+    /**
+     * Sets the additional information.
+     *
+     * @param additionalInformation the new additional information
+     */
     public void setAdditionalInformation(AdditionalInformation additionalInformation) {
         this.additionalInformation = additionalInformation;
         if (additionalInformation != null) additionalInformation.setReport(this);
     }
 
+    /**
+     * Gets the response description.
+     *
+     * @return the response description
+     */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public AdverseEventResponseDescription getResponseDescription() {
@@ -548,18 +822,33 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return responseDescription;
     }
 
+    /**
+     * Sets the response description.
+     *
+     * @param responseDescription the new response description
+     */
     public void setResponseDescription(AdverseEventResponseDescription responseDescription) {
         this.responseDescription = responseDescription;
         if (responseDescription != null) responseDescription.setReport(this);
     }
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
+    /**
+     * Gets the reporter.
+     *
+     * @return the reporter
+     */
     @OneToOne(mappedBy = "expeditedReport",  fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Reporter getReporter() {
         return reporter;
     }
 
+    /**
+     * Sets the reporter.
+     *
+     * @param reporter the new reporter
+     */
     public void setReporter(Reporter reporter) {
         this.reporter = reporter;
         if (reporter != null) reporter.setExpeditedReport(this);
@@ -568,17 +857,32 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
+    /**
+     * Gets the physician.
+     *
+     * @return the physician
+     */
     @OneToOne(mappedBy = "expeditedReport", fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Physician getPhysician() {
         return physician;
     }
 
+    /**
+     * Sets the physician.
+     *
+     * @param physician the new physician
+     */
     public void setPhysician(Physician physician) {
         this.physician = physician;
         if (physician != null) physician.setExpeditedReport(this);
     }
 
+    /**
+     * Gets the disease history.
+     *
+     * @return the disease history
+     */
     @OneToOne(mappedBy = "report", fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL})
     public DiseaseHistory getDiseaseHistory() {
@@ -586,11 +890,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return diseaseHistory;
     }
 
+    /**
+     * Sets the disease history.
+     *
+     * @param diseaseHistory the new disease history
+     */
     public void setDiseaseHistory(DiseaseHistory diseaseHistory) {
         this.diseaseHistory = diseaseHistory;
         if (diseaseHistory != null) diseaseHistory.setReport(this);
     }
 
+    /**
+     * Gets the participant history.
+     *
+     * @return the participant history
+     */
     @OneToOne(mappedBy = "report", fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public ParticipantHistory getParticipantHistory() {
@@ -598,11 +912,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return participantHistory;
     }
 
+    /**
+     * Sets the participant history.
+     *
+     * @param participantHistory the new participant history
+     */
     public void setParticipantHistory(ParticipantHistory participantHistory) {
         this.participantHistory = participantHistory;
         if (participantHistory != null) participantHistory.setReport(this);
     }
 
+    /**
+     * Gets the reports.
+     *
+     * @return the reports
+     */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
     @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT,
             CascadeType.LOCK, CascadeType.REMOVE})
@@ -614,8 +938,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * True,when at least one Report is active
-     * @return
+     * True,when at least one Report is active.
+     *
+     * @return true, if is active
      */
     @Transient
     public boolean isActive(){
@@ -628,7 +953,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /**
      * This method returns all the reports that are not in {@link ReportStatus}.WITHDRAWN or {@link ReportStatus}.REPLACED.
      *
-     * @return
+     * @return the active reports
      */
     @Transient
     public List<Report> getActiveReports() {
@@ -642,8 +967,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * Returns all the pending reports, that are in PENDING
-     * @return
+     * Returns all the pending reports, that are in PENDING.
+     *
+     * @return the pending reports
      */
     @Transient
     public List<Report> getPendingReports(){
@@ -655,9 +981,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * Tells whether an active report (ie. in PENDING, INPROCESS, FAILED) status, beloing to the same report definition is present. 
-     * @param reportType
-     * @return
+     * Tells whether an active report (ie. in PENDING, INPROCESS, FAILED) status, beloing to the same report definition is present.
+     *
+     * @param reportType the report type
+     * @return true, if is an active report present
      */
     @Transient
     public boolean isAnActiveReportPresent(ReportDefinition reportType){
@@ -668,8 +995,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * Lists the reports that are completed and is amendable. 
-     * @return
+     * Lists the reports that are completed and is amendable.
+     *
+     * @return the list
      */
     public List<Report> findCompletedAmendableReports(){
     	List<Report> completedReports = listReportsHavingStatus(ReportStatus.COMPLETED);
@@ -680,10 +1008,20 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return amendableReports;
     }
     
+    /**
+     * Sets the reports.
+     *
+     * @param reports the new reports
+     */
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
 
+    /**
+     * Adds the report.
+     *
+     * @param report the report
+     */
     public void addReport(Report report) {
         getReports().add(report);
         report.setAeReport(this);
@@ -691,14 +1029,29 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
    
 
+    /**
+     * Gets the created at.
+     *
+     * @return the created at
+     */
     public Timestamp getCreatedAt() {
         return createdAt;
     }
 
+    /**
+     * Sets the created at.
+     *
+     * @param createdAt the new created at
+     */
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
+    /**
+     * Gets the reporting period.
+     *
+     * @return the reporting period
+     */
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "reporting_period_id")
     @Cascade(value = {CascadeType.LOCK})
@@ -706,11 +1059,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return reportingPeriod;
     }
 
+    /**
+     * Sets the reporting period.
+     *
+     * @param reportingPeriod the new reporting period
+     */
     public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
         this.reportingPeriod = reportingPeriod;
     }
 
 
+    /**
+     * Gets the public identifier.
+     *
+     * @return the public identifier
+     */
     @Transient
     public String getPublicIdentifier() {
         String id = getAssignment().getStudySite().getOrganization().getNciInstituteCode() + "-" + getAssignment().getStudySite().getOrganization().getNciInstituteCode();
@@ -718,29 +1081,56 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return id;
     }
 
+    /**
+     * Sets the public identifier.
+     *
+     * @param strId the new public identifier
+     */
     @Transient
     public void setPublicIdentifier(String strId) {
     }
 
  
+    /**
+     * Find phone numbers.
+     *
+     * @param role the role
+     * @return the list
+     */
     @Transient
     List<String> findPhoneNumbers(String role) {
         assert false : "Not implemented";
         return null;
     }
 
+    /**
+     * Find fax numbers.
+     *
+     * @param role the role
+     * @return the list
+     */
     @Transient
     List<String> findFaxNumbers(String role) {
         assert false : "Not implemented";
         return null;
     }
 
+    /**
+     * Gets the number of aes.
+     *
+     * @return the number of aes
+     */
     @Transient
     public int getNumberOfAes() {
         int count = (this.getAdverseEvents() != null) ? this.getAdverseEvents().size() : 0;
         return count;
     }
 
+    /**
+     * Gets the primary report.
+     *
+     * @return the primary report
+     */
     @Transient
     public Report getPrimaryReport() {
         return getReports().get(0);
@@ -749,6 +1139,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /*
    you should call this method only once
     */
+    /**
+     * Synchronize medical history from assignment to report.
+     */
     public void synchronizeMedicalHistoryFromAssignmentToReport() {
         StudyParticipantAssignment assignment = getAssignment();
         if (assignment == null) {
@@ -764,7 +1157,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
     /**
-     * synchronize prior therapies from assignment to report
+     * synchronize prior therapies from assignment to report.
      */
     private void syncrhonizePriorTherapies() {
 
@@ -778,6 +1171,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
 
+    /**
+     * Syncrhonize pre existing conditions.
+     */
     private void syncrhonizePreExistingConditions() {
 
         if (getSaeReportPreExistingConditions().isEmpty()) {
@@ -791,6 +1187,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
 
+    /**
+     * Syncrhonize concomitant medications.
+     */
     private void syncrhonizeConcomitantMedications() {
 
         if (getConcomitantMedications().isEmpty()) {
@@ -804,6 +1203,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     }
 
+    /**
+     * Syncrhonize disease histories.
+     */
     private void syncrhonizeDiseaseHistories() {
 
         if ((getDiseaseHistory() == null) || (getDiseaseHistory() != null && getDiseaseHistory().getId() == null)) {
@@ -819,7 +1221,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /**
      * This method returns true if any of the reports associated to this data-collection was submitted
      * successfully.
-     * @return
+     *
+     * @return the checks for submitted amendable report
      */
     @Transient
     public Boolean getHasSubmittedAmendableReport(){
@@ -831,6 +1234,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     /**
      * This method returns true if the data-collection has atleast one amendable report. It returns false otherwise.
+     *
+     * @return the checks for amendable report
      */
     @Transient
     public Boolean getHasAmendableReport(){
@@ -843,8 +1248,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * Returns true if all of the active {@link Report} associated to this data collection, says attribution is requried.  
-     * @return
+     * Returns true if all of the active {@link Report} associated to this data collection, says attribution is requried.
+     *
+     * @return true, if is attribution required
      */
     @Transient
     public boolean isAttributionRequired(){
@@ -870,8 +1276,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     
     /**
-     * This method will return the earliest graded date, of  adverse events
-     * @return
+     * This method will return the earliest graded date, of  adverse events.
+     *
+     * @return the earliest adverse event graded date
      */
     @Transient
     public Date getEarliestAdverseEventGradedDate(){
@@ -926,6 +1333,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     }
     
+    /**
+     * Checks if is physician sign off required.
+     *
+     * @return true, if is physician sign off required
+     */
     @Transient
     public boolean isPhysicianSignOffRequired(){
     	boolean physicianSignOffRequired = false;
@@ -936,6 +1348,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return physicianSignOffRequired;
     }
     
+    /**
+     * Gets the physician sign off.
+     *
+     * @return the physician sign off
+     */
     @Transient
     public Boolean getPhysicianSignOff(){
     	Boolean physicianSignOff = true;
@@ -948,6 +1365,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return physicianSignOff;
     }
     
+    /**
+     * Sets the physician sign off.
+     *
+     * @param physicianSignOff the new physician sign off
+     */
     @Transient
     public void setPhysicianSignOff(Boolean physicianSignOff){
     	for(Report report: getReports())
@@ -972,8 +1394,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /**
      * Lists out the report that completed, belonging to the same group and organization
      * of the {@link ReportDefinition} param rd.
-     * @param rd
-     * @return
+     *
+     * @param rd the rd
+     * @return the list
      */
     public List<Report> findReportsToAmmend(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.COMPLETED);
@@ -990,6 +1413,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return reportsToAmmend;
     }
     
+    /**
+     * Find reports to witdraw.
+     *
+     * @param rd the rd
+     * @return the list
+     */
     public List<Report> findReportsToWitdraw(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
     	List<Report> reportsToWitdraw = new ArrayList<Report>();
@@ -1006,6 +1435,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return reportsToWitdraw;
     }
     
+    /**
+     * Find reports to edit.
+     *
+     * @param rd the rd
+     * @return the list
+     */
     public List<Report> findReportsToEdit(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
     	List<Report> reportsToEdit = new ArrayList<Report>();
@@ -1020,6 +1455,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     /**
      * This method will find the recently amended report, that belongs to the same group and organization.
+     *
+     * @param rd the rd
+     * @return the report
      */
     public Report findLastAmendedReport(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.AMENDED);
@@ -1040,8 +1478,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     /**
      * The report that is instantiated last, and is belonging to same organization and type.
-     * @param rd
-     * @return
+     *
+     * @param rd the rd
+     * @return the report
      */
     public Report findLastSubmittedReport(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.AMENDED, ReportStatus.COMPLETED);
@@ -1060,6 +1499,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return theReport;
     }
     
+    /**
+     * List reports having status.
+     *
+     * @param statuses the statuses
+     * @return the list
+     */
     public List<Report> listReportsHavingStatus(ReportStatus... statuses){
     	List<Report> reports = new ArrayList<Report>();
     	for(Report report : getReports()){
@@ -1069,10 +1514,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * Will return true, if there is an organization of same group and type is already instantiated 
-     * on this expedited report. 
-     * @param rd
-     * @return
+     * Will return true, if there is an organization of same group and type is already instantiated
+     * on this expedited report.
+     *
+     * @param rd the rd
+     * @return true, if successful
      */
     public boolean hasExistingReportsOfSameOrganizationAndType(ReportDefinition rd){
     	for(Report report : getReports()){
@@ -1083,9 +1529,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     
     /**
-     * This method will return the AdverseEvent that is associated with this data collection, identified by ID
-     * @param id
-     * @return
+     * This method will return the AdverseEvent that is associated with this data collection, identified by ID.
+     *
+     * @param id the id
+     * @return the adverse event
      */
     public AdverseEvent findAdverseEventById(Integer id){
     	for(AdverseEvent ae : getAdverseEvents()){
@@ -1095,9 +1542,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * This method will return the Report associated to this data collection, identified by ID
-     * @param id
-     * @return
+     * This method will return the Report associated to this data collection, identified by ID.
+     *
+     * @param id the id
+     * @return the report
      */
     public Report findReportById(Integer id){
     	for(Report report : getReports()){
@@ -1107,7 +1555,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
-     * This method returns is used to determine if there are any active reports which are in a workflow
+     * This method returns is used to determine if there are any active reports which are in a workflow.
+     *
      * @return boolean
      */
     public boolean hasWorkflowOnActiveReports(){

@@ -30,26 +30,44 @@ import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.springframework.transaction.annotation.Transactional;
+ 
+
 /**
- * 
- * @author Biju Joseph
+ * The Class AdverseEventRoutingAndReviewRepositoryImpl.
  *
+ * @author Biju Joseph
  */
 @Transactional
 public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventRoutingAndReviewRepository {
 	
+	/** The routing and review factory. */
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
+	
+	/** The adverse event reporting period dao. */
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	
+	/** The expedited adverse event report dao. */
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	
+	/** The report validation service. */
 	private ReportValidationService reportValidationService;
+	
+	/** The report dao. */
 	private ReportDao reportDao;
 
+	/** The workflow service. */
 	private WorkflowService workflowService;
 	
+	/** The Constant SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR. */
 	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office Report Reviewer";
+    
+    /** The Constant SUBMIT_TO_PHYSICIAN. */
     private static final String SUBMIT_TO_PHYSICIAN = "Send to Physician for Review";
 	
 	
+	/**
+	 * Instantiates a new adverse event routing and review repository impl.
+	 */
 	public AdverseEventRoutingAndReviewRepositoryImpl() {
 		routingAndReviewFactory = new AERoutingAndReviewDTOFactory();
 		routingAndReviewFactory.setAdverseEventRoutingAndReviewRepository(this);
@@ -120,21 +138,33 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#fetchReviewCommentsForReport(java.lang.Integer)
+	 */
 	public List<? extends ReviewComment> fetchReviewCommentsForReport(Integer reportId) {
 		return reportDao.getById(reportId).getReviewComments();
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#fetchReviewCommentsForReportingPeriod(java.lang.Integer)
+	 */
 	public List<? extends ReviewComment> fetchReviewCommentsForReportingPeriod(Integer rpId) {
 		return adverseEventReportingPeriodDao.getById(rpId).getReviewComments();
 	}
 	
 	//TODO These methods needs to be uddated to add/edit comments to aeReport instead of a report.
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#addReportReviewComment(java.lang.Integer, java.lang.String, java.lang.String)
+	 */
 	public void addReportReviewComment(Integer reportId, String comment, String userId){
 		Report report = reportDao.getById(reportId);
 		this.addReportReviewComment(report, comment, userId);
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#addReportReviewComment(gov.nih.nci.cabig.caaers.domain.report.Report, java.lang.String, java.lang.String)
+	 */
 	public void addReportReviewComment(Report report, String comment, String userId) {
 		
 		ReportReviewComment reviewComment = new ReportReviewComment();
@@ -148,11 +178,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reportDao.save(report);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#editReportReviewComment(java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	public void editReportReviewComment(Integer reportId, String comment, String userId, Integer commentId){
 		Report report = reportDao.getById(reportId);
 		this.editReportReviewComment(report, comment, userId, commentId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#editReportReviewComment(gov.nih.nci.cabig.caaers.domain.report.Report, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	public void editReportReviewComment(Report report, String comment, String userId, Integer commentId){
 		for(ReportReviewComment reviewComment: report.getReviewCommentsInternal()){
 			if(reviewComment.getId().equals(commentId)){
@@ -165,11 +201,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reportDao.save(report);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#deleteReportReviewComment(java.lang.Integer, java.lang.Integer)
+	 */
 	public void deleteReportReviewComment(Integer reportId, Integer commentId){
 		Report report = reportDao.getById(reportId);
 		deleteReportReviewComment(report, commentId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#deleteReportReviewComment(gov.nih.nci.cabig.caaers.domain.report.Report, java.lang.Integer)
+	 */
 	public void deleteReportReviewComment(Report report, Integer commentId){
 		for(ReportReviewComment reviewComment: report.getReviewCommentsInternal()){
 			if(reviewComment.getId().equals(commentId)){
@@ -180,11 +222,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reportDao.save(report);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#deleteReportingPeriodReviewComment(java.lang.Integer, java.lang.Integer)
+	 */
 	public void deleteReportingPeriodReviewComment(Integer reportingPeriodId, Integer commentId){
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
 		deleteReportingPeriodReviewComment(reportingPeriod, commentId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#deleteReportingPeriodReviewComment(gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod, java.lang.Integer)
+	 */
 	public void deleteReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, Integer commentId){
 		for(ReportingPeriodReviewComment reviewComment: reportingPeriod.getReviewCommentsInternal()){
 			if(reviewComment.getId().equals(commentId)){
@@ -195,11 +243,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#addReportingPeriodReviewComment(java.lang.Integer, java.lang.String, java.lang.String)
+	 */
 	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId){
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
 		this.addReportingPeriodReviewComment(reportingPeriod, comment, userId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#addReportingPeriodReviewComment(gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod, java.lang.String, java.lang.String)
+	 */
 	public void addReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId){
 		ReportingPeriodReviewComment reviewComment = new ReportingPeriodReviewComment();
 		reviewComment.setUserComment(comment);
@@ -212,11 +266,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#editReportingPeriodReviewComment(java.lang.Integer, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	public void editReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId, Integer commentId){
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
 		this.editReportingPeriodReviewComment(reportingPeriod, comment, userId, commentId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#editReportingPeriodReviewComment(gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	public void editReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId, Integer commentId){
 		for(ReportingPeriodReviewComment reviewComment: reportingPeriod.getReviewCommentsInternal()){
 			if(reviewComment.getId().equals(commentId)){
@@ -228,11 +288,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#advanceReportingPeriodWorkflow(java.lang.Integer, java.lang.String, java.lang.Integer, java.lang.String)
+	 */
 	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, Integer id, String userId) {
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
 		return this.advanceReportingPeriodWorkflow(workflowId, toTransition, reportingPeriod, userId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#advanceReportingPeriodWorkflow(java.lang.Integer, java.lang.String, gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod, java.lang.String)
+	 */
 	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, AdverseEventReportingPeriod reportingPeriod, String userId){
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		reportingPeriod.setReviewStatus(nextStatus);
@@ -250,11 +316,12 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	}
 	
 	/**
-	 * This method creates a comment to show the transition history. 
-	 * @param toTransition
-	 * @param userId
-	 * @param domainObjectType
-	 * @return
+	 * This method creates a comment to show the transition history.
+	 *
+	 * @param toTransition the to transition
+	 * @param userId the user id
+	 * @param domainObjectType the domain object type
+	 * @return the review comment
 	 */
 	public ReviewComment createAdvanceWorkflowComment(String toTransition, String userId, String domainObjectType){
 		ReviewComment reviewComment;
@@ -269,11 +336,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return reviewComment;
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#advanceReportWorkflow(java.lang.Integer, java.lang.String, java.lang.Integer, java.lang.String)
+	 */
 	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Integer id, String userId) {
 		Report report = reportDao.getById(id);
 		return this.advanceReportWorkflow(workflowId, toTransition, report, userId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#advanceReportWorkflow(java.lang.Integer, java.lang.String, gov.nih.nci.cabig.caaers.domain.report.Report, java.lang.String)
+	 */
 	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Report report, String userId) {
 
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
@@ -288,16 +361,20 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return nextTransitionNamesForReportWorkflow(report, userId);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#nextTransitionNames(java.lang.Integer, java.lang.String)
+	 */
 	public List<String> nextTransitionNames(Integer workflowId, String loginId) {
 		return workflowService.nextTransitionNames(workflowId, loginId);
 	}
 	
 	/**
 	 * This method is specifically called for Report workflow.
-     * Only submittable reports should be allowed to send to Central Office SAE Coordinator review.
+	 * Only submittable reports should be allowed to send to Central Office SAE Coordinator review.
+	 *
 	 * @param report - An active @{link Report}
 	 * @param loginId - The login name of the user
-	 * @return
+	 * @return the list
 	 */
 	public List<String> nextTransitionNamesForReportWorkflow(Report report, String loginId){
 		List<String> nextTransitionNames = workflowService.nextTransitionNames(report.getWorkflowId(), loginId);
@@ -326,6 +403,9 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 	
 	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#findAdverseEventReportingPeriods(gov.nih.nci.cabig.caaers.domain.Participant, gov.nih.nci.cabig.caaers.domain.Study, gov.nih.nci.cabig.caaers.domain.Organization, gov.nih.nci.cabig.caaers.domain.ReviewStatus, gov.nih.nci.cabig.caaers.domain.ReportStatus, java.lang.String, java.lang.Boolean)
+	 */
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, 
 			Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId, Boolean courseWorkflowEnabled){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
@@ -384,8 +464,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	
 	/**
 	 * This method will return true if the dataCollection (aeReport) has workflow enabled on any active reports. Reports with status
-	 * other than (Withdrawn, Replaced or Amended) are considered to be active reports. In caAERS context even reports with status 
+	 * other than (Withdrawn, Replaced or Amended) are considered to be active reports. In caAERS context even reports with status
 	 * 'Completed' is considered to be inactive reports.
+	 *
+	 * @param aeReport the ae report
+	 * @return true, if successful
 	 */
 	public boolean aeReportHasWorkflowOnActiveReports(ExpeditedAdverseEventReport aeReport){
 		boolean hasWorkflowOnActiveReports = false;
@@ -397,10 +480,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	
 	/**
 	 * This method returns the list of active reports. Reports with status
-	 * other than (Withdrawn, Replaced or Amended) are considered to be active reports. In caAERS context even reports with status 
+	 * other than (Withdrawn, Replaced or Amended) are considered to be active reports. In caAERS context even reports with status
 	 * 'Completed' is considered to be inactive reports.
-	 * @param aeReport
-	 * @return
+	 *
+	 * @param aeReport the ae report
+	 * @return the active reports for ae report
 	 */
 	private List<Report> getActiveReportsForAeReport(ExpeditedAdverseEventReport aeReport){
 		List<Report> reports = aeReport.getReports();
@@ -433,6 +517,13 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return false; //nor reporting period or report(s) has the status mentioned
 	}
 	
+	/**
+	 * Checks if is reporting period having workflow or reports with workflow.
+	 *
+	 * @param rp the rp
+	 * @param courseWorkflowEnabled the course workflow enabled
+	 * @return true, if is reporting period having workflow or reports with workflow
+	 */
 	protected boolean isReportingPeriodHavingWorkflowOrReportsWithWorkflow(AdverseEventReportingPeriod rp, Boolean courseWorkflowEnabled){
 		if(courseWorkflowEnabled && rp.getWorkflowId() != null)
 			return true;
@@ -445,7 +536,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	}
 	
 	/**
-	 * Will return true, if the reportingPeriod has any report with the specified reportStatus
+	 * Will return true, if the reportingPeriod has any report with the specified reportStatus.
+	 *
 	 * @param rp - An {@link AdverseEventReportingPeriod}
 	 * @param rs - A {@link ReportStatus}
 	 * @return - true if the reporting period has any report with the specified reportStatus
@@ -464,10 +556,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	}
 	
 	/**
-	 * Will return true, if the entity has the given workflow status
-	 * @param rs
-	 * @param wfAwareEntity
-	 * @return
+	 * Will return true, if the entity has the given workflow status.
+	 *
+	 * @param rs the rs
+	 * @param wfAwareEntity the wf aware entity
+	 * @return true, if is entity having specified review status
 	 */
 	protected boolean isEntityHavingSpecifiedReviewStatus( ReviewStatus rs,WorkflowAware wfAwareEntity){
 		if(rs == null) return true; //return true if review status is null
@@ -476,6 +569,12 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return entityRS.equals(rs);
 	}
 
+    /**
+     * Gets the task notification by user login.
+     *
+     * @param userLogin the user login
+     * @return the task notification by user login
+     */
     public List<TaskNotificationDTO> getTaskNotificationByUserLogin(String userLogin) {
         List<TaskInstance> l = workflowService.fetchTaskInstances(userLogin);
         List<TaskNotificationDTO> dtos = new ArrayList<TaskNotificationDTO>();
@@ -524,46 +623,104 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
     // ToDo: get task, get process, get variables, get StudyID, SubjectID, hibernate get objects send to dashboard controller
     // 
 
-	public void setRoutingAndReviewFactory(
+	/**
+     * Sets the routing and review factory.
+     *
+     * @param routingAndReviewFactory the new routing and review factory
+     */
+    public void setRoutingAndReviewFactory(
 			AERoutingAndReviewDTOFactory routingAndReviewFactory) {
 		this.routingAndReviewFactory = routingAndReviewFactory;
 	}
 	
+	/**
+	 * Gets the routing and review factory.
+	 *
+	 * @return the routing and review factory
+	 */
 	public AERoutingAndReviewDTOFactory getRoutingAndReviewFactory() {
 		return routingAndReviewFactory;
 	}
 	
+	/**
+	 * Sets the adverse event reporting period dao.
+	 *
+	 * @param adverseEventReportingPeriodDao the new adverse event reporting period dao
+	 */
 	public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
+	
+	/**
+	 * Gets the adverse event reporting period dao.
+	 *
+	 * @return the adverse event reporting period dao
+	 */
 	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
 		return adverseEventReportingPeriodDao;
 	}
 	
+	/**
+	 * Gets the expedited adverse event report dao.
+	 *
+	 * @return the expedited adverse event report dao
+	 */
 	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
 		return expeditedAdverseEventReportDao;
 	}
+	
+	/**
+	 * Sets the expedited adverse event report dao.
+	 *
+	 * @param expeditedAdverseEventReportDao the new expedited adverse event report dao
+	 */
 	public void setExpeditedAdverseEventReportDao(
 			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
 		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
 	}
 	
+	/**
+	 * Gets the workflow service.
+	 *
+	 * @return the workflow service
+	 */
 	public WorkflowService getWorkflowService() {
 		return workflowService;
 	}
+	
+	/**
+	 * Sets the workflow service.
+	 *
+	 * @param workflowService the new workflow service
+	 */
 	public void setWorkflowService(WorkflowService workflowService) {
 		this.workflowService = workflowService;
 	}
 
+	/**
+	 * Sets the report validation service.
+	 *
+	 * @param reportValidationService the new report validation service
+	 */
 	public void setReportValidationService(ReportValidationService reportValidationService){
 		this.reportValidationService = reportValidationService;
 	}
 	
+	/**
+	 * Sets the report dao.
+	 *
+	 * @param reportDao the new report dao
+	 */
 	public void setReportDao(ReportDao reportDao){
 		this.reportDao = reportDao;
 	}
 	
+	/**
+	 * Gets the report dao.
+	 *
+	 * @return the report dao
+	 */
 	public ReportDao getReportDao(){
 		return reportDao;
 	}

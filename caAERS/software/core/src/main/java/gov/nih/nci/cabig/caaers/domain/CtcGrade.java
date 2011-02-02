@@ -9,6 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
+ 
 /**
  * This class represents the CtcGrade domain object associated with the Adverse event report.
  * 
@@ -17,17 +18,28 @@ import org.hibernate.annotations.Type;
 @Entity
 public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrade {
 
+    /** The grade. */
     private Grade grade;
+    
+    /** The term. */
     private CtcTerm term;
+    
+    /** The text. */
     private String text;
 
     // //// LOGIC
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.CodedGrade#getCode()
+     */
     @Transient
     public Integer getCode() {
         return getGrade().getCode();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.CodedGrade#getDisplayName()
+     */
     @Transient
     public String getDisplayName() {
         return getText();
@@ -35,34 +47,67 @@ public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrad
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the grade.
+     *
+     * @return the grade
+     */
     @Type(type = "grade")
     @Column(name = "grade_code")
     public Grade getGrade() {
         return grade;
     }
 
+    /**
+     * Sets the grade.
+     *
+     * @param grade the new grade
+     */
     public void setGrade(Grade grade) {
         this.grade = grade;
     }
 
+    /**
+     * Gets the term.
+     *
+     * @return the term
+     */
     @ManyToOne
     public CtcTerm getTerm() {
         return term;
     }
 
+    /**
+     * Sets the term.
+     *
+     * @param term the new term
+     */
     public void setTerm(CtcTerm term) {
         this.term = term;
     }
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Column(name = "grade_text")
     public String getText() {
         return text;
     }
 
+    /**
+     * Sets the text.
+     *
+     * @param text the new text
+     */
     public void setText(String text) {
         this.text = text;
     }
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.CodedGrade#getName()
+     */
     @Transient
     public String getName(){
     	return grade.getName();

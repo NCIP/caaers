@@ -17,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the Lab domain object associated with the Adverse event report.
  *
@@ -26,45 +27,80 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "ae_labs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_labs_id")})
 public class Lab extends AbstractExpeditedReportCollectionElementChild {
+    
+    /** The lab term. */
     private LabTerm labTerm;
 
     // private String name;
+    /** The other. */
     private String other;
 
+    /** The units. */
     private String units; // TODO: source this from caDSR
 
+    /** The baseline. */
     private LabValue baseline;
 
+    /** The nadir. */
     private LabValue nadir;
 
+    /** The recovery. */
     private LabValue recovery;
 
+    /** The site. */
     private String site;
 
+    /** The lab date. */
     private Date labDate;
 
+    /** The infectious agent. */
     private String infectiousAgent;
 
     // //// BEAN PROPERTIES
 
+    /**
+     * Gets the lab term.
+     *
+     * @return the lab term
+     */
     @ManyToOne
     @JoinColumn(name = "lab_term_id")
     public LabTerm getLabTerm() {
         return labTerm;
     }
 
+    /**
+     * Sets the lab term.
+     *
+     * @param labTerm the new lab term
+     */
     public void setLabTerm(LabTerm labTerm) {
         this.labTerm = labTerm;
     }
 
+    /**
+     * Gets the units.
+     *
+     * @return the units
+     */
     public String getUnits() {
         return units;
     }
 
+    /**
+     * Sets the units.
+     *
+     * @param units the new units
+     */
     public void setUnits(String units) {
         this.units = units;
     }
 
+    /**
+     * Gets the baseline.
+     *
+     * @return the baseline
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "baseline_value")),
@@ -74,10 +110,20 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
         return baseline;
     }
 
+    /**
+     * Sets the baseline.
+     *
+     * @param baseline the new baseline
+     */
     public void setBaseline(LabValue baseline) {
         this.baseline = baseline;
     }
 
+    /**
+     * Gets the nadir.
+     *
+     * @return the nadir
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "nadir_value")),
@@ -87,10 +133,20 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
         return nadir;
     }
 
+    /**
+     * Sets the nadir.
+     *
+     * @param nadir the new nadir
+     */
     public void setNadir(LabValue nadir) {
         this.nadir = nadir;
     }
 
+    /**
+     * Gets the recovery.
+     *
+     * @return the recovery
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "recovery_value")),
@@ -100,53 +156,109 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
         return recovery;
     }
 
+    /**
+     * Sets the recovery.
+     *
+     * @param recovery the new recovery
+     */
     public void setRecovery(LabValue recovery) {
         this.recovery = recovery;
     }
 
+    /**
+     * Gets the other.
+     *
+     * @return the other
+     */
     public String getOther() {
         return other;
     }
 
+    /**
+     * Sets the other.
+     *
+     * @param other the new other
+     */
     public void setOther(String other) {
         this.other = other;
     }
 
+    /**
+     * Gets the infectious agent.
+     *
+     * @return the infectious agent
+     */
     public String getInfectiousAgent() {
         return infectiousAgent;
     }
 
+    /**
+     * Sets the infectious agent.
+     *
+     * @param infectiousAgent the new infectious agent
+     */
     public void setInfectiousAgent(String infectiousAgent) {
         this.infectiousAgent = infectiousAgent;
     }
 
+    /**
+     * Gets the lab date.
+     *
+     * @return the lab date
+     */
     public Date getLabDate() {
         return labDate;
     }
 
+    /**
+     * Sets the lab date.
+     *
+     * @param labDate the new lab date
+     */
     public void setLabDate(Date labDate) {
         this.labDate = labDate;
     }
 
+    /**
+     * Gets the site.
+     *
+     * @return the site
+     */
     public String getSite() {
         return site;
     }
 
+    /**
+     * Sets the site.
+     *
+     * @param site the new site
+     */
     public void setSite(String site) {
         this.site = site;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         if (getLabTerm() != null) return getLabTerm().getTerm();
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         return ("" + getName() + other).hashCode();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
@@ -168,6 +280,11 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     }
 
 
+    /**
+     * Copy.
+     *
+     * @return the lab
+     */
     public Lab copy() {
         Lab lab = new Lab();
         BeanUtils.copyProperties(this, lab, new String[]{"id", "gridId",

@@ -7,21 +7,40 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+ 
+/**
+ * The Class InvestigatorHeldIND.
+ */
 @Entity
 @DiscriminatorValue("INV")
 public class InvestigatorHeldIND extends INDHolder {
+    
+    /** The investigator. */
     private Investigator investigator;
 
+    /**
+     * Gets the investigator.
+     *
+     * @return the investigator
+     */
     @ManyToOne(optional = false,fetch=FetchType.LAZY)
     @JoinColumn(name = "inv_id", nullable = false)
     public Investigator getInvestigator() {
         return investigator;
     }
 
+    /**
+     * Sets the investigator.
+     *
+     * @param investigator the new investigator
+     */
     public void setInvestigator(Investigator investigator) {
         this.investigator = investigator;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.INDHolder#getName()
+     */
     @Override
     @Transient
     public String getName() {

@@ -15,6 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the MetastaticDiseaseSite domain object associated with the Adverse event
  * report.
@@ -28,18 +29,36 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_metastatic_disease_site_id")})
 // TODO: this sort of class might be better as a component rather than another domain object
 public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
+    
+    /** The other site. */
     private String otherSite;
 
+    /** The coded site. */
     private AnatomicSite codedSite;
 
+    /**
+     * Gets the other site.
+     *
+     * @return the other site
+     */
     public String getOtherSite() {
         return otherSite;
     }
 
+    /**
+     * Sets the other site.
+     *
+     * @param otherSite the new other site
+     */
     public void setOtherSite(String otherSite) {
         this.otherSite = otherSite;
     }
 
+    /**
+     * Gets the coded site.
+     *
+     * @return the coded site
+     */
     @OneToOne
     @JoinColumn(name = "coded_site_id")
     //@Cascade(value = {CascadeType.ALL})
@@ -47,15 +66,30 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
         return codedSite;
     }
 
+    /**
+     * Sets the coded site.
+     *
+     * @param codedSite the new coded site
+     */
     public void setCodedSite(AnatomicSite codedSite) {
         this.codedSite = codedSite;
     }
 
+    /**
+     * Equals.
+     *
+     * @param codedSite the coded site
+     * @param otherSite the other site
+     * @return true, if successful
+     */
     public boolean equals( AnatomicSite codedSite,String otherSite){
     	return StringUtils.equals(this.otherSite, otherSite) && ObjectUtils.equals(codedSite, this.codedSite);
     }
     
     ///OBJECT METHODS
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -78,6 +112,9 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -90,6 +127,12 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
     }
 
 
+    /**
+     * Creates the report metastatic disease site.
+     *
+     * @param studyParticipantMetastaticDiseaseSite the study participant metastatic disease site
+     * @return the metastatic disease site
+     */
     public static MetastaticDiseaseSite createReportMetastaticDiseaseSite(StudyParticipantMetastaticDiseaseSite studyParticipantMetastaticDiseaseSite) {
         if (studyParticipantMetastaticDiseaseSite != null) {
             MetastaticDiseaseSite metastaticDiseaseSite = copyBasicProperties(studyParticipantMetastaticDiseaseSite);
@@ -100,12 +143,23 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
 
     }
 
+    /**
+     * Copy basic properties.
+     *
+     * @param object the object
+     * @return the metastatic disease site
+     */
     private static MetastaticDiseaseSite copyBasicProperties(Object object) {
         MetastaticDiseaseSite metastaticDiseaseSite = new MetastaticDiseaseSite();
         BeanUtils.copyProperties(object, metastaticDiseaseSite, new String[]{"id", "gridId", "version"});
         return metastaticDiseaseSite;
     }
 
+    /**
+     * Copy.
+     *
+     * @return the metastatic disease site
+     */
     public MetastaticDiseaseSite copy() {
         return copyBasicProperties(this);
     }

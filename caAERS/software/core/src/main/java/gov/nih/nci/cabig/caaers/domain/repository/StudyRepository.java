@@ -55,37 +55,65 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+ 
 /**
+ * The Class StudyRepository.
+ *
  * @author Biju Joseph
  * @author Monish Dombla
  */
 @Transactional(readOnly = true)
 public class StudyRepository {
 	
+	/** The log. */
 	private static Log log = LogFactory.getLog(StudyRepository.class);
 	
+    /** The study dao. */
     private StudyDao studyDao;
+    
+    /** The study site dao. */
     private StudySiteDao studySiteDao;
+    
+    /** The research staff dao. */
     private ResearchStaffDao researchStaffDao;
+    
+    /** The organization dao. */
     private OrganizationDao organizationDao;
+    
+    /** The organization repository. */
     private OrganizationRepository organizationRepository;
+    
+    /** The investigator dao. */
     private InvestigatorDao investigatorDao;
+    
+    /** The workflow config dao. */
     private WorkflowConfigDao workflowConfigDao;
+    
+    /** The investigational new drug dao. */
     private InvestigationalNewDrugDao investigationalNewDrugDao;
+    
+    /** The site research staff dao. */
     private SiteResearchStaffDao siteResearchStaffDao;
+    
+    /** The caaers security facade. */
     private CaaersSecurityFacade caaersSecurityFacade;
+    
+    /** The event factory. */
     private EventFactory eventFactory;
     
     //nci_institute_code for National Cancer Institute. 
+    /** The Constant INSTITUTE_CODE. */
     private static final String INSTITUTE_CODE = "NCI";
 
 
     /**
-     * Search the study
-     * @param query
-     * @param type
-     * @param text
-     * @return
+     * Search the study.
+     *
+     * @param query the query
+     * @param type the type
+     * @param text the text
+     * @param searchInCOPPA the search in coppa
+     * @return the list
      */
 /*
     @Transactional(readOnly = false)
@@ -115,10 +143,11 @@ public class StudyRepository {
 
     /**
      * Will issue a search in the local database only.
-     * @param query
-     * @param type
-     * @param text
-     * @return
+     *
+     * @param query the query
+     * @param type the type
+     * @param text the text
+     * @return the list
      */
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text){
         return this.search(query, type, text, false);
@@ -126,11 +155,12 @@ public class StudyRepository {
 
     /**
      * Will issue a search against the db and COPPA db.
-     * @param query
-     * @param type
-     * @param text
+     *
+     * @param query the query
+     * @param type the type
+     * @param text the text
      * @param searchInCOPPA - true, will invoke search against COPPA
-     * @return
+     * @return the list
      */
     @Transactional(readOnly = false)
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query, String type, String text, boolean searchInCOPPA){
@@ -145,6 +175,12 @@ public class StudyRepository {
         return objectArray;
     }
     
+    /**
+     * Search and save remote studies.
+     *
+     * @param type the type
+     * @param text the text
+     */
     @Transactional(readOnly = false)
     private void searchAndSaveRemoteStudies(String type, String text) {
         try {
@@ -192,6 +228,15 @@ public class StudyRepository {
         eventFactory.publishEntityModifiedEvent(new LocalStudy(), false);
     }
 
+    /**
+     * Search.
+     *
+     * @param query the query
+     * @param type the type
+     * @param text the text
+     * @param searchInCOPPA the search in coppa
+     * @return the list
+     */
     @Transactional(readOnly = false)
     public List<StudySite> search(StudySitesQuery query,String type,String text, boolean searchInCOPPA){
         if (searchInCOPPA) searchAndSaveRemoteStudies(type, text);
@@ -202,7 +247,8 @@ public class StudyRepository {
 
     /**
      * This method saves all the RemoteStudies provided in the list.
-     * @param remoteStudies
+     *
+     * @param remoteStudies the remote studies
      */
     @Transactional(readOnly = false)
 	public void saveRemoteStudies(List<Study> remoteStudies) {
@@ -231,8 +277,9 @@ public class StudyRepository {
     
     /**
      * This methods validates if study has Co-ordinating center & funding sponsor.
-     * @param remoteStudy
-     * @return
+     *
+     * @param remoteStudy the remote study
+     * @return true, if successful
      */
     private boolean validateRemoteStudy(RemoteStudy remoteStudy){
     	if(remoteStudy.getStudyCoordinatingCenters() != null){
@@ -255,7 +302,8 @@ public class StudyRepository {
     
     /**
      * This method checks if the Investigator already in caAERS. If exists it uses it else creates new investigator in caAERS
-     * @param remoteStudy
+     *
+     * @param remoteStudy the remote study
      */
     @Transactional(readOnly = false)
     private void verifyAndSaveInvestigators(Study remoteStudy){
@@ -282,7 +330,8 @@ public class StudyRepository {
 
     /**
      * This method checks if the Organization in StudyOrganization is already in caAERS. If exists it uses it else creates new organization in caAERS
-     * @param remoteStudy
+     *
+     * @param remoteStudy the remote study
      */
     @Transactional(readOnly = false)
     private void verifyAndSaveOrganizations(Study remoteStudy){
@@ -337,7 +386,8 @@ public class StudyRepository {
     
     /**
      * This method iterates the IND list in RemoteStudy and saves it in DB.
-     * @param remoteStudy
+     *
+     * @param remoteStudy the remote study
      */
     @Transactional(readOnly = false)
     protected void verifyAndSaveIND(RemoteStudy remoteStudy){
@@ -364,7 +414,7 @@ public class StudyRepository {
     }
     
     /**
-     * Search using a sample populate Study object
+     * Search using a sample populate Study object.
      *
      * @param study the study object
      * @return List of Study objects based on the sample study object
@@ -374,20 +424,31 @@ public class StudyRepository {
         return studyDao.searchByExample(study, true);
     }
 
+    /**
+     * Clear study personnel.
+     *
+     * @param so the so
+     */
     @Transactional(readOnly = false)
     public void clearStudyPersonnel(StudyOrganization so) {
         so.getStudyPersonnels().clear();
     }
 
+    /**
+     * Clear study investigators.
+     *
+     * @param so the so
+     */
     @Transactional(readOnly = false)
     public void clearStudyInvestigators(StudyOrganization so) {
         so.getStudyInvestigators().clear();
     }
 
     /**
-     * Will merge the study and return the merged study back. 
-     * @param study
-     * @return
+     * Will merge the study and return the merged study back.
+     *
+     * @param study the study
+     * @return the study
      */
     @Transactional(readOnly=false)
     public Study merge(Study study){
@@ -396,10 +457,9 @@ public class StudyRepository {
     }
     
     /**
-     * Saves a study object
+     * Saves a study object.
      *
      * @param study the study object
-     * @throws Exception runtime exception object
      */
 
     @Transactional(readOnly = false)
@@ -413,7 +473,8 @@ public class StudyRepository {
     
     /**
      * This method provision's the study team members into CSM.
-     * @param study
+     *
+     * @param study the study
      */
     public  void provisionStudyTeam(Study study){
 //Commented code below as we are not provision studies to CSM when a Person gets on the Study Team.
@@ -444,28 +505,53 @@ public class StudyRepository {
 //    	}
     }
 
+    /**
+     * Sets the study dao.
+     *
+     * @param studyDao the new study dao
+     */
     @Required
     public void setStudyDao(final StudyDao studyDao) {
         this.studyDao = studyDao;
     }
 
+    /**
+     * Find.
+     *
+     * @param query the query
+     * @return the list
+     */
     public List<Study> find(final AbstractQuery query) {
         return studyDao.find(query);
     }
     
     /**
-     * @param id
-     * @return
+     * Gets the by id.
+     *
+     * @param id the id
+     * @return the by id
      */
     public Study getById(int id) {
     	return studyDao.getById(id);
     }
     
+    /**
+     * Gets the by identifier.
+     *
+     * @param identifier the identifier
+     * @return the by identifier
+     */
     public Study getByIdentifier(final Identifier identifier) {
         return studyDao.getByIdentifier(identifier);
     }    
     
     //Activating / De-Activating StudyPersonnel 
+    /**
+     * Associate study personnel.
+     *
+     * @param researchStaff the research staff
+     * @throws Exception the exception
+     */
     public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
     	List<StudyOrganization> studyOrganizations = null;
     	StudyOrganizationsQuery studyOrgsQuery = null;
@@ -486,6 +572,11 @@ public class StudyRepository {
     
     
     //Activating / De-Activating StudyPersonnel 
+    /**
+     * Synchronize study personnel.
+     *
+     * @param study the study
+     */
     @Transactional(readOnly = false)
     public void synchronizeStudyPersonnel(Study study) {
         List<SiteResearchStaff> siteResearchStaffs = null;
@@ -523,57 +614,122 @@ public class StudyRepository {
     	
     }
     
+    /**
+     * Gets the all studies.
+     *
+     * @return the all studies
+     */
     public List<Study> getAllStudies() {
         StudyQuery q = new StudyQuery();
         return this.find(q);
     }
 
+	/**
+	 * Sets the research staff dao.
+	 *
+	 * @param researchStaffDao the new research staff dao
+	 */
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
 	}
 
+	/**
+	 * Sets the organization dao.
+	 *
+	 * @param organizationDao the new organization dao
+	 */
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
 	}
 
+	/**
+	 * Sets the organization repository.
+	 *
+	 * @param organizationRepository the new organization repository
+	 */
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
 
+	/**
+	 * Sets the investigator dao.
+	 *
+	 * @param investigatorDao the new investigator dao
+	 */
 	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
 		this.investigatorDao = investigatorDao;
 	}
 	
+	/**
+	 * Sets the workflow config dao.
+	 *
+	 * @param workflowConfigDao the new workflow config dao
+	 */
 	public void setWorkflowConfigDao(WorkflowConfigDao workflowConfigDao) {
 		this.workflowConfigDao = workflowConfigDao;
 	}
 
+	/**
+	 * Sets the investigational new drug dao.
+	 *
+	 * @param investigationalNewDrugDao the new investigational new drug dao
+	 */
 	public void setInvestigationalNewDrugDao(
 			InvestigationalNewDrugDao investigationalNewDrugDao) {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
 	}
 
+	/**
+	 * Sets the site research staff dao.
+	 *
+	 * @param siteResearchStaffDao the new site research staff dao
+	 */
 	public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
 		this.siteResearchStaffDao = siteResearchStaffDao;
 	}
 
+	/**
+	 * Sets the caaers security facade.
+	 *
+	 * @param caaersSecurityFacade the new caaers security facade
+	 */
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
 		this.caaersSecurityFacade = caaersSecurityFacade;
 	}
 
+    /**
+     * Gets the study site dao.
+     *
+     * @return the study site dao
+     */
     public StudySiteDao getStudySiteDao() {
         return studySiteDao;
     }
 
+    /**
+     * Sets the study site dao.
+     *
+     * @param studySiteDao the new study site dao
+     */
     public void setStudySiteDao(StudySiteDao studySiteDao) {
         this.studySiteDao = studySiteDao;
     }
     
+    /**
+     * Gets the event factory.
+     *
+     * @return the event factory
+     */
     public EventFactory getEventFactory() {
         return eventFactory;
     }
 
+    /**
+     * Sets the event factory.
+     *
+     * @param eventFactory the new event factory
+     */
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
     }

@@ -6,6 +6,7 @@ import javax.persistence.Embeddable;
 
 import org.apache.commons.lang.StringUtils;
 
+ 
 /**
  * This class represents the LabValue domain object associated with the Adverse event report.
  * 
@@ -13,26 +14,52 @@ import org.apache.commons.lang.StringUtils;
  */
 @Embeddable
 public class LabValue {
+    
+    /** The value. */
     private String value;
 
+    /** The date. */
     private Date date;
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value the new value
+     */
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * Gets the date.
+     *
+     * @return the date
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets the date.
+     *
+     * @param date the new date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;

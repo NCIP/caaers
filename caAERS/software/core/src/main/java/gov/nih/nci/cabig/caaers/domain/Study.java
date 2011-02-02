@@ -32,8 +32,9 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 
+ 
 /**
- * Domain object representing Study(Protocol)
+ * Domain object representing Study(Protocol).
  *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
@@ -41,7 +42,6 @@ import org.hibernate.annotations.*;
  * @author Ion Olaru
  * @author Sameer Sawant
  * @author Monish Dombla
- * 
  */
 @Entity
 @Table(name = "studies")
@@ -51,83 +51,162 @@ import org.hibernate.annotations.*;
 @Where(clause = "load_status > 0")
 public abstract class Study extends AbstractIdentifiableDomainObject implements Serializable {
 
+	/** The Constant serialVersionUID. */
 	protected static final long serialVersionUID = 2524271609924679883L;
+	
+	/** The Constant STATUS_ADMINISTRATIVELY_COMPLETE. */
 	public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
+    
+    /** The Constant STATUS_ACTIVE. */
     public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 
+    /** The short title. */
     protected String shortTitle;
+    
+    /** The long title. */
     @Deprecated protected String longTitle;
+    
+    /** The description. */
     @Deprecated protected String description;
+    
+    /** The precis. */
     @Deprecated protected String precis;
+    
+    /** The phase code. */
     protected String phaseCode;
+    
+    /** The ae terminology. */
     protected AeTerminology aeTerminology;
+    
+    /** The disease terminology. */
     protected DiseaseTerminology diseaseTerminology;
+    
+    /** The status. */
     @Deprecated String status;
+    
+    /** The other treatment assignment. */
     protected String otherTreatmentAssignment;
 
     // TODO: Remove
+    /** The blinded indicator. */
     protected Boolean blindedIndicator;
+    
+    /** The multi institution indicator. */
     @Deprecated Boolean multiInstitutionIndicator;
+    
+    /** The adeers reporting. */
     @Deprecated protected Boolean adeersReporting;
 
     // TODO: Remove
+    /** The randomized indicator. */
     protected Boolean randomizedIndicator;
 
     // TODO: Remove
+    /** The disease code. */
     protected String diseaseCode;
 
     // TODO: Remove
+    /** The monitor code. */
     protected String monitorCode;
 
     // TODO: Remove
+    /** The target accrual number. */
     protected Integer targetAccrualNumber;
     
+    /** The other meddra. */
     protected MeddraVersion otherMeddra;
+    
+    /** The study organizations. */
     protected List<StudyOrganization> studyOrganizations;
 
+    /** The ctep study diseases. */
     protected List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
+    
+    /** The meddra study diseases. */
     protected List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
+    
+    /** The study conditions. */
     protected List<StudyCondition> studyConditions = new ArrayList<StudyCondition>();
 
+    /** The expected a es. */
     protected List<AbstractExpectedAE> expectedAEs = new ArrayList<AbstractExpectedAE>();
+    
+    /** The expected ae meddra terms. */
     protected List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms = new ArrayList<ExpectedAEMeddraLowLevelTerm>();
+    
+    /** The expected aectc terms. */
     protected List<ExpectedAECtcTerm> expectedAECTCTerms = new ArrayList<ExpectedAECtcTerm>();
 
+    /** The lazy list helper. */
     protected final LazyListHelper lazyListHelper;
 
+    /** The organization assigned identifier. */
     protected OrganizationAssignedIdentifier organizationAssignedIdentifier;
+    
+    /** The study therapies. */
     protected List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
+    
+    /** The report formats. */
     @Deprecated protected List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
+    
+    /** The ctc categories. */
     protected List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
+    
+    /** The other interventions. */
     protected List<OtherIntervention> otherInterventions = new ArrayList<OtherIntervention>();
+    
+    /** The study devices. */
     protected List<StudyDevice> studyDevices = new ArrayList<StudyDevice>();
 
     // TODO move into Command Object
     // Investigators page)
 
+    /** The drug administration therapy type. */
     protected Boolean drugAdministrationTherapyType = Boolean.FALSE;
+    
+    /** The radiation therapy type. */
     protected Boolean radiationTherapyType = Boolean.FALSE;
+    
+    /** The device therapy type. */
     protected Boolean deviceTherapyType = Boolean.FALSE;
+    
+    /** The surgery therapy type. */
     protected Boolean surgeryTherapyType = Boolean.FALSE;
+    
+    /** The behavioral therapy type. */
     protected Boolean behavioralTherapyType = Boolean.FALSE;
+    
+    /** The load status. */
     protected Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     // Used to facilitate import of a coordinating center / funding sponsor
+    /** The funding sponsor. */
     protected FundingSponsor fundingSponsor;
+    
+    /** The coordinating center. */
     protected CoordinatingCenter coordinatingCenter;
 
     // DCP specific properties
+    /** The design. */
     @Deprecated protected Design design;
 
+    /** The epochs. */
     protected List<Epoch> epochs=new ArrayList<Epoch>();
     
+    /** The data entry status. */
     protected Boolean dataEntryStatus;
+    
+    /** The verbatim first. */
     protected Boolean verbatimFirst;
 
   //Added for COPPA integration
-    protected String externalId;
+    /** The external id. */
+  protected String externalId;
     
 
+    /**
+     * Instantiates a new study.
+     */
     public Study() {
 
         lazyListHelper = new LazyListHelper();
@@ -147,44 +226,89 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     // / LOGIC
+    /**
+     * Adds the study organization.
+     *
+     * @param so the so
+     */
     public void addStudyOrganization(final StudyOrganization so) {
         getStudyOrganizations().add(so);
         so.setStudy(this);
     }
 
+    /**
+     * Adds the treatment assignment.
+     *
+     * @param treatmentAssignment the treatment assignment
+     */
     public void addTreatmentAssignment(final TreatmentAssignment treatmentAssignment) {
         getTreatmentAssignments().add(treatmentAssignment);
         treatmentAssignment.setStudy(this);
     }
 
+    /**
+     * Removes the study organization.
+     *
+     * @param so the so
+     */
     public void removeStudyOrganization(final StudyOrganization so) {
         getStudyOrganizations().remove(so);
     }
 
+    /**
+     * Gets the study sites.
+     *
+     * @return the study sites
+     */
     @Transient
     public List<StudySite> getStudySites() {
         return lazyListHelper.getLazyList(StudySite.class);
     }
 
+    /**
+     * Adds the study site.
+     *
+     * @param studySite the study site
+     */
     public void addStudySite(final StudySite studySite) {
         getStudySites().add(studySite);
         studySite.setStudy(this);
     }
 
+    /**
+     * Removes the study site.
+     *
+     * @param studySite the study site
+     */
     public void removeStudySite(final StudySite studySite) {
         getStudySites().remove(studySite);
     }
 
+    /**
+     * Adds the study funding sponsor.
+     *
+     * @param studyFundingSponsor the study funding sponsor
+     */
     public void addStudyFundingSponsor(final StudyFundingSponsor studyFundingSponsor) {
         getStudyFundingSponsors().add(studyFundingSponsor);
         studyFundingSponsor.setStudy(this);
     }
 
+    /**
+     * Gets the study funding sponsors.
+     *
+     * @return the study funding sponsors
+     */
     @Transient
     public List<StudyFundingSponsor> getStudyFundingSponsors() {
         return lazyListHelper.getLazyList(StudyFundingSponsor.class);
     }
 
+    /**
+     * Gets the primary funding sponsor.
+     *
+     * @return the primary funding sponsor
+     */
     @Transient
     public StudyFundingSponsor getPrimaryFundingSponsor() {
         for (StudyFundingSponsor sponsor : getStudyFundingSponsors()) {
@@ -195,6 +319,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    /**
+     * Gets the primary funding sponsor organization.
+     *
+     * @return the primary funding sponsor organization
+     */
     @Transient
     public Organization getPrimaryFundingSponsorOrganization() {
         StudyFundingSponsor primarySponsor = getPrimaryFundingSponsor();
@@ -204,6 +333,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return primarySponsor.getOrganization();
     }
 
+    /**
+     * Sets the primary funding sponsor organization.
+     *
+     * @param org the new primary funding sponsor organization
+     */
     @Transient
     public void setPrimaryFundingSponsorOrganization(final Organization org) {
         // if already a primary funding sponsor exist, replace that sponor's organization
@@ -221,6 +355,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     /**
      * Will return the primary identifier associated to this study.
+     *
+     * @return the primary identifier
      */
     @Transient
     public Identifier getPrimaryIdentifier() {
@@ -234,37 +370,72 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
 
+    /**
+     * Adds the study agent.
+     *
+     * @param studyAgent the study agent
+     */
     public void addStudyAgent(final StudyAgent studyAgent) {
         getStudyAgents().add(studyAgent);
         studyAgent.setStudy(this);
     }
 
+    /**
+     * Adds the ctep study disease.
+     *
+     * @param ctepStudyDisease the ctep study disease
+     */
     public void addCtepStudyDisease(final CtepStudyDisease ctepStudyDisease) {
         ctepStudyDisease.setStudy(this);
         ctepStudyDiseases.add(ctepStudyDisease);
     }
 
+    /**
+     * Adds the meddra study disease.
+     *
+     * @param meddraStudyDisease the meddra study disease
+     */
     public void addMeddraStudyDisease(final MeddraStudyDisease meddraStudyDisease) {
         meddraStudyDisease.setStudy(this);
         meddraStudyDiseases.add(meddraStudyDisease);
     }
     
+    /**
+     * Adds the study condition.
+     *
+     * @param studyCondition the study condition
+     */
     public void addStudyCondition(final StudyCondition studyCondition) {
         studyCondition.setStudy(this);
         studyConditions.add(studyCondition);
     }
     
     
+    /**
+     * Gets the study coordinating centers.
+     *
+     * @return the study coordinating centers
+     */
     @Transient
     public List<StudyCoordinatingCenter> getStudyCoordinatingCenters() {
         return new ProjectedList<StudyCoordinatingCenter>(studyOrganizations, StudyCoordinatingCenter.class);
     }
 
+    /**
+     * Gets the study coordinating center.
+     *
+     * @return the study coordinating center
+     */
     @Transient
     public StudyCoordinatingCenter getStudyCoordinatingCenter() {
         return getStudyCoordinatingCenters().isEmpty() ? null : getStudyCoordinatingCenters().get(0);
     }
 
+    /**
+     * Gets the organization assigned identifier.
+     *
+     * @return the organization assigned identifier
+     */
     @Transient
     public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
 
@@ -289,6 +460,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return organizationAssignedIdentifier;
     }
     
+    /**
+     * Gets the nci assigned identifier.
+     *
+     * @return the nci assigned identifier
+     */
     @Transient
     public OrganizationAssignedIdentifier getNciAssignedIdentifier() {
         for (Identifier identifier : getIdentifiers()) {
@@ -303,6 +479,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return organizationAssignedIdentifier;
     }
     
+    /**
+     * Gets the funding sponsor identifier.
+     *
+     * @return the funding sponsor identifier
+     */
     @Transient
     public OrganizationAssignedIdentifier getFundingSponsorIdentifier() {
         for (Identifier identifier : getIdentifiers()) {
@@ -317,6 +498,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return organizationAssignedIdentifier;
     }
     
+    /**
+     * Gets the coordinating center identifier.
+     *
+     * @return the coordinating center identifier
+     */
     @Transient
     public OrganizationAssignedIdentifier getCoordinatingCenterIdentifier() {
         for (Identifier identifier : getIdentifiers()) {
@@ -331,16 +517,32 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return organizationAssignedIdentifier;
     }
     
+    /**
+     * Gets the funding sponsor identifier value.
+     *
+     * @return the funding sponsor identifier value
+     */
     @Transient
     public String getFundingSponsorIdentifierValue() {
         return getFundingSponsorIdentifier().getValue();
     }
     
+    /**
+     * Gets the coordinating center identifier value.
+     *
+     * @return the coordinating center identifier value
+     */
     @Transient
     public String getCoordinatingCenterIdentifierValue() {
         return getCoordinatingCenterIdentifier().getValue();
     }
     
+    /**
+     * Gets the identifier containing.
+     *
+     * @param text the text
+     * @return the identifier containing
+     */
     @Transient
     public String getIdentifierContaining(String text){
     	for (Identifier identifier : getIdentifiers()) {
@@ -352,22 +554,42 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
 
+    /**
+     * Sets the organization assigned identifier.
+     *
+     * @param organizationAssignedIdentifier the new organization assigned identifier
+     */
     @Transient
     public void setOrganizationAssignedIdentifier(final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
         this.organizationAssignedIdentifier = organizationAssignedIdentifier;
     }
 
+    /**
+     * Gets the study agents.
+     *
+     * @return the study agents
+     */
     @Transient
     @UniqueObjectInCollection(message = "Duplicates found in Study Agents list")
     public List<StudyAgent> getStudyAgents() {
         return lazyListHelper.getLazyList(StudyAgent.class);
     }
 
+    /**
+     * Sets the study agents.
+     *
+     * @param studyAgents the new study agents
+     */
     @Transient
     public void setStudyAgents(final List<StudyAgent> studyAgents) {
         setStudyAgentsInternal(studyAgents);
     }
 
+    /**
+     * Gets the study devices.
+     *
+     * @return the study devices
+     */
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
@@ -376,15 +598,30 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return this.studyDevices;
     }
 
+    /**
+     * Sets the study devices.
+     *
+     * @param studyDevices the new study devices
+     */
     public void setStudyDevices(final List<StudyDevice> studyDevices) {
         this.studyDevices = studyDevices;
     }
 
+    /**
+     * Adds the study device.
+     *
+     * @param sd the sd
+     */
     public void addStudyDevice(StudyDevice sd) {
         this.getStudyDevices().add(sd);
         sd.setStudy(this);
     }
 
+    /**
+     * Gets the other interventions.
+     *
+     * @return the other interventions
+     */
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
@@ -393,18 +630,29 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return this.otherInterventions;
     }
 
+    /**
+     * Adds the other intervention.
+     *
+     * @param oi the oi
+     */
     public void addOtherIntervention(OtherIntervention oi) {
         this.getOtherInterventions().add(oi);
         oi.setStudy(this);
     }
 
+    /**
+     * Sets the other interventions.
+     *
+     * @param otherInterventions the new other interventions
+     */
     public void setOtherInterventions(final List<OtherIntervention> otherInterventions) {
         this.otherInterventions = otherInterventions;
     }
 
     /**
-     * Will return the {@link StudyAgent}s that are not retired
-     * @return
+     * Will return the {@link StudyAgent}s that are not retired.
+     *
+     * @return the active study agents
      */
     @Transient
     public List<StudyAgent> getActiveStudyAgents(){
@@ -416,8 +664,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     /**
-     * Will return the {@link StudyDevice}s that are not retired
-     * @return
+     * Will return the {@link StudyDevice}s that are not retired.
+     *
+     * @return the active study devices
      */
     @Transient
     public List<StudyDevice> getActiveStudyDevices() {
@@ -428,6 +677,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	return devices;
     }
 
+    /**
+     * Gets the active other interventions.
+     *
+     * @return the active other interventions
+     */
     @Transient
     public List<OtherIntervention> getActiveOtherInterventions() {
     	List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
@@ -438,9 +692,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     /**
-    * Will return the {@link StudyDevice}s that are not retired
-    * @return
-    */
+     * Will return the {@link StudyDevice}s that are not retired.
+     *
+     * @return the active study radiations
+     */
    @Transient
    public List<OtherIntervention> getActiveStudyRadiations() {
        List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
@@ -452,9 +707,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
 
     /**
-    * Will return the {@link StudyDevice}s that are not retired
-    * @return
-    */
+     * Will return the {@link StudyDevice}s that are not retired.
+     *
+     * @return the active study surgeries
+     */
    @Transient
    public List<OtherIntervention> getActiveStudySurgeries() {
        List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
@@ -465,8 +721,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
    }
     
     /**
-     * Will return the {@link StudySite}s that are not retired
-     * @return
+     * Will return the {@link StudySite}s that are not retired.
+     *
+     * @return the active study sites
      */
     @Transient
     public List<StudySite> getActiveStudySites(){
@@ -479,7 +736,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     /**
      * Will return the {@link StudyOrganization}s that are not retired.
-     * @return
+     *
+     * @return the active study organizations
      */
     @Transient
     public List<StudyOrganization> getActiveStudyOrganizations(){
@@ -492,7 +750,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     /**
      * Will return the {@link TreatmentAssignment}s that are not retired.
-     * @return
+     *
+     * @return the active treatment assignments
      */
     @Transient
     public List<TreatmentAssignment> getActiveTreatmentAssignments(){
@@ -505,7 +764,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     /**
      * Will return the {@link AbstractStudyDisease}s that are not retired.
-     * @return
+     *
+     * @return the active study diseases
      */
     @Transient
     public List<? extends AbstractStudyDisease<? extends DomainObject>> getActiveStudyDiseases(){
@@ -544,6 +804,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     }
 
+    /**
+     * Checks for therapy of type.
+     *
+     * @param therapyType the therapy type
+     * @return true, if successful
+     */
     public boolean hasTherapyOfType(StudyTherapyType therapyType) {
         switch (therapyType.getCode().intValue()) {
             case 1: return getActiveStudyAgents().size() > 0;  
@@ -557,8 +823,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     /**
-     * Will remove all the {@link StudyTherapy} of the specific {@link StudyTherapyType}
-     * @param therapyType
+     * Will remove all the {@link StudyTherapy} of the specific {@link StudyTherapyType}.
+     *
+     * @param therapyType the therapy type
      */
     @Deprecated
     public void removeTherapiesOfType(StudyTherapyType therapyType){
@@ -568,26 +835,51 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	}
     }
 
+    /**
+     * Checks if is surgery present.
+     *
+     * @return true, if is surgery present
+     */
     @Transient
     public boolean isSurgeryPresent() {
         return this.hasTherapyOfType(StudyTherapyType.SURGERY);
     }
 
+    /**
+     * Checks if is device present.
+     *
+     * @return true, if is device present
+     */
     @Transient
     public boolean isDevicePresent() {
         return this.hasTherapyOfType(StudyTherapyType.DEVICE);
     }
 
+    /**
+     * Checks if is radiation present.
+     *
+     * @return true, if is radiation present
+     */
     @Transient
     public boolean isRadiationPresent() {
         return this.hasTherapyOfType(StudyTherapyType.RADIATION);
     }
 
+    /**
+     * Checks if is behavioral present.
+     *
+     * @return true, if is behavioral present
+     */
     @Transient
     public boolean isBehavioralPresent() {
         return this.hasTherapyOfType(StudyTherapyType.BEHAVIORAL);
     }
 
+    /**
+     * Checks if is drug administration present.
+     *
+     * @return true, if is drug administration present
+     */
     @Transient
     public boolean isDrugAdministrationPresent() {
         return this.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION);
@@ -597,12 +889,22 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
 
+    /**
+     * Gets the ctc version.
+     *
+     * @return the ctc version
+     */
     @Deprecated
     @Transient
     public Ctc getCtcVersion() {
         return getAeTerminology().getCtcVersion();
     }
 
+    /**
+     * Sets the ctc version.
+     *
+     * @param ctcVersion the new ctc version
+     */
     @Deprecated
     @Transient
     public void setCtcVersion(final Ctc ctcVersion) {
@@ -611,6 +913,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         t.setCtcVersion(ctcVersion);
     }
 
+    /**
+     * Gets the disease terminology.
+     *
+     * @return the disease terminology
+     */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public DiseaseTerminology getDiseaseTerminology() {
@@ -621,10 +928,20 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return diseaseTerminology;
     }
 
+    /**
+     * Sets the disease terminology.
+     *
+     * @param diseaseTerminology the new disease terminology
+     */
     public void setDiseaseTerminology(final DiseaseTerminology diseaseTerminology) {
         this.diseaseTerminology = diseaseTerminology;
     }
 
+    /**
+     * Gets the ae terminology.
+     *
+     * @return the ae terminology
+     */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public AeTerminology getAeTerminology() {
@@ -635,10 +952,18 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return aeTerminology;
     }
 
+    /**
+     * Sets the ae terminology.
+     *
+     * @param aeTerminology the new ae terminology
+     */
     public void setAeTerminology(final AeTerminology aeTerminology) {
         this.aeTerminology = aeTerminology;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject#getIdentifiers()
+     */
     @Override
     @OneToMany
     @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -649,22 +974,40 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return lazyListHelper.getInternalList(Identifier.class);
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject#setIdentifiers(java.util.List)
+     */
     @Override
     public void setIdentifiers(final List<Identifier> identifiers) {
         lazyListHelper.setInternalList(Identifier.class, identifiers);
     }
 
+    /**
+     * Gets the identifiers lazy.
+     *
+     * @return the identifiers lazy
+     */
     @Transient
     @UniqueObjectInCollection(message = "Duplicates found in Identifiers list")
     public List<Identifier> getIdentifiersLazy() {
         return lazyListHelper.getLazyList(Identifier.class);
     }
 
+    /**
+     * Sets the identifiers lazy.
+     *
+     * @param identifiers the new identifiers lazy
+     */
     @Transient
     public void setIdentifiersLazy(final List<Identifier> identifiers) {
         setIdentifiers(identifiers);
     }
 
+    /**
+     * Gets the study agents internal.
+     *
+     * @return the study agents internal
+     */
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
@@ -673,10 +1016,20 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return lazyListHelper.getInternalList(StudyAgent.class);
     }
 
+    /**
+     * Sets the study agents internal.
+     *
+     * @param studyAgents the new study agents internal
+     */
     public void setStudyAgentsInternal(final List<StudyAgent> studyAgents) {
         lazyListHelper.setInternalList(StudyAgent.class, studyAgents);
     }
 
+    /**
+     * Gets the ctep study diseases.
+     *
+     * @return the ctep study diseases
+     */
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -689,15 +1042,30 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return ctepStudyDiseases;
     }
 
+    /**
+     * Gets the active ctep study diseases.
+     *
+     * @return the active ctep study diseases
+     */
     @Transient
     public List<CtepStudyDisease> getActiveCtepStudyDiseases() {
         return CollectionUtil.getActiveObjects(getCtepStudyDiseases());
     }
 
+    /**
+     * Sets the ctep study diseases.
+     *
+     * @param ctepStudyDiseases the new ctep study diseases
+     */
     public void setCtepStudyDiseases(final List<CtepStudyDisease> ctepStudyDiseases) {
         this.ctepStudyDiseases = ctepStudyDiseases;
     }
 
+    /**
+     * Gets the meddra study diseases.
+     *
+     * @return the meddra study diseases
+     */
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -710,132 +1078,277 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return meddraStudyDiseases;
     }
 
+    /**
+     * Gets the active meddra study diseases.
+     *
+     * @return the active meddra study diseases
+     */
     @Transient
     public List<MeddraStudyDisease> getActiveMeddraStudyDiseases() {
         return CollectionUtil.getActiveObjects(getMeddraStudyDiseases());
     }
 
+    /**
+     * Sets the meddra study diseases.
+     *
+     * @param meddraStudyDiseases the new meddra study diseases
+     */
     public void setMeddraStudyDiseases(final List<MeddraStudyDisease> meddraStudyDiseases) {
         this.meddraStudyDiseases = meddraStudyDiseases;
     }
 
+    /**
+     * Gets the blinded indicator.
+     *
+     * @return the blinded indicator
+     */
     public Boolean getBlindedIndicator() {
         return blindedIndicator;
     }
 
+    /**
+     * Sets the blinded indicator.
+     *
+     * @param blindedIndicator the new blinded indicator
+     */
     public void setBlindedIndicator(final Boolean blindedIndicator) {
         this.blindedIndicator = blindedIndicator;
     }
 
+    /**
+     * Gets the multi institution indicator.
+     *
+     * @return the multi institution indicator
+     */
     @Deprecated
     public Boolean getMultiInstitutionIndicator() {
         return multiInstitutionIndicator;
     }
 
+    /**
+     * Sets the multi institution indicator.
+     *
+     * @param multiInstitutionIndicator the new multi institution indicator
+     */
     @Deprecated
     public void setMultiInstitutionIndicator(final Boolean multiInstitutionIndicator) {
         this.multiInstitutionIndicator = multiInstitutionIndicator;
     }
 
+    /**
+     * Gets the randomized indicator.
+     *
+     * @return the randomized indicator
+     */
     public Boolean getRandomizedIndicator() {
         return randomizedIndicator;
     }
 
+    /**
+     * Sets the randomized indicator.
+     *
+     * @param randomizedIndicator the new randomized indicator
+     */
     public void setRandomizedIndicator(final Boolean randomizedIndicator) {
         this.randomizedIndicator = randomizedIndicator;
     }
 
+    /**
+     * Gets the description.
+     *
+     * @return the description
+     */
     @Transient @Deprecated
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description.
+     *
+     * @param descriptionText the new description
+     */
     @Deprecated
     public void setDescription(final String descriptionText) {
         description = descriptionText;
     }
 
+    /**
+     * Gets the disease code.
+     *
+     * @return the disease code
+     */
     public String getDiseaseCode() {
         return diseaseCode;
     }
 
+    /**
+     * Sets the disease code.
+     *
+     * @param diseaseCode the new disease code
+     */
     public void setDiseaseCode(final String diseaseCode) {
         this.diseaseCode = diseaseCode;
     }
 
+    /**
+     * Gets the long title.
+     *
+     * @return the long title
+     */
     @Transient @Deprecated
     public String getLongTitle() {
         return longTitle;
     }
 
+    /**
+     * Sets the long title.
+     *
+     * @param longTitleText the new long title
+     */
     @Deprecated
     public void setLongTitle(final String longTitleText) {
         longTitle = longTitleText;
     }
 
+    /**
+     * Gets the monitor code.
+     *
+     * @return the monitor code
+     */
     public String getMonitorCode() {
         return monitorCode;
     }
 
+    /**
+     * Sets the monitor code.
+     *
+     * @param monitorCode the new monitor code
+     */
     public void setMonitorCode(final String monitorCode) {
         this.monitorCode = monitorCode;
     }
 
+    /**
+     * Gets the phase code.
+     *
+     * @return the phase code
+     */
     @Transient
     public String getPhaseCode() {
         return phaseCode;
     }
 
+    /**
+     * Sets the phase code.
+     *
+     * @param phaseCode the new phase code
+     */
     public void setPhaseCode(final String phaseCode) {
         this.phaseCode = phaseCode;
     }
 
+    /**
+     * Gets the precis.
+     *
+     * @return the precis
+     */
     @Deprecated
     public String getPrecis() {
         return precis;
     }
 
+    /**
+     * Sets the precis.
+     *
+     * @param precisText the new precis
+     */
     @Deprecated
     public void setPrecis(final String precisText) {
         precis = precisText;
     }
 
+    /**
+     * Gets the short title.
+     *
+     * @return the short title
+     */
     @Transient
     public String getShortTitle() {
         return shortTitle;
     }
 
+    /**
+     * Sets the short title.
+     *
+     * @param shortTitleText the new short title
+     */
     public void setShortTitle(final String shortTitleText) {
         shortTitle = shortTitleText;
     }
 
+    /**
+     * Gets the status.
+     *
+     * @return the status
+     */
     @Transient @Deprecated
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Sets the status.
+     *
+     * @param status the new status
+     */
     @Deprecated
     public void setStatus(final String status) {
         this.status = status;
     }
 
+    /**
+     * Gets the target accrual number.
+     *
+     * @return the target accrual number
+     */
     public Integer getTargetAccrualNumber() {
         return targetAccrualNumber;
     }
 
+    /**
+     * Sets the target accrual number.
+     *
+     * @param targetAccrualNumber the new target accrual number
+     */
     public void setTargetAccrualNumber(final Integer targetAccrualNumber) {
         this.targetAccrualNumber = targetAccrualNumber;
     }
     
+    /**
+     * Gets the external id.
+     *
+     * @return the external id
+     */
     @Transient
     public String getExternalId() {
 		return externalId;
 	}
     
+	/**
+	 * Sets the external id.
+	 *
+	 * @param externalId the new external id
+	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 
+    /**
+     * Gets the study organizations.
+     *
+     * @return the study organizations
+     */
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicates found in StudyOrganizations list")
@@ -845,6 +1358,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return studyOrganizations;
     }
 
+    /**
+     * Sets the study organizations.
+     *
+     * @param studyOrganizations the new study organizations
+     */
     public void setStudyOrganizations(final List<StudyOrganization> studyOrganizations) {
         this.studyOrganizations = studyOrganizations;
         // initialize projected list for StudySite, StudyFundingSponsor and StudyCoordinatingCenter
@@ -855,6 +1373,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
                         StudyFundingSponsor.class));
     }
 
+    /**
+     * Gets the treatment assignments internal.
+     *
+     * @return the treatment assignments internal
+     */
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy
@@ -863,21 +1386,41 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return lazyListHelper.getInternalList(TreatmentAssignment.class);
     }
 
+    /**
+     * Sets the treatment assignments internal.
+     *
+     * @param treatmentAssignments the new treatment assignments internal
+     */
     public void setTreatmentAssignmentsInternal(final List<TreatmentAssignment> treatmentAssignments) {
         lazyListHelper.setInternalList(TreatmentAssignment.class, treatmentAssignments);
     }
 
+    /**
+     * Gets the treatment assignments.
+     *
+     * @return the treatment assignments
+     */
     @Transient
     @UniqueObjectInCollection(message = "Duplicates found in TreatmentAssignments list")
     public List<TreatmentAssignment> getTreatmentAssignments() {
         return lazyListHelper.getLazyList(TreatmentAssignment.class);
     }
 
+    /**
+     * Sets the treatment assignments.
+     *
+     * @param treatmentAssignments the new treatment assignments
+     */
     public void setTreatmentAssignments(final List<TreatmentAssignment> treatmentAssignments) {
         setTreatmentAssignmentsInternal(treatmentAssignments);
     }
 
     // TODO Why rules is still using primarySponsorCode... (check)
+    /**
+     * Gets the primary sponsor code.
+     *
+     * @return the primary sponsor code
+     */
     @Transient
     public String getPrimarySponsorCode() {
         Organization sponsorOrg = getPrimaryFundingSponsorOrganization();
@@ -887,10 +1430,20 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    /**
+     * Gets the load status.
+     *
+     * @return the load status
+     */
     public Integer getLoadStatus() {
         return loadStatus;
     }
 
+    /**
+     * Sets the load status.
+     *
+     * @param loadStatus the new load status
+     */
     public void setLoadStatus(Integer loadStatus) {
         this.loadStatus = loadStatus;
     }
@@ -901,12 +1454,22 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     // TODO check how to get rid of this???? (Admin module require this method)
 
+    /**
+     * Sets the primary sponsor code.
+     *
+     * @param sponsorCode the new primary sponsor code
+     */
     public void setPrimarySponsorCode(final String sponsorCode) {
         throw new UnsupportedOperationException(
                 "'setPrimarySponsorCode', one should not access this method!");
     }
 
     // ToDo - this should be removed
+    /**
+     * Gets the study therapies.
+     *
+     * @return the study therapies
+     */
     @Transient
     @Deprecated
     public List<StudyTherapy> getStudyTherapies() {
@@ -927,16 +1490,32 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
 
+    /**
+     * Adds the study therapy.
+     *
+     * @param studyTherapy the study therapy
+     */
     @Transient
     @Deprecated
     public void addStudyTherapy(final StudyTherapy studyTherapy) {
         studyTherapies.add(studyTherapy);
     }
 
+    /**
+     * Removes the identifier.
+     *
+     * @param identifier the identifier
+     */
     public void removeIdentifier(final Identifier identifier) {
         getIdentifiers().remove(identifier);
     }
 
+    /**
+     * Gets the study therapy.
+     *
+     * @param studyTherapyType the study therapy type
+     * @return the study therapy
+     */
     @Transient
     @Deprecated
     public StudyTherapy getStudyTherapy(final StudyTherapyType studyTherapyType) {
@@ -950,46 +1529,91 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    /**
+     * Gets the system assigned identifiers.
+     *
+     * @return the system assigned identifiers
+     */
     @Transient
     public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers() {
         return new ProjectedList<SystemAssignedIdentifier>(getIdentifiersLazy(),
                 SystemAssignedIdentifier.class);
     }
 
+    /**
+     * Gets the organization assigned identifiers.
+     *
+     * @return the organization assigned identifiers
+     */
     @Transient
     public List<OrganizationAssignedIdentifier> getOrganizationAssignedIdentifiers() {
         return new ProjectedList<OrganizationAssignedIdentifier>(getIdentifiersLazy(),
                 OrganizationAssignedIdentifier.class);
     }
 
+    /**
+     * Gets the coordinating center.
+     *
+     * @return the coordinating center
+     */
     @Transient
     public CoordinatingCenter getCoordinatingCenter() {
         return coordinatingCenter;
     }
 
+    /**
+     * Gets the funding sponsor.
+     *
+     * @return the funding sponsor
+     */
     @Transient
     public FundingSponsor getFundingSponsor() {
         return fundingSponsor;
     }
 
+    /**
+     * Sets the coordinating center.
+     *
+     * @param coordinatingCenter the new coordinating center
+     */
     public void setCoordinatingCenter(CoordinatingCenter coordinatingCenter) {
         this.coordinatingCenter = coordinatingCenter;
     }
 
+    /**
+     * Sets the funding sponsor.
+     *
+     * @param fundingSponsor the new funding sponsor
+     */
     public void setFundingSponsor(FundingSponsor fundingSponsor) {
         this.fundingSponsor = fundingSponsor;
     }
 
+    /**
+     * Gets the adeers reporting.
+     *
+     * @return the adeers reporting
+     */
     @Deprecated
     public Boolean getAdeersReporting() {
         return adeersReporting;
     }
 
+    /**
+     * Sets the adeers reporting.
+     *
+     * @param adeersSubmission the new adeers reporting
+     */
     @Deprecated
     public void setAdeersReporting(Boolean adeersSubmission) {
         this.adeersReporting = adeersSubmission;
     }
 
+    /**
+     * Gets the design.
+     *
+     * @return the design
+     */
     @Column(name = "design_code")
     @Type(type = "designCode")
     @Deprecated
@@ -997,11 +1621,21 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return design;
     }
 
+    /**
+     * Sets the design.
+     *
+     * @param design the new design
+     */
     @Deprecated
     public void setDesign(Design design) {
         this.design = design;
     }
 
+    /**
+     * Gets the report formats.
+     *
+     * @return the report formats
+     */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Deprecated
@@ -1010,11 +1644,21 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return reportFormats;
     }
 
+    /**
+     * Sets the report formats.
+     *
+     * @param reportFormats the new report formats
+     */
     @Deprecated
     public void setReportFormats(final List<ReportFormat> reportFormats) {
         this.reportFormats = reportFormats;
     }
 
+    /**
+     * Adds the report format.
+     *
+     * @param reportFormat the report format
+     */
     @Transient
     @Deprecated
     public void addReportFormat(final ReportFormat reportFormat) {
@@ -1022,6 +1666,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         reportFormats.add(reportFormat);
     }
 
+    /**
+     * Adds the report format type.
+     *
+     * @param reportFormatType the report format type
+     */
     @Transient
     @Deprecated
     public void addReportFormatType(ReportFormatType reportFormatType) {
@@ -1031,6 +1680,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         reportFormats.add(rf);
     }
 
+    /**
+     * Gets the report format.
+     *
+     * @param reportFormatType the report format type
+     * @return the report format
+     */
     @Transient
     @Deprecated
     public ReportFormat getReportFormat(final ReportFormatType reportFormatType) {
@@ -1043,6 +1698,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    /**
+     * Update report formats.
+     *
+     * @param selected the selected
+     * @param type the type
+     */
     @Deprecated
     public void updateReportFormats(Boolean selected, ReportFormatType type) {
         if (selected == null) return;
@@ -1057,66 +1718,131 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         }
     }
 
+    /**
+     * Gets the adeers pdf type.
+     *
+     * @return the adeers pdf type
+     */
     @Transient
     public Boolean getAdeersPDFType() {
         return getReportFormat(ReportFormatType.ADEERSPDF) != null;
     }
 
+    /**
+     * Sets the adeers pdf type.
+     *
+     * @param value the new adeers pdf type
+     */
     @Deprecated
     public void setAdeersPDFType(final Boolean value) {
         updateReportFormats(value, ReportFormatType.ADEERSPDF);
     }
 
+    /**
+     * Gets the caaers xml type.
+     *
+     * @return the caaers xml type
+     */
     @Transient @Deprecated
     public Boolean getCaaersXMLType() {
         return getReportFormat(ReportFormatType.CAAERSXML) != null;
     }
 
+    /**
+     * Sets the caaers xml type.
+     *
+     * @param value the new caaers xml type
+     */
     @Deprecated
     public void setCaaersXMLType(final Boolean value) {
     	updateReportFormats(value, ReportFormatType.CAAERSXML);
     }
 
+    /**
+     * Gets the cioms pdf type.
+     *
+     * @return the cioms pdf type
+     */
     @Transient @Deprecated
     public Boolean getCiomsPDFType() {
         return getReportFormat(ReportFormatType.CIOMSFORM) != null;
     }
 
+    /**
+     * Sets the cioms pdf type.
+     *
+     * @param value the new cioms pdf type
+     */
     @Deprecated
     public void setCiomsPDFType(final Boolean value) {
         updateReportFormats(value, ReportFormatType.CIOMSFORM);
     }
 
+    /**
+     * Gets the cioms sae pdf type.
+     *
+     * @return the cioms sae pdf type
+     */
     @Transient @Deprecated
     public Boolean getCiomsSaePDFType() {
         return getReportFormat(ReportFormatType.CIOMSSAEFORM) != null;
     }
 
+    /**
+     * Sets the cioms sae pdf type.
+     *
+     * @param value the new cioms sae pdf type
+     */
     @Deprecated
     public void setCiomsSaePDFType(final Boolean value) {
         updateReportFormats(value, ReportFormatType.CIOMSSAEFORM);
     }
 
+    /**
+     * Gets the dcp saepdf type.
+     *
+     * @return the dcp saepdf type
+     */
     @Transient @Deprecated
     public Boolean getDcpSAEPDFType() {
         return getReportFormat(ReportFormatType.DCPSAEFORM) != null;
     }
 
+    /**
+     * Sets the dcp saepdf type.
+     *
+     * @param dcpSAEPDFType the new dcp saepdf type
+     */
     @Deprecated
     public void setDcpSAEPDFType(final Boolean dcpSAEPDFType) {
         updateReportFormats(dcpSAEPDFType, ReportFormatType.DCPSAEFORM);
     }
 
+    /**
+     * Gets the medwatch pdf type.
+     *
+     * @return the medwatch pdf type
+     */
     @Transient @Deprecated
     public Boolean getMedwatchPDFType() {
         return getReportFormat(ReportFormatType.MEDWATCHPDF) != null;
     }
 
+    /**
+     * Sets the medwatch pdf type.
+     *
+     * @param medwatchPDFType the new medwatch pdf type
+     */
     @Deprecated
     public void setMedwatchPDFType(final Boolean medwatchPDFType) {
         updateReportFormats(medwatchPDFType, ReportFormatType.MEDWATCHPDF);
     }
 
+    /**
+     * Adds the study therapy.
+     *
+     * @param studyTherapyType the study therapy type
+     */
     @Transient
     public void addStudyTherapy(final StudyTherapyType studyTherapyType) {
         StudyTherapy studyTherapy = new StudyTherapy();
@@ -1126,9 +1852,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     /**
-     * This method will find the email address of people associated with the role. 
-     * @param roleName
-     * @return
+     * This method will find the email address of people associated with the role.
+     *
+     * @param roleName the role name
+     * @return the list
      */
     public List<String> findEmailAddressByRole(String roleName){
         List<String> emails = new ArrayList<String>();
@@ -1141,6 +1868,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     
+    /**
+     * Gets the epochs.
+     *
+     * @return the epochs
+     */
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name="study_id", nullable = false)
@@ -1150,21 +1882,39 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 		return epochs;
 	}
     
+	/**
+	 * Sets the epochs.
+	 *
+	 * @param epochs the new epochs
+	 */
 	public void setEpochs(List<Epoch> epochs) {
 		this.epochs = epochs;
 	}
 	
+	/**
+	 * Adds the epoch.
+	 *
+	 * @param epoch the epoch
+	 * @return true, if successful
+	 */
 	public boolean addEpoch(Epoch epoch){
 		  return epochs.add(epoch);
 	}	
 		
+	/**
+	 * Removes the epoch.
+	 *
+	 * @param epoch the epoch
+	 * @return true, if successful
+	 */
 	public boolean removeEpoch(Epoch epoch){
 		  return epochs.remove(epoch);
 	}
 	
 	/**
-	 * This method will list all the {@link Epoch}s that are not retired. 
-	 * @return
+	 * This method will list all the {@link Epoch}s that are not retired.
+	 *
+	 * @return the active epochs
 	 */
 	@Transient
 	public List<Epoch> getActiveEpochs(){
@@ -1180,13 +1930,29 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 	}
 	
 	//this method is added to satisfy the UI requirements, so to be moved to command classs
+	/**
+	 * Gets the term code.
+	 *
+	 * @return the term code
+	 */
 	@Transient
 	public Integer getTermCode(){
 		return null;
 	}
 	//this method is added to satisfy the UI requirements, so to be moved to the command class
+	/**
+	 * Sets the term code.
+	 *
+	 * @param ignore the new term code
+	 */
 	public void setTermCode(Integer ignore){}
 	
+	/**
+	 * Contains solicited ae.
+	 *
+	 * @param termID the term id
+	 * @return true, if successful
+	 */
 	public boolean containsSolicitedAE(Integer termID)
 	{
         for(Epoch epoch : getEpochs())
@@ -1216,6 +1982,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 		
 	}
 	
+	/**
+	 * Gets the ctc categories.
+	 *
+	 * @return the ctc categories
+	 */
 	@Transient
 	public List<CtcCategory> getCtcCategories(){
 		if(ctcCategories.size() != 0)
@@ -1226,20 +1997,40 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 		return ctcCategories;
 	}
 	
+	/**
+	 * Sets the ctc categories.
+	 *
+	 * @param ctcCategories the new ctc categories
+	 */
 	public void setCtcCategories(List<CtcCategory> ctcCategories) {
 		this.ctcCategories = ctcCategories;
 	}
 	
+	/**
+	 * Gets the other meddra.
+	 *
+	 * @return the other meddra
+	 */
 	@OneToOne
     @JoinColumn(name = "other_meddra_id")
 	public MeddraVersion getOtherMeddra() {
 		return otherMeddra;
 	}
 	
+	/**
+	 * Sets the other meddra.
+	 *
+	 * @param otherMeddra the new other meddra
+	 */
 	public void setOtherMeddra(MeddraVersion otherMeddra) {
 		this.otherMeddra = otherMeddra;
 	}
 
+    /**
+     * Gets the study conditions.
+     *
+     * @return the study conditions
+     */
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -1251,15 +2042,30 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return studyConditions;
     }
 
+    /**
+     * Gets the active study conditions.
+     *
+     * @return the active study conditions
+     */
     @Transient
     public List<StudyCondition> getActiveStudyConditions() {
         return CollectionUtil.getActiveObjects(getStudyConditions());
     }
 
+    /**
+     * Sets the study conditions.
+     *
+     * @param studyConditions the new study conditions
+     */
     public void setStudyConditions(List<StudyCondition> studyConditions) {
         this.studyConditions = studyConditions;
     }
 
+    /**
+     * Gets the expected ae ctc terms.
+     *
+     * @return the expected ae ctc terms
+     */
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -1269,15 +2075,30 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return expectedAECTCTerms;
     }
 
+    /**
+     * Sets the expected ae ctc terms.
+     *
+     * @param expectedAECTCTerms the new expected ae ctc terms
+     */
     public void setExpectedAECtcTerms(List<ExpectedAECtcTerm> expectedAECTCTerms) {
         this.expectedAECTCTerms = expectedAECTCTerms;
     }
 
+    /**
+     * Adds the expected ae ctc term.
+     *
+     * @param expectedAECtcTerm the expected ae ctc term
+     */
     public void addExpectedAECtcTerm(final ExpectedAECtcTerm expectedAECtcTerm) {
         expectedAECtcTerm.setStudy(this);
         expectedAECTCTerms.add(expectedAECtcTerm);
     }
 
+    /**
+     * Gets the expected ae meddra low level terms.
+     *
+     * @return the expected ae meddra low level terms
+     */
     @OneToMany
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     @JoinColumn(name = "study_id", nullable = false)
@@ -1288,23 +2109,47 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return expectedAEMeddraTerms;
     }
 
+    /**
+     * Sets the expected ae meddra low level terms.
+     *
+     * @param expectedAEMeddraTerms the new expected ae meddra low level terms
+     */
     public void setExpectedAEMeddraLowLevelTerms(List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms) {
         this.expectedAEMeddraTerms = expectedAEMeddraTerms;
     }
     
+    /**
+     * Adds the expected ae meddra low level term.
+     *
+     * @param expectedAEMeddraLowLevelTerm the expected ae meddra low level term
+     */
     public void addExpectedAEMeddraLowLevelTerm(final ExpectedAEMeddraLowLevelTerm expectedAEMeddraLowLevelTerm) {
         expectedAEMeddraLowLevelTerm.setStudy(this);
         expectedAEMeddraTerms.add(expectedAEMeddraLowLevelTerm);
     }
     
+    /**
+     * Gets the data entry status.
+     *
+     * @return the data entry status
+     */
     @Column(name="data_entry_status")
     public Boolean getDataEntryStatus(){
     	return dataEntryStatus;
     }
+    
+    /**
+     * Sets the data entry status.
+     *
+     * @param dataEntryStatus the new data entry status
+     */
     public void setDataEntryStatus(Boolean dataEntryStatus) {
 		this.dataEntryStatus = dataEntryStatus;
 	}
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -1317,6 +2162,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
     	boolean found = false;
@@ -1347,9 +2195,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     /**
-     * This method checks against the ASAEL, and tells whether the AE term is 
+     * This method checks against the ASAEL, and tells whether the AE term is
      * expected.
-     * @param aeTerm
+     *
+     * @param aeTerm the ae term
      * @return true , if expected term, false otherwise.
      */
     public boolean isExpectedAdverseEventTerm(DomainObject aeTerm) {
@@ -1364,6 +2213,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	return false; 
     }
 
+    /**
+     * Check expected ae uniqueness.
+     *
+     * @return the abstract expected ae
+     */
     @SuppressWarnings("unchecked")
 	public AbstractExpectedAE checkExpectedAEUniqueness() {
         List expectedAEs = null;
@@ -1389,6 +2243,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     
+    /**
+     * Gets the unique study organizations.
+     *
+     * @return the unique study organizations
+     */
     @Transient
     public List<StudyOrganization> getUniqueStudyOrganizations() {
         Set<Organization> set = new HashSet<Organization>();
@@ -1402,6 +2261,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return list;
     }
 
+    /**
+     * Synchronize expected a es.
+     */
     @Transient
     /*
     *
@@ -1415,18 +2277,38 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         // todo
     }
 
+    /**
+     * Gets the verbatim first.
+     *
+     * @return the verbatim first
+     */
     public Boolean getVerbatimFirst() {
         return verbatimFirst;
     }
 
+    /**
+     * Sets the verbatim first.
+     *
+     * @param verbatimFirst the new verbatim first
+     */
     public void setVerbatimFirst(Boolean verbatimFirst) {
         this.verbatimFirst = verbatimFirst;
     }
 
+    /**
+     * Gets the other treatment assignment.
+     *
+     * @return the other treatment assignment
+     */
     public String getOtherTreatmentAssignment() {
         return otherTreatmentAssignment;
     }
 
+    /**
+     * Sets the other treatment assignment.
+     *
+     * @param otherTreatmentAssignment the new other treatment assignment
+     */
     public void setOtherTreatmentAssignment(String otherTreatmentAssignment) {
         this.otherTreatmentAssignment = otherTreatmentAssignment;
     }

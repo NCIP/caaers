@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+ 
 /**
  * This interface must be implemented by all those sub fields of Study, which are to be wrapped by
  * LasyList. Infact the StudyChildInstantiateFactory will create the new StudyChild instance, then
@@ -10,7 +11,18 @@ package gov.nih.nci.cabig.caaers.domain;
  * @since 1.0
  */
 public interface StudyChild {
+    
+    /**
+     * Sets the study.
+     *
+     * @param study the new study
+     */
     public void setStudy(Study study);
 
+    /**
+     * Gets the study.
+     *
+     * @return the study
+     */
     public Study getStudy();
 }

@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
  * This class represents the ConcomitantMedication domain object associated with the Adverse event
  * report.
@@ -20,14 +21,22 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_concomitant_medications_id")})
 public class ConcomitantMedication extends AbstractExpeditedReportCollectionElementChild {
+    
+    /** The agent name. */
     private String agentName;
 
+    /** The start date. */
     private DateValue startDate;
 
+    /** The end date. */
     private DateValue endDate;
 
+    /** The still taking medications. */
     private Boolean stillTakingMedications;
 
+    /**
+     * Instantiates a new concomitant medication.
+     */
     public ConcomitantMedication() {
         startDate = new DateValue();
         endDate = new DateValue();
@@ -37,6 +46,11 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
     // //// LOGIC
 
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         return agentName;
@@ -44,14 +58,29 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
 
     // //// BOUND PROPERTIES
 
+    /**
+     * Gets the agent name.
+     *
+     * @return the agent name
+     */
     public String getAgentName() {
         return agentName;
     }
 
+    /**
+     * Sets the agent name.
+     *
+     * @param agentName the new agent name
+     */
     public void setAgentName(String agentName) {
         this.agentName = agentName;
     }
 
+    /**
+     * Gets the start date.
+     *
+     * @return the start date
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
@@ -63,10 +92,20 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
         return startDate;
     }
 
+    /**
+     * Sets the start date.
+     *
+     * @param startDate the new start date
+     */
     public void setStartDate(DateValue startDate) {
         this.startDate = startDate;
     }
 
+    /**
+     * Gets the end date.
+     *
+     * @return the end date
+     */
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
@@ -78,19 +117,40 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
         return endDate;
     }
 
+    /**
+     * Sets the end date.
+     *
+     * @param endDate the new end date
+     */
     public void setEndDate(DateValue endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the still taking medications.
+     *
+     * @return the still taking medications
+     */
     public Boolean getStillTakingMedications() {
         return stillTakingMedications;
     }
 
+    /**
+     * Sets the still taking medications.
+     *
+     * @param stillTakingMedications the new still taking medications
+     */
     public void setStillTakingMedications(Boolean stillTakingMedications) {
         this.stillTakingMedications = stillTakingMedications;
     }
 
 
+    /**
+     * Creates the concomitant medication.
+     *
+     * @param studyParticipantConcomitantMedication the study participant concomitant medication
+     * @return the concomitant medication
+     */
     public static ConcomitantMedication createConcomitantMedication(StudyParticipantConcomitantMedication studyParticipantConcomitantMedication) {
         if (studyParticipantConcomitantMedication != null) {
             ConcomitantMedication saeReportConcomitantMedication = copy(studyParticipantConcomitantMedication);
@@ -100,6 +160,12 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
 
     }
 
+    /**
+     * Copy.
+     *
+     * @param source the source
+     * @return the concomitant medication
+     */
     private static ConcomitantMedication copy(Object source) {
         ConcomitantMedication saeReportConcomitantMedication = new ConcomitantMedication();
         BeanUtils.copyProperties(source, saeReportConcomitantMedication, new String[]{"id", "gridId","version", "report"});
@@ -107,11 +173,19 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
         return saeReportConcomitantMedication;
     }
 
+    /**
+     * Copy.
+     *
+     * @return the concomitant medication
+     */
     public ConcomitantMedication copy() {
         return copy(this);
 
     }
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,6 +202,9 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

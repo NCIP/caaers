@@ -12,15 +12,22 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+ 
 /**
+ * The Class ExpectedAECtcTerm.
+ *
  * @author Ion C. Olaru
  */
 @Entity
 @DiscriminatorValue("ctep")
 public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
 
+    /** The other meddra term. */
     private LowLevelTerm otherMeddraTerm;
     
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE#getTerm()
+     */
     @OneToOne
     @JoinColumn(name = "term_id")
     @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.LOCK, CascadeType.EVICT})
@@ -29,6 +36,9 @@ public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
         return super.getTerm();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE#getFullName()
+     */
     @Override
     @Transient
     public String getFullName() {
@@ -37,6 +47,8 @@ public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
     }
 
     /**
+     * Gets the ctc term.
+     *
      * @return CtcTerm
      */
     @Transient
@@ -45,6 +57,8 @@ public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
     }
 
     /**
+     * Sets the ctc term.
+     *
      * @param ctcTerm The CTC term
      */
     @Transient
@@ -52,17 +66,26 @@ public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
         super.setTerm(ctcTerm);
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE#copy()
+     */
     @Override
     public ExpectedAECtcTerm copy() {
         return (ExpectedAECtcTerm) super.copy();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE#isMedDRA()
+     */
     @Override
     @Transient
     public boolean isMedDRA() {
     	return false;
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE#isOtherRequired()
+     */
     @Override
     @Transient
     public boolean isOtherRequired() {
@@ -70,12 +93,22 @@ public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
         return getTerm().isOtherRequired();
     }
 
+    /**
+     * Gets the other meddra term.
+     *
+     * @return the other meddra term
+     */
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "low_level_term_id")
     public LowLevelTerm getOtherMeddraTerm() {
         return otherMeddraTerm;
     }
 
+    /**
+     * Sets the other meddra term.
+     *
+     * @param otherMeddraTerm the new other meddra term
+     */
     public void setOtherMeddraTerm(LowLevelTerm otherMeddraTerm) {
         this.otherMeddraTerm = otherMeddraTerm;
     }

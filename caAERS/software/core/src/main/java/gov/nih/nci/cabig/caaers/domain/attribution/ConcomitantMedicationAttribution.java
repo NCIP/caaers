@@ -7,12 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+ 
 /**
+ * The Class ConcomitantMedicationAttribution.
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @DiscriminatorValue("CM")
 public class ConcomitantMedicationAttribution extends AdverseEventAttribution<ConcomitantMedication> {
+    
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+     */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override
@@ -20,6 +27,9 @@ public class ConcomitantMedicationAttribution extends AdverseEventAttribution<Co
         return super.getCause();
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#copy()
+     */
     @Override
     public ConcomitantMedicationAttribution copy() {
         return super.copy();

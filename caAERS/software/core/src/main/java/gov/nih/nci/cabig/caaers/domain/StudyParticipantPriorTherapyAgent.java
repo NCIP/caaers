@@ -13,8 +13,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
+ 
 /**
- * This class represents the SturyParticipantPriorTherapyAgent domain object associated with the StudyParticipantAssignment
+ * This class represents the SturyParticipantPriorTherapyAgent domain object associated with the StudyParticipantAssignment.
  *
  * @author Sameer Sawant
  */
@@ -22,12 +23,20 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "spa_prior_therapy_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_spa_prior_therapy_agent_id")})
 public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObject {
+    
+    /** The prior therapy. */
     private StudyParticipantPriorTherapy priorTherapy;
 
+    /** The chemo agent. */
     private ChemoAgent chemoAgent;
 
     // //// LOGIC
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Transient
     public String getName() {
         if (getChemoAgent() != null) {
@@ -39,28 +48,51 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
 
     // //// BOUND PROPERTIES
 
+    /**
+     * Gets the chemo agent.
+     *
+     * @return the chemo agent
+     */
     @ManyToOne
     @JoinColumn(name = "chemo_agent_id")
     public ChemoAgent getChemoAgent() {
         return chemoAgent;
     }
 
+    /**
+     * Sets the chemo agent.
+     *
+     * @param agent the new chemo agent
+     */
     public void setChemoAgent(ChemoAgent agent) {
         this.chemoAgent = agent;
     }
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
+    /**
+     * Gets the prior therapy.
+     *
+     * @return the prior therapy
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "spa_prior_therapy_id", insertable = false, updatable = false, nullable = false)
     public StudyParticipantPriorTherapy getPriorTherapy() {
         return priorTherapy;
     }
 
+    /**
+     * Sets the prior therapy.
+     *
+     * @param priorTherapy the new prior therapy
+     */
     public void setPriorTherapy(StudyParticipantPriorTherapy priorTherapy) {
         this.priorTherapy = priorTherapy;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -71,6 +103,9 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -87,6 +122,12 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
     }
 
 
+    /**
+     * Creates the assignment prior therapy agent.
+     *
+     * @param priorTherapyAgent the prior therapy agent
+     * @return the study participant prior therapy agent
+     */
     public static StudyParticipantPriorTherapyAgent createAssignmentPriorTherapyAgent(PriorTherapyAgent priorTherapyAgent) {
         if (priorTherapyAgent != null) {
             StudyParticipantPriorTherapyAgent studyParticipantPriorTherapyAgent = new StudyParticipantPriorTherapyAgent();

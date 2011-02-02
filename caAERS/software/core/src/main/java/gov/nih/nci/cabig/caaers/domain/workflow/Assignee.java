@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
 /**
  * This class represents the Persons assigned to a Task. They will receive a Notification once as task is created and that task is assigned
  * to them. It will also appear in their Inbox (task lists) when they login into the system.
@@ -28,16 +29,39 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "SEQ_WF_ASSIGNEES_ID")})
 public abstract class Assignee extends AbstractMutableDomainObject {
 	
+	/** The name. */
 	protected String name;
 	
+	/**
+	 * Checks if is role.
+	 *
+	 * @return true, if is role
+	 */
 	@Transient
 	public abstract boolean isRole();
+	
+	/**
+	 * Checks if is user.
+	 *
+	 * @return true, if is user
+	 */
 	@Transient
 	public abstract boolean isUser();
 	
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}

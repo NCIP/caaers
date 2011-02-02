@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+ 
 /**
  * This class represents the saved searches in the advancedsearch page.
  * @author Sameer Sawant
@@ -19,19 +20,13 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_searches_id") })
 public class Search extends AbstractMutableDomainObject{
 	
-	/**
-	 * This is the loginId of the user who created the search
-	 */
+	/** This is the loginId of the user who created the search. */
 	private String loginId;
 	
-	/**
-	 * This is the name of the saved search
-	 */
+	/** This is the name of the saved search. */
 	private String name;
 	
-	/**
-	 * This is the optional description for the saved search
-	 */
+	/** This is the optional description for the saved search. */
 	private String description;
 	
 	/**
@@ -45,6 +40,8 @@ public class Search extends AbstractMutableDomainObject{
 	private Date createdDate;
 
 	/**
+	 * Gets the login id.
+	 *
 	 * @return the loginId
 	 */
 	public String getLoginId() {
@@ -52,6 +49,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Sets the login id.
+	 *
 	 * @param loginId the loginId to set
 	 */
 	public void setLoginId(String loginId) {
@@ -59,6 +58,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Gets the name.
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -66,6 +67,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Sets the name.
+	 *
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
@@ -73,6 +76,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Gets the description.
+	 *
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -80,6 +85,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Sets the description.
+	 *
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -87,6 +94,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Gets the criteria xml.
+	 *
 	 * @return the criteria
 	 */
 	public String getCriteriaXml() {
@@ -94,13 +103,17 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
-	 * @param criteria the criteria to set
+	 * Sets the criteria xml.
+	 *
+	 * @param criteriaXml the new criteria xml
 	 */
 	public void setCriteriaXml(String criteriaXml) {
 		this.criteriaXml = criteriaXml;
 	}
 
 	/**
+	 * Gets the created date.
+	 *
 	 * @return the createdDate
 	 */
 	public Date getCreatedDate() {
@@ -108,6 +121,8 @@ public class Search extends AbstractMutableDomainObject{
 	}
 
 	/**
+	 * Sets the created date.
+	 *
 	 * @param createdDate the createdDate to set
 	 */
 	public void setCreatedDate(Date createdDate) {
