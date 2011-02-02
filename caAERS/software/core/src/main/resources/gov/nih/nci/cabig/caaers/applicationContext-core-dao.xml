@@ -432,7 +432,11 @@ This applicationContext contains the definition of the DAOs
                 <prop key="hibernate.format_sql">false</prop>
                 <prop key="hibernate.use_sql_comments">false</prop>
                 <prop key="hibernate.generate_statistics">false</prop>
-                
+
+                <!-- caching -->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+
             </props>
         </property>
     </bean>

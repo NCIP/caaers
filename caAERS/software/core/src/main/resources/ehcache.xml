@@ -277,7 +277,7 @@
             timeToLiveSeconds="120"
             overflowToDisk="true"
             maxElementsOnDisk="10000000"
-            diskPersistent="false"
+            diskPersistent="true"
             diskExpiryThreadIntervalSeconds="120"
             memoryStoreEvictionPolicy="LRU"
             />
@@ -288,9 +288,61 @@
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
            timeToLiveSeconds="1200"
-           diskPersistent="false"
+           diskPersistent="true"
            overflowToDisk="false"/>      
         
-                
-          
+	<cache name="gov.nih.nci.cabig.caaers.domain.CtcTerm"
+           maxElementsInMemory="10000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="true"
+           overflowToDisk="false"/>
+
+	<cache name="gov.nih.nci.cabig.caaers.domain.CtcTerm.contextualGrades"
+           maxElementsInMemory="50000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="true"
+           overflowToDisk="false"/>
+
+	<cache name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm"
+           maxElementsInMemory="100000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="true"
+           overflowToDisk="false"/>
+
+	<cache name="gov.nih.nci.cabig.caaers.domain.CtcTerm.category"
+           maxElementsInMemory="1000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="true"
+           overflowToDisk="false"/>
+
+	<cache name="gov.nih.nci.cabig.caaers.domain.CtcCategory.ctc"
+           maxElementsInMemory="1000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="true"
+           overflowToDisk="false"/>
+
+	<cache name="gov.nih.nci.cabig.caaers.domain.CtcCategory"
+           maxElementsInMemory="1000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LRU"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           diskPersistent="true"
+           overflowToDisk="false"/>
+
 </ehcache>

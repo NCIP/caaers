@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -22,6 +24,7 @@ import org.hibernate.annotations.CascadeType;
  * @author Rhett Sutphin
  */
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class CtcTerm extends AbstractImmutableDomainObject {
 
     private String term;
@@ -100,6 +103,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     }
 
     @ManyToOne
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public CtcCategory getCategory() {
         return category;
     }
@@ -119,6 +123,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     @OneToMany(mappedBy = "term")
     @Cascade(value={CascadeType.ALL})
     @OrderBy("grade")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public List<CtcGrade> getContextualGrades() {
         return contextualGrades;
     }

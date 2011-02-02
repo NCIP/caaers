@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import javax.persistence.OrderBy;
  * @author Rhett Sutphin
  */
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class CtcCategory extends AbstractImmutableDomainObject {
 
     private String name;
@@ -34,6 +37,7 @@ public class CtcCategory extends AbstractImmutableDomainObject {
 
     @ManyToOne
     @JoinColumn(name = "version_id")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     public Ctc getCtc() {
         return ctc;
     }
