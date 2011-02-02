@@ -181,7 +181,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Map<ReviewStatus, Boolean> allowedReviewStatusMap = new HashMap<ReviewStatus, Boolean>();
 		try{
 
-            List<UserGroupType> userGroupTypes = userRepository.getUserGroups(loginId); //CAAERS-4586
+            List<UserGroupType> userGroupTypes = userRepository.getUserByLoginName(loginId).getUserGroupTypes(); //CAAERS-4586
             //first fetch all the possible workflow configs.
             List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
             for(WorkflowConfig wc : workflowConfigList){

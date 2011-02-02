@@ -71,11 +71,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		//save the details in caAERS
 		investigator = investigatorDao.merge(investigator);
 	    
-		//create the csm entries
-		if(investigator.getAllowedToLogin()){
-			caaersSecurityFacade.createOrUpdateCSMUser(investigator, changeURL);
-		}
-		
 		return investigator;
 	}
 	

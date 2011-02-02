@@ -496,25 +496,6 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
         getJdbcTemplate().batchUpdate(sql, setter);
     }
    
-    
-    /**
-     * This method will provision Organizations and Studies into CSM for a given user.
-     */
-    @SuppressWarnings("unchecked")
-	protected void provisionExistingUsers(CaaersDataMigrationContext context){
-    	List<Map> csmUsers = getAllCsmUsers();
-    	User user = null;
-    	for (Map map : csmUsers) {
-			String loginName = map.get("login_name").toString();
-			user = userDao.getByLoginId(loginName);
-			if(user != null){
-				caaersSecurityFacade.provisionUser(user);
-				userDao.flush();
-			}
-    	}
-    }
-    
-    
     /**
      * Deletes all the Study Personnel records with old roleCode.
      */

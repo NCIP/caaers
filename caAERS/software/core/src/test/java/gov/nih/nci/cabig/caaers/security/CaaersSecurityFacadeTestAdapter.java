@@ -35,9 +35,6 @@ public class CaaersSecurityFacadeTestAdapter implements CaaersSecurityFacade {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public List<String> getAccessibleProtectionElements(String loginId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public List<IndexEntry> getAccessibleStudyIds(String loginId) {
         return new ArrayList<IndexEntry>();  //To change body of implemented methods use File | Settings | File Templates.
@@ -55,28 +52,9 @@ public class CaaersSecurityFacadeTestAdapter implements CaaersSecurityFacade {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public void clearUserCache(String userName) {
         //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void provisionStudies(StudyPersonnel studyPersonnel) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void provisionStudies(StudyInvestigator studyInvestigator) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateUser(User user, String changeURL) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships) {

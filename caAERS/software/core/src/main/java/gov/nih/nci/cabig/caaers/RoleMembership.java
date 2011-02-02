@@ -24,7 +24,20 @@ public class RoleMembership {
         studyIdentifiers = new HashSet<String>();
     }
 
+    public boolean isGlobalScoped(){
+       return UserGroupType.getUnScopedRoles().contains(role);
+    }
+
+    public boolean isStudyScoped(){
+        return UserGroupType.getStudyScopedRoles().contains(role);
+    }
+
+    public boolean isSiteScoped(){
+        return UserGroupType.getSiteScopedRoles().contains(role);
+    }
+
     public boolean isActive(){
+      if(isGlobalScoped()) return true;
       return  allSite || allStudy || (!organizationNCICodes.isEmpty() ) || (!studyIdentifiers.isEmpty());
     }
     public boolean isAllSite() {

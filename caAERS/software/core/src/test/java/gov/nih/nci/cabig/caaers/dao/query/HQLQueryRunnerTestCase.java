@@ -49,6 +49,20 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
     }
 
 
+    public void testOrgIdFetching(){
+
+
+        StringBuilder hql = new StringBuilder("select ss.organization.id from StudySite ss join ss.study s join s.studyOrganizations so where so.organization.id in (:orgIdSet) and so.class in ('SFS', 'SCC') ");
+        HQLQuery query = new HQLQuery(hql.toString());
+        query.getParameterMap().put("orgIdSet", Arrays.asList(new Integer[]{6}));
+
+        List<Integer> resultList = (List<Integer>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new TreeSet(resultList).size());
+        System.out.println(new TreeSet(resultList));
+    }
+
+
     public void testStudyIDFetcher2(){
 
 
@@ -287,13 +301,6 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
     	
     }
     
-    
-    public void testProvisionRs(){
-    	CaaersSecurityFacadeImpl securityFacade = (CaaersSecurityFacadeImpl)getDeployedApplicationContext().getBean("caaersSecurityFacade");
-    	ResearchStaffDao researchStaffDao = (ResearchStaffDao)getDeployedApplicationContext().getBean("researchStaffDao");
-    	ResearchStaff rs = researchStaffDao.getByLoginId("whosbaum@yahoo.com");
-    	securityFacade.provisionUser(rs);
-    }
 
 
     public void testHQL(){

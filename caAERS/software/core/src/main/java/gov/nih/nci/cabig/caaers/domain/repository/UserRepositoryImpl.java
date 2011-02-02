@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao._UserDao;
 import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.security.CSMCacheManager;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
@@ -77,6 +78,34 @@ public class UserRepositoryImpl implements UserRepository {
 		}
 	}
 
+
+    /*
+     * (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade#provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User, java.util.List)
+     */
+    public void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships) {
+
+        //Fetch all the existing groups of the Given User.
+        List<UserGroupType> userGroups = getUserGroups(csmUser.getUserId().toString());
+
+        //Erase all the existing SuiteRoleMemberships of the User
+        ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+        for(UserGroupType group : userGroups){
+            session.deleteRole(SuiteRole.getByCsmName(group.getCsmName()));
+        }
+        //Provision the newly provided SuiteRoleMemberships for the User in CSM.
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(roleMemberships)){
+            for(SuiteRoleMembership roleMembership : roleMemberships){
+                session.replaceRole(roleMembership);
+            }
+        }
+
+
+        //user information got updated, so remove from cache.
+        CSMCacheManager.removeUserFromCache(csmUser.getLoginName());
+    }
+
+
     /**
      * Will fetch the user from the DB, along with the CSM related information properly populated. 
      * @param loginName
@@ -84,46 +113,64 @@ public class UserRepositoryImpl implements UserRepository {
      */
     @Transactional(readOnly = true)
 	public _User getUserByLoginName(String loginName) {
+
+        //fetch the fresh user. 
 		_User _user = userDao.getByLoginName(loginName);
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(loginName);
-        if(_user == null && csmUser == null) return null; // may be login-id supplied is incorrect.
-        if(csmUser == null){
-            logger.error("CSM User with loginName [" + loginName +"] don't exist, a data integrity issue as user exist in caAERS");
-            throw new CaaersSystemException("caAERS user exists and relevant CSM user does not exist : Data Integrity issue");
-        }
-        if(_user == null){
-            _user = new _User(csmUser);
+
+       //fetch the CSM related details from Cache if the user is present there.
+        _User userFromCache = CSMCacheManager.getUserFromCache(loginName);
+        if(userFromCache != null){
+            //obtain csm information from cache. 
+           _user.setCsmUser(userFromCache.getCsmUser());
+           _user.getRoleMembershipMap().putAll(userFromCache.getRoleMembershipMap());
+            
         }else{
-            _user.setCsmUser(csmUser);
-        }
+              //fetch CSM information
+            gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(loginName);
+            if(_user == null && csmUser == null) return null; // may be login-id supplied is incorrect.
+            if(csmUser == null){
+                logger.error("CSM User with loginName [" + loginName +"] don't exist, a data integrity issue as user exist in caAERS");
+                throw new CaaersSystemException("caAERS user exists and relevant CSM user does not exist : Data Integrity issue");
+            }
+            if(_user == null){
+                _user = new _User(csmUser);
+            }else{
+                _user.setCsmUser(csmUser);
+            }
 
-        //populate the role membership
-        List<UserGroupType> groups = getUserGroups(csmUser.getUserId().toString());
-        if(!CollectionUtils.isEmpty(groups)){
-           ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-           for(UserGroupType role : groups){
-               SuiteRole suiteRole = SuiteRole.getByCsmName(role.getCsmName());
-               if(!suiteRole.isScoped()){
-                     _user.findRoleMembership(role);
-               }else{
-                   SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
-                   RoleMembership roleMembership = _user.findRoleMembership(role);
-                   if(suiteRoleMembership.isAllSites()){
-                       roleMembership.setAllSite(suiteRoleMembership.isAllSites());
+            //populate the role membership
+            List<UserGroupType> groups = getUserGroups(csmUser.getUserId().toString());
+            if(!CollectionUtils.isEmpty(groups)){
+               ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
+               for(UserGroupType role : groups){
+                   SuiteRole suiteRole = SuiteRole.getByCsmName(role.getCsmName());
+                   if(!suiteRole.isScoped()){
+                         _user.findRoleMembership(role);
                    }else{
-                       roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
-                   }
-                   if(suiteRole.isStudyScoped()){
-                      if(suiteRoleMembership.isAllStudies()){
-                            roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
+                       SuiteRoleMembership suiteRoleMembership = session.getProvisionableRoleMembership(suiteRole);
+                       RoleMembership roleMembership = _user.findRoleMembership(role);
+                       if(suiteRoleMembership.isAllSites()){
+                           roleMembership.setAllSite(suiteRoleMembership.isAllSites());
                        }else{
-                           roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
+                           roleMembership.getOrganizationNCICodes().addAll(suiteRoleMembership.getSiteIdentifiers());
                        }
-                   }
+                       if(suiteRole.isStudyScoped()){
+                          if(suiteRoleMembership.isAllStudies()){
+                                roleMembership.setAllStudy(suiteRoleMembership.isAllStudies());
+                           }else{
+                               roleMembership.getStudyIdentifiers().addAll(suiteRoleMembership.getStudyIdentifiers());
+                           }
+                       }
 
+                   }
                }
-           }
+            }
+
+            //add the user into the cache.
+            CSMCacheManager.addUserToCache(loginName, _user);
+
         }
+
 
 		return _user;
 	}	

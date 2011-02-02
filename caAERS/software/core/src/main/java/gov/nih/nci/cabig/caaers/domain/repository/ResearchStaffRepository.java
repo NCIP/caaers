@@ -89,17 +89,8 @@ public class ResearchStaffRepository {
 			throw new CaaersSystemException("Failed to associte researchstaff to all studies", e);
 		}
     	
-		//create user groups  - Note : RemoteResearchStaff fetched from PO will not have a loginId/Username.  
-		if(StringUtils.isNotEmpty(researchStaff.getLoginId())){
-			caaersSecurityFacade.createOrUpdateCSMUser(researchStaff, changeURL);
-		}
     }
     
-    //TODO:MONISH -- No longer need this method. Will have to be removed.
-    public void unlockResearchStaff(ResearchStaff researchStaff) {
-//    	researchStaff.unlock();
-//    	researchStaffDao.save(researchStaff);
-    }
     
     public void evict(ResearchStaff researchStaff){
     	researchStaffDao.evict(researchStaff);

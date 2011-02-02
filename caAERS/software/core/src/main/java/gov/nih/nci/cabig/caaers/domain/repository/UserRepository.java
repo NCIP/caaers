@@ -5,6 +5,7 @@ import java.util.List;
 import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
 public interface UserRepository {
 
@@ -26,6 +27,13 @@ public interface UserRepository {
 
     public List<_User> search(UserQuery query);
 
+
+    /**
+     * This method provisions all the SuiteRoleMemebrships for a given User in CSM.
+     * @param csmUser
+     * @param roleMemberships
+     */
+    void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships);
     
 
 }
