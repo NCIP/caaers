@@ -292,7 +292,7 @@
            overflowToDisk="false"/>      
         
 	<cache name="gov.nih.nci.cabig.caaers.domain.CtcTerm"
-           maxElementsInMemory="10000"
+           maxElementsInMemory="5000"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
@@ -301,7 +301,7 @@
            overflowToDisk="false"/>
 
 	<cache name="gov.nih.nci.cabig.caaers.domain.CtcTerm.contextualGrades"
-           maxElementsInMemory="50000"
+           maxElementsInMemory="15000"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
@@ -310,7 +310,7 @@
            overflowToDisk="false"/>
 
 	<cache name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm"
-           maxElementsInMemory="100000"
+           maxElementsInMemory="1000000"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
@@ -319,7 +319,7 @@
            overflowToDisk="false"/>
 
 	<cache name="gov.nih.nci.cabig.caaers.domain.CtcTerm.category"
-           maxElementsInMemory="1000"
+           maxElementsInMemory="500"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
@@ -328,7 +328,7 @@
            overflowToDisk="false"/>
 
 	<cache name="gov.nih.nci.cabig.caaers.domain.CtcCategory.ctc"
-           maxElementsInMemory="1000"
+           maxElementsInMemory="10"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
@@ -337,7 +337,7 @@
            overflowToDisk="false"/>
 
 	<cache name="gov.nih.nci.cabig.caaers.domain.CtcCategory"
-           maxElementsInMemory="1000"
+           maxElementsInMemory="500"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
            timeToIdleSeconds="1200"
