@@ -108,9 +108,11 @@ function toggleDeviceOrOther(index) {
             _field_input.value = 'Begin typing here...';
             _field_input.disable();
             _field.clear();
+/*
             $(_fieldHelper.id + '.type').innerHTML = '';
             $(_fieldHelper.id + '.commonName').innerHTML = '';
             $(_fieldHelper.id + '.brandName').innerHTML = '';
+*/
         }
         if (_otherField) _otherField.show();
         if (_fieldHelper) _fieldHelper.hide();

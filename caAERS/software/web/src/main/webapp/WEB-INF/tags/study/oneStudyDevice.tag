@@ -43,9 +43,11 @@
                                     var propertyName = "study.studyDevices[${index}].device";
                                     $(propertyName).value = selectedChoice.id;
                                     var _fieldHelper = 'study.studyDevices[' + ${index} + '].device.autocompleter';
-                                    if (_fieldHelper + '.commonName') $(_fieldHelper + '.commonName').innerHTML = selectedChoice.commonName; 
-                                    if (_fieldHelper + '.brandName') $(_fieldHelper + '.brandName').innerHTML = selectedChoice.brandName;
-                                    if (_fieldHelper + '.type') $(_fieldHelper + '.type').innerHTML = selectedChoice.type;
+
+                                    if (_fieldHelper + '.commonName.i') $(_fieldHelper + '.commonName.i').value = selectedChoice.commonName;
+                                    if (_fieldHelper + '.brandName.i') $(_fieldHelper + '.brandName.i').value = selectedChoice.brandName;
+                                    if (_fieldHelper + '.type.i') $(_fieldHelper + '.type.i').value = selectedChoice.type;
+
                                     updateDeviceBoxTitle("titleOf_StudyDevice_${index}", selectedChoice.commonName, selectedChoice.brandName, selectedChoice.type);
                                 }
                             }
@@ -63,15 +65,15 @@
     <div id="study.studyDevices[${index}].device.autocompleter" style="display:${command.study.studyDevices[index].otherDevice ? 'none' : 'inline'};">
         <div class="row">
             <div class="label">Common name</div>
-            <div class="value" id="study.studyDevices[${index}].device.autocompleter.commonName">${command.study.studyDevices[index].device.commonName}</div>
+            <div class="value" id="study.studyDevices[${index}].device.autocompleter.commonName"><input id="study.studyDevices[${index}].device.autocompleter.commonName.i" type="text" size="30" value="${command.study.studyDevices[index].device.commonName}" disabled></div>
         </div>
         <div class="row">
             <div class="label">Brand name</div>
-            <div class="value" id="study.studyDevices[${index}].device.autocompleter.brandName">${command.study.studyDevices[index].device.brandName}</div>
+            <div class="value" id="study.studyDevices[${index}].device.autocompleter.brandName"><input id="study.studyDevices[${index}].device.autocompleter.brandName.i" type="text" size="30" value="${command.study.studyDevices[index].device.brandName}" disabled></div>
         </div>
         <div class="row">
             <div class="label">Device type</div>
-            <div class="value" id="study.studyDevices[${index}].device.autocompleter.type">${command.study.studyDevices[index].device.type}</div>
+            <div class="value" id="study.studyDevices[${index}].device.autocompleter.type"><input id="study.studyDevices[${index}].device.autocompleter.type.i" type="text" size="30" value="${command.study.studyDevices[index].device.type}" disabled></div>
         </div>
     </div>
 
