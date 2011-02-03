@@ -327,8 +327,6 @@ public class DetailsTab extends StudyTab {
             command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
         }
         
-        command.getStudyRepository().synchronizeStudyPersonnel(command.getStudy());
-
     }
 
     public CtcDao getCtcDao() {

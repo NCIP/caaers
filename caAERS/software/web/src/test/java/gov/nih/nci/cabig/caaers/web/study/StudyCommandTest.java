@@ -268,7 +268,6 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
         Study s = Fixtures.createStudy("test");
 
         command.getStudy().setId(5);
-        studyRepository.synchronizeStudyPersonnel(command.getStudy());
         EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(s);
         EasyMock.expect(studyDao.initialize(s)).andReturn(s);
         replayMocks();

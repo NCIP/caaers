@@ -87,8 +87,6 @@ class SitesTab extends StudyTab {
             i++;
         }
 
-        command.getStudyRepository().synchronizeStudyPersonnel(command.getStudy());
-
     }
 
     @Override

@@ -512,11 +512,6 @@ public class StudyCommand {
      */
     public void save(){
 
-         //synchronize research staff if study have a valid ID.
-         if(study.getId() != null ){
-             studyRepository.synchronizeStudyPersonnel(study);
-         }
-
         //save the study by merging it.
          Study mergedStudy = studyRepository.merge(study);
          studyDao.initialize(mergedStudy);
