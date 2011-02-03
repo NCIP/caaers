@@ -75,18 +75,23 @@
         </div>
     </div>
 
+    <c:set var="isReadonly" value="${!empty command.study.studyDevices[index].id and
+                            (!empty command.study.studyDevices[index].device or
+                             !empty command.study.studyDevices[index].otherCommonName or
+                             !empty command.study.studyDevices[index].otherBrandName or
+                             !empty command.study.studyDevices[index].otherDeviceType)}"/>
     <div id="study.studyDevices[${index}].otherDevice" style="display:${command.study.studyDevices[index].otherDevice ? 'inline' : 'none'};">
         <div class="row">
             <div class="label">Common name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="30" readonly="${!empty command.study.studyDevices[index].id}" /></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherCommonName" size="30" readonly="${isReadonly}" /></div>
         </div>
         <div class="row">
             <div class="label">Brand name</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherBrandName" size="30" readonly="${!empty command.study.studyDevices[index].id}"/></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherBrandName" size="30" readonly="${isReadonly}"/></div>
         </div>
         <div class="row">
             <div class="label">Device type</div>
-            <div class="value"><ui:text path="study.studyDevices[${index}].otherDeviceType" size="30" readonly="${!empty command.study.studyDevices[index].id}"/></div>
+            <div class="value"><ui:text path="study.studyDevices[${index}].otherDeviceType" size="30" readonly="${isReadonly}"/></div>
         </div>
     </div>
 </td>    
