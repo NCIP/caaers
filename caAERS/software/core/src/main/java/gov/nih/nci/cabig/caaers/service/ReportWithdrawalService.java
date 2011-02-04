@@ -40,6 +40,12 @@ public class ReportWithdrawalService {
 	}
 
 
+    /**
+     * This method will notify any external system of the report being generated.
+     * @param xml
+     * @param report
+     * @throws Exception
+     */
     public void notifyExternalSystems(String xml,Report report) throws Exception {
         List<ReportDelivery> deliveries = report.getExternalSystemDeliveries();
         int reportId = report.getId();

@@ -25,6 +25,9 @@ public class InteroperationServiceImpl implements InteroperationService {
     private String certificateLocation = "/sample.txt";
     private AENotificationFactory aeNotificationFactory;
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.service.InteroperationService#pushToStudyCalendar(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport)
+     */
     public void pushToStudyCalendar(ExpeditedAdverseEventReport aeReport)
             throws CaaersSystemException {
         AeNotification aeNotification = null;
@@ -42,6 +45,9 @@ public class InteroperationServiceImpl implements InteroperationService {
         
     }
 
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.service.InteroperationService#pushToStudyCalendar(gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport)
+     */
     public void pushToStudyCalendar(RoutineAdverseEventReport roReport)
             throws CaaersSystemException {
         AeNotification aeNotification = null;

@@ -17,6 +17,12 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
  */
 public class FreeMarkerService {
 
+	/**
+	 * applyRuntimeReplacementsForReport
+	 * @param rawText
+	 * @param variableMap
+	 * @return
+	 */
 	public String applyRuntimeReplacementsForReport(String rawText, Map<Object, Object> variableMap) {
 	   if(rawText == null) return "";
 	   

@@ -27,8 +27,14 @@ public abstract class AbstractImportServiceImpl {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    /*
-     * This is common for participant and study
+
+    /**
+     * This method migrates all the identifiers from source to destination.
+     * This method is common for participant and study
+     * 
+     * @param destination
+     * @param source
+     * @param studyImportOutcome
      */
     protected void migrateIdentifiers(AbstractIdentifiableDomainObject destination,
                                       AbstractIdentifiableDomainObject source,
@@ -54,7 +60,12 @@ public abstract class AbstractImportServiceImpl {
                 "Identifiers are either Empty or Not Valid");
     }
 
-    // Helpers
+
+    /**
+     * This method returns an organization from caAERS database.
+     * @param organizationName
+     * @return
+     */
     protected Organization getOrganization(String organizationName) {
         Organization organization = organizationDao.getByName(organizationName);
         return organization;

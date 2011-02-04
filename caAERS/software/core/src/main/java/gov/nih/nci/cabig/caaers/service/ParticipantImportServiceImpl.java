@@ -15,6 +15,11 @@ public class ParticipantImportServiceImpl extends AbstractImportServiceImpl {
     private ParticipantRepository participantRepository;
     private ParticipantMigrator participantMigrator;
 
+    /**
+     * This method converts a Participant DTO to Domain Participant and sets it in ParticipantImportOutcome instance.
+     * @param xstreamParticipant
+     * @return
+     */
     public DomainObjectImportOutcome<Participant> importParticipant(Participant xstreamParticipant) {
 
         Participant participant = new Participant();
@@ -27,6 +32,11 @@ public class ParticipantImportServiceImpl extends AbstractImportServiceImpl {
         return participantImportOutcome;
     }
 
+    /**
+     * This method checks for uniqueness of a Participant.
+     * @param participant
+     * @param participantImportOutcome
+     */
     private void participantUniquenessCheck(Participant participant,
                                             DomainObjectImportOutcome<Participant> participantImportOutcome) {
 
