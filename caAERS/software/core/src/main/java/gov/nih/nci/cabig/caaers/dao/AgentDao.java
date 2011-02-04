@@ -13,6 +13,8 @@ import java.util.List;
  * This class implements the Data access related operations for the Agent domain object.
  * 
  * @author Krikor Krumlian
+ * @author Biju Joseph
+ * @author Ion Olaru
  */
 @Transactional(readOnly=true)
 public class AgentDao extends GridIdentifiableDao<Agent> implements MutableDomainObjectDao<Agent> {
@@ -21,6 +23,10 @@ public class AgentDao extends GridIdentifiableDao<Agent> implements MutableDomai
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
+    /**
+     * The domain class this Dao represents in this case an Agent
+     * @return
+     */
     @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Agent> domainClass() {
         return Agent.class;
@@ -70,6 +76,10 @@ public class AgentDao extends GridIdentifiableDao<Agent> implements MutableDomai
         return results.size() > 0 ? results.get(0) : null;
     }
 
+    /**
+     * Will save an Agent into the DB. 
+     * @param o - Agent to save. 
+     */
     @Override
     @Transactional(readOnly = false)
     public void save(Agent o) {

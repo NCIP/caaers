@@ -37,8 +37,7 @@ public class CtcDao extends CaaersDao<Ctc> {
     }
 
     /**
-     * TODO
-     * 
+     * Will retrive the CTC verion 2.
      * @return
      */
     public Ctc getCtcV2() {
@@ -46,14 +45,18 @@ public class CtcDao extends CaaersDao<Ctc> {
     }
 
     /**
-     * TODO
-     * 
-     * @return
+     * Will retrieve the CTC version 3. 
+      * @return
      */
     public Ctc getCtcaeV3() {
         return getById(Ctc.CTC_V3);
     }
 
+    /**
+     * Will retrieve a Ctc object along with its categories.
+     * @param id - DB ID of the  Ctc Object to fetch. 
+     * @return
+     */
     public Ctc getCtcWithCategories(Integer id) {
         String query = "select c from Ctc as c left join fetch c.categories as cats where c.id = ?";
         return (Ctc)getHibernateTemplate().find(query, new Object[] {id}).get(0);

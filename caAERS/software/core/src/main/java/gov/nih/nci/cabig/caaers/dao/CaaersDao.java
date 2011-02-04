@@ -101,6 +101,18 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
+    /**
+     * Will build the sub name query. 
+     * @param subnames   the name fragments to search on
+     * @param extraConditions custom HQL conditions with which to constrain the fragment matches
+     * @param extraParameters  parameters for the custom conditions
+     * @param joins  the join conditions to use
+     * @param params the constraints parameters. 
+     * @param substringMatchProperties  a list of properties of the implementing object which should be matched as
+     *                case-insensitive substrings
+     * @param exactMatchProperties  a list of properties which should be matched as case-insensitive full strings
+     * @return a String representation of the Query
+     */
     protected String buildSubnameQuery( String[] subnames, String extraConditions, List<Object> extraParameters,String joins,List<Object> params,List<String> substringMatchProperties, List<String> exactMatchProperties){
     	 
 
@@ -128,8 +140,17 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
           log.debug("query::" + query.toString());
           return query.toString();
     }
+
     /**
-     * @see findBySubname
+     * Will find the objects, matching the sub names. 
+     * @param subnames   the name fragments to search on
+     * @param extraConditions custom HQL conditions with which to constrain the fragment matches
+     * @param extraParameters  parameters for the custom conditions
+     * @param joins  the join conditions to use
+     * @param substringMatchProperties  a list of properties of the implementing object which should be matched as
+     *                case-insensitive substrings
+     * @param exactMatchProperties  a list of properties which should be matched as case-insensitive full strings
+     * @return
      */
     @SuppressWarnings("unchecked")
     protected List<T> findBySubname(String[] subnames, String extraConditions, List<Object> extraParameters, List<String> substringMatchProperties, List<String> exactMatchProperties, String joins) {
@@ -145,9 +166,16 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
-   
-
-  
+    /**
+     * Will build the sub name query.
+     * @param subname   the name fragments to search on
+     * @param query the base query to use
+     * @param params the constraints parameters.
+     * @param substringMatchProperties  a list of properties of the implementing object which should be matched as
+     *                case-insensitive substrings
+     * @param exactMatchProperties  a list of properties which should be matched as case-insensitive full strings
+     * @param includeObjectReference - if true, the referenced objects are prefetched. 
+     */
     private void buildSubnameQuery(String subname, StringBuilder query, List<Object> params,
                     List<String> substringMatchProperties, List<String> exactMatchProperties,
                     boolean includeObjectReference) {
@@ -187,6 +215,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         query.append(')');
     }
 
+    /**
+     * Will check if the input list is empty or not
+     * @param properties - The list to be verified for emptyness
+     * @return   true if empty, false otherwise. 
+     */
     private boolean hasAny(List<String> properties) {
         return properties != null && properties.size() > 0;
     }
@@ -333,12 +366,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         return dateFormat.parse(date);
     }
-    
-    
-    
-    /*
-     * Only used for import , using this in any other instance might introduce confusion
-     * 
+
+
+    /**
+     * Will clear-off the content in the current Hibernate Session
+     * @see org.hibernate.Session
      */
     @Transactional(readOnly = false)
     public void clearSession() {
@@ -353,6 +385,12 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                         + session.getStatistics().getCollectionCount());
     }
 
+
+    /**
+     * Will retrive all those domain objects that this DAO is respresenting from the DB. 
+     * @param sortCriteria
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected List<T> findAll(String sortCriteria) {
 
@@ -368,16 +406,22 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
+    /**
+     * Will execute the query and return the results. 
+     * @param query - An AbstractQuery instance. 
+     * @return - List of objects that is fetched by the Query. 
+     */
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
     	return search(query, null, null);
     }
 
     /**
-     * @param query
-     * @param firstResult can be null.
-     * @param maxResults can be null.
-     * @return
+     * A paginated query. 
+     * @param query - The query to be executed. 
+     * @param firstResult - The starting index
+     * @param maxResults - The number of objects to be returned. 
+     * @return - A list of objects returned by the query, matching the pagination criteria. 
      */
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query, final Integer firstResult, final Integer maxResults) {
@@ -437,6 +481,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     		query.setMaxResults(maxResults);
 	}
 
+    /**
+     * Will execute the query and return the results.
+     * @param query - An AbstractQuery instance.
+     * @return - List of objects that is fetched by the Query.
+     */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {
 		String queryString = query.getQueryString();

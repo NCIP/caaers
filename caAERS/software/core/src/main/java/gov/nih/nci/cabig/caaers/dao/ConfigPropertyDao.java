@@ -9,12 +9,17 @@ import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 
 /**
+ * Will perform the CURD operations on ConfigProperty domain object. 
  * @author Biju Joseph
  *
  */
 @Transactional
 public class ConfigPropertyDao extends CaaersDao<ConfigProperty>{
-	
+
+    /**
+     *  The domain class this Dao represents in this case ConfigProperty
+     * @return
+     */
 	@Override
 	@Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
 	public Class<ConfigProperty> domainClass() {
@@ -23,7 +28,7 @@ public class ConfigPropertyDao extends CaaersDao<ConfigProperty>{
 	
 	/**
 	 * Lists all ConfigProperty available against the {@link ConfigPropertyType}
-	 * @param type
+	 * @param type   - A ConfigPropertyType
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -34,7 +39,8 @@ public class ConfigPropertyDao extends CaaersDao<ConfigProperty>{
 	
 	/**
 	 * Lists all ConfigProperty available against the {@link ConfigPropertyType}
-	 * @param type
+	 * @param type The type of the ConfigProperty
+     * @param code - ConfigProperty code. 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -47,8 +53,7 @@ public class ConfigPropertyDao extends CaaersDao<ConfigProperty>{
 	}
 	
 	/**
-	 * Lists all ConfigProperty 
-	 * @param type
+	 * Lists all ConfigProperty available in the DB.  
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

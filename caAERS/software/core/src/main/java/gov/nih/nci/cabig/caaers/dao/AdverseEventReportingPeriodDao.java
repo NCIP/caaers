@@ -44,7 +44,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     /**
      * Save or update the adverse event reporting periods in the db.
      * 
-     * @param The adverse event reporting period.
+     * @param reportingPeriod - An adverse event reporting period.
      */
     @Transactional(readOnly = false)
     public void save(final AdverseEventReportingPeriod reportingPeriod) {
@@ -55,41 +55,61 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     /**
      * Save or update the adverse event reporting periods in the db.
      * 
-     * @param The adverse event reporting period.
+     * @param reportingPeriod - An adverse event reporting period.
      */
     @Transactional(readOnly = false)
     public void modifyOrSaveReviewStatusAndComments(final AdverseEventReportingPeriod reportingPeriod) {
         getHibernateTemplate().saveOrUpdate(reportingPeriod);
       
     }
-    
-    
+
+
     /**
-     * Get the list of AdverseEventReportingPeriods based on the Assignment.
-     * This is needed to rightly update the dropdown on addition of a new reporting period.
+     * Gets the list of AdverseEventReportingPeriods based on the Assignment.
+     * @param assignment - A StudyParticipantAssignment
+     * @return
      */
     @SuppressWarnings("unchecked")
 	public List<AdverseEventReportingPeriod> getByAssignment(StudyParticipantAssignment assignment) {
         List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where assignment_id= ? order by start_date desc", assignment.getId());
         return results;
     }
-    
+
+    /**
+     * Will reassociate an AdverseEventReportingPeriod object to the running Hibernate Session. 
+     * @param o - an AdverseEventReportingPeriod
+     */
     @Override
     public void reassociate(AdverseEventReportingPeriod o) {
     	getHibernateTemplate().lock(o, LockMode.NONE);
     }
-    
+
+    /**
+     * Will execute the query, and returns the matched AdverseEventReportingPeriod objects. 
+     * @param query  - AdverseEventReportingPeriod
+     * @return
+     */
     @SuppressWarnings("unchecked")
 	public List<AdverseEventReportingPeriod> findAdverseEventReportingPeriods(final AdverseEventReportingPeriodForReviewQuery query){
         return (List<AdverseEventReportingPeriod>) find(query);
     }
-    
+
+    /**
+     * Will execute the query, and returns the matched AdverseEventReportingPeriod objects. 
+     * @param query
+     * @return
+     */
     @SuppressWarnings("unchecked")
 	public Object find(final AbstractQuery query){
          log.debug("::: " + query.getQueryString());
          return super.search(query);
     }
-    
+
+    /**
+     * Checks if the given AdverseEvent is present in the DB. 
+     * @param ae
+     * @return
+     */
     public boolean isAdverseEventPresent(AdverseEvent ae){
     	AdverseEventExistQuery query = new AdverseEventExistQuery();
     	query.filterByDifferentAdverseEventId(ae.getId());
