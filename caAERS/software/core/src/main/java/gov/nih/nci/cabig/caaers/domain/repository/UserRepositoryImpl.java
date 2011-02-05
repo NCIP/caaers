@@ -99,6 +99,9 @@ public class UserRepositoryImpl implements UserRepository {
 			sendCreateAccountEmail(user,changeURL);
 		}else{
 			updateCSMUser(user);
+            if(user.getId() == null){
+                save(user);
+            }
 			sendUpdateAccountEmail(user);
 		}
 	}
