@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.List;
@@ -134,6 +132,22 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
     		return person;
     	}
     	return person;
+    }
+
+    /**
+     * Will deactivate the study personnels associated with this SiteResearchStaff
+     * @param srs
+     */
+    public void deactivateStudyPersonnel(SiteResearchStaff srs){
+       // researchStaffDao.deactivateStudyPersonnel(srs);
+    }
+
+    /**
+     * Will deactivate study investigator associated with the SiteInvestigator
+     * @param si
+     */
+    public void deactivateStudyInvestigator(SiteInvestigator si){
+      //  investigatorDao.deactivateStudyInvestigators(si);
     }
 
 	public Person getByGridId(String arg0) {

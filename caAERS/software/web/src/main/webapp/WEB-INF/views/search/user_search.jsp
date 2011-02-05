@@ -49,7 +49,12 @@
 		        var _userName = oRecord.getData("userName");
 		        elCell.title = _recordType;
 		        if(oData){
-		        	elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
+                    if(_userName){
+                       elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
+                    }else{
+                        elCell.innerHTML = "<a href='editUser?id=" + _id + "&recordType=" + _recordType + "'>" + oData + "</a>";
+                    }
+
 		        }
 			};
 

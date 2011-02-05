@@ -179,25 +179,27 @@ public class UserTab extends TabWithFields<UserCommand>{
            errors.rejectValue("emailAddress", "USR_010");
         }
 
+        if(StringUtils.isNotEmpty(command.getNciIdentifier())){
 
-        rsQuery = new ResearchStaffQuery();
-        rsQuery.setFiltered(true);
-        rsQuery.filterByNciIdentifier(command.getNciIdentifier());
-        if(existingPerson instanceof ResearchStaff) rsQuery.excludeHavingId(command.getPerson().getId());
-        existingStaffs = personRepository.searchLocalResearchStaff(rsQuery);
-        if(CollectionUtils.isNotEmpty(existingStaffs)){
-           errors.rejectValue("nciIdentifier", "USR_018" );
+            rsQuery = new ResearchStaffQuery();
+            rsQuery.setFiltered(true);
+            rsQuery.filterByNciIdentifier(command.getNciIdentifier());
+            if(existingPerson instanceof ResearchStaff) rsQuery.excludeHavingId(command.getPerson().getId());
+            existingStaffs = personRepository.searchLocalResearchStaff(rsQuery);
+            if(CollectionUtils.isNotEmpty(existingStaffs)){
+               errors.rejectValue("nciIdentifier", "USR_018" );
+            }
+
+            invQuery = new InvestigatorQuery();
+            invQuery.setFiltered(true);
+            invQuery.filterByNciIdentifier(command.getNciIdentifier());
+            if(existingPerson instanceof Investigator) invQuery.excludeHavingId(command.getPerson().getId());
+            existingInvs = personRepository.searchLocalInvestigator(invQuery);
+            if(CollectionUtils.isNotEmpty(existingInvs)){
+               errors.rejectValue("nciIdentifier", "USR_018" );
+            }
+            
         }
-
-        invQuery = new InvestigatorQuery();
-        invQuery.setFiltered(true);
-        invQuery.filterByNciIdentifier(command.getNciIdentifier());
-        if(existingPerson instanceof Investigator) invQuery.excludeHavingId(command.getPerson().getId());
-        existingInvs = personRepository.searchLocalInvestigator(invQuery);
-        if(CollectionUtils.isNotEmpty(existingInvs)){
-           errors.rejectValue("nciIdentifier", "USR_018" );
-        }
-
 
 
         List<SitePerson> sitePersonnel = command.getSitePersonnel();
@@ -222,37 +224,20 @@ public class UserTab extends TabWithFields<UserCommand>{
     @Override
     protected void validate(final UserCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
     	
+        String em = command.getEmailAddress();
+        if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
+           errors.rejectValue("emailAddress", "USR_006", "Invalid email");
+        }
 
     	if(command.getCreateMode()){
         	if(!command.getCreateAsPerson() && !command.getCreateAsUser()){
         		errors.reject("USER_PERSON_001", "Either Create as Person or Create as User or both must be checked");
         	}
-            String em = command.getEmailAddress();
-            if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
-                errors.rejectValue("emailAddress", "USR_006", "Invalid email");
-            }
 
-            if(command.getCreateMode()){
-                //another person should not be present.
-               if(command.getCreateAsPerson() && em != null){
-                    createNewPersonValidation(command, commandBean, fieldGroups, errors);     
-               }
-
-
-            }else if(command.getEditMode()){
-                //there should not be another person with the same details.
-                if(command.getCreateAsPerson()){
-                    Person person = command.getPerson();
-                    if(person != null){
-                       editPersonValidation(command, commandBean, fieldGroups, errors);
-                    }else{
-                        //creating new person
-                       createNewPersonValidation(command, commandBean, fieldGroups, errors);
-                    }
-                }
-
-            }
-
+              //another person should not be present.
+           if(command.getCreateAsPerson() && em != null){
+                createNewPersonValidation(command, commandBean, fieldGroups, errors);
+           }
 
            if(command.getCreateAsUser()){
                 if(StringUtils.isEmpty(command.getUserName())){
@@ -264,8 +249,30 @@ public class UserTab extends TabWithFields<UserCommand>{
                 }
            }
 
+    	} else if(command.getEditMode()){
+            //there should not be another person with the same details.
+            if(command.getCreateAsPerson()){
+                Person person = command.getPerson();
+                if(person != null){
+                   editPersonValidation(command, commandBean, fieldGroups, errors);
+                }else{
+                    //creating new person
+                   createNewPersonValidation(command, commandBean, fieldGroups, errors);
+                }
+            }
+            //only do user validation if already user don't exist. 
+            if(command.getCreateAsUser() && (command.getUser() == null || command.getUser().getCsmUser().getUserId() == null )){
+                if(StringUtils.isEmpty(command.getUserName())){
+                    errors.rejectValue("userName", "USR_014");
+                }
+                _User user = userRepository.getUserByLoginName(command.getUserName());
+                if(user != null && user.getCsmUser() != null){
+                    errors.rejectValue("userName", "USR_001", "Username already taken");
+                }
+            }
 
-    	}
+        }
+
     }
 
 
@@ -369,11 +376,11 @@ public class UserTab extends TabWithFields<UserCommand>{
 	 * @return
 	 */
     private _User buildUser(UserCommand command){
-    	if(command.getUser() == null || command.getUser().getId() == null){
+    	if(command.getUser() == null){
             command.setUser(new _User());
+            command.getUser().setLoginName(command.getUserName());
         }
         _User user = command.getUser();
-    	user.setLoginName(command.getUserName());
     	user.setFirstName(command.getFirstName());
     	user.setLastName(command.getLastName());
     	user.setEmailAddress(command.getEmailAddress());

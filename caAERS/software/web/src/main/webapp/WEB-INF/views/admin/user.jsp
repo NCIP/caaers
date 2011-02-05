@@ -191,6 +191,9 @@
                 var _id = ${param.id} + '';
                 var _recordType = '${param.recordType}';
                 var _userName = '${param.userName}';
+                if(_linkType == 'user'){
+                    _userName = _linkedUserName;
+                }
                 var url = "editUser?id=#{id}&linkType=#{linkType}&userName=#{userName}&recordType=#{recordType}&linkedId=#{linkedId}&linkedRecordType=#{linkedRecordType}&linkedUserName=#{linkedUserName}".interpolate(
                  {
                      id:_id,

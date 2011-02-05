@@ -144,9 +144,10 @@ public class EditUserController extends UserController<UserCommand> {
 		        populateSiteMap(command);
 		        populateStudyMap(command);
             }
-            command.buildRolesHelper();
-
         }
+        
+        command.buildRolesHelper();
+
         if(person != null){
             command.setCreateAsPerson(true);
             command.setPerson(person);

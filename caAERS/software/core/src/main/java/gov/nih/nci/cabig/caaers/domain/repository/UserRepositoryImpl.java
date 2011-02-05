@@ -145,7 +145,7 @@ public class UserRepositoryImpl implements UserRepository {
 
        //fetch the CSM related details from Cache if the user is present there.
         _User userFromCache = CSMCacheManager.getUserFromCache(loginName);
-        if(userFromCache != null){
+        if(_user != null && userFromCache != null){
             //obtain csm information from cache. 
            _user.setCsmUser(userFromCache.getCsmUser());
            _user.getRoleMembershipMap().putAll(userFromCache.getRoleMembershipMap());

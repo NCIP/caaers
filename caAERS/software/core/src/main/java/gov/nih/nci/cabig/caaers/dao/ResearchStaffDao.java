@@ -196,6 +196,29 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     	List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where lower(externalId)= ?", externalId.toLowerCase());
         return results.size() > 0 ? results.get(0) : null;
     }
+
+    /**
+     * Will deactivate all the StudyPersonnel associated with this SiteResearchStaff
+     * @param siteResearchStaff
+     */
+    public void deactivateStudyPersonnel(SiteResearchStaff siteResearchStaff){
+
+        getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.startDate = ? where sp.siteResearchStaff.id = ?", new Object[]{
+                siteResearchStaff.getStartDate(), siteResearchStaff.getId()
+        });
+
+        if(siteResearchStaff.getEndDate() == null){
+           getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.endDate = null where sp.siteResearchStaff.id = ?", new Object[]{
+                 siteResearchStaff.getId()
+           });
+        }else{
+           getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.endDate = ? where sp.siteResearchStaff.id = ? and sp.endDate > ?", new Object[]{
+                siteResearchStaff.getEndDate(), siteResearchStaff.getId(), siteResearchStaff.getEndDate()
+           });
+        }
+
+        
+    }
     
     
 	public void setRemoteSession(RemoteSession remoteSession) {
