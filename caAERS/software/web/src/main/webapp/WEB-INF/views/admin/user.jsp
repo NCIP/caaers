@@ -362,7 +362,7 @@
     					<tags:instructions code="userRolesForUA" />
     					<ui:row path="loginName">
     						<jsp:attribute name="label"><ui:label path="userName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
-    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${ (command.editMode and (not empty command.userName) ) or  (not command.UA)}"/>
+    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${ (command.editMode and (empty command.user.id) ) or  (not command.UA)}"/>
 
                                 <c:if test="${command.editMode and (empty command.userName) and command.PO}">
                                     <caaers:message code="LBL_link.user" var="linkauser" text="Link a user" />
