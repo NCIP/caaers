@@ -378,9 +378,9 @@ public class UserTab extends TabWithFields<UserCommand>{
     private _User buildUser(UserCommand command){
     	if(command.getUser() == null){
             command.setUser(new _User());
-            command.getUser().setLoginName(command.getUserName());
         }
         _User user = command.getUser();
+        command.getUser().setLoginName(command.getUserName());
     	user.setFirstName(command.getFirstName());
     	user.setLastName(command.getLastName());
     	user.setEmailAddress(command.getEmailAddress());
