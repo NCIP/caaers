@@ -181,7 +181,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     @SuppressWarnings("unchecked")
 	public Investigator getByLoginId(String loginId) {
         List<Investigator> results = getHibernateTemplate().find(
-                        "from Investigator where loginId= ?", loginId);
+                        "from Investigator inv where inv.caaersUser.loginName= ?", loginId);
         Investigator investigator =  results.size() > 0 ? results.get(0) : null;
         if(investigator != null) initialize(investigator);
         return investigator;

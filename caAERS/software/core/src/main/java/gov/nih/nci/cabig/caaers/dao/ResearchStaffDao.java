@@ -175,7 +175,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings("unchecked")
 	public ResearchStaff getByLoginId(String loginId) {
-        List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where loginId= ?", loginId);
+        List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff rs where rs.caaersUser.loginName= ?", loginId);
         return results.size() > 0 ? results.get(0) : null;
     }
 
