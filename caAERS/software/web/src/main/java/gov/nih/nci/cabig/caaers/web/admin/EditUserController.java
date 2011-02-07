@@ -47,11 +47,10 @@ public class EditUserController extends UserController<UserCommand> {
             _User user = command.getUser();
             Person person = command.getPerson();
 
-
-            boolean willCreatePerson = (person != null && person.getId() == null);
-            boolean willUpdatePerson = (person != null) && person.getId() != null;
-            boolean willCreateUser = user != null && user.getId() == null;
-            boolean willUpdateUser = user != null && user.getId() != null;
+            boolean willCreatePerson = person != null && person.getId() == null;
+            boolean willUpdatePerson = person != null && person.getId() != null;
+            boolean willCreateUser = user != null && user.getCsmUser().getUserId() == null;
+            boolean willUpdateUser = user != null && user.getCsmUser().getUserId() != null;
 
             if(user != null){
                 try {
