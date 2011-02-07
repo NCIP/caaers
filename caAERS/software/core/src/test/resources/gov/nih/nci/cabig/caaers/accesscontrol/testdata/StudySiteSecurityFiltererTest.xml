@@ -28,7 +28,7 @@
             description_text="NUCC"
             nci_institute_code="CALGB"/>
             
-
+        <caaers_users id="-1"  login_name="1000@def.com" />
     <RESEARCH_STAFFS
         id="-1000"
         version="1"
@@ -37,7 +37,7 @@
         email_address="1000@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        login_id="1000@def.com"/>
+        user_id="-1"/>
 
     <SITE_RESEARCH_STAFFS
     	id="-9001"
@@ -47,7 +47,7 @@
     	id="-10001"
     	site_id="-1003"
     	researchstaff_id="-1000"/>        
-        
+         <caaers_users id="-2"  login_name="1001@def.com" />   
     <RESEARCH_STAFFS
         id="-1001"
         version="1"
@@ -56,13 +56,13 @@
         email_address="1001@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        login_id="1001@def.com"/>
+        user_id="-2"/>
         
     <SITE_RESEARCH_STAFFS
     	id="-9002"
     	site_id="-1000"
     	researchstaff_id="-1001"/>
-        
+        <caaers_users id="-3"  login_name="1002@def.com" />
     <RESEARCH_STAFFS
         id="-1002"
         version="1"
@@ -71,13 +71,13 @@
         email_address="1002@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        login_id="1002@def.com"/>
+        user_id="-3"/>
         
     <SITE_RESEARCH_STAFFS
     	id="-9003"
     	site_id="-1000"
     	researchstaff_id="-1002"/>        
-        
+        <caaers_users id="-4"  login_name="1003@def.com" />
     <RESEARCH_STAFFS
         id="-1003"
         version="1"
@@ -86,13 +86,13 @@
         email_address="1003@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        login_id="1003@def.com"/>
+        user_id="-4"/>
         
     <SITE_RESEARCH_STAFFS
     	id="-9004"
     	site_id="-1000"
     	researchstaff_id="-1003"/>        
-        
+    <caaers_users id="-5"  login_name="inv200@def.com" />    
     <INVESTIGATORS
         id="-200"
         first_name="karthik"
@@ -100,15 +100,16 @@
 		nci_identifier="222"
         email_address="inv200@def.com"
         phone_number="123-456-789"
-        login_id="inv200@def.com"
+        user_id="-5"
        />
+    <caaers_users id="-6"  login_name="inv100@def.com" />
 	<INVESTIGATORS
         id="-100"
         first_name="Dilbert"
         last_name="Scott"
         email_address="inv100@def.com"
         phone_number="123-456-789"
-       login_id="inv100@def.com"
+       user_id="-6"
        />
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    

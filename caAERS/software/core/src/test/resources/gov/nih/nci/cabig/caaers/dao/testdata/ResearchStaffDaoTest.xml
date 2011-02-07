@@ -8,7 +8,8 @@
     id="-1001" 
     name="New Site 2" 
     grid_id="gridSite2"/>
-    
+
+    <caaers_users id="-1"  login_name="abcd" />
     <RESEARCH_STAFFS 
     id="-1000" 
     version="1" 
@@ -17,14 +18,14 @@
     email_address="big@def.com" 
     phone_number="123-456-789" 
     nci_identifier="nci id" 
-    login_id="abcd"
     street="Park Centre Road"
    	city="Fairfax"
    	state="Virginia"
    	zip="22033"
-   	code="0"/>
-    
-    <RESEARCH_STAFFS 
+   	code="0"
+    user_id="-1" />
+
+    <RESEARCH_STAFFS
     id="-1001" 
     version="1" 
     first_name="George" 
@@ -35,7 +36,9 @@
 	city="Fairfax"
    	state="Virginia"
    	zip="22033"
-   	code="0"/>
+   	code="0"
+    />
+
     
     <RESEARCH_STAFFS 
     id="-1002" 

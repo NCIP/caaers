@@ -3,14 +3,14 @@
         id="-1000"
         name="New Site"
         grid_id="gridSite"/>
-
+   <caaers_users id="-1"  login_name="abc@def.com" />
     <RESEARCH_STAFFS
         id="-1000"
         version="1"
         first_name="Bill"
         last_name="Gates"
         email_address="abc@def.com"
-        login_id="abc@def.com"
+        user_id="-1"
         phone_number="123-456-789"
         nci_identifier="nci id"/>
         

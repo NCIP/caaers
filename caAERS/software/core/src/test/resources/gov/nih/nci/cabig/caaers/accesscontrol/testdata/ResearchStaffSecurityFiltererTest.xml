@@ -12,7 +12,9 @@
             name="DCP"
             description_text="DCP"
             nci_institute_code="DCP"
-            /> 
+            />
+
+            <caaers_users id="-1"  login_name="1000@def.com" />
     <RESEARCH_STAFFS
         id="-1000"
         version="1"
@@ -21,7 +23,7 @@
         email_address="1000@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        login_id="1000@def.com"
+        user_id="-1"
         />
 
      <SITE_RESEARCH_STAFFS
