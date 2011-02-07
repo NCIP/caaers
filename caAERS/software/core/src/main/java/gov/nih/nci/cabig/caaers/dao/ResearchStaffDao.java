@@ -203,9 +203,15 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     public void deactivateStudyPersonnel(SiteResearchStaff siteResearchStaff){
 
-        getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.startDate = ? where sp.siteResearchStaff.id = ?", new Object[]{
+        if(siteResearchStaff.getStartDate() == null){
+            getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.startDate = null where sp.siteResearchStaff.id = ?", new Object[]{
+                 siteResearchStaff.getId()
+            });
+        }else{
+            getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.startDate = ? where sp.siteResearchStaff.id = ?", new Object[]{
                 siteResearchStaff.getStartDate(), siteResearchStaff.getId()
-        });
+            });
+        }
 
         if(siteResearchStaff.getEndDate() == null){
            getHibernateTemplate().bulkUpdate("update StudyPersonnel sp set sp.endDate = null where sp.siteResearchStaff.id = ?", new Object[]{

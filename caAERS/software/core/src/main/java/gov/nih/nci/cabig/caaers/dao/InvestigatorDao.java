@@ -225,9 +225,17 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     public void deactivateStudyInvestigators(SiteInvestigator siteInvestigator){
 
 
-        getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.startDate = ? where si.siteInvestigator.id = ?", new Object[]{
+        if(siteInvestigator.getStartDate() == null){
+            getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.startDate = null where si.siteInvestigator.id = ?", new Object[]{
+                     siteInvestigator.getId()
+            });
+
+        }else{
+            getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.startDate = ? where si.siteInvestigator.id = ?", new Object[]{
                 siteInvestigator.getStartDate(), siteInvestigator.getId()
-        });
+            });
+        }
+
 
         if(siteInvestigator.getEndDate() == null){
            getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.endDate = null where si.siteInvestigator.id = ?", new Object[]{

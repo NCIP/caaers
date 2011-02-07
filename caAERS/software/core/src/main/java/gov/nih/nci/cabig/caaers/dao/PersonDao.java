@@ -139,7 +139,7 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
      * @param srs
      */
     public void deactivateStudyPersonnel(SiteResearchStaff srs){
-       // researchStaffDao.deactivateStudyPersonnel(srs);
+        researchStaffDao.deactivateStudyPersonnel(srs);
     }
 
     /**
@@ -147,7 +147,7 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
      * @param si
      */
     public void deactivateStudyInvestigator(SiteInvestigator si){
-      //  investigatorDao.deactivateStudyInvestigators(si);
+        investigatorDao.deactivateStudyInvestigators(si);
     }
 
 	public Person getByGridId(String arg0) {
