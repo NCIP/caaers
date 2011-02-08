@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
@@ -40,6 +41,7 @@ public class UserCommand {
 	private Map<String,String> studyMap = new HashMap<String,String>();
 	private boolean createMode;
 	private boolean editMode;
+	private _User loggedInUser;
 	
 	//Attributes which will be processed to save data to db.
 	private _User user;
@@ -157,6 +159,32 @@ public class UserCommand {
         	}
         }
 		return allStudyScopedRoles;
+	}
+	
+	/**
+	 * This method will return true if the logged is a user_administrator and has All Site access.
+	 * @return
+	 */
+	public  boolean isUAAllSite(){
+		RoleMembership uaRoleMembership = getLoggedInUser().getRoleMembershipMap().get(UserGroupType.user_administrator);
+		if (uaRoleMembership != null){
+			return uaRoleMembership.isAllSite();
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * This method will return true if the logged is a person_and_organization_information_manager and has All Site access.
+	 * @return
+	 */
+	public  boolean isPOAllSite(){
+		RoleMembership poRoleMembership = getLoggedInUser().getRoleMembershipMap().get(UserGroupType.person_and_organization_information_manager);
+		if (poRoleMembership != null){
+			return poRoleMembership.isAllSite();
+		}else{
+			return false;
+		}
 	}
 	
 	//Setters & Getters for the private attributes if this class.
@@ -349,4 +377,12 @@ public class UserCommand {
     public String getToDay(){
         return DateUtils.formatDate(DateUtils.today());
     }
+
+	public _User getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	public void setLoggedInUser(_User loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
 }

@@ -443,7 +443,7 @@
 									<div id="membershipDiv-${index.index}" style="display:${roleMembership.checked ? '' : 'none'}">
 									<c:if test="${roleMembership.scoped}">
 
-										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA}" />&nbsp;&nbsp;All Site access.<br><br>
+										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA || not command.UAAllSite}" />&nbsp;&nbsp;All Site access.<br><br>
 											<div class="row" id="roleMembershipHelper[${index.index}]-siteSelector" style="display:${roleMembership.allSiteAccess ? 'none' : ''}">
 												<c:if test="${command.UA}">
                                                 <div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>

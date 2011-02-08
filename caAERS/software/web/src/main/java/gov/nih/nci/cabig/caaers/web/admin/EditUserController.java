@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
@@ -97,6 +98,9 @@ public class EditUserController extends UserController<UserCommand> {
 
 		
 		UserCommand command = new UserCommand();
+		String loggedInPersonUserName = SecurityUtils.getUserLoginName();
+		_User loggedinUser =  userRepository.getUserByLoginName(loggedInPersonUserName);
+		command.setLoggedInUser(loggedinUser);
 		command.setCreateMode(Boolean.FALSE);
 		command.setEditMode(Boolean.TRUE);
 
