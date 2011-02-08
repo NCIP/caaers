@@ -137,9 +137,20 @@ AE.registerCalendarPopups = function(containerId) {
                 	$(cal.params['monthInputId']).value = cal.date.print('%m');
                 	$(cal.params['yearInputId']).value =  cal.date.print('%Y');
 
-                    ValidationManager.setNormalState($(cal.params['dayInputId']));
-                    ValidationManager.setNormalState($(cal.params['monthInputId']));
-                    ValidationManager.setNormalState($(cal.params['yearInputId']));
+                   if(ValidationManager.isRequired($(cal.params['dayInputId']))) {
+                         ValidationManager.setNormalState($(cal.params['dayInputId']));
+                   }
+
+                    if(ValidationManager.isRequired($(cal.params['dayInputId']))) {
+                         ValidationManager.setNormalState($(cal.params['monthInputId']));
+                   }
+
+                    if(ValidationManager.isRequired($(cal.params['dayInputId']))) {
+                         ValidationManager.setNormalState($(cal.params['yearInputId']));
+                   }
+
+
+
                     
                     if(cal.dateClicked)
 	                    cal.callCloseHandler();
