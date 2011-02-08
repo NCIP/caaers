@@ -353,6 +353,7 @@
 							<jsp:attribute name="label"><ui:label path="nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
 							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false" readonly="${not command.PO}"/>
                                 <c:if test="${command.editMode and  empty command.person and command.PO}">
+                                     <caaers:message code="LBL_Or" text="| OR |" />
                                      <caaers:message code="LBL_link.person" var="linkaperson" text="Link a person" />
                                      <tags:button value="${linkaperson}" color="blue" icon="search" onclick="showLinkPopup('person')" size="small" type="button"/>
                                 </c:if>
@@ -381,6 +382,7 @@
     						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${ (command.editMode and (not empty command.user.id) ) or  (not command.UA)}"/>
 
                                 <c:if test="${command.editMode and (empty command.userName) and command.PO}">
+                                    <caaers:message code="LBL_Or" text="| OR |" />
                                     <caaers:message code="LBL_link.user" var="linkauser" text="Link a user" />
                                     <tags:button value="${linkauser}" color="blue" icon="search" onclick="showLinkPopup('user')" size="small" type="button"/>
                                 </c:if>
