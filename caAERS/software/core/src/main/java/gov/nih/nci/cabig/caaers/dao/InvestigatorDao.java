@@ -221,7 +221,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
         return investigator;
     }
 
-
+    @Transactional(readOnly = false)
     public void deactivateStudyInvestigators(SiteInvestigator siteInvestigator){
 
 

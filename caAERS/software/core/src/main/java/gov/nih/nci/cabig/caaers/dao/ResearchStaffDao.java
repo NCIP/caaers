@@ -201,6 +201,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      * Will deactivate all the StudyPersonnel associated with this SiteResearchStaff
      * @param siteResearchStaff
      */
+    @Transactional(readOnly = false)
     public void deactivateStudyPersonnel(SiteResearchStaff siteResearchStaff){
 
         if(siteResearchStaff.getStartDate() == null){
