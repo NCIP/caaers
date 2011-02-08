@@ -190,9 +190,19 @@
                     recenterAuto:true});
                 AE.popupWin.showCenter(true);
             }
+            //Will show the ajax loading indicator
+            function showLoadingIndicator(){
+                try {
+                     var elIndicator =  $('ajax-loading-indictor');
+                     if(elIndicator)
+                        elIndicator.show();
+                } catch(e) {
+                }
+            }
             
             /* Will refresh the page after linking */
             function updateAfterLinking(_linkedId, _linkedUserName, _linkedRecordType, _linkType){
+                showLoadingIndicator();
                 var _id = ${param.id} + '';
                 var _recordType = '${param.recordType}';
                 var _userName = '${param.userName}';
