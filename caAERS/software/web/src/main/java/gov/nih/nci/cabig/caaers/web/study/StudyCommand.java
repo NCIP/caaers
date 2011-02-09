@@ -513,7 +513,6 @@ public class StudyCommand {
     public void save(){
 
         //save the study by merging it.
-        // ToDo study.getExpectedAECtcTerms(); before the merge
          Study mergedStudy = studyRepository.merge(study);
          studyDao.initialize(mergedStudy);
 
