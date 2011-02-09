@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.userdetails.User;
 import org.springframework.validation.BindException;
 
@@ -17,7 +20,6 @@ import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -42,8 +44,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 	protected ReviewAeReportCommand command;
 	protected EvaluationService evaluationService;
 	protected ReportValidationService reportValidationService;
-	protected CSMUserRepository csmUserRepository;
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		
@@ -55,37 +56,27 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		reportDao = registerDaoMockFor(ReportDao.class);
 		command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
 		errors = new BindException(command,"command");
-		csmUserRepository = registerMockFor(CSMUserRepository.class);
-		
+
 		controller = new ReviewAeReportController();
 		controller.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
 		controller.setAssignmentDao(assignmentDao);
 		controller.setConfiguration(configuration);
 		controller.setEvaluationService(evaluationService);
 		controller.setReportValidationService(reportValidationService);
-		controller.setCsmUserRepository(csmUserRepository);
 	}
 	
 	
 	public void testReferenceData() throws Exception{
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		Report report = Fixtures.createReport("test report");
-		SecurityContext context = registerMockFor(SecurityContext.class);
-        Authentication auth =  registerMockFor(Authentication.class);
-        User user = registerMockFor(User.class);
-        session.setAttribute(ReviewAeReportController.class + ".FORM.command",command);
-        session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
-		aeReport.addReport(report);
+
 		report.setId(1);
+        aeReport.addReport(report);
 		command.setAeReport(aeReport);
 		command.setReportId(1);
 		ValidationErrors vErrors = new ValidationErrors();
 		expect(evaluationService.validateReportingBusinessRules(isA(ExpeditedAdverseEventReport.class), isA(ExpeditedReportSection.class))).andReturn(vErrors).anyTimes();
 		expect(reportValidationService.isSubmittable(report)).andReturn(new ReportSubmittability());
-		expect(context.getAuthentication()).andReturn(auth);
-        expect(auth.getPrincipal()).andReturn(user);
-        expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
-        expect(csmUserRepository.getUserGroups("SYSTEM_ADMIN")).andReturn(new ArrayList<UserGroupType>());
 		replayMocks();
 		Map<String, Object> refdata = controller.referenceData(request, command, errors);
 		verifyMocks();

@@ -12,8 +12,6 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import static org.easymock.EasyMock.expect;
 

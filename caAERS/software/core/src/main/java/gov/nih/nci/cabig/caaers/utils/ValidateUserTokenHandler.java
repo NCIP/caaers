@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.utils;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.ctms.acegi.csm.authentication.CSMAuthenticationProvider;
 import gov.nih.nci.security.AuthenticationManager;
 
@@ -43,7 +43,7 @@ public class ValidateUserTokenHandler extends AbstractHandler{
 	
    private static final String  TOKEN_NS = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";	
    private CSMAuthenticationProvider localAuthenticationProvider;
-   private CSMUserRepository csmUserRepository;
+   private UserRepository userRepository;
    private static final Log logger = LogFactory.getLog(ValidateUserTokenHandler.class);
    
    
@@ -90,7 +90,7 @@ public class ValidateUserTokenHandler extends AbstractHandler{
 		   throw new XFireFault(e.getMessage(), XFireFault.SENDER);
 	   } 
 	   
-	   List<UserGroupType> groups = csmUserRepository.getUserGroups(userName);
+	   List<UserGroupType> groups = userRepository.getUserByLoginName(userName).getUserGroupTypes();
 	   GrantedAuthority[] authorities = new GrantedAuthority[groups.size()];
 	   int idx = 0;
 	   for(UserGroupType group : groups) {
@@ -114,7 +114,7 @@ public class ValidateUserTokenHandler extends AbstractHandler{
 		this.localAuthenticationProvider = localAuthenticationProvider;
    }
 
-   public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
-	   this.csmUserRepository = csmUserRepository;
-   }
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 }

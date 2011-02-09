@@ -82,10 +82,10 @@ public interface UserRepository {
 	/**
 	 * Gets the user groups.
 	 *
-	 * @param loginName the login name
+	 * @param csmUserId CSMUser's id
 	 * @return the user groups
 	 */
-	public List<UserGroupType> getUserGroups(String loginName);
+	public List<UserGroupType> getUserGroups(String csmUserId);
 
     /**
      * Will provision the user.

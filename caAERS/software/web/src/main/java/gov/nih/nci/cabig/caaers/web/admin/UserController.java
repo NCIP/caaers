@@ -78,7 +78,7 @@ public abstract class UserController<C extends UserCommand> extends AutomaticSav
 	
     @Override
     protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
-        Object subviewName = findInRequest(request, ResearchStaffController.AJAX_SUBVIEW_PARAMETER);
+        Object subviewName = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
         if (subviewName != null) {
             return "admin/ajax/" + subviewName;
         } else {

@@ -13,8 +13,6 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -36,7 +34,6 @@ public class RoutingAndReviewControllerTest extends WebTestCase{
     private StudyParticipantAssignmentDao assignmentDao;
     private WorkflowService workflowService;
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
-    private CSMUserRepository csmUserRepository;
     private ModelAndView modelAndView;
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     private static final String PAGINATION_ACTION = "paginationAction";
@@ -52,7 +49,6 @@ public class RoutingAndReviewControllerTest extends WebTestCase{
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		workflowService = registerMockFor(WorkflowServiceImpl.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
-		csmUserRepository = registerMockFor(CSMUserRepositoryImpl.class);
 		resultsDTO = registerMockFor(RoutingAndReviewSearchResultsDTO.class);
 		modelAndView = new ModelAndView("test");
 		controller = new RoutingAndReviewController();

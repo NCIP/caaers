@@ -83,7 +83,7 @@
      
 	<bean id="domInHandler" class="org.codehaus.xfire.util.dom.DOMInHandler" />
 	<bean id="validateUserTokenHandler" autowire="byType"  class="gov.nih.nci.cabig.caaers.utils.ValidateUserTokenHandler">
-		<property name="csmUserRepository" ref="csmUserRepository"/>
+		<property name="userRepository" ref="userRepository"/>
 	</bean>
     <bean id="xFireSchemaValidationHandler" class="gov.nih.nci.cabig.caaers.utils.XFireSchemaValidationHandler"/>
     <bean id="auditInfoHandler" class="gov.nih.nci.cabig.caaers.utils.AuditInfoHandler"/>

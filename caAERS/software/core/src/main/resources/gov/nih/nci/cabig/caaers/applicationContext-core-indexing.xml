@@ -309,7 +309,6 @@
 
     <bean id="abstractIdFetcher" abstract="true">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
-        <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
     </bean>
 	

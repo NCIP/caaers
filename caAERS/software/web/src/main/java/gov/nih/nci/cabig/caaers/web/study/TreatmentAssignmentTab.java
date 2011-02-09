@@ -2,28 +2,16 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.web.admin.ResearchStaffCommand;
-import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
-
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.commons.lang.math.NumberUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Saurabh Agrawal

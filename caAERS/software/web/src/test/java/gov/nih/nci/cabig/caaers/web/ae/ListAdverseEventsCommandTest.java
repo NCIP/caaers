@@ -15,7 +15,6 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -33,7 +32,6 @@ public class ListAdverseEventsCommandTest extends WebTestCase {
     private ParticipantDao participantDao;
     private ReportValidationService reportValidationService;
     private ResearchStaffDao researchStaffDao;
-    protected CSMUserRepository csmUserRepository;
 
     @Override
     protected void setUp() throws Exception {
@@ -43,7 +41,6 @@ public class ListAdverseEventsCommandTest extends WebTestCase {
         participantDao = registerDaoMockFor(ParticipantDao.class);
         researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
         reportValidationService = registerMockFor(ReportValidationService.class);
-        csmUserRepository = registerMockFor(CSMUserRepository.class);
         command = new ListAdverseEventsCommand(reportValidationService, researchStaffDao);
         setupCommand();
     }

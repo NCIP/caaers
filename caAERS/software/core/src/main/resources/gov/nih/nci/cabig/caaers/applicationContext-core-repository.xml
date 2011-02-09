@@ -42,13 +42,6 @@
           parent="daoTemplate">
     </bean>
 
-    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
-          lazy-init="true" autowire="byType">
-        <property name="authenticationMode" ref="authenticationMode"/>
-        <property name="mailSender" ref="mailer"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="userDao" ref="userDao" />
-    </bean>
 
     <bean id="reportVersionRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository">
         <property name="reportVersionDao" ref="reportVersionDao"/>

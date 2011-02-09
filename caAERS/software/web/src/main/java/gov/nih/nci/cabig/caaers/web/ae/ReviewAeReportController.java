@@ -8,8 +8,8 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -39,7 +39,6 @@ public class ReviewAeReportController extends SimpleFormController{
 	private StudyParticipantAssignmentDao assignmentDao;
 	private Configuration configuration;
 	private MessageSource messageSource;
-	private CSMUserRepository csmUserRepository;
 	private EvaluationService evaluationService;
 	private ReportValidationService reportValidationService;
 	
@@ -102,14 +101,7 @@ public class ReviewAeReportController extends SimpleFormController{
 
         // This is to check if the logged in person is SAE-Coordinator.
         // Data coordinator cannot submit a report.
-        SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
-		boolean isReportReviewer = false;
-
-        List<UserGroupType> userGroupTypes = csmUserRepository.getUserGroups(userId); //	CAAERS-4586
-        if(userGroupTypes.contains(UserGroupType.ae_expedited_report_reviewer)){
-            isReportReviewer = true;
-        }
+		boolean isReportReviewer = SecurityUtils.hasAuthorityOf(UserGroupType.ae_expedited_report_reviewer);
         
         //boolean canSubmit = false;
         //if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isReportReviewer)
@@ -162,8 +154,5 @@ public class ReviewAeReportController extends SimpleFormController{
 		this.reportDao = reportDao;
 	}
 	
-	@Required
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
-    }
+
 }

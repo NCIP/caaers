@@ -416,9 +416,7 @@
   <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
   
   <bean name="/ae/reviewEvaluationPeriod" id="reviewEvaluationPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodController"/>
-  <bean name="/ae/reviewAeReport" id="reviewAeReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportController">
-  	<property name="csmUserRepository" ref="csmUserRepository"></property>
-  </bean>
+  <bean name="/ae/reviewAeReport" id="reviewAeReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportController" />
   <bean name="/ae/reviewResolver" id="reviewResolverController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewResolverController"/>	
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>
   <bean name="/ae/submitReport" id="submitReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
@@ -443,22 +441,6 @@
   	<property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"></property>
   </bean>
 
-  <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
-    <property name="sessionForm"><value>true</value></property>
-    <property name="authenticationMode" ref="authenticationMode"/>
-    <property name="investigatorRepository" ref="investigatorRepository" />
-    <property name="csmUserRepository" ref="csmUserRepository" />
-  </bean>
-  
-  <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
-	<property name="authenticationMode" ref="authenticationMode"/>   
-	<property name="investigatorRepository" ref="investigatorRepository" />      
-  </bean>
-  
-
-  <bean name="/admin/searchInvestigator" id="searchInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchInvestigatorController">
-  </bean>     
-  
   <bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
     <property name="sessionForm"><value>true</value></property>
     <property name="webControllerValidator" ref="webControllerValidator"/>
@@ -472,21 +454,8 @@
   <bean name="/admin/searchOrganization" id="searchOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchOrganizationController" />
   <bean name="/admin/searchResearchStaff" id="searchResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController" />
 
-  <bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
-    <property name="webControllerValidator" ref="webControllerValidator"/>
-    <property name="authenticationMode" ref="authenticationMode"/>   
-  </bean>
-
     <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController" />
     <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" />
-    <bean name="/admin/viewInvestigator" id="viewInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" />
-
-  <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
-    <property name="sessionForm"><value>true</value></property>
-    <property name="webControllerValidator" ref="webControllerValidator"/>
-    <property name="authenticationMode" ref="authenticationMode"/>
-    <property name="csmUserRepository" ref="csmUserRepository" />
-  </bean>
 
   <bean name="/admin/createIND" id="createINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
   <bean name="/admin/searchIND" id="searchINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>

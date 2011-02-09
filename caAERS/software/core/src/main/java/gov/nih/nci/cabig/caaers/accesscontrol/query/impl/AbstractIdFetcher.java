@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 import java.sql.SQLException;
@@ -34,8 +33,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 
     protected final Log log = LogFactory.getLog(AbstractIdFetcher.class);
 
-    protected CSMUserRepository csmUserRepository;
-    
     protected CaaersSecurityFacade caaersSecurityFacade;
     private UserGroupType[] applicableSiteScopedRoles ; 
     private UserGroupType[] applicableStudyScopedRoles ;
@@ -203,15 +200,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
             }
 
         });
-    }
-
-
-    public CSMUserRepository getCsmUserRepository() {
-        return csmUserRepository;
-    }
-
-    public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
     }
 
 	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {

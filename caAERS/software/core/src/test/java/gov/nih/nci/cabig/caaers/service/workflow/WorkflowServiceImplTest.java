@@ -8,7 +8,6 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
