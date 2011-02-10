@@ -61,5 +61,5 @@ public abstract class TransitionOwner extends AbstractMutableDomainObject {
 	 * @return true, if is user
 	 */
 	@Transient
-	public abstract boolean isUser();
+	public abstract boolean isPerson();
 }
