@@ -83,7 +83,7 @@ public class ReporterTest extends AbstractTestCase {
 
 
     public void testCopyUser() {
-        _User user = Fixtures.createUser("x", "tester");
+        User user = Fixtures.createUser("x", "tester");
     	user.setFirstName("a");
     	user.setEmailAddress("k");
     	reporter.copy(user);

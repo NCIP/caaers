@@ -44,7 +44,7 @@ public class Reporter extends ReportPerson {
      * Will copy the details from the supplied user. 
      * @param user - A user in caAERS. 
      */
-    public void copy(_User user) {
+    public void copy(User user) {
         if(user == null) return;
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());

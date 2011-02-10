@@ -10,7 +10,6 @@ import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
-import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,15 +138,15 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 	public List<UserAjaxableDomainObject> getUserTable(HashMap searchCriteriaMap) {
     	List<UserAjaxableDomainObject> ajaxableUserList = new ArrayList<UserAjaxableDomainObject>();
         if(!StringUtils.equals("person", (String)searchCriteriaMap.get("linkType"))){
-            List<User> csmUserList = userRepository.searchCsmUser((String)searchCriteriaMap.get("firstName"),
+            List<gov.nih.nci.security.authorization.domainobjects.User> csmUserList = userRepository.searchCsmUser((String)searchCriteriaMap.get("firstName"),
     															(String)searchCriteriaMap.get("lastName"),
     															(String)searchCriteriaMap.get("userName"));
 
 
             if(StringUtils.equals("user", (String)searchCriteriaMap.get("linkType"))){
                 if(CollectionUtils.isNotEmpty(csmUserList)){
-                   HashMap<String, User> userMap = new HashMap<String, User>();
-                   for(User csmUser : csmUserList){
+                   HashMap<String, gov.nih.nci.security.authorization.domainobjects.User> userMap = new HashMap<String, gov.nih.nci.security.authorization.domainobjects.User>();
+                   for(gov.nih.nci.security.authorization.domainobjects.User csmUser : csmUserList){
                       userMap.put(csmUser.getLoginName(),csmUser);
                    }
 
@@ -167,13 +166,13 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                    for(Investigator inv : investigators){
                        userMap.remove(inv.getLoginId());
                    }
-                   csmUserList = new ArrayList<User>(userMap.values());
+                   csmUserList = new ArrayList<gov.nih.nci.security.authorization.domainobjects.User>(userMap.values());
                 }
 
             }
 
             UserAjaxableDomainObject ajaxableUser = null;
-            for(User csmUser : csmUserList){
+            for(gov.nih.nci.security.authorization.domainobjects.User csmUser : csmUserList){
                 ajaxableUser = new UserAjaxableDomainObject();
                 ajaxableUser.setId(csmUser.getUserId().intValue());
                 ajaxableUser.setFirstName(csmUser.getFirstName());
@@ -368,7 +367,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
     public void unlockUser(){
         UserCommand command = (UserCommand) extractCommand();
-        _User user = command.getUser();
+        User user = command.getUser();
         getUserRepository().unlockUser(user);
     }
     

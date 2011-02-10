@@ -8,7 +8,7 @@ import java.util.List;
 public class UserQuery extends AbstractQuery{
 
     public UserQuery(){
-        this("select distinct u from _User u");
+        this("select distinct u from User u");
     }
     public UserQuery(String queryString) {
         super(queryString);

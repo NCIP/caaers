@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 
@@ -25,7 +25,7 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
     private PasswordPolicyServiceImpl passwordPolicyService;
     private PasswordPolicyDao passwordPolicyDao;
 
-    private _User user;
+    private User user;
     private gov.nih.nci.security.authorization.domainobjects.User csmUser;
     private UserRepository userRepository;
     
@@ -42,7 +42,7 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
     public void testRequestToken() throws Exception {
        
     	String userName = "user@domain";
-        user = new _User();
+        user = new User();
         user.setTokenTime(new Timestamp(new Date().getTime()));
         
         
@@ -51,7 +51,7 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
         userRepository.save(user);
         
         replayMocks();
-        _User returnedUser = passwordManagerService.requestToken(userName);
+        User returnedUser = passwordManagerService.requestToken(userName);
         verifyMocks();
         assertNotNull(returnedUser);
         assertNotNull(returnedUser.getToken());
@@ -61,7 +61,7 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
     public void testSetPassword() throws Exception {
     	
     	String userName = "user@domain";
-        user = new _User();
+        user = new User();
         user.setLoginName(userName);
         csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
         csmUser.setLoginName(userName);

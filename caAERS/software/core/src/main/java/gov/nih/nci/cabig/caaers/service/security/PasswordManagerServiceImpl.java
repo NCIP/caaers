@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.service.security;
 
 import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
@@ -21,8 +21,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     private PasswordPolicyService passwordPolicyService;
     private UserRepository userRepository;
 
-    public _User requestToken(String userName) throws CaaersSystemException {
-    	_User user = userRepository.getUserByLoginName(userName);
+    public User requestToken(String userName) throws CaaersSystemException {
+    	User user = userRepository.getUserByLoginName(userName);
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
     	}
@@ -34,7 +34,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 
     public void setPassword(String userName, String password, String token)
             throws CaaersSystemException {
-    	_User user = userRepository.getUserByLoginName(userName);
+    	User user = userRepository.getUserByLoginName(userName);
     	
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
@@ -43,7 +43,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         validateAndSetPassword(user, password);
     }
 
-    private boolean validateToken(_User user, String token) throws CaaersSystemException {
+    private boolean validateToken(User user, String token) throws CaaersSystemException {
         if (user.getTokenTime().after(
                 new Timestamp(new Date().getTime()
                         - passwordPolicyService.getPasswordPolicy()
@@ -52,7 +52,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         throw new CaaersSystemException("Invalid token.");
     }
 
-    private boolean validateAndSetPassword(_User user, String password)
+    private boolean validateAndSetPassword(User user, String password)
             throws CaaersSystemException {
         passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(user.getLoginName(),
                 password));

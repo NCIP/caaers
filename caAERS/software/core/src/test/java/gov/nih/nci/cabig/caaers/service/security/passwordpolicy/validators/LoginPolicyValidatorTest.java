@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
@@ -23,7 +23,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 	private PasswordPolicy passwordPolicy;
 	private LoginPolicy loginPolicy;
 	private Credential credential;
-	private _User user;	
+	private User user;
 	private String userName;    
 	private String password;
 	
@@ -31,7 +31,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		super.setUp();
 		userName = "xyz";
 		password = "Abcdef1!";
-		user = new _User();
+		user = new User();
 		credential = new Credential(userName, password);
 		credential.setUser(user);
 		loginPolicyValidator = new LoginPolicyValidator();

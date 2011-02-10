@@ -3,8 +3,8 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
  
@@ -19,7 +19,7 @@ public interface UserRepository {
 	 * @param loginName the login name
 	 * @return the user by login name
 	 */
-	public _User getUserByLoginName(String loginName);
+	public User getUserByLoginName(String loginName);
 	
 	/**
 	 * Creates the or update user.
@@ -27,7 +27,7 @@ public interface UserRepository {
 	 * @param user the user
 	 * @param changeURL the change url
 	 */
-	public void createOrUpdateUser(_User user,String changeURL);
+	public void createOrUpdateUser(User user,String changeURL);
 	
 	/**
 	 * User change password.
@@ -36,14 +36,14 @@ public interface UserRepository {
 	 * @param password the password
 	 * @param maxHistorySize the max history size
 	 */
-	public void userChangePassword(_User user, String password, int maxHistorySize);
+	public void userChangePassword(User user, String password, int maxHistorySize);
 	
 	/**
 	 * Save.
 	 *
 	 * @param user the user
 	 */
-	public void save(_User user);
+	public void save(User user);
 	
 	/**
 	 * Send user email.
@@ -59,7 +59,7 @@ public interface UserRepository {
 	 *
 	 * @param user the user
 	 */
-	public void unlockUser(_User user);
+	public void unlockUser(User user);
 	
 	/**
 	 * Search csm user.
@@ -92,7 +92,7 @@ public interface UserRepository {
      *
      * @param user the user
      */
-    public void provisionUser(_User user);
+    public void provisionUser(User user);
 
     /**
      * Search.
@@ -100,7 +100,7 @@ public interface UserRepository {
      * @param query the query
      * @return the list
      */
-    public List<_User> search(UserQuery query);
+    public List<User> search(UserQuery query);
 
 
     /**

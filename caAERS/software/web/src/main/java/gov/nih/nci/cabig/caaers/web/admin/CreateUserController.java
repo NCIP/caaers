@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import javax.servlet.ServletException;
@@ -61,7 +61,7 @@ public class CreateUserController extends UserController<UserCommand>{
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		UserCommand command = new UserCommand();
 		String loggedInPersonUserName = SecurityUtils.getUserLoginName();
-		_User loggedinUser =  userRepository.getUserByLoginName(loggedInPersonUserName);
+		User loggedinUser =  userRepository.getUserByLoginName(loggedInPersonUserName);
 		command.setLoggedInUser(loggedinUser);
         command.setCreateAsPerson(command.getPO());
         command.setCreateAsUser(command.getUA());

@@ -773,8 +773,8 @@ public class Fixtures {
       return sd;
   }
 
-  public static _User createUser(String loginId, String name){
-     _User u = new _User();
+  public static User createUser(String loginId, String name){
+     User u = new User();
      u.setFirstName(name);
      u.setLoginName(loginId);
      return u;

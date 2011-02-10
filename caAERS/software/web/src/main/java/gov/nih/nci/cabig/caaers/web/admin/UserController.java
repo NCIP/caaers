@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao._UserDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -20,25 +20,21 @@ import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 
  * @author Monish
  *
  */
-public abstract class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, gov.nih.nci.cabig.caaers.domain._User, _UserDao>  {
+public abstract class UserController<C extends UserCommand> extends AutomaticSaveAjaxableFormController<C, User, UserDao>  {
 	
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";	
 	protected CaaersSecurityFacadeImpl caaersSecurityFacade;
@@ -94,12 +90,12 @@ public abstract class UserController<C extends UserCommand> extends AutomaticSav
     
 
 	@Override
-	protected _User getPrimaryDomainObject(C command) {
-		return new _User();
+	protected User getPrimaryDomainObject(C command) {
+		return new User();
 	}
 	
 	@Override
-	protected _UserDao getDao() {
+	protected UserDao getDao() {
 		return null;
 	}
     
@@ -116,7 +112,7 @@ public abstract class UserController<C extends UserCommand> extends AutomaticSav
      * @param request
      * @param user
      */
-	protected void createOrUpdateUser(HttpServletRequest request,_User user){
+	protected void createOrUpdateUser(HttpServletRequest request, User user){
 		
 		userRepository.createOrUpdateUser(user, ResetPasswordController.getURL(request.getScheme(), 
 																					   request.getServerName(),
@@ -129,7 +125,7 @@ public abstract class UserController<C extends UserCommand> extends AutomaticSav
 	 * @param csmUser
 	 * @param roleMemberships
 	 */
-	protected void processRoleMemberships(User csmUser, List<SuiteRoleMembership> roleMemberships){
+	protected void processRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships){
 		userRepository.provisionRoleMemberships(csmUser, roleMemberships);
 	}
 	

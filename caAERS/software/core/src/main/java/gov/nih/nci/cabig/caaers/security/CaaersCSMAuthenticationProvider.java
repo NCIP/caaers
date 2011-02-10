@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
@@ -47,7 +47,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) 
 	throws AccountExpiredException{
 
-		_User caaersUser = null;
+		User caaersUser = null;
 		Credential credential =  new Credential(user.getUsername(), user.getPassword());
 		PasswordPolicy passwordPolicy = passwordPolicyService.getPasswordPolicy();
 		LoginPolicyValidator loginPolicyValidator = new LoginPolicyValidator();		

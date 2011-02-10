@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
@@ -47,7 +47,7 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     public boolean validatePasswordAgainstCreationPolicy(Credential credential)
             throws PasswordCreationPolicyException {
     	ValidationErrors validationErrors = new ValidationErrors();
-    	_User user = userRepository.getUserByLoginName(credential.getUserName());
+    	User user = userRepository.getUserByLoginName(credential.getUserName());
     	passwordCreationPolicyValidator.setUser(user);
 		boolean result = passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential, validationErrors);
 		if(validationErrors.hasErrors()) throw new PasswordCreationPolicyException("Error while saving password", validationErrors);

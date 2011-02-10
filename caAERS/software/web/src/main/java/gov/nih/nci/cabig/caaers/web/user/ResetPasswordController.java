@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 
@@ -37,7 +37,7 @@ public class ResetPasswordController extends SimpleFormController {
         ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
 
     	UserName userName = (UserName) command;
-        _User dbUser = userRepository.getUserByLoginName(userName.getUserName());
+        User dbUser = userRepository.getUserByLoginName(userName.getUserName());
         
         if(dbUser==null) return modelAndView.addObject("noSuchUser", true);
         if(dbUser.getCsmUser()  == null) return modelAndView.addObject("noSuchUser", true);
@@ -45,7 +45,7 @@ public class ResetPasswordController extends SimpleFormController {
         // Srini Akkala , CAAERS-2356
         String userEmail = dbUser.getCsmUser().getEmailId();
         //find the user object, preference given to researchstaff
-        _User user = passwordManagerService.requestToken(userName.getUserName());
+        User user = passwordManagerService.requestToken(userName.getUserName());
         //csmUserRepository.sendUserEmail(userName.getUserName(), "Reset caAERS Password", emailPretext
         userRepository.sendUserEmail(userEmail, "Reset caAERS Password", emailPretext
                 + userName.getURL() + "&token=" + user.getToken() + emailPosttext);

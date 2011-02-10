@@ -85,7 +85,7 @@ public abstract class Investigator extends Person {
      */
     @OneToOne
     @JoinColumn(name = "user_id")	
-	public _User getCaaersUser() {
+	public User getCaaersUser() {
 		return caaersUser;
 	}
     

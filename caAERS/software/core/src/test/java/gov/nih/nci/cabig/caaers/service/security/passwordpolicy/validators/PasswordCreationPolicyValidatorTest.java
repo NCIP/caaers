@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
@@ -23,7 +23,7 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 		private Credential credential;
 		private String userName;    
 		private String password;    
-		private _User user;
+		private User user;
 		private gov.nih.nci.security.authorization.domainobjects.User csmUser;
 	
 	@Override
@@ -31,7 +31,7 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 		super.setUp();        
 		userName = "wxyz1234";        
 		password = "Password1!";  
-		user =  new _User();
+		user =  new User();
 		csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
 		user.setLoginName(userName);
 		csmUser.setLoginName(userName);
@@ -68,7 +68,7 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 	 * 2. This testcase checks if the validate method returns false if the user tries to set a password which is already used.
 	 */
 	public void testPasswordHistoryValidation_Failure() {
-		user = registerMockFor(_User.class);
+		user = registerMockFor(User.class);
 		expect(user.getPasswordAge()).andReturn(new Long(190));
 		expect(user.userHasPassword(password)).andReturn(false);
 		expect(user.userHadPassword(password)).andReturn(true);
@@ -82,7 +82,7 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 	 * 3. This method has various assertions to check the password creation validations on various passwords.
 	 */
 	public void testAllPasswordFormatValidations() {
-		user = registerMockFor(_User.class);
+		user = registerMockFor(User.class);
 		expect(user.getPasswordAge()).andReturn(new Long(190)).anyTimes();
 		expect(user.userHasPassword((String)EasyMock.anyObject())).andReturn(false).anyTimes();
 		expect(user.userHadPassword((String)EasyMock.anyObject())).andReturn(false).anyTimes();

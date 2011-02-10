@@ -4,11 +4,8 @@ import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
@@ -67,7 +64,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ : refactored to use SuiteRoleMembership
 	public Collection<String> getRoles(String userName, Study study) {
 		Set<String> roles = new HashSet<String>();
-		_User user = userRepository.getUserByLoginName(userName);
+		User user = userRepository.getUserByLoginName(userName);
         String studyCCIdentifier = study.getCoordinatingCenterIdentifier().getValue();
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
             if(roleMembership.isGlobalScoped()) continue; //not scoped at study level
@@ -106,7 +103,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ : Refactored to use SuiteRoleMembership
 	public Collection<String> getRoles(String userName, Organization org) {
 		Set<String> roles = new HashSet<String>();
-		_User user = userRepository.getUserByLoginName(userName);
+		User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
             if(roleMembership.isGlobalScoped()) continue; //not scoped role
             if(roleMembership.isAllSite()){
@@ -215,7 +212,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     public List<IndexEntry> getAccessibleStudyIds(String userName){
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
         
-        _User user = userRepository.getUserByLoginName(userName);
+        User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
 
            IndexEntry entry = new IndexEntry(roleMembership.getRole());
@@ -257,7 +254,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ - Refactored to use the RoleMembership
     public List<IndexEntry> getAccessibleOrganizationIds(String userName){
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
-        _User user = userRepository.getUserByLoginName(userName);
+        User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
             IndexEntry entry = new IndexEntry(roleMembership.getRole());
             entries.add(entry);
@@ -309,7 +306,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			return;
 		}
         
-		_User user = userRepository.getUserByLoginName(userName);
+		User user = userRepository.getUserByLoginName(userName);
 		gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
         if(csmUser == null) return;
 

@@ -3,8 +3,8 @@ package gov.nih.nci.cabig.caaers.datamigrator;
 import static gov.nih.nci.cabig.caaers.domain.UserGroupType.*;
 
 import gov.nih.nci.cabig.caaers.RoleMembership;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,7 +26,7 @@ public class UserPrivilegeMigrator extends CaaersDataMigratorTemplate {
 
     private String authenticationMode="local";
     private UserRepository userRepository;
-    private Map<Long, _User> userDataMap = new HashMap<Long, _User>();
+    private Map<Long, User> userDataMap = new HashMap<Long, User>();
 
 
     //SQLs
@@ -163,7 +163,7 @@ public class UserPrivilegeMigrator extends CaaersDataMigratorTemplate {
              getJdbcTemplate().query(query.toString(), new UserRowMapper(false));
 
              if(!userDataMap.isEmpty()){
-                 for(_User user : userDataMap.values()){
+                 for(User user : userDataMap.values()){
                      log.debug("provisioning csm_user : " + user.getCsmUser().getUserId());
                      userRepository.provisionUser(user);
                  }
@@ -188,9 +188,9 @@ public class UserPrivilegeMigrator extends CaaersDataMigratorTemplate {
              String entityIdentifierValue = rs.getString(3);
 
              UserGroupType role = valueOf(roleCode);
-             _User user = userDataMap.get(userId);
+             User user = userDataMap.get(userId);
              if(user == null){
-                 user = new _User();
+                 user = new User();
                  user.getCsmUser().setUserId(userId);
                  userDataMap.put(userId, user);
              }

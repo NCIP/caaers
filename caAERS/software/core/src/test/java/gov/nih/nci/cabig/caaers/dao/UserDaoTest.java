@@ -1,31 +1,31 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Calendar;
 
-public class _UserDaoTest extends CaaersDbNoSecurityTestCase  {
+public class UserDaoTest extends CaaersDbNoSecurityTestCase  {
 	
-	private _UserDao _userDao;
+	private UserDao _userDao;
 	
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		_userDao = (_UserDao)getDeployedApplicationContext().getBean("_userDao");
+		_userDao = (UserDao)getDeployedApplicationContext().getBean("_userDao");
 	}
 
 	public void testGetByLoginName(){
-		_User _user = _userDao.getByLoginName("monishd");
+		User _user = _userDao.getByLoginName("monishd");
 		assertNotNull(_user);
 		assertEquals("monishd",_user.getLoginName());
 		assertEquals("abcd",_user.getToken());
 	}
 	
 	public void testSave(){
-		_User _newUser = new _User();
+		User _newUser = new User();
 		_newUser.setLoginName("monish123");
 		_newUser.setToken("1234abc");
 		_newUser.setFailedLoginAttempts(0);
@@ -44,7 +44,7 @@ public class _UserDaoTest extends CaaersDbNoSecurityTestCase  {
 		
 		_userDao.save(_newUser);
 		interruptSession();
-		_User _user = _userDao.getByLoginName("monish123");
+		User _user = _userDao.getByLoginName("monish123");
 		assertNotNull(_user);
 		
 	}

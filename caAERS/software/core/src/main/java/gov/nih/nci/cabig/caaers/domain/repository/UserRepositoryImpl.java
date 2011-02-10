@@ -3,10 +3,10 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.RoleMembership;
-import gov.nih.nci.cabig.caaers.dao._UserDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.security.CSMCacheManager;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
 	private Logger logger = Logger.getLogger(UserRepositoryImpl.class);
 	
 	/** The user dao. */
-	private _UserDao userDao;
+	private UserDao userDao;
 	
 	/** The user provisioning manager. */
 	private UserProvisioningManager userProvisioningManager;
@@ -81,18 +81,18 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 	
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#save(gov.nih.nci.cabig.caaers.domain._User)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#save(gov.nih.nci.cabig.caaers.domain.User)
      */
     @Transactional(readOnly = false)
-    public void save(_User user){
+    public void save(User user){
     	userDao.save(user);
     }
     
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#createOrUpdateUser(gov.nih.nci.cabig.caaers.domain._User, java.lang.String)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#createOrUpdateUser(gov.nih.nci.cabig.caaers.domain.User, java.lang.String)
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, noRollbackFor = MailException.class)
-	public void createOrUpdateUser(_User user,String changeURL){
+	public void createOrUpdateUser(User user,String changeURL){
 		if(user.getCsmUser().getUserId() == null){
 			createCSMUser(user);
 			save(user);
@@ -141,13 +141,13 @@ public class UserRepositoryImpl implements UserRepository {
      * @return the user by login name
      */
     @Transactional(readOnly = true)
-	public _User getUserByLoginName(String loginName) {
+	public User getUserByLoginName(String loginName) {
 
         //fetch the fresh user. 
-		_User _user = userDao.getByLoginName(loginName);
+		User _user = userDao.getByLoginName(loginName);
 
        //fetch the CSM related details from Cache if the user is present there.
-        _User userFromCache = CSMCacheManager.getUserFromCache(loginName);
+        User userFromCache = CSMCacheManager.getUserFromCache(loginName);
         if(_user != null && userFromCache != null){
             //obtain csm information from cache. 
            _user.setCsmUser(userFromCache.getCsmUser());
@@ -162,7 +162,7 @@ public class UserRepositoryImpl implements UserRepository {
                 throw new CaaersSystemException("caAERS user exists and relevant CSM user does not exist : Data Integrity issue");
             }
             if(_user == null){
-                _user = new _User(csmUser);
+                _user = new User(csmUser);
             }else{
                 _user.setCsmUser(csmUser);
             }
@@ -233,7 +233,7 @@ public class UserRepositoryImpl implements UserRepository {
      * @param user the user
      */
     @Transactional(readOnly = false)
-    protected void updateCSMUser(_User user){
+    protected void updateCSMUser(User user){
         try {
             userProvisioningManager.modifyUser(user.getCsmUser());
         } catch (CSTransactionException e) {
@@ -247,7 +247,7 @@ public class UserRepositoryImpl implements UserRepository {
      * @param user the user
      */
     @Transactional(readOnly = false)
-    protected void createCSMUser(_User user){
+    protected void createCSMUser(User user){
     	gov.nih.nci.security.authorization.domainobjects.User dbCsmUser = userProvisioningManager.getUser(user.getLoginName());
     	if(dbCsmUser != null)  throw new CaaersSystemException("Couldn't add user: " + user.getLoginName() + ": already exists.");
     	try{
@@ -261,17 +261,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
     
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#unlockUser(gov.nih.nci.cabig.caaers.domain._User)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#unlockUser(gov.nih.nci.cabig.caaers.domain.User)
      */
-    public void unlockUser(_User user){
+    public void unlockUser(User user){
     	user.unlock();
     	save(user);
     }
     
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#userChangePassword(gov.nih.nci.cabig.caaers.domain._User, java.lang.String, int)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#userChangePassword(gov.nih.nci.cabig.caaers.domain.User, java.lang.String, int)
      */
-    public void userChangePassword(_User user, String password, int maxHistorySize) {
+    public void userChangePassword(User user, String password, int maxHistorySize) {
         user.resetToken();
         user.setPasswordLastSet(new Timestamp(new Date().getTime()));
         user.addPasswordToHistory(DigestUtils.shaHex(password), maxHistorySize);
@@ -320,7 +320,7 @@ public class UserRepositoryImpl implements UserRepository {
      * @param user the user
      * @param changeURL the change url
      */
-    protected void sendCreateAccountEmail(_User user, String changeURL){
+    protected void sendCreateAccountEmail(User user, String changeURL){
 
         String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null,"Your new caAERS account", Locale.getDefault());
         String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getCsmUser().getLoginName(), changeURL + "&token=" + user.getToken()},
@@ -338,7 +338,7 @@ public class UserRepositoryImpl implements UserRepository {
      *
      * @param user the user
      */
-    protected void sendUpdateAccountEmail(_User user){
+    protected void sendUpdateAccountEmail(User user){
     	if ("local".equals(getAuthenticationMode())) {
     		sendUserEmail(user.getCsmUser().getEmailId(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
     	}
@@ -349,7 +349,7 @@ public class UserRepositoryImpl implements UserRepository {
      *
      * @param user the user
      */
-    public void provisionUser(_User user) {
+    public void provisionUser(User user) {
 
         ProvisioningSession session = provisioningSessionFactory.createSession(user.getCsmUser().getUserId());
 
@@ -398,8 +398,8 @@ public class UserRepositoryImpl implements UserRepository {
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#search(gov.nih.nci.cabig.caaers.dao.query.UserQuery)
      */
-    public List<_User> search(UserQuery query) {
-        return (List<_User>)userDao.search(query);
+    public List<User> search(UserQuery query) {
+        return (List<User>)userDao.search(query);
     }
 
     /**
@@ -407,7 +407,7 @@ public class UserRepositoryImpl implements UserRepository {
      *
      * @param userDao the new user dao
      */
-    public void setUserDao(_UserDao userDao) {
+    public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 

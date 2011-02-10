@@ -33,7 +33,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "caaers_users")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_caaers_users_id") })
-public class _User extends AbstractMutableDomainObject{
+public class User extends AbstractMutableDomainObject{
 	
 	/** The login name. */
 	protected String loginName;
@@ -68,7 +68,7 @@ public class _User extends AbstractMutableDomainObject{
     /**
      * Instantiates a new _ user.
      */
-    public _User() {
+    public User() {
         this(new gov.nih.nci.security.authorization.domainobjects.User());
     }
 
@@ -77,7 +77,7 @@ public class _User extends AbstractMutableDomainObject{
      *
      * @param csmUser the csm user
      */
-    public _User(gov.nih.nci.security.authorization.domainobjects.User csmUser){
+    public User(gov.nih.nci.security.authorization.domainobjects.User csmUser){
        passwordHistory = new ArrayList<String>();
        roleMembershipMap = new HashMap<UserGroupType, RoleMembership>();
        setCsmUser(csmUser);
@@ -630,7 +630,7 @@ public class _User extends AbstractMutableDomainObject{
      * role memberships of this user will be removed. 
      * @param u - User from which details to be copied. 
      */
-    public void sync(_User u){
+    public void sync(User u){
         getRoleMembershipMap().clear(); //clear so that if the incoming user is NULL, this user atleast have no roles.
         if(u == null) return;
         
@@ -678,8 +678,8 @@ public class _User extends AbstractMutableDomainObject{
 			return true;
 		if (!super.equals(obj))
 			return false;
-		if(!(obj instanceof _User)) return false;
-		_User other = (_User) obj;
+		if(!(obj instanceof User)) return false;
+		User other = (User) obj;
 		if (loginName == null) {
 			if (other.loginName != null)
 				return false;

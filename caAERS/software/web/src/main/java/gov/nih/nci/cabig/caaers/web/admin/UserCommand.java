@@ -2,8 +2,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
@@ -41,10 +41,10 @@ public class UserCommand {
 	private Map<String,String> studyMap = new HashMap<String,String>();
 	private boolean createMode;
 	private boolean editMode;
-	private _User loggedInUser;
+	private User loggedInUser;
 	
 	//Attributes which will be processed to save data to db.
-	private _User user;
+	private User user;
 	private Person person;
 
     private Integer personId;
@@ -189,11 +189,11 @@ public class UserCommand {
 	
 	//Setters & Getters for the private attributes if this class.
 
-	public _User getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(_User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -378,11 +378,11 @@ public class UserCommand {
         return DateUtils.formatDate(DateUtils.today());
     }
 
-	public _User getLoggedInUser() {
+	public User getLoggedInUser() {
 		return loggedInUser;
 	}
 
-	public void setLoggedInUser(_User loggedInUser) {
+	public void setLoggedInUser(User loggedInUser) {
 		this.loggedInUser = loggedInUser;
 	}
 }

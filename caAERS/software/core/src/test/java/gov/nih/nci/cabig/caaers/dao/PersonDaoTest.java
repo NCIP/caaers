@@ -8,18 +8,18 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 
 public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
 	private PersonDao personDao;
-	private _UserDao userDao;
+	private UserDao userDao;
 	private OrganizationDao organizationDao;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		personDao = (PersonDao)getDeployedApplicationContext().getBean("personDao");
-		userDao = (_UserDao)getDeployedApplicationContext().getBean("_userDao");
+		userDao = (UserDao)getDeployedApplicationContext().getBean("_userDao");
 		organizationDao = (OrganizationDao)getDeployedApplicationContext().getBean("organizationDao");
 	}
 	
@@ -60,7 +60,7 @@ public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
 	//Investigator as Person & User
 	public void testSavePersonAsInvestigatorAndUser(){
 		
-		_User user = new _User();
+		User user = new User();
 		user.setLoginName("monishd");
 		userDao.save(user);
 		
@@ -126,7 +126,7 @@ public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
 	
 	//ResearchStaff as Person & User
 	public void testSavePersonAsResearchStaffAndUser(){
-		_User user = new _User();
+		User user = new User();
 		user.setLoginName("bijuj");
 		userDao.save(user);
 		

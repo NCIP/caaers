@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.security;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 
 
 /**
@@ -16,7 +16,7 @@ public interface PasswordManagerService {
      * @throws CaaersSyystemException
      *                 if the user does not exist.
      */
-    public _User requestToken(String userName) throws CaaersSystemException;
+    public User requestToken(String userName) throws CaaersSystemException;
 
     /**
      * Set the password for the specified user.

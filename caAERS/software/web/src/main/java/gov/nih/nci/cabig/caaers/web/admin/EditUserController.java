@@ -2,15 +2,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
@@ -45,7 +38,7 @@ public class EditUserController extends UserController<UserCommand> {
 
         if (!errors.hasErrors()) {
 
-            _User user = command.getUser();
+            User user = command.getUser();
             Person person = command.getPerson();
 
             boolean willCreatePerson = person != null && person.getId() == null;
@@ -99,13 +92,13 @@ public class EditUserController extends UserController<UserCommand> {
 		
 		UserCommand command = new UserCommand();
 		String loggedInPersonUserName = SecurityUtils.getUserLoginName();
-		_User loggedinUser =  userRepository.getUserByLoginName(loggedInPersonUserName);
+		User loggedinUser =  userRepository.getUserByLoginName(loggedInPersonUserName);
 		command.setLoggedInUser(loggedinUser);
 		command.setCreateMode(Boolean.FALSE);
 		command.setEditMode(Boolean.TRUE);
 
         Person person = null;
-        _User user = null;
+        User user = null;
 
         if(StringUtils.isNotEmpty(linkType)){
             //edit call from popup - for linking
@@ -127,7 +120,7 @@ public class EditUserController extends UserController<UserCommand> {
                      StringUtils.equals("INVESTIGATOR_RECORD", recordType)){
                 Integer personId = Integer.parseInt(id);
                 person = personRepository.getById(personId);
-                _User u = person.getCaaersUser();
+                User u = person.getCaaersUser();
                 if(u != null){
                     user = userRepository.getUserByLoginName(u.getLoginName());
                 }
@@ -202,7 +195,7 @@ public class EditUserController extends UserController<UserCommand> {
 	/**
 	 * Populates SuiteRoleMembeships for the user.
 	 */
-	private void populateRoleMemberships(_User user,UserCommand command){
+	private void populateRoleMemberships(User user,UserCommand command){
 		ProvisioningSession session =  proSessionFactory.createSession(user.getCsmUser().getUserId());
 		for(UserGroupType group : user.getUserGroupTypes()){
 			command.addRoleMembership(session.getProvisionableRoleMembership(SuiteRole.getByCsmName(group.getCsmName())));

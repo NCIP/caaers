@@ -64,7 +64,7 @@ public class ReporterTab extends AeTab {
            ResearchStaff rs = srs.getResearchStaff();
            if(!temporaryRsSet.contains(rs)){
               if(rs.isUser()){
-                 _User user = userRepository.getUserByLoginName(rs.getCaaersUser().getLoginName());
+                 User user = userRepository.getUserByLoginName(rs.getCaaersUser().getLoginName());
                  if(user.hasRole(UserGroupType.ae_reporter)) researchStaffSet.add(rs);
               }
 

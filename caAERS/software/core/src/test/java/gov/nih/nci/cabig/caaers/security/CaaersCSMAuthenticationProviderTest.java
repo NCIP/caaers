@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import gov.nih.nci.security.authentication.CommonAuthenticationManager;
@@ -52,14 +52,14 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 				authorities);
 	}
 
-	private _User loadUser() {
+	private User loadUser() {
 		// load the user and update the last password set time
-		_User user = userRepository.getUserByLoginName(token.getName());
+		User user = userRepository.getUserByLoginName(token.getName());
 		assertNotNull(user);
 		return user;
 	}
 
-	private void saveUser(_User user) {
+	private void saveUser(User user) {
 		userRepository.save(user);
 	}
 
@@ -73,7 +73,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	public void testAdditionalAuthChecks_CheckingSuccess() {
 		createToken("monishd", "xxx");
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(0);
 			saveUser(user);
@@ -96,7 +96,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			assertEquals(0, user.getFailedLoginAttempts());
 			assertNull(user.getLastFailedLoginAttemptTime());
 		}
@@ -110,7 +110,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 			throws Exception {
 		createToken("monishd", "xxx");
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(0);
 			saveUser(user);
@@ -140,7 +140,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			assertEquals(1, user.getFailedLoginAttempts());
 		}
 	}
@@ -153,7 +153,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 			throws Exception {
 		createToken("monishd", "xxx");
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.DATE, -100);
 			user.setPasswordLastSet(new Timestamp(cal.getTime().getTime()));// last
@@ -187,7 +187,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			assertEquals(0, user.getFailedLoginAttempts());
 		}
 	}
@@ -200,7 +200,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 			throws Exception {
 		createToken("monishd", "xxx");
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(4);
 			user.setLastFailedLoginAttemptTime(null);
@@ -230,7 +230,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		interruptSession();
 
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			assertEquals(-1, user.getFailedLoginAttempts());
 		}
 	}
@@ -242,7 +242,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	public void testAdditionalChecks_ThrowingLockedException() throws Exception {
 		createToken("monishd", "xxx");
 		{
-			_User user = loadUser();
+			User user = loadUser();
 			user.setPasswordLastSet(now);
 			user.setFailedLoginAttempts(-1);
 			user.setLastFailedLoginAttemptTime(now);

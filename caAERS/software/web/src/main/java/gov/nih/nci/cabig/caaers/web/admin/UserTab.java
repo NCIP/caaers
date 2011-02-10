@@ -3,15 +3,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -243,7 +236,7 @@ public class UserTab extends TabWithFields<UserCommand>{
                 if(StringUtils.isEmpty(command.getUserName())){
                     errors.rejectValue("userName", "USR_014");
                 }
-                _User user = userRepository.getUserByLoginName(command.getUserName());
+                User user = userRepository.getUserByLoginName(command.getUserName());
                 if(user != null && user.getCsmUser() != null){
                     errors.rejectValue("userName", "USR_001", "Username already taken");
                 }
@@ -265,7 +258,7 @@ public class UserTab extends TabWithFields<UserCommand>{
                 if(StringUtils.isEmpty(command.getUserName())){
                     errors.rejectValue("userName", "USR_014");
                 }
-                _User user = userRepository.getUserByLoginName(command.getUserName());
+                User user = userRepository.getUserByLoginName(command.getUserName());
                 if(user != null && user.getCsmUser() != null){
                     errors.rejectValue("userName", "USR_001", "Username already taken");
                 }
@@ -371,15 +364,15 @@ public class UserTab extends TabWithFields<UserCommand>{
     }
 
 	/**
-	 * This method builds a _User instance from the command object
+	 * This method builds a User instance from the command object
 	 * @param command
 	 * @return
 	 */
-    private _User buildUser(UserCommand command){
+    private User buildUser(UserCommand command){
     	if(command.getUser() == null){
-            command.setUser(new _User());
+            command.setUser(new User());
         }
-        _User user = command.getUser();
+        User user = command.getUser();
         command.getUser().setLoginName(command.getUserName());
     	user.setFirstName(command.getFirstName());
     	user.setLastName(command.getLastName());

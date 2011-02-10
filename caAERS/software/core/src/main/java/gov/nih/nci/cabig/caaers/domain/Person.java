@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.List;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -39,7 +37,7 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
 	protected String faxNumber;
 	
 	/** The caaers user. */
-	protected _User caaersUser; //TODO - MD : Need to rename this to user, also make sure reporter.jsp field name are modified. 
+	protected User caaersUser; //TODO - MD : Need to rename this to user, also make sure reporter.jsp field name are modified.
 	
     /**
      * Gets the last first.
@@ -258,7 +256,7 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
 	@Transient
     @OneToOne
     @JoinColumn(name = "user_id")	
-	public _User getCaaersUser() {
+	public User getCaaersUser() {
 		return caaersUser;
 	}
 
@@ -267,7 +265,7 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
 	 *
 	 * @param caaersUser the new caaers user
 	 */
-	public void setCaaersUser(_User caaersUser) {
+	public void setCaaersUser(User caaersUser) {
 		this.caaersUser = caaersUser;
 	}
 

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 public class PasswordCreationPolicyValidator implements PasswordPolicyValidator {
 
     private PasswordPolicyValidator combinationValidator;
-    private _User user;
+    private User user;
 
     public PasswordCreationPolicyValidator() {
         combinationValidator = new CombinationValidator();
@@ -83,11 +83,11 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
         }
     }
 
-    public _User getUser() {
+    public User getUser() {
 		return user;
 	}
 
-	public void setUser(_User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 }

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 
@@ -20,7 +20,7 @@ public class CSMCacheManager {
 	private static long IDLE_TIME_INSECONDS = 1200;
     private static long IDLE_TIME_INSECONDS_FOR_USER = 300;
 	private static final String ROLE_PRIVILEGE_MAPPING_CACHE_KEY = "gov.nih.nci.cabig.caaers.security.CSMCacheManager.ROLE_PRIVILEGE_MAPPING_CACHE_KEY";
-    private static final String USER_CACHE_KEY = "gov.nih.nci.cabig.caaers.domain._User.CACHE_KEY";
+    private static final String USER_CACHE_KEY = "gov.nih.nci.cabig.caaers.domain.User.CACHE_KEY";
 	
 	/**
 	 * Singleton CacheManager
@@ -35,7 +35,7 @@ public class CSMCacheManager {
 		return instance;
 	}
 
-    public static void addUserToCache(String loginName, _User user){
+    public static void addUserToCache(String loginName, User user){
        CacheManager cacheManager = getCacheManager();
        if(cacheManager.getCache(USER_CACHE_KEY) == null){
            synchronized (cacheManager){
@@ -111,11 +111,11 @@ public class CSMCacheManager {
      * @param loginName
      * @return
      */
-    public static _User getUserFromCache(String loginName){
+    public static User getUserFromCache(String loginName){
         Cache cache = getCacheManager().getCache(USER_CACHE_KEY);
         if(cache != null){
             Element e = cache.get(loginName);
-            if(e != null) return (_User) e.getObjectValue();
+            if(e != null) return (User) e.getObjectValue();
         }
 
        

@@ -167,7 +167,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             	  loginId = researchStaffDto.getEmailAddress();
               }
               //populate the user details
-                final _User user = new _User();
+                final User user = new User();
                 user.setLoginName(loginId);
                 user.setFirstName(researchStaffDto.getFirstName());
                 user.setLastName(researchStaffDto.getLastName());

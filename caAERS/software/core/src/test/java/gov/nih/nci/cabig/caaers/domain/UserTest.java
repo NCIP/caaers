@@ -8,12 +8,12 @@ import junit.framework.TestCase;
  * @author Ram Seethiraju
  */
 
-public class _UserTest extends TestCase {
-	private _User user;	
+public class UserTest extends TestCase {
+	private User user;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		user =  new _User();
+		user =  new User();
 	}
 
 	public void testIsLocked_CheckingSuccess() {
@@ -75,7 +75,7 @@ public class _UserTest extends TestCase {
        assertNull(user.getMiddleName());
        assertTrue(user.getRoleMembershipMap().isEmpty());
 
-       _User x  = new _User();
+       User x  = new User();
        x.setFirstName("x");
        x.setLastName("y");
        x.findRoleMembership(UserGroupType.ae_reporter).addOrganizationNCICode("xyz");

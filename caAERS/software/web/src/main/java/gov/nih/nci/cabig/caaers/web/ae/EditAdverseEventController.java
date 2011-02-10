@@ -146,7 +146,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
                    Person loggedInPerson = getPersonRepository().getByLoginId(loginId);
                    command.getAeReport().getReporter().copy(loggedInPerson);
                    if(loggedInPerson == null){
-                       _User loggedInUser = getUserRepository().getUserByLoginName(loginId);
+                       User loggedInUser = getUserRepository().getUserByLoginName(loginId);
                        command.getAeReport().getReporter().copy(loggedInUser);
                    }
                 }

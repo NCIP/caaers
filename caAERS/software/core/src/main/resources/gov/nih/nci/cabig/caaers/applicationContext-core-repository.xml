@@ -115,7 +115,7 @@
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="mailSender" ref="mailer"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="userDao" ref="_userDao" />
+        <property name="userDao" ref="userDao" />
         <property name="provisioningSessionFactory" ref="provisioningSessionFactory" /> 
     </bean>
 

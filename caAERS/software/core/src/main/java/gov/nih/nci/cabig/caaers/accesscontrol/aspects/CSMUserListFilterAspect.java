@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 
 import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
@@ -18,7 +18,7 @@ public class CSMUserListFilterAspect {
     public void applyFilter(Object list){
         List csmUserList = (List) list;
         String userName = SecurityUtils.getUserLoginName();
-        _User user = userRepository.getUserByLoginName(userName);
+        User user = userRepository.getUserByLoginName(userName);
         RoleMembership roleMembership = user.getRoleMembershipMap().get(UserGroupType.user_administrator);
         if(roleMembership == null){
             csmUserList.clear();

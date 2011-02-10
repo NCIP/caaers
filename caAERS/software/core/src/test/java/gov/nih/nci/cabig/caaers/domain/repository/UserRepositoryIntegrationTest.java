@@ -1,13 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.RoleMembership;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain._User;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
 
 /**
  * UserRepositoryImpl Tester.
@@ -31,14 +27,14 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         String loginName = "x" + l;
         
         {
-            _User x = userRepository.getUserByLoginName(loginName);
+            User x = userRepository.getUserByLoginName(loginName);
             assertNull(x);
         }
 
 
         
         {
-            _User x = new _User();
+            User x = new User();
             x.setFirstName("x");
             x.setLastName("y");
             x.setMiddleName("Z");
@@ -51,7 +47,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
             assertNotNull(x.getCsmUser().getUserId());
         }
         {
-            _User x = userRepository.getUserByLoginName(loginName);
+            User x = userRepository.getUserByLoginName(loginName);
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
             assertTrue(1 == x.getUserGroupTypes().size());
@@ -67,7 +63,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         long l = System.currentTimeMillis()  ;
         String loginName = "x" + l;
         {
-            _User x = new _User();
+            User x = new User();
             x.setFirstName("x");
             x.setLastName("y");
             x.setMiddleName("Z");
@@ -82,7 +78,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
             assertNotNull(x.getCsmUser().getUserId());
         }
         {
-            _User x = userRepository.getUserByLoginName(loginName);
+            User x = userRepository.getUserByLoginName(loginName);
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
             assertTrue(3 == x.getUserGroupTypes().size());
@@ -99,7 +95,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         long l = System.currentTimeMillis()  ;
         String loginName = "x" + l;
         {
-             _User x = new _User();
+             User x = new User();
             x.setFirstName("x");
             x.setLastName("y");
             x.setMiddleName("Z");
@@ -112,7 +108,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
             assertNotNull(x.getCsmUser().getUserId());
         }
         {
-            _User x = userRepository.getUserByLoginName(loginName);
+            User x = userRepository.getUserByLoginName(loginName);
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
             assertTrue(1 == x.getUserGroupTypes().size());
@@ -121,7 +117,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
 
         }
         {
-           _User x = userRepository.getUserByLoginName(loginName);
+           User x = userRepository.getUserByLoginName(loginName);
             RoleMembership rm = x.findRoleMembership(UserGroupType.person_and_organization_information_manager);
             rm.setAllSite(true);
             userRepository.provisionUser(x);
@@ -129,7 +125,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         }
 
         {
-            _User x = userRepository.getUserByLoginName(loginName);
+            User x = userRepository.getUserByLoginName(loginName);
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
             assertTrue(x.getUserGroupTypes().contains(UserGroupType.system_administrator));
@@ -140,7 +136,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         }
         
         {
-           _User x = userRepository.getUserByLoginName(loginName);
+           User x = userRepository.getUserByLoginName(loginName);
            x.removeRoleMembership(UserGroupType.person_and_organization_information_manager);
            x.removeRoleMembership(UserGroupType.system_administrator);
            RoleMembership rm = x.findRoleMembership(UserGroupType.ae_reporter);
@@ -151,7 +147,7 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
 
 
         {
-            _User x = userRepository.getUserByLoginName(loginName);
+            User x = userRepository.getUserByLoginName(loginName);
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
             assertTrue(x.getUserGroupTypes().contains(UserGroupType.ae_reporter));
