@@ -15,7 +15,6 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,20 +79,13 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
  	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public Investigator save(Investigator investigator, String changeURL) {
-		if(investigator.getAllowedToLogin()){
-	    	
-	    	if (investigator.getEmailAddress() == null) {
-	            throw new CaaersSystemException("Email address is required");
-	        }
-	    	
-	    	if(investigator.getId() == null &&  StringUtilities.isBlank(investigator.getLoginId())) {
-	    		investigator.setLoginId(investigator.getEmailAddress());
-	    	}
-		}
-		
 		//save the details in caAERS
-		investigator = investigatorDao.merge(investigator);
-	    
+		try{
+			investigator = investigatorDao.merge(investigator);
+		}catch(Exception e){
+    		logger.error("error while saving investigator", e);
+			throw new CaaersSystemException("Failed to save investigator", e);
+		}
 		return investigator;
 	}
 	
