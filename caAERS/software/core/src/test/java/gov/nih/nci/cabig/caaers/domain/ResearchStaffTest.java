@@ -17,29 +17,16 @@ public class ResearchStaffTest extends AbstractTestCase {
 		staff = new  LocalResearchStaff();
         Organization org = Fixtures.createOrganization("test");
         SiteResearchStaff siteResearchStaff1 = Fixtures.createSiteResearchStaff(org, staff);
-        siteResearchStaff1.addSiteResearchStaffRole(Fixtures.createSiteResearchStaffRole("abcd", new Date(), null));
         SiteResearchStaff siteResearchStaff2 = Fixtures.createSiteResearchStaff(org, staff);
-        siteResearchStaff2.addSiteResearchStaffRole(Fixtures.createSiteResearchStaffRole("efg",  DateUtils.yesterday(), DateUtils.yesterday()));
+        siteResearchStaff2.setEndDate(DateUtils.yesterday());
+        siteResearchStaff2.setStartDate(DateUtils.yesterday());
 
 	}
 
 
-	public void testGetAllRoles(){
-		assertFalse(staff.getAllRoles().isEmpty());
-	}
-	
-	public void testGetSiteRolesMapping(){
-		assertFalse(staff.getSiteRolesMapping().isEmpty());
-	}
-	
-	public void testGetActiveDate(){
-		assertTrue(DateUtils.compareDate(DateUtils.yesterday(), staff.getActiveDate()) == 0);
-	}
-	
     public void testGetActiveSiteResearchStaff(){
         assertEquals(2, staff.getSiteResearchStaffs().size());
         assertEquals(1, staff.getActiveSiteResearchStaff().size());
-        assertEquals("abcd", staff.getActiveSiteResearchStaff().get(0).getSiteResearchStaffRoles().get(0).getRoleCode());
     }
 
     public void testSync(){

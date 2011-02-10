@@ -56,11 +56,11 @@ public class AddressTest extends TestCase {
         assertEquals("Sunrise Valley Dr", a2.getStreet());
 
         a2.sync(null);
-        assertNull(a.getStreet());
-        assertNull(a.getCity());
-        assertNull(a.getState());
-        assertNull(a.getZip());
-        assertNull(a.getCountry());
+        assertNull(a2.getStreet());
+        assertNull(a2.getCity());
+        assertNull(a2.getState());
+        assertNull(a2.getZip());
+        assertNull(a2.getCountry());
 
     }
 

@@ -15,7 +15,7 @@ public class SiteResearchStaffTest extends TestCase {
 	}
 
 	public void testIsActive() {
-		assertFalse(new SiteResearchStaff().isActive());
+		assertTrue(new SiteResearchStaff().isActive());
 	}
 	
 	public void testGetActiveSiteResearchStaffRoles() {

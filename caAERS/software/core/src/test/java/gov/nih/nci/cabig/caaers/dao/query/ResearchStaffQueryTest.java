@@ -70,7 +70,7 @@ public class ResearchStaffQueryTest extends TestCase {
         "loginId"));
     	assertEquals("wrong parameter value", "%a%", researchStaffQuery.getParameterMap().get("loginId"));
     	assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.loginId) LIKE :loginId  order by rs.id",
+                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs join rs.caaersUser u WHERE lower(u.loginName) LIKE :loginId  order by rs.id",
                 researchStaffQuery.getQueryString());
     }
     
@@ -96,7 +96,7 @@ public class ResearchStaffQueryTest extends TestCase {
     public void testFilterByExactLoginId() throws Exception{
     	ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
     	researchStaffQuery.filterByExactLoginId("loginId");
-    	assertEquals("SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.loginId) = :loginId  order by rs.id",researchStaffQuery.getQueryString());
+    	assertEquals("SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs join rs.caaersUser u WHERE lower(u.loginName) = :loginId  order by rs.id",researchStaffQuery.getQueryString());
     	
     }
 }
