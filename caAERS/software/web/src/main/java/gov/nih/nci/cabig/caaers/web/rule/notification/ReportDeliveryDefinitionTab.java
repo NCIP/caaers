@@ -29,6 +29,20 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
     }
 
     @Override
+    public void onBind(HttpServletRequest request, ReportDefinitionCommand command, Errors errors) {
+        super.onBind(request, command, errors); //To change body of overridden methods use File | Settings | File Templates.
+        List<ReportDeliveryDefinition> reportDefinitions = command.getReportDefinition().getDeliveryDefinitions();
+        Iterator<ReportDeliveryDefinition> it = reportDefinitions.iterator();
+
+        for(ReportDeliveryDefinition rd: reportDefinitions)   {
+                if (StringUtils.isEmpty(rd.getEntityName())) {
+                 rd.setEntityName(rd.getEndPoint());
+            }
+        }
+
+    }
+
+    @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
         // -
         RepeatingFieldGroupFactory rfgFactory;
@@ -54,16 +68,7 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
         return map;
     }
 
-    @Override
-    protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        super.validate(command, commandBean, fieldGroups, errors);
-        List<ReportDeliveryDefinition> reportDefinitions = command.getReportDefinition().getDeliveryDefinitions();
-        Iterator<ReportDeliveryDefinition> it = reportDefinitions.iterator();
-        while (it.hasNext()) {
-            ReportDeliveryDefinition rd = it.next();
-            if (StringUtils.isEmpty(rd.getEntityName())) { errors.reject("RPD_007", "Check the fields for valid values."); return; }
-        }
-    }
+
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ReportDefinitionCommand command) {
