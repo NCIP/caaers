@@ -76,17 +76,19 @@ public abstract class ResearchStaff extends Person {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object o) {
-		if (this == o)
-			return true;
 
         if (o == null)
 			return false;
 
+        if(o == this) return true;
+
         if(!(o instanceof ResearchStaff)) return false;
+        ResearchStaff that = (ResearchStaff) o;
+        if(that.getId() != null && getId() != null) return that.getId().equals(getId());
 
 		if (!super.equals(o))
 			return false;
-		ResearchStaff that = (ResearchStaff) o;
+
 		if (emailAddress != null ? !emailAddress.equals(that.emailAddress) : that.emailAddress != null)
 			return false;
 		return true;

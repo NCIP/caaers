@@ -281,6 +281,41 @@ public abstract class Person extends AbstractIdentifiableDomainObject implements
         return getCaaersUser() != null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if(!(o instanceof Person)) return false;
+
+        Person person = (Person) o;
+        if(person.getId() != null && getId() != null) return getId().equals(person.getId());
+
+        if (caaersUser != null ? !caaersUser.equals(person.caaersUser) : person.caaersUser != null) return false;
+        if (emailAddress != null ? !emailAddress.equals(person.emailAddress) : person.emailAddress != null)
+            return false;
+        if (faxNumber != null ? !faxNumber.equals(person.faxNumber) : person.faxNumber != null) return false;
+        if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(person.lastName) : person.lastName != null) return false;
+        if (middleName != null ? !middleName.equals(person.middleName) : person.middleName != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(person.phoneNumber) : person.phoneNumber != null) return false;
+        if (title != null ? !title.equals(person.title) : person.title != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (faxNumber != null ? faxNumber.hashCode() : 0);
+        result = 31 * result + (caaersUser != null ? caaersUser.hashCode() : 0);
+        return result;
+    }
+
     /**
      * Will copy into this Person, the details from the input Person.
      *

@@ -252,14 +252,19 @@ public abstract class Investigator extends Person {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if(o == null) return false;
+        if(!(o instanceof Investigator)) return false;
 
         Investigator that = (Investigator) o;
+        if(that.getId() != null && getId() != null) return that.getId().equals(getId());
+
+		if (!super.equals(o))
+			return false;
 
         if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier) : that.nciIdentifier != null)
             return false;
 
-        return true && super.equals(o);
+        return true;
     }
 
     /* (non-Javadoc)
