@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -34,11 +34,11 @@ public class PersonTransitionOwner extends TransitionOwner {
 	}
 
 	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner#isUser()
+	 * @see gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner#isPerson()
 	 */
 	@Override
 	@Transient
-	public boolean isUser() {
+	public boolean isPerson() {
 		return true;
 	}
 	
@@ -48,7 +48,7 @@ public class PersonTransitionOwner extends TransitionOwner {
 	 * @return the user
 	 */
 	@Transient
-	public User getUser() {
+	public Person getPerson() {
 		if(getResearchStaff() != null) return researchStaff;
 		return getInvestigator();
 	}
@@ -58,7 +58,7 @@ public class PersonTransitionOwner extends TransitionOwner {
 	 *
 	 * @param user the new user
 	 */
-	public void setUser(User user) {
+	public void setPerson(Person user) {
 		if(user instanceof ResearchStaff) setResearchStaff((ResearchStaff)user); 
 		else setInvestigator((Investigator)user);
 	}

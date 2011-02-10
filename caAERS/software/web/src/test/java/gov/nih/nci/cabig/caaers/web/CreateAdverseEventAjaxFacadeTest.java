@@ -19,26 +19,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcGrade;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -92,8 +73,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private StudyParticipantAssignment assignment;
     
     private ResearchStaffDao researchStaffDao;
-    
-    private SiteResearchStaffDao siteResearchStaffDao;
 
     private StudySite studySite;
     
@@ -121,7 +100,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
         reportRepository = registerMockFor(ReportRepository.class);
         researchStaffDao = registerMockFor(ResearchStaffDao.class);
-        siteResearchStaffDao = registerMockFor(SiteResearchStaffDao.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -135,7 +113,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setExpeditedReportTree(new ExpeditedReportTree());
         facade.setReportRepository(reportRepository);
         facade.setResearchStaffDao(researchStaffDao);
-        facade.setSiteResearchStaffDao(siteResearchStaffDao);
 
         ConfigProperty configProperty = new ConfigProperty();
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
@@ -256,12 +233,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	
     	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
     	expect(researchStaffDao.getById(10)).andReturn(rStaff);
-    	expect(siteResearchStaffDao.getOrganizationResearchStaff(testOrg, rStaff)).andReturn(siteResearchStaff);
     	expect(assignment.getStudySite()).andReturn(studySite);
     	expect(studySite.getOrganization()).andReturn(testOrg);
     	
     	replayMocks();
-    	User user = facade.getResearchStaffDetails("10");
+    	Person user = facade.getResearchStaffDetails("10");
     	verifyMocks();
     	
     	assertEquals("Incorrect email address", "siteResearchStaffEmail", user.getEmailAddress());

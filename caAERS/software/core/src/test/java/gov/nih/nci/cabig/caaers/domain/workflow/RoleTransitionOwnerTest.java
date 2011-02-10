@@ -14,7 +14,7 @@ public class RoleTransitionOwnerTest extends TestCase {
 	}
 
 	public void testIsUser() {
-		assertFalse(ra.isUser());
+		assertFalse(ra.isPerson());
 	}
 
 	public void testGetUserRole() {

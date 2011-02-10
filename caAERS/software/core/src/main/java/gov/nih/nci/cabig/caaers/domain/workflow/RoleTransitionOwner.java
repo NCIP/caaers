@@ -31,11 +31,11 @@ public class RoleTransitionOwner extends TransitionOwner {
 	}
 
 	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner#isUser()
+	 * @see gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner#isPerson()
 	 */
 	@Override
 	@Transient
-	public boolean isUser() {
+	public boolean isPerson() {
 		return false;
 	}
 	

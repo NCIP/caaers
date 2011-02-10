@@ -22,14 +22,6 @@ public class CaaersSecurityFacadeTestAdapter implements CaaersSecurityFacade {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void provisionUser(User user) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user, String changeURL) {
-        //To change body of implemented methods use File | Settings | File Templates.
-        return null;
-    }
 
     public boolean checkAuthorization(Authentication auth, String objectPrivilege) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.

@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.workflow.callback;
 
 import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.User;
-
-import java.util.List;
-
 import org.jbpm.JbpmContext;
 import org.jbpm.JbpmException;
 import org.jbpm.graph.def.Node;
@@ -12,6 +8,8 @@ import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
 import org.springmodules.workflow.jbpm31.JbpmCallback;
+
+import java.util.List;
 
 /**
  * This class will create task instances, this is written in this way to do the easymock junit testing.

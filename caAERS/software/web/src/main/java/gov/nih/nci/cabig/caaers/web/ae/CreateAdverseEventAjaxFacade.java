@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
@@ -101,8 +100,6 @@ public class CreateAdverseEventAjaxFacade {
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
     private ConditionDao conditionDao;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
-	private UserDao userDao;
-	private SiteResearchStaffDao siteResearchStaffDao;
 	private ResearchStaffDao researchStaffDao;
 	private InvestigatorDao investigatorDao;
     private OtherInterventionDao otherInterventionDao;
@@ -268,20 +265,18 @@ public class CreateAdverseEventAjaxFacade {
     }
 
 
-    public User getResearchStaff(String text) {
-        User user = userDao.getById(Integer.parseInt(text));
-        return reduce(user, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
-    }
-    
-    public User getResearchStaffDetails(String userId){
+    public Person getResearchStaffDetails(String userId){
     	Object cmd = extractCommand();
 		ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
-		//User user = userDao.getById(Integer.parseInt(userId));
 		ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(userId));
-		User user = null;
+		Person user = null;
 		SiteResearchStaff siteResearchStaff = null;
 		if(researchStaff != null){
-			siteResearchStaff = siteResearchStaffDao.getOrganizationResearchStaff(command.getAeReport().getAssignment().getStudySite().getOrganization(), researchStaff);
+            Organization organization = command.getAeReport().getAssignment().getStudySite().getOrganization();
+            if(organization != null){
+               siteResearchStaff = researchStaff.findActiveSiteResearchStaffByOrganizationId(organization.getId()); 
+            }
+
 			user = researchStaff;
 		}else{
 			user = investigatorDao.getById(Integer.parseInt(userId));
@@ -309,8 +304,8 @@ public class CreateAdverseEventAjaxFacade {
     	return rstaff;
     }
     
-    public User getInvestigator(String text){
-    	User user = userDao.getById(Integer.parseInt(text));
+    public Person getInvestigator(String text){
+    	Person user = investigatorDao.getById(Integer.parseInt(text));
         return reduce(user, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
     
@@ -1448,15 +1443,7 @@ public class CreateAdverseEventAjaxFacade {
     public void setConditionDao(ConditionDao conditionDao) {
         this.conditionDao = conditionDao;
     }
-    @Required
-    public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-    
-    @Required
-    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao){
-    	this.siteResearchStaffDao = siteResearchStaffDao;
-    }
+
     
     @Required
     public void setResearchStaffDao(ResearchStaffDao researchStaffDao){

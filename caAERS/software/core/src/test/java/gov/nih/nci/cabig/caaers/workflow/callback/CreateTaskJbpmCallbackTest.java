@@ -4,11 +4,6 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.easymock.classextension.EasyMock;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.Node;
@@ -16,6 +11,9 @@ import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 
  * @author Biju Joseph

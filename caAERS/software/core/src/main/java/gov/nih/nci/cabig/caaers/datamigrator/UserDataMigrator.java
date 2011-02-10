@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.datamigrator;
 
-import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -10,14 +9,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * This class will migrate existing users to new groups.
@@ -30,8 +21,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 
-    private UserDao userDao;
-    private CaaersSecurityFacade caaersSecurityFacade;
     public static final List<String> EXISTING_GROUPS = Arrays.asList("caaers_study_cd",
     																"caaers_participant_cd",
     																"caaers_central_office_sae_cd",
@@ -503,18 +492,6 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
     	String sql = "delete from study_personnel where role_code like 'caaers%'";
     	getJdbcTemplate().execute(sql);
     }
-
-   
-	
-	@Required
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	@Required
-	public void setCaaersSecurityFacade(CaaersSecurityFacade caaersSecurityFacade) {
-		this.caaersSecurityFacade = caaersSecurityFacade;
-	}
 
 
 }

@@ -2,27 +2,15 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.collections15.Factory;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
  
 /**
@@ -37,7 +25,7 @@ import org.hibernate.annotations.*;
 @Table(name = "investigators")
 @DiscriminatorColumn(name="type")
 @GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
-public abstract class Investigator extends User {
+public abstract class Investigator extends Person {
 	
 	/** The id. */
 	protected Integer id;

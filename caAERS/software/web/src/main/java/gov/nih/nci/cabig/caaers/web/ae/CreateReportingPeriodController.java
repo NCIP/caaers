@@ -12,34 +12,26 @@ import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.text.NumberFormat;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.NumberFormat;
+import java.util.*;
 
 /**
  * The create flow of Reporting Period is handled by this controller.
@@ -65,7 +57,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private EpochDao epochDao;
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     private WorkflowConfigDao workflowConfigDao;
-    private UserDao userDao;
 
     private Configuration configuration;
     private static final String viewName = "ae/createReportingPeriod";
@@ -531,10 +522,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
     public WorkflowConfigDao getWorkflowConfigDao() {
         return workflowConfigDao;
-    }
-
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
     }
 
     @Required

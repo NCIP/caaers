@@ -36,16 +36,13 @@ public class SiteResearchStaffDao extends GridIdentifiableDao<SiteResearchStaff>
     }
 
     /**
-     * Get Site ResearchStaff belonging to specified organization.
-     * 
+     * Will return the site research staff associated to the specified organization. 
      * @param organization
-     *                The organization.
-     * @param researchstaff
-     *                The researchstaff.
-     * @return The site researchstaff.
+     * @param researchStaff
+     * @return
      */
     @SuppressWarnings("unchecked")
-    public SiteResearchStaff getOrganizationResearchStaff(Organization organization, ResearchStaff researchStaff) {
+    public SiteResearchStaff getSiteResearchStaff(Organization organization, ResearchStaff researchStaff) {
         return CollectionUtils.firstElement((List<SiteResearchStaff>) getHibernateTemplate().find("from SiteResearchStaff a where a.organization = ? and a.researchStaff = ?", new Object[] { organization, researchStaff }));
     }
 

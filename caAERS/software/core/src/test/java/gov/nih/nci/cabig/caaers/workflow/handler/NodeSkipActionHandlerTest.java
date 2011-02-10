@@ -4,20 +4,18 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.easymock.classextension.EasyMock;
 import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 
  * @author Biju Joseph
@@ -95,7 +93,7 @@ public class NodeSkipActionHandlerTest extends AbstractTestCase {
 		EasyMock.expect(wfService.findTaskConfig(wfDefName, taskDefName)).andReturn(tConfig);
 		
 		List<Person> users = new ArrayList<Person>();
-		User u1 = new LocalResearchStaff();
+		Person u1 = new LocalResearchStaff();
 		u1.setLoginId("joel@efg.com");
 		users.add(u1);
 		

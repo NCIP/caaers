@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
@@ -43,7 +42,6 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	WorkflowServiceImpl wfService;
 	WorkflowConfigDao wfConfigDao;
 	WorkflowConfig wfConfig;
-	UserDao userDao;
 	AdverseEventReportingPeriodDao reportingPeriodDao;
 	PossibleTransitionsResolver possibleTransitionsResolver;
 	UserRepository userRepository;

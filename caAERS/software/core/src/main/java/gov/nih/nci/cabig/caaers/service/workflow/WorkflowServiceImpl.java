@@ -149,9 +149,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 			if(owners == null) continue; //no body owns the transition
 			
 			for(TransitionOwner owner : owners){
-				if(owner.isUser()){
+				if(owner.isPerson()){
 					PersonTransitionOwner personOwner = (PersonTransitionOwner) owner;
-					if(StringUtils.equals(personOwner.getUser().getLoginId(), loginId)) {
+					if(StringUtils.equals(personOwner.getPerson().getLoginId(), loginId)) {
                         if(!filteredTransitionMap.containsKey(transition.getName()) ){
                            filteredTransitionMap.put(transition.getName(), transition);
                         }

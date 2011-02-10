@@ -15,7 +15,7 @@ public class SiteResearchStaffDaoTest extends DaoNoSecurityTestCase<SiteResearch
 	public void testGetOrganizationResearchStaff() {
 		Organization organization = organizationDao.getById(-1000);
 		ResearchStaff researchStaff = researchStaffDao.getById(-1000);
-		SiteResearchStaff siteResearchStaff = getDao().getOrganizationResearchStaff(organization, researchStaff);
+		SiteResearchStaff siteResearchStaff = getDao().getSiteResearchStaff(organization, researchStaff);
 		assertNotNull(siteResearchStaff);
 		assertEquals("Park Centre Road", siteResearchStaff.getAddress().getStreet());
 		assertEquals("Fairfax", siteResearchStaff.getAddress().getCity());

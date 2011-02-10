@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.datamigrator;
 import static gov.nih.nci.cabig.caaers.domain.UserGroupType.*;
 
 import gov.nih.nci.cabig.caaers.RoleMembership;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;

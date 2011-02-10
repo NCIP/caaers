@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -55,8 +54,6 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
      EpochDao epochDao;
      AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
      WorkflowConfigDao workflowConfigDao;
-	 UserDao userDao;
-	 
 	 CreateReportingPeriodController controller;
 	 Study study;
 	 Participant participant;
@@ -83,7 +80,6 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		epochDao = registerDaoMockFor(EpochDao.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
 		workflowConfigDao = registerDaoMockFor(WorkflowConfigDao.class);
-		userDao = registerDaoMockFor(UserDao.class);
 		configuration = registerMockFor(Configuration.class);
 		study = registerMockFor(Study.class);
 		participant = registerMockFor(Participant.class);
@@ -100,7 +96,6 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		controller.setEpochDao(epochDao);
 		controller.setAdverseEventRoutingAndReviewRepository(adverseEventRoutingAndReviewRepository);
 		controller.setWorkflowConfigDao(workflowConfigDao);
-		controller.setUserDao(userDao);
 		controller.setConfiguration(configuration);
 
         renderDecisionManagerFactoryBean = registerMockFor(RenderDecisionManagerFactoryBean.class);
@@ -272,7 +267,6 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 	}
 	
 	/**
-	 * Tests {@link CreateReportingPeriodController#onBindAndValidate(javax.servlet.http.HttpSetvletRequest, Object, BindException)},
 	 * should pass even with no treatment type
 	 * @throws Exception
 	 */

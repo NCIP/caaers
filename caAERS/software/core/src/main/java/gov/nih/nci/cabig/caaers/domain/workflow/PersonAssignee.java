@@ -36,7 +36,7 @@ public class PersonAssignee extends Assignee {
 	}
 
 	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.domain.workflow.Assignee#isUser()
+	 * @see gov.nih.nci.cabig.caaers.domain.workflow.Assignee#isPerson()
 	 */
 	@Override
 	@Transient

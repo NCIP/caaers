@@ -1,33 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Factory;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.*;
 
  
 /**
@@ -48,7 +31,7 @@ import org.hibernate.annotations.*;
 @Table(name = "research_staffs")
 @DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
-public abstract class ResearchStaff extends User {
+public abstract class ResearchStaff extends Person {
 
 	/** The nci identifier. */
 	protected String nciIdentifier;
@@ -402,6 +385,21 @@ public abstract class ResearchStaff extends User {
         }
         return null;
     }
+
+
+    /**
+     * Find site research staff by id.
+     *
+     * @param id the id
+     * @return the site research staff
+     */
+    public SiteResearchStaff findActiveSiteResearchStaffByOrganizationId(Integer id){
+        for(SiteResearchStaff srs : getActiveSiteResearchStaff()) {
+           if(srs.getOrganization() != null && srs.getOrganization().getId().equals(id)) return srs;
+        }
+        return null;
+    }
+
 
 
     /**
