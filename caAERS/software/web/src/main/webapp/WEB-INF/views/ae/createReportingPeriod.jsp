@@ -116,10 +116,15 @@
 	<jsp:attribute name="navButtons">
 	      	<div class="content buttons autoclear">
     	      <div class="flow-buttons">
-    	      	  <span class="prev">
-				  	<tags:button color="red" type="button" onclick="javascript:deleteCourse()" cssClass="tab${tabNumber}" value="Delete" icon="delete"/>
-				  </span>
-				  <span class="next">
+
+
+                  <c:if test="${param.id ne  '-1'}">
+                        <span class="prev">
+                            <tags:button color="red" type="button" onclick="javascript:deleteCourse()" cssClass="tab${tabNumber}" value="Delete" icon="delete"/>
+				        </span>
+                  </c:if>
+
+    	      	  <span class="next">
 				  	<tags:button color="green" type="submit" id="flow-update" cssClass="tab${tabNumber}" value="Save" icon="save"/>
 				  </span>
           </div>
