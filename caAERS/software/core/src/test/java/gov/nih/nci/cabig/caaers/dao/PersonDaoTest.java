@@ -19,7 +19,7 @@ public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
 	protected void setUp() throws Exception {
 		super.setUp();
 		personDao = (PersonDao)getDeployedApplicationContext().getBean("personDao");
-		userDao = (UserDao)getDeployedApplicationContext().getBean("_userDao");
+		userDao = (UserDao)getDeployedApplicationContext().getBean("userDao");
 		organizationDao = (OrganizationDao)getDeployedApplicationContext().getBean("organizationDao");
 	}
 	

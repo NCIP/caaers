@@ -14,7 +14,7 @@ public class UserDaoTest extends CaaersDbNoSecurityTestCase  {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		_userDao = (UserDao)getDeployedApplicationContext().getBean("_userDao");
+		_userDao = (UserDao)getDeployedApplicationContext().getBean("userDao");
 	}
 
 	public void testGetByLoginName(){
