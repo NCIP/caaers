@@ -110,6 +110,7 @@
     		</div>
     		
     		<div class="content">
+    			<tags:instructions code="personUserSearchInstructions" />
     			<form:form name="searchForm" id="searchForm" method="post">
     				<caaers:message code="user.search.criteriaSection" var="criteriaSectionTitle"/>
     				<chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
