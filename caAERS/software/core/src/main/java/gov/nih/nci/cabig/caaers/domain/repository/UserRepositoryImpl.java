@@ -159,7 +159,7 @@ public class UserRepositoryImpl implements UserRepository {
             if(_user == null && csmUser == null) return null; // may be login-id supplied is incorrect.
             if(csmUser == null){
                 logger.error("CSM User with loginName [" + loginName +"] don't exist, a data integrity issue as user exist in caAERS");
-                throw new CaaersSystemException("caAERS user exists and relevant CSM user does not exist : Data Integrity issue");
+                throw new CaaersSystemException("caAERS user [" +  loginName +"] exists and relevant CSM user does not exist : Data Integrity issue");
             }
             if(_user == null){
                 _user = new User(csmUser);

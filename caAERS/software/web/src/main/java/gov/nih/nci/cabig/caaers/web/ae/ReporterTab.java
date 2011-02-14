@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -64,8 +65,12 @@ public class ReporterTab extends AeTab {
            ResearchStaff rs = srs.getResearchStaff();
            if(!temporaryRsSet.contains(rs)){
               if(rs.isUser()){
-                 User user = userRepository.getUserByLoginName(rs.getCaaersUser().getLoginName());
-                 if(user.hasRole(UserGroupType.ae_reporter)) researchStaffSet.add(rs);
+                 try{
+                    User user = userRepository.getUserByLoginName(rs.getCaaersUser().getLoginName());
+                    if(user.hasRole(UserGroupType.ae_reporter)) researchStaffSet.add(rs);
+                 }catch(CaaersSystemException ignore){
+                     //just continue the loop.. 
+                 }
               }
 
            }
