@@ -1,6 +1,9 @@
 
 <dataset>
 
+    <ctc_grades />
+    <identifiers />
+
     <ctc_versions id="3" name="CTCAE v3.0" />
     <ctc_versions id="4" name="CTCAE v4.0" />
     <meddra_versions id="10" name="medDRA v10" />

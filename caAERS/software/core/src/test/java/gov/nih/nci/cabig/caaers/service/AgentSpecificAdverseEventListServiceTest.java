@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import org.dbunit.operation.DatabaseOperation;
 
 import java.util.List;
 
@@ -86,10 +85,4 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
         assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
     }
 
-/*
-    @Override
-    protected DatabaseOperation getTearDownOperation() throws Exception {
-        return DatabaseOperation.REFRESH;
-    }
-*/
 }
