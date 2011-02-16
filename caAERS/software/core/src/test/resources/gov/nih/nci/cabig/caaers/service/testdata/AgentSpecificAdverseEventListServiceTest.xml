@@ -1,9 +1,6 @@
 
 <dataset>
 
-    <ctc_grades />
-    <identifiers />
-
     <ctc_versions id="3" name="CTCAE v3.0" />
     <ctc_versions id="4" name="CTCAE v4.0" />
     <meddra_versions id="10" name="medDRA v10" />
@@ -36,7 +33,6 @@
     <study_agent_inds/>
     <disease_terminologies />
 
-
     <CTC_TERMS id="4010" category_id="402" term="Nosea40" ctep_term="Nosea40" ctep_code="100438810" other_required="0" />
     <CTC_TERMS id="4011" category_id="402" term="Nosea41" ctep_term="Nosea40" ctep_code="100438821" other_required="0" />
     <CTC_TERMS id="4012" category_id="402" term="Nosea42" ctep_term="Nosea40" ctep_code="100438832" other_required="0" />
@@ -47,5 +43,8 @@
     <agent_terms id="-3" agent_id="-990" term_id="4012" term_type="ctep" />
     <agent_terms id="-4" agent_id="-990" term_id="4013" term_type="ctep" />
     <agent_terms id="-5" agent_id="-990" term_id="3012" term_type="ctep" />
+
+    <ctc_grades />
+    <identifiers />
 
 </dataset>
