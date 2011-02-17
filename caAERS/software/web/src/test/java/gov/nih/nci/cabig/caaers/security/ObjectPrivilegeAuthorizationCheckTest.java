@@ -10,10 +10,10 @@ import org.easymock.classextension.EasyMock;
 import java.util.HashMap;
 
 /**
- * ObjectPrivilegeAuthorizationCheck Tester.
+ * ObjectPrivilegeAuthorizationCheck Tester...
  *
  * @author Biju Joseph
- * @since <pre>06/23/2010</pre>
+ * @since <pre>06/23/2010</pre> 
  * 
  */
 public class ObjectPrivilegeAuthorizationCheckTest extends AbstractTestCase {
