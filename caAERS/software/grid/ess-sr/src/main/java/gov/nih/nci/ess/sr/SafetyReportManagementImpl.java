@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-import gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException;
+//import gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException;
 import gov.nih.nci.ess.safetyreporting.management.common.SafetyReportManagementI;
 import gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException;
 import gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod;
