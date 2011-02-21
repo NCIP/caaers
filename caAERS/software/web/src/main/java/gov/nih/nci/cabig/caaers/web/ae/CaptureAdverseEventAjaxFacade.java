@@ -158,7 +158,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 
     /**
      *
-     * Determnines whether or not the passed ID is af a expected AE, also this sets the AE as expected
+     * Determines whether or not the passed ID is of an expected AE, also this sets the AE as expected
      * @param realIndex - the index of the actual AE in the command.study list,
      *                    this may be different than the index used on the page to display the AEs
      *
