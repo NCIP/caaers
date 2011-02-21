@@ -315,4 +315,10 @@ public final class SafetyReportManagementImpl implements
 		return null;
 	}
 
+	public SafetyReportVersion associateProblemToSafetyReport()
+			throws RemoteException, SafetyReportingServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
