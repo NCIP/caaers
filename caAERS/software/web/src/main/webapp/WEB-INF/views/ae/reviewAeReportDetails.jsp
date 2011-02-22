@@ -118,7 +118,7 @@
     <c:forEach items="${command.pngFiles[baseFilename]}" var="filePath" >
            <c:set var="i" value="${i + 1}"/>
            <a href = "/caaers/ImageRenderer?aeReport=${param.aeReport}&report=${param.report}&page=${i}">page${i}</a>
-           <img  src= "/caaers/ImageRenderer?aeReport=${param.aeReport}&report=${param.report}&page=${i}"  width = "900"align="middle" border="2"/><br>
+           <img  src= "/caaers/ImageRenderer?aeReport=${param.aeReport}&report=${param.report}&page=${i}"  width = "900"align="middle" border="2"/><br><br>
     </c:forEach>
 
 
