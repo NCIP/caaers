@@ -57,49 +57,31 @@ public class ReviewAeReportController extends SimpleFormController{
 	@Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
 
-		ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
-		String aeReportId = request.getParameter("aeReport");
-		String reportId = request.getParameter("report");
+        ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
+        String aeReportId = request.getParameter("aeReport");
+        String reportId = request.getParameter("report");
 
-        /*String xmlFileName = "/home/nikhil/out/xslt/expedited_report_caaers_complete.xml";
-        InputStream is =  new FileInputStream(xmlFileName);
-        Writer writer = new StringWriter();
-        if (is != null) {
-            char[] buffer = new char[1024];
-            try {
-                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                int n;
-                while ((n = reader.read(buffer)) != -1) {
-                    writer.write(buffer, 0, n);
-                }
-            } finally {
-                is.close();
-            }
-        }
-
-        String caAERSXML = writer.toString();
-        System.out.println("xml:" + caAERSXML);*/
         ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
         Report report = reportDao.getById(Integer.parseInt(reportId));
         String xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
-        String pngOutFile = "expeditedAdverseEvent-"+aeReportId + "-" + reportId+"report.png";
+        String pngOutFile = "expeditedAdverseEvent-" + aeReportId + "-" + reportId + "report.png";
 
 
         List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile);
         command.addFiles(aeReportId, reportId, list);
 
 
-		if(reportId != null && !reportId.equals("") && !reportId.equals("null"))
-			command.setReportId(Integer.parseInt(reportId));
-		else
-			command.setReportId(null);
-		command.setAeReport(aeReport);
-		for(Report r: aeReport.getReports()){
-			if(r.getId().equals(Integer.parseInt(reportId)))
-				command.setWorkflowEnabled(r.getReportDefinition().getWorkflowEnabled());
-		}
-		return command;
-	}
+        if (reportId != null && !reportId.equals("") && !reportId.equals("null"))
+            command.setReportId(Integer.parseInt(reportId));
+        else
+            command.setReportId(null);
+        command.setAeReport(aeReport);
+        for (Report r : aeReport.getReports()) {
+            if (r.getId().equals(Integer.parseInt(reportId)))
+                command.setWorkflowEnabled(r.getReportDefinition().getWorkflowEnabled());
+        }
+        return command;
+    }
 	
 	@SuppressWarnings("unchecked")
     @Override
