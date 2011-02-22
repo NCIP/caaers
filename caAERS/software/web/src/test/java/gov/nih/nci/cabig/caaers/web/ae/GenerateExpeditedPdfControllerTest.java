@@ -39,4 +39,18 @@ public class GenerateExpeditedPdfControllerTest extends WebTestCase {
         }
     }
 
+     public void testExportImage() throws Exception {
+        request.setMethod("GET");
+        request.setParameter("format", "image");
+        request.setParameter("aeReport", "5");
+        request.setParameter("reportId", "6");
+
+        try {
+            replayMocks();
+            ModelAndView mv = controller.handleRequest(request, response);
+            verifyMocks();
+        } catch (Exception e) {
+        }
+    }
+
 }

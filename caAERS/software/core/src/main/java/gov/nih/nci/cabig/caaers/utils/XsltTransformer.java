@@ -1,11 +1,6 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.*;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -23,6 +18,7 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FormattingResults;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.apps.PageSequenceResults;
+import java.util.*;
 
 public class XsltTransformer {
     protected final Log log = LogFactory.getLog(getClass());
@@ -136,6 +132,72 @@ public class XsltTransformer {
             throw new Exception(e);
         } finally {
             out.close();
+        }
+    }
+
+
+    public List toImage(String inXml, String outPdfFile, String xsltFile) throws Exception {
+
+        String fo = getFO(inXml, xsltFile);
+        // System.out.println(fo);
+
+        FopFactory fopFactory = FopFactory.newInstance();
+
+        OutputStream out = null;
+        java.io.File f = null;
+
+        try {
+            FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+            f = new File(outPdfFile);
+            foUserAgent.setOutputFile(f);
+            foUserAgent.setTargetResolution(150);
+            // configure foUserAgent as desired
+
+            // Setup output stream. Note: Using BufferedOutputStream
+            // for performance reasons (helpful with FileOutputStreams).
+            out = new FileOutputStream(f);
+            out = new BufferedOutputStream(out);
+
+            // Construct fop with desired output format
+            Fop fop = fopFactory.newFop(MimeConstants.MIME_PNG, foUserAgent, out);
+            // Setup JAXP using identity transformer
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(); // identity transformer
+            // Setup input stream
+            Source src = new StreamSource(new ByteArrayInputStream(fo.getBytes()));
+
+            // Resulting SAX events (the generated FO) must be piped through to FOP
+            Result res = new SAXResult(fop.getDefaultHandler());
+
+            // Start XSLT transformation and FOP processing
+            transformer.transform(src, res);
+
+            File f1 = foUserAgent.getOutputFile();
+
+            FormattingResults foResults = fop.getResults();
+
+            String baseFileName = foUserAgent.getOutputFile().getAbsolutePath();
+            List<String> listFileNames = new ArrayList<String>();
+            for (int i = 1; i <= foResults.getPageCount(); i++) {
+                if (i == 1) {
+                    listFileNames.add(baseFileName);
+                } else {
+
+                    String[] splitFilename =  {" "," "};
+                    int lastIndexOfDot = baseFileName.lastIndexOf(".");
+                    splitFilename[0] = baseFileName.substring(0,lastIndexOfDot);
+		            splitFilename[1] = baseFileName.substring(lastIndexOfDot +  1);
+                    listFileNames.add(splitFilename[0] + Integer.toString(i) + "." + splitFilename[1]);
+                }
+            }
+            return listFileNames;
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        } finally {
+            out.close();
+
+
         }
     }
 

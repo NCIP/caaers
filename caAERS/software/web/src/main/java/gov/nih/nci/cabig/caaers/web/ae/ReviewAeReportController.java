@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
@@ -20,7 +21,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -36,7 +39,9 @@ public class ReviewAeReportController extends SimpleFormController{
 	private MessageSource messageSource;
 	private EvaluationService evaluationService;
 	private ReportValidationService reportValidationService;
-	
+    private AdeersReportGenerator adeersReportGenerator;
+    String tempDir = System.getProperty("java.io.tmpdir");
+
 	public ReviewAeReportController(){
 		setCommandClass(ReviewAeReportCommand.class);
 		setSessionForm(true);
@@ -51,10 +56,39 @@ public class ReviewAeReportController extends SimpleFormController{
 	
 	@Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
+
 		ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
 		String aeReportId = request.getParameter("aeReport");
 		String reportId = request.getParameter("report");
-		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+
+        /*String xmlFileName = "/home/nikhil/out/xslt/expedited_report_caaers_complete.xml";
+        InputStream is =  new FileInputStream(xmlFileName);
+        Writer writer = new StringWriter();
+        if (is != null) {
+            char[] buffer = new char[1024];
+            try {
+                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            } finally {
+                is.close();
+            }
+        }
+
+        String caAERSXML = writer.toString();
+        System.out.println("xml:" + caAERSXML);*/
+        ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+        Report report = reportDao.getById(Integer.parseInt(reportId));
+        String xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
+        String pngOutFile = "expeditedAdverseEvent-"+aeReportId + "-" + reportId+"report.png";
+
+
+        List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile);
+        command.addFiles(aeReportId, reportId, list);
+
+
 		if(reportId != null && !reportId.equals("") && !reportId.equals("null"))
 			command.setReportId(Integer.parseInt(reportId));
 		else
@@ -148,6 +182,12 @@ public class ReviewAeReportController extends SimpleFormController{
 	public void setReportDao(ReportDao reportDao){
 		this.reportDao = reportDao;
 	}
-	
 
+    public AdeersReportGenerator getAdeersReportGenerator() {
+        return adeersReportGenerator;
+    }
+
+    public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
+        this.adeersReportGenerator = adeersReportGenerator;
+    }
 }

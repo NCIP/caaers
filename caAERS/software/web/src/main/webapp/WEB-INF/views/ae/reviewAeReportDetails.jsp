@@ -3,6 +3,7 @@
 
 <html>
 <head>
+
  	<tags:dwrJavascriptLink objects="reviewAeReport"/>
     <script>
 	    var routingHelper = new RoutingAndReviewHelper(reviewAeReport, 'reviewAeReport');
@@ -111,6 +112,18 @@
 	</style>
 </head>
 <body>
+
+    <c:set var="baseFilename" value="${param.aeReport}_${param.report}" />
+
+    <c:forEach items="${command.pngFiles[baseFilename]}" var="filePath" >
+           <c:set var="i" value="${i + 1}"/>
+           <a href = "/caaers/ImageRenderer?aeReport=${param.aeReport}&report=${param.report}&page=${i}">page${i}</a>
+           <img  src= "/caaers/ImageRenderer?aeReport=${param.aeReport}&report=${param.report}&page=${i}"  width = "900"align="middle" border="2"/><br>
+    </c:forEach>
+
+
+
+     <%--
 	 <applet code="ch.randelshofer.pdf.EmbedPDFApplet" archive="<c:url value="/EmbedPDF3.jar"/>" width="100%" height="520">
 	 			    <param name="pdf" value="<c:url value="/pages/ae/generateExpeditedfPdf?format=pdf&aeReport=${command.aeReport.id }&reportId=${command.reportId}"/>"/>
    			     	<param name="codebase_lookup" value="false">
@@ -121,6 +134,7 @@
    	   		  		<param name="centerimage" value="true"/>
 	 	
 	 </applet>
+	 --%>
 	
 			<chrome:box title="Report Validation" id="popupId" collapsable="true">
 				<table width="100%" border="0" cellspacing="0" >

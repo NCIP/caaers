@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -55,6 +56,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		reportValidationService = registerMockFor(ReportValidationService.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
 		command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
+
 		errors = new BindException(command,"command");
 
 		controller = new ReviewAeReportController();
@@ -83,4 +85,15 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		assertFalse("isUserSAECoordinator flag set incorrectly", (Boolean)refdata.get("isUserSAECoordinato"));
 		assertContainsKey("Report messages is expected in jsp, but not set in the reference data", refdata, "reportMessages");
 	}
-}
+
+    public void testFormBackingObject() throws Exception {
+        request.setParameter("aeReport","1");
+        request.setParameter("report","1");
+        command =  (ReviewAeReportCommand)controller.formBackingObject(request);
+        Map<String,List> pngFiles =  command.getPngFiles();
+        List listOFiles = pngFiles.get("1_1");
+        for(Object li:listOFiles)  {
+            System.out.println("filename:" + li);
+        }
+    }
+    }

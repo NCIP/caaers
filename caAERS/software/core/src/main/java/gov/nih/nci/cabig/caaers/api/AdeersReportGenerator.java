@@ -12,6 +12,7 @@ import java.io.FileReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import java.util.*;
 
 /**
  * @author Ion C. Olaru
@@ -40,6 +41,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     public void generatePdf(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOXsltFile);
+    }
+
+    public List<String> generateImage(String adverseEventReportXml, String pngOutFileName) throws Exception {
+        XsltTransformer xsltTrans = new XsltTransformer();
+        return xsltTrans.toImage(adverseEventReportXml, pngOutFileName, xslFOXsltFile);
     }
 
     public void generateDcpSaeForm(String adverseEventReportXml, String pdfOutFileName) throws Exception {

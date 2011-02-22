@@ -319,6 +319,15 @@
     			</init-param>
 			<load-on-startup>1</load-on-startup>   
 		</servlet>
-    
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>gov.nih.nci.cabig.caaers.web.utils.ImageServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/ImageRenderer</url-pattern>
+  </servlet-mapping>
+
 </web-app>
 	

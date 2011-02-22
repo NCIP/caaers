@@ -19,9 +19,16 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import org.apache.commons.io.IOUtils;
 import org.easymock.classextension.EasyMock;
+import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.xml.Unmarshaller;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * 
@@ -128,6 +135,37 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
         assertEquals(data.trim(),xml.trim());
 		
 	}
+
+    public void testImage() throws Exception {
+
+        generator.setAdverseEventReportSerializer(new AdverseEventReportSerializer());
+        generator.setEvaluationService(evaluationService);
+        String xmlFileName = "expedited_report_caaers_complete.xml";
+        InputStream is = AdeersReportGeneratorTest.class.getClassLoader().getResourceAsStream(xmlFileName);
+        Writer writer = new StringWriter();
+        if (is != null) {
+            char[] buffer = new char[1024];
+            try {
+                Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            } finally {
+                is.close();
+            }
+        }
+
+        String caAERSXML = writer.toString();
+
+            System.out.println(caAERSXML);
+        long now = System.currentTimeMillis();
+        String fileName = "/home/nikhil/ae" + String.valueOf(now) + ".png";
+        System.out.println("filename:" + fileName);
+        List<String> list = generator.generateImage(caAERSXML, fileName);
+
+    }
+
 
 
     private List<ReportMandatoryFieldDefinition> createManatoryFieldDefinitions(){

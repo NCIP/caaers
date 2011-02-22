@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
+import java.io.File;
 
 public class WebUtils {
 
@@ -278,6 +279,19 @@ public class WebUtils {
         return _s;
     }
 
+
+    public static String getFilePath(String aeReportId, String reportId, String pageNumber) {
+		  String tempDir = System.getProperty("java.io.tmpdir");
+		  String pngOutFile = "";
+		 if(pageNumber.equalsIgnoreCase("1")) {
+			  pngOutFile = tempDir+ File.separator + "expeditedAdverseEvent-"+ aeReportId + "-" + reportId + "report.png";
+		 }else {
+			  pngOutFile = tempDir+ File.separator + "expeditedAdverseEvent-"+ aeReportId + "-" + reportId+ "report" + pageNumber + ".png";
+		 }
+		  return pngOutFile;
+
+
+	}
     /*
     *
     * Will keep only the studies Coordinated or Sponsored by Research Staff's organizations
