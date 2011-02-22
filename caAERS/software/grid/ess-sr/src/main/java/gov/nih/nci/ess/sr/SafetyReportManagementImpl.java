@@ -5,20 +5,23 @@ package gov.nih.nci.ess.sr;
 
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-//import gov.nih.nci.ess.ae.service.management.stubs.types.AdverseEventServiceException;
 import gov.nih.nci.ess.safetyreporting.management.common.SafetyReportManagementI;
 import gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException;
 import gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod;
 import gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion;
 
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
@@ -49,14 +52,19 @@ public final class SafetyReportManagementImpl implements
 	public static final String PARTICIPANT_NOT_ASSIGNED_ERR = "WS_AEMS_037";
 	public static final String INVALID_COURSE_START_DATE_ERR = "WS_AEMS_036";
 	public static final String NO_REPORTING_PERIOD_ERR = "WS_AEMS_038";
+	public static final String INVALID_AE_ID = "WS_SRS_001";
 	private static final Log log = LogFactory
 			.getLog(SafetyReportManagementImpl.class);
 	private static final String TS_DATETIME_PATTERN = "yyyyMMddHHmmss";
+	private static final ISO21090Helper h = null;
 
 	private MessageSource messageSource;
 	private ParticipantRepository participantRepository;
 	private StudyRepository studyRepository;
 	private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
+	private ExpeditedAdverseEventReportDao adverseEventReportDao;
+	private AdverseEventDao adverseEventDao;
+	private ExpeditedToSafetyReportConverter safetyReportConverter;
 
 	/*
 	 * (non-Javadoc)
@@ -200,7 +208,32 @@ public final class SafetyReportManagementImpl implements
 		gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod period = getReportingPeriod(
 				courseStartDate, assignment);
 
-		return null;
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+		aeReport.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		aeReport.setReportingPeriod(period);
+
+		if (adverseEventIds != null && adverseEventIds.getItem() != null) {
+			for (II aeId : adverseEventIds.getItem()) {
+				Integer aeIdInt = h.value(aeId);
+				if (aeIdInt != null) {
+					gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = adverseEventDao
+							.getById(aeIdInt);
+					if (ae == null) {
+						throw new gov.nih.nci.ess.sr.SafetyReportingServiceException(
+								INVALID_AE_ID, getMessageSource().getMessage(
+										INVALID_AE_ID,
+										new Object[] { aeIdInt },
+										Locale.getDefault()));
+
+					}
+					aeReport.addAdverseEvent(ae);
+				}
+			}
+		}
+
+		adverseEventReportDao.save(aeReport);
+		return safetyReportConverter
+				.convertExpeditedAdverseEventReport(aeReport);
 	}
 
 	/**
@@ -319,6 +352,53 @@ public final class SafetyReportManagementImpl implements
 			throws RemoteException, SafetyReportingServiceException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return the adverseEventReportDao
+	 */
+	public final ExpeditedAdverseEventReportDao getAdverseEventReportDao() {
+		return adverseEventReportDao;
+	}
+
+	/**
+	 * @param adverseEventReportDao
+	 *            the adverseEventReportDao to set
+	 */
+	public final void setAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao adverseEventReportDao) {
+		this.adverseEventReportDao = adverseEventReportDao;
+	}
+
+	/**
+	 * @return the adverseEventDao
+	 */
+	public final AdverseEventDao getAdverseEventDao() {
+		return adverseEventDao;
+	}
+
+	/**
+	 * @param adverseEventDao
+	 *            the adverseEventDao to set
+	 */
+	public final void setAdverseEventDao(AdverseEventDao adverseEventDao) {
+		this.adverseEventDao = adverseEventDao;
+	}
+
+	/**
+	 * @return the safetyReportConverter
+	 */
+	public final ExpeditedToSafetyReportConverter getSafetyReportConverter() {
+		return safetyReportConverter;
+	}
+
+	/**
+	 * @param safetyReportConverter
+	 *            the safetyReportConverter to set
+	 */
+	public final void setSafetyReportConverter(
+			ExpeditedToSafetyReportConverter safetyReportConverter) {
+		this.safetyReportConverter = safetyReportConverter;
 	}
 
 }

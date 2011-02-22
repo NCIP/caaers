@@ -5,6 +5,7 @@ package gov.nih.nci.ess.sr;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import _21090.org.iso.AD;
 import _21090.org.iso.ADXP;
@@ -231,5 +232,14 @@ public final class ISO21090Helper {
 			return null;
 		}
 	}
+	
+	public static final Integer value(II ii) {
+		if (ii != null && ii.getNullFlavor()!=null && NumberUtils.isNumber(ii.getExtension())) {
+			return Integer.parseInt(ii.getExtension());
+		} else {
+			return null;
+		}
+	}
+	
 
 }
