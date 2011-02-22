@@ -18,8 +18,7 @@
         }
         
         #criteria-div{
-          width: 70%;
-          margin-left: 5em;
+          
         }
 
     </style>

@@ -13,24 +13,24 @@
                 width: 700px;
             } .right {
                 position: absolute;
-                right: 66px;
-                top: 75px;
+                right: 116px;
+                top: 109px;
                 margin-left: 25px;
                 margin-top: 1em;
                 text-align: center;
             } .left {
-                margin-left: 50px;
+                margin-left: 0px;
             } .forgot {
-                margin-top: 1em; font-size: 11px;text-shadow: 0 2px 1px black;
+                margin-top: 0; font-size: 11px;text-shadow: 0 2px 1px black; text-align: center;
             } .forgot a {
-                color: #fff; text-decoration: none;
+                color: #bdd1ff; text-decoration: none; border-bottom: 1px dotted #bdd1ff;
             }.forgot a:hover {
-                color: #bdd1ff;
+                color: #fff;border-bottom: 1px solid #fff;
             }
             
             body {
                 background:#02307f url(../images/blue/top_texture_bg.png) top center no-repeat;
-                color: #ccc;
+                color: #fff;
                 font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
             } #header {
                 visibility: hidden
@@ -39,12 +39,19 @@
             } #taskbar {
                 width: 10px;
             } #build-name {
-                color: #5776aa;
+                color: #8db0eb;
                 font-weight: normal;
-                padding: 0px;
-                margin-left: 68px;
+                padding: 15px 0px;
+                background: url(../images/footer_divider.png) no-repeat top center;
                 bottom: -175px;
-                text-shadow: 0 -1px 1px #00112d;
+                text-shadow: 0 1px 1px #000;
+                font-size: 10px;
+                margin-top: 30px;
+                text-align: center
+            }
+
+            .required-indicator {
+                color: yellow
             }
 
             #main {background-image: none}
@@ -53,8 +60,9 @@
                 color: #fff;
                 font-size: 30px;
                 font-weight: normal;
-                margin-top: 20px;
+                margin: 30px 0;
                 text-shadow: 0 2px 1px black;
+                text-align: center;
             }
             
             h1 {
@@ -74,10 +82,30 @@
             div.row div.label {
                 float: left;
                 font-weight: normal;
-                margin-left: 0.5em;
+                margin-left: 3.5em;
                 text-align: right;
-                width: 10em;
+                width: 9.5em;
+                padding-top: 4px;
+                font-size: 16px
             }
+
+            div.row div.value {
+                margin-left: 16em;
+
+            }
+
+            ul.errors {
+                color:#F05757;
+                font-size: 11px;
+            }
+
+            input.required[type="text"], input.required[type="password"], select.required, textarea.required  {
+                -moz-box-shadow: 0 2px 4px black;
+                -webkit-box-shadow: 0 2px 4px black;
+                box-shadow: 0 2px 4px black;
+            }
+
+
         </style>
         <!--[if lte IE 6]>
             <style>

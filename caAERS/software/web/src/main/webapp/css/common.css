@@ -684,9 +684,8 @@ h2.title {
 .box ul.inner.tabs a:hover { color: #002EE2; }
 /* two boxes with the additional class "paired" are displayed side-by-side */
 .box.pairedLong {
-	margin: 1em;
 	float:left;
-    width: 90%;
+    width: 100%;
 }
 .box.paired {
 	width: 45%;
@@ -860,7 +859,7 @@ a.help img { border: none; }
 div.row.instructions {
 	margin-left:7px;
 	margin-bottom:20px;
-    color: #666;
+    color: #333;
 }
 div.row.instructions div.label {
 	width:auto;

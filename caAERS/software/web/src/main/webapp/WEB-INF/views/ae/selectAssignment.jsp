@@ -18,8 +18,7 @@
         }
         
         #criteria-div{
-          width: 80%;
-          margin-left: 8em;
+          
         }
 		.selection {
 			display:none;
