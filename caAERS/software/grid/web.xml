@@ -29,10 +29,11 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 	<context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-		classpath:applicationContext-grid.xml
+				classpath:applicationContext-grid.xml
                 classpath:applicationContext-lab.xml
-		classpath:applicationContext-studyConsumer-grid.xml
-		classpath:applicationContext-essae.xml
+				classpath:applicationContext-studyConsumer-grid.xml
+				classpath:applicationContext-essae.xml
+				classpath:applicationContext-nes-sr.xml
         </param-value>
     </context-param>
     

@@ -125,7 +125,7 @@
 		<constructor-arg value="wsrf-caaers"/>
 	</bean>	
 
-	<bean id="safetyReportManagementTarget" class="gov.nih.nci.ess.sr.SafetyReportManagementImpl" autowire="byType" />		
+	<bean id="safetyReportManagementImplTarget" class="gov.nih.nci.ess.sr.SafetyReportManagementImpl" autowire="byType" />		
 	<bean id="expeditedToSafetyReportConverterImpl" class="gov.nih.nci.ess.sr.ExpeditedToSafetyReportConverterImpl" />
 
 	<!-- Audit -->

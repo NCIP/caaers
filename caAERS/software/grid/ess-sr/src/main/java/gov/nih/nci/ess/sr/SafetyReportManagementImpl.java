@@ -42,7 +42,7 @@ import _21090.org.iso.TS;
  * @author Denis G. Krylov
  * 
  */
-public final class SafetyReportManagementImpl implements
+public  class SafetyReportManagementImpl implements
 		SafetyReportManagementI, MessageSourceAware {
 
 	public static final String INVALID_PARTICIPANT_ID_ERR = "WS_AEMS_032";
