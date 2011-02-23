@@ -11,6 +11,8 @@
             <li id="thirdlevelnav" class="tab ${selected eq 'create' ? 'selected' : ''}"><div><a href="asaelCreate">Enter / Edit Agent</a></div></li>
         </c:if>
         <%--<li id="thirdlevelnav" class="tab ${selected eq 'import' ? 'selected' : ''}"><div><a href="asaelImport">Import Agents</a></div></li>--%>
+        <li id="thirdlevelnav" class="tab ${selected eq 'searchDevice' ? 'selected' : ''}"><div><a href="deviceSearch">Search Devices</a></div></li>
+        <li id="thirdlevelnav" class="tab ${selected eq 'createDevice' ? 'selected' : ''}"><div><a href="deviceCreate">Enter / Edit Devices</a></div></li>
     </ul>
     <tags:pageHelp propertyKey="searchIND"/>
 </div>

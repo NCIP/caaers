@@ -57,6 +57,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private AgentRepository agentRepository;
+    private DeviceRepository deviceRepository;
 
     private static Class<?>[] CONTROLLERS = {};
 
@@ -917,9 +918,17 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
     public List<Agent> getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
         List<Agent> agents = new ArrayList<Agent>();
         if (text != null) {
-            agents = agentRepository.getAgentsBySubnames(new String[] {text, nsc});
+            agents = agentRepository.getAgentsBySubnames(new String[]{text, nsc});
         }
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber");
+    }
+
+    public List<Device> getDevices(final Map parameterMap, final String text, final HttpServletRequest request) {
+        List<Device> devices = new ArrayList<Device>();
+        if (text != null) {
+            devices = deviceRepository.getByMatchText(text);
+        }
+        return ObjectTools.reduceAll(devices, "id", "commonName", "brandName", "type");
     }
 
     public List<UserAjaxableDomainObject> getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
@@ -1243,6 +1252,14 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
     public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
         this.investigatorDao = investigatorDao;
+    }
+
+    public DeviceRepository getDeviceRepository() {
+        return deviceRepository;
+    }
+
+    public void setDeviceRepository(DeviceRepository deviceRepository) {
+        this.deviceRepository = deviceRepository;
     }
 
     @Required

@@ -121,7 +121,7 @@
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="IND#" p:linkName="searchINDController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Organization" p:linkName="searchOrganizationController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Agents" p:linkName="asaelSearchController"/>
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Interventions" p:linkName="asaelSearchController"/>
                 
           </list>
         </property>
@@ -565,6 +565,10 @@
     <bean name="/admin/asaelSearch" id="asaelSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentSearchController" />
     <bean name="/admin/asaelCreate" id="asaelCreateController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentCreateController" />
     <bean name="/admin/asaelEdit" id="asaelEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.AgentEditController" />
+
+    <bean name="/admin/deviceSearch" id="deviceSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.DeviceSearchController" />
+    <bean name="/admin/deviceCreate" id="deviceCreateController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.DeviceCreateController" />
+    <bean name="/admin/deviceEdit" id="deviceEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.DeviceEditController" />
 
     <!-- DASHBOARD CONTROLLERS -->
     <bean name="/dashboard/aeReporter" id="aeReporterDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.AEReporterDashboardController" autowire="byType" />

@@ -47,4 +47,9 @@ public class DeviceDao extends GridIdentifiableDao<Device> implements MutableDom
         getHibernateTemplate().delete(d);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void save(Device o) {
+        getHibernateTemplate().saveOrUpdate(o);
+    }
 }

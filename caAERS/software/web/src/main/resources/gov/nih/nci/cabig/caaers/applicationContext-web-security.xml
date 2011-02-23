@@ -46,6 +46,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/import" value="data_importer"/>
         <entry key="/pages/admin/createIND" value="business_administrator,data_reader"/>
         <entry key="/pages/admin/searchIND" value="business_administrator,data_reader"/>
+        <entry key="/pages/admin/deviceSearch" value="business_administrator,data_reader"/>
 
 		<entry key="/pages/participant/create" value="subject_manager,registrar" />
         <entry key="/pages/participant/search" value="registration_qa_manager,subject_manager,registrar,data_reader"/>
@@ -156,7 +157,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/asaelSearch" value="gov.nih.nci.cabig.caaers.domain.Agent:READ"/>
 		<entry key="/pages/admin/asaelCreate" value="gov.nih.nci.cabig.caaers.domain.Agent:CREATE"/>
         <entry key="/pages/admin/asaelEdit" value="gov.nih.nci.cabig.caaers.domain.Agent:UPDATE || gov.nih.nci.cabig.caaers.domain.Agent:READ" />
-        
+        <entry key="/pages/admin/deviceSearch" value="gov.nih.nci.cabig.caaers.domain.Device:READ"/>
+        <entry key="/pages/admin/deviceCreate" value="gov.nih.nci.cabig.caaers.domain.Device:CREATE"/>
+        <entry key="/pages/admin/deviceEdit" value="gov.nih.nci.cabig.caaers.domain.Device:UPDATE || gov.nih.nci.cabig.caaers.domain.Device:READ" />
+
 		<entry key="/pages/admin/createUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:CREATE" />
 		<entry key="/pages/admin/editUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
 		<entry key="/pages/admin/searchUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
@@ -279,6 +283,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportReviewTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportSummaryTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
           <entry key="gov.nih.nci.cabig.caaers.web.admin.AgentTab" value="gov.nih.nci.cabig.caaers.domain.Agent:READ" />
+          <entry key="gov.nih.nci.cabig.caaers.web.admin.DeviceTab" value="gov.nih.nci.cabig.caaers.domain.Device:READ" />
           <entry key="gov.nih.nci.cabig.caaers.web.admin.OrganizationTab" value="gov.nih.nci.cabig.caaers.domain.Organization:READ" />
           <entry key="gov.nih.nci.cabig.caaers.web.admin.UserTab" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE" />
           
