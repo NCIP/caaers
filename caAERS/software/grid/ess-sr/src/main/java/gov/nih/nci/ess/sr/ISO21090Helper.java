@@ -234,7 +234,7 @@ public final class ISO21090Helper {
 	}
 	
 	public static final Integer value(II ii) {
-		if (ii != null && ii.getNullFlavor()!=null && NumberUtils.isNumber(ii.getExtension())) {
+		if (ii != null && ii.getNullFlavor()==null && NumberUtils.isNumber(ii.getExtension())) {
 			return Integer.parseInt(ii.getExtension());
 		} else {
 			return null;

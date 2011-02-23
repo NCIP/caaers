@@ -42,8 +42,8 @@ import _21090.org.iso.TS;
  * @author Denis G. Krylov
  * 
  */
-public  class SafetyReportManagementImpl implements
-		SafetyReportManagementI, MessageSourceAware {
+public class SafetyReportManagementImpl implements SafetyReportManagementI,
+		MessageSourceAware {
 
 	public static final String INVALID_PARTICIPANT_ID_ERR = "WS_AEMS_032";
 	public static final String INVALID_STUDY_ID_ERR = "WS_AEMS_034";
@@ -219,14 +219,11 @@ public  class SafetyReportManagementImpl implements
 					gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = adverseEventDao
 							.getById(aeIdInt);
 					if (ae == null) {
-						throw new gov.nih.nci.ess.sr.SafetyReportingServiceException(
-								INVALID_AE_ID, getMessageSource().getMessage(
-										INVALID_AE_ID,
-										new Object[] { aeIdInt },
-										Locale.getDefault()));
-
+						raiseInvalidAeId(aeIdInt);
 					}
 					aeReport.addAdverseEvent(ae);
+				} else {
+					raiseInvalidAeId(aeIdInt);
 				}
 			}
 		}
@@ -234,6 +231,21 @@ public  class SafetyReportManagementImpl implements
 		adverseEventReportDao.save(aeReport);
 		return safetyReportConverter
 				.convertExpeditedAdverseEventReport(aeReport);
+	}
+
+	/**
+	 * @param aeIdInt
+	 * @throws SafetyReportingServiceException
+	 * @throws NoSuchMessageException
+	 */
+	private void raiseInvalidAeId(Integer aeIdInt)
+			throws gov.nih.nci.ess.sr.SafetyReportingServiceException,
+			NoSuchMessageException {
+		throw new gov.nih.nci.ess.sr.SafetyReportingServiceException(
+				INVALID_AE_ID, getMessageSource().getMessage(
+						INVALID_AE_ID,
+						new Object[] { aeIdInt != null ? aeIdInt.intValue()
+								: "null" }, Locale.getDefault()));
 	}
 
 	/**
