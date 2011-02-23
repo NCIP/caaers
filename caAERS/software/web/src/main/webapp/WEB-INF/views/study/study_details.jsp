@@ -206,6 +206,9 @@
           <%-- Data Entry Status --%>
           <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
           
+          <%-- Study Purpose --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[4]}"/>
+
       </c:if>
 
 

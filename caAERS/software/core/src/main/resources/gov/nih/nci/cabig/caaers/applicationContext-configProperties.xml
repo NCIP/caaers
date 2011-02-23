@@ -1664,7 +1664,25 @@
                         </bean>
                      </list>
                 </entry>
-                                
+
+                <entry key="studyPurposeRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Treatment" /><property name="desc" value="Treatment" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Prevention" /><property name="desc" value="Prevention" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Diagnostic" /><property name="desc" value="Diagnostic" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Early Detection" /><property name="desc" value="Early Detection" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Supportive Care" /><property name="desc" value="Supportive Care" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Screening" /><property name="desc" value="Screening" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Epidemiologic" /><property name="desc" value="Epidemiologic" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Observational" /><property name="desc" value="Observational" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Outcome" /><property name="desc" value="Outcome" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Ancillary" /><property name="desc" value="Ancillary" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Correlative" /><property name="desc" value="Correlative" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Health Services Research" /><property name="desc" value="Health Services Research" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Basic Science" /><property name="desc" value="Basic Science" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Other" /><property name="desc" value="Other" /></bean>
+                    </list>
+                </entry>
             </map>
         </property>
     </bean>

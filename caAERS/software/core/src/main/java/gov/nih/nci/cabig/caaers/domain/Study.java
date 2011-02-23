@@ -202,7 +202,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
   //Added for COPPA integration
     /** The external id. */
   protected String externalId;
-    
+
+  protected String studyPurpose;
+
 
     /**
      * Instantiates a new study.
@@ -2311,5 +2313,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      */
     public void setOtherTreatmentAssignment(String otherTreatmentAssignment) {
         this.otherTreatmentAssignment = otherTreatmentAssignment;
+    }
+
+    public String getStudyPurpose() {
+        return studyPurpose;
+    }
+
+    public void setStudyPurpose(String studyPurpose) {
+        this.studyPurpose = studyPurpose;
     }
 }

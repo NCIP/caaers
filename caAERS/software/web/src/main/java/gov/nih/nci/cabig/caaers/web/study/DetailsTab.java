@@ -104,6 +104,10 @@ public class DetailsTab extends StudyTab {
             fields.add(InputFieldFactory.createSelectField("study.verbatimFirst", "verbatimFirst", false, verbatimFirstOptions));
             fields.add(InputFieldFactory.createLabelField("dataEntryStatus", "Data Entry Status", false));
 
+            Map<Object, Object> studyPurposeMap = new LinkedHashMap<Object, Object>();
+            studyPurposeMap.put("", "Please select");
+            fields.add(InputFieldFactory.createSelectField("study.studyPurpose", "Study Purpose", false, collectOptionsFromConfig("studyPurposeRefData", "code", "desc")));
+
         }
 
 /*
