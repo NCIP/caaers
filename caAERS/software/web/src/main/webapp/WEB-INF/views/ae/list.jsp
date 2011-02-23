@@ -322,7 +322,6 @@ color:#0033FF;
         <td width="18%" class="tableHeader">Course</td>
         <td width="16%" class="centerTableHeader"># of Reports</td>
         <td width="16%" class="centerTableHeader"># of AEs</td>
-        <td width="16%" class="tableHeader">Data Entry Status</td>
         <td width="16%" class="tableHeader">Report Submission Status</td>
         <td width="16%" class="tableHeader">Options</td>
       </tr>
