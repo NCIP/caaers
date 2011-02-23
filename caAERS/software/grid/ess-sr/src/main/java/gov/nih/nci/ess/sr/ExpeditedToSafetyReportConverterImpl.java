@@ -573,14 +573,19 @@ public class ExpeditedToSafetyReportConverterImpl implements ExpeditedToSafetyRe
 
 		safetyReport.setAdditionalInformation(gridAi);
 	}
-	private void populateAdverseEvents(SafetyReportVersion safetyReport,ExpeditedAdverseEventReport expeditedAEReport) {
+
+	private void populateAdverseEvents(SafetyReportVersion safetyReport,
+			ExpeditedAdverseEventReport expeditedAEReport) {
 		List<AdverseEvent> aes = expeditedAEReport.getAdverseEvents();
-		int ct =-1;
-		for (AdverseEvent ae:aes) {
+		List<ess.caaers.nci.nih.gov.AdverseEvent> gridAes = new ArrayList<ess.caaers.nci.nih.gov.AdverseEvent>();
+		for (AdverseEvent ae : aes) {
 			DomainToGridObjectConverter dgoc = new DomainToGridObjectConverter();
-			ess.caaers.nci.nih.gov.AdverseEvent gridAe = dgoc.convertAdverseEvent(ae);
-			safetyReport.setAdverseEvents(ct++, gridAe);			
+			ess.caaers.nci.nih.gov.AdverseEvent gridAe = dgoc
+					.convertAdverseEvent(ae);
+			gridAes.add(gridAe);
 		}
+		safetyReport.setAdverseEvents(gridAes
+				.toArray(new ess.caaers.nci.nih.gov.AdverseEvent[0]));
 	}
 	
 	private void populateAEResponseDescription(SafetyReportVersion safetyReport,ExpeditedAdverseEventReport expeditedAEReport) {
