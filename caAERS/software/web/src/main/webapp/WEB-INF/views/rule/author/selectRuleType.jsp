@@ -176,7 +176,7 @@
 						<div title="Select institution" id="institutionName-details" style="display:none" class="pane">
 							<ui:row path="institution">
                                 <jsp:attribute name="label">
-                                    <ui:label required="true" text="Institution" path="institution"/>
+                                    <ui:label required="true" text="Organization" path="institution"/>
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
                                     <ui:autocompleter path="institution" enableClearButton="true" required="false" title="Institution"
