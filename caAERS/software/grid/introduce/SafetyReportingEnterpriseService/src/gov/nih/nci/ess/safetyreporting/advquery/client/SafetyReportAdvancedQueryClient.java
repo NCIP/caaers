@@ -76,14 +76,6 @@ public class SafetyReportAdvancedQueryClient extends SafetyReportAdvancedQueryCl
 		}
 	}
 
-  public void getSafetyReportSummaryData() throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getSafetyReportSummaryData");
-    gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataRequest params = new gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataRequest();
-    gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataResponse boxedResult = portType.getSafetyReportSummaryData(params);
-    }
-  }
-
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");
@@ -95,6 +87,14 @@ public class SafetyReportAdvancedQueryClient extends SafetyReportAdvancedQueryCl
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"setTerminationTime");
     return portType.setTerminationTime(params);
+    }
+  }
+
+  public void getSafetyReportSummaryData() throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getSafetyReportSummaryData");
+    gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataRequest params = new gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataRequest();
+    gov.nih.nci.ess.safetyreporting.advquery.stubs.GetSafetyReportSummaryDataResponse boxedResult = portType.getSafetyReportSummaryData(params);
     }
   }
 

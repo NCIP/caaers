@@ -76,6 +76,20 @@ public class SafetyReportRulesEvaluationClient extends SafetyReportRulesEvaluati
 		}
 	}
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"destroy");
+    return portType.destroy(params);
+    }
+  }
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setTerminationTime");
+    return portType.setTerminationTime(params);
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.DSET_ReportDefinition evaluateAgainstSafetyReportingRules(ess.caaers.nci.nih.gov.Id adverseEventId,ess.caaers.nci.nih.gov.Id problemId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id organizationId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"evaluateAgainstSafetyReportingRules");
@@ -94,20 +108,6 @@ public class SafetyReportRulesEvaluationClient extends SafetyReportRulesEvaluati
     params.setOrganizationId(organizationIdContainer);
     gov.nih.nci.ess.safetyreporting.ruleseval.stubs.EvaluateAgainstSafetyReportingRulesResponse boxedResult = portType.evaluateAgainstSafetyReportingRules(params);
     return boxedResult.getDSET_ReportDefinition();
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"destroy");
-    return portType.destroy(params);
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"setTerminationTime");
-    return portType.setTerminationTime(params);
     }
   }
 

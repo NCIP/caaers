@@ -35,7 +35,10 @@
    <ns2:SchemaElement type="PriorTherapy" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Product" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="RegulatoryApplication" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Report" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ReportDefinition" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ReportDelivery" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ReportDeliveryDefinition" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ReportingRule" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ReportSubmitter" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ReportTerminology" xsi:type="ns2:SchemaElementType"/>
@@ -78,6 +81,7 @@
    <ns2:SchemaElement type="AdverseEvent" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AdverseEventQuery" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AdverseEventSummary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AeTerminology" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ANY" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AuditTrail" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="BiologicEntity" xsi:type="ns2:SchemaElementType"/>
@@ -86,6 +90,12 @@
    <ns2:SchemaElement type="Cd" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Criteria" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DataRequirement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_AdverseEvent" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_AuditTrail" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_ExpectedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_II" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSET_SolicitedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ExpectedAdverseEvent" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Id" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="LimitOffset" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Oid" xsi:type="ns2:SchemaElementType"/>
@@ -94,6 +104,7 @@
    <ns2:SchemaElement type="ST" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="StudyProtocolVersion" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="StudySubject" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TreatmentInformation" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="TsDateTime" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">

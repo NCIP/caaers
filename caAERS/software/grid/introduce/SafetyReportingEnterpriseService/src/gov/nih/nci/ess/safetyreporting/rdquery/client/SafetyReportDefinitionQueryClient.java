@@ -76,6 +76,20 @@ public class SafetyReportDefinitionQueryClient extends SafetyReportDefinitionQue
 		}
 	}
 
+  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"destroy");
+    return portType.destroy(params);
+    }
+  }
+
+  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setTerminationTime");
+    return portType.setTerminationTime(params);
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.DSET_ReportDefinition querySafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"querySafetyReportDefinition");
@@ -97,20 +111,6 @@ public class SafetyReportDefinitionQueryClient extends SafetyReportDefinitionQue
     params.setReportDefinitionId(reportDefinitionIdContainer);
     gov.nih.nci.ess.safetyreporting.rdquery.stubs.GetSafetyReportDefinitionResponse boxedResult = portType.getSafetyReportDefinition(params);
     return boxedResult.getReportDefinition();
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"destroy");
-    return portType.destroy(params);
-    }
-  }
-
-  public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"setTerminationTime");
-    return portType.setTerminationTime(params);
     }
   }
 
