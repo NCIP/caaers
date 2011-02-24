@@ -57,6 +57,8 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 			.getLog(SafetyReportManagementImpl.class);
 	private static final String TS_DATETIME_PATTERN = "yyyyMMddHHmmss";
 	private static final ISO21090Helper h = null;
+	private static final String INVALID_AE_REPORT_ID = "WS_SRS_002";
+	private static final String AE_REPORT_NOT_FOUND = "WS_SRS_003";
 
 	private MessageSource messageSource;
 	private ParticipantRepository participantRepository;
@@ -77,8 +79,58 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 	public SafetyReportVersion associateAdverseEventsToSafetyReport(
 			Id safetyReportId, DSET_II adverseEventIds) throws RemoteException,
 			SafetyReportingServiceException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Integer aeReportId = h.value(safetyReportId);
+		if (aeReportId == null) {
+			throw new gov.nih.nci.ess.sr.SafetyReportingServiceException(
+					INVALID_AE_REPORT_ID, getMessageSource().getMessage(
+							INVALID_AE_REPORT_ID, new Object[] {},
+							Locale.getDefault()));
+
+		}
+		ExpeditedAdverseEventReport report = adverseEventReportDao
+				.getById(aeReportId);
+		if (report == null) {
+			throw new gov.nih.nci.ess.sr.SafetyReportingServiceException(
+					AE_REPORT_NOT_FOUND, getMessageSource().getMessage(
+							AE_REPORT_NOT_FOUND, new Object[] { aeReportId },
+							Locale.getDefault()));
+
+		}
+
+		addAdverseEventsToReport(adverseEventIds, report);
+
+		adverseEventReportDao.save(report);
+		return safetyReportConverter.convertExpeditedAdverseEventReport(report);
+
+	}
+
+	/**
+	 * @param adverseEventIds
+	 * @param report
+	 * @throws SafetyReportingServiceException
+	 * @throws NoSuchMessageException
+	 */
+	private void addAdverseEventsToReport(DSET_II adverseEventIds,
+			ExpeditedAdverseEventReport report)
+			throws gov.nih.nci.ess.sr.SafetyReportingServiceException,
+			NoSuchMessageException {
+		if (adverseEventIds != null && adverseEventIds.getItem() != null) {
+			for (II aeId : adverseEventIds.getItem()) {
+				Integer aeIdInt = h.value(aeId);
+				if (aeIdInt != null) {
+					gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = adverseEventDao
+							.getById(aeIdInt);
+					if (ae == null) {
+						raiseInvalidAeId(aeIdInt);
+					}
+					if (report.getAdverseEvent(ae.getId()) == null)
+						report.addAdverseEvent(ae);
+				} else {
+					raiseInvalidAeId(aeIdInt);
+				}
+			}
+		}
 	}
 
 	/**
@@ -212,21 +264,7 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 		aeReport.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		aeReport.setReportingPeriod(period);
 
-		if (adverseEventIds != null && adverseEventIds.getItem() != null) {
-			for (II aeId : adverseEventIds.getItem()) {
-				Integer aeIdInt = h.value(aeId);
-				if (aeIdInt != null) {
-					gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = adverseEventDao
-							.getById(aeIdInt);
-					if (ae == null) {
-						raiseInvalidAeId(aeIdInt);
-					}
-					aeReport.addAdverseEvent(ae);
-				} else {
-					raiseInvalidAeId(aeIdInt);
-				}
-			}
-		}
+		addAdverseEventsToReport(adverseEventIds, aeReport);
 
 		adverseEventReportDao.save(aeReport);
 		return safetyReportConverter

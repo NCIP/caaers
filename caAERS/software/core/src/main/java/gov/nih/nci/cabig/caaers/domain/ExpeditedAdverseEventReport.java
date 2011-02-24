@@ -269,6 +269,20 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         getAdverseEventsInternal().add(adverseEvent);
         if (adverseEvent != null) adverseEvent.setReport(this);
     }
+    
+    /**
+     * @param aeId
+     * @return
+     */
+    @Transient
+    public AdverseEvent getAdverseEvent(int aeId) {
+    	for (AdverseEvent ae: getAdverseEventsInternal()) {
+    		if (ae.getId()!=null && ae.getId()==aeId) {
+    			return ae;
+    		}
+    	}
+    	return null;
+    }
 
     /**
      * Gets the adverse events.
