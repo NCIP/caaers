@@ -679,21 +679,18 @@ this collection of information, including suggestions for reducing this burden t
 														<fo:inline xsl:use-attribute-sets="label">Diagnosis for Use </fo:inline>
 														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
 													</fo:block>
-													<!--<xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease">-->
-														<fo:block>
-															<!--<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>-->
-															<!--
-															<fo:inline font-size="6.5pt">  
-																<xsl:value-of select="DiseaseTerm/ctepTerm"/>
-															</fo:inline>
-															-->
-															<fo:inline font-size="6.5pt">  
-																<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
-																<xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
-																<xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
-															</fo:inline>
-														</fo:block>
-													<!--</xsl:for-each>-->
+                                                    <fo:block>
+                                                        <fo:inline font-size="6.5pt">
+                                                            For <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose"/> of
+                                                        </fo:inline>
+                                                    </fo:block>
+                                                    <fo:block>
+                                                        <fo:inline font-size="6.5pt">
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
+                                                        </fo:inline>
+                                                    </fo:block>
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="2">													
 													<fo:block font-size="6.5pt" font-weight="bold">

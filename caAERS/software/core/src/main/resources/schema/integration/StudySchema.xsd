@@ -43,6 +43,7 @@
                     <xs:element name="multiInstitutionIndicator" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="adeersReporting" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
+                    <xs:element name="studyPurpose" type="xs:string" minOccurs="0"/>
                     <xs:element ref="aeTerminology"/>
 
                     <xs:element ref="diseaseTerminology"/>

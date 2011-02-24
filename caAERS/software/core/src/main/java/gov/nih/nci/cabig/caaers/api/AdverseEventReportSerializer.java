@@ -687,6 +687,7 @@ public class AdverseEventReportSerializer {
 		    	s.setMultiInstitutionIndicator(hibernateStudy.getMultiInstitutionIndicator());
 		    	s.setRandomizedIndicator(hibernateStudy.getRandomizedIndicator());
 		    	s.setShortTitle(hibernateStudy.getShortTitle());
+                s.setStudyPurpose(hibernateStudy.getStudyPurpose());
 		    	s.setLongTitle(hibernateStudy.getLongTitle());
 		    	s.setDescription(hibernateStudy.getDescription());
 		    	s.setPrecis(hibernateStudy.getPrecis());

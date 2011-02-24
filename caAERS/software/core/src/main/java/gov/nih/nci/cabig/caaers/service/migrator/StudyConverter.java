@@ -34,6 +34,8 @@ public class StudyConverter {
         gov.nih.nci.cabig.caaers.webservice.Study studyDto = objectFactory.createStudy();
             studyDto.setShortTitle(study.getShortTitle());
             studyDto.setPhaseCode(StudyPhaseType.fromValue(study.getPhaseCode()));
+            studyDto.setStudyPurpose(study.getStudyPurpose());
+
             if(study.getOtherMeddra() != null && !study.getOtherMeddra().equals("")){
                 MeddraVersion otherMeddra = new MeddraVersion();
                 otherMeddra.setName(study.getOtherMeddra().getName());
@@ -73,6 +75,7 @@ public class StudyConverter {
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
 			study.setPhaseCode(studyDto.getPhaseCode().value());
+            study.setStudyPurpose(studyDto.getStudyPurpose());
 
 			if (! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null) {
 				MeddraVersion otherMeddra = null;

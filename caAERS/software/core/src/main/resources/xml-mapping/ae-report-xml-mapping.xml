@@ -1507,62 +1507,25 @@
 	</class>  
 
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="blindedIndicator" type="boolean">
-      <bind-xml name="blindedIndicator" node="element"/>
-    </field>
-    <field name="multiInstitutionIndicator" type="boolean">
-      <bind-xml name="multiInstitutionIndicator" node="element"/>
-    </field>
-    <field name="randomizedIndicator" type="boolean">
-      <bind-xml name="randomizedIndicator" node="element"/>
-    </field>
-    <field name="shortTitle" type="string">
-      <bind-xml name="shortTitle" node="element"/>
-    </field>
-    <field name="longTitle" type="string">
-      <bind-xml name="longTitle" node="element"/>
-    </field>
-    <field name="description" type="string">
-      <bind-xml name="description" node="element"/>
-    </field>
-    <field name="precis" type="string">
-      <bind-xml name="precis" node="element"/>
-    </field>
-    <field name="diseaseCode" type="string">
-      <bind-xml name="diseaseCode" node="element"/>
-    </field>
-    <field name="monitorCode" type="string">
-      <bind-xml name="monitorCode" node="element"/>
-    </field>
-    <field name="phaseCode" type="string">
-      <bind-xml name="phaseCode" node="element"/>
-    </field>
-    <!-- BJ : removed primarySponsorCode -->
-    <field name="status" type="string">
-      <bind-xml name="status" node="element"/>
-    </field>
-    <field name="targetAccrualNumber" type="integer">
-      <bind-xml name="targetAccrualNumber" node="element"/>
-    </field>
-    <field name="ctcVersion" type="gov.nih.nci.cabig.caaers.domain.Ctc">
-      <bind-xml name="Ctc"/>
-    </field>
-    <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
-      <bind-xml name="Identifier"/>
-    </field>
-    <field name="design" type="gov.nih.nci.cabig.caaers.domain.Design">
-      <bind-xml name="design"/>
-    </field>   
-    <field name="studyAgents" type="gov.nih.nci.cabig.caaers.domain.StudyAgent" collection="arraylist">
-      <bind-xml name="StudyAgent"/>
-    </field>   
-    <field name="ctepStudyDiseases" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease" collection="arraylist">
-      <bind-xml name="CtepStudyDisease"/>
-    </field> 
-
+    <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+    <field name="blindedIndicator" type="boolean"><bind-xml name="blindedIndicator" node="element"/></field>
+    <field name="multiInstitutionIndicator" type="boolean"><bind-xml name="multiInstitutionIndicator" node="element"/></field>
+    <field name="randomizedIndicator" type="boolean"><bind-xml name="randomizedIndicator" node="element"/></field>
+    <field name="shortTitle" type="string"><bind-xml name="shortTitle" node="element"/></field>
+    <field name="longTitle" type="string"><bind-xml name="longTitle" node="element"/></field>
+    <field name="description" type="string"><bind-xml name="description" node="element"/></field>
+    <field name="precis" type="string"><bind-xml name="precis" node="element"/></field>
+    <field name="diseaseCode" type="string"><bind-xml name="diseaseCode" node="element"/></field>
+    <field name="monitorCode" type="string"><bind-xml name="monitorCode" node="element"/></field>
+    <field name="phaseCode" type="string"><bind-xml name="phaseCode" node="element"/></field>
+    <field name="status" type="string"><bind-xml name="status" node="element"/></field>
+    <field name="targetAccrualNumber" type="integer"><bind-xml name="targetAccrualNumber" node="element"/></field>
+    <field name="ctcVersion" type="gov.nih.nci.cabig.caaers.domain.Ctc"><bind-xml name="Ctc"/></field>
+    <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist"><bind-xml name="Identifier"/></field>
+    <field name="design" type="gov.nih.nci.cabig.caaers.domain.Design"><bind-xml name="design"/></field>
+    <field name="studyAgents" type="gov.nih.nci.cabig.caaers.domain.StudyAgent" collection="arraylist"><bind-xml name="StudyAgent"/></field>
+    <field name="ctepStudyDiseases" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease" collection="arraylist"><bind-xml name="CtepStudyDisease"/></field>
+    <field name="studyPurpose" type="string"><bind-xml name="studyPurpose" node="element"/></field>
   </class>
 
 	<class name="gov.nih.nci.cabig.caaers.domain.LocalStudy" extends="gov.nih.nci.cabig.caaers.domain.Study">
