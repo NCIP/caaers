@@ -75,6 +75,23 @@ public class SafetyReportDefinitionManagementImpl implements SafetyReportDefinit
 		return null;
 	}
 
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return reportDefinitionDao;
+	}
+
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
+	}
+
+	public SafetyToExpeditedReportConverter getSafetyToExpeditedReportConverter() {
+		return safetyToExpeditedReportConverter;
+	}
+
+	public void setSafetyToExpeditedReportConverter(
+			SafetyToExpeditedReportConverter safetyToExpeditedReportConverter) {
+		this.safetyToExpeditedReportConverter = safetyToExpeditedReportConverter;
+	}
+
 
 
 }
