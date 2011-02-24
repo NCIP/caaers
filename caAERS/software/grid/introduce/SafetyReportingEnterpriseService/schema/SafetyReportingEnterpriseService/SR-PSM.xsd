@@ -9,7 +9,7 @@
 	<xs:import namespace="uri:iso.org:21090" schemaLocation="ISO_datatypes_Narrative.xsd"/>
 	<xs:import namespace="http://ess.caaers.nci.nih.gov" schemaLocation="AE-PSM.xsd"/>
 	
-
+<!--
 	<xs:complexType name="Report">
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
@@ -20,7 +20,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="Report" type="ESS-SR:Report"/>
+	<xs:element name="Report" type="ESS-SR:Report"/>-->
 		
 	<xs:complexType name="SafetyReportVersion">
 		<xs:complexContent>
@@ -44,7 +44,7 @@
 					<xs:element name="otherCauses" type="ESS-SR:OtherCause" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="priorTherapies" type="ESS-SR:SAEPriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="preExistingConditions" type="ESS-SR:PreExistingCondition" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="reports" type="ESS-SR:Report" minOccurs="0" maxOccurs="unbounded"/>
+
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -640,5 +640,8 @@
 	
   <xs:element name="DSET_II" type="ISO:DSET_II"/>
   
+  <xs:element name="DSET_TEL.Email" type="ISO:DSET_TEL.Email"/>
+  
+  <xs:element name="DSET_TEL" type="ISO:DSET_TEL"/>
 				
 </xs:schema>

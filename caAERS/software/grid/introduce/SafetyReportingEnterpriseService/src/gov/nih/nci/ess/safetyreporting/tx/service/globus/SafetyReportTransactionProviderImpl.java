@@ -28,19 +28,19 @@ public class SafetyReportTransactionProviderImpl{
 
     public gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportResponse amendSafetyReport(gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.tx.stubs.AmendSafetyReportResponse();
-    boxedResult.setSafetyReportVersion(impl.amendSafetyReport(params.getSafetyReportId().getId(),params.getAmendmentId().getId(),params.getReasonForAmend().getST()));
+    impl.amendSafetyReport(params.getSafetyReportId().getId(),params.getReportDefinitionId().getId());
     return boxedResult;
   }
 
     public gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportResponse submitSafetyReport(gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.tx.stubs.SubmitSafetyReportResponse();
-    boxedResult.setSafetyReportVersion(impl.submitSafetyReport(params.getSafetyReportId().getId(),params.getSubmitterId().getId(),params.getAdditionalRecipientIds().getDSET_II()));
+    impl.submitSafetyReport(params.getSafetyReportId().getId(),params.getReportDefinitionId().getId(),params.getSubmitterId().getId(),params.getAdditionalRecipientEmails().getDSET_TEL());
     return boxedResult;
   }
 
     public gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportResponse withdrawSafetyReport(gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.tx.stubs.WithdrawSafetyReportResponse();
-    boxedResult.setSafetyReportVersion(impl.withdrawSafetyReport(params.getSafetyReportId().getId(),params.getWithdrawerId().getId(),params.getReasonForWithdraw().getST()));
+    impl.withdrawSafetyReport(params.getSafetyReportId().getId(),params.getReportDefinitionId().getId());
     return boxedResult;
   }
 

@@ -42,17 +42,10 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="amendmentId">
+            <element name="reportDefinitionId">
               <complexType>
                 <sequence>
                   <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-            <element name="reasonForAmend">
-              <complexType>
-                <sequence>
-                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -61,15 +54,20 @@
       </element>
       <element name="AmendSafetyReportResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="SubmitSafetyReportRequest">
         <complexType>
           <sequence>
             <element name="safetyReportId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="reportDefinitionId">
               <complexType>
                 <sequence>
                   <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
@@ -83,10 +81,10 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="additionalRecipientIds">
+            <element name="additionalRecipientEmails">
               <complexType>
                 <sequence>
-                  <element ref="ns0:DSET_II" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:DSET_TEL" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -95,9 +93,7 @@
       </element>
       <element name="SubmitSafetyReportResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="WithdrawSafetyReportRequest">
@@ -110,17 +106,10 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="withdrawerId">
+            <element name="reportDefinitionId">
               <complexType>
                 <sequence>
                   <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-            <element name="reasonForWithdraw">
-              <complexType>
-                <sequence>
-                  <element ref="ns2:ST" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -129,9 +118,7 @@
       </element>
       <element name="WithdrawSafetyReportResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="SafetyReportTransactionResourceProperties">
