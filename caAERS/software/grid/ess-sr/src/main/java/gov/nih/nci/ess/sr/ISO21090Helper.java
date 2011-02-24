@@ -241,5 +241,21 @@ public final class ISO21090Helper {
 		}
 	}
 	
+	public static final Boolean value(BL bl) {
+		if (bl != null) {
+			return bl.getValue();
+		} else {
+			return null;
+		}
+	}
+	
+	public static final Integer value(INT in) {
+		if (in != null) {
+			return in.getValue();
+		} else {
+			return null;
+		}
+	}
+	
 
 }
