@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.ess.safetyreporting.types.ReportDeliveryDefinition;
+import gov.nih.nci.ess.safetyreporting.types.ReportMandatoryFieldDefinition;
 import gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion;
 
 public class SafetyToExpeditedReportConverterImpl implements SafetyToExpeditedReportConverter{
@@ -101,6 +103,28 @@ public class SafetyToExpeditedReportConverterImpl implements SafetyToExpeditedRe
 		}
 		return rdd;
 	}
+	
+	public gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition convertReportMandatoryFieldDefinition (ReportMandatoryFieldDefinition srmd) {
+		gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition rmd = new gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition();
+		if (srmd.getFieldPath()!=null) {
+			rmd.setFieldPath(ISO21090Helper.value(srmd.getFieldPath()));
+		}
+		if (srmd.getRuleBindURL()!=null) {
+			rmd.setRuleBindURL(ISO21090Helper.value(srmd.getRuleBindURL()));
+		}
+		if (srmd.getRuleName()!=null) {
+			rmd.setRuleName(ISO21090Helper.value(srmd.getRuleName()));
+		}
+		if (srmd.getSelfReferenced()!=null) {
+			rmd.setSelfReferenced(ISO21090Helper.value(srmd.getSelfReferenced()));
+		}
+		if (srmd.getRequirednessIndicator()!=null) {
+			rmd.setMandatory(RequirednessIndicator.valueOf(ISO21090Helper.value(srmd.getFieldPath())));
+		}
+		
+		return rmd;
+	}
+	
 
 	public OrganizationDao getOrganizationDao() {
 		return organizationDao;
