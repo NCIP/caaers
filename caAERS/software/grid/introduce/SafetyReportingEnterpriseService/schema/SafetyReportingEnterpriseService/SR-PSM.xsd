@@ -520,6 +520,7 @@
 					<xs:element name="workflowEnabled" type="ISO:BL"/>
 					<xs:element name="enabled" type="ISO:BL"/>
 					<xs:element name="reportDeliveryDefinitions" type="ESS-SR:ReportDeliveryDefinition" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="mandatoryFields" type="ESS-SR:ReportMandatoryFieldDefinition" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -545,6 +546,21 @@
 	</xs:complexType>
 	<xs:element name="ReportDeliveryDefinition" type="ESS-SR:ReportDeliveryDefinition"/>
 
+	<xs:complexType name="ReportMandatoryFieldDefinition">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity">
+				<xs:sequence>
+					<xs:element name="fieldPath" type="ISO:ST"/>
+					<xs:element name="requirednessIndicator" type="ISO:ST"/>
+					<xs:element name="ruleBindURL" type="ISO:ST"/>
+					<xs:element name="ruleName" type="ISO:ST"/>
+					<xs:element name="selfReferenced" type="ISO:BL"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReportMandatoryFieldDefinition" type="ESS-SR:ReportMandatoryFieldDefinition"/>
+	
 
 	<xs:complexType name="ReportDelivery">
 		<xs:complexContent>

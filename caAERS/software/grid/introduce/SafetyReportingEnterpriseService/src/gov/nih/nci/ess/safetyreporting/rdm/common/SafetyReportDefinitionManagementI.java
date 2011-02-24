@@ -16,17 +16,17 @@ public interface SafetyReportDefinitionManagementI {
 
   public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
 
-  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition createSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public void createSafetyReportDefinition(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
-  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition updateSafetyReportDefinitionDetails(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public void updateSafetyReportDefinitionDetails(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
-  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition updateSafetyReportDefinitionDeliveryDetails(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public void updateSafetyReportDefinitionDeliveryDetails(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
-  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition updateSafetyReportDefinitionMandatoryFields(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public void updateSafetyReportDefinitionMandatoryFields(gov.nih.nci.ess.safetyreporting.types.ReportDefinition reportDefinition) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
-  public gov.nih.nci.ess.safetyreporting.types.ReportDefinition deactivateSafetyReportDefinition(ess.caaers.nci.nih.gov.Id reportDefinitionId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public void deactivateSafetyReportDefinition(ess.caaers.nci.nih.gov.Id reportDefinitionId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
-  public ess.caaers.nci.nih.gov.Bl updateSafetyReportTerminologyForStudy(ess.caaers.nci.nih.gov.Id reportDefinitionId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id reportTerminologyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public void updateSafetyReportTerminologyForStudy(ess.caaers.nci.nih.gov.Id reportDefinitionId,ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id reportTerminologyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
 }
 

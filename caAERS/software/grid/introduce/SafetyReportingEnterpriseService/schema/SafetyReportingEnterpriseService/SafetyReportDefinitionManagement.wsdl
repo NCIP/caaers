@@ -47,9 +47,7 @@
       </element>
       <element name="CreateSafetyReportDefinitionResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:ReportDefinition" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="UpdateSafetyReportDefinitionDetailsRequest">
@@ -67,9 +65,7 @@
       </element>
       <element name="UpdateSafetyReportDefinitionDetailsResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:ReportDefinition" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="UpdateSafetyReportDefinitionDeliveryDetailsRequest">
@@ -87,9 +83,7 @@
       </element>
       <element name="UpdateSafetyReportDefinitionDeliveryDetailsResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:ReportDefinition" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="UpdateSafetyReportDefinitionMandatoryFieldsRequest">
@@ -107,9 +101,7 @@
       </element>
       <element name="UpdateSafetyReportDefinitionMandatoryFieldsResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:ReportDefinition" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="DeactivateSafetyReportDefinitionRequest">
@@ -134,9 +126,7 @@
       </element>
       <element name="DeactivateSafetyReportDefinitionResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:ReportDefinition" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="UpdateSafetyReportTerminologyForStudyRequest">
@@ -168,9 +158,7 @@
       </element>
       <element name="UpdateSafetyReportTerminologyForStudyResponse">
         <complexType>
-          <sequence>
-            <element ref="ns2:Bl" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="SafetyReportDefinitionManagementResourceProperties">
