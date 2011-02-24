@@ -282,6 +282,7 @@
 		</div>
 	</chrome:box>
 
+   <c:if test="${empty command.assignment.studySite.study.studyPurpose or command.assignment.studySite.study.studyPurpose eq 'Treatment'}">
 	<chrome:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
 		
      <p><tags:instructions code="instruction_subject_enter.medhist.disease"/></p>
@@ -383,7 +384,7 @@
 			</ui:row>
 		</div>
 	</chrome:box>
-
+   </c:if>
    <%-- BOX --%>
 
     <chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
