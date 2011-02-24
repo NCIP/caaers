@@ -1,12 +1,12 @@
 package gov.nih.nci.ess.sr;
 
-import ess.caaers.nci.nih.gov.Bl;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException;
 import gov.nih.nci.ess.safetyreporting.rdm.common.SafetyReportDefinitionManagementI;
 import gov.nih.nci.ess.safetyreporting.types.ReportDefinition;
 import gov.nih.nci.ess.safetyreporting.types.ReportDeliveryDefinition;
+import gov.nih.nci.ess.safetyreporting.types.ReportMandatoryFieldDefinition;
 
 import java.rmi.RemoteException;
 
@@ -22,22 +22,25 @@ public class SafetyReportDefinitionManagementImpl implements SafetyReportDefinit
 	private ReportDefinitionDao reportDefinitionDao;
 	private SafetyToExpeditedReportConverter safetyToExpeditedReportConverter;
 
-	public ReportDefinition createSafetyReportDefinition(ReportDefinition safetyReportDefinition) throws RemoteException, SafetyReportingServiceException {
+	public void createSafetyReportDefinition(ReportDefinition safetyReportDefinition) throws RemoteException, SafetyReportingServiceException {
 		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = safetyToExpeditedReportConverter.convertSafetyReportDefinition(safetyReportDefinition,null);
 		for (ReportDeliveryDefinition srdd:safetyReportDefinition.getReportDeliveryDefinitions()) {
 			rd.addReportDeliveryDefinition(safetyToExpeditedReportConverter.convertReportDeliveryDefinition(srdd));
 		}
+		for (ReportMandatoryFieldDefinition srmd:safetyReportDefinition.getMandatoryFields()) {
+			rd.addReportMandatoryFieldDefinition(safetyToExpeditedReportConverter.convertReportMandatoryFieldDefinition(srmd));
+		}
 		reportDefinitionDao.save(rd);
-		return null;
+
 	}
 
-	public ReportDefinition deactivateSafetyReportDefinition(Id reportDefinitionId, ST reasonForDeactivation) throws RemoteException, SafetyReportingServiceException {
+	public void deactivateSafetyReportDefinition(Id reportDefinitionId, ST reasonForDeactivation) throws RemoteException, SafetyReportingServiceException {
 		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = reportDefinitionDao.getById(ISO21090Helper.value(reportDefinitionId));
 		rd.setEnabled(false);
 		reportDefinitionDao.save(rd);
-		return null;
+
 	}
-	public ReportDefinition updateSafetyReportDefinitionDeliveryDetails(ReportDefinition reportDefinition) throws RemoteException, SafetyReportingServiceException {
+	public void updateSafetyReportDefinitionDeliveryDetails(ReportDefinition reportDefinition) throws RemoteException, SafetyReportingServiceException {
 		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = reportDefinitionDao.getById(ISO21090Helper.value(reportDefinition.getIdentifier()));
 
 		for (ReportDeliveryDefinition srdd:reportDefinition.getReportDeliveryDefinitions()) {
@@ -45,24 +48,29 @@ public class SafetyReportDefinitionManagementImpl implements SafetyReportDefinit
 			rd.addReportDeliveryDefinition(rdd);
 		}
 		reportDefinitionDao.save(rd);
-		return null;
+
 	}
 
-	public ReportDefinition updateSafetyReportDefinitionDetails(ReportDefinition safetyReportDefinition) throws RemoteException, SafetyReportingServiceException {
+	public void updateSafetyReportDefinitionDetails(ReportDefinition safetyReportDefinition) throws RemoteException, SafetyReportingServiceException {
 		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = reportDefinitionDao.getById(ISO21090Helper.value(safetyReportDefinition.getIdentifier()));
 		rd = safetyToExpeditedReportConverter.convertSafetyReportDefinition(safetyReportDefinition,  rd);
 		reportDefinitionDao.save(rd);
-		return null;
+
 	}
 
-	public ReportDefinition updateSafetyReportDefinitionMandatoryFields(ReportDefinition reportDefinition) throws RemoteException, SafetyReportingServiceException {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateSafetyReportDefinitionMandatoryFields(ReportDefinition reportDefinition) throws RemoteException, SafetyReportingServiceException {
+		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = reportDefinitionDao.getById(ISO21090Helper.value(reportDefinition.getIdentifier()));
+
+		for (ReportMandatoryFieldDefinition srmd:reportDefinition.getMandatoryFields()) {
+			gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition rmd = safetyToExpeditedReportConverter.convertReportMandatoryFieldDefinition(srmd);
+			rd.addReportMandatoryFieldDefinition(rmd);
+		}
+		reportDefinitionDao.save(rd);
+
 	}
 
-	public Bl updateSafetyReportTerminologyForStudy(Id reportDefinitionId, Id studyId, Id reportTerminologyId) throws RemoteException, SafetyReportingServiceException {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateSafetyReportTerminologyForStudy(Id reportDefinitionId, Id studyId, Id reportTerminologyId) throws RemoteException, SafetyReportingServiceException {
+
 	}
 	
 	public DestroyResponse destroy(Destroy params) throws RemoteException {
