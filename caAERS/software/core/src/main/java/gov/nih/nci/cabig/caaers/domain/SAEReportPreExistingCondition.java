@@ -1,9 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +26,8 @@ public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollec
 
     /** The other. */
     private String other;
+
+    private Boolean linkedToOtherCause = false;
 
     // //// LOGIC
 
@@ -87,6 +86,15 @@ public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollec
         this.other = other;
     }
     
+    @Column(name="synced_to_cause")
+    public Boolean getLinkedToOtherCause() {
+        return linkedToOtherCause;
+    }
+
+    public void setLinkedToOtherCause(Boolean linkedToOtherCause) {
+        this.linkedToOtherCause = linkedToOtherCause;
+    }
+
     /**
      * Will return true, if this object has the same 'other' and 'preexistingcondition'.
      *

@@ -1573,11 +1573,13 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      */
     public void autoGenerateOtherCauses(){
         for(SAEReportPreExistingCondition saePreCondition : getSaeReportPreExistingConditions()){
+            if(saePreCondition.getLinkedToOtherCause()) continue; //already linked to a cause. 
             String preConditionName = saePreCondition.getName();
             if(preConditionName == null) continue;
             OtherCause otherCause = findOtherCauseByCause(preConditionName);
             if(otherCause == null){
                 addOtherCause(new OtherCause(preConditionName));
+                saePreCondition.setLinkedToOtherCause(true);
             }
         }
     }
