@@ -15,7 +15,7 @@ public interface SafetyToExpeditedReportConverter {
 	
 	public abstract gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition convertReportDeliveryDefinition (ReportDeliveryDefinition srdd) ;
 	
-	public abstract gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition convertReportMandatoryFieldDefinition (ReportMandatoryFieldDefinition srmd)
+	public abstract gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition convertReportMandatoryFieldDefinition (ReportMandatoryFieldDefinition srmd);
 
 
 }
