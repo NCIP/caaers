@@ -9,7 +9,34 @@
 	<xs:import namespace="uri:iso.org:21090" schemaLocation="ISO_datatypes_Narrative.xsd"/>
 	<xs:import namespace="http://ess.caaers.nci.nih.gov" schemaLocation="AE-PSM.xsd"/>
 	
-	
+<!--
+	<xs:complexType name="Report">
+		<xs:complexContent>
+			<xs:extension base="ESS-AE:Entity">
+				<xs:sequence>
+					<xs:element name="aeReport" type="ESS-SR:SafetyReportVersion"/>
+					<xs:element name="required" type="ISO:BL"/>
+					<xs:element name="reportDefinition" type="ESS-SR:ReportDefinition"/>
+					<xs:element name="notifications" type="ESS-AE:ScheduledNotification"/> 
+					<xs:element name="reporter" type="ESS-SR:ReportSubmitter"/>
+					<xs:element name="physician" type="ESS-SR:Physician"/>
+					<xs:element name="participantHistory" type="ESS-SR:ParticipantHistory"/>
+					<xs:element name="diseaseHistory" type="ESS-SR:PerformedDiagnosis"/>
+					<xs:element name="reportingPeriod" type="ESS-SR:AdverseEventReportingPeriod"/>
+					<xs:element name="adverseEvents" type="ESS-AE:AdverseEvent" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="labs" type="ESS-SR:PerformedObservation" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="devices" type="ESS-SR:Device" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="radiationInterventions" type="ESS-SR:PerformedSubstanceAdministration" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="surgeryInterventions" type="ESS-SR:PerformedProcedure" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="concomitantMedications" type="ESS-SR:ConcomitantAgent" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="otherCauses" type="ESS-SR:OtherCause" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="priorTherapies" type="ESS-SR:SAEPriorTherapy" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="preExistingConditions" type="ESS-SR:PreExistingCondition" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+-->		
 	<xs:complexType name="SafetyReportVersion">
 		<xs:complexContent>
 			<xs:extension base="ESS-AE:Entity">
@@ -490,7 +517,24 @@
 		
 	<xs:complexType name="ReportDefinition">
 		<xs:complexContent>
-			<xs:extension base="ESS-AE:Entity"/>
+			<xs:extension base="ESS-AE:Entity">
+				<xs:sequence>
+					<xs:element name="name" type="ISO:ST"/>
+					<xs:element name="label" type="ISO:ST"/>
+					<xs:element name="header" type="ISO:ST"/>
+					<xs:element name="footer" type="ISO:ST"/>
+					<xs:element name="description" type="ISO:ST"/>
+					<xs:element name="amendable" type="ISO:BL"/>
+					<xs:element name="duration" type="ISO:INT"/>
+					<xs:element name="timeScaleUnitType" type="ISO:ST"/>
+					<xs:element name="organization" type="ESS-AE:Organization"/>
+					<xs:element name="attributionRequired" type="ISO:BL"/>
+					<xs:element name="reportFormatType" type="ISO:ST"/>
+					<xs:element name="physicianSignOff" type="ISO:BL"/>
+					<xs:element name="workflowEnabled" type="ISO:BL"/>
+					<xs:element name="enabled" type="ISO:BL"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="ReportDefinition" type="ESS-SR:ReportDefinition"/>
