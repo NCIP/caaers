@@ -80,6 +80,24 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 			Id safetyReportId, DSET_II adverseEventIds) throws RemoteException,
 			SafetyReportingServiceException {
 
+		ExpeditedAdverseEventReport report = findSafetyReport(safetyReportId);
+
+		addAdverseEventsToReport(adverseEventIds, report);
+
+		adverseEventReportDao.save(report);
+		return safetyReportConverter.convertExpeditedAdverseEventReport(report);
+
+	}
+
+	/**
+	 * @param safetyReportId
+	 * @return
+	 * @throws SafetyReportingServiceException
+	 * @throws NoSuchMessageException
+	 */
+	private ExpeditedAdverseEventReport findSafetyReport(Id safetyReportId)
+			throws gov.nih.nci.ess.sr.SafetyReportingServiceException,
+			NoSuchMessageException {
 		Integer aeReportId = h.value(safetyReportId);
 		if (aeReportId == null) {
 			throw new gov.nih.nci.ess.sr.SafetyReportingServiceException(
@@ -97,12 +115,7 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 							Locale.getDefault()));
 
 		}
-
-		addAdverseEventsToReport(adverseEventIds, report);
-
-		adverseEventReportDao.save(report);
-		return safetyReportConverter.convertExpeditedAdverseEventReport(report);
-
+		return report;
 	}
 
 	/**
@@ -133,6 +146,27 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 		}
 	}
 
+	private void removeAdverseEventsFromReport(DSET_II adverseEventIds,
+			ExpeditedAdverseEventReport report)
+			throws gov.nih.nci.ess.sr.SafetyReportingServiceException,
+			NoSuchMessageException {
+		if (adverseEventIds != null && adverseEventIds.getItem() != null) {
+			for (II aeId : adverseEventIds.getItem()) {
+				Integer aeIdInt = h.value(aeId);
+				if (aeIdInt != null) {
+					final gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = report
+							.getAdverseEvent(aeIdInt);
+					if (ae != null) {						
+						report.removeAdverseEvent(ae);
+						adverseEventDao.save(ae);						
+					}
+				} else {
+					raiseInvalidAeId(aeIdInt);
+				}
+			}
+		}
+	}
+
 	/**
 	 * @param id
 	 * @return
@@ -156,8 +190,11 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 	public SafetyReportVersion dissociateAdverseEventsFromSafetyReport(
 			Id safetyReportId, DSET_II adverseEventIds) throws RemoteException,
 			SafetyReportingServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		ExpeditedAdverseEventReport report = findSafetyReport(safetyReportId);
+		removeAdverseEventsFromReport(adverseEventIds, report);
+		adverseEventReportDao.save(report);
+		return safetyReportConverter
+				.convertExpeditedAdverseEventReport(findSafetyReport(safetyReportId));
 	}
 
 	public MessageSource getMessageSource() {

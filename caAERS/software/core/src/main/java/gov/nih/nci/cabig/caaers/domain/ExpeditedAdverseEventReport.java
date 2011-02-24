@@ -270,6 +270,20 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if (adverseEvent != null) adverseEvent.setReport(this);
     }
     
+	/**
+	 * This method will remove the {@link AdverseEvent} from the list and will
+	 * reset the {@link AdverseEvent#getReport()} association to null. However,
+	 * you're still responsible for persisting the updated {@link AdverseEvent}
+	 * instance, because the removal operation will not cascade. 
+	 * 
+	 * @param adverseEvent
+	 */
+	public void removeAdverseEvent(AdverseEvent adverseEvent) {
+		getAdverseEventsInternal().remove(adverseEvent);
+		if (adverseEvent != null)
+			adverseEvent.setReport(null);
+	}    
+    
     /**
      * @param aeId
      * @return
