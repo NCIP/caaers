@@ -421,8 +421,12 @@ public class PatientDetailsTab extends AeTab {
     public ModelAndView removePreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
     	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<SAEReportPreExistingCondition> preConditions = command.getAeReport().getSaeReportPreExistingConditions();
-    	preConditions.remove(preConditions.get(command.getIndex())); //remove the element
-    	
+        SAEReportPreExistingCondition preCondition = preConditions.get(command.getIndex());
+    	preConditions.remove(preCondition); //remove the element
+    	if(preCondition.getName() != null){
+           command.getAeReport().removeOtherCause(preCondition.getName()); 
+        }
+
     	//create the indexes in reverse order
     	int size = preConditions.size();
     	Integer[] indexes = new Integer[size];

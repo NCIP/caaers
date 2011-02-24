@@ -1610,5 +1610,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         }
         return null;
     }
+
+    public boolean removeOtherCause(String cause){
+        OtherCause otherCause = findOtherCauseByCause(cause);
+        if(otherCause != null) return getOtherCauses().remove(otherCause);
+        return false;
+    }
     
 }
