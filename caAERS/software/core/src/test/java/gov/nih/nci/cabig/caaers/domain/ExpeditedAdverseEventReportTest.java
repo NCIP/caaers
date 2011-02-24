@@ -1381,4 +1381,60 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         adverseEvent.setHospitalization(Hospitalization.YES);
         assertEquals(0, report.getModifiedAdverseEvents(ruleableFields).size());
     }
+
+
+    public void testAutoGenerateOtherCause(){
+
+        //No preexisting condition and othercauses.
+        {
+          ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+          assertEquals(0, aeReport.getOtherCauses().size());
+          assertEquals(0, aeReport.getSaeReportPreExistingConditions().size());
+          aeReport.autoGenerateOtherCauses();
+          assertEquals(0, aeReport.getOtherCauses().size());
+
+        }
+
+        //One preexisting condition and No othercauses.
+        {
+          ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+          assertEquals(0, aeReport.getOtherCauses().size());
+          assertEquals(0, aeReport.getSaeReportPreExistingConditions().size());
+          SAEReportPreExistingCondition preCondition = Fixtures.createSAEReportPreExistingCondition("abcd");
+          aeReport.addSaeReportPreExistingCondition(preCondition);
+          aeReport.autoGenerateOtherCauses();
+          assertEquals(1, aeReport.getOtherCauses().size());
+        }
+
+
+
+        //One preexisting condition and One othercauses.
+        {
+          ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+          assertEquals(0, aeReport.getOtherCauses().size());
+          assertEquals(0, aeReport.getSaeReportPreExistingConditions().size());
+          SAEReportPreExistingCondition preCondition = Fixtures.createSAEReportPreExistingCondition("abcd");
+          aeReport.addSaeReportPreExistingCondition(preCondition);
+          aeReport.addOtherCause(new OtherCause("abcdx"));  
+
+          aeReport.autoGenerateOtherCauses();
+          assertEquals(2, aeReport.getOtherCauses().size());
+        }
+
+
+
+        //One preexisting condition and One othercauses.
+        {
+          ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+          assertEquals(0, aeReport.getOtherCauses().size());
+          assertEquals(0, aeReport.getSaeReportPreExistingConditions().size());
+          SAEReportPreExistingCondition preCondition = Fixtures.createSAEReportPreExistingCondition("abcd");
+          aeReport.addSaeReportPreExistingCondition(preCondition);
+          aeReport.addOtherCause(new OtherCause("abcd"));
+
+          aeReport.autoGenerateOtherCauses();
+          assertEquals(1, aeReport.getOtherCauses().size());
+        }
+
+    }
 }

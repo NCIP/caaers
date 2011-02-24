@@ -25,6 +25,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.*;
@@ -1565,6 +1566,33 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		if(r.getWorkflowId() != null)
     			hasWorkflowOnActiveReports = true;
     	return hasWorkflowOnActiveReports;
+    }
+
+    /**
+     * Will create other cause from PreExistingCondition.
+     */
+    public void autoGenerateOtherCauses(){
+        for(SAEReportPreExistingCondition saePreCondition : getSaeReportPreExistingConditions()){
+            String preConditionName = saePreCondition.getName();
+            if(preConditionName == null) continue;
+            OtherCause otherCause = findOtherCauseByCause(preConditionName);
+            if(otherCause == null){
+                addOtherCause(new OtherCause(preConditionName));
+            }
+        }
+    }
+
+    /**
+     * Will return the OtherCause matching the cause.
+     * @param cause  - The cause to find. 
+     * @return  OtherCause if found, otherwise null. 
+     */
+    private OtherCause findOtherCauseByCause(String cause){
+        for(OtherCause otherCause : getOtherCauses()) {
+            String otherCauseText = otherCause.getText();
+            if(StringUtils.equals(cause, otherCauseText)) return otherCause;
+        }
+        return null;
     }
     
 }

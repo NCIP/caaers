@@ -33,6 +33,15 @@ public class PreExistingCondition extends AbstractImmutableDomainObject {
     /** The meddra hlgt. */
     private String meddraHlgt; // MedDRA v9.0 High Level Group Term (HLGT)/CTEP Condition Category
 
+
+    public PreExistingCondition(){
+       this(null);
+    }
+
+    public PreExistingCondition(String text){
+        this.text = text;
+    }
+
     /**
      * Gets the text.
      *

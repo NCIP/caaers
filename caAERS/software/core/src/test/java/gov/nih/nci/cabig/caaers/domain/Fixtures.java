@@ -779,4 +779,14 @@ public class Fixtures {
      u.setLoginName(loginId);
      return u;
   }
+
+  public static SAEReportPreExistingCondition createSAEReportPreExistingCondition(String name){
+    SAEReportPreExistingCondition pec =  new SAEReportPreExistingCondition();
+    pec.setPreExistingCondition(createPreExistingCondtion(name));
+    return pec;
+  }
+
+  public static PreExistingCondition createPreExistingCondtion(String name){
+      return new PreExistingCondition(name);
+  }
 }

@@ -22,6 +22,14 @@ public class OtherCause extends AbstractExpeditedReportCollectionElementChild {
     /** The text. */
     private String text;
 
+    public OtherCause(){
+        this(null);
+    }
+
+    public OtherCause(String text){
+        this.text = text;
+    }
+
     /**
      * Gets the text.
      *
