@@ -32,19 +32,7 @@ public class SafetyReportTransactionImpl implements SafetyReportTransactionI,
 	private ReportDao reportDao;
 	private ReportSubmissionService reportSubmissionService;
 	
-	private Report createReport(Id safetyReportVersionId , Id safetyReportDefinitionId) {
-		ExpeditedAdverseEventReport aeReport = adverseEventReportDao.getById(ISO21090Helper.value(safetyReportVersionId));
-		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = reportDefinitionDao.getById(ISO21090Helper.value(safetyReportDefinitionId));
-		return reportRepository.createReport(rd, aeReport);
-	}
-	
-	private Report getReport(Integer expeditedReportId, Integer reportDefinitionId) {
-		ReportQuery qry = new ReportQuery();
-		qry.filterByExpeditedReportAndReportDefinition(expeditedReportId, reportDefinitionId);
-		List<Report> reports = reportDao.search(qry);
-		return  reports.size() == 0 ? reports.get(0):null;
-		
-	}
+
 	
 	public void submitSafetyReport(Id safetyReportVersionId , Id safetyReportDefinitionId , Id submitterId, DSET_TEL additionalRecipientEmails) throws RemoteException, SafetyReportingServiceException {
 		Report r  = getReport(ISO21090Helper.value(safetyReportVersionId) , ISO21090Helper.value(safetyReportDefinitionId)); // get report from DB ...
@@ -72,6 +60,19 @@ public class SafetyReportTransactionImpl implements SafetyReportTransactionI,
 
 	}
 	
+	private Report createReport(Id safetyReportVersionId , Id safetyReportDefinitionId) {
+		ExpeditedAdverseEventReport aeReport = adverseEventReportDao.getById(ISO21090Helper.value(safetyReportVersionId));
+		gov.nih.nci.cabig.caaers.domain.report.ReportDefinition rd = reportDefinitionDao.getById(ISO21090Helper.value(safetyReportDefinitionId));
+		return reportRepository.createReport(rd, aeReport);
+	}
+	
+	private Report getReport(Integer expeditedReportId, Integer reportDefinitionId) {
+		ReportQuery qry = new ReportQuery();
+		qry.filterByExpeditedReportAndReportDefinition(expeditedReportId, reportDefinitionId);
+		List<Report> reports = reportDao.search(qry);
+		return  reports.size() == 0 ? reports.get(0):null;
+		
+	}
 
 	public SetTerminationTimeResponse setTerminationTime(SetTerminationTime params) throws RemoteException {
 		// TODO Auto-generated method stub
