@@ -130,6 +130,7 @@
 	<bean id="safetyToExpeditedReportConverter" class="gov.nih.nci.ess.sr.SafetyToExpeditedReportConverterImpl" autowire="byType" />	
 	<bean id="safetyReportDefinitionManagementImplTarget" class="gov.nih.nci.ess.sr.SafetyReportDefinitionManagementImpl" autowire="byType" />	
 	<bean id="safetyReportTransactionImplTarget" class="gov.nih.nci.ess.sr.SafetyReportTransactionImpl" autowire="byType" />	
+	<bean id="safetyReportNotificationImplTarget" class="gov.nih.nci.ess.sr.SafetyReportNotificationImpl" autowire="byType" />	
 
 	<!-- Audit -->
     <bean id="safetyReportManagementGridServiceUrl" class="java.lang.String">
@@ -167,6 +168,18 @@
 	<bean id="safetyReportTransactionImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="proxyTargetClass"><value>true</value></property>
 		<property name="target"><ref local="safetyReportTransactionImplTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>gridAutenticationInterceptor</value>
+				<value>safetyReportManagementAuditInfoPopulatorInterceptor</value>				
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>	
+	
+	<bean id="safetyReportNotificationImpl" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="safetyReportNotificationImplTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
 				<value>gridAutenticationInterceptor</value>
