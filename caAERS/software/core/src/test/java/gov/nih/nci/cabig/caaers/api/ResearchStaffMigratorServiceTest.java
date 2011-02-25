@@ -140,11 +140,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
 			assertEquals(2,updatedResearchStaff.getSiteResearchStaffs().size());
-			for(SiteResearchStaff siteResearchStaff : updatedResearchStaff.getSiteResearchStaffs()){
-				assertNotNull(siteResearchStaff.getSiteResearchStaffRoles());
-				assertEquals(2, siteResearchStaff.getSiteResearchStaffRoles().size());
-			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Error running test: " + e.getMessage());
