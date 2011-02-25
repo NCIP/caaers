@@ -135,4 +135,14 @@ public class ReportQuery extends AbstractQuery {
     public void filterByCourseEndDate(String dateString , String operator) throws Exception {
     	andWhere(createDateQuery(AE_REPORTING_PERIOD_ALIAS+".endDate", dateString, operator));
     }
+    
+    public void filterByExpeditedReportAndReportDefinition (Integer expeditedReportId , Integer reportDefinitionId) {
+    	joinExpeditedAEReport();
+    	joinReportDefinition();
+    	andWhere (this.EXPEDITED_AE_REPORT_ALIAS +".id = : eId");
+    	andWhere (this.REPORT_DEFINITION_ALIAS  + ".id = : rId");
+    	setParameter("eId" , expeditedReportId);
+    	setParameter("rId" , reportDefinitionId);
+    	
+    }
 }
