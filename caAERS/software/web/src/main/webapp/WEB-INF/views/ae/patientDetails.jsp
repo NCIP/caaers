@@ -421,7 +421,7 @@
 	</chrome:box>
 	  
 
-
+<c:if test="${empty command.assignment.studySite.study.studyPurpose or command.assignment.studySite.study.studyPurpose eq 'Treatment'}">
     <chrome:box id="aeReport.diseaseHistory" title="Disease Information" collapsable="true">
       <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
     <a name="anchorDiseaseInfo"></a>
@@ -488,7 +488,7 @@
     </div>
     
   </chrome:box>
-
+</c:if>
 
 
 
