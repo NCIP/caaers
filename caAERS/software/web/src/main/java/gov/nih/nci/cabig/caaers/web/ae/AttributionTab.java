@@ -43,8 +43,9 @@ public class AttributionTab extends AeTab {
 
     private List<AttributionBlock> createBlocks(ExpeditedAdverseEventReport report) {
         List<AttributionBlock> blocks = new ArrayList<AttributionBlock>();
-        boolean isStudyForTreatment = (report.getAssignment().getStudySite().getStudy().getStudyPurpose().equals("Treatment"));
-        if (isStudyForTreatment)
+        String studyPurpose =  report.getAssignment().getStudySite().getStudy().getStudyPurpose();
+        boolean isStudyForTreatment = (studyPurpose != null && studyPurpose.equals("Treatment"));
+        if (studyPurpose == null || isStudyForTreatment)
             blocks.add(new AttributionBlock("Disease", createGroups(CauseAndAttributionAccessor.DISEASE, report)));
         blocks.add(new AttributionBlock("Study Agent", "Agents", createGroups(CauseAndAttributionAccessor.COURSE_AGENT, report)));
         blocks.add(new AttributionBlock("Surgery", createGroups(CauseAndAttributionAccessor.SURGERY, report)));

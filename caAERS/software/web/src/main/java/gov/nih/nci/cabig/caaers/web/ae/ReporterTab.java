@@ -77,7 +77,7 @@ public class ReporterTab extends AeTab {
            temporaryRsSet.add(rs);
         }
 
-    	for(StudyInvestigator sInvestigator: command.getAssignment().getStudySite().getActiveStudyInvestigators()){
+    	for (StudyInvestigator sInvestigator: command.getAssignment().getStudySite().getActiveStudyInvestigators()){
     		//investigatorList.add(sInvestigator.getSiteInvestigator().getInvestigator());
     		investigatorSet.add(sInvestigator.getSiteInvestigator().getInvestigator());
     	}
