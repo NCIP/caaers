@@ -106,6 +106,31 @@ public class SafetyReportTransactionImpl implements SafetyReportTransactionI,
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
 
+	public ReportDao getReportDao() {
+		return reportDao;
+	}
+
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
+
+	public ReportRepository getReportRepository() {
+		return reportRepository;
+	}
+
+	public void setReportRepository(ReportRepository reportRepository) {
+		this.reportRepository = reportRepository;
+	}
+
+	public ReportSubmissionService getReportSubmissionService() {
+		return reportSubmissionService;
+	}
+
+	public void setReportSubmissionService(
+			ReportSubmissionService reportSubmissionService) {
+		this.reportSubmissionService = reportSubmissionService;
+	}
+
 
 
 
