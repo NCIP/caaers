@@ -436,6 +436,7 @@ public class StudyConverterTest extends AbstractTestCase {
 
         study.setMeddraStudyDiseases(new ArrayList<MeddraStudyDisease>());
         MeddraStudyDisease meddra = new MeddraStudyDisease();
+        meddra.setTerm(new LowLevelTerm()); meddra.getTerm().setMeddraCode("8980368");
         study.getMeddraStudyDiseases().add(meddra);
 
         // SAES
