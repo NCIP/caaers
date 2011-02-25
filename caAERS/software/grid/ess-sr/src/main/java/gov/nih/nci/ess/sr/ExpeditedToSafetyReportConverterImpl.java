@@ -669,6 +669,14 @@ public class ExpeditedToSafetyReportConverterImpl implements ExpeditedToSafetyRe
 		
 	}
 	
+	public  gov.nih.nci.ess.safetyreporting.types.ReportDefinition convertReportDefinition(
+			gov.nih.nci.cabig.caaers.domain.report.ReportDefinition reportDefinition) {
+		gov.nih.nci.ess.safetyreporting.types.ReportDefinition safetyReportDefinition = new gov.nih.nci.ess.safetyreporting.types.ReportDefinition();
+		safetyReportDefinition.setIdentifier(ISO21090Helper.II(reportDefinition.getId()));
+		// to be impemented ...
+		return safetyReportDefinition;
+	}
+	
 	private TSDateTime convert(Date date) {
 		TSDateTime tsDateTime = new TSDateTime();
 		if (date != null) {
