@@ -67,6 +67,7 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 	private ExpeditedAdverseEventReportDao adverseEventReportDao;
 	private AdverseEventDao adverseEventDao;
 	private ExpeditedToSafetyReportConverter safetyReportConverter;
+	private GridToDomainObjectConverter gridToDomainObjectConverter;
 
 	/*
 	 * (non-Javadoc)
@@ -156,9 +157,9 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 				if (aeIdInt != null) {
 					final gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = report
 							.getAdverseEvent(aeIdInt);
-					if (ae != null) {						
+					if (ae != null) {
 						report.removeAdverseEvent(ae);
-						adverseEventDao.save(ae);						
+						adverseEventDao.save(ae);
 					}
 				} else {
 					raiseInvalidAeId(aeIdInt);
@@ -379,8 +380,18 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 	public SafetyReportVersion updateAdverseEventInformationInSafetyReport(
 			Id safetyReportId, AdverseEvent adverseEvent)
 			throws RemoteException, SafetyReportingServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		ExpeditedAdverseEventReport report = findSafetyReport(safetyReportId);
+		Integer aeId = h.value(adverseEvent.getIdentifier());
+		if (aeId == null || report.getAdverseEvent(aeId) == null) {
+			raiseInvalidAeId(aeId);
+		}
+		gov.nih.nci.cabig.caaers.domain.AdverseEvent ae = report
+				.getAdverseEvent(aeId);
+		gridToDomainObjectConverter.convertAdverseEvent(adverseEvent, ae);
+		adverseEventDao.save(ae);
+		return safetyReportConverter
+				.convertExpeditedAdverseEventReport(findSafetyReport(safetyReportId));
+
 	}
 
 	/**
@@ -486,6 +497,22 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 	public final void setSafetyReportConverter(
 			ExpeditedToSafetyReportConverter safetyReportConverter) {
 		this.safetyReportConverter = safetyReportConverter;
+	}
+
+	/**
+	 * @return the gridToDomainObjectConverter
+	 */
+	public final GridToDomainObjectConverter getGridToDomainObjectConverter() {
+		return gridToDomainObjectConverter;
+	}
+
+	/**
+	 * @param gridToDomainObjectConverter
+	 *            the gridToDomainObjectConverter to set
+	 */
+	public final void setGridToDomainObjectConverter(
+			GridToDomainObjectConverter gridToDomainObjectConverter) {
+		this.gridToDomainObjectConverter = gridToDomainObjectConverter;
 	}
 
 }

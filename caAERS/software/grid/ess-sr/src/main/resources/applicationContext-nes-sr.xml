@@ -125,6 +125,8 @@
 		<constructor-arg value="wsrf-caaers"/>
 	</bean>	
 
+	<bean id="gridToDomainObjectConverter" class="gov.nih.nci.ess.sr.GridToDomainObjectConverter"
+		autowire="byType" />
 	<bean id="safetyReportManagementImplTarget" class="gov.nih.nci.ess.sr.SafetyReportManagementImpl" autowire="byType" />		
 	<bean id="expeditedToSafetyReportConverterImpl" class="gov.nih.nci.ess.sr.ExpeditedToSafetyReportConverterImpl" />
 	<bean id="safetyToExpeditedReportConverter" class="gov.nih.nci.ess.sr.SafetyToExpeditedReportConverterImpl" autowire="byType" />	
@@ -146,7 +148,7 @@
 		<property name="target"><ref local="safetyReportManagementImplTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>gridAutenticationInterceptor</value>
+				<value>runAsAutenticationProviderInterceptor</value>
 				<value>safetyReportManagementAuditInfoPopulatorInterceptor</value>				
 				<value>hibernateInterceptor</value> 
 			</list> 
