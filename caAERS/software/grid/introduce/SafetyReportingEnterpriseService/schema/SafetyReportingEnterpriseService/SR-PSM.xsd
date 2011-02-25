@@ -521,6 +521,7 @@
 					<xs:element name="enabled" type="ISO:BL"/>
 					<xs:element name="reportDeliveryDefinitions" type="ESS-SR:ReportDeliveryDefinition" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:element name="mandatoryFields" type="ESS-SR:ReportMandatoryFieldDefinition" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="notifications" type="ESS-SR:SafetyReportDefinitionNotification" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -591,7 +592,14 @@
 
 	<xs:complexType name="SafetyReportDefinitionNotification">
 		<xs:complexContent>
-			<xs:extension base="ESS-AE:Entity"/>
+			<xs:extension base="ESS-AE:Entity">
+				<xs:sequence>
+					<xs:element name="indexOnTimeScale" type="ISO:INT"/>
+					<xs:element name="recipients" type="ISO:BAG_TEL"/>
+					<xs:element name="bodyContent" type="ISO:ST"/>
+					<xs:element name="subjectLIne" type="ISO:ST"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="SafetyReportDefinitionNotification" type="ESS-SR:SafetyReportDefinitionNotification"/>

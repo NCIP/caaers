@@ -90,7 +90,7 @@ public class SafetyReportNotificationClient extends SafetyReportNotificationClie
     }
   }
 
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification createSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification safetyReportDefinitionNotification,ess.caaers.nci.nih.gov.Id reportDefinitionId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+  public void createSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification safetyReportDefinitionNotification,ess.caaers.nci.nih.gov.Id reportDefinitionId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createSafetyReportDefinitionNotification");
     gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationRequest params = new gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationRequest();
@@ -101,11 +101,10 @@ public class SafetyReportNotificationClient extends SafetyReportNotificationClie
     reportDefinitionIdContainer.setId(reportDefinitionId);
     params.setReportDefinitionId(reportDefinitionIdContainer);
     gov.nih.nci.ess.safetyreporting.notification.stubs.CreateSafetyReportDefinitionNotificationResponse boxedResult = portType.createSafetyReportDefinitionNotification(params);
-    return boxedResult.getSafetyReportDefinitionNotification();
     }
   }
 
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification updateSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification safetyReportDefinitionNotification) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+  public void updateSafetyReportDefinitionNotification(gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification safetyReportDefinitionNotification) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"updateSafetyReportDefinitionNotification");
     gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationRequest params = new gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationRequest();
@@ -113,11 +112,10 @@ public class SafetyReportNotificationClient extends SafetyReportNotificationClie
     safetyReportDefinitionNotificationContainer.setSafetyReportDefinitionNotification(safetyReportDefinitionNotification);
     params.setSafetyReportDefinitionNotification(safetyReportDefinitionNotificationContainer);
     gov.nih.nci.ess.safetyreporting.notification.stubs.UpdateSafetyReportDefinitionNotificationResponse boxedResult = portType.updateSafetyReportDefinitionNotification(params);
-    return boxedResult.getSafetyReportDefinitionNotification();
     }
   }
 
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportDefinitionNotification deactivateSafetyReportDefinitionNotification(ess.caaers.nci.nih.gov.Id notificationId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+  public void deactivateSafetyReportDefinitionNotification(ess.caaers.nci.nih.gov.Id notificationId,_21090.org.iso.ST reasonForDeactivation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"deactivateSafetyReportDefinitionNotification");
     gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationRequest params = new gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationRequest();
@@ -128,7 +126,6 @@ public class SafetyReportNotificationClient extends SafetyReportNotificationClie
     reasonForDeactivationContainer.setST(reasonForDeactivation);
     params.setReasonForDeactivation(reasonForDeactivationContainer);
     gov.nih.nci.ess.safetyreporting.notification.stubs.DeactivateSafetyReportDefinitionNotificationResponse boxedResult = portType.deactivateSafetyReportDefinitionNotification(params);
-    return boxedResult.getSafetyReportDefinitionNotification();
     }
   }
 

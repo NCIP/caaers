@@ -54,9 +54,7 @@
       </element>
       <element name="CreateSafetyReportDefinitionNotificationResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="UpdateSafetyReportDefinitionNotificationRequest">
@@ -74,9 +72,7 @@
       </element>
       <element name="UpdateSafetyReportDefinitionNotificationResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="DeactivateSafetyReportDefinitionNotificationRequest">
@@ -101,9 +97,7 @@
       </element>
       <element name="DeactivateSafetyReportDefinitionNotificationResponse">
         <complexType>
-          <sequence>
-            <element ref="ns0:SafetyReportDefinitionNotification" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="SafetyReportNotificationResourceProperties">

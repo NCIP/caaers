@@ -21,7 +21,14 @@
       </ns2:Operation>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns5:umlAttributeCollection/>
+         <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns5:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns5:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
      </ns2:operationCollection>
@@ -33,56 +40,63 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns5:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns6:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns7:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns7:umlAttributeCollection/>
+         <ns7:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns7:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns7:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns7:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation." name="initiateSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns6:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns6="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns7:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="subjectId" xmlns:ns7="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns8:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="patientId" xmlns:ns8="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns9:DSET_II" dimensionality="1" index="3" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns9="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns10:DSET_II" dimensionality="1" index="4" isArray="false" isRequired="false" name="problemIds" xmlns:ns10="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns11:AdverseEventReportingPeriod" dimensionality="1" index="5" isArray="false" isRequired="false" name="adverseEventReportingPeriod" xmlns:ns11="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns8:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns8="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns9:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="subjectId" xmlns:ns9="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns10:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="patientId" xmlns:ns10="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns11:DSET_II" dimensionality="1" index="3" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns11="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns12:DSET_II" dimensionality="1" index="4" isArray="false" isRequired="false" name="problemIds" xmlns:ns12="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns13:AdverseEventReportingPeriod" dimensionality="1" index="5" isArray="false" isRequired="false" name="adverseEventReportingPeriod" xmlns:ns13="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns12:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns12="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns14:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns14="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Provides the capability to associate adverse events to a safety report." name="associateAdverseEventsToSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns13:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns13="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns14:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns14="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns15:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns15="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns16:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns16="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns15:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns15="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns17:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns17="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Provides the capability to dissociate an adverse event from a safety report." name="dissociateAdverseEventsFromSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns16:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns16="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns17:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns17="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns18:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns18="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns19:DSET_II" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEventIds" xmlns:ns19="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns18:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns18="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns20:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns20="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Provides the capability to update the adverse event information in the safety report." name="updateAdverseEventInformationInSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns19:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns19="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns20:AdverseEvent" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEvent" xmlns:ns20="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns21:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns21="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns22:AdverseEvent" dimensionality="1" index="1" isArray="false" isRequired="false" name="adverseEvent" xmlns:ns22="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns21:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns21="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns23:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns23="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="associateProblemToSafetyReport">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns22:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns22="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns24:SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns24="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -94,7 +108,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns23:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns25:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns26:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns26:umlAttributeCollection/>
+         <ns26:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns26:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns26:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns26:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -107,28 +128,28 @@
       </ns2:Operation>
       <ns2:Operation description="" name="querySafetyReports">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns24:SafetyReportVersion" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportVersion" xmlns:ns24="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns27:SafetyReportVersion" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportVersion" xmlns:ns27="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns25:DSET_SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns25="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns28:DSET_SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns28="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="getSafetyReports">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns26:DSET_II" dimensionality="1" index="0" isArray="false" isRequired="false" name="dSET_II" xmlns:ns26="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns29:DSET_II" dimensionality="1" index="0" isArray="false" isRequired="false" name="dSET_II" xmlns:ns29="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns27:DSET_SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns27="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns30:DSET_SafetyReportVersion" dimensionality="1" isArray="false" xmlns:ns30="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="viewSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns28:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns28="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns29:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="desiredFormat" xmlns:ns29="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns31:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns31="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns32:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="desiredFormat" xmlns:ns32="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns30:SafetyReportFormat" dimensionality="1" isArray="false" xmlns:ns30="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns33:SafetyReportFormat" dimensionality="1" isArray="false" xmlns:ns33="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -143,7 +164,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns31:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns34:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns35:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns35:umlAttributeCollection/>
+         <ns35:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns35:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns35:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns35:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -156,8 +184,8 @@
       </ns2:Operation>
       <ns2:Operation description="" name="amendSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns32:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns32="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns33:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns33="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns36:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns36="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns37:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns37="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -165,10 +193,10 @@
       </ns2:Operation>
       <ns2:Operation description="" name="submitSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns34:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns34="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns35:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns35="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns36:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="submitterId" xmlns:ns36="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns37:DSET_TEL" dimensionality="1" index="3" isArray="false" isRequired="false" name="additionalRecipientEmails" xmlns:ns37="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns38:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns38="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns39:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns39="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns40:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="submitterId" xmlns:ns40="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns41:DSET_TEL" dimensionality="1" index="3" isArray="false" isRequired="false" name="additionalRecipientEmails" xmlns:ns41="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -176,8 +204,8 @@
       </ns2:Operation>
       <ns2:Operation description="" name="withdrawSafetyReport">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns38:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns38="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns39:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns39="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns42:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportId" xmlns:ns42="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns43:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns43="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -193,7 +221,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns40:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns44:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns44="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns45:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns45="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns45:umlAttributeCollection/>
+         <ns45:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns45:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns45:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns45:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -206,7 +241,7 @@
       </ns2:Operation>
       <ns2:Operation description="" name="createSafetyReportDefinition">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns41:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns41="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns46:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns46="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -214,7 +249,7 @@
       </ns2:Operation>
       <ns2:Operation description="" name="updateSafetyReportDefinitionDetails">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns42:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns42="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns47:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns47="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -222,7 +257,7 @@
       </ns2:Operation>
       <ns2:Operation description="" name="updateSafetyReportDefinitionDeliveryDetails">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns43:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns43="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns48:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns48="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -230,7 +265,7 @@
       </ns2:Operation>
       <ns2:Operation description="" name="updateSafetyReportDefinitionMandatoryFields">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns44:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns44="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns49:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns49="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -238,8 +273,8 @@
       </ns2:Operation>
       <ns2:Operation description="" name="deactivateSafetyReportDefinition">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns45:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns45="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns46:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns46="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns50:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns50="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns51:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns51="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -247,9 +282,9 @@
       </ns2:Operation>
       <ns2:Operation description="" name="updateSafetyReportTerminologyForStudy">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns47:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns47="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns48:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns48="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns49:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="reportTerminologyId" xmlns:ns49="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns52:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns52="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns53:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns53="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns54:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="reportTerminologyId" xmlns:ns54="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
@@ -265,7 +300,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns50:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns50="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns55:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns55="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns56:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns56="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns56:umlAttributeCollection/>
+         <ns56:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns56:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns56:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns56:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -278,81 +320,81 @@
       </ns2:Operation>
       <ns2:Operation description="" name="createOrganizationSafetyReportingRules">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns51:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns51="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns52:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="organizationId" xmlns:ns52="http://ess.caaers.nci.nih.gov"/>
-       </ns2:inputParameterCollection>
-       <ns2:Output qName="ns53:ReportingRule" dimensionality="1" isArray="false" xmlns:ns53="http://gov.nih.nci.ess.safetyreporting.types"/>
-       <ns2:faultCollection>
-        <ns2:Fault description="" name="SafetyReportingServiceException"/>
-       </ns2:faultCollection>
-      </ns2:Operation>
-      <ns2:Operation description="" name="updateOrganizationSafetyReportingRules">
-       <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns54:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns54="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns55:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="organizationId" xmlns:ns55="http://ess.caaers.nci.nih.gov"/>
-       </ns2:inputParameterCollection>
-       <ns2:Output qName="ns56:ReportingRule" dimensionality="1" isArray="false" xmlns:ns56="http://gov.nih.nci.ess.safetyreporting.types"/>
-       <ns2:faultCollection>
-        <ns2:Fault description="" name="SafetyReportingServiceException"/>
-       </ns2:faultCollection>
-      </ns2:Operation>
-      <ns2:Operation description="" name="deactivateOrganizationSafetyReportingRules">
-       <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns57:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="organizationId" xmlns:ns57="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns58:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns58="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns57:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns57="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns58:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="organizationId" xmlns:ns58="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns59:ReportingRule" dimensionality="1" isArray="false" xmlns:ns59="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="" name="createStudySafetyReportingRules">
+      <ns2:Operation description="" name="updateOrganizationSafetyReportingRules">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns60:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns60="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns61:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns61="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns62:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="organizationId" xmlns:ns62="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns61:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="organizationId" xmlns:ns61="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns63:ReportingRule" dimensionality="1" isArray="false" xmlns:ns63="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns62:ReportingRule" dimensionality="1" isArray="false" xmlns:ns62="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="SafetyReportingServiceException"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="" name="deactivateOrganizationSafetyReportingRules">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns63:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="organizationId" xmlns:ns63="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns64:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns64="http://ess.caaers.nci.nih.gov"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns65:ReportingRule" dimensionality="1" isArray="false" xmlns:ns65="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="SafetyReportingServiceException"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="" name="createStudySafetyReportingRules">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns66:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns66="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns67:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns67="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns68:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="organizationId" xmlns:ns68="http://ess.caaers.nci.nih.gov"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns69:ReportingRule" dimensionality="1" isArray="false" xmlns:ns69="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="updateStudySafetyReportingRules">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns64:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns64="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns65:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns65="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns66:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="organizationId" xmlns:ns66="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns70:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns70="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns71:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns71="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns72:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="organizationId" xmlns:ns72="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns67:ReportingRule" dimensionality="1" isArray="false" xmlns:ns67="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns73:ReportingRule" dimensionality="1" isArray="false" xmlns:ns73="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="deactivateStudySafetyReportingRules">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns68:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns68="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns69:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="organizationId" xmlns:ns69="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns70:ST" dimensionality="1" index="2" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns70="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns74:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="studyId" xmlns:ns74="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns75:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="organizationId" xmlns:ns75="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns76:ST" dimensionality="1" index="2" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns76="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns71:ReportingRule" dimensionality="1" isArray="false" xmlns:ns71="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns77:ReportingRule" dimensionality="1" isArray="false" xmlns:ns77="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="querySafetyReportingRules">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns72:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns72="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns78:ReportingRule" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportingRule" xmlns:ns78="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns73:DSET_ReportingRule" dimensionality="1" isArray="false" xmlns:ns73="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns79:DSET_ReportingRule" dimensionality="1" isArray="false" xmlns:ns79="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="getSafetyReportingRules">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns74:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="ruleId" xmlns:ns74="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns80:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="ruleId" xmlns:ns80="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns75:ReportingRule" dimensionality="1" isArray="false" xmlns:ns75="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns81:ReportingRule" dimensionality="1" isArray="false" xmlns:ns81="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -367,7 +409,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns76:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns76="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns82:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns82="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns83:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns83="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns83:umlAttributeCollection/>
+         <ns83:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns83:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns83:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns83:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -380,29 +429,26 @@
       </ns2:Operation>
       <ns2:Operation description="" name="createSafetyReportDefinitionNotification">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns77:SafetyReportDefinitionNotification" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportDefinitionNotification" xmlns:ns77="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns78:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns78="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns84:SafetyReportDefinitionNotification" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportDefinitionNotification" xmlns:ns84="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns85:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns85="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns79:SafetyReportDefinitionNotification" dimensionality="1" isArray="false" xmlns:ns79="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="updateSafetyReportDefinitionNotification">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns80:SafetyReportDefinitionNotification" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportDefinitionNotification" xmlns:ns80="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns86:SafetyReportDefinitionNotification" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportDefinitionNotification" xmlns:ns86="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns81:SafetyReportDefinitionNotification" dimensionality="1" isArray="false" xmlns:ns81="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="deactivateSafetyReportDefinitionNotification">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns82:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="notificationId" xmlns:ns82="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns83:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns83="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns87:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="notificationId" xmlns:ns87="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns88:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns88="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns84:SafetyReportDefinitionNotification" dimensionality="1" isArray="false" xmlns:ns84="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -417,7 +463,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns85:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns85="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns89:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns89="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns90:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns90="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns90:umlAttributeCollection/>
+         <ns90:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns90:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns90:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns90:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -430,55 +483,55 @@
       </ns2:Operation>
       <ns2:Operation description="" name="createSafetyReportReviewProcess">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns86:SafetyReportReview" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportReview" xmlns:ns86="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns87:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns87="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns88:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="studyId" xmlns:ns88="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns89:Id" dimensionality="1" index="3" isArray="false" isRequired="false" name="organizationId" xmlns:ns89="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns91:SafetyReportReview" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportReview" xmlns:ns91="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns92:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns92="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns93:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="studyId" xmlns:ns93="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns94:Id" dimensionality="1" index="3" isArray="false" isRequired="false" name="organizationId" xmlns:ns94="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns90:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns90="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns95:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns95="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="updateSafetyReportReviewProcess">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns91:SafetyReportReview" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportReview" xmlns:ns91="http://gov.nih.nci.ess.safetyreporting.types"/>
-        <ns2:InputParameter qName="ns92:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns92="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns93:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="organizationId" xmlns:ns93="http://ess.caaers.nci.nih.gov"/>
-       </ns2:inputParameterCollection>
-       <ns2:Output qName="ns94:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns94="http://gov.nih.nci.ess.safetyreporting.types"/>
-       <ns2:faultCollection>
-        <ns2:Fault description="" name="SafetyReportingServiceException"/>
-       </ns2:faultCollection>
-      </ns2:Operation>
-      <ns2:Operation description="" name="deactivateSafetyReportReviewProcess">
-       <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns95:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reviewProcessId" xmlns:ns95="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns96:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns96="http://ess.caaers.nci.nih.gov"/>
-       </ns2:inputParameterCollection>
-       <ns2:Output qName="ns97:Bl" dimensionality="1" isArray="false" xmlns:ns97="http://ess.caaers.nci.nih.gov"/>
-       <ns2:faultCollection>
-        <ns2:Fault description="" name="SafetyReportingServiceException"/>
-       </ns2:faultCollection>
-      </ns2:Operation>
-      <ns2:Operation description="" name="getSafetyReportReviewProcess">
-       <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns98:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reviewProcessId" xmlns:ns98="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns96:SafetyReportReview" dimensionality="1" index="0" isArray="false" isRequired="false" name="safetyReportReview" xmlns:ns96="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns97:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="studyId" xmlns:ns97="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns98:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="organizationId" xmlns:ns98="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns99:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns99="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="" name="reviewSafetyReport">
+      <ns2:Operation description="" name="deactivateSafetyReportReviewProcess">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns100:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reviewProcessId" xmlns:ns100="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns101:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reviewDispostion" xmlns:ns101="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns102:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="reviewerid" xmlns:ns102="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns103:TsDateTime" dimensionality="1" index="3" isArray="false" isRequired="false" name="timeOdReview" xmlns:ns103="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns104:ST" dimensionality="1" index="4" isArray="false" isRequired="false" name="comments" xmlns:ns104="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns101:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reasonForDeactivation" xmlns:ns101="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns105:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns105="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns102:Bl" dimensionality="1" isArray="false" xmlns:ns102="http://ess.caaers.nci.nih.gov"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="SafetyReportingServiceException"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="" name="getSafetyReportReviewProcess">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns103:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reviewProcessId" xmlns:ns103="http://ess.caaers.nci.nih.gov"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns104:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns104="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="SafetyReportingServiceException"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="" name="reviewSafetyReport">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns105:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reviewProcessId" xmlns:ns105="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns106:ST" dimensionality="1" index="1" isArray="false" isRequired="false" name="reviewDispostion" xmlns:ns106="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns107:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="reviewerid" xmlns:ns107="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns108:TsDateTime" dimensionality="1" index="3" isArray="false" isRequired="false" name="timeOdReview" xmlns:ns108="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns109:ST" dimensionality="1" index="4" isArray="false" isRequired="false" name="comments" xmlns:ns109="http://ess.caaers.nci.nih.gov"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns110:SafetyReportReview" dimensionality="1" isArray="false" xmlns:ns110="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -493,7 +546,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns106:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns106="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns111:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns111="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns112:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns112="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns112:umlAttributeCollection/>
+         <ns112:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns112:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns112:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns112:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -518,7 +578,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns107:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns107="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns113:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns113="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns114:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns114="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns114:umlAttributeCollection/>
+         <ns114:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns114:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns114:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns114:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -531,12 +598,12 @@
       </ns2:Operation>
       <ns2:Operation description="" name="evaluateAgainstSafetyReportingRules">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns108:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="adverseEventId" xmlns:ns108="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns109:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="problemId" xmlns:ns109="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns110:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="studyId" xmlns:ns110="http://ess.caaers.nci.nih.gov"/>
-        <ns2:InputParameter qName="ns111:Id" dimensionality="1" index="3" isArray="false" isRequired="false" name="organizationId" xmlns:ns111="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns115:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="adverseEventId" xmlns:ns115="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns116:Id" dimensionality="1" index="1" isArray="false" isRequired="false" name="problemId" xmlns:ns116="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns117:Id" dimensionality="1" index="2" isArray="false" isRequired="false" name="studyId" xmlns:ns117="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns118:Id" dimensionality="1" index="3" isArray="false" isRequired="false" name="organizationId" xmlns:ns118="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns112:DSET_ReportDefinition" dimensionality="1" isArray="false" xmlns:ns112="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns119:DSET_ReportDefinition" dimensionality="1" isArray="false" xmlns:ns119="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -551,7 +618,14 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns113:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns113="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns120:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns120="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns121:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="9D04DC00-18A3-3317-E040-BB89AD4333FA" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns121="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns121:umlAttributeCollection/>
+         <ns121:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns121:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns121:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns121:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="Destroy">
@@ -564,18 +638,18 @@
       </ns2:Operation>
       <ns2:Operation description="" name="querySafetyReportDefinition">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns114:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns114="http://gov.nih.nci.ess.safetyreporting.types"/>
+        <ns2:InputParameter qName="ns122:ReportDefinition" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinition" xmlns:ns122="http://gov.nih.nci.ess.safetyreporting.types"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns115:DSET_ReportDefinition" dimensionality="1" isArray="false" xmlns:ns115="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns123:DSET_ReportDefinition" dimensionality="1" isArray="false" xmlns:ns123="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="" name="getSafetyReportDefinition">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns116:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns116="http://ess.caaers.nci.nih.gov"/>
+        <ns2:InputParameter qName="ns124:Id" dimensionality="1" index="0" isArray="false" isRequired="false" name="reportDefinitionId" xmlns:ns124="http://ess.caaers.nci.nih.gov"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns117:ReportDefinition" dimensionality="1" isArray="false" xmlns:ns117="http://gov.nih.nci.ess.safetyreporting.types"/>
+       <ns2:Output qName="ns125:ReportDefinition" dimensionality="1" isArray="false" xmlns:ns125="http://gov.nih.nci.ess.safetyreporting.types"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="SafetyReportingServiceException"/>
        </ns2:faultCollection>
@@ -587,16 +661,16 @@
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns118:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns118="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns119:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns119="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns126:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns126="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns127:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns127="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns120:ResearchCenter displayName="NCI" shortName="NCI" xmlns:ns120="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns120:Address country="US" locality="US" postalCode="20889" stateProvince="MD" street1="8901 Rockville Pike" street2="N/A"/>
-   <ns120:pointOfContactCollection>
-    <ns120:PointOfContact affiliation="N/A" email="denis.krylov@semanticbits.com" firstName="Denis" lastName="Krylov" phoneNumber="703.787.9656 x230" role="Developer"/>
-   </ns120:pointOfContactCollection>
-  </ns120:ResearchCenter>
+  <ns128:ResearchCenter displayName="NCI" shortName="NCI" xmlns:ns128="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns128:Address country="US" locality="US" postalCode="20889" stateProvince="MD" street1="8901 Rockville Pike" street2="N/A"/>
+   <ns128:pointOfContactCollection>
+    <ns128:PointOfContact affiliation="N/A" email="denis.krylov@semanticbits.com" firstName="Denis" lastName="Krylov" phoneNumber="703.787.9656 x230" role="Developer"/>
+   </ns128:pointOfContactCollection>
+  </ns128:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>
