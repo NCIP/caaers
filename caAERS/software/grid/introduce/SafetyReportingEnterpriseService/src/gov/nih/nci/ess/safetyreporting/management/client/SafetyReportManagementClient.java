@@ -76,6 +76,21 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
 		}
 	}
 
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"associateStudyToSafetyReport");
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestSafetyReportId();
+    safetyReportIdContainer.setId(safetyReportId);
+    params.setSafetyReportId(safetyReportIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse boxedResult = portType.associateStudyToSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion initiateSafetyReport(ess.caaers.nci.nih.gov.Id studyId,ess.caaers.nci.nih.gov.Id subjectId,ess.caaers.nci.nih.gov.Id patientId,_21090.org.iso.DSET_II adverseEventIds,_21090.org.iso.DSET_II problemIds,gov.nih.nci.ess.safetyreporting.types.AdverseEventReportingPeriod adverseEventReportingPeriod) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"initiateSafetyReport");

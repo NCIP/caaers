@@ -26,6 +26,12 @@ public class SafetyReportManagementProviderImpl{
 	}
 	
 
+    public gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse associateStudyToSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.associateStudyToSafetyReport(params.getSafetyReportId().getId(),params.getStudyId().getId()));
+    return boxedResult;
+  }
+
     public gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse initiateSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.InitiateSafetyReportResponse();
     boxedResult.setSafetyReportVersion(impl.initiateSafetyReport(params.getStudyId().getId(),params.getSubjectId().getId(),params.getPatientId().getId(),params.getAdverseEventIds().getDSET_II(),params.getProblemIds().getDSET_II(),params.getAdverseEventReportingPeriod().getAdverseEventReportingPeriod()));

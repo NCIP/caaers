@@ -515,4 +515,10 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 		this.gridToDomainObjectConverter = gridToDomainObjectConverter;
 	}
 
+	public SafetyReportVersion associateStudyToSafetyReport(Id safetyReportId,
+			Id studyId) throws RemoteException, SafetyReportingServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

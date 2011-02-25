@@ -13,6 +13,16 @@ import java.rmi.RemoteException;
 public interface SafetyReportManagementI {
 
   /**
+   * Provides the capability to associate a study to a safety report.
+   *
+   * @param safetyReportId
+   * @param studyId
+   * @throws SafetyReportingServiceException
+   *	
+   */
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  /**
    * Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation.
    *
    * @param studyId

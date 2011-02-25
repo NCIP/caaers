@@ -60,5 +60,10 @@ public class SafetyReportManagementImpl extends SafetyReportManagementImplBase {
     throw new RemoteException("Not yet implemented");
   }
 
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+	initialize();
+	return safetyReportManagementI.associateStudyToSafetyReport(safetyReportId, studyId);
+  }
+
 }
 
