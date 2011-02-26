@@ -40,6 +40,9 @@
  </style>
  
  <script type="text/javascript"><!--
+
+ var continueReportingMsg = "To continue reporting at least one of the following must be selected:";
+
  AE.checkForModification = false; 
  //to store the recommended options (aeReportId - {reportDefinitionId} 
  AE.recommendedOptions = new Hash();
@@ -80,7 +83,7 @@
  //create an object to hold report definition details.
  var jsReportDefinition = Class.create();
  Object.extend(jsReportDefinition.prototype, {
-   initialize: function(id, aeReportId, name, group , typeCode, status, grpStatus, otherStatus, due, grpDue, otherDue, action, grpAction, otherAction) {
+   initialize: function(id, aeReportId, name, group , typeCode, status, grpStatus, otherStatus, due, grpDue, otherDue, action, grpAction, otherAction, childReport, inActive, notStringent) {
 	   this.id = id;
 	   this.aeReportId = aeReportId;
 	   this.name = name;
@@ -98,6 +101,9 @@
 	   this.action = action;
 	   this.grpAction = grpAction;
 	   this.otherAction = otherAction;
+       this.childReport = childReport;
+       this.inActive = inActive;
+       this.notStringent = notStringent;
 
 	   this.trTemplate = '<tr class="#{cssClass}">' + 
 	   '<td style="text-align:center;"><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
@@ -134,6 +140,9 @@
 	   });
 	   
 	   return retVal;
+   },
+   isInvisible : function(){
+       return this.childReport || this.inActive || this.notStringent;
    },
    /* function will create and insert a recomended row, for this report definition.*/
    insertRecommendedRow : function(){
@@ -268,7 +277,7 @@
 	   return new jsReportDefinition(this.id, this.aeReportId,  this.name, this.group, this.typeCode, 
 			   this.status, this.grpStatus, this.otherStatus, 
 			   this.due, this.grpDue, this.otherDue, 
-			   this.action, this.grpAction, this.otherAction);
+			   this.action, this.grpAction, this.otherAction, this.isChecked, this.inActive, this.notStringent);
    }
  });
 
@@ -362,7 +371,57 @@
 	deselectOtherReportsOfSameGroup(aeReportId,rdId, curRdObject.group);
 	//update the display text.
 	updateDisplayTexts(aeReportId);
+
+     warnUserAboutRulesRecomendation(aeReportId);
+
  }
+
+ //=================================================================================
+ /* Will warn the user that at least one report must be selected */
+function warnUserAboutRulesRecomendation(aeReportId){
+    var recommendedRdIds = AE.referenceRecomendedOptions.get(aeReportId);
+    if(recommendedRdIds.length == 0) return false;
+
+    var rdNames = "";
+    var groupList = findOptedOutRecommendedGroups(aeReportId);
+    groupList.each(function(grpName){
+        var rdIds = AE.groupDefinitions.get(aeReportId).get(grpName);
+        if(rdIds){
+            for(var i = 0; i <rdIds.length ; i++){
+                var _rdObj =  AE.referenceReportDefinitionHash.get(aeReportId).get(rdIds[i]);
+                if(_rdObj.isInvisible()) continue;
+                rdNames = rdNames + "\r\n ";
+                rdNames = rdNames + _rdObj.name;
+            }
+        }
+    });
+
+    if(rdNames.length > 0){
+        alert(continueReportingMsg + rdNames);
+        return true;
+    }
+    return false;
+
+}
+
+
+//=================================================================================
+/*This function return an array group names that are recommended by rules but has not selected*/
+function findOptedOutRecommendedGroups(aeReportId){
+    var rdObjects =   new Array();
+    var rdIds = AE.referenceRecomendedOptions.get(aeReportId);
+    rdIds.each(function(rdId){
+        rdObjects.push(AE.referenceReportDefinitionHash.get(aeReportId).get(rdId));
+    });
+    var groupList = new Array();
+    for(var i = 0; i< rdObjects.length ;i++){
+        if(rdObjects[i].isChecked() || rdObjects[i].isAnyInGroupChecked()) continue;
+        if(groupList.indexOf(rdObjects[i].group) > -1) continue;
+        groupList.push(rdObjects[i].group)
+    }
+    return groupList;
+}
+
 
 //=================================================================================
 /*This function return an array of all the aes that unselected currently , under a datacollection*/
@@ -736,10 +795,14 @@ function hasActualActionOnReports(aeReportId){
 // will check if the report is selected or not, then will enable disable the report.
  
  function toggleReportingButton(aeReportId) {
+     var hasOptedOutGroups = findOptedOutRecommendedGroups(aeReportId).length > 0;
+
      var hasActualAction = hasActualActionOnReports(aeReportId);
+     var enableReporting = hasActualAction && (!hasOptedOutGroups);
+
 
      // change the SUBMIT button and the message
-     if (hasActualAction) {
+     if (enableReporting) {
          jQuery('#report-btn-' + aeReportId).removeAttr('disabled');
          if (jQuery('#rulesMessage-' + aeReportId)) jQuery('#rulesMessage-' + aeReportId).show();
          if (jQuery('#rulesMessageNone-' + aeReportId)) jQuery('#rulesMessageNone-' + aeReportId).hide();
@@ -809,10 +872,13 @@ function validate(aeReportId){
  <body>
   <tags:tabForm tab="${tab}" flow="${flow}" formName="review" hideBox="true">
    <jsp:attribute name="singleFields">
-   
+   <caaers:message code="continueReportingMsg" text="In order to continue reporting, select one of the below mentioned reports :" var="_continueReportingMsg"/>
    <script type="text/javascript">
-   
+   continueReportingMsg = '${_continueReportingMsg}';
+
    Event.observe(window, "load", function() {
+        var rdObject = null;
+        var rdObjectCopy = null;
 
 		//remove the query string from form url
 		removeQueryStringFromForm('command');
@@ -858,15 +924,27 @@ function validate(aeReportId){
 	     AE.reportDefinitionGroupHash.set(${row.reportDefinition.id}, '${row.group}');
 
 	     //create and store applicableReportDefinitions.
-		 var rdObject =  new jsReportDefinition(${row.reportDefinition.id}, ${entry.key},
+		 rdObject =  new jsReportDefinition(${row.reportDefinition.id}, ${entry.key},
 			     "${row.reportDefinition.label}" , "${row.group}" , "${row.reportDefinition.reportType.code}",
 			     "${row.status}", "${row.grpStatus}", "${row.otherStatus}",
 			     "${row.due}", "${row.grpDue}", "${row.otherDue}",
-			     "${row.action}", "${row.grpAction}", "${row.otherAction}" );
+			     "${row.action}", "${row.grpAction}", "${row.otherAction}",
+			      ${not empty row.reportDefinition.parent},
+			      ${not row.reportDefinition.enabled},
+			      ${not row.stringent});
+         rdObjectCopy =  new jsReportDefinition(${row.reportDefinition.id}, ${entry.key},
+                        "${row.reportDefinition.label}" , "${row.group}" , "${row.reportDefinition.reportType.code}",
+                        "${row.status}", "${row.grpStatus}", "${row.otherStatus}",
+                        "${row.due}", "${row.grpDue}", "${row.otherDue}",
+                        "${row.action}", "${row.grpAction}", "${row.otherAction}",
+                         ${not empty row.reportDefinition.parent},
+                         ${not row.reportDefinition.enabled},
+                         ${not row.stringent});
+
 
 		 AE.applicableReportDefinitionHash.get(${entry.key}).set(rdObject.id, rdObject);
 
-		 AE.referenceReportDefinitionHash.get(${entry.key}).set(rdObject.id, rdObject.deepCopy());
+		 AE.referenceReportDefinitionHash.get(${entry.key}).set(rdObject.id, rdObjectCopy);
 		 
 	    </c:forEach>
 
