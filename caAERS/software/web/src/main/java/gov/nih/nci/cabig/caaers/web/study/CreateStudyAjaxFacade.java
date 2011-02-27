@@ -76,10 +76,10 @@ public class CreateStudyAjaxFacade {
      * Retrieves StudySite's Investigators for the autocompleter through AJAX
      * */
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
-        String[] arr = new String[] { text };
+        String[] subtexts = text.split("[\\s]+");
         StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
         int siteId = studyCommand.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
-        List<SiteInvestigator> siteInvestigators = investigatorRepository.getBySubnames(arr, siteId);
+        List<SiteInvestigator> siteInvestigators = investigatorRepository.getBySubnames(subtexts, siteId);
         siteInvestigators = RankBasedSorterUtils.sort(siteInvestigators, text, new Serializer<SiteInvestigator>(){
             public String serialize(SiteInvestigator object) {
                 return object.getInvestigator().getFullName();  
@@ -112,9 +112,10 @@ public class CreateStudyAjaxFacade {
      * Retrieves Site's ResearchStaffs for the autocompleter through AJAX
      * */
     public List<SiteResearchStaff> matchSiteResearchStaff(final String text, final int indexId) {
+        String[] subtexts = text.split("[\\s]+");
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getActiveStudyOrganizations().get(indexId).getOrganization().getId();
-        List<SiteResearchStaff> siteResearchStaffs =  researchStaffRepository.getSiteResearchStaffBySubnames(new String[] { text }, siteId);
+        List<SiteResearchStaff> siteResearchStaffs =  researchStaffRepository.getSiteResearchStaffBySubnames(subtexts, siteId);
         siteResearchStaffs = RankBasedSorterUtils.sort(siteResearchStaffs , text, new Serializer<SiteResearchStaff>(){
             public String serialize(SiteResearchStaff object) {
                 return object.getResearchStaff().getFullName();
