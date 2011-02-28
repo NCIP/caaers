@@ -62,6 +62,20 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         assertEquals("wrong parameter value", query.getParameterMap().get("firstName"),"%a%");
     }
 
+    public void testParticipantsWithMatchingTextTwoTexts() throws Exception {
+        ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
+        query.filterParticipantsWithMatchingText("John Doe");
+        String qry = baseQuery + "WHERE ((lower(participant.firstName) LIKE :firstName AND lower(participant.lastName) LIKE :lastName) OR (lower(participant.lastName) LIKE :firstName AND lower(participant.firstName) LIKE :lastName))  order by participant.firstName";
+
+        assertEquals(qry.trim(), query.getQueryString());
+        assertEquals("wrong number of parameters", 2, query.getParameterMap().size());
+
+        assertTrue("missing paramenter name", query.getParameterMap().containsKey("lastName"));
+        assertEquals("wrong parameter value", query.getParameterMap().get("lastName"),"%doe%");
+        assertTrue("missing paramenter name", query.getParameterMap().containsKey("firstName"));
+        assertEquals("wrong parameter value", query.getParameterMap().get("firstName"),"%john%");
+    }
+
     public void testFilterByBothParticipantAndText() throws Exception {
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText("a");

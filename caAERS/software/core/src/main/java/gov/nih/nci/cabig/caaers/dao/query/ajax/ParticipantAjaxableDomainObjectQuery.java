@@ -35,22 +35,31 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     
 
     public void filterParticipantsWithMatchingText(String text) {
+        String[] subtexts = text.split("[\\s]+");
 
-        String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-
-        andWhere(String.format("(lower(participant.firstName) LIKE :%s " +
-                                "or lower(participant.lastName) LIKE :%s " +
-                                "or lower(identifier.value) LIKE :%s " +
-                                "or lower(spa.studySubjectIdentifier) LIKE :%s)",
-                                FIRST_NAME, LAST_NAME, IDENTIFIER_VALUE, STUDY_SUBJECT_IDENTIFIER));
-        setParameter(IDENTIFIER_VALUE, searchString);
-        setParameter(FIRST_NAME, searchString);
-        setParameter(LAST_NAME, searchString);
-        setParameter(STUDY_SUBJECT_IDENTIFIER, searchString);
+        if (subtexts.length < 2) {
+            String searchString = subtexts[0] != null ? "%" + subtexts[0].toLowerCase() + "%" : null;
+            andWhere(String.format("(lower(participant.firstName) LIKE :%s " +
+                                    "or lower(participant.lastName) LIKE :%s " +
+                                    "or lower(identifier.value) LIKE :%s " +
+                                    "or lower(spa.studySubjectIdentifier) LIKE :%s)",
+                                    FIRST_NAME, LAST_NAME, IDENTIFIER_VALUE, STUDY_SUBJECT_IDENTIFIER));
+            setParameter(IDENTIFIER_VALUE, searchString);
+            setParameter(FIRST_NAME, searchString);
+            setParameter(LAST_NAME, searchString);
+            setParameter(STUDY_SUBJECT_IDENTIFIER, searchString);
+        } else {
+            String s1 = subtexts[0] != null ? "%" + subtexts[0].toLowerCase() + "%" : null;
+            String s2 = subtexts[1] != null ? "%" + subtexts[1].toLowerCase() + "%" : null;
+            andWhere(String.format("((lower(participant.firstName) LIKE :%s AND lower(participant.lastName) LIKE :%s) " +
+                                    "OR (lower(participant.lastName) LIKE :%s AND lower(participant.firstName) LIKE :%s))",
+                                    FIRST_NAME, LAST_NAME, FIRST_NAME, LAST_NAME));
+            setParameter(FIRST_NAME, s1);
+            setParameter(LAST_NAME, s2);
+        }
 
     }
-   
-    
+
     public void filterParticipants(final Map props) throws ParseException {
 		
 

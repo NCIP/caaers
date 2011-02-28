@@ -310,7 +310,6 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public List<ParticipantAjaxableDomainObject> matchParticipants(String text, Integer studyId) {
-
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText(text);
         query.filterByStudy(studyId);
