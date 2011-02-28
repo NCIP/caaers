@@ -515,10 +515,22 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 		this.gridToDomainObjectConverter = gridToDomainObjectConverter;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nih.nci.ess.safetyreporting.management.common.SafetyReportManagementI
+	 * #associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id,
+	 * ess.caaers.nci.nih.gov.Id)
+	 */
 	public SafetyReportVersion associateStudyToSafetyReport(Id safetyReportId,
 			Id studyId) throws RemoteException, SafetyReportingServiceException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ExpeditedAdverseEventReport report = findSafetyReport(safetyReportId);
+		Study study = getStudyByPrimaryId(studyId);
+		
+		adverseEventReportDao.save(report);
+		return safetyReportConverter.convertExpeditedAdverseEventReport(report);
 	}
 
 }
