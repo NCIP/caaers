@@ -25,7 +25,7 @@ public class AdverseEventReportingPeriodForReviewQuery extends AbstractQuery {
 		 join("ss.organization as org ");
 		 join("ss.study as s ");
 		 join("spa.participant as p");
-		 orderBy("rp.id");
+		 orderBy("rp.startDate");
 		 andWhere("rp.retiredIndicator = false");
 		 //super(queryString);
 	 }
