@@ -13,14 +13,14 @@ import java.rmi.RemoteException;
 public interface SafetyReportManagementI {
 
   /**
-   * Provides the capability to associate a study to a safety report.
+   * Provides the capability to associate additional information to a safety report.
    *
    * @param safetyReportId
-   * @param studyId
+   * @param additionalInformation
    * @throws SafetyReportingServiceException
    *	
    */
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateAdditionalInformationToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.AdditionalInformation additionalInformation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
   /**
    * Enables a client system to create a safety report record in the Safety Reporting System with all fields required for safety report creation.
@@ -67,6 +67,16 @@ public interface SafetyReportManagementI {
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion updateAdverseEventInformationInSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.AdverseEvent adverseEvent) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
   public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateProblemToSafetyReport() throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
+
+  /**
+   * Provides the capability to associate a study to a safety report.
+   *
+   * @param safetyReportId
+   * @param studyId
+   * @throws SafetyReportingServiceException
+   *	
+   */
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException ;
 
 }
 

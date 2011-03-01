@@ -206,6 +206,33 @@
           </sequence>
         </complexType>
       </element>
+      <element name="AssociateAdditionalInformationToSafetyReportRequest">
+        <complexType>
+          <sequence>
+            <element name="safetyReportId">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:Id" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="additionalInformation">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:AdditionalInformation" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AssociateAdditionalInformationToSafetyReportResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SafetyReportVersion" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="SafetyReportManagementResourceProperties">
         <complexType>
           <sequence />
@@ -250,6 +277,12 @@
   <message name="AssociateStudyToSafetyReportResponse">
     <part name="parameters" element="tns:AssociateStudyToSafetyReportResponse" />
   </message>
+  <message name="AssociateAdditionalInformationToSafetyReportRequest">
+    <part name="parameters" element="tns:AssociateAdditionalInformationToSafetyReportRequest" />
+  </message>
+  <message name="AssociateAdditionalInformationToSafetyReportResponse">
+    <part name="parameters" element="tns:AssociateAdditionalInformationToSafetyReportResponse" />
+  </message>
   <message name="SafetyReportingServiceExceptionFaultMessage">
     <part name="fault" element="ns8:SafetyReportingServiceException" />
   </message>
@@ -287,6 +320,11 @@
     <operation name="associateStudyToSafetyReport">
       <input message="tns:AssociateStudyToSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/AssociateStudyToSafetyReportRequest" />
       <output message="tns:AssociateStudyToSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/AssociateStudyToSafetyReportResponse" />
+      <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/SafetyReportingServiceExceptionFaultMessage" />
+    </operation>
+    <operation name="associateAdditionalInformationToSafetyReport">
+      <input message="tns:AssociateAdditionalInformationToSafetyReportRequest" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/AssociateAdditionalInformationToSafetyReportRequest" />
+      <output message="tns:AssociateAdditionalInformationToSafetyReportResponse" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/AssociateAdditionalInformationToSafetyReportResponse" />
       <fault name="SafetyReportingServiceException" message="tns:SafetyReportingServiceExceptionFaultMessage" wsa:Action="http://safetyreporting.ess.nci.nih.gov/SafetyReportingEnterpriseService/SafetyReportManagement/SafetyReportingServiceExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">

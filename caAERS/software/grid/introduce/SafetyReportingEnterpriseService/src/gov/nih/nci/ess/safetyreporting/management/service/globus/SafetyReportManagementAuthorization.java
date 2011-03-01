@@ -82,6 +82,10 @@ public class SafetyReportManagementAuthorization implements PDP {
 	public void authorizeAssociateStudyToSafetyReport(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeAssociateAdditionalInformationToSafetyReport(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -110,6 +114,9 @@ public class SafetyReportManagementAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("associateStudyToSafetyReport")){
 			authorizeAssociateStudyToSafetyReport(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("associateAdditionalInformationToSafetyReport")){
+			authorizeAssociateAdditionalInformationToSafetyReport(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

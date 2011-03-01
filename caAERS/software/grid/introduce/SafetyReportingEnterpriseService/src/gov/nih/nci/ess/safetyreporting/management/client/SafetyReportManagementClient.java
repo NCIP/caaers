@@ -76,17 +76,17 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
 		}
 	}
 
-  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateAdditionalInformationToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.AdditionalInformation additionalInformation) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"associateStudyToSafetyReport");
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest();
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestSafetyReportId();
+      configureStubSecurity((Stub)portType,"associateAdditionalInformationToSafetyReport");
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequestSafetyReportId();
     safetyReportIdContainer.setId(safetyReportId);
     params.setSafetyReportId(safetyReportIdContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestStudyId();
-    studyIdContainer.setId(studyId);
-    params.setStudyId(studyIdContainer);
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse boxedResult = portType.associateStudyToSafetyReport(params);
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequestAdditionalInformation additionalInformationContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequestAdditionalInformation();
+    additionalInformationContainer.setAdditionalInformation(additionalInformation);
+    params.setAdditionalInformation(additionalInformationContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportResponse boxedResult = portType.associateAdditionalInformationToSafetyReport(params);
     return boxedResult.getSafetyReportVersion();
     }
   }
@@ -168,6 +168,21 @@ public class SafetyReportManagementClient extends SafetyReportManagementClientBa
       configureStubSecurity((Stub)portType,"associateProblemToSafetyReport");
     gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest();
     gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportResponse boxedResult = portType.associateProblemToSafetyReport(params);
+    return boxedResult.getSafetyReportVersion();
+    }
+  }
+
+  public gov.nih.nci.ess.safetyreporting.types.SafetyReportVersion associateStudyToSafetyReport(ess.caaers.nci.nih.gov.Id safetyReportId,ess.caaers.nci.nih.gov.Id studyId) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"associateStudyToSafetyReport");
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest params = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest();
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestSafetyReportId safetyReportIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestSafetyReportId();
+    safetyReportIdContainer.setId(safetyReportId);
+    params.setSafetyReportId(safetyReportIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestStudyId studyIdContainer = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequestStudyId();
+    studyIdContainer.setId(studyId);
+    params.setStudyId(studyIdContainer);
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse boxedResult = portType.associateStudyToSafetyReport(params);
     return boxedResult.getSafetyReportVersion();
     }
   }

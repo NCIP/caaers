@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.ess.sr;
 
+import ess.caaers.nci.nih.gov.AdditionalInformation;
 import ess.caaers.nci.nih.gov.AdverseEvent;
 import ess.caaers.nci.nih.gov.Id;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
@@ -528,9 +529,16 @@ public class SafetyReportManagementImpl implements SafetyReportManagementI,
 
 		ExpeditedAdverseEventReport report = findSafetyReport(safetyReportId);
 		Study study = getStudyByPrimaryId(studyId);
-		
+		// TODO: Not yet supported. 
 		adverseEventReportDao.save(report);
 		return safetyReportConverter.convertExpeditedAdverseEventReport(report);
+	}
+
+	public SafetyReportVersion associateAdditionalInformationToSafetyReport(
+			Id safetyReportId, AdditionalInformation additionalInformation)
+			throws RemoteException, SafetyReportingServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

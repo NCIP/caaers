@@ -26,9 +26,9 @@ public class SafetyReportManagementProviderImpl{
 	}
 	
 
-    public gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse associateStudyToSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
-    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse();
-    boxedResult.setSafetyReportVersion(impl.associateStudyToSafetyReport(params.getSafetyReportId().getId(),params.getStudyId().getId()));
+    public gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportResponse associateAdditionalInformationToSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateAdditionalInformationToSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.associateAdditionalInformationToSafetyReport(params.getSafetyReportId().getId(),params.getAdditionalInformation().getAdditionalInformation()));
     return boxedResult;
   }
 
@@ -59,6 +59,12 @@ public class SafetyReportManagementProviderImpl{
     public gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportResponse associateProblemToSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
     gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateProblemToSafetyReportResponse();
     boxedResult.setSafetyReportVersion(impl.associateProblemToSafetyReport());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse associateStudyToSafetyReport(gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportRequest params) throws RemoteException, gov.nih.nci.ess.safetyreporting.management.stubs.types.SafetyReportingServiceException {
+    gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse boxedResult = new gov.nih.nci.ess.safetyreporting.management.stubs.AssociateStudyToSafetyReportResponse();
+    boxedResult.setSafetyReportVersion(impl.associateStudyToSafetyReport(params.getSafetyReportId().getId(),params.getStudyId().getId()));
     return boxedResult;
   }
 
