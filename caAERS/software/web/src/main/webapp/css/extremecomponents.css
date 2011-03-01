@@ -6,9 +6,8 @@
 
 
 .eXtremeTable .tableRegion {
-	border: 1px solid silver;
-	padding: 2px;
-	font-family: arial, verdana, helvetica, sans-serif;
+	border: 1px solid #6cafe9;
+	font-family: lucida grande, sans-serif;
 	font-size: 12px;
 	margin-top: 7px;
 }
@@ -24,7 +23,7 @@
 .eXtremeTable .title {
 	color: #444444;
 	font-weight: bold;
-	font-family: arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 	font-size: 15px;
 	vertical-align: middle;
 }
@@ -48,42 +47,41 @@
 }
 
 .eXtremeTable .filter input {
-	font-family: arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 	font-size: 10px;
-	border: solid 1px grey;
+	border: solid 1px gray;
 	padding: 1px;
 }
 
 .eXtremeTable .filter select {
-	font-family: arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 	font-size: 9px;
 	border: solid 1px #EEE;
 }
 
 .eXtremeTable .tableHeader {
-	background-color: #2b4186;
-	color: white;
-	font-family: Arial, verdana, helvetica, sans-serif;
+	background-color: #6dafe9;
+	color: #2b4f6f;
+	font-family: lucida grande, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	text-align: left;
-	padding-right: 3px;
-	padding-left: 3px;
+	padding-right: 8px;
+	padding-left: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
+	border-right: solid 1px #d5e8f9;
 	background-image: url(../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
 	background-position: top;
+    text-shadow: 0 1px white;
 }
 
 .eXtremeTable .centerTableHeader {
-	background-color: #2b4186;
-	color: white;
-	font-family: Arial, verdana, helvetica, sans-serif;
+	background-color: #6dafe9;
+	color: #2b4f6f;
+	font-family: lucida grande, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	text-align: center;
@@ -92,47 +90,51 @@
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
+	border-right: solid 1px #d5e8f9;
 	background-image: url(../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
 	background-position: top;
+    text-shadow: 0 1px white;
 }
 
 
 .eXtremeTable .tableHeaderSort {
-	background-color: #2b4186;
-	color: white;
-	font-family: Arial, verdana, helvetica, sans-serif;
+	background-color: #6dafe9;
+	color: #2b4f6f;
+	font-family: lucida grande, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	text-align: left;
-	padding-right: 3px;
-	padding-left: 3px;
+	padding-right: 8px;
+	padding-left: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
+	border-right: solid 1px #d5e8f9;
 	background-image: url(../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
 	background-position: top;
+    text-shadow: 0 1px white;
 }
 
 .eXtremeTable .odd a, .even a {
-	color: Black;
+	color: #1b619c;
+    text-decoration: none
+}
+
+.eXtremeTable .odd a:hover, .even a:hover {
+	color: #6dafea;
+    text-decoration: none
 }
 
 .eXtremeTable .odd td, .eXtremeTable .even td {
 	padding-top: 3px;
-	padding-right: 3px;
+	padding-right: 8px;
 	padding-bottom: 3px;
-	padding-left: 3px;
+	padding-left: 8px;
 	vertical-align: middle;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 13px;
+	font-family: lucida grande, sans-serif;
+	font-size: 12px;
 }
 
 
@@ -141,18 +143,20 @@
 }
 
 .eXtremeTable .even {
-  	background-color: #dfe4e8;
+  	background: #f0f7fd url(../images/blue/eXtable_even.png) repeat-x top;
+    text-shadow: 0 1px white;
 }
 
 .eXtremeTable .highlight td {
-	color: black;
+	color: #1b619c;
+    text-shadow: 0 1px white;
 	padding-top: 3px;
-	padding-right: 3px;
+	padding-right: 8px;
 	padding-bottom: 3px;
-	padding-left: 3px;
+	padding-left: 8px;
 	vertical-align: middle;
-	background-color: #F09B5D;
-	font-size: 13px;
+	background: #bddbf5 url(../images/blue/eXtable_highlight.png) repeat-x top;
+	font-size: 12px;
 }
 
 .eXtremeTable .highlight a, .highlight a {
@@ -163,34 +167,44 @@
 	background-color: #F4F4F4;
 }
 
+.eXtremeTable .eXtremeTable {border: 1px solid #6cafe9}
+
 .eXtremeTable .toolbar {
-	background-color: #F4F4F4;
-	font-family: arial, verdana, helvetica, sans-serif;
-	font-size: 10px;
-	margin-right: 1px;
-	border-right: 1px solid silver;
-	border-left: 1px solid silver;
-	border-top: 1px solid silver;
-	border-bottom: 1px solid silver;
+	background: url(../images/blue/thirdlevelnav_grey_gradient.png) center ;
+
+	border: 1px solid #ccc;
+
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-box-shadow:inset  0px 0px 9px #000;
+    -webkit-box-shadow:inset  0px 0px 9px #000;
+    padding: 6px 10px 0 10px;
+
 }
 
 .eXtremeTable .toolbar a:hover {
 	background-color: transparent;
 }
 
-.eXtremeTable .toolbar td {
-	color: #444444;
-	padding: 0px 3px 0px 3px;
-	text-align:center;
+.eXtremeTable .toolbar img {
+
 }
+
+.eXtremeTable .toolbar td {
+	text-align:center;
+    padding: 0 6px 2px 6px;
+
+}
+
 
 .eXtremeTable .separator {
 	width: 7px;
+    height: 20px;
 }
 
 .eXtremeTable .statusBar {
 	background-color: #F4F4F4;
-	font-family: Arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 	font-size: 10px;
 }
 
@@ -211,7 +225,7 @@
 
 .eXtremeTable .formButton {
 	cursor: pointer;
-	font-family: arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 	font-weight: bold;
 	background-color: #308dbb;
 	color: white;
@@ -227,14 +241,14 @@
 .eXtremeTable .calcTitle {
 	background-color: #F4F4F4;
 	color: black;
-	font-family: Arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 	font-weight: bold;
 }
 
 .eXtremeTable .calcResult {
 	background-color: #F4F4F4;
 	color: black;
-	font-family: Arial, verdana, helvetica, sans-serif;
+	font-family: lucida grande, sans-serif;
 }
 
 

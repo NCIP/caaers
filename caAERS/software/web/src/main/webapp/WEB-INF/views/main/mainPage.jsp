@@ -31,10 +31,9 @@
         border-right: solid 1px #c8c8c8;
     }
 
-
     td.taskItemImage {
         height: 37px;
-        background-image: url(../images/iphone2/quick-links_up.jpg);
+
         padding-top: 2px;
         padding-left:10px;
         padding-right:10px;
@@ -49,7 +48,7 @@
     }
 
     td.taskItem a {
-        font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
+        font-family: Lucida Grande, sans-serif;
         font-size: 12px;
         color: #094c86;
         text-shadow: 0 1px white;
@@ -65,7 +64,7 @@
     }
 
     .tasksSubheader h3.subHeader {
-        font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
+        font-family: Lucida Grande, sans-serif;
         font-size: 14px;
         color: #1265ae;
         text-shadow: 0 1px white;
@@ -75,7 +74,7 @@
     }
 
     .subSubheader span.tasksSubSubheaderText {
-        font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;
+        font-family: Lucida Grande, sans-serif;
         font-size: 14px;
         color: #fff;
         text-shadow: 0 -1px #333;
@@ -133,7 +132,7 @@
     }
 
     .boxIPhone h3 {
-        font: bold 15px Arial, Helvetica, sans-serif;
+        font: bold 15px "Lucida Grande",Arial,Helvetica,sans-serifsans-serif;
         color: #2774b8;
         text-shadow: 0 1px white;
         padding-top: 8px;
@@ -143,7 +142,7 @@
     }
 
     .boxIPhone h3.blue {
-        font: bold 15px Arial, Helvetica, sans-serif;
+        font: bold 15px "Lucida Grande",Arial,Helvetica,sans-serifsans-serif;
         color: #2774B8;
         text-shadow: 0 1px white;
         padding-top: 8px;
@@ -153,12 +152,12 @@
     }
 
     .dashboard_table {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Lucida Grande",Arial,Helvetica,sans-serifsans-serif;
         margin: 0 1px 0 2px;
         /*border-collapse: collapse;*/
         border-bottom: 0px solid #dddddd;
         border-top: 0px solid #dddddd;
-        padding-top: 1px;
+        padding-top: 0px;
 
     }
 
@@ -171,13 +170,14 @@
 
     .dashboard_table a {
         font-weight: bold;
-        color: #3a3a3a;
-        text-decoration: none;
+        color: #6846d9;
+        border-bottom: 1px dotted #6846d9;
+        text-decoration: none
     }
 
     .dashboard_table a:hover {
-        color: #09589d;
-        text-decoration: none;
+        color: #8b6fe8;
+        border-bottom: 1px solid #8b6fe8;
     }
 
     .dashboard_table a:active {
@@ -242,17 +242,35 @@
     }
 
     tr.taskTitleRow th {
-        color : #518EC2;
+        color : #0B60AB;
         font-weight: bold;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        text-shadow: 0 1px white
     }
 
     tr.taskTitleRow td, tr.taskTitleRow th {
         border-bottom: 1px #ccc solid;
     }
 
-    a.linkHere, a.linkHere:hover {
-        color : blue;
-        text-decoration: underline;
+    a.linkHere {
+        color : #518EC2;
+        border-bottom: 1px dotted #518EC2;
+    }
+
+    a.linkHere:hover {
+        color: #4697db;
+        border-bottom: 1px solid #4697db;
+    }
+
+    a.studyid {
+        color : #518EC2;
+        border-bottom: 1px dotted #518EC2;
+    }
+
+    a.studyid:hover {
+        color: #4697db;
+        border-bottom: 1px solid #4697db;
     }
 
 </style>

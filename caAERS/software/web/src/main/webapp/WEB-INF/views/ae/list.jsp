@@ -15,7 +15,9 @@
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <style type="text/css">
-.notify-unit.success {
+
+    /*
+    .notify-unit.success {
 	color: #090;
 }
 .notify-unit.failure {
@@ -175,6 +177,7 @@
 .eXtremeTable a:hover{
 color:#0033FF;
 }
+*/
 </style>
 <script type="text/javascript">
 

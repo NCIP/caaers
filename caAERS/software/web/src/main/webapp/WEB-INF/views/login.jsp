@@ -14,7 +14,7 @@
             } .right {
                 position: absolute;
                 right: 116px;
-                top: 109px;
+                top: 99px;
                 margin-left: 25px;
                 margin-top: 1em;
                 text-align: center;
@@ -31,7 +31,7 @@
             body {
                 background:#02307f url(../images/blue/top_texture_bg.png) top center no-repeat;
                 color: #fff;
-                font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+                font-family:"Lucida Grande",sans-serif;
             } #header {
                 visibility: hidden
             } .wide-header {
@@ -70,7 +70,7 @@
             } #logo {
                 position: absolute;
                 top: -135px;
-                left: 200px;
+                left: 184px;
             } .errors {
                 color: #FFCC00;
             }
@@ -246,7 +246,7 @@
         </noscript>
         <div id="all-login">
             <div class="left">
-                <img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in</h2>
+                <img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in:</h2>
                 <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>?rand=${_today.time}'>
                     <c:if test="${not empty param.login_error}">
                         <p class="errors">

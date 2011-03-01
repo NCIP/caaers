@@ -8,9 +8,7 @@
 <head>
   <title>Configure Password Policy</title>
   <style type="text/css">
-    div {
-     font-weight: bold;
-    }
+
 
     .nested_section {
      width: 100%;

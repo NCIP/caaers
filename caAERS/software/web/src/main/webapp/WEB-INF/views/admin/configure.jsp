@@ -6,7 +6,7 @@
     <style type="text/css">
         div.row { padding: 5px 3px; }
         .row .value { margin-left: 22%; }
-        .row .label { width: 20%; margin-left: 1em; text-align: right; }
+        .row .label { width: 20%; text-align: right; }
         p.description { margin: 0.25em 0 0 1em; }
         div.submit { text-align: right; }
         .value input[type=text] { width: 80%; }

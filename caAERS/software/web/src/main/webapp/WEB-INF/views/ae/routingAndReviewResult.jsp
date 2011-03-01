@@ -7,7 +7,10 @@
 <tags:dwrJavascriptLink objects="routingAndReview"/>
 
 <style type="text/css">
-.eXtremeTable select {
+
+
+    /*
+    .eXtremeTable select {
 	font-size: 11px;
 }
 .eXtremeTable .tableHeader {
@@ -106,6 +109,7 @@
 .eXtremeTable a:hover{
 color:#0033FF;
 }
+*/
 
 </style>
 <script type="text/javascript">

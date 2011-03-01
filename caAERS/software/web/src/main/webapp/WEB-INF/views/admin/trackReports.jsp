@@ -12,7 +12,10 @@
 
 
 <style type="text/css">
-.notify-unit.success {
+
+
+    /*
+    .notify-unit.success {
 	color: #090;
 }
 .notify-unit.failure {
@@ -171,7 +174,11 @@
 }
 .eXtremeTable a:hover{
 color:#0033FF;
+
 }
+    */
+
+    
 </style>
 
 <script type="text/javascript">

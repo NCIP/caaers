@@ -6,13 +6,9 @@
     <tags:dwrJavascriptLink objects="createParticipant"/>
 
     <style>
-        .yui-pg-page { padding: 5pt; }
-        .yui-dt-label .yui-dt-sortable { color: white; }
         .yui-dt table { width: 100%; }
-        div.yui-dt-liner a {color : black;}
 
-        tr.yui-dt-even { background-color: #FFF;}
-        tr.yui-dt-odd { background-color: #EDF5FF;}
+       
                
     </style>
     

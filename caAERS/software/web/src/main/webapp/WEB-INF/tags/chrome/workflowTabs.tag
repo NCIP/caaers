@@ -20,7 +20,7 @@
     <c:set var="_isF" value="${not _isU}" />
 
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
-     <c:if test="${_isM}"><span class="required-indicator">*</span></c:if>
+     <c:if test="${_isM}"><font style="color: #f66; text-shadow:0 -1px black;">*</font></c:if>
         <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (_isU ? 'incomplete' : 'complete'):''}">
         	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
 				<c:if test="${!status.last}">

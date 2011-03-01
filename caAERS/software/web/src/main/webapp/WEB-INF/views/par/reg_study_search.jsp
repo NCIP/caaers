@@ -8,13 +8,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Search for a Study</title>
     <style>
-        .yui-pg-page { padding: 5pt; }
-        .yui-dt-label .yui-dt-sortable { color: white; }
         .yui-dt table { width: 100%; }
-        div.yui-dt-liner a {color : black;}
 
-        tr.yui-dt-even { background-color: #FFF; border-bottom: 1px gray solid;}
-        tr.yui-dt-odd { background-color: #EDF5FF; border-bottom: 2px blue dotted; padding: 2px; }
+       
 
     </style>
 
