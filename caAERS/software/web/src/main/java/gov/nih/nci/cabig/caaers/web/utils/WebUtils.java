@@ -292,6 +292,12 @@ public class WebUtils {
 
 
 	}
+
+    public static String getBaseFileName(String aeReportId, String reportId) {
+
+        return "expeditedAdverseEvent-" + aeReportId + "-" + reportId + "report.png";
+
+    }
     /*
     *
     * Will keep only the studies Coordinated or Sponsored by Research Staff's organizations

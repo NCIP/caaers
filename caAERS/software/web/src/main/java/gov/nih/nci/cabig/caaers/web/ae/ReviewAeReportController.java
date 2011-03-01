@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import  gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -64,7 +65,7 @@ public class ReviewAeReportController extends SimpleFormController{
         ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
         Report report = reportDao.getById(Integer.parseInt(reportId));
         String xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
-        String pngOutFile = "expeditedAdverseEvent-" + aeReportId + "-" + reportId + "report.png";
+        String pngOutFile = WebUtils.getBaseFileName(aeReportId ,reportId);
 
 
         List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile);

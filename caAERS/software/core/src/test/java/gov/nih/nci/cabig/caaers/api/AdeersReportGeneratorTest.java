@@ -158,10 +158,9 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
 
         String caAERSXML = writer.toString();
 
-            System.out.println(caAERSXML);
+        //System.out.println(caAERSXML);
         long now = System.currentTimeMillis();
-        String fileName = "/home/nikhil/ae" + String.valueOf(now) + ".png";
-        System.out.println("filename:" + fileName);
+        String fileName =  System.getProperty("java.io.tmpdir") + File.separator + "ae" + String.valueOf(now) + "report.png";
         List<String> list = generator.generateImage(caAERSXML, fileName);
 
     }
