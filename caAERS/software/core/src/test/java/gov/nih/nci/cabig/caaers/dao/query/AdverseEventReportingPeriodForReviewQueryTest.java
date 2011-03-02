@@ -16,32 +16,24 @@ public class AdverseEventReportingPeriodForReviewQueryTest extends TestCase {
 	
 	public void testFilterByStudy() {
 		query.filterByStudy(5);
-		assertEquals("select distinct rp from AdverseEventReportingPeriod rp " +
-				"join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  " +
-				"join spa.participant as p WHERE rp.retiredIndicator = false AND s.id =:studyId  order by rp.id" , query.getQueryString());
+		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p WHERE rp.retiredIndicator = false AND s.id =:studyId  order by rp.startDate" , query.getQueryString());
 	}
 
 	public void testFilterByStudySite() {
 		query.filterByOrganization(5);
-		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa " +
-				" join spa.studySite as ss  join ss.organization as org  join ss.study as s  " +
-				"join spa.participant as p WHERE rp.retiredIndicator = false AND org.id =:organizationId  order by rp.id",query.getQueryString());
+		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p WHERE rp.retiredIndicator = false AND org.id =:organizationId  order by rp.startDate",query.getQueryString());
 	}
 
 	public void testFilterByParticipant() {
 		query.filterByParticipant(7);
-		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa  " +
-				"join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p " +
-				"WHERE rp.retiredIndicator = false AND p.id =:participantId  order by rp.id",query.getQueryString());
+		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p WHERE rp.retiredIndicator = false AND p.id =:participantId  order by rp.startDate",query.getQueryString());
 	}
 	
 	public void testFilterByAll(){
 		query.filterByParticipant(7);
 		query.filterByOrganization(5);
 		query.filterByStudy(5);
-		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa  " +
-				"join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p " +
-				"WHERE rp.retiredIndicator = false AND p.id =:participantId AND org.id =:organizationId AND s.id =:studyId  order by rp.id",query.getQueryString());
+		assertEquals("select distinct rp from AdverseEventReportingPeriod rp join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p WHERE rp.retiredIndicator = false AND p.id =:participantId AND org.id =:organizationId AND s.id =:studyId  order by rp.startDate",query.getQueryString());
 	}
 	
 }
