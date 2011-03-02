@@ -740,14 +740,16 @@ span.phone-number { font-style: italic; }
 .error .label { color: #c03; }
 .errors { color: #c03; }
 div.errors {
+    background:#ecb9c5 url(../images/error-message_bg.jpg) repeat-x top;
 	color: #c03;
-	font-size:11pt;
-	border: 1px solid #c03;
+    text-shadow: 0 1px white;
+	font-size:13px;
+	border: 1px solid #ecb9c5;
 	margin: 40px;
 	padding: 10px 20px;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
 
 }
 
