@@ -34,7 +34,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		super.setUp();
 		caaersSecurityFacade = (CaaersSecurityFacadeImpl)getApplicationContext().getBean("caaersSecurityFacade");
 		provisioningSessionFactory = (ProvisioningSessionFactory)getDeployedApplicationContext().getBean("provisioningSessionFactory");
-		userProvisioningManager = (UserProvisioningManager)getDeployedApplicationContext().getBean("userProvisioningManager");
+		userProvisioningManager = (UserProvisioningManager)getDeployedApplicationContext().getBean("csmUserProvisioningManager");
 		userRepository = (UserRepository)getDeployedApplicationContext().getBean("userRepository");
 	}
 	
