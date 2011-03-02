@@ -58,7 +58,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbNoSecurityTestCase {
 		ae.setGrade(Grade.DEATH);
 		ae.setEventApproximateTime(getDefaultTimeValue());
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
-		assertEquals(1, aes.size());
+		assertEquals(2, aes.size());
 	}
 
 	public void testAEsForParticipantWithGradeMILD() {
@@ -89,7 +89,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbNoSecurityTestCase {
 		ae.setHospitalization(Hospitalization.YES);
 		ae.setEventApproximateTime(getDefaultTimeValue());
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
-		assertEquals(0, aes.size());
+		assertEquals(1, aes.size());
 
 	}
 	
