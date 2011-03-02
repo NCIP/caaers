@@ -67,20 +67,33 @@
 				
 		  <fo:static-content flow-name="xsl-region-before">
 		    <fo:table>
-				<fo:table-column column-width="100%"/>
+				<fo:table-column />
 				<fo:table-body>
 				  <fo:table-row>
-				    <fo:table-cell>
-				    	<fo:block font-size="10pt" font-family="Times New Roman" text-align-last="left">
-				    		NCI Contract/Grant No.		 
-				    	</fo:block>
-				    	<fo:block font-size="10pt" font-family="Times New Roman" text-align-last="left">
-				    		IRB Protocol No.		 
-				    	</fo:block>
-				    </fo:table-cell>
+					    <fo:table-cell>
+					    	<fo:block font-size="10pt" font-family="Times New Roman" text-align-last="left">
+					    		NCI Contract/Grant No.
+						<fo:leader leader-pattern="rule" leader-length="4cm" />
+			 
+					    	</fo:block>
+					   </fo:table-cell>		
+						<fo:table-cell>	
+						    	<fo:block font-size="10pt" font-family="Times New Roman" text-align-last="right">
+						    		DCP Protocol No.
+							<fo:leader leader-pattern="rule" leader-length="4cm" />		 
+						    	</fo:block>
+						</fo:table-cell>
+				</fo:table-row>
+				<fo:table-row>
+					<fo:table-cell>
+						<fo:block font-size="10pt" font-family="Times New Roman" text-align-last="left">
+					    		IRB Protocol No.	
+						<fo:leader leader-pattern="rule" leader-length="4cm" />	 
+					    	</fo:block>
+					    </fo:table-cell>
 				  </fo:table-row>
 				</fo:table-body>				
-			</fo:table>									
+		  </fo:table>									
 		  </fo:static-content>
 		  
 		  <fo:flow flow-name="xsl-region-body">		  	
@@ -118,7 +131,7 @@
 									<fo:inline>NCI, DCP</fo:inline>
 						  		</fo:block>      							
       						</fo:table-cell>
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-rows-spanned = "2">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									<fo:inline font-weight="bold"> Study (Indication) : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									<fo:inline><xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/shortTitle"/></fo:inline>
@@ -129,25 +142,8 @@
       					
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold"> Date Report Submitted :  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-						  			<fo:inline>
-						  					<xsl:call-template name="standard_date">
-						  						<xsl:with-param name="date" select="AdverseEventReport/createdAt"/>
-						  					</xsl:call-template>
-						  			</fo:inline>
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold">NCI Study # <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<fo:inline><xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier/value"/></fo:inline>
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="label"> 
-						  			Agent(s) under Investigation :
+						  			Drugs(s) under Investigation :
 						  		</fo:block> 
 						  		
 						  			<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
@@ -155,9 +151,16 @@
 						  					<xsl:value-of select="StudyAgent/Agent/name"/>
 						  					<xsl:value-of select="StudyAgent/otherAgent"/>
 						  				</fo:block> 
-						  			</xsl:for-each>
-						  		    							
+						  			</xsl:for-each>							
       						</fo:table-cell>
+      						
+      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+									<fo:inline font-weight="bold">IND No : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+									<fo:inline><xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier/value"/></fo:inline>
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						
       					</fo:table-row>
 
 		  			</fo:table-body>
@@ -190,12 +193,14 @@
 									<fo:inline font-weight="bold"> 2.  Year of Birth :  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline> 
 									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString" />
 						  		</fo:block>
+						<fo:block><fo:inline><fo:leader leader-pattern="rule" leader-length="4cm" /></fo:inline></fo:block>	
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									<fo:inline font-weight="bold">3.  Weight at Time of Event : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>  
 									<xsl:value-of select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
 						  		</fo:block>   
+						<fo:block><fo:inline><fo:leader leader-pattern="rule" leader-length="4cm" /></fo:inline></fo:block>
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 						  		<fo:block xsl:use-attribute-sets="normal">						  		
 						  			[<xsl:if test="AdverseEventReport/ParticipantHistory/weight/unit = 'Kilogram'">
@@ -216,9 +221,13 @@
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									<fo:inline font-weight="bold">4. Height at Time of Event :<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline> 
 									<xsl:value-of select="AdverseEventReport/ParticipantHistory/height/quantity"/>
-						  		</fo:block>      							
+							
+						  		</fo:block> 
+						<fo:block><fo:inline><fo:leader leader-pattern="rule" leader-length="4cm" /></fo:inline></fo:block>     							
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-						  		<fo:block xsl:use-attribute-sets="normal">						  		
+									
+						  		<fo:block xsl:use-attribute-sets="normal">
+														  		
 						  			[<xsl:if test="AdverseEventReport/ParticipantHistory/height/unit = 'Centimeter'">
 						  				x
 						  			</xsl:if>] cm <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
@@ -253,15 +262,14 @@
 										
 		  			<fo:table-body >
 					<fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned = "2" >
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			[ x ]  Initial Event Report  
-						  		</fo:block>      										  					
-						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			[  ]  Amendment  
-						  		</fo:block> 
+						  			[ x ]  Initial Event Report<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>[  ]  Follow-up <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>  
+								<fo:leader leader-pattern="rule" leader-length="4cm" /> 
+								 
+						  		</fo:block>       	
       						</fo:table-cell>
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned = "2">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  		<fo:inline font-weight="bold">Gender : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>  
 						  		<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text> 
@@ -273,14 +281,7 @@
 						  			</xsl:if>] F <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
 						  		</fo:block>      							
       						</fo:table-cell>
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold"> Dose at Event : </fo:inline>  
-						  		</fo:block>  
-						  		<fo:block xsl:use-attribute-sets="normal" >   
-						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
-						  		</fo:block>	  							
-      						</fo:table-cell>
+      						
       					</fo:table-row>
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
@@ -300,7 +301,7 @@
 						  			(Month/Day/Year)  
 						  		</fo:block> 						  					
       						</fo:table-cell>
-      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2" number-rows-spanned="1">
+      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2" number-rows-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									<fo:inline font-weight="bold"> Primary Event (diagnosis): (Verbatim AE term) </fo:inline>  
 									<xsl:for-each select="AdverseEventReport/AdverseEvent">
@@ -337,24 +338,7 @@
 						  			(Indicate A.M./P.M.)  
 						  		</fo:block> 						  					
       						</fo:table-cell>
-      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2" number-rows-spanned="2">     							
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold"> CTCAE category : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:for-each select="AdverseEventReport/AdverseEvent">
-										<xsl:if test="substring(gridId,1,3) = 'PRY'">
-                        					<xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/> 
-                    					</xsl:if>
-									</xsl:for-each>
-						  		</fo:block>  
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold"> CTCAE Term : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:for-each select="AdverseEventReport/AdverseEvent">
-										<xsl:if test="substring(gridId,1,3) = 'PRY'">
-                        					<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/> 
-                    					</xsl:if>
-									</xsl:for-each>
-						  		</fo:block>  						  		
-      						</fo:table-cell>      						
+      						      						
       					</fo:table-row>
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
@@ -371,16 +355,22 @@
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			<fo:inline font-weight="bold">  Total dose administered.: </fo:inline>
+						  			<fo:inline font-weight="bold">  Duration of Drug Exposure at Event.: </fo:inline>
 						  			<fo:block/>
 						  			<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 						  				<xsl:value-of select="StudyAgent/Agent/name"/>
-										<xsl:value-of select="StudyAgent/otherAgent"/> :<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-										<xsl:value-of select="Dose/amount"/> 
+										<xsl:value-of select="StudyAgent/otherAgent"/> :<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>						
+						<xsl:call-template name="standard_date">
+				                        <xsl:with-param name="date" select="/AdverseEventReport/TreatmentInformation/firstCourseDate"/>
+				                 </xsl:call-template> <fo:leader leader-pattern="use-content" leader-length=".2cm">-</fo:leader>
+						<xsl:call-template name="standard_date">
+				                        <xsl:with-param name="date" select="lastAdministeredDate"/>
+				                 </xsl:call-template> 
 										<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-										<xsl:value-of select="Dose/units"/>
 										<fo:block/>
 						  			</xsl:for-each>
+								<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
+								<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
 						  		</fo:block>      				 						  					
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2">
@@ -393,6 +383,7 @@
 						  			<fo:block/>  							
 									<fo:inline font-weight="bold"> Primary Treatment of Event :<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>	
 									<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/primaryTreatment"/>	
+								
 						  		</fo:block> 
       						</fo:table-cell>
       					</fo:table-row>      					
@@ -436,14 +427,17 @@
 						  		</fo:block>    	
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  			<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/eventDescription"/>
+							
 						  		</fo:block>
+<fo:block><xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
+<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text></fo:block>	
 						  							  		
       						</fo:table-cell>
       					</fo:table-row> 
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold"> Form Completed by : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+									<fo:inline font-weight="bold"> Form Completed by :(Print Name) <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									<xsl:value-of select="AdverseEventReport/Physician/firstName"/>
 									<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 									<xsl:value-of select="AdverseEventReport/Physician/lastName"/>	
@@ -451,15 +445,7 @@
 									<fo:inline font-weight="bold">Title : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>	 						
 						  		   <fo:block/>  
 
-									<fo:inline font-weight="bold"> e-mail :   <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:for-each select="AdverseEventReport/Physician/ContactMechanism">
-					                    <xsl:if test="key = 'e-mail'">
-					                        <xsl:value-of select="value"/>
-					                    </xsl:if>
-					                </xsl:for-each>
-									<xsl:text disable-output-escaping="yes"> &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
 									
-									<fo:inline font-weight="bold">Telephone : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									<xsl:for-each select="AdverseEventReport/Physician/ContactMechanism">
 					                    <xsl:if test="key = 'phone'">
 					                        <xsl:value-of select="value"/>
@@ -470,18 +456,12 @@
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									<fo:inline font-weight="bold"> Investigator Signature : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
-									<fo:inline font-weight="bold"> Date : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>					
+									<fo:inline font-weight="bold"> Date(Month/Day/Year) : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>					
 									<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
 									<fo:inline font-weight="bold"> Phone No : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>	
 						  		</fo:block> 
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> 	
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<fo:inline font-weight="bold"> e-mail :  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>	 
-									<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
-									<fo:inline font-weight="bold"> Telephone : 	<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>	 					
-						  		</fo:block>    
-						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> 		
-						  		
+						  								  		
       						</fo:table-cell>
       					</fo:table-row>      					
 		  			</fo:table-body>
@@ -507,40 +487,24 @@
 						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/Investigator/firstName"/>
 									<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/Investigator/lastName"/>
-									<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
-									<fo:inline font-weight="bold">e-mail : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/Investigator/emailAddress"/>
-						  		</fo:block>      							
+									
+								</fo:block>  
+					<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+					<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>    							
+													
+								<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+						  			<fo:inline font-weight="bold">3. Address : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+								<xsl:value-of select="AdverseEventReport/Reporter/address/street"/>
+<xsl:value-of select="AdverseEventReport/Reporter/address/city"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+<xsl:value-of select="AdverseEventReport/Reporter/address/state"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> 
+<xsl:value-of select="AdverseEventReport/Reporter/address/zip"/>							
+								</fo:block>
+								
       						</fo:table-cell>
 
       					</fo:table-row>
       					
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
-						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			<fo:inline font-weight="bold">2.  Fax : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/Investigator/faxNumber"/>	
-						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
-									<fo:inline font-weight="bold">Telephone : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/Investigator/phoneNumber"/>
-						  		</fo:block>      							
-      						</fo:table-cell>
-
-      					</fo:table-row>
-
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell xsl:use-attribute-sets="small-cell">
-						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			<fo:inline font-weight="bold">3. Site Name and (ID) : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/name"/>	
-						  			<xsl:text disable-output-escaping="yes">&amp;#160; </xsl:text>
-									(<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/nciInstituteCode"/>	)
-						  		</fo:block>      							
-      						</fo:table-cell>
-
-      					</fo:table-row>
-      					
-      					
+		  			    
 		  			</fo:table-body>
 		  		</fo:table>
 		  		
@@ -583,7 +547,7 @@
 		  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			<fo:inline font-weight="bold"> 2. Study Agent(s) <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+						  			<fo:inline font-weight="bold"> 2. Study Drug <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 						  		</fo:block>  
       						</fo:table-cell>		  			
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="3">
@@ -622,7 +586,7 @@
 		  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="8">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			<fo:inline font-weight="bold"> 3.  Start Date of Study Agent (Month/Day/Year) :<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+						  			<fo:inline font-weight="bold"> 3.  Start Date of Study Drug (Month/Day/Year) :<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 						  		    <xsl:call-template name="standard_date">
 				                        <xsl:with-param name="date" select="AdverseEventReport/TreatmentInformation/firstCourseDate"/>
 				                    </xsl:call-template>						  			
@@ -802,6 +766,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
       					</fo:table-row>
+					
       					<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
 							<fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">							  		
@@ -972,9 +937,10 @@
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell" >
 							  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" text-align-last="center"> 
 							  			Date (if known)
-							  		</fo:block>      				
-	      						</fo:table-cell>		  			
-	      						<fo:table-cell xsl:use-attribute-sets="small-cell" >
+							  		</fo:block>  
+							</fo:table-cell>		  			
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell" >    				
+	      						
 							  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" text-align-last="center"> 
 							  			Diseases/Surgeries/Treatment
 							  		</fo:block>      				
@@ -1029,8 +995,21 @@
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+
+							  										  			<fo:inline font-weight="bold">3.<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>CTCAE Term: <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>				<xsl:for-each select="AdverseEventReport/AdverseEvent">
+									<xsl:if test="substring(gridId,1,3) = 'PRY'">
+                        							<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/> 
+                    							</xsl:if>
+								</xsl:for-each><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text> 
+	<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>CTCAE version #:  <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Ctc/name"/>
+		<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>NA<fo:leader leader-pattern="rule" leader-length="4cm" /></fo:inline>
+		<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160;&amp;#160; &amp;#160; </xsl:text>
+									</fo:block>
+						
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  										  			
-										<fo:inline font-weight="bold"> 3. NCI Toxicity GRADE of the Event (use NCI Common Toxicity Criteria) : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+										<fo:inline font-weight="bold"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>Grade  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 
 										<xsl:for-each select="AdverseEventReport/AdverseEvent">
 											<xsl:if test="substring(gridId,1,3) = 'PRY'">	
@@ -1046,14 +1025,10 @@
 											</xsl:if>                   					
 										</xsl:for-each>
 									</fo:block>
-									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										<fo:inline font-weight="bold"> If not gradable by NCI CTC, check one of the following :  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-										[  ] Mild     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] Moderate     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] Severe    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] Life-threatening     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] Fatal
-							  		</fo:block>      				
+	<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+
+	
+													
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -1061,6 +1036,7 @@
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 										<fo:inline font-weight="bold"> 4. Why Serious ?<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									</fo:block>
+			<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
 							<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 								<xsl:for-each select="AdverseEventReport/AdverseEvent">
 									<xsl:if test="substring(gridId,1,3) = 'PRY'">					
@@ -1075,7 +1051,8 @@
 									</xsl:if>
 								</xsl:for-each>
 							</fo:block> 
- 									  									  									  									  							  									  						
+ 									  									  				<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+			<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>  									  							  									  						
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >					
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -1083,37 +1060,85 @@
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 										<fo:inline font-weight="bold"> 5. Outcome of Event (at time of report) <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									</fo:block>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 									
-										<fo:inline font-weight="bold"> Present Status : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-									  	<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='INTERVENTION_CONTINUES'">Intervention for AE continues </xsl:if>  
-									  	<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='RECOVERING'">Recovering/Resolving </xsl:if>  										
-										<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae  </xsl:if> 
-										<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae </xsl:if>  
-										<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='NOT_RECOVERED'">Not recovered/Not resolved </xsl:if>  
-										<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='DEAD'">Fatal/Died </xsl:if> 
-										
-										<fo:block/>										
-										<fo:inline font-weight="bold"> Date of recovery or death : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
-				                    		<xsl:call-template name="standard_date">
-				                        		<xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
-				                    		</xsl:call-template>
+									<fo:block>
+	<xsl:choose>
+		<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='DEAD'">
+			<fo:inline>[ ] Resolved-date(Month/Day/Year):<fo:leader leader-pattern="rule" leader-length="2cm" /> [ ]Improved	[ ]Unchanged	[ ]Worse	[ ]Not available</fo:inline>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+		<fo:inline><xsl:text>[x]	Fatal-date of death(Month/Day/Year):</xsl:text>
+			<xsl:call-template name="standard_date">
+				<xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+			</xsl:call-template>
+		 </fo:inline>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:text>[x] Resolved-date(Month/Day/Year):</xsl:text>
+			<xsl:call-template name="standard_date">
+				<xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+			</xsl:call-template>
+			<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+			
+			<xsl:text> [	]Improved	[	]Unchanged	[	]Worse	[	]Not available</xsl:text>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block> 
+		<fo:inline >
+			<xsl:text>[ ]	Fatal-date of death(Month/Day/Year):</xsl:text> <fo:leader leader-pattern="rule" leader-length="2cm" /> 
+		</fo:inline>
+		<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>	
 
-				                    	<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='DEAD'">
-					                    <fo:block/>					                    	
+		</xsl:otherwise>
+		
+		
+	</xsl:choose>
+</fo:block>
+			
+
+<xsl:choose>
+	<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='DEAD'">
+		<fo:block/>					                    	
 					                    	<fo:inline font-weight="bold"> Autopsy performed ? <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 											<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 											<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed='true'">Yes</xsl:if>
-											<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed='false'">No</xsl:if>										
-										</xsl:if>
-														                    	
-				                    	<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/causeOfDeath">
-					                    <fo:block/>					                    	
-					                    	<fo:inline font-weight="bold"> Cause of death : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+											<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed='false'">No</xsl:if>	
+	</xsl:when>
+	<xsl:otherwise>
+		<fo:block/>					                    	
+					                    	<fo:inline font-weight="bold"> Autopsy performed ?(Circle one) <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 											<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-											<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/causeOfDeath"/>										
-										</xsl:if>
-					  				</fo:block>					  						
+											<xsl:text>Yes</xsl:text><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+											<xsl:text>No</xsl:text><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+	</xsl:otherwise>
+	</xsl:choose>					
+					                    	
+														                    	
+				                    	
+					                    <fo:block/>	
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+		<xsl:choose>
+			<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/causeOfDeath">
+				<fo:inline font-weight="bold"> Cause of death : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+				<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+				<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/causeOfDeath"/>	
+				<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;(please attach death certificate and autopsy report,if applicable)</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline font-weight="bold"> Cause of death : <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+					<fo:leader leader-pattern="rule" leader-length="8cm" />
+					<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;(please attach death certificate and autopsy report,if applicable)</xsl:text>
+				</fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
+
+			
+								
+										
+					  				</fo:block>	
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+		 						
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -1122,6 +1147,7 @@
 										<fo:inline font-weight="bold"> 6.	Investigator's opinion of the relationship between the event and the study agent  (If more than one event is being reported, list secondary events and corresponding relationship to study agent in the comments section below.) Check applicable box :
 										<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 									</fo:block>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 								<xsl:for-each select="AdverseEventReport/AdverseEvent">
 									<xsl:if test="substring(gridId,1,3) = 'PRY'">
@@ -1136,19 +1162,32 @@
 					                    [ <xsl:if test="substring(attributionSummary,1,1)=5">x</xsl:if>] Definite  
 					                 </xsl:if>
 					           </xsl:for-each>                     
-							  		</fo:block>      							  									  						
+							  		</fo:block>  
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+		 							  									  						
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										<fo:inline font-weight="bold"> Was this event reported by the Investigator to (check all that apply) :   <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
+										<fo:inline font-weight="bold">7.		 Was this event reported by the Investigator to (check all that apply) :   <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline>
 										[  ] IRB       <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>  
 										 [  ] Manufacturer/Distributor        <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
 									</fo:block> 
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 										[  ] Other Investigators participating in this study, if checked, please list names and institutions
 									</fo:block>
+		<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+								<fo:block>
+									<fo:inline><fo:leader leader-pattern="rule" leader-length="19.5cm" /></fo:inline>
+								</fo:block>
+								<fo:block>
+									<fo:inline><fo:leader leader-pattern="rule" leader-length="19.5cm" /></fo:inline>
+								</fo:block>
+								<fo:block>
+									<fo:inline><fo:leader leader-pattern="rule" leader-length="19.5cm" /></fo:inline>
+								</fo:block>
+	
      							  									  						
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >
@@ -1186,10 +1225,28 @@
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 										<fo:inline font-weight="bold"> Medical Assessment of Event (including drug relationship and expectancy) : <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text></fo:inline>
 							  		</fo:block>      							  									  						
-	      						</fo:table-cell>		  			
-			  			</fo:table-row >
-			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
-	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+	      						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>					<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>					<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+						<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>				
+						<fo:block  xsl:use-attribute-sets="normal" margin-left="2mm"><fo:inline font-weight="bold"> Medical Monitor's opinionof expectedness (based on Investigator's Brochure or other information provided to the site):   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text></fo:inline></fo:block>
+<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+<fo:block xsl:use-attribute-sets="normal"  margin-left="2mm"><fo:inline > [ ] Expected   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160; </xsl:text>[  ] Unexpected </fo:inline></fo:block>
+<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+
+		
+						<fo:block  xsl:use-attribute-sets="normal" margin-left="2mm"><fo:inline font-weight="bold"> Medical Monitor's opinion of the relationship between the event and the study drug.Check applicable box:   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text></fo:inline></fo:block>
+<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
+<fo:block xsl:use-attribute-sets="normal"  margin-left="2mm"><fo:inline > [ ] Expected   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160;</xsl:text> [  ] Unexpected <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160;</xsl:text> [ ] Possible<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160;</xsl:text>[ ] Probable<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;&amp;#160;</xsl:text>[ ] Definite</fo:inline></fo:block>
+<fo:block><fo:inline><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline></fo:block>
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 										<fo:inline font-weight="bold"> Is this an FDA reportable (7 calendar days) event ?    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text></fo:inline>
 										[  ] Yes   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
