@@ -34,8 +34,9 @@ public class RolePrivilegeDao extends GridIdentifiableDao<RolePrivilege> impleme
 		if(StringUtils.isEmpty(objectId) || StringUtils.isEmpty(privilege)){
 			return null;
 		}
+
 		StringBuilder queryBuf = new StringBuilder(" select distinct rp.roleName from RolePrivilege rp ");
-								   queryBuf.append(" where rp.objectId = ? and rp.privilege = ? "); 
+        queryBuf.append(" where rp.objectId = ? and rp.privilege = ? ");
 		List<String> roles = getHibernateTemplate().find(queryBuf.toString(), new Object[]{objectId,privilege});
 		return roles;
 	}

@@ -82,7 +82,13 @@
 		stu_id="-223"
 	/>
 
-	
+    <role_privilege
+		id="-4"
+		version="0"
+		role_name="business_administrator"
+		object_id="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition"
+		privilege="READ"/>
+
 	<investigational_new_drugs />    
     <ind_holders />		
 	<investigators/>

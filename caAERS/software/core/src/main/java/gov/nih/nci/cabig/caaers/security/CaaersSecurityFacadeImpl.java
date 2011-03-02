@@ -166,8 +166,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 			List<String> privilegedRoles;
 			if(authorities  != null){
 				//Fetch all the roles which have the given privilege on the given objectId
-				privilegedRoles = getRolesFromRolePrivilegeMapping(objectId,
-						privilege);				
+				privilegedRoles = getRolesFromRolePrivilegeMapping(objectId, privilege);
 				if(privilegedRoles != null){
 					for(int i=0;i < authorities.length;i++){
 						if(privilegedRoles.contains(authorities[i].getAuthority())){
@@ -188,9 +187,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	 * @param privilege
 	 * @return
 	 */
-	private List<String> getRolesFromRolePrivilegeMapping(String objectId,
-			String privilege) {
-		
+	private List<String> getRolesFromRolePrivilegeMapping(String objectId, String privilege) {
 		List<String> privilegedRoles = CSMCacheManager.getRolesFromCache(objectId, privilege);
 		if (privilegedRoles==null) {		
 			privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.security;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.util.List;
 
