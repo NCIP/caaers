@@ -527,13 +527,12 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		
 		//aeReport 1
 		assertFalse(result.getAmendmentMap().get(aeReport1.getId()).isEmpty());
-		assertFalse(result.getCreateMap().get(aeReport1.getId()).isEmpty());
+		assertTrue(result.getCreateMap().get(aeReport1.getId()).isEmpty());
 		assertTrue(result.getWithdrawalMap().get(aeReport1.getId()).isEmpty());
 		assertTrue(result.getEditMap().get(aeReport1.getId()).isEmpty());
 		
 		assertNotNull(getWrapper(result.getAmendmentMap().get(aeReport1.getId()), rd1));
 		assertEquals(rd2, getWrapper(result.getAmendmentMap().get(aeReport1.getId()), rd1).getSubstitute());
-		assertNotNull(getWrapper(result.getCreateMap().get(aeReport1.getId()), rd2));
 		verifyMocks();
 		
 	}
@@ -671,8 +670,7 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		assertTrue(result.getEditMap().get(aeReport1.getId()).isEmpty());
 		assertNotNull(getWrapper(result.getAmendmentMap().get(aeReport1.getId()), rd1).getDef());
 		assertEquals(rd2, getWrapper(result.getAmendmentMap().get(aeReport1.getId()), rd1).getSubstitute());
-		assertNotNull(getWrapper(result.getCreateMap().get(aeReport1.getId()), rd2).getDef());
-		
+
 		verifyMocks();
 		
 	}
@@ -812,7 +810,7 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		
 		//aeReport 1
 		assertTrue(result.getAmendmentMap().get(aeReport1.getId()).isEmpty());
-		assertTrue(result.getCreateMap().get(aeReport1.getId()).isEmpty());
+		assertFalse(result.getCreateMap().get(aeReport1.getId()).isEmpty());
 		assertTrue(result.getWithdrawalMap().get(aeReport1.getId()).isEmpty());
 		assertFalse(result.getEditMap().get(aeReport1.getId()).isEmpty());
 		
@@ -953,8 +951,8 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		assertNotNull( getWrapper(result.getAmendmentMap().get(aeReport1.getId()), rd1));
 		assertNotNull( getWrapper(result.getAmendmentMap().get(aeReport1.getId()), rdz));
 		
-		assertNotNull( getWrapper(result.getCreateMap().get(aeReport1.getId()), rd2));
-		assertNotNull( getWrapper(result.getCreateMap().get(aeReport1.getId()), rdz));
+		assertNull( getWrapper(result.getCreateMap().get(aeReport1.getId()), rd2));
+		assertNull( getWrapper(result.getCreateMap().get(aeReport1.getId()), rdz));
 		
 		verifyMocks();
 	}
@@ -1058,13 +1056,9 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 	    assertNull(wrapperList.get(0).getSubstitute());
 	    
 	    wrappers = result.getCreateMap().get(new Integer(1));
-	    assertFalse(wrappers.isEmpty());
+	    assertTrue(wrappers.isEmpty());
 	    wrapperList = new ArrayList<ReportDefinitionWrapper>(wrappers);
-	    assertEquals(1, wrapperList.size());
-	    assertEquals(rd1, wrapperList.get(0).getDef());
-	    assertNull(wrapperList.get(0).getSubstitute());
-	    
-	    
+	    assertEquals(0, wrapperList.size());
 		verifyMocks();
 	}
 
