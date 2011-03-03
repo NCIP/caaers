@@ -700,12 +700,28 @@ public class AdverseEventReportSerializer {
 		    	s.setCtcVersion(hibernateStudy.getCtcVersion());
 		    	s.setDesign(hibernateStudy.getDesign());
 
-		    	List<CtepStudyDisease> ctepds = hibernateStudy.getCtepStudyDiseases();
-		    	for (CtepStudyDisease dis:ctepds) {
-		    		s.addCtepStudyDisease(dis);
-		    	}
-		    	
-		    	List<StudyAgent> sas = hibernateStudy.getStudyAgents();
+                if (hibernateStudy.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) {
+                    List<CtepStudyDisease> dl = hibernateStudy.getCtepStudyDiseases();
+                    for (CtepStudyDisease dis : dl) {
+                        s.addCtepStudyDisease(dis);
+                    }
+                }
+
+                if (hibernateStudy.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
+                    List<MeddraStudyDisease> dl = hibernateStudy.getMeddraStudyDiseases();
+                    for (MeddraStudyDisease dis : dl) {
+                        s.addMeddraStudyDisease(dis);
+                    }
+                }
+
+                if (hibernateStudy.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.OTHER) {
+                    List<StudyCondition> dl = hibernateStudy.getStudyConditions();
+                    for (StudyCondition dis : dl) {
+                        s.addStudyCondition(dis);
+                    }
+                }
+
+                List<StudyAgent> sas = hibernateStudy.getStudyAgents();
 		    	for (StudyAgent sa:sas) {
 		    		s.addStudyAgent(getStudyAgent(sa));
 		    	}

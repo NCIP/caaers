@@ -698,84 +698,51 @@
       <bind-xml name="MetastaticDiseaseSite"/>
     </field>
   </class>
-  
-  
-  <class name="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease">
-    <map-to xml="CtepStudyDisease"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="leadDisease" type="boolean">
-      <bind-xml name="leadDisease" node="element"/>
-    </field>
-    <field name="term" type="gov.nih.nci.cabig.caaers.domain.DiseaseTerm">
-      <bind-xml name="DiseaseTerm" node="element"/>
-    </field>
-  </class>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease">
-    <map-to xml="MeddraStudyDisease"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="term" type="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
-      <bind-xml name="LowLevelTerm" node="element"/>
-    </field>    
-  </class>
-  
-  <class name="gov.nih.nci.cabig.caaers.domain.StudyCondition">
-    <map-to xml="StudyCondition"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="term" type="gov.nih.nci.cabig.caaers.domain.Condition">
-      <bind-xml name="Condition" node="element"/>
-    </field>
-  </class>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.Condition">
-    <map-to xml="Condition"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="conditionName" type="string">
-      <bind-xml name="conditionName" node="element"/>
-    </field>
-  </class>
-  
-  <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
-    <map-to xml="LowLevelTerm"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="meddraCode" type="string">
-      <bind-xml name="meddraCode" node="element"/>
-    </field>
-    <field name="meddraTerm" type="string">
-      <bind-xml name="meddraTerm" node="element"/>
-    </field>
-    <field name="fullName" type="string">
-      <bind-xml name="fullName" node="element"/>
-    </field>
-  </class>
-    
-  <class name="gov.nih.nci.cabig.caaers.domain.DiseaseTerm">
-    <map-to xml="DiseaseTerm"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="term" type="string">
-      <bind-xml name="term" node="element"/>
-    </field>
-    <field name="ctepTerm" type="string">
-      <bind-xml name="ctepTerm" node="element"/>
-    </field>
-    <field name="category" type="gov.nih.nci.cabig.caaers.domain.DiseaseCategory">
-      <bind-xml name="DiseaseCategory" node="element"/>
-    </field>
-  </class>
+    <class name="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease">
+        <map-to xml="CtepStudyDisease"/>
+        <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+        <field name="leadDisease" type="boolean"><bind-xml name="leadDisease" node="element"/></field>
+        <field name="term" type="gov.nih.nci.cabig.caaers.domain.DiseaseTerm"><bind-xml name="DiseaseTerm" node="element"/></field>
+    </class>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.DiseaseCategory">
+    <class name="gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease">
+        <map-to xml="MeddraStudyDisease"/>
+        <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+        <field name="leadDisease" type="boolean"><bind-xml name="leadDisease" node="element"/></field>
+        <field name="term" type="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm"><bind-xml name="LowLevelTerm" node="element"/></field>
+    </class>
+
+    <class name="gov.nih.nci.cabig.caaers.domain.StudyCondition">
+        <map-to xml="StudyCondition"/>
+        <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+        <field name="term" type="gov.nih.nci.cabig.caaers.domain.Condition"><bind-xml name="Condition" node="element"/></field>
+    </class>
+
+    <class name="gov.nih.nci.cabig.caaers.domain.Condition">
+        <map-to xml="Condition"/>
+        <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+        <field name="conditionName" type="string"><bind-xml name="conditionName" node="element"/></field>
+    </class>
+
+    <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
+        <map-to xml="LowLevelTerm"/>
+        <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+        <field name="meddraCode" type="string"><bind-xml name="meddraCode" node="element"/></field>
+        <field name="meddraTerm" type="string"><bind-xml name="meddraTerm" node="element"/></field>
+        <field name="fullName" type="string"><bind-xml name="fullName" node="element"/></field>
+    </class>
+
+    <class name="gov.nih.nci.cabig.caaers.domain.DiseaseTerm">
+        <map-to xml="DiseaseTerm"/>
+        <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+        <field name="term" type="string"><bind-xml name="term" node="element"/></field>
+        <field name="ctepTerm" type="string"><bind-xml name="ctepTerm" node="element"/></field>
+        <field name="category" type="gov.nih.nci.cabig.caaers.domain.DiseaseCategory"><bind-xml name="DiseaseCategory" node="element"/></field>
+    </class>
+
+    <class name="gov.nih.nci.cabig.caaers.domain.DiseaseCategory">
     <map-to xml="DiseaseCategory"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
@@ -1525,6 +1492,8 @@
     <field name="design" type="gov.nih.nci.cabig.caaers.domain.Design"><bind-xml name="design"/></field>
     <field name="studyAgents" type="gov.nih.nci.cabig.caaers.domain.StudyAgent" collection="arraylist"><bind-xml name="StudyAgent"/></field>
     <field name="ctepStudyDiseases" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease" collection="arraylist"><bind-xml name="CtepStudyDisease"/></field>
+    <field name="meddraStudyDiseases" type="gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease" collection="arraylist"><bind-xml name="MeddraStudyDisease"/></field>
+    <field name="studyConditions" type="gov.nih.nci.cabig.caaers.domain.StudyCondition" collection="arraylist"><bind-xml name="StudyCondition"/></field>
     <field name="studyPurpose" type="string"><bind-xml name="studyPurpose" node="element"/></field>
   </class>
 

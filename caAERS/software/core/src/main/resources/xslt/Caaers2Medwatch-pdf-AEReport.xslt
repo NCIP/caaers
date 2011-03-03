@@ -681,14 +681,49 @@ this collection of information, including suggestions for reducing this burden t
 													</fo:block>
                                                     <fo:block>
                                                         <fo:inline font-size="6.5pt">
-                                                            For <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose"/> of
+                                                            <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose"/> of
                                                         </fo:inline>
                                                     </fo:block>
                                                     <fo:block>
                                                         <fo:inline font-size="6.5pt">
-                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
-                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
-                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
+
+                                                            <!-- CTC -->
+                                                            <xsl:choose>
+                                                                <xsl:when test="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease/leadDisease = 'true'">
+                                                                    <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease">
+                                                                        <xsl:if test="leadDisease = 'true'">
+                                                                            <xsl:value-of select="DiseaseTerm/ctepTerm" />
+                                                                        </xsl:if>
+                                                                    </xsl:for-each>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease">
+                                                                        <fo:block><xsl:value-of select="DiseaseTerm/ctepTerm" /></fo:block>
+                                                                    </xsl:for-each>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
+
+                                                            <!-- MEDDRA -->
+                                                            <xsl:choose>
+                                                                <xsl:when test="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/MeddraStudyDisease/leadDisease = 'true'">
+                                                                    <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/MeddraStudyDisease">
+                                                                        <xsl:if test="leadDisease = 'true'">
+                                                                            <xsl:value-of select="LowLevelTerm/meddraTerm" />
+                                                                        </xsl:if>
+                                                                    </xsl:for-each>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/MeddraStudyDisease">
+                                                                        <fo:block><xsl:value-of select="LowLevelTerm/meddraTerm" /></fo:block>
+                                                                    </xsl:for-each>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
+
+                                                            <!-- OTHER -->
+                                                            <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/StudyCondition">
+                                                                <fo:block><xsl:value-of select="Condition/conditionName" /></fo:block>
+                                                            </xsl:for-each>
+
                                                         </fo:inline>
                                                     </fo:block>
 												</fo:table-cell>
