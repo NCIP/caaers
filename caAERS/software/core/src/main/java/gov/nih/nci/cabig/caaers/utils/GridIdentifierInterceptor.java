@@ -21,17 +21,13 @@ public class GridIdentifierInterceptor extends EmptyInterceptor {
     // private GridIdentifierCreator gridIdentifierCreator = new CaBigGridIdentifierCreator();
     private GridIdentifierCreator gridIdentifierCreator;
 
-    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames,
-                    Type[] types) {
+    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
         boolean localMod = false;
         if (entity instanceof MutableDomainObject) {
             int gridIdIdx = findBigId(propertyNames);
-            if (gridIdIdx < 0) throw new CaaersError(
-                            "Object implements MutableDomainObject but doesn't have gridId property; class: "
-                                            + entity.getClass().getName());
+            if (gridIdIdx < 0) throw new CaaersError("Object implements MutableDomainObject but doesn't have gridId property; class: " + entity.getClass().getName());
             if (state[gridIdIdx] == null) {
-                state[gridIdIdx] = gridIdentifierCreator.getGridIdentifier(UUID.randomUUID()
-                                .toString());
+                state[gridIdIdx] = gridIdentifierCreator.getGridIdentifier(UUID.randomUUID().toString());
                 localMod = true;
             }
         }
