@@ -12,24 +12,28 @@
     <jsp:attribute name="title">
 		<c:out value="${not empty preExistingCondition.text ? preExistingCondition.text : otherValue }" />
 	</jsp:attribute>
-    <jsp:attribute name="titleFragment" />
+
+    <jsp:attribute name="titleFragment" >
+    <c:if test="${empty preExistingCondition.text && empty otherValue}">
+    <ui:row path="assignment.preExistingConditions[${index}]">
+        <jsp:attribute name="label">Pre-existing condition</jsp:attribute>
+        <jsp:attribute name="value">
+            <ui:select options="${preExistingConditionOptions}" path="assignment.preExistingConditions[${index}].preExistingCondition"></ui:select>&nbsp;
+                <c:set var="display" value="${empty preExistingCondition ? 'inline' : 'none'}" />
+                <span id="otherPreExistingCondition_${index}" style="display:none;">
+                    Other, specify <ui:text path="assignment.preExistingConditions[${index}].other"/>
+                </span>
+            <tags:errors path="assignment.preExistingConditions[${index}]"/>
+        </jsp:attribute>
+    </ui:row>
+    </c:if>
+    </jsp:attribute>
+
 
     <jsp:body>
 
+
 <%--<ae:fieldGroupDivision fieldGroupFactoryName="preExistingCondition" index="${index}" enableDelete="true" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions'">--%>
-<c:if test="${empty preExistingCondition.text && empty otherValue}">
-<ui:row path="assignment.preExistingConditions[${index}]">
-    <jsp:attribute name="label">Pre-existing condition</jsp:attribute>
-    <jsp:attribute name="value">
-        <ui:select options="${preExistingConditionOptions}" path="assignment.preExistingConditions[${index}].preExistingCondition"></ui:select>&nbsp;
-            <c:set var="display" value="${empty preExistingCondition ? 'inline' : 'none'}" />
-            <span id="otherPreExistingCondition_${index}" style="display:none;">
-                Other, specify <ui:text path="assignment.preExistingConditions[${index}].other"/>
-            </span>
-        <tags:errors path="assignment.preExistingConditions[${index}]"/>
-    </jsp:attribute>
-</ui:row>
-</c:if>
 <%--</ae:fieldGroupDivision>--%>
 
 <script language="JavaScript">

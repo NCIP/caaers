@@ -21,60 +21,62 @@
     </jsp:attribute>
 
     <jsp:attribute name="titleFragment">
+        <c:if test="${empty anatomicSite.name || (anatomicSite.id == 110 && empty otherSite)}">
+        <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
+            <jsp:attribute name="label">
+                <caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.codedSite" />
+            </jsp:attribute>
+            <jsp:attribute name="value">
+                <c:set var="initValue" value="${not empty anatomicSite.name ? anatomicSite.name : 'Begin typing here...'}"/>
+                <ui:autocompleter path="${siteField.propertyName}" readonly="false" mandatory="${siteField.attributes.mandatory}" displayNamePath="${siteField.propertyName}.name" initialDisplayValue="${initValue}" enableClearButton="true">
+                      <jsp:attribute name="populatorJS"> function(autocompleter, text) {
+                          createAE.matchAnatomicSite(text, function(values) {
+                          autocompleter.setChoices(values)
+                      })
+                      }
+                      </jsp:attribute>
+                    <jsp:attribute name="selectorJS"> function (obj) {
+                        return obj.name;
+                     }
+                    </jsp:attribute>
+                    <jsp:attribute name="optionsJS"> {
+                            afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                                var propertyName = "aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite";
+                                $(propertyName).value = selectedChoice.id;
+                                ValidationManager.setValidState($(propertyName + '-input'));
+
+                                setTitleMDS_${index}();
+                                if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
+                                    $('otherMetastaticDS_${index}').show();
+                                    value += " - " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value + "";
+                                    $('showALL${index}').hide();
+                                } else {
+                                    $('otherMetastaticDS_${index}').hide();
+                                    $('showALL${index}').show();
+                                }
+
+                            }
+                        }
+                    </jsp:attribute>
+
+                </ui:autocompleter>
+                &nbsp;
+                    <span id="otherMetastaticDS_${index}" style="display:none;">
+                            <%-- Other, Specify--%>
+                            &nbsp;<caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.otherSite" /> <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
+                    </span>
+                <span id="showALL${index}">
+                    <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
+                </span>
+            </jsp:attribute>
+        </ui:row>
+                </c:if>
+
 	</jsp:attribute>
 
     <jsp:body>
 
-<c:if test="${empty anatomicSite.name || (anatomicSite.id == 110 && empty otherSite)}">
-<ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
-    <jsp:attribute name="label">
-    </jsp:attribute>
-    <jsp:attribute name="value">
-        <c:set var="initValue" value="${not empty anatomicSite.name ? anatomicSite.name : 'Begin typing here...'}"/>
-        <ui:autocompleter path="${siteField.propertyName}" readonly="false" mandatory="${siteField.attributes.mandatory}" displayNamePath="${siteField.propertyName}.name" initialDisplayValue="${initValue}" enableClearButton="true">
-              <jsp:attribute name="populatorJS"> function(autocompleter, text) {
-                  createAE.matchAnatomicSite(text, function(values) {
-                  autocompleter.setChoices(values)
-              })
-              }
-              </jsp:attribute>
-            <jsp:attribute name="selectorJS"> function (obj) {
-                return obj.name;
-             }
-            </jsp:attribute>
-            <jsp:attribute name="optionsJS"> {
-                    afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                        var propertyName = "aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite";
-                        $(propertyName).value = selectedChoice.id;
-                        ValidationManager.setValidState($(propertyName + '-input'));
 
-                        setTitleMDS_${index}();
-                        if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
-                            $('otherMetastaticDS_${index}').show();
-                            value += " - " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value + "";
-                            $('showALL${index}').hide();
-                        } else {
-                            $('otherMetastaticDS_${index}').hide();
-                            $('showALL${index}').show();
-                        }
-
-                    }
-                }
-            </jsp:attribute>
-
-        </ui:autocompleter>
-        &nbsp;
-            <span id="otherMetastaticDS_${index}" style="display:none;">
-                    <%-- Other, Specify--%>
-                    &nbsp;<caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.otherSite" /> <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
-            </span>
-        <span id="showALL${index}">
-            <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
-        </span>
-    </jsp:attribute>
-</ui:row>
-        </c:if>
-        
     </jsp:body>
     
 </chrome:division>
@@ -92,7 +94,7 @@
             $('otherMetastaticDS_${index}').hide();
             $('showALL${index}').show();
         }
-        $(titleID).innerHTML = "${siteField.displayName}:&nbsp;" + value;
+        $(titleID).innerHTML = value;
     }
 
     Event.observe($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input"), "blur", function() {
