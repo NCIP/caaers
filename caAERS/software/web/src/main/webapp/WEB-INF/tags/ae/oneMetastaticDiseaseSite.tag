@@ -15,7 +15,7 @@
 <chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
 
     <jsp:attribute name="title">
-        <caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.codedSite" />:&nbsp;
+
 		${anatomicSite.name}
         <c:if test="${not empty otherSite}"> - ${otherSite}</c:if>
     </jsp:attribute>
