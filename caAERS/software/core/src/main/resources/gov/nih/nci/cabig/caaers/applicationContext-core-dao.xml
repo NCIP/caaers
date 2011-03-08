@@ -128,6 +128,11 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.BehavioralIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.BiologicalIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.GeneticIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherAEIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
@@ -312,6 +317,11 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.BehavioralIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.BiologicalIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.GeneticIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherAEIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>

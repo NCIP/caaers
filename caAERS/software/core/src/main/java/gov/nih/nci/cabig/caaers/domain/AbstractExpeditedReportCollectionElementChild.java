@@ -14,8 +14,7 @@ import javax.persistence.MappedSuperclass;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractExpeditedReportCollectionElementChild extends AbstractMutableDomainObject
-                implements ExpeditedAdverseEventReportChild {
+public class AbstractExpeditedReportCollectionElementChild extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild {
     
     /** The report. */
     private ExpeditedAdverseEventReport report;

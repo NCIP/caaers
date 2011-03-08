@@ -695,7 +695,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     /**
      * Will return the {@link StudyDevice}s that are not retired.
-     *
      * @return the active study radiations
      */
    @Transient
@@ -703,6 +702,51 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
        List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
        for(OtherIntervention oi : getOtherInterventions()){
            if(!oi.isRetired() &&  oi.getStudyTherapyType().equals(StudyTherapyType.RADIATION)) ois.add(oi);
+       }
+       return ois;
+   }
+
+   @Transient
+   public List<OtherIntervention> getActiveStudyBehavioralInterventions() {
+       List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
+       for(OtherIntervention oi : getOtherInterventions()){
+           if(!oi.isRetired() &&  oi.getStudyTherapyType().equals(StudyTherapyType.BEHAVIORAL)) ois.add(oi);
+       }
+       return ois;
+   }
+
+   @Transient
+   public List<OtherIntervention> getActiveStudyBiologicalInterventions() {
+       List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
+       for(OtherIntervention oi : getOtherInterventions()){
+           if(!oi.isRetired() &&  oi.getStudyTherapyType().equals(StudyTherapyType.BIOLOGICAL_VACCINE)) ois.add(oi);
+       }
+       return ois;
+   }
+
+   @Transient
+   public List<OtherIntervention> getActiveStudyGeneticInterventions() {
+       List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
+       for(OtherIntervention oi : getOtherInterventions()){
+           if(!oi.isRetired() &&  oi.getStudyTherapyType().equals(StudyTherapyType.GENETIC)) ois.add(oi);
+       }
+       return ois;
+   }
+
+   @Transient
+   public List<OtherIntervention> getActiveStudyDietaryInterventions() {
+       List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
+       for(OtherIntervention oi : getOtherInterventions()){
+           if(!oi.isRetired() &&  oi.getStudyTherapyType().equals(StudyTherapyType.DIETARY_SUPPLEMENT)) ois.add(oi);
+       }
+       return ois;
+   }
+
+   @Transient
+   public List<OtherIntervention> getActiveStudyOtherInterventions() {
+       List<OtherIntervention> ois = new ArrayList<OtherIntervention>();
+       for(OtherIntervention oi : getOtherInterventions()){
+           if(!oi.isRetired() &&  oi.getStudyTherapyType().equals(StudyTherapyType.OTHER)) ois.add(oi);
        }
        return ois;
    }
@@ -873,8 +917,28 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      * @return true, if is behavioral present
      */
     @Transient
-    public boolean isBehavioralPresent() {
+    public boolean isBehavioralInterventionPresent() {
         return this.hasTherapyOfType(StudyTherapyType.BEHAVIORAL);
+    }
+
+    @Transient
+    public boolean isBiologicalInterventionPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.BIOLOGICAL_VACCINE);
+    }
+
+    @Transient
+    public boolean isGeneticInterventionPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.GENETIC);
+    }
+
+    @Transient
+    public boolean isDietaryInterventionPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.DIETARY_SUPPLEMENT);
+    }
+
+    @Transient
+    public boolean isOtherInterventionPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.OTHER);
     }
 
     /**
@@ -1481,12 +1545,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         if(isSurgeryPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.SURGERY));
         if(isDevicePresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DEVICE));
         if(isRadiationPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.RADIATION));
-        if(isBehavioralPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.BEHAVIORAL));
+        if(isBehavioralInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.BEHAVIORAL));
         if(isDrugAdministrationPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DRUG_ADMINISTRATION));
-        if(hasTherapyOfType(StudyTherapyType.DIETARY_SUPPLEMENT)) therapies.add(new StudyTherapy(this, StudyTherapyType.DIETARY_SUPPLEMENT));
-        if(hasTherapyOfType(StudyTherapyType.GENETIC)) therapies.add(new StudyTherapy(this, StudyTherapyType.GENETIC));
-        if(hasTherapyOfType(StudyTherapyType.BIOLOGICAL_VACCINE)) therapies.add(new StudyTherapy(this, StudyTherapyType.BIOLOGICAL_VACCINE));
-        if(hasTherapyOfType(StudyTherapyType.OTHER)) therapies.add(new StudyTherapy(this, StudyTherapyType.OTHER));
+        if(isDietaryInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DIETARY_SUPPLEMENT));
+        if(isGeneticInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.GENETIC));
+        if(isGeneticInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.BIOLOGICAL_VACCINE));
+        if(isOtherInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.OTHER));
         
         return therapies;
     }

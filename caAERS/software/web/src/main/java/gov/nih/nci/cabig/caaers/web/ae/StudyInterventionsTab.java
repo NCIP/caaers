@@ -43,6 +43,7 @@ public class StudyInterventionsTab extends AeTab {
     private static final String STUDY_INTERVENTION_DEVICE = "device";
     private static final String STUDY_INTERVENTION_RADIATION = "radiation";
     private static final String STUDY_INTERVENTION_AGENT = "agent";
+    private static final String STUDY_INTERVENTION_BEHAVIORAL = "behavioral";
 
     public StudyInterventionsTab() {
         super("Study Interventions", ExpeditedReportSection.STUDY_INTERVENTIONS.getDisplayName(), "ae/studyInterventions");
@@ -54,6 +55,8 @@ public class StudyInterventionsTab extends AeTab {
         methodNameMap.put("remove" + STUDY_INTERVENTION_DEVICE, "removeDevice");        
         methodNameMap.put("add" + STUDY_INTERVENTION_AGENT, "addAgent");
         methodNameMap.put("remove" + STUDY_INTERVENTION_AGENT, "removeAgent");        
+        methodNameMap.put("add" + STUDY_INTERVENTION_BEHAVIORAL, "addBehavioral");
+        methodNameMap.put("remove" + STUDY_INTERVENTION_BEHAVIORAL, "removeBehavioral");
     }
     
     @Override
@@ -113,6 +116,23 @@ public class StudyInterventionsTab extends AeTab {
                 InputFieldFactory.createAutocompleterField("interventionSite", "Intervention site", true),
                 InputFieldFactory.createPastDateField("interventionDate", "Date of intervention", false),
                 studySurgeriesField);
+    }
+
+    private void createOtherInterventionsFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+        InputField studyBehavioralsField = InputFieldFactory.createSelectField("studyBehavioral", "Study behavioral", true, WebUtils.collectOptions(command.getStudy().getActiveStudyBehavioralInterventions(), "id", "name", "Please select"));
+        creator.createRepeatingFieldGroup("behavioralIntervention", "behavioralInterventions", new SimpleNumericDisplayNameCreator("Behavioral"), studyBehavioralsField);
+
+        InputField studyBiologicalsField = InputFieldFactory.createSelectField("studyBiological", "Study biological", true, WebUtils.collectOptions(command.getStudy().getActiveStudyBiologicalInterventions(), "id", "name", "Please select"));
+        creator.createRepeatingFieldGroup("biologicalIntervention", "biologicalInterventions", new SimpleNumericDisplayNameCreator("Biological"), studyBiologicalsField);
+
+        InputField studyGeneticsField = InputFieldFactory.createSelectField("studyGenetic", "Study genetic", true, WebUtils.collectOptions(command.getStudy().getActiveStudyGeneticInterventions(), "id", "name", "Please select"));
+        creator.createRepeatingFieldGroup("geneticIntervention", "geneticInterventions", new SimpleNumericDisplayNameCreator("Genetic"), studyGeneticsField);
+
+        InputField studyDietaryField = InputFieldFactory.createSelectField("studyDietary", "Study dietary", true, WebUtils.collectOptions(command.getStudy().getActiveStudyDietaryInterventions(), "id", "name", "Please select"));
+        creator.createRepeatingFieldGroup("dietaryIntervention", "dietaryInterventions", new SimpleNumericDisplayNameCreator("Dietary"), studyDietaryField);
+
+        InputField studyOtherInterventionsField = InputFieldFactory.createSelectField("studyOther", "Study other", true, WebUtils.collectOptions(command.getStudy().getActiveStudyOtherInterventions(), "id", "name", "Please select"));
+        creator.createRepeatingFieldGroup("otherAEIntervention", "otherAEInterventions", new SimpleNumericDisplayNameCreator("Other"), studyOtherInterventionsField);
     }
 
     private void createAgentFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
@@ -206,6 +226,7 @@ public class StudyInterventionsTab extends AeTab {
         createRadiationFieldGroups(creator, command);
         createSurgeryFieldGroups(creator, command);
         createAgentFieldGroups(creator, command);
+        createOtherInterventionsFieldGroups(creator, command);
     }
 
     @Override
@@ -251,6 +272,20 @@ public class StudyInterventionsTab extends AeTab {
         ModelAndView modelAndView = new ModelAndView("ae/ajax/surgeryInterventionFormSection");
         modelAndView.getModel().put("surgeries", surgeries);
         modelAndView.getModel().put("indexes", new Integer[]{surgeries.size() - 1});
+        return modelAndView;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    public ModelAndView addBehavioral(HttpServletRequest request, Object command, Errors errors) {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        BehavioralIntervention si = new BehavioralIntervention();
+        List<BehavioralIntervention> behaviorals = cmd.getAeReport().getBehavioralInterventions();
+        cmd.getAeReport().addBehavioralIntervention(si);
+        si.setReport(cmd.getAeReport());
+        ModelAndView modelAndView = new ModelAndView("ae/ajax/behavioralInterventionFormSection");
+        modelAndView.getModel().put("behaviorals", behaviorals);
+        modelAndView.getModel().put("indexes", new Integer[]{behaviorals.size() - 1});
         return modelAndView;
     }
 
@@ -315,7 +350,7 @@ public class StudyInterventionsTab extends AeTab {
         } else if (index >=0) {
             SurgeryIntervention object = (SurgeryIntervention)surgeries.get(index);
             surgeries.remove(object);
-            deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);        
+            deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
         }
 
         int size = surgeries.size();
@@ -326,7 +361,41 @@ public class StudyInterventionsTab extends AeTab {
         ModelAndView modelAndView = new ModelAndView("ae/ajax/surgeryInterventionFormSection");
         modelAndView.getModel().put("surgeries", surgeries);
         modelAndView.getModel().put("indexes", indexes);
-        
+
+        return modelAndView;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    public ModelAndView removeBehavioral(HttpServletRequest request, Object command, Errors errors) {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        List<BehavioralIntervention> bs = cmd.getAeReport().getBehavioralInterventions();
+
+        int index;
+        try {
+            index = Integer.parseInt(request.getParameter("index"));
+        } catch (NumberFormatException e) {
+            index = -1;
+            log.debug("Wrong <index> for <behaviorals> list: " + e.getMessage());
+        }
+
+        if (bs.size() - 1 < index) {
+            log.debug("Wrong <index> for <behaviorals> list.");
+        } else if (index >=0) {
+            BehavioralIntervention object = (BehavioralIntervention)bs.get(index);
+            bs.remove(object);
+            deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+        }
+
+        int size = bs.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++) {
+    		indexes[i] = size - (i + 1);
+    	}
+        ModelAndView modelAndView = new ModelAndView("ae/ajax/behavioralInterventionFormSection");
+        modelAndView.getModel().put("behaviorals", bs);
+        modelAndView.getModel().put("indexes", indexes);
+
         return modelAndView;
     }
 

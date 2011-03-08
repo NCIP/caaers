@@ -121,6 +121,9 @@ function updateMedicalDevice(i, studyDeviceId){
     function addSurgery() {
         interventionInstance._addItem('surgery', null, null, '_surgeries');
     }
+    function addBehavioral() {
+        interventionInstance._addItem('behavioral', null, null, '_behaviorals');
+    }
 
     function fireAction(itemType, index, location, elementId, css) {
         interventionInstance._deleteItem(itemType, index, location);
@@ -204,7 +207,11 @@ function updateMedicalDevice(i, studyDeviceId){
 <c:set var="hasDevice" value="${command.study.devicePresent}" />
 <c:set var="hasRadiation" value="${command.study.radiationPresent}" />
 <c:set var="hasAgent" value="${command.study.drugAdministrationPresent}" />
-<c:set var="hasBehavioral" value="${command.study.behavioralPresent}" />
+<c:set var="hasBehavioral" value="${command.study.behavioralInterventionPresent}" />
+<c:set var="hasBiological" value="${command.study.biologicalInterventionPresent}" />
+<c:set var="hasGenetic" value="${command.study.geneticInterventionPresent}" />
+<c:set var="hasDietary" value="${command.study.dietaryInterventionPresent}" />
+<c:set var="hasOther" value="${command.study.otherInterventionPresent}" />
 
 <div class="row">
     <div class="summarylabel">Treatment</div>
@@ -297,6 +304,44 @@ function updateMedicalDevice(i, studyDeviceId){
         </chrome:box>
     </c:if>
 	
+    <c:if test="${hasBehavioral}">
+        <chrome:box title="Behaviorals" collapsable="true">
+            <jsp:attribute name="additionalTitle"/>
+            <jsp:body>
+                <div style="padding-left:20px;">
+                    <tags:button cssClass="foo" id="btn-add-behavioral" color="blue" value="Add" icon="Add" type="button" onclick="addBehavioral();" size="small"/>
+                    <tags:indicator id="behavioral_AjaxIndicator" />
+                <div id="_behaviorals">
+                    <c:set var="size" value="${fn:length(command.aeReport.behavioralInterventions)}" />
+                    <c:forEach items="${command.aeReport.behavioralInterventions}" varStatus="status" var="behavioral">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <ae:oneBehavioralIntervention index="${newIndex}" behavioral="${behavioral}" collapsed="true"/>
+                    </c:forEach>
+                </div>
+                </div>
+            </jsp:body>
+        </chrome:box>
+    </c:if>
+
+    <c:if test="${hasBiological}">
+        <chrome:box title="Biologicals" collapsable="true">
+            <jsp:attribute name="additionalTitle"/>
+            <jsp:body>
+                <div style="padding-left:20px;">
+                    <tags:button cssClass="foo" id="btn-add-behavioral" color="blue" value="Add" icon="Add" type="button" onclick="addBehavioral();" size="small"/>
+                    <tags:indicator id="biological_AjaxIndicator" />
+                <div id="_behaviorals">
+                    <c:set var="size" value="${fn:length(command.aeReport.behavioralInterventions)}" />
+                    <c:forEach items="${command.aeReport.behavioralInterventions}" varStatus="status" var="behavioral">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <ae:oneBehavioralIntervention index="${newIndex}" behavioral="${behavioral}" collapsed="true"/>
+                    </c:forEach>
+                </div>
+                </div>
+            </jsp:body>
+        </chrome:box>
+    </c:if>
+
 <%--
     <c:if test="${hasBehavioral}">
         <chrome:box title="Behavioral" collapsable="true"></chrome:box>

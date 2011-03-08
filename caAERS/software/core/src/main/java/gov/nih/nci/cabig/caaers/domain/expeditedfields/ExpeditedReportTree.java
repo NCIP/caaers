@@ -100,6 +100,27 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("interventionDate", getMessage("LBL_aeReport.surgeryInterventions.interventionDate", "Date of intervention"))
                             )
                         ),
+
+                        section(BEHAVIORAL_INTERVENTION_SECTION,
+                        	list("behavioralInterventions", "BehavioralIntervention")
+                        ),
+
+                        section(BIOLOGICAL_INTERVENTION_SECTION,
+                        	list("biologicalInterventions", "BiologicalIntervention")
+                        ),
+
+                        section(GENETIC_INTERVENTION_SECTION,
+                        	list("geneticInterventions", "GeneticIntervention")
+                        ),
+
+                        section(DIETARY_INTERVENTION_SECTION,
+                        	list("dietaryInterventions", "DietarySupplementalIntervention")
+                        ),
+
+                        section(OTHER_AE_INTERVENTION_SECTION,
+                        	list("otherAEInterventions", "OtherAEIntervention")
+                        ),
+
                         section(MEDICAL_DEVICE_SECTION,
 //                        	list("medicalDevices", getMessage("LBL_aeReport.medicalDevices.title", "MedicalDevice"),
                         	list("medicalDevices", "MedicalDevice",

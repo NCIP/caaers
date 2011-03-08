@@ -99,6 +99,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         addReportChildLazyList(MedicalDevice.class);
         addReportChildLazyList(RadiationIntervention.class);
         addReportChildLazyList(SurgeryIntervention.class);
+        addReportChildLazyList(BehavioralIntervention.class);
+        addReportChildLazyList(GeneticIntervention.class);
+        addReportChildLazyList(BiologicalIntervention.class);
+        addReportChildLazyList(DietarySupplementIntervention.class);
+        addReportChildLazyList(OtherAEIntervention.class);
         addReportChildLazyList(ConcomitantMedication.class);
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(SAEReportPriorTherapy.class);
@@ -447,6 +452,31 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if (surgeryIntervention != null) surgeryIntervention.setReport(this);
     }
 
+    public void addBehavioralIntervention(BehavioralIntervention i) {
+        getBehavioralInterventionsInternal().add(i);
+        if (i != null) i.setReport(this);
+    }
+
+    public void addBilogicalIntervention(BiologicalIntervention i) {
+        getBiologicalInterventionsInternal().add(i);
+        if (i != null) i.setReport(this);
+    }
+
+    public void addGeneticIntervention(GeneticIntervention i) {
+        getGeneticInterventionsInternal().add(i);
+        if (i != null) i.setReport(this);
+    }
+
+    public void addDietarySupplementalIntervention(DietarySupplementIntervention i) {
+        getDietarySupplementInterventionsInternal().add(i);
+        if (i != null) i.setReport(this);
+    }
+
+    public void addOtherAEIntervention(OtherAEIntervention i) {
+        getOtherAEInterventionsInternal().add(i);
+        if (i != null) i.setReport(this);
+    }
+
     /**
      * Gets the surgery interventions.
      *
@@ -457,6 +487,30 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getLazyList(SurgeryIntervention.class);
     }
 
+    @Transient
+    public List<BehavioralIntervention> getBehavioralInterventions() {
+        return lazyListHelper.getLazyList(BehavioralIntervention.class);
+    }
+
+    @Transient
+    public List<BiologicalIntervention> getBiologicalInterventions() {
+        return lazyListHelper.getLazyList(BiologicalIntervention.class);
+    }
+
+    @Transient
+    public List<GeneticIntervention> getGeneticInterventions() {
+        return lazyListHelper.getLazyList(GeneticIntervention.class);
+    }
+
+    @Transient
+    public List<DietarySupplementIntervention> getDietaryInterventions() {
+        return lazyListHelper.getLazyList(DietarySupplementIntervention.class);
+    }
+
+    @Transient
+    public List<OtherAEIntervention> getOtherAEInterventions() {
+        return lazyListHelper.getLazyList(OtherAEIntervention.class);
+    }
 
     /**
      * Adds the concomitant medication.
@@ -684,6 +738,51 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return lazyListHelper.getInternalList(SurgeryIntervention.class);
     }
 
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    protected List<BehavioralIntervention> getBehavioralInterventionsInternal() {
+        return lazyListHelper.getInternalList(BehavioralIntervention.class);
+    }
+
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    protected List<BiologicalIntervention> getBiologicalInterventionsInternal() {
+        return lazyListHelper.getInternalList(BiologicalIntervention.class);
+    }
+
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    protected List<GeneticIntervention> getGeneticInterventionsInternal() {
+        return lazyListHelper.getInternalList(GeneticIntervention.class);
+    }
+
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    protected List<DietarySupplementIntervention> getDietarySupplementInterventionsInternal() {
+        return lazyListHelper.getInternalList(DietarySupplementIntervention.class);
+    }
+
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    protected List<OtherAEIntervention> getOtherAEInterventionsInternal() {
+        return lazyListHelper.getInternalList(OtherAEIntervention.class);
+    }
+
     /**
      * Sets the surgery interventions internal.
      *
@@ -691,6 +790,26 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      */
     protected void setSurgeryInterventionsInternal(List<SurgeryIntervention> surgeryInterventionsInternal) {
         lazyListHelper.setInternalList(SurgeryIntervention.class, surgeryInterventionsInternal);
+    }
+
+    protected void setBehavioralInterventionsInternal(List<BehavioralIntervention> l) {
+        lazyListHelper.setInternalList(BehavioralIntervention.class, l);
+    }
+
+    protected void setBiologicalInterventionsInternal(List<BiologicalIntervention> l) {
+        lazyListHelper.setInternalList(BiologicalIntervention.class, l);
+    }
+
+    protected void setGeneticInterventionsInternal(List<GeneticIntervention> l) {
+        lazyListHelper.setInternalList(GeneticIntervention.class, l);
+    }
+
+    protected void setDietarySupplementInterventionsInternal(List<DietarySupplementIntervention> l) {
+        lazyListHelper.setInternalList(DietarySupplementIntervention.class, l);
+    }
+
+    protected void setOtherAEInterventionsInternal(List<OtherAEIntervention> l) {
+        lazyListHelper.setInternalList(OtherAEIntervention.class, l);
     }
 
     // This is annotated this way so that the IndexColumn will work with

@@ -23,7 +23,13 @@ public enum ExpeditedReportSection {
     
     /** The SURGER y_ interventio n_ section. */
     SURGERY_INTERVENTION_SECTION("Surgery"),
-    
+
+    BEHAVIORAL_INTERVENTION_SECTION("Behavioral"),
+    BIOLOGICAL_INTERVENTION_SECTION("Biological"),
+    GENETIC_INTERVENTION_SECTION("Genetic"),
+    DIETARY_INTERVENTION_SECTION("Dietary"),
+    OTHER_AE_INTERVENTION_SECTION("Other"),
+
     /** The MEDICA l_ devic e_ section. */
     MEDICAL_DEVICE_SECTION("Device", true),
     
