@@ -44,6 +44,10 @@ public class StudyInterventionsTab extends AeTab {
     private static final String STUDY_INTERVENTION_RADIATION = "radiation";
     private static final String STUDY_INTERVENTION_AGENT = "agent";
     private static final String STUDY_INTERVENTION_BEHAVIORAL = "behavioral";
+    private static final String STUDY_INTERVENTION_BIOLOGICAL = "biological";
+    private static final String STUDY_INTERVENTION_GENETIC = "genetic";
+    private static final String STUDY_INTERVENTION_DIETARY = "dietary";
+    private static final String STUDY_INTERVENTION_OTHERAE= "otherAE";
 
     public StudyInterventionsTab() {
         super("Study Interventions", ExpeditedReportSection.STUDY_INTERVENTIONS.getDisplayName(), "ae/studyInterventions");
@@ -57,6 +61,14 @@ public class StudyInterventionsTab extends AeTab {
         methodNameMap.put("remove" + STUDY_INTERVENTION_AGENT, "removeAgent");        
         methodNameMap.put("add" + STUDY_INTERVENTION_BEHAVIORAL, "addBehavioral");
         methodNameMap.put("remove" + STUDY_INTERVENTION_BEHAVIORAL, "removeBehavioral");
+        methodNameMap.put("add" + STUDY_INTERVENTION_BIOLOGICAL, "addBehavioral");
+        methodNameMap.put("remove" + STUDY_INTERVENTION_BIOLOGICAL, "removeBehavioral");
+        methodNameMap.put("add" + STUDY_INTERVENTION_GENETIC, "addGenetic");
+        methodNameMap.put("remove" + STUDY_INTERVENTION_GENETIC, "removeGenetic");
+        methodNameMap.put("add" + STUDY_INTERVENTION_DIETARY, "addDietary");
+        methodNameMap.put("remove" + STUDY_INTERVENTION_DIETARY, "removeDietary");
+        methodNameMap.put("add" + STUDY_INTERVENTION_OTHERAE, "addOtherAE");
+        methodNameMap.put("remove" + STUDY_INTERVENTION_OTHERAE, "removeOtherAE");
     }
     
     @Override
@@ -119,19 +131,19 @@ public class StudyInterventionsTab extends AeTab {
     }
 
     private void createOtherInterventionsFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-        InputField studyBehavioralsField = InputFieldFactory.createSelectField("studyBehavioral", "Study behavioral", true, WebUtils.collectOptions(command.getStudy().getActiveStudyBehavioralInterventions(), "id", "name", "Please select"));
+        InputField studyBehavioralsField = InputFieldFactory.createSelectField("studyIntervention", "Study behavioral", true, WebUtils.collectOptions(command.getStudy().getActiveStudyBehavioralInterventions(), "id", "name", "Please select"));
         creator.createRepeatingFieldGroup("behavioralIntervention", "behavioralInterventions", new SimpleNumericDisplayNameCreator("Behavioral"), studyBehavioralsField);
 
-        InputField studyBiologicalsField = InputFieldFactory.createSelectField("studyBiological", "Study biological", true, WebUtils.collectOptions(command.getStudy().getActiveStudyBiologicalInterventions(), "id", "name", "Please select"));
+        InputField studyBiologicalsField = InputFieldFactory.createSelectField("studyIntervention", "Study biological", true, WebUtils.collectOptions(command.getStudy().getActiveStudyBiologicalInterventions(), "id", "name", "Please select"));
         creator.createRepeatingFieldGroup("biologicalIntervention", "biologicalInterventions", new SimpleNumericDisplayNameCreator("Biological"), studyBiologicalsField);
 
-        InputField studyGeneticsField = InputFieldFactory.createSelectField("studyGenetic", "Study genetic", true, WebUtils.collectOptions(command.getStudy().getActiveStudyGeneticInterventions(), "id", "name", "Please select"));
+        InputField studyGeneticsField = InputFieldFactory.createSelectField("studyIntervention", "Study genetic", true, WebUtils.collectOptions(command.getStudy().getActiveStudyGeneticInterventions(), "id", "name", "Please select"));
         creator.createRepeatingFieldGroup("geneticIntervention", "geneticInterventions", new SimpleNumericDisplayNameCreator("Genetic"), studyGeneticsField);
 
-        InputField studyDietaryField = InputFieldFactory.createSelectField("studyDietary", "Study dietary", true, WebUtils.collectOptions(command.getStudy().getActiveStudyDietaryInterventions(), "id", "name", "Please select"));
+        InputField studyDietaryField = InputFieldFactory.createSelectField("studyIntervention", "Study dietary", true, WebUtils.collectOptions(command.getStudy().getActiveStudyDietaryInterventions(), "id", "name", "Please select"));
         creator.createRepeatingFieldGroup("dietaryIntervention", "dietaryInterventions", new SimpleNumericDisplayNameCreator("Dietary"), studyDietaryField);
 
-        InputField studyOtherInterventionsField = InputFieldFactory.createSelectField("studyOther", "Study other", true, WebUtils.collectOptions(command.getStudy().getActiveStudyOtherInterventions(), "id", "name", "Please select"));
+        InputField studyOtherInterventionsField = InputFieldFactory.createSelectField("studyIntervention", "Study other", true, WebUtils.collectOptions(command.getStudy().getActiveStudyOtherInterventions(), "id", "name", "Please select"));
         creator.createRepeatingFieldGroup("otherAEIntervention", "otherAEInterventions", new SimpleNumericDisplayNameCreator("Other"), studyOtherInterventionsField);
     }
 
@@ -289,6 +301,54 @@ public class StudyInterventionsTab extends AeTab {
         return modelAndView;
     }
 
+     public ModelAndView addBiological(HttpServletRequest request, Object command, Errors errors) {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        BiologicalIntervention si = new BiologicalIntervention();
+        List<BiologicalIntervention> biologicals = cmd.getAeReport().getBiologicalInterventions();
+        cmd.getAeReport().addBilogicalIntervention(si);
+        si.setReport(cmd.getAeReport());
+        ModelAndView modelAndView = new ModelAndView("ae/ajax/biologicalInterventionFormSection");
+        modelAndView.getModel().put("biologicals", biologicals);
+        modelAndView.getModel().put("indexes", new Integer[]{biologicals.size() - 1});
+        return modelAndView;
+    }
+
+    public ModelAndView addDietary(HttpServletRequest request, Object command, Errors errors) {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        DietarySupplementIntervention si = new DietarySupplementIntervention();
+        List<DietarySupplementIntervention> dietaries = cmd.getAeReport().getDietaryInterventions();
+        cmd.getAeReport().addDietarySupplementalIntervention(si);
+        si.setReport(cmd.getAeReport());
+        ModelAndView modelAndView = new ModelAndView("ae/ajax/dietaryInterventionFormSection");
+        modelAndView.getModel().put("dietaries", dietaries);
+        modelAndView.getModel().put("indexes", new Integer[]{dietaries.size() - 1});
+        return modelAndView;
+    }
+
+    public ModelAndView addGenetic(HttpServletRequest request, Object command, Errors errors) {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        GeneticIntervention si = new GeneticIntervention();
+        List<GeneticIntervention> genetics = cmd.getAeReport().getGeneticInterventions();
+        cmd.getAeReport().addGeneticIntervention(si);
+        si.setReport(cmd.getAeReport());
+        ModelAndView modelAndView = new ModelAndView("ae/ajax/geneticInterventionFormSection");
+        modelAndView.getModel().put("genetics", genetics);
+        modelAndView.getModel().put("indexes", new Integer[]{genetics.size() - 1});
+        return modelAndView;
+    }
+
+    public ModelAndView addOtherAE(HttpServletRequest request, Object command, Errors errors) {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        OtherAEIntervention si = new OtherAEIntervention();
+        List<OtherAEIntervention> otherAEInterventions = cmd.getAeReport().getOtherAEInterventions();
+        cmd.getAeReport().addOtherAEIntervention(si);
+        si.setReport(cmd.getAeReport());
+        ModelAndView modelAndView = new ModelAndView("ae/ajax/otherAEInterventionFormSection");
+        modelAndView.getModel().put("otherAEInterventions", otherAEInterventions);
+        modelAndView.getModel().put("indexes", new Integer[]{otherAEInterventions.size() - 1});
+        return modelAndView;
+    }
+
     // ----------------------------------------------------------------------------------------------------------------
 
     public ModelAndView addRadiation(HttpServletRequest request, Object command, Errors errors) {
@@ -398,6 +458,139 @@ public class StudyInterventionsTab extends AeTab {
 
         return modelAndView;
     }
+
+    public ModelAndView removeBiological(HttpServletRequest request, Object command, Errors errors) {
+            ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+            List<BiologicalIntervention> bs = cmd.getAeReport().getBiologicalInterventions();
+
+            int index;
+            try {
+                index = Integer.parseInt(request.getParameter("index"));
+            } catch (NumberFormatException e) {
+                index = -1;
+                log.debug("Wrong <index> for <biologicals> list: " + e.getMessage());
+            }
+
+            if (bs.size() - 1 < index) {
+                log.debug("Wrong <index> for <biologicals> list.");
+            } else if (index >=0) {
+                BiologicalIntervention object = (BiologicalIntervention)bs.get(index);
+                bs.remove(object);
+                deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+            }
+
+            int size = bs.size();
+            Integer[] indexes = new Integer[size];
+            for(int i = 0 ; i < size ; i++) {
+                indexes[i] = size - (i + 1);
+            }
+            ModelAndView modelAndView = new ModelAndView("ae/ajax/biologicalInterventionFormSection");
+            modelAndView.getModel().put("biologicals", bs);
+            modelAndView.getModel().put("indexes", indexes);
+
+            return modelAndView;
+        }
+
+
+
+
+
+    public ModelAndView removeDietary(HttpServletRequest request, Object command, Errors errors) {
+               ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+               List<DietarySupplementIntervention> bs = cmd.getAeReport().getDietaryInterventions();
+
+               int index;
+               try {
+                   index = Integer.parseInt(request.getParameter("index"));
+               } catch (NumberFormatException e) {
+                   index = -1;
+                   log.debug("Wrong <index> for <dietaries> list: " + e.getMessage());
+               }
+
+               if (bs.size() - 1 < index) {
+                   log.debug("Wrong <index> for <dietaries> list.");
+               } else if (index >=0) {
+                   DietarySupplementIntervention object = (DietarySupplementIntervention)bs.get(index);
+                   bs.remove(object);
+                   deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+               }
+
+               int size = bs.size();
+               Integer[] indexes = new Integer[size];
+               for(int i = 0 ; i < size ; i++) {
+                   indexes[i] = size - (i + 1);
+               }
+               ModelAndView modelAndView = new ModelAndView("ae/ajax/dietaryInterventionFormSection");
+               modelAndView.getModel().put("dietaries", bs);
+               modelAndView.getModel().put("indexes", indexes);
+
+               return modelAndView;
+           }
+
+    public ModelAndView removeGenetic(HttpServletRequest request, Object command, Errors errors) {
+                ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+                List<GeneticIntervention> bs = cmd.getAeReport().getGeneticInterventions();
+
+                int index;
+                try {
+                    index = Integer.parseInt(request.getParameter("index"));
+                } catch (NumberFormatException e) {
+                    index = -1;
+                    log.debug("Wrong <index> for <genetics> list: " + e.getMessage());
+                }
+
+                if (bs.size() - 1 < index) {
+                    log.debug("Wrong <index> for genetics> list.");
+                } else if (index >=0) {
+                    GeneticIntervention object = (GeneticIntervention)bs.get(index);
+                    bs.remove(object);
+                    deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+                }
+
+                int size = bs.size();
+                Integer[] indexes = new Integer[size];
+                for(int i = 0 ; i < size ; i++) {
+                    indexes[i] = size - (i + 1);
+                }
+                ModelAndView modelAndView = new ModelAndView("ae/ajax/geneticInterventionFormSection");
+                modelAndView.getModel().put("genetics", bs);
+                modelAndView.getModel().put("indexes", indexes);
+
+                return modelAndView;
+            }
+
+
+    public ModelAndView removeOtherAE(HttpServletRequest request, Object command, Errors errors) {
+                ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+                List<OtherAEIntervention> bs = cmd.getAeReport().getOtherAEInterventions();
+
+                int index;
+                try {
+                    index = Integer.parseInt(request.getParameter("index"));
+                } catch (NumberFormatException e) {
+                    index = -1;
+                    log.debug("Wrong <index> for <otherAEinterventions> list: " + e.getMessage());
+                }
+
+                if (bs.size() - 1 < index) {
+                    log.debug("Wrong <index> for genetics> list.");
+                } else if (index >=0) {
+                   OtherAEIntervention object = (OtherAEIntervention)bs.get(index);
+                    bs.remove(object);
+                    deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+                }
+
+                int size = bs.size();
+                Integer[] indexes = new Integer[size];
+                for(int i = 0 ; i < size ; i++) {
+                    indexes[i] = size - (i + 1);
+                }
+                ModelAndView modelAndView = new ModelAndView("ae/ajax/otherAEInterventionFormSection");
+                modelAndView.getModel().put("otherAEInterventions", bs);
+                modelAndView.getModel().put("indexes", indexes);
+
+                return modelAndView;
+            }
 
     // ----------------------------------------------------------------------------------------------------------------
 

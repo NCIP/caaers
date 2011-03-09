@@ -2,8 +2,8 @@
 
 <tags:noform>
     <c:forEach items="${indexes}" var="index" varStatus="i">
-        <c:set var="surgery" value="${surgeries[index]}" />
-        <ae:oneBiologicalIntervention index="${index}" behavioral="${behavioral}" collapsed="${fn:length(indexes) > 1}"/>
+        <c:set var="otherAEIntervention" value="${otherAEInterventions[index]}" />
+        <ae:oneOtherAEIntervention index="${index}" otherAE = "${otherAEIntervention}" collapsed="${fn:length(indexes) > 1}"/>
     </c:forEach>
 </tags:noform>
 

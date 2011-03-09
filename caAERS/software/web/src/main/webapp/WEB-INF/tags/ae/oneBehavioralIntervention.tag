@@ -16,7 +16,7 @@
 <ae:fieldGroupDivision fieldGroupFactoryName="behavioralIntervention" index="${index}" enableDelete="true" deleteParams="'behavioral', ${index}, '_behaviorals'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.behavioralInterventions[${index}]"/>
 
-    <ui:row path="aeReport.surgeryInterventions[${index}].studySurgery">
+    <ui:row path="aeReport.behavioralInterventions[${index}].studyIntervention">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" mandatory="${fieldGroup.fields[0].attributes.mandatory}" required="true"/></jsp:attribute>
          <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[0].propertyName}" options="${fieldGroup.fields[0].attributes.options}" field="${fieldGroup.fields[0]}"/></jsp:attribute>
     </ui:row>

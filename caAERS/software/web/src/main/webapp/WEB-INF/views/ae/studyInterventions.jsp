@@ -125,6 +125,22 @@ function updateMedicalDevice(i, studyDeviceId){
         interventionInstance._addItem('behavioral', null, null, '_behaviorals');
     }
 
+    function addBiological() {
+        interventionInstance._addItem('biological', null, null, '_biologicals');
+    }
+
+    function addGenetic() {
+        interventionInstance._addItem('genetic', null, null, '_genetics');
+    }
+
+    function addDietary() {
+        interventionInstance._addItem('dietary', null, null, '_dietaries');
+    }
+
+    function addOtherAE() {
+        interventionInstance._addItem('otherAE', null, null, '_otherAEs');
+    }
+
     function fireAction(itemType, index, location, elementId, css) {
         interventionInstance._deleteItem(itemType, index, location);
     }
@@ -328,19 +344,78 @@ function updateMedicalDevice(i, studyDeviceId){
             <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
-                    <tags:button cssClass="foo" id="btn-add-behavioral" color="blue" value="Add" icon="Add" type="button" onclick="addBehavioral();" size="small"/>
+                    <tags:button cssClass="foo" id="btn-add-biological" color="blue" value="Add" icon="Add" type="button" onclick="addBiological();" size="small"/>
                     <tags:indicator id="biological_AjaxIndicator" />
-                <div id="_behaviorals">
-                    <c:set var="size" value="${fn:length(command.aeReport.behavioralInterventions)}" />
-                    <c:forEach items="${command.aeReport.behavioralInterventions}" varStatus="status" var="behavioral">
+                <div id="_biologicals">
+                    <c:set var="size" value="${fn:length(command.aeReport.biologicalInterventions)}" />
+                    <c:forEach items="${command.aeReport.biologicalInterventions}" varStatus="status" var="biological">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                        <ae:oneBehavioralIntervention index="${newIndex}" behavioral="${behavioral}" collapsed="true"/>
+                        <ae:oneBiologicalIntervention index="${newIndex}" biological="${biological}" collapsed="true"/>
                     </c:forEach>
                 </div>
                 </div>
             </jsp:body>
         </chrome:box>
     </c:if>
+
+    <c:if test="${hasGenetic}">
+            <chrome:box title="Genetics" collapsable="true">
+                <jsp:attribute name="additionalTitle"/>
+                <jsp:body>
+                    <div style="padding-left:20px;">
+                        <tags:button cssClass="foo" id="btn-add-genetic" color="blue" value="Add" icon="Add" type="button" onclick="addGenetic();" size="small"/>
+                        <tags:indicator id="genetic_AjaxIndicator" />
+                    <div id="_genetics">
+                        <c:set var="size" value="${fn:length(command.aeReport.geneticInterventions)}" />
+                        <c:forEach items="${command.aeReport.geneticInterventions}" varStatus="status" var="genetic">
+                            <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                            <ae:oneGeneticIntervention index="${newIndex}" genetic="${genetic}" collapsed="true"/>
+                        </c:forEach>
+                    </div>
+                    </div>
+                </jsp:body>
+            </chrome:box>
+        </c:if>
+
+    <c:if test="${hasDietary}">
+            <chrome:box title="Dietaries" collapsable="true">
+                <jsp:attribute name="additionalTitle"/>
+                <jsp:body>
+                    <div style="padding-left:20px;">
+                        <tags:button cssClass="foo" id="btn-add-Dietary" color="blue" value="Add" icon="Add" type="button" onclick="addDietary();" size="small"/>
+                        <tags:indicator id="dietary_AjaxIndicator" />
+                    <div id="_dietaries">
+                        <c:set var="size" value="${fn:length(command.aeReport.dietaryInterventions)}" />
+                        <c:forEach items="${command.aeReport.dietaryInterventions}" varStatus="status" var="dietary">
+                            <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                            <ae:oneDietaryIntervention index="${newIndex}" dietary ="${dietary}" collapsed="true"/>
+                        </c:forEach>
+                    </div>
+                    </div>
+                </jsp:body>
+            </chrome:box>
+        </c:if>
+
+
+    <c:if test="${hasOther}">
+            <chrome:box title="otherAEs" collapsable="true">
+                <jsp:attribute name="additionalTitle"/>
+                <jsp:body>
+                    <div style="padding-left:20px;">
+                        <tags:button cssClass="foo" id="btn-add-OtherAE" color="blue" value="Add" icon="Add" type="button" onclick="addOtherAE();" size="small"/>
+                        <tags:indicator id="otherAE_AjaxIndicator" />
+                    <div id="_otherAEs">
+                        <c:set var="size" value="${fn:length(command.aeReport.otherAEInterventions)}" />
+                        <c:forEach items="${command.aeReport.otherAEInterventions}" varStatus="status" var="otherAE">
+                            <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                            <ae:oneOtherAEIntervention index="${newIndex}" otherAE = "${otherAE}" collapsed="true"/>
+                        </c:forEach>
+                    </div>
+                    </div>
+                </jsp:body>
+            </chrome:box>
+        </c:if>
+
 
 <%--
     <c:if test="${hasBehavioral}">

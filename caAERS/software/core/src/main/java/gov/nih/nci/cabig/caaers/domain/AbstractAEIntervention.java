@@ -18,7 +18,7 @@ public class AbstractAEIntervention extends AbstractExpeditedReportCollectionEle
     private String description;
 
     /** The study behavioral. */
-    private OtherIntervention studyBehavioral;
+    private OtherIntervention studyIntervention;
     /**
      * Gets the description.
      * @return the description
@@ -35,22 +35,13 @@ public class AbstractAEIntervention extends AbstractExpeditedReportCollectionEle
         this.description = description;
     }
 
-    /**
-     * Gets the study behavioral
-     * @return the study radiation
-     */
     @ManyToOne
     @JoinColumn(name = "study_intervention_id")
-    public OtherIntervention getStudyBehavioral() {
-        return studyBehavioral;
+    public OtherIntervention getStudyIntervention() {
+        return studyIntervention;
     }
 
-    /**
-     * Sets the study behavioral
-     * @param studyBehavioral the new study behavioral
-     */
-    public void setStudyBehavioral(OtherIntervention studyBehavioral) {
-        this.studyBehavioral = studyBehavioral;
+    public void setStudyIntervention(OtherIntervention studyIntervention) {
+        this.studyIntervention = studyIntervention;
     }
-
 }

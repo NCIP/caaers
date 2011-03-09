@@ -8,24 +8,24 @@
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
-<%@attribute name="behavioral" type="gov.nih.nci.cabig.caaers.domain.BehavioralIntervention" %>
+<%@attribute name="dietary" type="gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention" %>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
 
-<c:set var="v" value="aeReport.behavioralIntervention[${index}]" />
+<c:set var="v" value="aeReport.dietaryIntervention[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="behavioralIntervention" index="${index}" enableDelete="true" deleteParams="'behavioral', ${index}, '_behaviorals'" collapsed="${!empties[v]}">
-    <tags:errors path="aeReport.behavioralInterventions[${index}]"/>
+<ae:fieldGroupDivision fieldGroupFactoryName="dietaryIntervention" index="${index}" enableDelete="true" deleteParams="'dietary', ${index}, '_dietaries'" collapsed="${!empties[v]}">
+    <tags:errors path="aeReport.dietaryInterventions[${index}]"/>
 
-    <ui:row path="aeReport.surgeryInterventions[${index}].studySurgery">
+    <ui:row path="aeReport.dietaryInterventions[${index}].studyIntervention">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" mandatory="${fieldGroup.fields[0].attributes.mandatory}" required="true"/></jsp:attribute>
          <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[0].propertyName}" options="${fieldGroup.fields[0].attributes.options}" field="${fieldGroup.fields[0]}"/></jsp:attribute>
     </ui:row>
 
-    <ui:row path="aeReport.behavioralInterventions[${index}].description">
+    <ui:row path="aeReport.dietaryInterventions[${index}].description">
         <jsp:attribute name="label">
-            <caaers:message code="LBL_aeReport.behavioralInterventions.description" text="Study behavioral description" />
+            <caaers:message code="LBL_aeReport.dietaryInterventions.description" text="Study Dietary  description" />
         </jsp:attribute>
-        <jsp:attribute name="value"><ui:textarea path="aeReport.behavioralInterventions[${index}].description" /></jsp:attribute>
+        <jsp:attribute name="value"><ui:textarea path="aeReport.dietaryInterventions[${index}].description" /></jsp:attribute>
     </ui:row>
 
 <script language="JavaScript">
