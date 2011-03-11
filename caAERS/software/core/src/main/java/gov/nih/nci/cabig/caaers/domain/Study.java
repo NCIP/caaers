@@ -67,7 +67,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Deprecated protected String longTitle;
     
     /** The description. */
-    @Deprecated protected String description;                               f
+    @Deprecated protected String description;
     
     /** The precis. */
     @Deprecated protected String precis;
