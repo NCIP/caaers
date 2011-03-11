@@ -21,10 +21,22 @@
 	<jsp:attribute name="value">
 	<div class="longselect" >
 		<div style="clear:right;">
-		<ui:checkbox path="${fieldGroups[outcomeGroup].fields[0].propertyName}">
+            <ui:checkbox path="${fieldGroups[outcomeGroup].fields[0].propertyName}">
 			<jsp:attribute name="embededJS">
 				$('${fieldGroups[outcomeGroup].fields[0].propertyName}').observe('click' , function(e){
-					Event.stop(e);
+                    var checked = $('${fieldGroups[outcomeGroup].fields[0].propertyName}').checked;
+                    var radioButtonName = '${not isRoutineFlow ? 'aeReport.' : ''}adverseEvents[${index}].grade';
+                     var radioGrp = document.getElementsByName(radioButtonName);
+
+                    if (checked) {
+                        for(i = 0; i < radioGrp.length; i++){
+                             if (radioGrp[i].value == 'DEATH') {
+                                radioGrp[i].checked = true;
+                            }
+                        }
+                    } else {
+                        //
+                    }
 				});
 				
 			</jsp:attribute>
@@ -35,7 +47,7 @@
 		<ui:checkbox path="${fieldGroups[outcomeGroup].fields[1].propertyName}">
 			<jsp:attribute name="embededJS">
 				$('${fieldGroups[outcomeGroup].fields[1].propertyName}').observe('click' , function(e){
-					Event.stop(e);
+					// Event.stop(e);
 				});
 			</jsp:attribute>
 		</ui:checkbox>
@@ -74,7 +86,7 @@
 	</div>
 	</jsp:attribute>
 	<jsp:attribute name="embededJS">
-		<%-- Script to tackle hospitalization --%>
+		<%-- Script to tackle hospitalization Dropdown--%>
 			$('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').observe('change', function(e){
 				if(e.element().value == 'YES'){
 					$('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked = true;
@@ -82,7 +94,37 @@
 					$('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked = false;
 				}
 			});
-		<%-- Script to tackle death  --%>	
+		<%-- Script to tackle death  --%>
+
+
+            $('${fieldGroups[outcomeGroup].fields[1].propertyName}').observe('change', function() {
+                var checked = $('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked;
+                if (checked) $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').value = 'YES';
+                else {
+                    $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').selectedIndex = 0;
+                }
+            })
+
+
+<%--
+        $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].grade').observe('change', function(e){
+				if(e.element().value == 'DEATH'){
+					$('${fieldGroups[outcomeGroup].fields[0].propertyName}').checked = true;
+				}else {
+					$('${fieldGroups[outcomeGroup].fields[0].propertyName}').checked = false;
+				}
+			});
+
+        $('${fieldGroups[outcomeGroup].fields[0].propertyName}').observe('change', function() {
+                var checked = $('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked;
+                if (checked) $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].grade').value = 'DEATH';
+
+            })
+--%>
+		<%-- Script to tackle hospitalization Checkbox--%>
+
+		<%-- --%>
+
 	</jsp:attribute>
 </ui:row>
 
