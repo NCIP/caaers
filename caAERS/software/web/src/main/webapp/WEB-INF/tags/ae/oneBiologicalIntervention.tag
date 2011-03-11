@@ -13,7 +13,7 @@
 
 <c:set var="v" value="aeReport.biologicalIntervention[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="behavioralIntervention" index="${index}" enableDelete="true" deleteParams="'biological', ${index}, '_biologicals'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="biologicalIntervention" index="${index}" enableDelete="true" deleteParams="'biological', ${index}, '_biologicals'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.biologicalInterventions[${index}]"/>
 
      <ui:row path="aeReport.biologicalInterventions[${index}].studyIntervention">
@@ -60,5 +60,35 @@
         updateOtherInterventionDescription(Event.element(event), "aeReport.surgeryInterventions[${index}].studySurgery.description_content" );
     });
 */
+
+Event.observe($("aeReport.biologicalInterventions[${index}].studyIntervention"), "change", function(event) {
+    var selBox = $('aeReport.biologicalInterventions[${index}].studyIntervention');
+    var Idtext = selBox.options[selBox.selectedIndex].value;
+
+    if(Idtext.toString().empty())  {
+         $('aeReport.biologicalInterventions[${index}].description').value = "";
+
+    }else {
+        $('aeReport.biologicalInterventions[${index}].description').value = biologicalMap.get(Idtext);
+    }
+
+
+});
+
+
+function setTitleBiological_${index}() {
+       var titleID = "titleOf_biologicalIntervention-" + ${index};
+       var selBox = $('aeReport.biologicalInterventions[${index}].studyIntervention');
+
+       var title = selBox.options[selBox.selectedIndex].text;
+       $(titleID).innerHTML = "" + title;
+   }
+
+   setTitleBiological_${index}.defer();
+   Event.observe($("aeReport.biologicalInterventions[${index}].studyIntervention"), "change", function() {
+         setTitleBiological_${index}();
+    });
+
+
 
 </script>

@@ -26,6 +26,33 @@
 <script language="JavaScript">
 var divisions = new Hash();
 var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
+var biologicalMap = new Hash();
+var behavioralMap =  new Hash();
+var geneticMap = new Hash();
+var dietaryMap =  new Hash();
+var otherAEMap = new Hash();
+
+<c:forEach items="${command.study.activeStudyBiologicalInterventions}" var="i">
+    biologicalMap.set("${i.id}", "${i.description}");
+</c:forEach>
+
+<c:forEach items="${command.study.activeStudyBehavioralInterventions}" var="i">
+   behavioralMap.set("${i.id}", "${i.description}");
+</c:forEach>
+
+<c:forEach items="${command.study.activeStudyGeneticInterventions}" var="i">
+   geneticMap.set("${i.id}", "${i.description}");
+</c:forEach>
+
+<c:forEach items="${command.study.activeStudyDietaryInterventions}" var="i">
+   dietaryMap.set("${i.id}", "${i.description}");
+</c:forEach>
+
+<c:forEach items="${command.study.activeStudyOtherInterventions}" var="i">
+   otherAEMap.set("${i.id}", "${i.description}");
+</c:forEach>
+
+
 
 function refreshBoxes() {
     registerAll();

@@ -61,4 +61,30 @@
     });
 */
 
+Event.observe($("aeReport.otherAEInterventions[${index}].studyIntervention"), "change", function(event) {
+    var selBox = $('aeReport.otherAEInterventions[${index}].studyIntervention');
+    var Idtext = selBox.options[selBox.selectedIndex].value;
+          if(Idtext.toString().empty())  {
+            $('aeReport.otherAEInterventions[${index}].description').value = "";
+          }
+         else {
+           $('aeReport.otherAEInterventions[${index}].description').value = otherAEMap.get(Idtext);
+       }
+
+});
+
+function setTitleOtherAE_${index}() {
+       var titleID = "titleOf_otherAEIntervention-" + ${index};
+       var selBox = $('aeReport.otherAEInterventions[${index}].studyIntervention');
+
+       var title = selBox.options[selBox.selectedIndex].text;
+       $(titleID).innerHTML = "" + title;
+   }
+
+   setTitleOtherAE_${index}.defer();
+   Event.observe($("aeReport.otherAEInterventions[${index}].studyIntervention"), "change", function() {
+         setTitleOtherAE_${index}();
+    });
+
+
 </script>

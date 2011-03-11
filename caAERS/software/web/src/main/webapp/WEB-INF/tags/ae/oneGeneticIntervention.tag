@@ -61,4 +61,30 @@
     });
 */
 
+Event.observe($("aeReport.geneticInterventions[${index}].studyIntervention"), "change", function(event) {
+    var selBox = $('aeReport.geneticInterventions[${index}].studyIntervention');
+    var Idtext = selBox.options[selBox.selectedIndex].value;
+
+           if(Idtext.toString().empty())  {
+                $('aeReport.geneticInterventions[${index}].description').value = "";
+           } else{
+                   $('aeReport.geneticInterventions[${index}].description').value = geneticMap.get(Idtext);
+               }
+
+
+});
+
+    function setTitleGenetic_${index}() {
+       var titleID = "titleOf_geneticIntervention-" + ${index};
+       var selBox = $('aeReport.geneticInterventions[${index}].studyIntervention');
+
+       var title = selBox.options[selBox.selectedIndex].text;
+       $(titleID).innerHTML = "" + title;
+   }
+
+   setTitleGenetic_${index}.defer();
+   Event.observe($("aeReport.geneticInterventions[${index}].studyIntervention"), "change", function() {
+         setTitleGenetic_${index}();
+    });
+
 </script>

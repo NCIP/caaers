@@ -60,5 +60,27 @@
         updateOtherInterventionDescription(Event.element(event), "aeReport.surgeryInterventions[${index}].studySurgery.description_content" );
     });
 */
+Event.observe($("aeReport.dietaryInterventions[${index}].studyIntervention"), "change", function(event) {
+    var selBox = $('aeReport.dietaryInterventions[${index}].studyIntervention');
+    var Idtext = selBox.options[selBox.selectedIndex].value;
+         if(Idtext.toString().empty())  {
+               $('aeReport.dietaryInterventions[${index}].description').value = "";
+         } else {
+                 $('aeReport.dietaryInterventions[${index}].description').value =  dietaryMap.get(Idtext);
+             }
 
+});
+
+    function setTitleDietary_${index}() {
+       var titleID = "titleOf_dietaryIntervention-" + ${index};
+       var selBox = $('aeReport.dietaryInterventions[${index}].studyIntervention');
+
+       var title = selBox.options[selBox.selectedIndex].text;
+       $(titleID).innerHTML = "" + title;
+   }
+
+   setTitleDietary_${index}.defer();
+   Event.observe($("aeReport.dietaryInterventions[${index}].studyIntervention"), "change", function() {
+         setTitleDietary_${index}();
+    });
 </script>

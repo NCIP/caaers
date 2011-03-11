@@ -61,8 +61,8 @@ public class StudyInterventionsTab extends AeTab {
         methodNameMap.put("remove" + STUDY_INTERVENTION_AGENT, "removeAgent");        
         methodNameMap.put("add" + STUDY_INTERVENTION_BEHAVIORAL, "addBehavioral");
         methodNameMap.put("remove" + STUDY_INTERVENTION_BEHAVIORAL, "removeBehavioral");
-        methodNameMap.put("add" + STUDY_INTERVENTION_BIOLOGICAL, "addBehavioral");
-        methodNameMap.put("remove" + STUDY_INTERVENTION_BIOLOGICAL, "removeBehavioral");
+        methodNameMap.put("add" + STUDY_INTERVENTION_BIOLOGICAL, "addBiological");
+        methodNameMap.put("remove" + STUDY_INTERVENTION_BIOLOGICAL, "removeBiological");
         methodNameMap.put("add" + STUDY_INTERVENTION_GENETIC, "addGenetic");
         methodNameMap.put("remove" + STUDY_INTERVENTION_GENETIC, "removeGenetic");
         methodNameMap.put("add" + STUDY_INTERVENTION_DIETARY, "addDietary");

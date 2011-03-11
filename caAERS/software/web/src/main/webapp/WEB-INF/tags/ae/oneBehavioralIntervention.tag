@@ -61,4 +61,29 @@
     });
 */
 
+Event.observe($("aeReport.behavioralInterventions[${index}].studyIntervention"), "change", function(event) {
+    var selBox = $('aeReport.behavioralInterventions[${index}].studyIntervention');
+    var Idtext = selBox.options[selBox.selectedIndex].value;
+    if(Idtext.toString().empty())  {
+           $('aeReport.behavioralInterventions[${index}].description').value = "";
+    }else {
+        $('aeReport.behavioralInterventions[${index}].description').value = behavioralMap.get(Idtext);
+    }
+
+});
+
+function setTitleBehavioral_${index}() {
+       var titleID = "titleOf_behavioralIntervention-" + ${index};
+       var selBox = $('aeReport.behavioralInterventions[${index}].studyIntervention');
+
+       var title = selBox.options[selBox.selectedIndex].text;
+       $(titleID).innerHTML = "" + title;
+   }
+
+   setTitleBehavioral_${index}.defer();
+   Event.observe($("aeReport.behavioralInterventions[${index}].studyIntervention"), "change", function() {
+         setTitleBehavioral_${index}();
+    });
+
+
 </script>
