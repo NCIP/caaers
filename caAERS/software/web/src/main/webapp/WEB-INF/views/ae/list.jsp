@@ -295,7 +295,7 @@ color:#0033FF;
     </div>
     <div class="row">
       <div class="summarylabel">Subject</div>
-      <div class="summaryvalue">(${command.participant.primaryIdentifier.value}) ${command.participant.fullName}</div>
+      <div class="summaryvalue">(${command.assignment == null ? '' : command.assignment.studySubjectIdentifier })</div>
     </div>
   </div>
 </c:if>
