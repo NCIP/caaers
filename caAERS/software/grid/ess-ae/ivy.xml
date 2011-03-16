@@ -43,7 +43,7 @@
             <exclude org="net.sf.hibernate" />
             <exclude conf="dist,distGrid,runtime" org="org.apache.commons" module="com.springsource.org.apache.commons.attributes" />
             <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
-
+            <exclude conf="*" org="apache" />
 
             
 			<!--  caAERS other modules -->
@@ -54,81 +54,89 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-web" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
 				
-        	<!--  C3PR registration stubs/skeltons -->
-			<dependency org="gov.nih.nci.ccts.grid"
-					name="RegistrationConsumer-client" rev="2.9" transitive="false" />
-			<dependency org="gov.nih.nci.ccts.grid"
-					name="RegistrationConsumer-common" rev="2.9" transitive="false" />
-			<dependency org="gov.nih.nci.ccts.grid"
-					name="RegistrationConsumer-stubs" rev="2.9" transitive="false" />
+        	<!-- Dependency on AdverseEventEnterprise Service -->
+            <dependency org="gov.nih.nci.cabig.caaers" name="AdverseEventEnterpriseService"  rev="latest.integration"
+                        conf="build->publish,runtime;runtime->runtime,publish;dist->dist;distGrid->distGrid" />
+        	
+        	
 
-        	
-        	
-        	
-        	<!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false"/>
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" />
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" />
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" />
-			
-        	<!--  AXIS unofficial versions -->
-        	<dependency org="axis" name="axis" rev="1.4" />
-        	<dependency org="axis-unofficial" name="addressing" rev="1.0" />
-        	
         	<!--  Apache Commons -->
-        	<dependency org="commons-lang" name="commons-lang" rev="2.4" />
-        	<dependency org="commons-logging" name="commons-logging" rev="1.1" />
+            <dependency org="commons-lang" name="commons-lang" rev="2.4" force="true"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
 
-            <!-- Spring/ Spring Modules -->
-            <dependency org="org.springframework" name="spring" rev="2.5.6" force="true" />
-            <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"  />
+            <!--  Spring framework -->
+            <dependency org="org.springframework" name="spring" rev="2.5.6" force="true"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+            <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"
+                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
 
-            <!--  Hibernate/Supporting Jars -->
-            <dependency org="org.hibernate" name="hibernate" rev="3.2.7.ga" force="true" >
-                <exclude org="cglib" />
-                <exclude org="asm" />
-            </dependency>
-            <dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.1.GA">
-                <exclude org="cglib" />
-                <exclude org="asm" />
-            </dependency>
-            <dependency org="javax.persistence" name="persistence-api" rev="1.0" force="true" />
-             <dependency org="asm" name="asm" rev="2.2" force="true" />
-            <dependency org="asm" name="asm-commons" rev="2.2" force="true"/>
-            <dependency org="asm" name="asm-attrs" rev="2.2" force="true"/>
-            <dependency org="cglib" name="cglib-nodep" rev="2.1_3" force="true"/>
- 			        	
- 			
-			<!--  Globus-caGRID  -->
-			<!-- 
-			<dependency org="org.globus" name="globus-wsrf-mds-aggregator" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-mds-aggregator-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-servicegroup" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-servicegroup-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="wsrf-core" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="wsrf-core-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="cog-jglobus" rev="1.2" />
-			 -->
-			<!-- Mobius  -->
-			<!-- 
-			<dependency org="org.projectmobius" name="mobius-common-client" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-factories" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-gme-client" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-mako-client" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-tools" rev="1.1" />
-			 -->
-			<!--  Castor -->
-			<dependency org="castor" name="castor" rev="0.9.9"/>
-			
-			
-						
-			<!-- Test only dependencies -->
+
+            <!-- Test only dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-web" conf="test->test(default)" rev="latest.integration" />
 			<dependency org="dbunit" name="dbunit" rev="2.1" conf="test->default"/>
 			<dependency org="org.springframework" name="spring-mock" rev="2.5.6" force="true" conf="test->default" />
         	<dependency org="xmlunit" name="xmlunit" rev="1.0" conf="test->default" />
         	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
+
+
+            <!--&lt;!&ndash; CTMS commons dependencies &ndash;&gt;-->
+            <!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>-->
+            <!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false"/>-->
+            <!--<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" />-->
+            <!--<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" />-->
+            <!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" />-->
+			            
+        	<!--<dependency org="axis" name="axis" rev="1.4" />-->
+        	<!--<dependency org="axis-unofficial" name="addressing" rev="1.0" />-->
+        	
+        	<!--&lt;!&ndash;  Apache Commons &ndash;&gt;-->
+        	<!--<dependency org="commons-lang" name="commons-lang" rev="2.4" />-->
+        	<!--<dependency org="commons-logging" name="commons-logging" rev="1.1" />-->
+
+            <!--&lt;!&ndash; Spring/ Spring Modules &ndash;&gt;-->
+            <!--<dependency org="org.springframework" name="spring" rev="2.5.6" force="true" />-->
+            <!--<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"  />-->
+
+            <!--&lt;!&ndash;  Hibernate/Supporting Jars &ndash;&gt;-->
+            <!--<dependency org="org.hibernate" name="hibernate" rev="3.2.7.ga" force="true" >-->
+                <!--<exclude org="cglib" />-->
+                <!--<exclude org="asm" />-->
+            <!--</dependency>-->
+            <!--<dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.1.GA">-->
+                <!--<exclude org="cglib" />-->
+                <!--<exclude org="asm" />-->
+            <!--</dependency>-->
+            <!--<dependency org="javax.persistence" name="persistence-api" rev="1.0" force="true" />-->
+             <!--<dependency org="asm" name="asm" rev="2.2" force="true" />-->
+            <!--<dependency org="asm" name="asm-commons" rev="2.2" force="true"/>-->
+            <!--<dependency org="asm" name="asm-attrs" rev="2.2" force="true"/>-->
+            <!--<dependency org="cglib" name="cglib-nodep" rev="2.1_3" force="true"/>-->
+ 			        	
+ 			
+			<!--&lt;!&ndash;  Globus-caGRID  &ndash;&gt;-->
+			<!--&lt;!&ndash; -->
+			<!--<dependency org="org.globus" name="globus-wsrf-mds-aggregator" rev="4.0-cagrid1.0" />-->
+			<!--<dependency org="org.globus" name="globus-wsrf-mds-aggregator-stubs" rev="4.0-cagrid1.0" />-->
+			<!--<dependency org="org.globus" name="globus-wsrf-servicegroup" rev="4.0-cagrid1.0" />-->
+			<!--<dependency org="org.globus" name="globus-wsrf-servicegroup-stubs" rev="4.0-cagrid1.0" />-->
+			<!--<dependency org="org.globus" name="wsrf-core" rev="4.0-cagrid1.0" />-->
+			<!--<dependency org="org.globus" name="wsrf-core-stubs" rev="4.0-cagrid1.0" />-->
+			<!--<dependency org="org.globus" name="cog-jglobus" rev="1.2" />-->
+			 <!--&ndash;&gt;-->
+			<!--&lt;!&ndash; Mobius  &ndash;&gt;-->
+			<!--&lt;!&ndash; -->
+			<!--<dependency org="org.projectmobius" name="mobius-common-client" rev="1.1" />-->
+			<!--<dependency org="org.projectmobius" name="mobius-factories" rev="1.1" />-->
+			<!--<dependency org="org.projectmobius" name="mobius-gme-client" rev="1.1" />-->
+			<!--<dependency org="org.projectmobius" name="mobius-mako-client" rev="1.1" />-->
+			<!--<dependency org="org.projectmobius" name="mobius-tools" rev="1.1" />-->
+			 <!--&ndash;&gt;-->
+			<!--&lt;!&ndash;  Castor &ndash;&gt;-->
+			<!--<dependency org="castor" name="castor" rev="0.9.9"/>-->
+			
+			
+						
+
         </dependencies>
 </ivy-module>

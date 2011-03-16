@@ -26,6 +26,12 @@
           <artifact pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
         </url>
 
+        <!-- caGrid 1.3 repository -->
+        <url name="nci-cagrid-repo">
+            <ivy pattern="http://software.cagrid.org/repository-1.3/[organisation]/[module]/ivy-[revision].xml" />
+            <artifact pattern="http://software.cagrid.org/repository-1.3/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+        </url>
+
 		<!--  Semanticbits shared repository [using http] -->
 
 		<url name="semanticbits-repo-http">
@@ -50,6 +56,7 @@
 				root="http://maven2.mirrors.skynet.be/pub/maven2"
 				changingPattern=".*SNAPSHOT" 
 				/>
+
 			<!--  useful at least for javax.transaction.jta -->
 			<ibiblio name="maven2-codehaus-mule" m2compatible="true"
 				root="http://dist.codehaus.org/mule/dependencies/maven2"
@@ -57,9 +64,10 @@
 				 />
 			<ibiblio name="maven2-codehaus" m2compatible="true"
 				root="http://repository.codehaus.org" changingPattern=".*SNAPSHOT"/>
-				
-			<ibiblio name="maven2-http" m2compatible="true"
-				root="http://repository.jboss.com/maven2" changingPattern=".*SNAPSHOT"/>
+
+            <!--Joboss repo seems to be down-->
+			<!--<ibiblio name="maven2-http" m2compatible="true"-->
+				<!--root="http://repository.jboss.com/maven2" changingPattern=".*SNAPSHOT"/>-->
 			
 
             <ibiblio name="openqa" m2compatible="true" root="http://archiva.openqa.org/repository/releases/" changingPattern=".*SNAPSHOT"/>
@@ -78,15 +86,6 @@
                 <artifact pattern="http://repository.springsource.com/ivy/bundles/external/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
             </url> 
 
-            <!--  Semanticbits shared caGRID repository [using http] -->
-            <url name="semanticbits-grid-repo-http">
-                <ivy pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/ivy-[revision].xml" />
-                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
-                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
-                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
-                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
-            </url>
 		             
 			<!--  SemanticBits shared repository [using sftp] -->
 <!--

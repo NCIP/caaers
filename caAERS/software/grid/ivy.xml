@@ -37,6 +37,7 @@
 			<exclude conf="distGrid" org="org.springframework" name="spring-dao" rev="1.2.9"/>
 			<exclude conf="distGrid" org="org.springframework" name="spring-support" rev="1.2.9"/>
 			<exclude conf="distGrid" org="javax.xml.stream" name="stax-api" rev="1.0-2"/>
+            <exclude conf="*" org="apache" />
 			
 			<dependency org="org.springframework" name="spring-webmvc" rev="2.5.6" 
 				conf="distGrid" transitive="false" force="true"/>
@@ -46,6 +47,7 @@
 			<!-- caAERS module dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+            
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-web" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid" transitive="false"/>				
 			

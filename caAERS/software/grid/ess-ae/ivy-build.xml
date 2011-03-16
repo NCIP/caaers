@@ -4,7 +4,7 @@
 	<import file="${parent.dir}/common.xml"/>
 	<property name="aees.nes.service.dir" value="${basedir}/../introduce/AdverseEventEnterpriseService"/>
 	
-	<target name="module-specific-flow" depends="resolve,build-grid-service,common.aspectj-compile" />
+	<target name="module-specific-flow" depends="resolve,common.aspectj-compile" />
 	
 	<!-- ========================================================================
 		target : jar-test
@@ -13,8 +13,12 @@
 	<target name="jar-test" depends="common.aspectj-compile-test, common.jar-test" />
 	
 
-	<target name="build-grid-service">
-		<antcall target="build-aees-service" inheritAll="true" inheritRefs="true"/>		
+	<!-- ========================================================================
+		target : build-grid-service
+			Will build the skeletons for Adverse Event Enterprise Service
+	============================================================================-->
+	<target name="build-grid-service" description="Will build the skeletons for Adverse Event Enterprise Service" >
+		<antcall target="build-aees-service" inheritAll="true" inheritRefs="true"/>
 		<copy todir="${lib.dir}">
 			<fileset dir="${aees.nes.service.dir}/build/lib" includes="*.jar"/>
 		</copy>
@@ -27,5 +31,13 @@
 			<fileset dir="${aees.nes.service.dir}" includes="build.xml"/>
 		</subant>
 	</target>
+
+	<!-- ========================================================================
+		target : help
+			Will provide the help instructions
+	============================================================================-->
+    <target  name="help" description="Will provide the help instructions" >
+        <echo message="ant -f ivy-build.xml publish-local --> Will build the AdverseEventService implementation" /> 
+    </target>
 	
 </project>

@@ -145,6 +145,12 @@
 	<!-- Post Jar Tests Build Target                                    -->
 	<!-- ============================================================== -->
 	<target name="postJarTests">
+        <!-- copy all files to distribution -->
+        <copy todir="${build.dir}/dist">
+            <fileset dir="${build.lib.dir}" includes="**/${jar.prefix}*.*">
+                <exclude name=".svn"/>
+            </fileset>
+        </copy>
 
 	</target>
 

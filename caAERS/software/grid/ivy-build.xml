@@ -23,7 +23,8 @@
 		<mkdir dir="${ccts.grid-services.working.location}"/>
 	</target>
 	
-	<target name="publish-local" depends="common.clean-dist,init,common.resolve,download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
+	<target name="publish-local"
+            depends="common.clean-dist,init,common.resolve,download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
 
 	<!-- ==============================================================
 		target: resolve-dist , resolves all core and dependent jars ..
@@ -84,13 +85,14 @@
 	<!-- ==============================================================
 		target: deploy-grid-services , deploys all grid services to working tomcat location ..
 	================================================================== -->	
-	<target name="deploy-grid-services" depends="build-grid-services">	
+	<target name="deploy-grid-services" >	
 		<property name="wsrf-root" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}"/>
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/build.xml"/>
 		</subant>
+
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
@@ -111,7 +113,6 @@
 				<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 				<fileset dir="${sres.nes.service.dir}" includes="build.xml"/>
 		</subant>
-		
 		<copy todir="${wsrf-root}/WEB-INF/lib" verbose="true">
 	        <fileset dir="${parent.dir}/grid/registration-consumer/build/dist" includes="caaers-registration-consumer.jar"/>
 			<fileset dir="${parent.dir}/grid/study-consumer/build/dist" includes="caaers-study-consumer.jar"/>
@@ -208,34 +209,33 @@
 	</target>
 	
 	
-	<available file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" property="tomcat.tools.exists" />
-	<available file="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" property="globus.tools.exists" />
+	<available file="${ivy.jar.dir}/${ccts.grid-services.working.tomcat.file}.zip" property="tomcat.tools.exists" />
+	<available file="${ivy.jar.dir}/${ccts.grid-services.working.globus.file}.zip" property="globus.tools.exists" />
 
 	<!-- ==============================================================
 		target: download tomcat to working directory
 	================================================================== -->	
 	<target name="download-tomcat" unless="tomcat.tools.exists"  description="Downloads TOMCAT from binary repository and verifies checksum">
-	 	<get src="${tomcat.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" />
-		<unzip src="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" dest="${ccts.grid-services.working.location}" />
+	 	<get src="${tomcat.src.url}" dest="${ivy.jar.dir}/${ccts.grid-services.working.tomcat.file}.zip" />
 	</target>
 	
 	<!-- ==============================================================
 		target: download globus to working directory
 	================================================================== -->	
 	<target name="download-globus" unless="globus.tools.exists"  description="Downloads GLOBUS">
-		 	<get src="${globus.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" />
-		
-			<unzip src="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" dest="${ccts.grid-services.working.location}" />
+		<get src="${globus.src.url}" dest="${ivy.jar.dir}/${ccts.grid-services.working.globus.file}.zip" />
 	</target>
 	
 	<!-- ==============================================================
 		target: deploy the downloaded globus to working tomcat 
 	================================================================== -->	
 	<target name="deploy-globus">
-			<subant target="deploySecureTomcat">
-				<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-				<fileset dir="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}" includes="share/globus_wsrf_common/tomcat/tomcat.xml"/>
-			</subant>		
+        <unzip src="${ivy.jar.dir}/${ccts.grid-services.working.tomcat.file}.zip" dest="${ccts.grid-services.working.location}" />
+        <unzip src="${ivy.jar.dir}/${ccts.grid-services.working.globus.file}.zip" dest="${ccts.grid-services.working.location}" />
+        <subant target="deploySecureTomcat">
+            <property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
+            <fileset dir="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}" includes="share/globus_wsrf_common/tomcat/tomcat.xml"/>
+        </subant>
 	</target>
  
 

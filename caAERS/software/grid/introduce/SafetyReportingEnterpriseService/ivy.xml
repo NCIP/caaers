@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.4">
+
+    	<info organisation="gov.nih.nci.cabig.caaers"
+          	module="SafetyReportingEnterpriseService"
+          	status="integration" revision="${caaers.ae.safety.service.version}"/>
+
+
+        <configurations>
+        	<conf name="default" visibility="public" extends="publish,runtime"
+        		description="Dependencies needed for default setting"  />
+        	<conf name="build" visibility="public"
+        		description="Dependencies required for build time, all classpath should have this"/>
+        	<conf name="publish" visibility="public"
+        		description="Dependencies along with this module is published in repository" />
+        	<conf name="distGrid" visibility="public"  extends="publish"
+        		description="Dependencies that are required in grid distribution of this module" />
+        	<conf name="dist" visibility="public"  extends="publish"
+        		description="Dependencies needed for standalone distribution" />
+        	<conf name="runtime" visibility="public"
+        		description="The dependencies that are needed for runtime" extends="build" />
+        	<conf name="test" visibility="public"
+        		description="Dependencies needed for testing purposes"/>
+        </configurations>
+
+         <!--  Items to be published  -->
+         <publications>
+    		<artifact name="${ivy.module}-client" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-common" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-service" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-stubs" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-tests" conf="test" type="jar" ext="jar"/>
+  		</publications>
+
+        <dependencies>
+
+            <!--
+               Will pull from https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/globus/mds/4.0.3/
+                    globus_wsrf_mds_aggregator.jar
+                    globus_wsrf_mds_aggregator_stubs.jar
+                    globus_wsrf_servicegroup.jar
+                    globus_wsrf_servicegroup_stubs.jar
+            -->
+            <dependency org="globus" name="mds" rev="4.0.3"
+                        conf="build->master;runtime->master;dist->master;distGrid->master"  />
+
+            <!--
+                http://software.cagrid.org/repository-1.3/jdom/jdom/
+                Though the caGrid repo has no transitive dependencies transitive=false,
+                as there is a chance that already the local ivy repo may have jdom resolved correctly
+            -->
+            <dependency org="jdom" name="jdom" rev="1.0" transitive="false"
+                        conf="build->master;runtime->default;dist->default;distGrid->default" />
+
+            <!--
+               http://mvnrepository.com/artifact/org.springframework/spring/2.5.6
+               transitive=false, as there were no other jars related to spring checked-in
+            -->
+            <dependency org="org.springframework" name="spring" rev="2.5.6" transitive="false"
+                        conf="build->master;runtime->default;dist->default;distGrid->default" />
+
+            <!--
+                Will pull out from http://software.cagrid.org/repository-1.3/caGrid/service-security-provider/
+                caGrid-ServiceSecurityProvider-service-1.3.jar
+                caGrid-ServiceSecurityProvider-common-1.3.jar
+                caGrid-metadata-security-1.3.jar
+                caGrid-ServiceSecurityProvider-stubs-1.3.jar
+                caGrid-ServiceSecurityProvider-client-1.3.jar
+                caGrid-core-1.3.jar
+            -->
+            <dependency org="caGrid" name="service-security-provider" rev="1.3"
+                        conf="build->client,service;runtime->client,service;dist->client,service;distGrid->client,service" />
+            <!--
+                Will pull out from http://software.cagrid.org/repository-1.3/caGrid/metadatautils/
+                caGrid-metadata-security-1.3.jar
+                caGrid-metadata-common-1.3.jar
+                caGrid-metadata-data-1.3.jar
+                caGrid-metadatautils-1.3.jar
+            -->
+            <dependency org="caGrid" name="metadatautils" rev="1.3"
+                        conf="build->default;runtime->default;dist->default(*);distGrid->default(*)" />
+
+             <!--
+                Will pull out from http://software.cagrid.org/repository-1.3/caGrid/introduce-servicetools/
+                caGrid-Introduce-serviceTools-1.3.jar
+            -->
+            <dependency org="caGrid" name="introduce-servicetools" rev="1.3"
+                        conf="build->default;runtime->default;dist->default(*);distGrid->default(*)" />
+
+            <!--
+                Will pull out from http://software.cagrid.org/repository-1.3/caGrid/advertisement/
+                caGrid-advertisement-1.3.jar
+                caGrid-core-1.3.jar
+             -->
+            <dependency org="caGrid" name="advertisement" rev="1.3"
+                        conf="build->default;runtime->default;dist->default(*);distGrid->default(*)" />
+
+			<!-- ===============================================
+			(tools/lib needed for compiling)
+			====================================================-->
+			<dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="build->default(*)"/>
+
+            <!--
+                http://software.cagrid.org/repository-1.3/caGrid/metadata-validator/
+            -->
+             <dependency org="caGrid" name="metadata-validator" rev="1.3"
+                        conf="build->default(*)" />
+
+        </dependencies>
+</ivy-module>

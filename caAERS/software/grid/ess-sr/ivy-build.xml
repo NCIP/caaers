@@ -4,7 +4,7 @@
 	<import file="${parent.dir}/common.xml"/>
 	<property name="sres.nes.service.dir" value="${basedir}/../introduce/SafetyReportingEnterpriseService"/>
 	
-	<target name="module-specific-flow" depends="resolve,build-grid-service,common.aspectj-compile" />
+	<target name="module-specific-flow" depends="resolve,common.aspectj-compile" />
 	
 	<!-- ========================================================================
 		target : jar-test
@@ -13,19 +13,37 @@
 	<target name="jar-test" depends="common.aspectj-compile-test, common.jar-test" />
 	
 
-	<target name="build-grid-service">
+	<!-- ========================================================================
+		target : build-grid-service
+			Will build the SafetyReportingEnterpriseService services skeletons
+	============================================================================-->
+	<target name="build-grid-service" description="Will build the SafetyReportingEnterpriseService services skeletons" >
 		<antcall target="build-sres-service" inheritAll="true" inheritRefs="true"/>		
 		<copy todir="${lib.dir}">
 			<fileset dir="${sres.nes.service.dir}/build/lib" includes="*.jar"/>
 		</copy>
 		<property name="sres.nes.service.built" value="true"/>
 	</target>
-	
+
+	<!-- ========================================================================
+		target : jar-test
+			Will call aspectj-compile of test classes then delegates to common jar-test
+	============================================================================-->
 	<target name="build-sres-service" unless="sres.nes.service.built">
 		<echo message="Building SafetyReportingEnterpriseService located in ${sres.nes.service.dir}, build file is ${sres.nes.service.dir}/build.xml" />
 		<subant target="all">
 			<fileset dir="${sres.nes.service.dir}" includes="build.xml"/>
 		</subant>
 	</target>
+
+
+    <!-- ========================================================================
+        target : help
+            Will provide the help instructions
+    ============================================================================-->
+    <target  name="help" description="Will provide the help instructions" >
+        <echo message="ant -f ivy-build.xml publish-local --> Will build the SafetyReportingEnterpriseService implementation" />
+    </target>
+	    
 	
 </project>

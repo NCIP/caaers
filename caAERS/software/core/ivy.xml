@@ -64,6 +64,7 @@
 			<exclude conf="runtime,dist,distGrid" module="xmlParserAPIs" rev="2.0.2"/>
 			<exclude conf="dist,distGrid" module="subject" />
 			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
+            <exclude conf="*" org="apache" />
             
 			<!--  <exclude conf="runtime,dist,distGrid" module="c3p0"/>  -->
 
