@@ -51,6 +51,7 @@
             <exclude conf="dist,distGrid,runtime" org="org.apache.commons" module="com.springsource.org.apache.commons.attributes" />
             <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
             <exclude conf="*" org="pull-parser" />
+            <exclude conf="*" name="pull-parser*" />
 
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />

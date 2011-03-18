@@ -39,6 +39,7 @@
 			<exclude conf="distGrid" org="javax.xml.stream" name="stax-api" rev="1.0-2"/>
             <exclude conf="*" org="apache" />
             <exclude conf="*" org="pull-parser" />
+            <exclude conf="*" name="pull-parser*" />
 			
 			<dependency org="org.springframework" name="spring-webmvc" rev="2.5.6" 
 				conf="distGrid" transitive="false" force="true"/>
