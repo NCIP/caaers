@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axis.encoding.ser.ArrayDeserializer;
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.xml.Unmarshaller;
 
@@ -49,7 +50,7 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
 		Study study = Fixtures.createStudy("test");
 		study.setId(44);
 		ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFile);
-		
+
 		//assignments
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod(1, "02/02/2008", "03/03/2008");
 		reportingPeriod.addAeReport(aeReport);
@@ -60,7 +61,11 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         r.setId(3);
         r.getReportDefinition().setReportType(ReportType.NOTIFICATION);
         aeReport.getReports().add(r);
-		
+
+        for (Report report : aeReport.getReports()) {
+            report.setMandatoryFields(new ArrayList<ReportMandatoryField>());
+        }
+
 		Thread currentThread = Thread.currentThread();
 		for(int i = 0; i < 30; i++ ){
 			
@@ -131,10 +136,10 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         String xmlFileName = "expedited_report_caaers_complete.xml";
         ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
 
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one[].name", RequirednessIndicator.MANDATORY));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[].two.name", RequirednessIndicator.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one.name", RequirednessIndicator.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two.name", RequirednessIndicator.MANDATORY));
         aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three.name", RequirednessIndicator.NA));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four.name[]", RequirednessIndicator.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four.name", RequirednessIndicator.MANDATORY));
         aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five.name", RequirednessIndicator.MANDATORY));
 
         aeReport.getReports().get(0).getReportDefinition().setHeader("THIS IS HEADER");
@@ -217,7 +222,7 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         assertTrue(xml.indexOf("field.three.name") == -1);
         assertTrue(xml.indexOf("field.four.name") >= 0);
         assertTrue(xml.indexOf("field.five.name") >= 0);
-        System.out.println(xml);
+        // System.out.println(xml);
 
     }
 }
