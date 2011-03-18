@@ -50,8 +50,9 @@
 			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
             <exclude conf="dist,distGrid,runtime" org="org.apache.commons" module="com.springsource.org.apache.commons.attributes" />
             <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
-            <exclude conf="*" org="pull-parser" />
-            <exclude conf="*" name="pull-parser*" />
+            <exclude org="pull-parser" conf="default,publish,dist,distGrid,compile,runtime" />
+            <exclude name="*pull-parser*" conf="compile,runtime,default,master,dist,distGrid,publish" />
+             <exclude org="dom4j" />
 
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
@@ -59,6 +60,7 @@
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid">
+                  <exclude org="pull-parser" />
 			</dependency>
 
              <dependency org="org.springframework" name="spring-webmvc" rev="2.5.6">
@@ -92,7 +94,9 @@
             
             
 			<!-- Testing dependencies -->
-			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration">
+              <exclude org="pull-parser" />
+            </dependency>
 			<dependency org="org.springframework" name="spring-mock" rev="2.5.6" conf="test->default(*)" />
              <dependency org="org.springframework" name="spring-test" rev="2.5.6" force="true" conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />

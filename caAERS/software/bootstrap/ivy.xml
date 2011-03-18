@@ -48,6 +48,9 @@
 			<exclude conf="dist,distGrid" name="jsp-api" />
         	<exclude conf="dist,distGrid" module="servlet-api"  />
         	<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
+            <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
+            <exclude org="pull-parser" />
+            <exclude name="pull-parser" />
 
             <dependency org="xml-apis"  name="xml-apis" rev="2.0.2" conf="build->default(*);runtime->default(*)" />
 

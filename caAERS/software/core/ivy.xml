@@ -66,7 +66,7 @@
 			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
             <exclude conf="*" org="apache" />
             <exclude conf="*" org="pull-parser" />
-            <exclude conf="*" name="pull-parser*" />
+            <exclude org="dom4j" />
             
 			<!--  <exclude conf="runtime,dist,distGrid" module="c3p0"/>  -->
 
@@ -117,9 +117,15 @@
 
 
 			<!--  XML supporting JARS -->
-        	<dependency org="castor" name="castor" rev="0.9.9"  />
-        	<dependency org="jdom" name="jdom" rev="1.0"  />
-        	<dependency org="jaxen" name="jaxen" rev="1.1"  />
+        	<dependency org="castor" name="castor" rev="0.9.9">
+                  <exclude org="pull-parser" />
+            </dependency>
+        	<dependency org="jdom" name="jdom" rev="1.0">
+                  <exclude org="pull-parser" />
+            </dependency>
+        	<dependency org="jaxen" name="jaxen" rev="1.1">
+                  <exclude org="pull-parser" />
+            </dependency>
 
 			<!-- PDF -->
 			<dependency org="org.apache.xmlgraphics" name="fop" rev="0.93">
@@ -158,8 +164,12 @@
 				<exclude module="junit" />
 			</dependency>
 			<dependency org="org.opensaml" name="opensaml" rev="1.1" force="true" />
-            <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2"  />
-            <dependency org="dom4j" name="dom4j" rev="1.6" />
+            <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2">
+                  <exclude module="pull-parser" />
+            </dependency>
+            <!--<dependency org="dom4j" name="dom4j" rev="1.6" transitive="false">-->
+                  <!--<exclude module="pull-parser" />-->
+            <!--</dependency>-->
             <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build->default(*);test->default(*)"/>
 
 
