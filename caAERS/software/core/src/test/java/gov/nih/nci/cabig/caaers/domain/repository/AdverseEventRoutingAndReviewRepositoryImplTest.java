@@ -465,7 +465,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
 		verifyMocks();
-		assertEquals(2, filteredTransitions.size());
+		assertEquals(1, filteredTransitions.size());
 	}
 	
 	public void testAeReportHasWorkflowOnActiveReportsWithActiveReports(){
