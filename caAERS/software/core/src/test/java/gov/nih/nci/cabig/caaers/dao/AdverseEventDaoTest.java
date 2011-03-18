@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertEqualArrays;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
@@ -490,26 +491,26 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	assertTrue(loaded.size()==3);
     	
     }
- 
+
     public void testGetByStudyParticipantAndAE() throws Exception {
     	AdverseEvent adverseEvent = new AdverseEvent();
     	adverseEvent.setHospitalization(Hospitalization.NONE);
     	adverseEvent.setSolicited(true);
-		TimeValue tv = new TimeValue();		
+		TimeValue tv = new TimeValue();
 		tv.setType(1);
-    	adverseEvent.setEventApproximateTime(tv);    	
+    	adverseEvent.setEventApproximateTime(tv);
     	List<AdverseEvent> loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4),adverseEvent);
-    	assertTrue(loaded.size()==1);
+    	assertEquals(3, loaded.size());
     	adverseEvent = new AdverseEvent();
     	adverseEvent.setHospitalization(Hospitalization.NO);
     	adverseEvent.setSolicited(true);
-    	adverseEvent.setEventApproximateTime(tv);    	
+    	adverseEvent.setEventApproximateTime(tv);
     	loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4),adverseEvent);
-    	assertTrue(loaded.size()==0);
+    	assertEquals(0, loaded.size());
 
-    	
+
     }
-    
+
     public AdverseEventDao getDao(){
     	return (AdverseEventDao) getDeployedApplicationContext().getBean("adverseEventDao");
     }
