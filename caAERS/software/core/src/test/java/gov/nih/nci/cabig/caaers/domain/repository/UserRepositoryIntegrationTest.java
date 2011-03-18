@@ -129,9 +129,9 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
             assertTrue(x.getUserGroupTypes().contains(UserGroupType.system_administrator));
-            assertTrue(x.getUserGroupTypes().contains(UserGroupType.person_and_organization_information_manager));
-            assertTrue(2 == x.getUserGroupTypes().size());
-            assertTrue(x.findRoleMembership(UserGroupType.person_and_organization_information_manager).isAllSite());
+            assertFalse(x.getUserGroupTypes().contains(UserGroupType.person_and_organization_information_manager));
+            assertEquals(1, x.getUserGroupTypes().size());
+            assertFalse(x.findRoleMembership(UserGroupType.person_and_organization_information_manager).isAllSite());
 
         }
         
@@ -150,10 +150,10 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
             User x = userRepository.getUserByLoginName(loginName);
             assertNotNull(x);
             assertEquals("x", x.getFirstName());
-            assertTrue(x.getUserGroupTypes().contains(UserGroupType.ae_reporter));
+            assertFalse(x.getUserGroupTypes().contains(UserGroupType.ae_reporter));
             assertFalse(x.findRoleMembership(UserGroupType.ae_reporter).isAllSite());
-            assertTrue(x.findRoleMembership(UserGroupType.ae_reporter).getOrganizationNCICodes().contains("CTEP"));
-            assertTrue(x.findRoleMembership(UserGroupType.ae_reporter).getStudyIdentifiers().contains("5876"));
+            assertFalse(x.findRoleMembership(UserGroupType.ae_reporter).getOrganizationNCICodes().contains("CTEP"));
+            assertFalse(x.findRoleMembership(UserGroupType.ae_reporter).getStudyIdentifiers().contains("5876"));
 
         }
 
