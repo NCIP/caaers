@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.util.List;
 
@@ -113,5 +114,10 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
         assertEquals("Burn", terms.get(0).getTerm());
         assertEquals("DERMATOLOGY/SKIN", terms.get(0).getCategory().getName());
         assertEquals(2, terms.get(0).getCategory().getCtc().getId().intValue());
+    }
+
+    @Override
+    protected DatabaseOperation getTearDownOperation() throws Exception {
+        return DatabaseOperation.REFRESH;
     }
 }
