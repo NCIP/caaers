@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,8 +61,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		replayMocks();
 		repository.save(staff, changeUrl);
 		verifyMocks();
-		assertEquals("Joel@def.com", staff.getLoginId());
-		
+		assertEquals("Joel@def.com", staff.getEmailAddress());
 	}
 	
 	public void testSaveWebSso() throws Exception {
@@ -70,6 +70,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
 		groupList.add(UserGroupType.ae_reporter);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
+
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setEmailAddress("Joel@def.com");
 		siteResearchStaff.setOrganization(org);
@@ -85,7 +86,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		replayMocks();
 		repository.save(staff, changeUrl);
 		verifyMocks();
-		assertEquals("Joel2@def.com", staff.getLoginId());
+		assertEquals("Joel@def.com", staff.getEmailAddress());
 	}
 	
 	public void testSave_NoLoginId() throws Exception{
