@@ -115,9 +115,4 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
         assertEquals("DERMATOLOGY/SKIN", terms.get(0).getCategory().getName());
         assertEquals(2, terms.get(0).getCategory().getCtc().getId().intValue());
     }
-
-    @Override
-    protected DatabaseOperation getTearDownOperation() throws Exception {
-        return DatabaseOperation.REFRESH;
-    }
 }
