@@ -70,11 +70,11 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 			modifyDates(staff);
 			svc.saveInvestigator(staff);
 			
-			updatedInvestigator = fetchInvestigator("l1");
+			updatedInvestigator = fetchInvestigator("jd@nci.org");
 			
 			assertNotNull(updatedInvestigator);
-			assertEquals("111-098-0989", updatedInvestigator.getFaxNumber());
-			assertEquals("111-098-0099", updatedInvestigator.getPhoneNumber());
+			assertEquals("870-098-0989", updatedInvestigator.getFaxNumber());
+			assertEquals("908-098-0099", updatedInvestigator.getPhoneNumber());
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -101,7 +101,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 			svc.saveInvestigator(staff);
 			
 
-			updatedInvestigator = fetchInvestigator("l1");
+			updatedInvestigator = fetchInvestigator("jd@nci.org");
 			assertNotNull(updatedInvestigator);
 			
 			//get site investigators.
@@ -132,14 +132,15 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
      * @param nciCode
      * @return
      */
-	Investigator fetchInvestigator(String loginId) {
+	Investigator fetchInvestigator(String email) {
     	InvestigatorQuery invQuery = new InvestigatorQuery();
-        if (StringUtils.isNotEmpty(loginId)) {
-        	invQuery.filterByExactLoginId(loginId);
+
+        if (StringUtils.isNotEmpty(email)) {
+        	invQuery.filterByEmailAddress(email);
         	
         }
         List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
-        
+
         if (rsList == null || rsList.isEmpty()) {
             return null;
         }
