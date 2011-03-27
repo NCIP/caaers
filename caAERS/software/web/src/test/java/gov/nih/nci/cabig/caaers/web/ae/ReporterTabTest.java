@@ -157,8 +157,7 @@ public class ReporterTabTest extends AeTabTestCase {
     	BeanWrapper commandBean = new BeanWrapperImpl(command);
     	InputFieldGroupMap fieldGroups = getTab().createFieldGroups(command);
     	getTab().validate(command, commandBean, fieldGroups, errors);
-    	assertTrue(errors.hasErrors());
-    	assertEquals("SAE_019", errors.getFieldError("aeReport.reporter.user").getCode());
+    	assertFalse(errors.hasErrors());
     	verifyMocks();
     }
     
