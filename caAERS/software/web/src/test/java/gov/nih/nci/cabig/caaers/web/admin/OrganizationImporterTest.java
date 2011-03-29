@@ -1,14 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import org.easymock.EasyMock;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.easymock.EasyMock;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 
 /**
  *		Input String has to have 5 tokens.Valid samples as given below
@@ -33,6 +36,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  *		"02006","Hosp. Ramos Mejia, Sala 18","Buenos Aires","","Argentina" 
  * 
  * @author Monish Dombla
+ * @author Ion C. Olaru
  *
  */
 public class OrganizationImporterTest extends WebTestCase {
@@ -45,7 +49,13 @@ public class OrganizationImporterTest extends WebTestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		importer = new OrganizationImporter(); 
+		importer = new OrganizationImporter();
+        importer.setEventFactory(new EventFactory());
+        importer.getEventFactory().setApplicationContext(new GenericApplicationContext() {
+            @Override
+            public void publishEvent(ApplicationEvent event) {}
+        });
+
 		command = new ImportCommand();
 		organizationRepository = registerMockFor(OrganizationRepositoryImpl.class);
 	}
@@ -79,32 +89,32 @@ public class OrganizationImporterTest extends WebTestCase {
 	}	
 	
 	public void testProcessEntities(){
-		
+
 		try {
 			File ctepOrganizationsFile = getResources("classpath*:gov/nih/nci/cabig/caaers/web/admin/testdata/Organization_Codes.txt")[0].getFile();
 			assertTrue(ctepOrganizationsFile.exists());
-			
+
 			organizationMap = new HashMap<String,Organization>();
-			
+
 			LocalOrganization localOrg1 = new LocalOrganization();
 			localOrg1.setNciInstituteCode("ABCD01");
 			localOrg1.setName("Change Me");
 			organizationMap.put("ABCD01", localOrg1);
-			
+
 			importer.setOrganizationMap(organizationMap);
-			
+
 			importer.processEntities(ctepOrganizationsFile, command);
 			assertNotNull(command);
-			
+
 			assertNotNull(command.getImportableOrganizations());
 			assertEquals(6,command.getImportableOrganizations().size());
-			
+
 			assertNotNull(command.getUpdateableOrganizations());
 			assertEquals(1,command.getUpdateableOrganizations().size());
-			
+
 			assertNotNull(command.getNonImportableOrganizations());
 			assertEquals(3,command.getNonImportableOrganizations().size());
-			
+
 		}catch(Exception e){
 			fail("No Exception is expected");
 		}
@@ -114,6 +124,7 @@ public class OrganizationImporterTest extends WebTestCase {
 		
 		//When Map is null.
 		importer.setOrganizationMap(null);
+
 		importer.setOrganizationRepository(organizationRepository);
 		Organization Org1 = Fixtures.createOrganization("LocalOrg-1", "1234");
 		Organization Org2 = Fixtures.createOrganization("RemoteOrg-1", "4321");

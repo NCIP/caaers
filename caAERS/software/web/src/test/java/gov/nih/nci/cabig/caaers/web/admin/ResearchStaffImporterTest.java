@@ -1,23 +1,23 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.ArrayList;
-
-import org.easymock.classextension.EasyMock;
-
-import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.support.GenericApplicationContext;
+
+import java.util.ArrayList;
 
 /**
  * @author Sameer Sawant
+ * @author Ion C. Olaru
  */
 
 public class ResearchStaffImporterTest extends WebTestCase {
@@ -32,6 +32,12 @@ public class ResearchStaffImporterTest extends WebTestCase {
 		super.setUp();
 		
 		importer = new ResearchStaffImporter();
+        importer.setEventFactory(new EventFactory());
+        importer.getEventFactory().setApplicationContext(new GenericApplicationContext() {
+            @Override
+            public void publishEvent(ApplicationEvent event) {}
+        });
+
 		command = new ImportCommand();
 		domainObjectValidator = registerMockFor(DomainObjectValidator.class);
 		researchStaffMigratorService = registerMockFor(DefaultResearchStaffMigratorService.class);
