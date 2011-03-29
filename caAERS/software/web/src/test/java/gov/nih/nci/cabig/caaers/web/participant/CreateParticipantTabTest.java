@@ -157,7 +157,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     public void testValidateDateOfBirth() throws Exception {
         newParticipantCommand.getParticipant().setDateOfBirth(new DateValue(2011));
         doValidate();
-        assertEquals("Wrong number of errors for " + "participant.dateOfBirth", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
+        assertEquals("Wrong number of errors for " + "participant.dateOfBirth", 0, errors.getFieldErrorCount("participant.dateOfBirth"));
     }
 
     public void testValidateIdentifiers() throws Exception {
