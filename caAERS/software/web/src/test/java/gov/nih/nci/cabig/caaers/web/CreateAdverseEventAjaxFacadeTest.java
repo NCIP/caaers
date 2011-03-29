@@ -242,8 +242,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	
     	assertEquals("Incorrect email address", "rStaff@def.com", user.getEmailAddress());
     	assertEquals("Incorrect phone number", "123-5-789", user.getPhoneNumber());
-    	assertEquals("Incorrect fax number", "", user.getFaxNumber());
-    	
     }
     
     public void testMatchLabTestNames() throws Exception {
