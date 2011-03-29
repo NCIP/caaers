@@ -196,7 +196,7 @@ public class StudyDomainObjectValidatorTest extends CaaersTestCase{
 		sampleStudy.addStudyOrganization(ss2);
 		
 		errors = domainObjectValidator.validate(sampleStudy);
-		assertEquals(0, errors.size());
+		assertEquals(1, errors.size());
 		
 	}
 	
