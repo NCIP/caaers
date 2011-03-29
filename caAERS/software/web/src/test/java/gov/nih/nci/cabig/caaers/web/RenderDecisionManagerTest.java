@@ -76,12 +76,11 @@ public class RenderDecisionManagerTest extends WebTestCase {
 
 		mgr.updateRenderDecision(rdList);
 		
-		assertFalse(mgr.canRenderField("aeReport.a.k[1].xz", request, response));
-		assertFalse(mgr.canRenderField("aeReport.a.k[].xz", request, response));
+		assertTrue(mgr.canRenderField("aeReport.a.k[1].xz", request, response));
+		assertTrue(mgr.canRenderField("aeReport.a.k[].xz", request, response));
 		assertTrue(mgr.canRenderField("aeReport.a.k[3].xy", request, response));
 		assertTrue(mgr.canRenderField("aeReport.c.k[2].x", request, response));
-		assertFalse(mgr.canRenderField("aeReport.b.k[" + 2 + "].x", request, response));
-		
+		assertTrue(mgr.canRenderField("aeReport.b.k[" + 2 + "].x", request, response));
 	}
 	
 }
