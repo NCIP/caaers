@@ -235,14 +235,14 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	expect(researchStaffDao.getById(10)).andReturn(rStaff);
     	expect(assignment.getStudySite()).andReturn(studySite);
     	expect(studySite.getOrganization()).andReturn(testOrg);
-    	
+
     	replayMocks();
     	Person user = facade.getResearchStaffDetails("10");
     	verifyMocks();
     	
-    	assertEquals("Incorrect email address", "siteResearchStaffEmail", user.getEmailAddress());
-    	assertEquals("Incorrect phone number", "444-444-4444", user.getPhoneNumber());
-    	assertEquals("Incorrect fax number", "555-555-5555", user.getFaxNumber());
+    	assertEquals("Incorrect email address", "rStaff@def.com", user.getEmailAddress());
+    	assertEquals("Incorrect phone number", "123-5-789", user.getPhoneNumber());
+    	assertEquals("Incorrect fax number", "", user.getFaxNumber());
     	
     }
     

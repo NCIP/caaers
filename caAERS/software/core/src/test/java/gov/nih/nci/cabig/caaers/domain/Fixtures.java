@@ -73,6 +73,7 @@ public class Fixtures {
 
     public static Organization createOrganization(final String name) {
         Organization organization = new LocalOrganization();
+        organization.setId(1);
         organization.setName(name);
         organization.setDescriptionText("dec:" + name);
         organization.setNciInstituteCode("NCI333:" + name);
