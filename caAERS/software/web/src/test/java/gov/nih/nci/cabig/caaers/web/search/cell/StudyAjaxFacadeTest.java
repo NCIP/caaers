@@ -46,6 +46,7 @@ public class StudyAjaxFacadeTest extends DwrFacadeTestCase {
         study.setId(1);
         studySite = new StudySite();
         studySite.setStudy(study);
+        studySite.setOrganization(new LocalOrganization());
 
         nciStudySite = new StudySite();
         nciStudySite.setId(1);
