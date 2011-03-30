@@ -36,15 +36,24 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 				classpath:applicationContext-nes-sr.xml
         </param-value>
     </context-param>
+
+    <context-param>
+        <param-name>beringContextConfigLocation</param-name>
+        <param-value>
+            classpath:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml
+            classpath:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml
+        </param-value>
+    </context-param>
     
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
-
+    <listener>
+        <listener-class>edu.northwestern.bioinformatics.bering.servlet.SeparateApplicationContextBeringContextListener</listener-class>
+    </listener>
    <listener>
      <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
    </listener>
-   
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>   
