@@ -31,6 +31,8 @@ public class ParticipantAjaxFacadeTest extends DwrFacadeTestCase {
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
     private StudyRepository studyRepository;
     private StudySite studySite;
+    private StudySite mockStudySite;
+    private Organization org;
     private StudyFundingSponsor ctepStudySponsor;
 
     @Override
@@ -39,12 +41,14 @@ public class ParticipantAjaxFacadeTest extends DwrFacadeTestCase {
         searchStudyAjaxFacade = new SearchStudyAjaxFacade();
         studySearchableAjaxableDomainObjectRepository = registerMockFor(StudySearchableAjaxableDomainObjectRepository.class);
         studyRepository = registerMockFor(StudyRepository.class);
+        mockStudySite = registerMockFor(StudySite.class);
         study = new LocalStudy();
         study.setShortTitle("short title");
         study.setId(1);
         studySite = new StudySite();
         studySite.setStudy(study);
-
+        org = new LocalOrganization();
+        studySite.setOrganization(org);
         nciStudySite = new StudySite();
         nciStudySite.setId(1);
         nciStudySite.setOrganization(new LocalOrganization()); nciStudySite.getOrganization().setName("National Cancer Inst");

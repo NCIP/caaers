@@ -166,7 +166,6 @@ public class CreateStudyControllerTest extends WebTestCase {
         assertSame(command, session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
         assertSame(newStudy, command.getStudy());
         assertEquals("study/study_reviewsummary", mv.getViewName());
-        assertEquals("Information saved successfully", mv.getModel().get("flashMessage"));
 
         verifyMocks();
     }

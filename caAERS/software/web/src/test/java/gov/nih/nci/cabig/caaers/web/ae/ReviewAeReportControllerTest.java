@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import org.acegisecurity.Authentication;
@@ -65,6 +66,23 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		controller.setConfiguration(configuration);
 		controller.setEvaluationService(evaluationService);
 		controller.setReportValidationService(reportValidationService);
+        controller.setReportDao(new ReportDao() {
+            @Override
+            public Report getById(int id) {
+                return new Report();
+            }
+        });
+        controller.setAdeersReportGenerator(new AdeersReportGenerator() {
+            @Override
+            public String generateCaaersXml(ExpeditedAdverseEventReport aeReport, Report report) throws Exception {
+                return "<xml>EMPTY XML</xml>";
+            }
+
+            @Override
+            public List<String> generateImage(String adverseEventReportXml, String pngOutFileName) throws Exception {
+                return new ArrayList();
+            }
+        });
 	}
 	
 	
@@ -86,14 +104,4 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		assertContainsKey("Report messages is expected in jsp, but not set in the reference data", refdata, "reportMessages");
 	}
 
-    public void testFormBackingObject() throws Exception {
-        request.setParameter("aeReport","1");
-        request.setParameter("report","1");
-        command =  (ReviewAeReportCommand)controller.formBackingObject(request);
-        Map<String,List> pngFiles =  command.getPngFiles();
-        List listOFiles = pngFiles.get("1_1");
-        for(Object li:listOFiles)  {
-            System.out.println("filename:" + li);
-        }
-    }
-    }
+}
