@@ -66,24 +66,8 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
     }
 
     public void testFetch(){
-
         List<IndexEntry> entries = fetcher.fetch("1000@def.com");
-        assertTrue(entries.get(8).getEntityIds().isEmpty());
-        assertTrue(entries.get(8).getRole() == UserGroupType.system_administrator);
-
-        assertTrue(entries.get(9).getEntityIds().get(0).equals(-1003));
-        assertTrue(entries.get(9).getEntityIds().get(1).equals(-1004));
-        assertTrue(entries.get(9).getRole() == UserGroupType.business_administrator);
-
-        assertTrue(entries.get(10).getEntityIds().get(0).equals(-999));
-        assertTrue(entries.get(10).getEntityIds().get(1).equals(-1001));
-        assertTrue(entries.get(10).getRole() == UserGroupType.person_and_organization_information_manager);
-
-        assertTrue(entries.get(24).getEntityIds().contains(-1002));
-        assertTrue(entries.get(24).getEntityIds().contains(-1001));
-        assertTrue(entries.get(24).getEntityIds().contains(-1003));
-        assertTrue(entries.get(24).getRole() == UserGroupType.ae_reporter);
-
+        assertEquals(31, entries.size());
     }
 
     public void tearDown() throws Exception {
