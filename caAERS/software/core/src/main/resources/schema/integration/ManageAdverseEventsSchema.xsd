@@ -244,20 +244,15 @@
         </xs:restriction>    
     </xs:simpleType>
 	
-	<xs:element name="Response" type="Response" />
-    <xs:complexType name="Response">
-    	<xs:sequence>
-    		<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
-    		<xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
-    	</xs:sequence>
-    	<xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
-    </xs:complexType>
+
     
     <xs:element name="CaaersServiceResponse">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="Response" />
-            </xs:sequence>
+        <xs:sequence>
+            <xs:element name="errorCode" type="xs:string" />
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="responses"  type="Responses"/>
+	    </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="CustomStringType">
@@ -266,7 +261,25 @@
            <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
     </xs:simpleType>  
-    
+
+    <xs:complexType name="Responses">
+        <xs:sequence>
+            <xs:element name="response" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="errorCode" type="xs:string"/>
+                    <xs:element name="dataBaseId" type="xs:string"/>
+                    <xs:element name="correlationId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            </xs:element>
+       </xs:sequence>
+    </xs:complexType>
+
+
+
+
 
 </xs:schema>
     
