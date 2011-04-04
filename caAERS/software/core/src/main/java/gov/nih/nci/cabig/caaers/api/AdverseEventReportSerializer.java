@@ -264,7 +264,9 @@ public class AdverseEventReportSerializer {
 		   r.setReportDefinition(getReportDefinition(report, report.getReportDefinition()));
 		   r.setEmailAddresses(report.getEmailRecipients());
            r.setMandatoryFields(report.getMandatoryFields());
-	   	   r.setReportDeliveries(report.getReportDeliveries());
+	   	   for(ReportDelivery rd : report.getReportDeliveries()){
+              r.addReportDelivery(ReportDelivery.copy(rd));
+           }
 
            // determine the FDA delivery
            if (report.getReportDefinition().getGroup().getCode().equals("RT_FDA")) {
@@ -300,15 +302,16 @@ public class AdverseEventReportSerializer {
          * */
         private List<ReportDeliveryDefinition> adjustDeliveryDefinitions(Report report, List<ReportDeliveryDefinition> ddl) {
             if (report == null) return ddl;
-
+            List<ReportDeliveryDefinition> rddList = new ArrayList<ReportDeliveryDefinition>();
             for (ReportDeliveryDefinition rdd : ddl) {
                 for (ReportDelivery rd : report.getReportDeliveries()) {
                     if (rd.getReportDeliveryDefinition().getId().equals(rdd.getId())) {
                         rdd.setStatus(rd.getDeliveryStatus().getName());
                     }
                 }
+                rddList.add(ReportDeliveryDefinition.copy(rdd));
             }
-            return ddl;
+            return rddList;
         }
 
 	   private AdditionalInformation getAdditionalInformation (AdditionalInformation additionalInformation) throws Exception {
