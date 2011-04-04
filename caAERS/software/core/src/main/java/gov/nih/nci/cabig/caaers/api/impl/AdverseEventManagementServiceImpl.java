@@ -36,7 +36,7 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.Criteria;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
+//import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +62,11 @@ import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
 
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
+/*
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
+*/
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.Responses;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.AdverseEventManagementService", serviceName="AdverseEventManagementService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
@@ -90,12 +95,14 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	//	WebRequest stubWebRequest = preProcess();
 		
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
-		Response adverseEventResponse = new Response();
+		Responses.Response  adverseEventResponse = new Responses.Response();
+        List<Responses.Response> adverseEventResponsesList = new ArrayList<Responses.Response>();
+        Responses adverseEventResponses = new Responses();
+
 		if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
 			if (adverseEventsInputMessage.getAdverseEvents() == null) {
-				adverseEventResponse.setResponsecode("WS_AEMS_025");
-				adverseEventResponse.setDescription(messageSource.getMessage("WS_AEMS_025", new String[]{},"",Locale.getDefault()));
-				caaersServiceResponse.setResponse(adverseEventResponse);
+                caaersServiceResponse.setErrorCode("WS_AEMS_025");
+                caaersServiceResponse.setDescription(messageSource.getMessage("WS_AEMS_025", new String[]{},"",Locale.getDefault()));
 				return caaersServiceResponse;
 			}
 		}
@@ -117,17 +124,31 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
        				String message = messageSource.getMessage("WS_AEMS_003", new String[]{criteria.getStudyIdentifier()},"",Locale.getDefault());
         			logger.error("Study Does not exist ");
     				//adverseEventImportOutcome.addErrorMessage("Study Does not exist in caAERS " , DomainObjectImportOutcome.Severity.ERROR);
-    				adverseEventResponse.setResponsecode("WS_AEMS_003");
+
+    				adverseEventResponse.setErrorCode("WS_AEMS_003");
     				adverseEventResponse.setDescription(message);
-    				caaersServiceResponse.setResponse(adverseEventResponse);
+                    adverseEventResponse.setCorrelationId("");
+                    adverseEventResponse.setDataBaseId("");
+                    adverseEventResponsesList.add(adverseEventResponse);
+                    adverseEventResponses.setResponse(adverseEventResponsesList);
+                    caaersServiceResponse.setErrorCode("-1");
+                    caaersServiceResponse.setDescription("failure");
+    				caaersServiceResponse.setResponses(adverseEventResponses);
+
     				return caaersServiceResponse;
         		}
         		List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(criteria.getStudyIdentifier());
         		if(authorizedStudies.size() == 0) {
         			String message = messageSource.getMessage("WS_AEMS_027", new String[]{criteria.getStudyIdentifier()},"",Locale.getDefault());
-        			adverseEventResponse.setResponsecode("WS_AEMS_027");
+        			adverseEventResponse.setErrorCode("WS_AEMS_027");
     				adverseEventResponse.setDescription(message);
-    				caaersServiceResponse.setResponse(adverseEventResponse);
+                    adverseEventResponse.setCorrelationId("");
+                    adverseEventResponse.setDataBaseId("");
+                    adverseEventResponsesList.add(adverseEventResponse);
+                    adverseEventResponses.setResponse(adverseEventResponsesList);
+                    caaersServiceResponse.setErrorCode("-1");
+                    caaersServiceResponse.setDescription("failure");
+    				caaersServiceResponse.setResponses(adverseEventResponses);
     				return caaersServiceResponse;
         		}
 			} catch (CaaersSystemException e){
@@ -135,9 +156,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				//adverseEventImportOutcome = new DomainObjectImportOutcome<AdverseEvent>();
 				logger.error("Study Criteria to StudyDomain Conversion Failed " , e);
 				//adverseEventImportOutcome.addErrorMessage("Study Criteria to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-				adverseEventResponse.setResponsecode("WS_AEMS_004");
+				adverseEventResponse.setErrorCode("WS_AEMS_004");
 				adverseEventResponse.setDescription(message);
-				caaersServiceResponse.setResponse(adverseEventResponse);
+                adverseEventResponse.setCorrelationId("");
+                adverseEventResponse.setDataBaseId("");
+				adverseEventResponsesList.add(adverseEventResponse);
+                adverseEventResponses.setResponse(adverseEventResponsesList);
+                caaersServiceResponse.setErrorCode("-1");
+                caaersServiceResponse.setDescription("failure");
+    			caaersServiceResponse.setResponses(adverseEventResponses);
 				return caaersServiceResponse;
 			}
 		}
@@ -153,9 +180,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     				String message = messageSource.getMessage("WS_AEMS_001", new String[]{criteria.getParticipantIdentifier()},"",Locale.getDefault());
         			logger.error(message);
     				//adverseEventImportOutcome.addErrorMessage("Participant Does not exist in caAERS " , DomainObjectImportOutcome.Severity.ERROR);
-    				adverseEventResponse.setResponsecode("WS_AEMS_001");
+    				adverseEventResponse.setErrorCode("WS_AEMS_001");
     				adverseEventResponse.setDescription(message);
-    				caaersServiceResponse.setResponse(adverseEventResponse);
+                    adverseEventResponse.setCorrelationId("");
+                    adverseEventResponse.setDataBaseId("");
+				    adverseEventResponsesList.add(adverseEventResponse);
+                    adverseEventResponses.setResponse(adverseEventResponsesList);
+                    caaersServiceResponse.setErrorCode("1");
+                    caaersServiceResponse.setDescription("success");
+    				caaersServiceResponse.setResponses(adverseEventResponses);
     				return caaersServiceResponse;
         		}
 			} catch (CaaersSystemException e){
@@ -163,8 +196,13 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				//adverseEventImportOutcome = new DomainObjectImportOutcome<AdverseEvent>();
 				logger.error("Participant Criteria to ParticipantDomain Conversion Failed " , e);
 				//adverseEventImportOutcome.addErrorMessage("Participant Criteria to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-				adverseEventResponse.setResponsecode("WS_AEMS_002");				
+				adverseEventResponse.setErrorCode("WS_AEMS_002");
 				adverseEventResponse.setDescription(message);
+                adverseEventResponse.setCorrelationId("");
+                adverseEventResponse.setDataBaseId("");
+				adverseEventResponsesList.add(adverseEventResponse);
+                adverseEventResponses.setResponse(adverseEventResponsesList);
+
 			}
 			
 		}		
@@ -183,9 +221,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
    				String message = messageSource.getMessage("WS_AEMS_005", new String[]{criteria.getParticipantIdentifier(),criteria.getStudyIdentifier()},"",Locale.getDefault());
     			logger.error(message);
 			//	adverseEventImportOutcome.addErrorMessage("Participant is not assigned to Study " , DomainObjectImportOutcome.Severity.ERROR);
-				adverseEventResponse.setResponsecode("WS_AEMS_005");
+				adverseEventResponse.setErrorCode("WS_AEMS_005");
 				adverseEventResponse.setDescription(message);
-				caaersServiceResponse.setResponse(adverseEventResponse);
+                adverseEventResponse.setCorrelationId("");
+                adverseEventResponse.setDataBaseId("");
+				adverseEventResponsesList.add(adverseEventResponse);
+                adverseEventResponses.setResponse(adverseEventResponsesList);
+                caaersServiceResponse.setErrorCode("1");
+                caaersServiceResponse.setDescription("success");
+    			caaersServiceResponse.setResponses(adverseEventResponses);
 				return caaersServiceResponse;
     		}
 			AdverseEventReportingPeriod adverseEventReportingPeriod = null;
@@ -193,15 +237,23 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				try {
 					adverseEventReportingPeriod = getReportingPeriod(criteria, assignment, operation);
 				} catch (CaaersSystemException e) {
-		    		messages.add(e.getMessage());
-		    		adverseEventResponse.setMessage(messages);
-					caaersServiceResponse.setResponse(adverseEventResponse);
-					return caaersServiceResponse;
+		    	//	messages.add(e.getMessage());
+
+			    adverseEventResponse.setDescription(e.getMessage());
+                adverseEventResponse.setCorrelationId("");
+                adverseEventResponse.setDataBaseId("");
+				adverseEventResponsesList.add(adverseEventResponse);
+                adverseEventResponses.setResponse(adverseEventResponsesList);
+                caaersServiceResponse.setErrorCode("-1");
+                caaersServiceResponse.setDescription("failure");
+    			caaersServiceResponse.setResponses(adverseEventResponses);
+				return caaersServiceResponse;
 				}
 			}
 			
 			//
 			if (operation.equals(AdverseEventManagementService.DELETE)) {
+                String errorCode = "";
 				AdverseEventTerms adverseEventTerms = adverseEventsInputMessage.getAdverseEventTerms();
 				if (adverseEventTerms.getAdverseEventCtcTerm().size() > 0) {
 					for (AdverseEventCtcTermType adverseEventCtcTerm:adverseEventTerms.getAdverseEventCtcTerm()) {
@@ -209,11 +261,20 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						String message = "";
 						if (adverseEvent.getSolicited()) {
 							message = messageSource.getMessage("WS_AEMS_024", new String[]{adverseEventCtcTerm.getCtepTerm()},"",Locale.getDefault());
+                            errorCode = "WS_AEMS_024";
 						} else {
 							deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
 							message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEventCtcTerm.getCtepTerm(),operation+"d"},"",Locale.getDefault());
+                            errorCode = "WS_AEMS_006";
 						}
-						messages.add (message);	
+						//messages.add (message);
+                        Responses.Response aeResponse = new Responses.Response();
+                        aeResponse.setErrorCode(errorCode);
+                        aeResponse.setDescription(message);
+                        aeResponse.setCorrelationId("");
+                        aeResponse.setDataBaseId("");
+                        adverseEventResponsesList.add(aeResponse);
+
 					}
 				} else if (adverseEventTerms.getAdverseEventMeddraLowLevelTerm().size() > 0) {
 					for (AdverseEventMeddraLowLevelTermType adverseEventMeddraLowLevelTerm:adverseEventTerms.getAdverseEventMeddraLowLevelTerm()) {
@@ -221,24 +282,39 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						String message = "";
 						if (adverseEvent.getSolicited()) {
 							message = messageSource.getMessage("WS_AEMS_024", new String[]{adverseEventMeddraLowLevelTerm.getMeddraTerm()},"",Locale.getDefault());
+                            errorCode = "WS_AEMS_024";
 						} else {
 							deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
 							message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEventMeddraLowLevelTerm.getMeddraTerm(),operation+"d"},"",Locale.getDefault());
+                            errorCode = "WS_AEMS_006";
 							
 						}
 						
-						messages.add (message);	
+						//messages.add (message);
+                        Responses.Response aeResponse = new Responses.Response();
+                        aeResponse.setErrorCode(errorCode);
+                        aeResponse.setDescription(message);
+                        aeResponse.setCorrelationId("");
+                        aeResponse.setDataBaseId("");
+                        adverseEventResponsesList.add(aeResponse);
+
+
 					}				
 				}
 		        //enableAuthorization(authorizationOnByDefault);
 				//switchUser(null);
-				adverseEventResponse.setMessage(messages);
-				caaersServiceResponse.setResponse(adverseEventResponse);
+				/*adverseEventResponse.setMessage(messages);
+				caaersServiceResponse.setResponse(adverseEventResponse);*/
+                adverseEventResponses.setResponse(adverseEventResponsesList);
+                caaersServiceResponse.setErrorCode("1");
+                caaersServiceResponse.setDescription("success");
+                caaersServiceResponse.setResponses(adverseEventResponses);
 				return caaersServiceResponse;
 			}
 			
 			AdverseEvents xmlAdverseEvents = adverseEventsInputMessage.getAdverseEvents();
 			for (AdverseEventType adverseEventType:xmlAdverseEvents.getAdverseEvent()) {
+                    Responses.Response aeResponse = new Responses.Response();
 				try {
 					AdverseEvent adverseEvent = processAdverseEvent(adverseEventType,adverseEventReportingPeriod,operation,dbStudy.getAdeersReporting());
 					ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
@@ -246,7 +322,13 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 					ValidationErrors errors = fireRules(aeReport,"gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
 					if (errors.getErrorCount() > 0) {
 						for (ValidationError error:errors.getErrors()) {
-							messages.add(error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")");
+							//messages.add(error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")");
+                             Responses.Response aeResp = new Responses.Response();
+                             aeResp.setErrorCode("error");
+                             aeResp.setDescription(error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")");
+                             aeResp.setCorrelationId("");
+                             aeResp.setDataBaseId("");
+                             adverseEventResponsesList.add(aeResp);
 						}
 					} else {
 						//SAVE AE
@@ -254,15 +336,28 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 							adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
 							adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
 							String message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEvent.getAdverseEventTerm().getFullName(),operation+"d"},"",Locale.getDefault());
-							messages.add (message);
+
+                             aeResponse.setErrorCode("WS_AEMS_006");
+                             aeResponse.setDescription(message);
+                             aeResponse.setCorrelationId("");
+                             aeResponse.setDataBaseId("");
+                             adverseEventResponsesList.add(aeResponse);
+							 //messages.add(message);
 						}	
 					}
 					
 					
 				} catch (CaaersSystemException e) {
-					messages.add(e.getMessage());
-					adverseEventResponse.setMessage(messages);
-					caaersServiceResponse.setResponse(adverseEventResponse);
+					//messages.add(e.getMessage());
+                    aeResponse.setErrorCode(" ");
+                    aeResponse.setDescription(e.getMessage());
+                    aeResponse.setCorrelationId("");
+                    aeResponse.setDataBaseId("");
+                    adverseEventResponsesList.add(aeResponse);
+					adverseEventResponses.setResponse(adverseEventResponsesList);
+                    caaersServiceResponse.setErrorCode("-1");
+                    caaersServiceResponse.setDescription("failure");
+                    caaersServiceResponse.setResponses(adverseEventResponses);
 					return caaersServiceResponse;
 				}
 			}
@@ -275,18 +370,32 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		//		Study initializedStudy = studyDao.initialize(dbStudy);
 				for (AdverseEvent ae:adverseEventReportingPeriod.getAdverseEvents()) {
 					String sae = "";
+                    Responses.Response aeResponse = new Responses.Response();
 					try {
 						
 						sae = adverseEventEvaluationService.assesAdverseEvent(ae, dbStudy);
 						if (sae.equals("SERIOUS_ADVERSE_EVENT")) {
-							messages.add("Rules enabled for this study , Reporting required for exported Adverse Events");
+							//messages.add("Rules enabled for this study , Reporting required for exported Adverse Events");
+                            aeResponse.setErrorCode("");
+                            aeResponse.setDescription("Rules enabled for this study , Reporting required for exported Adverse Events");
+                            aeResponse.setDataBaseId("");
+                            aeResponse.setCorrelationId("");
+                            adverseEventResponsesList.add(aeResponse);
+
 						}
 						
 					} catch (Exception e) {
-						messages.add("Error in firing SAE rules . "+e.getMessage());
-						adverseEventResponse.setMessage(messages);
-						caaersServiceResponse.setResponse(adverseEventResponse);
-						return caaersServiceResponse;
+						//messages.add("Error in firing SAE rules . "+e.getMessage());
+						aeResponse.setErrorCode("");
+                        aeResponse.setDescription("Error in firing SAE rules . "+e.getMessage());
+                        aeResponse.setDataBaseId("");
+                        aeResponse.setCorrelationId("");
+                        adverseEventResponsesList.add(aeResponse);
+					    adverseEventResponses.setResponse(adverseEventResponsesList);
+						caaersServiceResponse.setErrorCode("-1");
+                        caaersServiceResponse.setDescription("failure");
+                        caaersServiceResponse.setResponses(adverseEventResponses);
+					    return caaersServiceResponse;
 					}	
 					/*
 					try {						
@@ -301,14 +410,17 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 
 				}
-			adverseEventResponse.setMessage(messages);
+			//adverseEventResponse.setMessage(messages);
 		}
 	//	postProcess(stubWebRequest);
         //enableAuthorization(authorizationOnByDefault);
 		//switchUser(null);
 		
-		caaersServiceResponse.setResponse(adverseEventResponse);
-		return caaersServiceResponse;
+            adverseEventResponses.setResponse(adverseEventResponsesList);
+            caaersServiceResponse.setErrorCode("1");
+            caaersServiceResponse.setDescription("success");
+            caaersServiceResponse.setResponses(adverseEventResponses);
+            return caaersServiceResponse;
 	}
 	
 	private void notifyStudyPersonnel(StudyParticipantAssignment assignment) throws MailException {
@@ -683,13 +795,22 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
  	}*/
 	public CaaersServiceResponse deleteAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
 		if (adverseEventsInputMessage.getAdverseEventTerms() == null) {
+            List<Responses.Response> adverseEventResponsesList = new ArrayList<Responses.Response>();
+            Responses adverseEventResponses = new Responses();
 			CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
-			Response adverseEventResponse = new Response();
-			adverseEventResponse.setResponsecode("WS_AEMS_026");
+			Responses.Response adverseEventResponse = new Responses.Response();
+			adverseEventResponse.setErrorCode("WS_AEMS_026");
 			adverseEventResponse.setDescription(messageSource.getMessage("WS_AEMS_026", new String[]{},"",Locale.getDefault()));
-			caaersServiceResponse.setResponse(adverseEventResponse);
+            adverseEventResponse.setCorrelationId("");
+            adverseEventResponse.setDataBaseId("");
+            adverseEventResponsesList.add(adverseEventResponse);
+            adverseEventResponses.setResponse(adverseEventResponsesList);
+            caaersServiceResponse.setErrorCode("1");
+            caaersServiceResponse.setDescription("success");
+    		caaersServiceResponse.setResponses(adverseEventResponses);
 			return caaersServiceResponse;
-		}
+
+        }
 		return saveAdverseEvent(adverseEventsInputMessage,DELETE);
 	}
 
