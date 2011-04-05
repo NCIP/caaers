@@ -17,7 +17,7 @@
 <c:set var="hasDevice" value="${command.study.devicePresent}" />
 <c:set var="hasRadiation" value="${command.study.radiationPresent}" />
 <c:set var="hasAgent" value="${command.study.drugAdministrationPresent}" />
-<c:set var="hasBehavioral" value="${command.study.behavioralPresent}" />
+<c:set var="hasBehavioral" value="${command.study.behavioralInterventionPresent}" />
 
 <table class="attribution" id="attribution-${offset}" border="0">
     <col class="cause"/>
