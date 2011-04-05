@@ -77,7 +77,7 @@ public class ReportVersionRepository {
      */
     public List<ReportVersion> getReportActivity() {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
-        q.orderBy("coalesce(rv.submittedOn, rv.dueOn, rv.withdrawnOn)");
+        q.orderBy("coalesce(rv.dueOn, rv.submittedOn,rv.withdrawnOn)");
         
 /*
         q.andWhere("rv.dueOn >= :dueOn");
