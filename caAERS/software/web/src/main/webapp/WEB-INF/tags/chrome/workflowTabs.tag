@@ -24,7 +24,7 @@
         <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (_isU ? 'incomplete' : 'complete'):''}">
         	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
 				<c:if test="${!status.last}">
-					<c:if test="${ _isF and _isM }">
+					<c:if test="${ _isF }">
 		        		<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt="Complete" style="vertical-align:top;" />
 		        	</c:if>
 				</c:if>
