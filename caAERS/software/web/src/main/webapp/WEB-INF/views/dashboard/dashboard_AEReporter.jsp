@@ -251,9 +251,10 @@
                 <b style="color:yellow;">Course: </b> Cycle #: ${rvDTO.periodCycle}&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
             </span>
             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                <td>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />" >${rvDTO.reportName}</a></td>
-                <%--<td>${rvDTO.rv.reportStatus}</td>--%>
                 <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
+
+                <td>&nbsp;<a <c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}">style='border-bottom:0px; color:gray;'</c:if> onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" <c:if test="${_s ne 'COMPLETED' and _s ne 'WITHDRAWN'}">href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />"</c:if> >${rvDTO.reportName}</a></td>
+                <%--<td>${rvDTO.rv.reportStatus}</td>--%>
                 <c:choose>
                     <c:when test="${_s eq 'PENDING' or _s eq 'INPROCESS' or _s eq 'FAILED'}">
                         <td><i>Due on:</i></td>
