@@ -264,9 +264,12 @@ public class AdverseEventReportSerializer {
 		   r.setReportDefinition(getReportDefinition(report, report.getReportDefinition()));
 		   r.setEmailAddresses(report.getEmailRecipients());
            r.setMandatoryFields(report.getMandatoryFields());
-	   	   for(ReportDelivery rd : report.getReportDeliveries()){
-              r.addReportDelivery(ReportDelivery.copy(rd));
+           if(report.getReportDeliveries() != null)   {
+              for(ReportDelivery rd : report.getReportDeliveries()){
+                r.addReportDelivery(ReportDelivery.copy(rd));
+              } 
            }
+
 
            // determine the FDA delivery
            if (report.getReportDefinition().getGroup().getCode().equals("RT_FDA")) {
