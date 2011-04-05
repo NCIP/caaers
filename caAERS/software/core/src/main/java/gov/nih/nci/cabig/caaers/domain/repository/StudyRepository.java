@@ -525,6 +525,10 @@ public class StudyRepository {
         return studyDao.find(query);
     }
     
+    public List<Study> find(final AbstractQuery query, final Integer firstResult, final Integer maxResults) {
+        return studyDao.find(query, firstResult, maxResults);
+    }
+
     /**
      * Gets the by id.
      *
@@ -622,6 +626,12 @@ public class StudyRepository {
     public List<Study> getAllStudies() {
         StudyQuery q = new StudyQuery();
         return this.find(q);
+    }
+
+    public List<Study> getAllStudies(int firstrow, int maxrows) {
+        StudyQuery q = new StudyQuery();
+        q.orderBy("s.id DESC");
+        return this.find(q, firstrow, maxrows);
     }
 
 	/**

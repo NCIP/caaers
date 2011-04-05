@@ -164,12 +164,18 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
      * @return The list of participants.
      */
     @SuppressWarnings("unchecked")
+    public List<Participant> searchParticipant(final ParticipantQuery query, int firstrow, int maxrows) {
+        String queryString = query.getQueryString();
+        log.debug(">>> " + queryString.toString());
+        return (List<Participant>) super.search(query, firstrow, maxrows);
+    }
+    
     public List<Participant> searchParticipant(final ParticipantQuery query) {
         String queryString = query.getQueryString();
         log.debug(">>> " + queryString.toString());
         return (List<Participant>) super.search(query);
     }
-    
+
     /**
      * This method will reassociate the domain object to hibernate session. With a lock mode none.
      *

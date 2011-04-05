@@ -81,6 +81,14 @@ public class ParticipantRepository {
         return participants;
     }
 
+    public List<Participant> getAll(int firstrow, int maxrows) {
+        ParticipantQuery q = new ParticipantQuery();
+        q.joinStudy();
+        List<Participant> participants = participantDao.searchParticipant(q, firstrow, maxrows);
+        log.debug(String.format(">>> Found %d Participants", participants.size()));
+        return participants;
+    }
+
     /**
      * Search for participants using query.
      *

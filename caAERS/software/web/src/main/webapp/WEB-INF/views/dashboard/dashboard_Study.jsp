@@ -2,7 +2,10 @@
 
 <c:if test="${not empty roles.study_creator or not empty roles.study_qa_manager or not empty roles.supplemental_study_information_manager or not empty roles.study_team_administrator or not empty roles.study_site_participation_administrator}">
 
-  <chrome:boxIPhone title="Studies" style="width:700px;">
+  <chrome:boxIPhone title="Studies" style="width:700px;" id="dashboardStudies">
+    <jsp:attribute name="additionalTitle">
+        <tags:indicator2 id="_loadAllStudies-indicator"/>&nbsp;<span style="color:white; text-decoration:underline; cursor:pointer;" onclick="loadAllStudies();" id="_loadAllStudies">Load all</span>
+    </jsp:attribute>
   	<jsp:body>
   		<form action = "dummy">
                 <div id="myStudies" class="<c:if test="${fn:length(studyList) > 6}">scrollerTask</c:if>"">
@@ -29,3 +32,15 @@
    </chrome:boxIPhone>
 
 </c:if>
+
+<script>
+    function loadAllStudies() {
+        jQuery("#_loadAllStudies-indicator").removeClass('indicator');
+        jQuery.ajax({
+            url: "./dashboard/study?loadAll",
+            success: function(data) {
+                jQuery('#dashboardStudies').html(data);
+            }
+        });
+    }
+</script>

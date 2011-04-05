@@ -282,6 +282,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         return (List<Study>) super.search(query);
     }
     
+    public List<Study> find(final AbstractQuery query, final Integer firstResult, final Integer maxResults) {
+        String queryString = query.getQueryString();
+        log.debug(">>> " + queryString.toString());
+        return (List<Study>) super.search(query, firstResult, maxResults);
+    }
+
     /**
      * This method return all the StudyOrganiations for a given Organization ID.
      * @param query

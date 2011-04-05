@@ -473,12 +473,9 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * @param firstResult
      * @param maxResults
      */
-    private void setResultSetBoundaries(org.hibernate.Query query,
-			Integer firstResult, Integer maxResults) {
-    	if (firstResult!=null)
-    		query.setFirstResult(firstResult);
-    	if (maxResults!=null)
-    		query.setMaxResults(maxResults);
+    private void setResultSetBoundaries(org.hibernate.Query query, Integer firstResult, Integer maxResults) {
+    	if (firstResult!=null) query.setFirstResult(firstResult);
+    	if (maxResults!=null) query.setMaxResults(maxResults);
 	}
 
     /**

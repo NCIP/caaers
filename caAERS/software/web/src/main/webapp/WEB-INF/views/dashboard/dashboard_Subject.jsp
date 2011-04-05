@@ -1,7 +1,11 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:if test="${not empty roles.registration_qa_manager or not empty roles.subject_manager or not empty roles.registrar}">
 
-  <chrome:boxIPhone title="Subjects" style="width:700px;">
+  <chrome:boxIPhone title="Subjects" style="width:700px;" id="dashboardSubjects">
+      <jsp:attribute name="additionalTitle">
+          <tags:indicator2 id="_loadAllSubjects-indicator"/>&nbsp;<span style="color:white; text-decoration:underline; cursor:pointer;" onclick="loadAllSubjects();" id="_loadAllSubjects">Load all</span>
+      </jsp:attribute>
+
   	<jsp:body>
   		<form action = "dummy">
                 <div id="subjects" class="<c:if test="${fn:length(subjectList) > 10}">scrollerTask</c:if>">
@@ -29,3 +33,15 @@
   	</jsp:body>               
   </chrome:boxIPhone>
 </c:if>
+
+<script>
+    function loadAllSubjects() {
+        jQuery("#_loadAllSubjects-indicator").removeClass('indicator');
+        jQuery.ajax({
+            url: "./dashboard/subject?loadAll",
+            success: function(data) {
+                jQuery('#dashboardSubjects').html(data);
+            }
+        });
+    }
+</script>
