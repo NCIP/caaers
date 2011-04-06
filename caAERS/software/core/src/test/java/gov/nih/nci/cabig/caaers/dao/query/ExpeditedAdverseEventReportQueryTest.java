@@ -14,7 +14,7 @@ public class ExpeditedAdverseEventReportQueryTest extends TestCase{
         assertEquals("Wrong parsing for constructor",
                 "select new gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO(rv, rd.label, subject.firstName, " +
                         "subject.lastName, study.shortTitle, identifier.value, aer.id, report.id, period.cycleNumber, " +
-                        "period.startDate, site.name, site.nciInstituteCode) from ExpeditedAdverseEventReport aer " +
+                        "period.startDate, site.name, site.nciInstituteCode, assignment.id) from ExpeditedAdverseEventReport aer " +
                         "join aer.reports as report join report.reportVersions as rv " +
                         "join report.reportDefinition as rd " +
                         "join aer.reportingPeriod as period " +
