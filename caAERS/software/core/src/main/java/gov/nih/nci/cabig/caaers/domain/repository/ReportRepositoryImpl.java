@@ -259,6 +259,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     		
     		instantiatedReports = new ArrayList<Report>();
     		for(ReportDefinition rdChild : rdChildren){
+                rdChild.setManuallySelected(report.isManuallySelected());
     			Report childReport = createReport(rdChild, report.getAeReport());
     			instantiatedReports.add(childReport);
     		}
