@@ -238,7 +238,7 @@
       <div class="summary">
       <div class="row">
           <div class="label">Subject</div>
-          <div class="value">${command.participant.fullName}</div>
+          <div class="value">${ command.assignment.studySubjectIdentifier }</div>
 	  </div>
 	  <div class="row">
           <div class="label">Study</div>

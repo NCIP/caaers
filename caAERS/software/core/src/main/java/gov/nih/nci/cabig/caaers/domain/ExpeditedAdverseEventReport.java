@@ -206,7 +206,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Study", summaryLine(getStudy()));
-        summary.put("Participant", summaryLine(getParticipant()));
+        summary.put("Participant", summaryLine(getAssignment()));
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
         if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm() != null && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
@@ -236,6 +236,13 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         StringBuilder sb = new StringBuilder();
         appendPrimaryIdentifier(participant, sb);
         sb.append(" ").append(participant.getFullName());
+        return sb.toString();
+    }
+
+     private String summaryLine(StudyParticipantAssignment assignment) {
+        if (assignment == null) return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append(assignment.getStudySubjectIdentifier());
         return sb.toString();
     }
 
