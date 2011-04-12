@@ -26,9 +26,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Command Object holding information for Rule authoring
@@ -256,7 +254,25 @@ public class CreateRuleCommand implements RuleInputCommand {
 
     }
 
+    /**
+     * Will delete the rules that are marked deleted.
+     */
+    public void removeDeletedRules() throws Exception{
+       //find the deleted rules.
+        Set<String> deletedRules = new HashSet<String>();
+        if(getRuleSet() == null || getRuleSet().getRule() == null) return;
+        List<Rule> rules = new ArrayList<Rule>(getRuleSet().getRule());
+        for(Rule rule: rules){
+            if(rule.isMarkedDelete()){
+                deletedRules.add(rule.getMetaData().getName());
+                getRuleSet().getRule().remove(rule);
+            }
+        }
 
+        for(String ruleName : deletedRules){
+            caaersRulesEngineService.deleteRule(getRuleSet().getName(), ruleName);
+        }
+    }
 
     //pre processes the ruleset to remove unwanted stuff.
     private void cleanRuleset(RuleSet ruleSet){

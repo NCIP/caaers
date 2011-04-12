@@ -91,19 +91,29 @@ public class RuleTab extends DefaultTab {
     @Override
     public void postProcess(HttpServletRequest request, RuleInputCommand cmd, Errors errors) {
     	logger.debug("In RuleTab post process");
-        super.postProcess(request, cmd, errors);
         
-        int prevPage = WebUtils.getPreviousPage(request);
-    	int targetPage = WebUtils.getTargetPage(request);
-        
-        CreateRuleCommand command = (CreateRuleCommand) cmd;
-        if(!errors.hasErrors() && targetPage > prevPage){
-        	
-        	// Now incase the ruleSet in context is in edit mode we need to redploy the ruleSet on saving.
-        	if(command.getMode().equals(CreateRuleCommand.EDIT_MODE))
-        		command.saveAndDeploy();
-        	else
-        		command.save();
+        try{
+
+            super.postProcess(request, cmd, errors);
+
+            int prevPage = WebUtils.getPreviousPage(request);
+            int targetPage = WebUtils.getTargetPage(request);
+
+            CreateRuleCommand command = (CreateRuleCommand) cmd;
+            command.removeDeletedRules();
+
+            if(!errors.hasErrors() && targetPage > prevPage){
+
+                // Now incase the ruleSet in context is in edit mode we need to redploy the ruleSet on saving.
+                if(command.getMode().equals(CreateRuleCommand.EDIT_MODE))
+                    command.saveAndDeploy();
+                else
+                    command.save();
+            }
+
+        }catch(Exception e){
+            logger.error("error while processing the rules", e);
+            errors.reject("RUL_022", "Unable to process the rules due to error");
         }
         
     }

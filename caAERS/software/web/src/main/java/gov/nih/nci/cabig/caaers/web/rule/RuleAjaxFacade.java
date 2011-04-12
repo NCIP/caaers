@@ -257,11 +257,11 @@ public class RuleAjaxFacade {
         RuleSet ruleSet = (RuleSet) createRuleCommand.getRuleSet();
         ruleSet.getRule().get(ruleCount).setMarkedDelete(true);
 
-        Rule r = ruleSet.getRule().get(ruleCount);
-        String rName = r.getMetaData().getName();
-        caaersRulesEngineService.deleteRule(ruleSet.getName(), rName);
-        
-        ruleSet.getRule().remove(ruleCount);
+//        Rule r = ruleSet.getRule().get(ruleCount);
+//        String rName = r.getMetaData().getName();
+//        caaersRulesEngineService.deleteRule(ruleSet.getName(), rName);
+//
+//        ruleSet.getRule().remove(ruleCount);
 
         return true;
         //return ruleSet.getRule().get(ruleCount) != null;
