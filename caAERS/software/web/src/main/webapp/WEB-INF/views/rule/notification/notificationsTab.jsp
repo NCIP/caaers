@@ -167,7 +167,7 @@
 			  	<option value="${role.key}">${role.value}</option>
 			  </c:forEach>
       		  </select>
-	      	<input type="image" src="../images/rule/remove_condition.gif" align="absmiddle" id="remove-action-image" style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
+	      	<input type="image" src="<c:url value="/images/rule/remove_condition.gif"/>" align="absmiddle" id="remove-action-image" style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	</div>
 		<!-- hidden direct recipient div -->
 		<div id="div_recipient_direct" style="display: none">
