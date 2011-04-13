@@ -310,43 +310,58 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
      */
     protected void insertProtectionGroupsAndProtectionElements(String protectionGroupName, boolean onOracleDB){
 
+       int pgCount =  getJdbcTemplate().queryForInt("select count(*) from csm_protection_group where protection_group_name = '" + protectionGroupName + "'");
+       int peCount =  getJdbcTemplate().queryForInt("select count(*) from csm_protection_element where protection_element_name = '" + protectionGroupName + "'");
+
         if(onOracleDB){
             
             //insert the protection group - HealthcareSite
-            getJdbcTemplate().execute("INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id,update_date,large_element_count_flag) " +
-                    "  VALUES (csm_protectio_protection_g_seq.nextval,'" + protectionGroupName + "','Implies All" + protectionGroupName + "', " +
-                    "  (select application_id from csm_application where application_name = 'CTMS_SUITE'),sysdate,0)");
+            if(pgCount <=0){
+                getJdbcTemplate().execute("INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id,update_date,large_element_count_flag) " +
+                                   "  VALUES (csm_protectio_protection_g_seq.nextval,'" + protectionGroupName + "','Implies All" + protectionGroupName + "', " +
+                                   "  (select application_id from csm_application where application_name = 'CTMS_SUITE'),sysdate,0)");
+
+            }
 
             //insert the protection element - HealthcareSite
-            getJdbcTemplate().execute("INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id, update_date) " +
-                    "  VALUES (csm_protectio_protection_e_seq.nextval,'" + protectionGroupName + "','Implies All " + protectionGroupName + "','" + protectionGroupName + "', " +
-                    "  (select application_id from csm_application where application_name = 'CTMS_SUITE'),sysdate)");
+            if(peCount <= 0) {
+                getJdbcTemplate().execute("INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id, update_date) " +
+                                    "  VALUES (csm_protectio_protection_e_seq.nextval,'" + protectionGroupName + "','Implies All " + protectionGroupName + "','" + protectionGroupName + "', " +
+                                    "  (select application_id from csm_application where application_name = 'CTMS_SUITE'),sysdate)");
+
+                //relate protection group and protection element.
+                getJdbcTemplate().execute("INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date) " +
+                        "    VALUES (csm_pg_pe_pg_pe_id_seq.nextval, " +
+                        " (select protection_group_id from csm_protection_group where protection_group_name = '" + protectionGroupName + "'), " +
+                        " (select protection_element_id from csm_protection_element where protection_element_name = '" + protectionGroupName + "'), sysdate)");
 
 
-            //relate protection group and protection element.
-            getJdbcTemplate().execute("INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date) " +
-                    "    VALUES (csm_pg_pe_pg_pe_id_seq.nextval, " +
-                    " (select protection_group_id from csm_protection_group where protection_group_name = '" + protectionGroupName + "'), " +
-                    " (select protection_element_id from csm_protection_element where protection_element_name = '" + protectionGroupName + "'), sysdate)");
+            }
 
 
         } else {
 
              //insert the protection group - HealthcareSite
-            getJdbcTemplate().execute("INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id,update_date,large_element_count_flag) " +
+            if(pgCount <= 0){
+               getJdbcTemplate().execute("INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id,update_date,large_element_count_flag) " +
                     "    VALUES ((select nextval('csm_protectio_protection_g_seq')),'" + protectionGroupName + "','Implies All " + protectionGroupName + "', " +
                     "    (select application_id from csm_application where application_name = 'CTMS_SUITE'),now(),0)");
+            }
+
             
             //insert the protection element - HealthcareSite
-            getJdbcTemplate().execute("INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id, update_date) " +
+            if(peCount <= 0){
+               getJdbcTemplate().execute("INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id, update_date) " +
                     "    VALUES ((select nextval('csm_protectio_protection_e_seq')),'" + protectionGroupName + "','Implies All " + protectionGroupName + "','" + protectionGroupName + "', " +
                     "     (select application_id from csm_application where application_name = 'CTMS_SUITE'),now())");
 
-            //relate protection group and protection element.
-            getJdbcTemplate().execute("INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date) " +
+               //relate protection group and protection element.
+               getJdbcTemplate().execute("INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date) " +
                     "    VALUES ((select nextval('csm_pg_pe_pg_pe_id_seq')), " +
                     " (select protection_group_id from csm_protection_group where protection_group_name = '" + protectionGroupName + "'), " +
                     " (select protection_element_id from csm_protection_element where protection_element_name = '" + protectionGroupName + "'), now())");
+            }
+
         }
 
 
