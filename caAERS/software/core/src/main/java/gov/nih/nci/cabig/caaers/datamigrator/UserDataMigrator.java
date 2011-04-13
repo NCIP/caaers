@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.datamigrator;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
@@ -64,34 +65,71 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 	protected void migrateSuperUsers(CaaersDataMigrationContext context){
     	
     	List<Map> csmUsers = getCsmUsers("caaers_super_user");
+        if(CollectionUtils.isEmpty(csmUsers)) return;
+
+        
+        insertProtectionGroupsAndProtectionElements("HealthcareSite",context.isOracle());
+        insertProtectionGroupsAndProtectionElements("Study",context.isOracle());
+        
+        List<String> groupNames = Arrays.asList("system_administrator",
+                                                "business_administrator",
+                                                "person_and_organization_information_manager",
+                                                "data_importer",
+                                                "user_administrator",
+                                                "study_qa_manager",
+                                                "study_creator",
+                                                "supplemental_study_information_manager",
+                                                "study_team_administrator",
+                                                "study_site_participation_administrator",
+                                                "ae_rule_and_report_manager",
+                                                "study_calendar_template_builder",
+                                                "registration_qa_manager",
+                                                "subject_manager",
+                                                "study_subject_calendar_manager",
+                                                "registrar",
+                                                "ae_reporter",
+                                                "ae_expedited_report_reviewer",
+                                                "ae_study_data_reviewer",
+                                                "lab_impact_calendar_notifier",
+                                                "lab_data_user",
+                                                "data_reader",
+                                                "data_analyst");
+
+        List<String> siteScopedGroupNames = Arrays.asList(
+                                                "person_and_organization_information_manager",
+                                                "user_administrator",
+                                                "study_qa_manager",
+                                                "study_creator",
+                                                "supplemental_study_information_manager",
+                                                "study_team_administrator",
+                                                "study_site_participation_administrator",
+                                                "registration_qa_manager",
+                                                "subject_manager");
+
+
+        List<String> studyScopedGroupNames = Arrays.asList(
+                                                "study_calendar_template_builder",
+                                                "study_subject_calendar_manager",
+                                                "registrar",
+                                                "ae_reporter",
+                                                "ae_expedited_report_reviewer",
+                                                "ae_study_data_reviewer",
+                                                "lab_impact_calendar_notifier",
+                                                "lab_data_user",
+                                                "data_reader",
+                                                "data_analyst");
+
+        
     	for (Map map : csmUsers) {
 			String loginName = map.get("login_name").toString();
 			String userId = map.get("user_id").toString();
 			log.debug("LoginName" + "::" + loginName + " -- User Id :: " + userId);
 			
-			insertIntoCsmUserGroup(userId, Arrays.asList("system_administrator",
-														 	"business_administrator",
-														 	"person_and_organization_information_manager",
-														 	"data_importer",
-														 	"user_administrator",
-														 	"study_qa_manager",
-														 	"study_creator",
-														 	"supplemental_study_information_manager",														 	
-														 	"study_team_administrator",
-														 	"study_site_participation_administrator",
-														 	"ae_rule_and_report_manager",
-														 	"study_calendar_template_builder",			
-														 	"registration_qa_manager",
-														 	"subject_manager",
-														 	"study_subject_calendar_manager",
-														 	"registrar",
-														 	"ae_reporter",
-														 	"ae_expedited_report_reviewer",
-														 	"ae_study_data_reviewer",
-														 	"lab_impact_calendar_notifier",
-														 	"lab_data_user",
-														 	"data_reader",
-														 	"data_analyst"), context.isOracle());
+			insertIntoCsmUserGroup(userId, groupNames, context.isOracle());
+
+            relateSuperUserGroupsToProtectionElements(loginName, "HealthcareSite", siteScopedGroupNames, context.isOracle());
+            relateSuperUserGroupsToProtectionElements(loginName, "HealthcareSite", studyScopedGroupNames, context.isOracle());
+            relateSuperUserGroupsToProtectionElements(loginName, "Study", studyScopedGroupNames, context.isOracle());
 			
 			String deleteSql = "delete from csm_user_group where user_id IN (-1,-7,-9) and group_id < 0";
 			getJdbcTemplate().execute(deleteSql);
@@ -228,6 +266,91 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
             }
         };
         getJdbcTemplate().batchUpdate(sql, setter);
+    }
+
+    /**
+     * Will related a user group to protection group. 
+     * @param userName - Username
+     * @param protectionGroupName - protectionGroup name
+     * @param groups   - The user groups to associate
+     * @param onOracleDB
+     */
+    protected void relateSuperUserGroupsToProtectionElements(final String userName, final String protectionGroupName,  final List groups, boolean onOracleDB){
+        String pgSQL = "INSERT INTO csm_user_group_role_pg(user_group_role_pg_id, user_id, protection_group_id, role_id,update_date) " +
+                "VALUES ((select nextval('csm_user_grou_user_group_r_seq')), " +
+                "(select user_id from csm_user where login_name = ?), " +
+                "(select protection_group_id from csm_protection_group where protection_group_name = ?), " +
+                "(select role_id from csm_role where role_name = ?), " +
+                "now())";
+        String oracleSQL = "INSERT INTO csm_user_group_role_pg(user_group_role_pg_id, user_id, protection_group_id, role_id,update_date) " +
+                "VALUES (csm_user_grou_user_group_r_seq.nextval, " +
+                "(select user_id from csm_user where login_name = ?), " +
+                "(select protection_group_id from csm_protection_group where protection_group_name = ?), " +
+                "(select role_id from csm_role where role_name = ?), " +
+                "sysdate)";
+
+        String sql = onOracleDB ? oracleSQL : pgSQL;
+        getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public int getBatchSize() {
+                return groups.size();
+            }
+
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+               ps.setString(1, userName);
+               ps.setString(2, protectionGroupName);
+               ps.setString(3, groups.get(i).toString());
+            }
+        });
+
+    }
+
+    /**
+     * Will insert the protection group and protection elements
+     * @param onOracleDB
+     */
+    protected void insertProtectionGroupsAndProtectionElements(String protectionGroupName, boolean onOracleDB){
+
+        if(onOracleDB){
+            
+            //insert the protection group - HealthcareSite
+            getJdbcTemplate().execute("INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id,update_date,large_element_count_flag) " +
+                    "  VALUES (csm_protectio_protection_g_seq.nextval,'" + protectionGroupName + "','Implies All" + protectionGroupName + "', " +
+                    "  (select application_id from csm_application where application_name = 'CTMS_SUITE'),sysdate,0)");
+
+            //insert the protection element - HealthcareSite
+            getJdbcTemplate().execute("INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id, update_date) " +
+                    "  VALUES (csm_protectio_protection_e_seq.nextval,'" + protectionGroupName + "','Implies All " + protectionGroupName + "','" + protectionGroupName + "', " +
+                    "  (select application_id from csm_application where application_name = 'CTMS_SUITE'),sysdate)");
+
+
+            //relate protection group and protection element.
+            getJdbcTemplate().execute("INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date) " +
+                    "    VALUES (csm_pg_pe_pg_pe_id_seq.nextval, " +
+                    " (select protection_group_id from csm_protection_group where protection_group_name = '" + protectionGroupName + "'), " +
+                    " (select protection_element_id from csm_protection_element where protection_element_name = '" + protectionGroupName + "'), sysdate)");
+
+
+        } else {
+
+             //insert the protection group - HealthcareSite
+            getJdbcTemplate().execute("INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id,update_date,large_element_count_flag) " +
+                    "    VALUES ((select nextval('csm_protectio_protection_g_seq')),'" + protectionGroupName + "','Implies All " + protectionGroupName + "', " +
+                    "    (select application_id from csm_application where application_name = 'CTMS_SUITE'),now(),0)");
+            
+            //insert the protection element - HealthcareSite
+            getJdbcTemplate().execute("INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, application_id, update_date) " +
+                    "    VALUES ((select nextval('csm_protectio_protection_e_seq')),'" + protectionGroupName + "','Implies All " + protectionGroupName + "','" + protectionGroupName + "', " +
+                    "     (select application_id from csm_application where application_name = 'CTMS_SUITE'),now())");
+
+            //relate protection group and protection element.
+            getJdbcTemplate().execute("INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date) " +
+                    "    VALUES ((select nextval('csm_pg_pe_pg_pe_id_seq')), " +
+                    " (select protection_group_id from csm_protection_group where protection_group_name = '" + protectionGroupName + "'), " +
+                    " (select protection_element_id from csm_protection_element where protection_element_name = '" + protectionGroupName + "'), now())");
+        }
+
+
+
     }
     
     /**

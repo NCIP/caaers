@@ -20,12 +20,7 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -163,6 +158,7 @@ public class UserRepositoryImpl implements UserRepository {
             }
             if(_user == null){
                 _user = new User(csmUser);
+                _user.setPasswordLastSet(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             }else{
                 _user.setCsmUser(csmUser);
             }
