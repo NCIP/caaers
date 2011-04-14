@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  * @author Ion C. Olaru
  */
 @Entity
-@DiscriminatorValue("BI")
+@DiscriminatorValue("DI")
 public class DietarySupplementInterventionAttribution extends AdverseEventAttribution<DietarySupplementIntervention> {
     
     /* (non-Javadoc)
