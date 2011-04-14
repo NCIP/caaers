@@ -1,14 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -109,6 +102,9 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     /** The device attributions. */
     private List<DeviceAttribution> deviceAttributions;
 
+    /** The device attributions. */
+    private List<OtherInterventionAttribution> otherInterventionAttributions;
+
     /** The outcomes. */
     private List<Outcome> outcomes;
 
@@ -176,6 +172,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	if(surgeryAttributions != null) surgeryAttributions.clear();
     	if(radiationAttributions != null) radiationAttributions.clear();
     	if(deviceAttributions != null) deviceAttributions.clear();
+    	if(otherInterventionAttributions != null) otherInterventionAttributions.clear();
     }
 
     // //// BOUND PROPERTIES
@@ -427,6 +424,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return deviceAttributions;
     }
 
+    @OneToMany
+    @JoinColumn(name = "adverse_event_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Where(clause = "cause_type = 'OI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    // it is pretty lame that this is necessary
+    public List<OtherInterventionAttribution> getOtherInterventionAttributions() {
+        if (otherInterventionAttributions == null) {
+            otherInterventionAttributions = new ArrayList<OtherInterventionAttribution>();
+        }
+        return otherInterventionAttributions;
+    }
+
     /**
      * Sets the device attributions.
      *
@@ -436,6 +447,9 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         this.deviceAttributions = deviceAttributions;
     }
 
+    public void setOtherInterventionAttributions(List<OtherInterventionAttribution> otherInterventionAttributions) {
+        this.otherInterventionAttributions = otherInterventionAttributions;
+    }
 
     /**
      * Gets the ctc term.
@@ -767,6 +781,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         attributions.addAll(getRadiationAttributions());
         attributions.addAll(getSurgeryAttributions());
         attributions.addAll(getDeviceAttributions());
+        attributions.addAll(getOtherInterventionAttributions());
         return attributions;
     }
 
@@ -784,8 +799,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
                 || containsAttribution(diseaseAttributions, attributions)
                 || containsAttribution(surgeryAttributions, attributions)
                 || containsAttribution(radiationAttributions, attributions)
-                || containsAttribution(deviceAttributions, attributions);
-
+                || containsAttribution(deviceAttributions, attributions)
+                || containsAttribution(otherInterventionAttributions, attributions);
     }
 
     /**
@@ -1185,7 +1200,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         AdverseEvent adverseEvent = new AdverseEvent();
         org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
                 new String[]{"id", "gridId", "outcomes", "version", "report",
-                        "deviceAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions"
+                        "deviceAttributions", "otherInterventionAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions"
                         , "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
                         "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm", "startDateAsString", "meddraTerm"});
 
@@ -1230,6 +1245,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
                 getDiseaseAttributions().add((DiseaseAttribution) adverseEventAttribution);
             } else if (adverseEventAttribution instanceof CourseAgentAttribution) {
                 getCourseAgentAttributions().add((CourseAgentAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof OtherInterventionAttribution) {
+                getOtherInterventionAttributions().add((OtherInterventionAttribution) adverseEventAttribution);
             }
         }
     }

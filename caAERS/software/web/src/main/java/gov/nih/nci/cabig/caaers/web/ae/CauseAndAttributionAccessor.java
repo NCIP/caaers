@@ -1,24 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -41,6 +25,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     public static final CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> OTHER_CAUSE = new OtherCauseAccessor();
     public static final CauseAndAttributionAccessor<DiseaseHistory, DiseaseAttribution> DISEASE = new DiseaseAccessor();
     public static final CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> SURGERY = new SurgeryAccessor();
+    public static final CauseAndAttributionAccessor<OtherAEIntervention, OtherInterventionAttribution> OTHER_INTERVENTION = new OtherInterventionAccessor();
     public static final CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> RADIATION = new RadiationAccessor();
     public static final CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> DEVICE = new DeviceAccessor();
     public static final String DEFAULT_NAME = "DEFAULT_VALUE";
@@ -329,6 +314,34 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
                 sb.append(StringUtils.trim(device.getBrandName()));
             }
             return sb.toString();
+        }
+    }
+
+    private static class OtherInterventionAccessor extends CauseAndAttributionAccessor<OtherAEIntervention, OtherInterventionAttribution> {
+        @Override
+        public String getKey() {
+            return ExpeditedAdverseEventInputCommand.OTHERINTERVENTION_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<OtherAEIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getOtherAEInterventions();
+        }
+
+        @Override
+        public OtherInterventionAttribution createAttribution() {
+            return new OtherInterventionAttribution();
+        }
+
+        @Override
+        public List<OtherInterventionAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getOtherInterventionAttributions();
+        }
+
+        @Override
+        public String getDisplayName(OtherAEIntervention i) {
+            if (StringUtils.isEmpty(i.getDescription())) return DEFAULT_NAME;
+            else return i.getDescription();
         }
     }
 }

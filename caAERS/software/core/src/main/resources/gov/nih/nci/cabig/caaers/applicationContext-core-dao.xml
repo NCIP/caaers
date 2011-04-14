@@ -121,6 +121,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherInterventionAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
@@ -310,6 +311,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherInterventionAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
