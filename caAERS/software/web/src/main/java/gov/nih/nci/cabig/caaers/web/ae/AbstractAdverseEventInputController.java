@@ -119,11 +119,21 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     protected PersonRepository personRepository;
 
+
+
 	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
         setFlowFactory(createFlowFactory());
+    }
+
+
+    public boolean getUnidentifiedMode(){
+        boolean unidentifiedMode;
+        if (configuration.get(Configuration.UNIDENTIFIED_MODE) == null) unidentifiedMode = false;
+        else unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
+        return unidentifiedMode;
     }
 
     protected abstract FlowFactory<ExpeditedAdverseEventInputCommand> createFlowFactory();
@@ -230,7 +240,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         refdata.put(MANDATORY_FIELD_TAB_KEY, sbMandatoryFieldTab.toString());
         
         if (displaySummary(page)) {
-            refdata.put("aesummary", cmd.getAeReport().getSummary());
+            refdata.put("aesummary", cmd.getAeReport().getSummary(getUnidentifiedMode()));
         }
         
         refdata.put("showReportContextMenu", displayReportContextMenu(page));

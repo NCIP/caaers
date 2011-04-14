@@ -429,7 +429,8 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
-        Map<String, String> summary = report.getSummary();
+        boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals(" El Study", summary.get("Study"));
     }
 
@@ -439,7 +440,8 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         study.addIdentifier(Identifier.createTemplate("1845"));
         study.getIdentifiers().get(0).setPrimaryIndicator(true);
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
-        Map<String, String> summary = report.getSummary();
+         boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals(" (1845) El Study", summary.get("Study"));
     }
 
@@ -448,7 +450,8 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         participant.getIdentifiersLazy().remove(0);
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
-        Map<String, String> summary = report.getSummary();
+         boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals(" Joe Shabadoo", summary.get("Participant"));
     }
 
@@ -459,22 +462,26 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         participant.getIdentifiers().get(0).setPrimaryIndicator(true);
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
-        Map<String, String> summary = report.getSummary();
+         boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals(" (MRN1138) Joe Shabadoo", summary.get("Participant"));
     }
 
     public void testSummaryIncludesFirstAETerm() throws Exception {
-        Map<String, String> summary = report.getSummary();
+        boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals("Term - Select", summary.get("Primary AE"));
     }
 
     public void testSummaryIncludesAECount() throws Exception {
-        Map<String, String> summary = report.getSummary();
+         boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals("1", summary.get("AE count"));
     }
 
     public void testSummaryIncludesCreatedAt() throws Exception {
-        Map<String, String> summary = report.getSummary();
+         boolean unIdentifiedMode = true;
+        Map<String, String> summary = report.getSummary(unIdentifiedMode);
         assertEquals("2006-05-08 09:08:07.0", summary.get("Report created at"));
     }
 

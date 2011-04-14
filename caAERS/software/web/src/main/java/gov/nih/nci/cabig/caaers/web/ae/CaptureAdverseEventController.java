@@ -86,6 +86,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	private Logger log = Logger.getLogger(getClass());
 
+    public boolean getUnidentifiedMode(){
+        boolean unidentifiedMode;
+        if (configuration.get(Configuration.UNIDENTIFIED_MODE) == null) unidentifiedMode = false;
+        else unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
+        return unidentifiedMode;
+    }
+
     public CaptureAdverseEventController(){
 		setBindOnNewForm(true);
 		setCommandClass(CaptureAdverseEventInputCommand.class);
@@ -112,7 +119,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		Map<String, String> summary = new LinkedHashMap<String, String>();
 		
 		summary.put("Study", (command.getStudy() == null) ? "" : "(" +  command.getStudy().getPrimaryIdentifierValue() + ") " + command.getStudy().getShortTitle());
-        summary.put("Participant","(" +  (command.getAssignment() == null ? "" :command.getAssignment().getStudySubjectIdentifier()) + ")");
+        if(getUnidentifiedMode()) {
+             summary.put("Participant","(" +  (command.getAssignment() == null ? "" :command.getAssignment().getStudySubjectIdentifier()) + ")");
+        }else {
+             summary.put("Participant", (command.getParticipant() == null) ? "" : "(" +  command.getParticipant().getPrimaryIdentifierValue() + ") " + command.getParticipant().getFullName() );
+        }
       
         if(command.getAdverseEventReportingPeriod() != null){
         	summary.put("Course", command.getAdverseEventReportingPeriod().getName());	

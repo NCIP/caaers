@@ -308,6 +308,14 @@
 	            <form:hidden path="participant"/>
 				<div class="label"><tags:requiredIndicator/> <caaers:message code="LBL_Subject" /></div>
 				<div class="value">
+                <c:choose>
+                  <c:when test="${command.unidentifiedMode}">
+                      <input type="text" id="participant-input" value="${  command.assignment.studySubjectIdentifier }" class="autocomplete"/>
+                  </c:when>
+                  <c:otherwise>
+                          <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
+                  </c:otherwise>
+                </c:choose>
 		            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
 		            <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
 		            <tags:indicator id="participant-indicator"/>

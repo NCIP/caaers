@@ -203,10 +203,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @return the summary
      */
     @Transient
-    public Map<String, String> getSummary() {
+    public Map<String, String> getSummary(boolean unIdentifiedMode) {
         Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Study", summaryLine(getStudy()));
-        summary.put("Participant", summaryLine(getAssignment()));
+        if(unIdentifiedMode) {
+            summary.put("Participant", summaryLine(getAssignment()));
+        }else {
+            summary.put("Participant", summaryLine(getParticipant()));
+        }
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
         if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm() != null && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
