@@ -116,7 +116,7 @@
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.OutcomeType','code','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Outcome Identifier " postfix="."/>
 			</field>
-			<field name="term" display-uri="Term" filter="CTC">
+			<field name="term" display-uri="Term" filter="CTCAE">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
@@ -129,7 +129,7 @@
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Term " postfix="."/>
 			</field>
-			<field name="category" display-uri="Category" filter="CTC">
+			<field name="category" display-uri="Category" filter="CTCAE">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
