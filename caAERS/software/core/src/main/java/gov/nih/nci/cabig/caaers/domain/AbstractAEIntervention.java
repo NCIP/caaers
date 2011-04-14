@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @author Ion C. Olaru
  */
 @MappedSuperclass
-public class AbstractAEIntervention extends AbstractExpeditedReportCollectionElementChild {
+public abstract class AbstractAEIntervention extends AbstractExpeditedReportCollectionElementChild {
 
     /** The description. */
     private String description;

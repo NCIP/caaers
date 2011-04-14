@@ -26,6 +26,10 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     public static final CauseAndAttributionAccessor<DiseaseHistory, DiseaseAttribution> DISEASE = new DiseaseAccessor();
     public static final CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> SURGERY = new SurgeryAccessor();
     public static final CauseAndAttributionAccessor<OtherAEIntervention, OtherInterventionAttribution> OTHER_INTERVENTION = new OtherInterventionAccessor();
+    public static final CauseAndAttributionAccessor<BiologicalIntervention, BiologicalInterventionAttribution> BIOLOGICAL_INTERVENTION = new BiologicalInterventionAccessor();
+    public static final CauseAndAttributionAccessor<BehavioralIntervention, BehavioralInterventionAttribution> BEHAVIORAL_INTERVENTION = new BehavioralInterventionAccessor();
+    public static final CauseAndAttributionAccessor<GeneticIntervention, GeneticInterventionAttribution> GENETIC_INTERVENTION = new GeneticInterventionAccessor();
+    public static final CauseAndAttributionAccessor<DietarySupplementIntervention, DietarySupplementInterventionAttribution> DIETARY_INTERVENTION = new DietarySupplementInterventionAccessor();
     public static final CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> RADIATION = new RadiationAccessor();
     public static final CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> DEVICE = new DeviceAccessor();
     public static final String DEFAULT_NAME = "DEFAULT_VALUE";
@@ -344,4 +348,121 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
             else return i.getDescription();
         }
     }
+
+
+    private static class BiologicalInterventionAccessor extends CauseAndAttributionAccessor<BiologicalIntervention, BiologicalInterventionAttribution> {
+        @Override
+        public String getKey() {
+            return ExpeditedAdverseEventInputCommand.BIOLOGICALINTERVENTION_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<BiologicalIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getBiologicalInterventions();
+        }
+
+        @Override
+        public BiologicalInterventionAttribution createAttribution() {
+            return new BiologicalInterventionAttribution();
+        }
+
+        @Override
+        public List<BiologicalInterventionAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getBiologicalInterventionAttributions();
+        }
+
+        @Override
+        public String getDisplayName(BiologicalIntervention i) {
+            if (StringUtils.isEmpty(i.getDescription())) return DEFAULT_NAME;
+            else return i.getDescription();
+        }
+    }
+
+
+    private static class BehavioralInterventionAccessor extends CauseAndAttributionAccessor<BehavioralIntervention, BehavioralInterventionAttribution> {
+        @Override
+        public String getKey() {
+            return ExpeditedAdverseEventInputCommand.BEHAVIORALINTERVENTION_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<BehavioralIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getBehavioralInterventions();
+        }
+
+        @Override
+        public BehavioralInterventionAttribution createAttribution() {
+            return new BehavioralInterventionAttribution();
+        }
+
+        @Override
+        public List<BehavioralInterventionAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getBehavioralInterventionAttributions();
+        }
+
+        @Override
+        public String getDisplayName(BehavioralIntervention i) {
+            if (StringUtils.isEmpty(i.getDescription())) return DEFAULT_NAME;
+            else return i.getDescription();
+        }
+    }
+
+
+    private static class GeneticInterventionAccessor extends CauseAndAttributionAccessor<GeneticIntervention, GeneticInterventionAttribution> {
+        @Override
+        public String getKey() {
+            return ExpeditedAdverseEventInputCommand.GENETICINTERVENTION_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<GeneticIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getGeneticInterventions();
+        }
+
+        @Override
+        public GeneticInterventionAttribution createAttribution() {
+            return new GeneticInterventionAttribution();
+        }
+
+        @Override
+        public List<GeneticInterventionAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getGeneticInterventionAttributions();
+        }
+
+        @Override
+        public String getDisplayName(GeneticIntervention i) {
+            if (StringUtils.isEmpty(i.getDescription())) return DEFAULT_NAME;
+            else return i.getDescription();
+        }
+    }
+
+
+    private static class DietarySupplementInterventionAccessor extends CauseAndAttributionAccessor<DietarySupplementIntervention, DietarySupplementInterventionAttribution> {
+        @Override
+        public String getKey() {
+            return ExpeditedAdverseEventInputCommand.DIETARYINTERVENTION_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<DietarySupplementIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getDietaryInterventions();
+        }
+
+        @Override
+        public DietarySupplementInterventionAttribution createAttribution() {
+            return new DietarySupplementInterventionAttribution();
+        }
+
+        @Override
+        public List<DietarySupplementInterventionAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getDietarySupplementInterventionAttributions();
+        }
+
+        @Override
+        public String getDisplayName(DietarySupplementIntervention i) {
+            if (StringUtils.isEmpty(i.getDescription())) return DEFAULT_NAME;
+            else return i.getDescription();
+        }
+    }
+
 }

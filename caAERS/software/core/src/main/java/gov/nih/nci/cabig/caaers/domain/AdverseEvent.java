@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-import gov.nih.nci.cabig.ctms.domain.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -102,8 +101,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     /** The device attributions. */
     private List<DeviceAttribution> deviceAttributions;
 
-    /** The device attributions. */
     private List<OtherInterventionAttribution> otherInterventionAttributions;
+    private List<BiologicalInterventionAttribution> biologicalInterventionAttributions;
+    private List<BehavioralInterventionAttribution> behavioralInterventionAttributions;
+    private List<GeneticInterventionAttribution> geneticInterventionAttributions;
+    private List<DietarySupplementInterventionAttribution> dietarySupplementInterventionAttributions;
 
     /** The outcomes. */
     private List<Outcome> outcomes;
@@ -173,6 +175,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	if(radiationAttributions != null) radiationAttributions.clear();
     	if(deviceAttributions != null) deviceAttributions.clear();
     	if(otherInterventionAttributions != null) otherInterventionAttributions.clear();
+    	if(biologicalInterventionAttributions != null) biologicalInterventionAttributions.clear();
+    	if(behavioralInterventionAttributions != null) behavioralInterventionAttributions.clear();
+    	if(geneticInterventionAttributions != null) geneticInterventionAttributions.clear();
+    	if(dietarySupplementInterventionAttributions != null) dietarySupplementInterventionAttributions.clear();
     }
 
     // //// BOUND PROPERTIES
@@ -438,6 +444,62 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return otherInterventionAttributions;
     }
 
+    @OneToMany
+    @JoinColumn(name = "adverse_event_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Where(clause = "cause_type = 'BI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    // it is pretty lame that this is necessary
+    public List<BiologicalInterventionAttribution> getBiologicalInterventionAttributions() {
+        if (biologicalInterventionAttributions == null) {
+            biologicalInterventionAttributions = new ArrayList<BiologicalInterventionAttribution>();
+        }
+        return biologicalInterventionAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "adverse_event_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Where(clause = "cause_type = 'HI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    // it is pretty lame that this is necessary
+    public List<BehavioralInterventionAttribution> getBehavioralInterventionAttributions() {
+        if (behavioralInterventionAttributions == null) {
+            behavioralInterventionAttributions = new ArrayList<BehavioralInterventionAttribution>();
+        }
+        return behavioralInterventionAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "adverse_event_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Where(clause = "cause_type = 'GI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    // it is pretty lame that this is necessary
+    public List<GeneticInterventionAttribution> getGeneticInterventionAttributions() {
+        if (geneticInterventionAttributions == null) {
+            geneticInterventionAttributions = new ArrayList<GeneticInterventionAttribution>();
+        }
+        return geneticInterventionAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "adverse_event_id", nullable = false)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Where(clause = "cause_type = 'DI'")
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    // it is pretty lame that this is necessary
+    public List<DietarySupplementInterventionAttribution> getDietarySupplementInterventionAttributions() {
+        if (dietarySupplementInterventionAttributions == null) {
+            dietarySupplementInterventionAttributions = new ArrayList<DietarySupplementInterventionAttribution>();
+        }
+        return dietarySupplementInterventionAttributions;
+    }
+
     /**
      * Sets the device attributions.
      *
@@ -449,6 +511,22 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     public void setOtherInterventionAttributions(List<OtherInterventionAttribution> otherInterventionAttributions) {
         this.otherInterventionAttributions = otherInterventionAttributions;
+    }
+
+    public void setBiologicalInterventionAttributions(List<BiologicalInterventionAttribution> biologicalInterventionAttributions) {
+        this.biologicalInterventionAttributions = biologicalInterventionAttributions;
+    }
+
+    public void setBehavioralInterventionAttributions(List<BehavioralInterventionAttribution> behavioralInterventionAttributions) {
+        this.behavioralInterventionAttributions = behavioralInterventionAttributions;
+    }
+
+    public void setGeneticInterventionAttributions(List<GeneticInterventionAttribution> geneticInterventionAttributions) {
+        this.geneticInterventionAttributions = geneticInterventionAttributions;
+    }
+
+    public void setDietarySupplementInterventionAttributions(List<DietarySupplementInterventionAttribution> dietarySupplementInterventionAttributions) {
+        this.dietarySupplementInterventionAttributions = dietarySupplementInterventionAttributions;
     }
 
     /**
@@ -782,6 +860,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         attributions.addAll(getSurgeryAttributions());
         attributions.addAll(getDeviceAttributions());
         attributions.addAll(getOtherInterventionAttributions());
+        attributions.addAll(getBiologicalInterventionAttributions());
+        attributions.addAll(getBehavioralInterventionAttributions());
+        attributions.addAll(getGeneticInterventionAttributions());
+        attributions.addAll(getDietarySupplementInterventionAttributions());
         return attributions;
     }
 
@@ -800,7 +882,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
                 || containsAttribution(surgeryAttributions, attributions)
                 || containsAttribution(radiationAttributions, attributions)
                 || containsAttribution(deviceAttributions, attributions)
-                || containsAttribution(otherInterventionAttributions, attributions);
+                || containsAttribution(otherInterventionAttributions, attributions)
+                || containsAttribution(biologicalInterventionAttributions, attributions)
+                || containsAttribution(behavioralInterventionAttributions, attributions)
+                || containsAttribution(geneticInterventionAttributions, attributions)
+                || containsAttribution(dietarySupplementInterventionAttributions, attributions);
     }
 
     /**
@@ -1200,8 +1286,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         AdverseEvent adverseEvent = new AdverseEvent();
         org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
                 new String[]{"id", "gridId", "outcomes", "version", "report",
-                        "deviceAttributions", "otherInterventionAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions"
-                        , "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
+                        "deviceAttributions", "biologicalInterventionAttributions", "behavioralInterventionAttributions", "geneticInterventionAttributions", "dietarySupplementInterventionAttributions", "otherInterventionAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions" ,
+                        "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
                         "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm", "startDateAsString", "meddraTerm"});
 
         //outcomes object must not be same. i.e. they should refer to different objects;
@@ -1247,6 +1333,14 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
                 getCourseAgentAttributions().add((CourseAgentAttribution) adverseEventAttribution);
             } else if (adverseEventAttribution instanceof OtherInterventionAttribution) {
                 getOtherInterventionAttributions().add((OtherInterventionAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof BehavioralInterventionAttribution) {
+                getBehavioralInterventionAttributions().add((BehavioralInterventionAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof BiologicalInterventionAttribution) {
+                getBiologicalInterventionAttributions().add((BiologicalInterventionAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof GeneticInterventionAttribution) {
+                getGeneticInterventionAttributions().add((GeneticInterventionAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof DietarySupplementInterventionAttribution) {
+                getDietarySupplementInterventionAttributions().add((DietarySupplementInterventionAttribution) adverseEventAttribution);
             }
         }
     }

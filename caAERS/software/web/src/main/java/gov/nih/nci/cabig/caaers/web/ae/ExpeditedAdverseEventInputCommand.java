@@ -27,6 +27,10 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     String RADIATION_ATTRIBUTION_KEY = "radiation";
     String DEVICE_ATTRIBUTION_KEY = "device";
     String OTHERINTERVENTION_ATTRIBUTION_KEY = "otherIntervention";
+    String BIOLOGICALINTERVENTION_ATTRIBUTION_KEY = "biologicalIntervention";
+    String BEHAVIORALINTERVENTION_ATTRIBUTION_KEY = "behavioralIntervention";
+    String GENETICINTERVENTION_ATTRIBUTION_KEY = "geneticIntervention";
+    String DIETARYINTERVENTION_ATTRIBUTION_KEY = "dietarySupplementIntervention";
 
     ExpeditedAdverseEventReport getAeReport();
     List<Map<Integer, Boolean>> getOutcomes();

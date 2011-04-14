@@ -45,11 +45,14 @@ public class AttributionTab extends AeTab {
         List<AttributionBlock> blocks = new ArrayList<AttributionBlock>();
         String studyPurpose =  report.getAssignment().getStudySite().getStudy().getStudyPurpose();
         boolean isStudyForTreatment = (studyPurpose != null && studyPurpose.equals("Treatment"));
-        if (studyPurpose == null || isStudyForTreatment)
-            blocks.add(new AttributionBlock("Disease", createGroups(CauseAndAttributionAccessor.DISEASE, report)));
+        if (studyPurpose == null || isStudyForTreatment) blocks.add(new AttributionBlock("Disease", createGroups(CauseAndAttributionAccessor.DISEASE, report)));
         blocks.add(new AttributionBlock("Study Agent", "Agents", createGroups(CauseAndAttributionAccessor.COURSE_AGENT, report)));
         blocks.add(new AttributionBlock("Surgery", createGroups(CauseAndAttributionAccessor.SURGERY, report)));
-        blocks.add(new AttributionBlock("Other Inetrventions", createGroups(CauseAndAttributionAccessor.OTHER_INTERVENTION, report)));
+        blocks.add(new AttributionBlock("Other Interventions", createGroups(CauseAndAttributionAccessor.OTHER_INTERVENTION, report)));
+        blocks.add(new AttributionBlock("Biological Interventions", createGroups(CauseAndAttributionAccessor.BIOLOGICAL_INTERVENTION, report)));
+        blocks.add(new AttributionBlock("Behavioral Interventions", createGroups(CauseAndAttributionAccessor.BEHAVIORAL_INTERVENTION, report)));
+        blocks.add(new AttributionBlock("Genetic Interventions", createGroups(CauseAndAttributionAccessor.GENETIC_INTERVENTION, report)));
+        blocks.add(new AttributionBlock("Dietary Supplement Interventions", createGroups(CauseAndAttributionAccessor.DIETARY_INTERVENTION, report)));
         blocks.add(new AttributionBlock("Radiation", createGroups(CauseAndAttributionAccessor.RADIATION, report)));
         blocks.add(new AttributionBlock("Medical device", createGroups(CauseAndAttributionAccessor.DEVICE, report)));
         blocks.add(new AttributionBlock("Concomitant medication", createGroups(CauseAndAttributionAccessor.CONCOMITANT_MEDICATION, report)));
