@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  * @author Ion C. Olaru
  */
 @Entity
-@DiscriminatorValue("BI")
+@DiscriminatorValue("HI")
 public class BehavioralInterventionAttribution extends AdverseEventAttribution<BehavioralIntervention> {
     
     /* (non-Javadoc)
