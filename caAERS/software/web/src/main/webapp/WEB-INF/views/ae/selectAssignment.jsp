@@ -309,7 +309,7 @@
 				<div class="label"><tags:requiredIndicator/> <caaers:message code="LBL_Subject" /></div>
 				<div class="value">
                 <c:choose>
-                  <c:when test="${command.unidentifiedMode}">
+                  <c:when test="${unidentifiedMode}">
                       <input type="text" id="participant-input" value="${  command.assignment.studySubjectIdentifier }" class="autocomplete"/>
                   </c:when>
                   <c:otherwise>
