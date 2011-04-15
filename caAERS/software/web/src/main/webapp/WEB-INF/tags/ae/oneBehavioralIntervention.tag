@@ -13,7 +13,7 @@
 
 <c:set var="v" value="aeReport.behavioralIntervention[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="behavioralIntervention" index="${index}" enableDelete="true" deleteParams="'behavioral', ${index}, '_behaviorals'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="behavioralIntervention" index="${index}" enableDelete="true" deleteParams="'behavioral', ${index}, '_behaviorals'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.behavioralInterventions[${index}]"/>
 
     <ui:row path="aeReport.behavioralInterventions[${index}].studyIntervention">

@@ -16,7 +16,8 @@
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:set var="v" value="aeReport.medicalDevices[${index}]" />
-<ae:fieldGroupDivision fieldGroupFactoryName="medicalDevice" index="${index}" style="${style}" enableDelete="true" deleteParams="'device', ${index}, '_devices'" collapsed="${!empties[v]}">
+
+<ae:fieldGroupDivision fieldGroupFactoryName="medicalDevice" index="${index}" style="${style}" enableDelete="true" deleteParams="'device', ${index}, '_devices'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.medicalDevices[${index}]"/>
 <%--
     <c:forEach items="${fieldGroup.fields}" var="field">

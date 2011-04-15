@@ -11,7 +11,7 @@
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
 
 <c:set var="v" value="aeReport.radiationInterventions[${index}]" />
-<ae:fieldGroupDivision fieldGroupFactoryName="radiationIntervention" index="${index}" style="${style}" enableDelete="true" deleteParams="'radiation', ${index}, '_radiations'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="radiationIntervention" index="${index}" style="${style}" enableDelete="true" deleteParams="'radiation', ${index}, '_radiations'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.radiationInterventions[${index}]"/>
 
     <ui:row path="aeReport.radiationInterventions[${index}].studyRadiation">

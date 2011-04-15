@@ -13,7 +13,7 @@
 
 <c:set var="v" value="aeReport.dietaryIntervention[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="dietaryIntervention" index="${index}" enableDelete="true" deleteParams="'dietary', ${index}, '_dietaries'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="dietaryIntervention" index="${index}" enableDelete="true" deleteParams="'dietary', ${index}, '_dietaries'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.dietaryInterventions[${index}]"/>
 
     <ui:row path="aeReport.dietaryInterventions[${index}].studyIntervention">

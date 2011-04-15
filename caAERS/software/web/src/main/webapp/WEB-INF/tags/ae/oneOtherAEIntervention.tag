@@ -13,7 +13,7 @@
 
 <c:set var="v" value="aeReport.otherAEIntervention[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="otherAEIntervention" index="${index}" enableDelete="true" deleteParams="'otherAE', ${index}, '_otherAEs'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="otherAEIntervention" index="${index}" enableDelete="true" deleteParams="'otherAE', ${index}, '_otherAEs'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.otherAEInterventions[${index}]"/>
 
     <ui:row path="aeReport.otherAEInterventions[${index}].studySurgery">

@@ -13,7 +13,7 @@
 <c:set var="v" value="aeReport.treatmentInformation.courseAgents[${index}]" />
 <ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}"
 		enableDelete="true" title="${agent.displayName}"
-		deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v]}">
+		deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.treatmentInformation.courseAgents[${index}]"/>
 
     <c:if test="${agent.displayName ne '[no agent]'}">

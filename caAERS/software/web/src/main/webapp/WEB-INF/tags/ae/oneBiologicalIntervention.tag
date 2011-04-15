@@ -13,7 +13,7 @@
 
 <c:set var="v" value="aeReport.biologicalIntervention[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="biologicalIntervention" index="${index}" enableDelete="true" deleteParams="'biological', ${index}, '_biologicals'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="biologicalIntervention" index="${index}" enableDelete="true" deleteParams="'biological', ${index}, '_biologicals'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.biologicalInterventions[${index}]"/>
 
      <ui:row path="aeReport.biologicalInterventions[${index}].studyIntervention">
