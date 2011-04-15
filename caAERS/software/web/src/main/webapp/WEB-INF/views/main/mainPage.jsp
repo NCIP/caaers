@@ -49,17 +49,18 @@
 
     td.taskItem a {
         font-family: Lucida Grande, sans-serif;
-        font-size: 12px;
+        font-size: 13px;
         color: #094c86;
         text-shadow: 0 1px white;
         text-decoration: none;
-        padding-right:10px;
+        padding:10px 0;
 
     }
 
     td.taskItem a:hover {
         color: #1878cc;
         text-decoration: none;
+        padding-left: 2px;
 
     }
 

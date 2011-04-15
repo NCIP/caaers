@@ -3,7 +3,7 @@
 <%@attribute name="key" %>
 <c:if test="${not empty warningMessage}">
     <div id="flash-message" class="${empty warningMessageClass ? 'warning' : warningMessageClass}">
-    	<img src= "<chrome:imageUrl name="../stop_orange.png"/>" />&nbsp;${warningMessage}
+    	<img src= "<chrome:imageUrl name="../error-yellow.png"/>" />&nbsp;${warningMessage}
     </div>
 </c:if>
 <c:if test="${not empty key}">

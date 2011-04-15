@@ -2,13 +2,16 @@
 
 div.calendar {z-index : 10;}
 
-.calendar, .calendar table {
-  border: 1px solid #556;
+.calendar {
+  border: 1px solid #999;
   font-size: 12px;
   color: #000;
   cursor: default;
   background: #eef;
   font-family: lucida Grande, sans serif;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -border-radius: 6px;
 }
 
 /* Header part -- contains navigation buttons and day names. */
@@ -25,9 +28,9 @@ div.calendar {z-index : 10;}
 .calendar thead .title { /* This holds the current "month, year" */
   font-weight: bold;      /* Pressing it will take you to the current date */
   text-align: center;
-  background: #fff;
   color: #000;
   padding: 2px;
+    text-shadow: 0 1px white;
 }
 
 .calendar thead .headrow { /* Row <TR> containing navigation buttons */
@@ -63,6 +66,8 @@ div.calendar {z-index : 10;}
 }
 
 /* The body part -- contains all the days in month. */
+
+.calendar tbody tr.daysrow {background: white}
 
 .calendar tbody .day { /* Cells <TD> containing month days dates */
   width: 2em;
@@ -134,12 +139,10 @@ div.calendar {z-index : 10;}
 
 .calendar tfoot .footrow { /* The <TR> in footer (only one right now) */
   text-align: center;
-  background: #556;
   color: #fff;
 }
 
 .calendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
-  background: #fff;
   color: #445;
   border-top: 1px solid #556;
   padding: 1px;
