@@ -12,7 +12,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-
+/**
+ * @author Ion C. Olaru
+ * */
 public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";

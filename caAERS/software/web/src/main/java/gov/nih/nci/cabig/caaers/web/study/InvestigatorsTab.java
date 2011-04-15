@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -70,7 +71,10 @@ class InvestigatorsTab extends StudyTab {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             for (StudyInvestigator si : so.getStudyInvestigators()) {
                 if (si.getId() == null) {
-                  si.syncDates();
+                    si.syncDates();
+                    // https://tracker.nci.nih.gov/browse/CAAERS-4739
+                    // Activate the newly added RSs
+                    if (si.getStartDate() == null) si.setStartDate(DateUtils.today());
                 }
             }
         }
