@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -53,6 +54,7 @@ class PersonnelTab extends StudyTab {
         else
             selectedPersonnelIndex = -1;
 
+        // START particular operations
         if ("removeStudyPersonnel".equals(action) && selectedIndex >= 0) {
             command.deleteStudyPersonAtIndex(selectedIndex, Integer.parseInt(selectedPersonnel));
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
@@ -66,17 +68,23 @@ class PersonnelTab extends StudyTab {
         } else if ("deactivate".equals(action)) {
             command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyPersonnels().get(selectedPersonnelIndex).deactivate();
         }
+        // END particular operations
 
         if (command.getStudySiteIndex() >= 0) {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             for (StudyPersonnel sp : so.getStudyPersonnels()) {
-                if (sp.getId() == null && sp.getSiteResearchStaff() != null) {
-                    sp.setStartDate(sp.getSiteResearchStaff().getActiveDate());
+                // https://tracker.nci.nih.gov/browse/CAAERS-4739
+                // Activate the newly added RSs
+                if (sp.getId() == null) {
+                    if (sp.getSiteResearchStaff() != null && sp.getSiteResearchStaff().getActiveDate() != null) {
+                        sp.setStartDate(sp.getSiteResearchStaff().getActiveDate());
+                    } else {
+                        sp.setStartDate(DateUtils.today());
+                    }
                     sp.setEndDate(null);
                 }
             }
         }
-
 
     }
 
