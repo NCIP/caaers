@@ -196,6 +196,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return ss;
     }
 
+    @Transient
+    public Map<String, String> getSummary() {
+        return getSummary(true);
+    }
     
     /**
      * Gets the summary.
