@@ -51,8 +51,9 @@
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
    		 <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
+        <c:set var="_size" value="${fn:length(command.aeReport.otherCauses)}" />
         <c:forEach items="${command.aeReport.otherCauses}" varStatus="status">
-            <ae:oneOtherCause index="${status.index}"/>
+            <ae:oneOtherCause index="${_size - 1 - status.index}"/>
         </c:forEach>
         <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
