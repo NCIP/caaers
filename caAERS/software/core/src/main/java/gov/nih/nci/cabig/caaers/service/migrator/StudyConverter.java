@@ -256,10 +256,15 @@ public class StudyConverter {
 			for(StudyPersonnelType studyPersonnelType : studyPersonnelList){
 				studyPersonnel = new StudyPersonnel();
 				studyPersonnel.setRoleCode(studyPersonnelType.getRoleCode().value());
-				studyPersonnel.setStartDate(studyPersonnelType.getStartDate().toGregorianCalendar().getTime());
-				if(studyPersonnelType.getEndDate() != null){
+
+                if (studyPersonnelType.getStartDate() != null) {
+				    studyPersonnel.setStartDate(studyPersonnelType.getStartDate().toGregorianCalendar().getTime());
+                }
+
+                if (studyPersonnelType.getEndDate() != null) {
 					studyPersonnel.setEndDate(studyPersonnelType.getEndDate().toGregorianCalendar().getTime());
 				}
+
 				ResearchStaff researchStaff = new LocalResearchStaff();
 				researchStaff.setAddress(new Address());
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
