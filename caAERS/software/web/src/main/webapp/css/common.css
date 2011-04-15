@@ -680,7 +680,6 @@ h2.title {
     margin-top: 20px;
     text-shadow: 0 2px 2px #ccc;
     font-weight: normal;
-    text-transform: capitalize;
     font-family:"Lucida Grande",sans-serif;
     line-height: 23px;
 }
@@ -744,7 +743,7 @@ div.errors {
 	color: #c03;
     text-shadow: 0 1px white;
 	font-size:13px;
-	border: 1px solid #ecb9c5;
+	border: 1px solid #f6dee4;
 	margin: 40px;
 	padding: 10px 20px;
     -moz-border-radius: 8px;
@@ -811,7 +810,7 @@ div.row:after, .autoclear:after {
 }
 div.row div.label {
 	font-weight: bold;
-    line-height: 16px;
+    /* line-height: 16px; */
 	float: left;
 
 	text-align: right;
