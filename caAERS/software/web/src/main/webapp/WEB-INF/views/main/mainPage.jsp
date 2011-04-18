@@ -82,14 +82,15 @@
         margin: 5px;
     }
 
-    .reportActivity { background-color: #99cc00; color: #f00; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
+    .reportActivity { background-color: #99cc00; color: #f00; padding: 1px 3px 1px 1px;}
+
     .pastDue { background-color: #ff6666; color: #ff6666; border:0px solid #000; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-    .calendar tbody .rowhilite td.pastDue { background: #ff6666; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-    .calendar tbody .rowhilite td.pastDue.hilite { background: #ff6666; border:1px #BBB solid; padding: 1px 3px 1px 1px;}
-    .calendar tbody .rowhilite td.reportActivity { background: #99cc00; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-    .calendar tbody .rowhilite td.reportActivity.hilite { background: #99cc00; border:1px #BBB solid; padding: 1px 3px 1px 1px;}
-    .calendar tbody .reportActivity {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
-    .calendar tbody .pastDue {font-weight: bold; color:white; border:1px #EEEEFF solid; padding: 1px 3px 1px 1px;}
+    /*.calendar tbody .rowhilite td.pastDue { background: #ff6666;  padding: 1px 3px 1px 1px;}
+    .calendar tbody .rowhilite td.pastDue.hilite { background: #ff6666; padding: 1px 3px 1px 1px;} 
+    .calendar tbody .rowhilite td.reportActivity { background: #99cc00; padding: 1px 3px 1px 1px;}
+    /*.calendar tbody .rowhilite td.reportActivity.hilite { background: #99cc00; padding: 1px 3px 1px 1px;} */
+    .calendar tbody .reportActivity {font-weight: bold; color:white; padding: 1px 3px 1px 1px;}
+    .calendar tbody .pastDue {font-weight: bold; color:white; padding: 1px 3px 1px 1px;}
     tr.last { border-bottom : 1px black solid; }
     .scroller { height: 180px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }
     .scrollerTask { height: 227px; overflow-x: hidden; overflow-y: scroll; margin: 0px; }

@@ -112,7 +112,7 @@ body {
 #thirdlevelnav div a:active { color:#CCCCCC }
 #thirdlevelnav.last div { background-image:none; }
 #thirdlevelnav.selected div a {
-	color:#23557a;
+	color:#0f3755;
 	font-weight: normal;
 	padding-top: 4px;
 	padding-right: 7px;
@@ -751,7 +751,7 @@ span.phone-number { font-style: italic; }
 .error .label { color: #c03; }
 .errors { color: #c03; }
 div.errors {
-    background:#ecb9c5 url(../images/error-message_bg.jpg) repeat-x top;
+    background:#F7DEE4 url(../images/error-message_bg.jpg) repeat-x top;
 	color: #c03;
     text-shadow: 0 1px white;
 	font-size:13px;

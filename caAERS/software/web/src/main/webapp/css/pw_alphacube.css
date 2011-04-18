@@ -98,7 +98,7 @@
 .alphacube_content {
 	overflow:auto;
 	color: #000;
-	font-family: Arial, Tahoma, Verdana, sans-serif;
+	font-family: lucida Grande, sans-serif;
 	background:#FDFDFD;
 }
 
@@ -145,3 +145,6 @@
 }
 
 
+#logout_warning p {
+    text-align: center;
+}
