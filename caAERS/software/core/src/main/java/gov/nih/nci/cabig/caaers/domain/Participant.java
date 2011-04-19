@@ -542,7 +542,9 @@ public class Participant extends Person {
      */
     @Transient
     public String getPrimaryIdentifierValue() {
-    	return getPrimaryIdentifier().getValue();
+        Identifier id = getPrimaryIdentifier();
+        if(id != null) return id.getValue();
+        return null;
     }
 
     /**
