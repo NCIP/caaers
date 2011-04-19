@@ -146,7 +146,7 @@ div.calendar {z-index : 10;}
 }
 
 .calendar tbody td.weekend { /* Cells showing weekend days */
-  color: #999;
+  color: #5093C6;
 }
 
 .calendar tbody td.today { /* Cell showing selected date */
