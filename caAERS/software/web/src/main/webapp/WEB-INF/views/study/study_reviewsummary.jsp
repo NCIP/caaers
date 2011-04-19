@@ -44,7 +44,7 @@
             	</div>
            		<div class="row">
                 	<div class="label">Title</div>
-                	<div class="value">${command.study.shortTitle} </div>
+                	<div class="value"><c:out value="${command.study.shortTitle} " escapeXml="true" /></div>
             	</div>
             	<div class="row">
                 	<div class="label">Funding sponsor</div>

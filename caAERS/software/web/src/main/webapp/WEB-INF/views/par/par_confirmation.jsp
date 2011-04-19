@@ -127,7 +127,7 @@
                 </tr>
                 <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                         <tr class="results">
-                            <td>${assignment.studySite.study.primaryIdentifier}</td>
+                            <td><c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/> </td>
                             <td>${assignment.studySite.study.shortTitle}</td>
                             <td>
   							<c:if test ="${assignment.studySite.organization.externalId != null}">
@@ -136,7 +136,7 @@
                             ${assignment.studySite.organization.name}
                             
                             </td>
-                            <td>${assignment.studySubjectIdentifier}</td>
+                            <td><c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/> </td>
                         </tr>
                 </c:forEach>
 
