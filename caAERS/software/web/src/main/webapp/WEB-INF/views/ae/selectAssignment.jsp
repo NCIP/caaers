@@ -316,7 +316,6 @@
                           <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
                   </c:otherwise>
                 </c:choose>
-		            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
 		            <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
 		            <tags:indicator id="participant-indicator"/>
 		            <div id="participant-choices" class="autocomplete"></div>
