@@ -32,6 +32,14 @@ class PropertyNode extends TreeNode {
     @Override
     protected TreeNode matchProperty(String desiredPropertyName) {
         if (log.isDebugEnabled()) log.debug("Looking for " + desiredPropertyName + " in " + this);
+
+        if(this.isLeaf()){
+            if(isImmediatePropertyMatch(desiredPropertyName)){
+                if (log.isDebugEnabled()) log.debug(" + Matched direct");
+                return this;
+            }
+        }
+
         String[] bits = desiredPropertyName.split("\\.", 2);
         String immediatePropertyName = bits[0];
         String grandchildrenEtc = bits.length > 1 ? bits[1] : null;

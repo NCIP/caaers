@@ -1,10 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
@@ -114,6 +112,21 @@ public class MandatoryPropertiesTest extends TestCase {
         List<UnsatisfiedProperty> errors = mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[1].preExistingCondition"), aeReport);
         assertEquals(1, errors.size());
         assertEquals(errors.get(0).getBeanPropertyName(), "saeReportPreExistingConditions[1].preExistingCondition");
+    }
+
+
+    public void testIsMandatoryCompositeField(){
+        //adverseEvents[1].eventApproximateTime.hourString
+
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        mandatory.addRealPropertyPath("adverseEvents[0].eventApproximateTime.hourString");
+        AdverseEvent ae = new AdverseEvent();
+        ae.setEventApproximateTime(new TimeValue());
+        aeReport.addAdverseEvent(ae);
+        TreeNode n = tree.find("adverseEvents[0].eventApproximateTime.hourString") ;
+        assertNotNull(n);
+        assertTrue(mandatory.isMandatory("adverseEvents[0].eventApproximateTime.hourString"));
+
     }
 
     
