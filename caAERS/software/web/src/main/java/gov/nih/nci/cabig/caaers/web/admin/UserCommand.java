@@ -51,9 +51,17 @@ public class UserCommand {
     private Integer userId;
     
 	private List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
-    
+    private String requestURL = "";
 
-	public UserCommand() {
+    public String getRequestURL() {
+        return requestURL;
+    }
+
+    public void setRequestURL(String requestURL) {
+        this.requestURL = requestURL;
+    }
+
+    public UserCommand() {
 		personTypeOptionsMap.put("", "Please select");
 		personTypeOptionsMap.put("Investigator", "Investigator");
 		personTypeOptionsMap.put("ResearchStaff", "ResearchStaff");

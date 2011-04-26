@@ -188,6 +188,15 @@ public class EditUserController extends UserController<UserCommand> {
             }
         }
 
+            String reqUrl = request.getRequestURL().toString();
+            String queryString = request.getQueryString();   // d=789
+            if (queryString != null) {
+                reqUrl += "?"+queryString;
+            }
+
+
+        command.setRequestURL(reqUrl);
+
         return command;
         
 	}

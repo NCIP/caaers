@@ -2,6 +2,13 @@
 
 <html>
 <head>
+    <script type="text/javascript">
+        function redirect(location) {
+            window.location = location;
+
+
+        }
+     </script>
 <tags:dwrJavascriptLink objects="createStudy"/>
 <title>Person/User Confirmation</title>
 </head>
@@ -123,6 +130,9 @@
 					</table>
 				</chrome:box>			
 			</c:if>
+
+
 		</div>
+	            <div class="row submit" style="float: right;"><tags:button type="submit" value="Edit" color="green" icon="edit"  onclick="redirect('${command.requestURL}')"/></div>
 	</body>
 </html>

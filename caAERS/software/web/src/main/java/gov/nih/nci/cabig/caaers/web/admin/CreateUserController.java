@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
+import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
 /**
  * 
@@ -23,37 +25,55 @@ public class CreateUserController extends UserController<UserCommand>{
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request,HttpServletResponse response, Object userCommand, BindException errors) throws Exception {
 		
-		ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
-		UserCommand command = (UserCommand)userCommand;
-		String mailSendIssue = "";
-		if(command.getCreateAsUser()){
-            try {
-    			createOrUpdateUser(request,command.getUser());
-            }catch (MailException e) {
-            	mailSendIssue = ". But could not send email to the User";
-                logger.error("Could not send email to user.", e);
+            ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
+            UserCommand command = (UserCommand)userCommand;
+
+            String mailSendIssue = "";
+            if(command.getCreateAsUser()){
+                try {
+                    createOrUpdateUser(request,command.getUser());
+                }catch (MailException e) {
+                    mailSendIssue = ". But could not send email to the User";
+                    logger.error("Could not send email to user.", e);
+                }
+                processRoleMemberships(command.getUser().getCsmUser(),command.getRoleMemberships());
             }
-            processRoleMemberships(command.getUser().getCsmUser(),command.getRoleMemberships());
-		}
-		if(command.getCreateAsPerson()){
-			personRepository.save(command.getPerson());
-            getEventFactory().publishEntityModifiedEvent(command.getPerson());
-		}
+            if(command.getCreateAsPerson()){
+                personRepository.save(command.getPerson());
+                getEventFactory().publishEntityModifiedEvent(command.getPerson());
+            }
 
-        String statusMessage = "";
-        if(command.getCreateAsPerson() && command.getCreateAsUser()){
-            statusMessage = "Created " +command.getPersonType()+ " with login capability"+mailSendIssue ;
-        }
-        if(command.getCreateAsPerson() && !command.getCreateAsUser()){
-            statusMessage = "Created " +command.getPersonType()+ " without login capability";
-        }
-        if(!command.getCreateAsPerson() && command.getCreateAsUser()){
-            statusMessage = "Created a User with login capability"+mailSendIssue;
-        }
-        modelAndView.getModel().put("flashMessage", statusMessage);
+            String statusMessage = "";
+            if(command.getCreateAsPerson() && command.getCreateAsUser()){
+                statusMessage = "Created " +command.getPersonType()+ " with login capability"+mailSendIssue ;
+            }
+            if(command.getCreateAsPerson() && !command.getCreateAsUser()){
+                statusMessage = "Created " +command.getPersonType()+ " without login capability";
+            }
+            if(!command.getCreateAsPerson() && command.getCreateAsUser()){
+                statusMessage = "Created a User with login capability"+mailSendIssue;
+            }
+            modelAndView.getModel().put("flashMessage", statusMessage);
+                StringBuffer reqUrl =  new StringBuffer(request.getScheme()+ "://" + request.getServerName()  + ":" +  request.getServerPort() +  request.getContextPath() + "/pages/admin/editUser?");
+                           String id = "";
+                           String userName= "";
+                           String recordType = "";
+                           User user = command.getUser();
+                           Person person = command.getPerson();
 
-        modelAndView.addAllObjects(errors.getModel());
-		return modelAndView;
+                           id = Integer.toString((person != null) ? person.getId() : user.getId());
+                           recordType = "CSM_RECORD";
+                            if(person != null){
+                                recordType = (person instanceof ResearchStaff  ? "RESEARCHSTAFF_RECORD" :"INVESTIGATOR_RECORD");
+                            }
+                            userName = (user != null  ? user.getLoginName() : null);
+
+                        reqUrl.append( "id=" +id.toString()).append("&").append(userName != null ? "userName=" + userName : "").append(user != null ? "&" : "").append("recordType=" +recordType);
+
+
+        command.setRequestURL(reqUrl.toString());
+            modelAndView.addAllObjects(errors.getModel());
+            return modelAndView;
 	}
 	
 	
@@ -68,8 +88,11 @@ public class CreateUserController extends UserController<UserCommand>{
 
 		command.setCreateMode(Boolean.TRUE);
 		command.setEditMode(Boolean.FALSE);
+        System.out.println(" " + command.getPersonType());
 
         command.buildRolesHelper();
+
+
 
         return command;
 	}
