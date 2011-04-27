@@ -1,8 +1,5 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent"    
-    xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent"
-
-    elementFormDefault="unqualified">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
 
             
     <xs:element name="AdverseEventsInputMessage">
@@ -19,11 +16,7 @@
 					            <xs:documentation> List of Adverse Events to create or update. </xs:documentation>
 					        </xs:annotation>
 	                </xs:element>
-					<xs:element ref="adverseEventTerms">
-	                        <xs:annotation>
-					            <xs:documentation> List of Adverse Event Terms to delete. </xs:documentation>
-					        </xs:annotation>						
-					</xs:element>
+
                 </xs:choice>  
                 <xs:element ref="criteria">
                         <xs:annotation>
@@ -38,21 +31,15 @@
             </xs:sequence>
         </xs:complexType>        
     </xs:element>
-    <xs:element name="adverseEventTerms" type="AdverseEventTerms"/>   
-    <xs:complexType name="AdverseEventTerms">
-	         <xs:choice> 
-	         		<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1" maxOccurs="unbounded"/>                   	
-	                <xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1" maxOccurs="unbounded"/>
-             </xs:choice>
-     </xs:complexType>
+
 	                
     <xs:element name="criteria" type="Criteria"/>   
 
  	<xs:complexType name="Criteria">
         <xs:sequence>
-        	<xs:element name="participantIdentifier" type="CustomStringType" minOccurs="1"/>
-        	<xs:element name="studyIdentifier" type="CustomStringType" minOccurs="1"/>
-        	<xs:element name="course" type="CourseType" minOccurs="1"/>
+        	<xs:element minOccurs="1" name="participantIdentifier" type="CustomStringType"/>
+        	<xs:element minOccurs="1" name="studyIdentifier" type="CustomStringType"/>
+        	<xs:element minOccurs="1" name="course" type="CourseType"/>
         </xs:sequence>
     </xs:complexType>         	
 
@@ -71,14 +58,14 @@
 				            	
 				            </xs:documentation>
 				     </xs:annotation>
-                    <xs:element name="startDateOfFirstCourse" type="xs:date" minOccurs="0"/>
-                    <xs:element name="startDateOfThisCourse" type="xs:date" minOccurs="1"/>
-                    <xs:element name="endDateOfThisCourse" type="xs:date" minOccurs="0"/>
-                    <xs:element name="treatmentType" type="xs:string" minOccurs="0"/>
-                    <xs:element name="cycleNumber" type="xs:integer" minOccurs="0"/>
+                    <xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
+                    <xs:element minOccurs="1" name="startDateOfThisCourse" type="xs:date"/>
+                    <xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"/>
+                    <xs:element minOccurs="0" name="treatmentType" type="xs:string"/>
+                    <xs:element minOccurs="0" name="cycleNumber" type="xs:integer"/>
                     <xs:choice>
-	                    <xs:element name="treatmentAssignmentCode" type="xs:string" minOccurs="1"/>
-	                    <xs:element name="otherTreatmentAssignmentDescription" type="xs:string" minOccurs="1"/>
+	                    <xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
+	                    <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
                     </xs:choice>
                 </xs:sequence> 
     </xs:complexType>
@@ -91,7 +78,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" ref="adverseEvent" />
+                <xs:element maxOccurs="unbounded" ref="adverseEvent"/>
             </xs:sequence>
         </xs:complexType>        
     </xs:element>
@@ -113,22 +100,22 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                	<xs:element name="verbatim" type="xs:string" minOccurs="0"/>
-                    <xs:element name="grade" type="GradeType" minOccurs="1"/>
-                    <xs:element name="hospitalization" type="HospitalizationType" minOccurs="0"/>
-                    <xs:element name="expected" type="xs:boolean" minOccurs="0"/>
-                    <xs:element name="attributionSummary" type="AttributionType" minOccurs="0"/>
-                    <xs:element name="comments" type="xs:string" minOccurs="0"/>
-                    <xs:element name="startDate" type="xs:date" minOccurs="0"/>
-                    <xs:element name="endDate" type="xs:date" minOccurs="0"/>  
+                	<xs:element minOccurs="0" name="verbatim" type="xs:string"/>
+                    <xs:element minOccurs="1" name="grade" type="GradeType"/>
+                    <xs:element minOccurs="0" name="hospitalization" type="HospitalizationType"/>
+                    <xs:element minOccurs="0" name="expected" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
+                    <xs:element minOccurs="0" name="comments" type="xs:string"/>
+                    <xs:element minOccurs="0" name="startDate" type="xs:date"/>
+                    <xs:element minOccurs="0" name="endDate" type="xs:date"/>  
                     <xs:choice>                    	
-                   		<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1"/>
-                   		<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1"/>
+                   		<xs:element minOccurs="1" name="ctepCode" type="xs:string"/>
+                   		<xs:element minOccurs="1" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
                     </xs:choice> 
-                    <xs:element name="otherMeddra" type="AdverseEventMeddraLowLevelTermType" minOccurs="0"/>
-                   	<xs:element name ="outcome" type="OutcomeType" minOccurs="0" maxOccurs="unbounded"/>  
-                    <xs:element name="eventApproximateTime" type="TimeType" minOccurs="0"/>
-                    <xs:element name="eventLocation" type="xs:string" minOccurs="0"/>
+                    <xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"/>
+                   	<xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>  
+                    <xs:element minOccurs="0" name="eventApproximateTime" type="TimeType"/>
+                    <xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
                     <!-- <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
                    <!-- <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	-->
@@ -138,9 +125,9 @@
    </xs:complexType>  
     <xs:complexType name="TimeType">
                 <xs:sequence>
-                  <xs:element name="hour" type="xs:integer" minOccurs="1"/>
-                  <xs:element name="minute" type="xs:integer" minOccurs="1"/>
-                  <xs:element name="ampm" type="AMPM" minOccurs="1"/>
+                  <xs:element minOccurs="1" name="hour" type="xs:integer"/>
+                  <xs:element minOccurs="1" name="minute" type="xs:integer"/>
+                  <xs:element minOccurs="1" name="ampm" type="AMPM"/>
                 </xs:sequence>
     </xs:complexType>
 
@@ -161,16 +148,16 @@
            
     <xs:complexType name="AdverseEventMeddraLowLevelTermType">
                 <xs:sequence>
-                  <xs:element name="meddraCode" type="xs:string" minOccurs="1"/>
-                  <xs:element name="meddraTerm" type="xs:string" minOccurs="1"/>
+                  <xs:element minOccurs="1" name="meddraCode" type="xs:string"/>
+                  <xs:element minOccurs="1" name="meddraTerm" type="xs:string"/>
                 </xs:sequence>
     </xs:complexType> 
         
 
     <xs:complexType name="OutcomeType">
                 <xs:sequence>
-                  <xs:element name="outComeEnumType" type="OutComeEnumType" minOccurs="1"/>
-                  <xs:element name="other" type="xs:string" minOccurs="0"/>
+                  <xs:element minOccurs="1" name="outComeEnumType" type="OutComeEnumType"/>
+                  <xs:element minOccurs="0" name="other" type="xs:string"/>
                 </xs:sequence>
     </xs:complexType> 
     
@@ -249,9 +236,9 @@
     <xs:element name="CaaersServiceResponse">
         <xs:complexType>
         <xs:sequence>
-            <xs:element name="errorCode" type="xs:string" />
+            <xs:element name="errorCode" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
-            <xs:element name="responses"  type="Responses"/>
+            <xs:element name="responses" type="Responses"/>
 	    </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -264,7 +251,7 @@
 
     <xs:complexType name="Responses">
         <xs:sequence>
-            <xs:element name="response" minOccurs="0" maxOccurs="unbounded">
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="response">
             <xs:complexType>
                 <xs:sequence>
                     <xs:element name="description" type="xs:string"/>
@@ -282,4 +269,3 @@
 
 
 </xs:schema>
-    

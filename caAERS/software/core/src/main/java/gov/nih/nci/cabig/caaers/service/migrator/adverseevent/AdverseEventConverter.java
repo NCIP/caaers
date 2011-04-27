@@ -7,7 +7,9 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -32,7 +34,7 @@ public class AdverseEventConverter {
 	private MessageSource messageSource;
 
 	public void convertAdverseEventDtoToAdverseEventDomain(gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType adverseEventDto, 
-			AdverseEvent adverseEvent, String operation) throws CaaersSystemException{
+			AdverseEvent adverseEvent, AeTerminology terminology  , Date startDateOfFirstCourse, String operation) throws CaaersSystemException{
 		if(adverseEvent == null){
 			adverseEvent = new AdverseEvent();
 		}
@@ -62,10 +64,19 @@ public class AdverseEventConverter {
 				}
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
+	        // Check if the start date is equal to or before the end date.
+	        int dateCompare = DateUtils.compareDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime(),startDateOfFirstCourse);
+			if (dateCompare < 0) {
+				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getEndDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
+			}
+	  
 
-			if (operation.equals(AdverseEventManagementService.CREATE)) {
-				populateCtcTerm(adverseEventDto,adverseEvent);
-				if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
+			if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
+				if (terminology.getCtcVersion() != null) {
+					populateCtcTerm(adverseEventDto,adverseEvent,terminology.getCtcVersion());
+				}
+				
+				if (terminology.getMeddraVersion() != null) {
 					populateLowLevelTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm() ,adverseEvent); 
 				}				
 			}
@@ -149,11 +160,13 @@ public class AdverseEventConverter {
 			}
 		}
 	}
-	private void populateCtcTerm(AdverseEventType adverseEventDto, AdverseEvent adverseEvent) throws CaaersSystemException{
-		if (adverseEventDto.getAdverseEventCtcTerm() != null) {
-			CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[]{adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()});//getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(), adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
+	private void populateCtcTerm(AdverseEventType adverseEventDto, AdverseEvent adverseEvent,Ctc ctc) throws CaaersSystemException{
+		if (adverseEventDto.getCtepCode() != null) {
+			//CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[]{adverseEventDto.getCtepCode()});//getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(), adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
+			CtcTerm ctcTerm = ctcTermDao.getByCtepCodeandVersion(adverseEventDto.getCtepCode(), ctc);
+
 			if (ctcTerm == null) {
-				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getAdverseEventCtcTerm().getCtepTerm().toString()},"",Locale.getDefault()));
+				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getCtepCode()},"",Locale.getDefault()));
 			} else {
 				if (ctcTerm.isOtherRequired()) {
 					if (adverseEventDto.getOtherMeddra() != null) {
@@ -165,11 +178,11 @@ public class AdverseEventConverter {
 							adverseEvent.setLowLevelTerm(lowLevelTerm);
 						}
 					} else {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
+						throw new CaaersSystemException ("<<Adverse Event with code " +adverseEventDto.getCtepCode() + ">> " + messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
 					}
 				} else {
 					if (adverseEventDto.getOtherMeddra() != null) {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
+						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getCtepCode()},"",Locale.getDefault()));
 					}
 				}
 				List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
@@ -181,7 +194,7 @@ public class AdverseEventConverter {
 					}
 				}
 				if (!gradeAllowed) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getCtepCode()},"",Locale.getDefault()));
 				}
 				AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
 				adverseEventCtcTerm.setCtcTerm(ctcTerm);
@@ -202,6 +215,18 @@ public class AdverseEventConverter {
 			}
 			adverseEvent.addOutcome(outCome);
 		}
+	}
+	private static String correlationStr(AdverseEventType adverseEventDto) {
+		String code = null;
+		if (adverseEventDto.getCtepCode() != null ) {
+			code = adverseEventDto.getCtepCode();
+		}
+		if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
+			code = adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
+		}
+		
+		return "<<Adverse Event with code : "+code+">> ";
+		
 	}
 	public void setCtcTermDao(CtcTermDao ctcTermDao) {
 		this.ctcTermDao = ctcTermDao;

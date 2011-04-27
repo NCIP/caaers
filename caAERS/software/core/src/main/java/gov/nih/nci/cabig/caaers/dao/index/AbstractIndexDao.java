@@ -50,12 +50,19 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
      * @return
      */
     public abstract String sequenceName();
+    
+    public void deleteByEntityIdColumn(String id) {
+    	String sql = "delete from "+indexTableName() + " where "+entityIdColumnName() + " = " + id;
+    	//System.out.println(sql);
+    	getJdbcTemplate().execute(sql);
+    }
 
     /**
      * Will return all the available index entries for a login-id
      * @param loginId
      * @return IndexEntry objects
      */
+
     public List<IndexEntry> queryAllIndexEntries(String loginId){
         StringBuffer sb = new StringBuffer("select ")
                 .append(entityIdColumnName()).append(", role_code")

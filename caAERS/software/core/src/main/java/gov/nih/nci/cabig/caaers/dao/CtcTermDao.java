@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 
 import java.util.Arrays;
@@ -137,4 +138,10 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
     public List<CtcTerm> getCtcTerm(String categoryName, Integer ctcaeVersion, String termName) {
         return getHibernateTemplate().find("from CtcTerm t where t.term = ? and t.category.name = ? and t.category.ctc.id = ?", new Object[] {termName, categoryName, ctcaeVersion});
     }
+    
+    public CtcTerm getByCtepCodeandVersion(String ctepCode , Ctc ctc) {
+    	List<CtcTerm> ctcTerms = getHibernateTemplate().find("from CtcTerm t where t.ctepCode = ? and t.category.ctc.id = ?", new Object[] {ctepCode, ctc.getId()});
+        return ctcTerms.isEmpty() ? null : ctcTerms.get(0);
+    }
+    
 }
