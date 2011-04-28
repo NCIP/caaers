@@ -453,8 +453,7 @@ public class User extends AbstractMutableDomainObject{
 	 *
 	 * @param csmUser the new csm user
 	 */
-	public void setCsmUser(
-			gov.nih.nci.security.authorization.domainobjects.User csmUser) {
+	public void setCsmUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) {
 		this.csmUser = csmUser;
         setLoginName(csmUser.getLoginName());
 	}

@@ -41,6 +41,10 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     ResearchStaff fetchResearchStaff(String loginId) {
         Person p = personRepository.getByLoginId(loginId);
         if(p == null) return null;
+
+        User user = userRepository.getUserByLoginName(loginId);
+        p.getCaaersUser().setCsmUser(user.getCsmUser());
+
         if(p instanceof ResearchStaff) return (ResearchStaff) p;
         throw new CaaersSystemException("Login Id/e-mail address is already associated to an Investigator");
     }
