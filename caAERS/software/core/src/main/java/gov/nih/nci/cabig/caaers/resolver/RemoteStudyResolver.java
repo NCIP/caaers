@@ -622,7 +622,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 					    	studyOrganization.addStudyInvestigators(studyInvestigator);
 					    }
 					    if(isStudyOrganizationNew){
-					    	remoteStudy.getStudyOrganizations().add(studyOrganization);
+					    	remoteStudy.addStudyOrganization(studyOrganization);
 					    }
 					}
 				}
