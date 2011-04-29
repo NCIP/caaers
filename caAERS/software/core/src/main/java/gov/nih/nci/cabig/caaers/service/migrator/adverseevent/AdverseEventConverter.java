@@ -65,18 +65,20 @@ public class AdverseEventConverter {
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
 	        // Check if the start date is equal to or before the end date.
-	        int dateCompare = DateUtils.compareDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime(),startDateOfFirstCourse);
-			if (dateCompare < 0) {
-				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getEndDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
+			if(adverseEventDto.getStartDate() != null && startDateOfFirstCourse != null){
+				int dateCompare = DateUtils.compareDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime(),startDateOfFirstCourse);
+				if (dateCompare < 0) {
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getEndDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
+				}
 			}
 	  
 
 			if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
-				if (terminology.getCtcVersion() != null) {
+				if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
 					populateCtcTerm(adverseEventDto,adverseEvent,terminology.getCtcVersion());
 				}
 				
-				if (terminology.getMeddraVersion() != null) {
+				if (terminology.getMeddraVersion() != null && adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
 					populateLowLevelTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm() ,adverseEvent); 
 				}				
 			}
@@ -178,7 +180,7 @@ public class AdverseEventConverter {
 							adverseEvent.setLowLevelTerm(lowLevelTerm);
 						}
 					} else {
-						throw new CaaersSystemException ("<<Adverse Event with code " +adverseEventDto.getCtepCode() + ">> " + messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
+						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
 					}
 				} else {
 					if (adverseEventDto.getOtherMeddra() != null) {
@@ -216,18 +218,7 @@ public class AdverseEventConverter {
 			adverseEvent.addOutcome(outCome);
 		}
 	}
-	private static String correlationStr(AdverseEventType adverseEventDto) {
-		String code = null;
-		if (adverseEventDto.getCtepCode() != null ) {
-			code = adverseEventDto.getCtepCode();
-		}
-		if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
-			code = adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
-		}
-		
-		return "<<Adverse Event with code : "+code+">> ";
-		
-	}
+
 	public void setCtcTermDao(CtcTermDao ctcTermDao) {
 		this.ctcTermDao = ctcTermDao;
 	}

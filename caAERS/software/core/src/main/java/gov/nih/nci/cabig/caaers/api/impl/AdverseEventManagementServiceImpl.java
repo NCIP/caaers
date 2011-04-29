@@ -41,8 +41,11 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.Responses;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -302,20 +305,23 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			}
 			
 			AdverseEvents xmlAdverseEvents = adverseEventsInputMessage.getAdverseEvents();
-			List<AdverseEvent> aesToSave = new ArrayList<AdverseEvent>();
+			Map <Integer , AdverseEvent> aesToSave = new HashMap<Integer,AdverseEvent>();
+			//List<AdverseEvent> aesToSave = new ArrayList<AdverseEvent>();
+			int index = 0; 
 			for (AdverseEventType adverseEventType:xmlAdverseEvents.getAdverseEvent()) {
+				index++;
                 Responses.Response aeResponse = new Responses.Response();
 				try {
 					
 					AdverseEvent adverseEvent = processAdverseEvent(adverseEventType,adverseEventReportingPeriod,operation,dbStudy,terminology);
 					// build list of aes that can be saved ...
-					aesToSave.add(adverseEvent);
+					aesToSave.put(index, adverseEvent);
 					
 				} catch (CaaersSystemException e) {
 					//messages.add(e.getMessage());
                     aeResponse.setErrorCode(" ");
                     aeResponse.setDescription(e.getMessage());
-                    aeResponse.setCorrelationId("");
+                    aeResponse.setCorrelationId(index+"");
                     aeResponse.setDataBaseId("");
                     adverseEventResponsesList.add(aeResponse);
 					adverseEventResponses.setResponse(adverseEventResponsesList);
@@ -324,7 +330,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
                     caaersServiceResponse.setResponses(adverseEventResponses);
 				}	
 			}
-			for (AdverseEvent adverseEvent:aesToSave) {
+			Iterator it =  aesToSave.entrySet().iterator();
+			while (it.hasNext()) {
+		        Map.Entry pairs = (Map.Entry)it.next();
+		        
+		        AdverseEvent adverseEvent = (AdverseEvent)pairs.getValue();
+		        
 				Responses.Response aeResponse = new Responses.Response();
 				ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 				
@@ -336,7 +347,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
                          Responses.Response aeResp = new Responses.Response();
                          aeResp.setErrorCode("error");
                          aeResp.setDescription(error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")");
-                         aeResp.setCorrelationId("");
+                         aeResp.setCorrelationId(pairs.getKey()+"");
                          aeResp.setDataBaseId("");
                          adverseEventResponsesList.add(aeResp);
 					}
@@ -345,11 +356,17 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 					if (operation.equals(CREATE) || operation.equals(UPDATE)) {	
 						adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
 						adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
-						String message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEvent.getAdverseEventTerm().getFullName(),operation+"d"},"",Locale.getDefault());
+						String term = "";
+						if (adverseEvent.getAdverseEventTerm() != null) {
+							term = adverseEvent.getAdverseEventTerm().getFullName();
+						} else {
+							term = adverseEvent.getDetailsForOther();
+						}
+						String message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",term,operation+"d"},"",Locale.getDefault());
 
                          aeResponse.setErrorCode("WS_AEMS_006");
                          aeResponse.setDescription(message);
-                         aeResponse.setCorrelationId("");
+                         aeResponse.setCorrelationId(pairs.getKey()+"");
                          aeResponse.setDataBaseId("");
                          adverseEventResponsesList.add(aeResponse);
 						 //messages.add(message);
@@ -931,6 +948,22 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     }
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+		
+	}
+	private static String correlationStr(AdverseEventType adverseEventDto) {
+		String code = null;
+		if (adverseEventDto.getId() != null) {
+			code = adverseEventDto.getId()+"";
+		} else if (adverseEventDto.getCtepCode() != null ) {
+			code = adverseEventDto.getCtepCode();
+		} else if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
+			code = adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
+		} else if (adverseEventDto.getVerbatim() != null) {
+			code = adverseEventDto.getVerbatim();
+		}
+		
+		
+		return "Adverse Event with code , verbatim or ID : "+code ;
 		
 	}
 	/*

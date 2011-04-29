@@ -108,10 +108,10 @@
                     <xs:element minOccurs="0" name="comments" type="xs:string"/>
                     <xs:element minOccurs="0" name="startDate" type="xs:date"/>
                     <xs:element minOccurs="0" name="endDate" type="xs:date"/>  
-                    <xs:choice>                    	
-                   		<xs:element minOccurs="1" name="ctepCode" type="xs:string"/>
-                   		<xs:element minOccurs="1" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
-                    </xs:choice> 
+                  	
+                   	<xs:element minOccurs="0" name="ctepCode" type="xs:string"/>
+                   	<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
+
                     <xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"/>
                    	<xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>  
                     <xs:element minOccurs="0" name="eventApproximateTime" type="TimeType"/>
@@ -258,6 +258,7 @@
                     <xs:element name="errorCode" type="xs:string"/>
                     <xs:element name="dataBaseId" type="xs:string"/>
                     <xs:element name="correlationId" type="xs:string"/>
+                    <xs:element name="correlationDescription" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
             </xs:element>
