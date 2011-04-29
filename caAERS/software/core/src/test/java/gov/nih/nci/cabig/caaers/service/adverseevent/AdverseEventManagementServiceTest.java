@@ -208,15 +208,15 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		assertEquals("This AE Term(Burn - ) already exists for given course.",msg);
 		
 	}
-	/*
+	
 	public void testAECreateWithOtherMeddra() throws Exception{
 		//String criteriaXmlFile = "AdverseeventCriteria.xml";
 		String xmlFile = "SucessAE3.xml";;
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		int id = getAeId(resp.getResponses().getResponse().get(0).getDescription().toString());
-		AdverseEvent ae = adverseEventDao.getById(id);
+		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Auditory/Ear - Other (Specify, __)",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("mc1",ae.getLowLevelTerm().getMeddraCode());
 		assertEquals("YES",ae.getHospitalization().name());
@@ -230,8 +230,8 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		int id = getAeId(resp.getResponses().getResponse().get(0).getDescription().toString());
-		AdverseEvent ae = adverseEventDao.getById(id);
+		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Auditory/Ear - Other (Specify, __)",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("mc1",ae.getLowLevelTerm().getMeddraCode());
 		assertEquals("YES",ae.getHospitalization().name());
@@ -242,15 +242,15 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		
 		
 	}
-	
+	/*
 	public void testAECreateMeddra() throws Exception{
 		//String criteriaXmlFile = "AdverseeventCriteria.xml";
 		String xmlFile = "SuccessMeddraAE.xml";;
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		int id = getAeId(resp.getResponses().getResponse().get(0).getDescription().toString());
-		AdverseEvent ae = adverseEventDao.getById(id);
+		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("mt1",((AdverseEventMeddraLowLevelTerm)ae.getAdverseEventTerm()).getLowLevelTerm().getMeddraTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("3",ae.getGrade().getCode()+"");
@@ -262,8 +262,8 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		int id = getAeId(resp.getResponses().getResponse().get(0).getDescription().toString());
-		AdverseEvent ae = adverseEventDao.getById(id);
+		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("mt1",((AdverseEventMeddraLowLevelTerm)ae.getAdverseEventTerm()).getLowLevelTerm().getMeddraTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("3",ae.getGrade().getCode()+"");
@@ -272,7 +272,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		adverseEventManagementService.deleteAdverseEvent(adverseEventsInputMessage);
 		
-		ae = adverseEventDao.getById(id);
+		ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertNull(ae);
 		
     }
@@ -286,14 +286,14 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		for (Response r:resp.getResponses().getResponse()) {
 			System.out.println(r.getDescription());
 		}
-		int id = getAeId(resp.getResponses().getResponse().get(0).getDescription().toString());
-		AdverseEvent ae = adverseEventDao.getById(id);
+		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("4",ae.getGrade().getCode()+"");
 
-		int id2 = getAeId(resp.getResponses().getResponse().get(1).getDescription().toString());
-		AdverseEvent dryae = adverseEventDao.getById(id2);
+		String id2 = resp.getResponses().getResponse().get(1).getDataBaseId();
+		AdverseEvent dryae = adverseEventDao.getById(Integer.parseInt(id2));
 		assertEquals("Dry skin",((AdverseEventCtcTerm)dryae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",dryae.getHospitalization().name());
 		assertEquals("3",dryae.getGrade().getCode()+"");
@@ -305,9 +305,9 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		for (Response r:resp.getResponses().getResponse()) {
 			System.out.println(r.getDescription());
 		}
-		ae = adverseEventDao.getById(id);
+		ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertNull(ae);
-		ae = adverseEventDao.getById(id2);
+		ae = adverseEventDao.getById(Integer.parseInt(id2));
 		assertNull(ae);
 		
 		
@@ -320,14 +320,14 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 		
-		int id = getAeId(resp.getResponses().getResponse().get(0).getDescription().toString());
-		AdverseEvent ae = adverseEventDao.getById(id);
+		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("4",ae.getGrade().getCode()+"");
 
-		int id2 = getAeId(resp.getResponses().getResponse().get(1).getDescription().toString());
-		ae = adverseEventDao.getById(id2);
+		String id2 = resp.getResponses().getResponse().get(1).getDataBaseId();
+		ae = adverseEventDao.getById(Integer.parseInt(id2));
 		assertEquals("Dry skin",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("3",ae.getGrade().getCode()+"");
@@ -336,14 +336,14 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		adverseEventManagementService.deleteAdverseEvent(adverseEventsInputMessage);
 		
-		ae = adverseEventDao.getById(id);
+		ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertNull(ae);
-		ae = adverseEventDao.getById(id2);
+		ae = adverseEventDao.getById(Integer.parseInt(id2));
 		assertNull(ae);	
 
 		
 	}
-	
+	*/
 	public void testInvalidTreatmentType() throws Exception{
 		String xmlFile = "CriteriaInvalidTreatmentType.xml";
 		//String xmlFile = "SucessAE.xml";;
@@ -370,7 +370,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 		assertEquals("TreatmentAssignment(TAC1X) is not valid.",resp.getResponses().getResponse().get(0).getDescription().toString());
 	}
-*/
+
 
 	private File getFile(String fileName) throws IOException{
 		File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/service/adverseevent/testdata/" + fileName).getFile();
