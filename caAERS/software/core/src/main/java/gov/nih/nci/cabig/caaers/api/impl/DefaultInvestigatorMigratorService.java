@@ -48,8 +48,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 
 	/**
      * Fetches the research staff from the DB
-     * 
-     * @param nciCode
+     * @param loginId
      * @return
      */
 	Investigator fetchInvestigator(String loginId) {
@@ -59,6 +58,19 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
         }
         List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
         
+        if (rsList == null || rsList.isEmpty()) {
+            return null;
+        }
+        return rsList.get(0);
+    }
+
+	Investigator fetchInvestigatorNoCaaersUser(String loginId) {
+    	InvestigatorQuery invQuery = new InvestigatorQuery();
+        if (StringUtils.isNotEmpty(loginId)) {
+        	invQuery.filterByNciIdentifierExactMatch(loginId);
+        }
+        List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
+
         if (rsList == null || rsList.isEmpty()) {
             return null;
         }
@@ -116,6 +128,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	
 	/**
 	 * This method creates or updates an Investigator (Called from WebService)
+     * @param staff - staff object from XML
 	 */
     public CaaersServiceResponse saveInvestigator(Staff staff) {//throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
@@ -142,26 +155,30 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     		}
     		
     		try {
-    			xmlInvestigator = buildInvestigator(investigatorType);
-    			String email = investigatorType.getEmailAddress();
+                xmlInvestigator = buildInvestigator(investigatorType);
+                String email = investigatorType.getEmailAddress();
                 String loginId = investigatorType.getLoginId();
+                String nciIdentifier = investigatorType.getNciIdentifier();
+
                 if (StringUtils.isEmpty(loginId)) {
-              	  loginId = email;
+                    loginId = email;
                 }
-                dbInvestigator = fetchInvestigator(loginId);
-    			if(dbInvestigator == null){
-    				validateInvestigator(xmlInvestigator,investigatorImportOutcome,wsErrors,false);
-    				if(wsErrors.size() == 0){
-    					saveInvestigator(xmlInvestigator);
-    				}
-    			}else{
-    				validateInvestigator(xmlInvestigator,investigatorImportOutcome,wsErrors,true);
-    				if(wsErrors.size() == 0){
-        				syncInvestigator(xmlInvestigator,dbInvestigator);
-        				saveInvestigator(dbInvestigator);
-    				}
-    			}
-    		} catch (CaaersSystemException e) {
+
+                dbInvestigator = fetchInvestigatorNoCaaersUser(nciIdentifier);
+
+                if (dbInvestigator == null) {
+                    validateInvestigator(xmlInvestigator, investigatorImportOutcome, wsErrors, false);
+                    if (wsErrors.size() == 0) {
+                        saveInvestigator(xmlInvestigator);
+                    }
+                } else {
+                    validateInvestigator(xmlInvestigator, investigatorImportOutcome, wsErrors, true);
+                    if (wsErrors.size() == 0) {
+                        syncInvestigator(xmlInvestigator, dbInvestigator);
+                        saveInvestigator(dbInvestigator);
+                    }
+                }
+            } catch (CaaersSystemException e) {
     			xmlInvestigator = new LocalInvestigator();
     			xmlInvestigator.setNciIdentifier(investigatorType.getNciIdentifier());
     			xmlInvestigator.setFirstName(investigatorType.getFirstName());
