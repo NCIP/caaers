@@ -49,6 +49,22 @@
 		</property>
 	</bean>
 
+    <bean id="invalidUserMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.InvalidUserMigrator">
+		<property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager" />
+    </bean>
+
+ 	<bean id="invalidUserMigrator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="invalidUserMigratorTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
 
 
     <bean id="medicalDeviceMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.MedicalDeviceDataMigrator">
@@ -67,8 +83,6 @@
 		</property>
 	</bean>
 
-
-
     <bean id="radiationDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.RadiationMigrator">
 		<property name="jdbcTemplate">
             <ref bean="jdbcTemplate"/>
@@ -84,9 +98,6 @@
 			</list>
 		</property>
 	</bean>
-
-
-
 
     <bean id="surgeryDataMigratorTarget" class="gov.nih.nci.cabig.caaers.datamigrator.SurgeryMigrator">
 		<property name="jdbcTemplate">
@@ -104,9 +115,6 @@
 		</property>
 	</bean>
 
-
-
-
 	<bean id="caaersDataMigratorDelegate" class="gov.nih.nci.cabig.caaers.datamigrator.CaaersDataMigratorDelegate">
 		<property name="migrators">
 			<list>
@@ -115,7 +123,7 @@
                 <ref bean="radiationDataMigrator"/>
                 <ref bean="surgeryDataMigrator"/>
                 <ref bean="userPrivilegeMigrator" />
-
+                <ref bean="invalidUserMigrator" />
 			</list>
 		</property>
     </bean>
