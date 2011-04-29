@@ -281,7 +281,7 @@
 			</view-column>
 
 		</dependent-object>
-        
+        <!--
         <dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyTherapy</class-name>
 			<display-name>Study therapy</display-name>
@@ -310,6 +310,7 @@
 				<view-column-index>0</view-column-index>
 			</view-column>
 		</dependent-object>
+        -->
         
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
@@ -332,7 +333,7 @@
 			<view-column>
 				<column-attribute>studySubjectIdentifier</column-attribute>
 				<column-title>Study subject identifier</column-title>
-				<dependent-object-index>6</dependent-object-index>
+				<dependent-object-index>5</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
 
@@ -358,7 +359,7 @@
 			<view-column>
 				<column-attribute>displayName</column-attribute>
 				<column-title>Agent name</column-title>
-				<dependent-object-index>7</dependent-object-index>
+				<dependent-object-index>6</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
 
