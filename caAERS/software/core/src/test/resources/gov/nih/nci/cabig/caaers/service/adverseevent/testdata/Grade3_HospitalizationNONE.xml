@@ -4,12 +4,22 @@
 	<ns1:adverseEvents>
 		<ns1:adverseEvent>
 			<grade>3</grade>
-			<hospitalization>NONE</hospitalization>
+			<hospitalization>YES</hospitalization>
 			<expected>true</expected>
-			<adverseEventCtcTerm>
-				<ctep-term>Burn</ctep-term>
-			</adverseEventCtcTerm>	
-		</ns1:adverseEvent>		
+			<ctepCode>-19</ctepCode>
+		</ns1:adverseEvent>	
+		<ns1:adverseEvent>
+			<grade>30</grade>
+			<hospitalization>YES</hospitalization>
+			<expected>true</expected>
+			<ctepCode>-18</ctepCode>
+		</ns1:adverseEvent>	
+		<ns1:adverseEvent>
+			<grade>3</grade>
+			<hospitalization>YES</hospitalization>
+			<expected>true</expected>
+			<ctepCode>-17</ctepCode>
+		</ns1:adverseEvent>	
 	</ns1:adverseEvents>
 	<ns1:criteria>
 		<participantIdentifier>008</participantIdentifier>

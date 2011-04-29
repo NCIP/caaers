@@ -362,12 +362,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						} else {
 							term = adverseEvent.getDetailsForOther();
 						}
-						String message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",term,operation+"d"},"",Locale.getDefault());
+						String message = messageSource.getMessage("WS_AEMS_006", new String[]{term,operation+"d"},"",Locale.getDefault());
 
                          aeResponse.setErrorCode("WS_AEMS_006");
                          aeResponse.setDescription(message);
                          aeResponse.setCorrelationId(pairs.getKey()+"");
-                         aeResponse.setDataBaseId("");
+                         aeResponse.setDataBaseId(adverseEvent.getId()+"");
                          adverseEventResponsesList.add(aeResponse);
 						 //messages.add(message);
 					}	

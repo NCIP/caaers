@@ -68,7 +68,7 @@ public class AdverseEventConverter {
 			if(adverseEventDto.getStartDate() != null && startDateOfFirstCourse != null){
 				int dateCompare = DateUtils.compareDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime(),startDateOfFirstCourse);
 				if (dateCompare < 0) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getEndDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getStartDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
 				}
 			}
 	  

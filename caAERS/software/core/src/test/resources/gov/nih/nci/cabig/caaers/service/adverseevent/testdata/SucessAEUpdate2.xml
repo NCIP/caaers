@@ -2,13 +2,14 @@
 <ns1:AdverseEventsInputMessage xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
 	<ns1:adverseEvents>
 		<ns1:adverseEvent>
-			<grade>3</grade>
+			<grade>2</grade>
 			<hospitalization>YES</hospitalization>
 			<expected>true</expected>
 			<startDate>2005-07-29</startDate>
-			<endDate>2005-08-29</endDate>		
-			<ctepCode>-18</ctepCode>
-		</ns1:adverseEvent>		
+			<endDate>2005-08-29</endDate>	
+			<ctepCode>-18</ctepCode>	
+		</ns1:adverseEvent>
+			
 	</ns1:adverseEvents>
 	<ns1:criteria>
 		<participantIdentifier>008</participantIdentifier>
