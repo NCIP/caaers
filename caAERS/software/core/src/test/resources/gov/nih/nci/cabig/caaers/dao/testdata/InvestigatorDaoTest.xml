@@ -44,7 +44,12 @@
     	site_id="-1003" 
     	investigator_id="-3004"/>
     	
-    <SITE_INVESTIGATORS 
+    <SITE_INVESTIGATORS
+    	id="-5001"
+    	site_id="-1003"
+    	investigator_id="-100"/>
+
+    <SITE_INVESTIGATORS
     	id="-4005" 
     	site_id="-1003" 
     	investigator_id="-3005"/>  

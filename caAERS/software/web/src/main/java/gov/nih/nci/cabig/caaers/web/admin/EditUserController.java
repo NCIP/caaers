@@ -181,6 +181,9 @@ public class EditUserController extends UserController<UserCommand> {
 					sitePerson.setOrganization(siteInv.getOrganization());
 					sitePerson.setPerson(siteInv.getInvestigator());
 					sitePerson.setEmailAddress(siteInv.getEmailAddress());
+                    sitePerson.setPhoneNumber(siteInv.getPhoneNumber());
+                    sitePerson.setFaxNumber(siteInv.getFaxNumber());
+                    sitePerson.setAddress(siteInv.getAddress());
                     sitePerson.setStartDate(siteInv.getStartDate());
                     sitePerson.setEndDate(siteInv.getEndDate());
 					command.addSitePersonnel(sitePerson);

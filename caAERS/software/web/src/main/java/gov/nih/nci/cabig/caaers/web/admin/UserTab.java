@@ -356,6 +356,9 @@ public class UserTab extends TabWithFields<UserCommand>{
     		siteInv.setStartDate(DateUtils.today());
     		siteInv.setOrganization(sitePerson.getOrganization());
     		siteInv.setEmailAddress(sitePerson.getEmailAddress());
+            siteInv.setPhoneNumber(sitePerson.getPhoneNumber());
+            siteInv.setFaxNumber(sitePerson.getFaxNumber());
+            siteInv.setAddress(sitePerson.getAddress());
             siteInv.setStartDate(sitePerson.getStartDate());
             siteInv.setEndDate(sitePerson.getEndDate());
 

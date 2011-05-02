@@ -26,6 +26,16 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
         assertEquals("Wrong first name", "Dilbert", investigator.getFirstName());
     }
     
+    public void testGetByIdWithSites() throws Exception {
+        Investigator investigator = getDao().getById(-100);
+        assertNotNull("Investigator not found", investigator);
+        assertEquals("Wrong last name", "Scott", investigator.getLastName());
+        assertEquals("Wrong first name", "Dilbert", investigator.getFirstName());
+        assertEquals(1, investigator.getSiteInvestigators().size());
+        assertEquals("Cancer and Leukemia Group B", investigator.getSiteInvestigators().get(0).getOrganization().getName());
+
+    }
+
     public void testGetByLoginId() {
     	Investigator inv = getDao().getByLoginId("abcd");
     	assertNotNull(inv);

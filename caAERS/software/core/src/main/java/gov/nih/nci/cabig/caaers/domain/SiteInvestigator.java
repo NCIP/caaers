@@ -7,20 +7,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
- 
+
 /**
  * This class represents the SiteInvestigator domain object associated with the Adverse event
  * report.
@@ -41,7 +35,16 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
     
     /** The email address. */
     private String emailAddress;
-    
+
+    /** The phone number. */
+    private String phoneNumber;
+
+    /** The fax number. */
+    private String faxNumber;
+
+    /** The address. */
+    private Address address;
+
     /** The start date. */
     private Date startDate;
     
@@ -181,7 +184,60 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
+
+    @Embedded
+    public Address getAddress() {
+        if(address == null) address = new Address();
+        return address;
+    }
+
+    /**
+     * Sets the address.
+     *
+     * @param address the new address
+     */
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    /**
+     * Gets the phone number.
+     *
+     * @return the phone number
+     */
+    @Column(name = "phone_number")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * Sets the phone number.
+     *
+     * @param phoneNumber the new phone number
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * Gets the fax number.
+     *
+     * @return the fax number
+     */
+    @Column(name = "fax_number")
+    public String getFaxNumber() {
+        return faxNumber;
+    }
+
+    /**
+     * Sets the fax number.
+     *
+     * @param faxNumber the new fax number
+     */
+    public void setFaxNumber(String faxNumber) {
+        this.faxNumber = faxNumber;
+    }
+
 	/**
 	 * Checks if is active.
 	 *
