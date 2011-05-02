@@ -280,7 +280,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	                            errorCode = "WS_AEMS_024";
 							} else {
 								deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
-								message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",code,operation+"d"},"",Locale.getDefault());
+								message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getAdverseEventTerm().getFullName()+"",operation+"d"},"",Locale.getDefault());
 	                            errorCode = "WS_AEMS_006";
 							}
 							//messages.add (message);

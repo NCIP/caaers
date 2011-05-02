@@ -242,11 +242,12 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		
 		
 	}
-	/*
+	
 	public void testAECreateMeddra() throws Exception{
 		//String criteriaXmlFile = "AdverseeventCriteria.xml";
 		String xmlFile = "SuccessMeddraAE.xml";;
-
+		//make study a meddra study for meddra tests
+		getJdbcTemplate().execute("update terminologies set meddra_version_id=9 , term_code=2 , ctc_id = null where id =-1");
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
@@ -259,7 +260,8 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 	
     public void testAEDeleteMeddra() throws Exception {
 		String xmlFile = "SuccessMeddraAE.xml";;
-
+		//make study a meddra study for meddra tests
+		getJdbcTemplate().execute("update terminologies set meddra_version_id=9 , term_code=2 , ctc_id = null where id =-1");
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
@@ -279,13 +281,13 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
     
 	public void testAEDelete() throws Exception{
 		//String criteriaXmlFile = "AdverseeventCriteria.xml";
-		String xmlFile = "SucessAEUpdate.xml";
-		
+		String xmlFile = "DeleteTest.xml";
+		//revert  study to ctc 
+		getJdbcTemplate().execute("update terminologies set meddra_version_id=null , term_code=1 , ctc_id = 3 where id =-1");
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
+		
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		for (Response r:resp.getResponses().getResponse()) {
-			System.out.println(r.getDescription());
-		}
+
 		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
@@ -302,9 +304,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		
 		resp=adverseEventManagementService.deleteAdverseEvent(adverseEventsInputMessage);
-		for (Response r:resp.getResponses().getResponse()) {
-			System.out.println(r.getDescription());
-		}
+
 		ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertNull(ae);
 		ae = adverseEventDao.getById(Integer.parseInt(id2));
@@ -313,37 +313,8 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		
 	}
 	
-	public void testAEDeleteMultiple() throws Exception{
-		//String criteriaXmlFile = "AdverseeventCriteria.xml";
-		String xmlFile = "SucessAEUpdate.xml";
-		
-		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
-		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		
-		String id = resp.getResponses().getResponse().get(0).getDataBaseId();
-		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
-		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
-		assertEquals("YES",ae.getHospitalization().name());
-		assertEquals("4",ae.getGrade().getCode()+"");
 
-		String id2 = resp.getResponses().getResponse().get(1).getDataBaseId();
-		ae = adverseEventDao.getById(Integer.parseInt(id2));
-		assertEquals("Dry skin",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
-		assertEquals("YES",ae.getHospitalization().name());
-		assertEquals("3",ae.getGrade().getCode()+"");
-
-		xmlFile = "DeleteMultipleAEs.xml";
-		adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
-		adverseEventManagementService.deleteAdverseEvent(adverseEventsInputMessage);
-		
-		ae = adverseEventDao.getById(Integer.parseInt(id));
-		assertNull(ae);
-		ae = adverseEventDao.getById(Integer.parseInt(id2));
-		assertNull(ae);	
-
-		
-	}
-	*/
+	
 	public void testInvalidTreatmentType() throws Exception{
 		String xmlFile = "CriteriaInvalidTreatmentType.xml";
 		//String xmlFile = "SucessAE.xml";;
