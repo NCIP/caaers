@@ -232,9 +232,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			}
 			
 			this.adverseEventReportingPeriod.getAssignment().getStudySite().getStudySiteWorkflowConfigs().size();
-			
+			this.adverseEventReportingPeriod.getAssignment().getLabLoads().size();
+
 			this.adverseEventReportingPeriod.isBaselineReportingType();
-			
+
 		}
     }
     
