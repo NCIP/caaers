@@ -147,6 +147,7 @@ public class PersonDao extends CaaersDao<Person> implements MutableDomainObjectD
      * Will deactivate study investigator associated with the SiteInvestigator
      * @param si
      */
+    @Transactional(readOnly = false)
     public void deactivateStudyInvestigator(SiteInvestigator si){
         investigatorDao.deactivateStudyInvestigators(si);
     }

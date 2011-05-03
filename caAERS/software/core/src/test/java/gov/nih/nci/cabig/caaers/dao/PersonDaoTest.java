@@ -1,14 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
 	private PersonDao personDao;
@@ -56,6 +50,45 @@ public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
 		assertEquals(1,((LocalInvestigator)p).getSiteInvestigators().size());
 		assertNull(p.getCaaersUser());
 	}
+
+
+    public void testDeactivateStudyInvestigator(){
+        {
+            LocalInvestigator inv = new LocalInvestigator();
+            inv.setFirstName("Monish");
+            inv.setMiddleName("M");
+            inv.setLastName("Dombla");
+            inv.setEmailAddress("bijujoseph@semanticbits.com");
+            inv.setPhoneNumber("703-123-1234");
+            inv.setFaxNumber("703-123-1234");
+
+            SiteInvestigator siteInv = new SiteInvestigator();
+            Organization org = organizationDao.getById(-1003);
+            siteInv.setStartDate(DateUtils.today());
+            siteInv.setOrganization(org);
+            inv.addSiteInvestigator(siteInv);
+
+            personDao.save(inv);
+        }
+        interruptSession();
+        {
+          Person p = personDao.getByEmailAddress("bijujoseph@semanticbits.com");
+		  assertNotNull(p);
+          Investigator i = (Investigator)p;
+          assertNull(i.getSiteInvestigators().get(0).getEndDate());
+          assertTrue(i.getSiteInvestigators().get(0).isActive());
+          personDao.deactivateStudyInvestigator(i.getSiteInvestigators().get(0));
+
+        }
+        interruptSession();
+        {
+           Person p = personDao.getByEmailAddress("bijujoseph@semanticbits.com");
+		  assertNotNull(p);
+          Investigator i = (Investigator)p;
+          assertFalse(i.getSiteInvestigators().get(0).isActive());
+        }
+
+    }
 	
 	//Investigator as Person & User
 	public void testSavePersonAsInvestigatorAndUser(){
