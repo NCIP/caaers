@@ -261,7 +261,7 @@ public class ReportSubmissionService {
             }
             
             String content = messageSource.getMessage("email.submission.content", new Object[]{report.getLabel(), firstName, lastName, pid, shortTitle, sid}, Locale.getDefault());
-            String subjectLine = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());
+            String subjectLine = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel(), pid}, Locale.getDefault());
             caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content, pdfFilePaths);
             String msg = "Notified to : " ;
         	for (String e:emailRecipients) {
