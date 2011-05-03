@@ -240,7 +240,7 @@ public class ReportSubmissionService {
     		 //if email recipents are there, notify them.
         	ExpeditedAdverseEventReport expeditedAdverseEventReport = report.getAeReport();
             Participant participant = expeditedAdverseEventReport.getAssignment().getParticipant();
-            String firstName = participant.getLastFirst();
+            String firstName = participant.getFirstName();
             String lastName = participant.getLastName();
             List<Identifier> pIds = participant.getIdentifiers();
             String pid = "";
