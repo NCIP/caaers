@@ -75,8 +75,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("participantAtRisk", getMessage("LBL_aeReport.adverseEvents.participantAtRisk", "Does this place participant at increased risk?")),
                                         property("eventLocation", getMessage("LBL_aeReport.adverseEvents.eventLocation", "Where was the patient when the event occurred?")),
                                         property("eventApproximateTime.hourString", getMessage("LBL_aeReport.adverseEvents.eventApproximateTime.hourString", "Time of event")),
-                                        property("outcomes", getMessage("LBL_aeReport.adverseEvents.outcomes", "Outcomes")),
-                                        property("comments", getMessage("LBL_aeReport.adverseEvents.comments", "Comments"))
+                                        property("outcomes", getMessage("LBL_aeReport.adverseEvents.outcomes", "Outcomes"))
                                  )
                         ),
                         section(REPORTER_INFO_SECTION,
