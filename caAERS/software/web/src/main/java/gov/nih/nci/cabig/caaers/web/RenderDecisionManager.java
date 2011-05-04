@@ -33,12 +33,18 @@ public class RenderDecisionManager {
 	}
 	
 	public boolean canRenderField(String fieldId){
-        Boolean d1 = decisionCache.get(fieldId);
+
+        Boolean d0 = decisionCache.get(fieldId);
+        Boolean d1 = decisionCache.get(findActualName(fieldId, false));
         Boolean d2 = decisionCache.get(findActualName(fieldId));
-        if(d1 == null && d2 == null) return true;
-        if(d1 == null) return d2;
-        if(d2 == null) return d1;
-        return d1 || d2;
+
+        if(d0 == null && d1 == null && d2 == null) return true;
+
+        if(d0 == null) d0 = false;
+        if(d1 == null) d1 = false;
+        if(d2 == null) d2 = false;
+
+        return d0 || d1 || d2;
     }
 
     /**
@@ -105,16 +111,18 @@ public class RenderDecisionManager {
 	public void reveal(List<String> fieldNamesList, boolean useActualPath){
 		for(String fieldName : fieldNamesList) reveal(fieldName, useActualPath);
 	}
-	
+
 	
 	/**
 	 * This method will remove all the array parameters and return the name
 	 * @param name (eg : biju.joseph[4].padupurackal)
 	 * @return (eg: biju.joseph[].padupurackal)
 	 */
-	
 	public String findActualName(String name){
-		String correctedName =  name.replaceAll("(\\[\\d+\\])", "[]");
+        return findActualName(name, true);
+    }
+	private String findActualName(String name, boolean removeArrayOrdinals){
+		String correctedName = (removeArrayOrdinals) ? name.replaceAll("(\\[\\d+\\])", "[]") : name ;
 		//apply field name corrections
 		if(StringUtils.equals(correctedName, "aeReport.adverseEvents[].outcomes")) correctedName = "outcomes";
         if(correctedName.startsWith("aeReport.")) correctedName = correctedName.substring(9);
