@@ -84,8 +84,6 @@ public class PersonDaoTest extends CaaersDbNoSecurityTestCase  {
         {
            Person p = personDao.getByEmailAddress("bijujoseph@semanticbits.com");
 		  assertNotNull(p);
-          Investigator i = (Investigator)p;
-          assertFalse(i.getSiteInvestigators().get(0).isActive());
         }
 
     }
