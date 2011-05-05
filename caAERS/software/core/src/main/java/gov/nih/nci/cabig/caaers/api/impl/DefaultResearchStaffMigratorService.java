@@ -214,6 +214,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	              	siteResearchStaffAddress.setStreet(siteResearchStaffType.getStreet());
 	              	siteResearchStaffAddress.setCity(siteResearchStaffType.getCity());
 	              	siteResearchStaffAddress.setState(siteResearchStaffType.getState());
+	              	siteResearchStaffAddress.setCountry(siteResearchStaffType.getCountry());
 	              	if(siteResearchStaffType.getZip() != null & !StringUtils.isEmpty(siteResearchStaffType.getZip())){
 	              		siteResearchStaffAddress.setZip(siteResearchStaffType.getZip());
 	              	}

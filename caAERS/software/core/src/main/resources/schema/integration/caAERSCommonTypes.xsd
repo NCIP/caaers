@@ -166,7 +166,6 @@
                     <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="state" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="zip" type="xs:string" minOccurs="0" maxOccurs="1"/>
-                    
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -179,6 +178,13 @@
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
                     <xs:element name="statusCode" type="StatusCodeType"/>
+                    <xs:element name="phoneNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="faxNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="state" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="zip" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="country" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -196,6 +202,7 @@
                     <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="state" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="zip" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="country" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

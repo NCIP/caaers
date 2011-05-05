@@ -4,10 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
@@ -238,6 +235,19 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             	if(siteInvestigatorType.getEndDate() != null){
             		siteInvestigator.setEndDate(siteInvestigatorType.getEndDate().toGregorianCalendar().getTime());
             	}
+
+                siteInvestigator.setPhoneNumber(siteInvestigatorType.getPhoneNumber());
+                siteInvestigator.setFaxNumber(siteInvestigatorType.getFaxNumber());
+                Address siteInvestigatorAddress = new Address();
+                siteInvestigatorAddress.setStreet(siteInvestigatorType.getStreet());
+                siteInvestigatorAddress.setCity(siteInvestigatorType.getCity());
+                siteInvestigatorAddress.setState(siteInvestigatorType.getState());
+                siteInvestigatorAddress.setCountry(siteInvestigatorType.getCountry());
+                if(siteInvestigatorType.getZip() != null & !StringUtils.isEmpty(siteInvestigatorType.getZip())){
+                    siteInvestigatorAddress.setZip(siteInvestigatorType.getZip());
+                }
+                siteInvestigator.setAddress(siteInvestigatorAddress);
+
             	Organization org = fetchOrganization(siteInvestigatorType.getOrganizationRef().getNciInstituteCode());
             	siteInvestigator.setOrganization(org);
             	investigator.addSiteInvestigator(siteInvestigator);
@@ -293,11 +303,14 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		if(CollectionUtils.isEmpty(xmlInvestigator.getSiteInvestigators())) return;  //nothing provided in xml input
 		
 		List<SiteInvestigator> newSiteInvestigators = new ArrayList<SiteInvestigator>();
-		for(SiteInvestigator xmlSiteInvestigator : xmlInvestigator.getSiteInvestigators()){
+		for(SiteInvestigator xmlSiteInvestigator : xmlInvestigator.getSiteInvestigators()) {
 			SiteInvestigator existing = dbInvestigator.findSiteInvestigator(xmlSiteInvestigator);
 			if(existing != null){
 				existing.setStartDate(xmlSiteInvestigator.getStartDate());
 				existing.setEndDate(xmlSiteInvestigator.getEndDate());
+                existing.setAddress(xmlSiteInvestigator.getAddress());
+                existing.setPhoneNumber(xmlSiteInvestigator.getPhoneNumber());
+                existing.setFaxNumber(xmlSiteInvestigator.getFaxNumber());
 			}else {
 				newSiteInvestigators.add(xmlSiteInvestigator);
 			}
