@@ -157,6 +157,6 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
         investigatorQuery.filterByOrganization("-1003");
         investigators = getDao().getLocalInvestigator(investigatorQuery);
         assertNotNull(investigators);
-        assertEquals(2, investigators.size());
+        assertEquals(3, investigators.size());
 	}
 }
