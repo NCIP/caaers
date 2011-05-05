@@ -139,7 +139,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertNotNull(updatedResearchStaff);
 			
 			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
-			assertEquals(2,updatedResearchStaff.getSiteResearchStaffs().size());
+			assertEquals(1,updatedResearchStaff.getSiteResearchStaffs().size());
 
 		} catch (IOException e) {
 			e.printStackTrace();
