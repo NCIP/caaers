@@ -4,7 +4,7 @@
 
   <chrome:boxIPhone title="Studies" style="width:700px;" id="dashboardStudies">
     <jsp:attribute name="additionalTitle">
-        <tags:indicator2 id="_loadAllStudies-indicator"/>&nbsp;<span style="color:white; text-decoration:underline; cursor:pointer;" onclick="loadAllStudies();" id="_loadAllStudies">Load all</span>
+        <c:if test="${param.loadAll == null}"><tags:indicator2 id="_loadAllStudies-indicator"/>&nbsp;<span style="color:white; text-decoration:underline; cursor:pointer;" onclick="loadAllStudies();" id="_loadAllStudies">Load all</span></c:if>
     </jsp:attribute>
   	<jsp:body>
   		<form action = "dummy">

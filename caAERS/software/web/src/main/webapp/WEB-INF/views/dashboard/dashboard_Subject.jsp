@@ -3,7 +3,7 @@
 
   <chrome:boxIPhone title="Subjects" style="width:700px;" id="dashboardSubjects">
       <jsp:attribute name="additionalTitle">
-          <tags:indicator2 id="_loadAllSubjects-indicator"/>&nbsp;<span style="color:white; text-decoration:underline; cursor:pointer;" onclick="loadAllSubjects();" id="_loadAllSubjects">Load all</span>
+          <c:if test="${param.loadAll == null}"><tags:indicator2 id="_loadAllSubjects-indicator"/>&nbsp;<span style="color:white; text-decoration:underline; cursor:pointer;" onclick="loadAllSubjects();" id="_loadAllSubjects">Load all</span></c:if>
       </jsp:attribute>
 
   	<jsp:body>
