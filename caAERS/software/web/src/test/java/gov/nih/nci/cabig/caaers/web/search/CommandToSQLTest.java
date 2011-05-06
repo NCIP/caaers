@@ -37,7 +37,7 @@ public class CommandToSQLTest extends TestCase {
 	
 	public void testTest() throws Exception {
 		createStudySearchXML();
-		AbstractQuery aq = CommandToSQL.transform(targetObject, criteriaParameters);
+		AbstractQuery aq = CommandToSQL.transform(targetObject, criteriaParameters,null);
 		String expectedHql = "select  distinct s from Study s WHERE lower(s.shortTitle) like :shortTitleText AND terminology.term = :term";
 		assertEquals(expectedHql,aq.getQueryString());
 		System.out.println(aq.getQueryString());
