@@ -115,7 +115,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 
     
 	public void testAECreateAndUpdateSameAE() throws Exception{
-		//String criteriaXmlFile = "AdverseeventCriteria.xml";
+		
 		String xmlFile = "SucessAE.xml";;
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
