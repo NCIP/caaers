@@ -8,7 +8,9 @@ import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,15 +26,14 @@ public final class CommandToSQL {
 	}
 
 	public static String OUTER_JOIN_PREFIX = "outer";
-
 	
 	public static AbstractQuery transform(SearchTargetObject targetObject, 
-			List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception{
+			List<AdvancedSearchCriteriaParameter> criteriaParameters , String tableAliasForInterventions) throws Exception{
 
-		return buildAbstractQuery(targetObject, criteriaParameters);
+		return buildAbstractQuery(targetObject, criteriaParameters, tableAliasForInterventions);
 	}
 
-	private static AbstractQuery buildAbstractQuery(SearchTargetObject targetObject , List<AdvancedSearchCriteriaParameter> criteriaParameters) throws Exception {
+	private static AbstractQuery buildAbstractQuery(SearchTargetObject targetObject , List<AdvancedSearchCriteriaParameter> criteriaParameters, String tableAliasForInterventions) throws Exception {
 		String queryClassName = targetObject.getQueryClassName();
 		AbstractQuery query = (AbstractQuery)Class.forName(queryClassName).newInstance();
 	 	 
@@ -41,6 +42,7 @@ public final class CommandToSQL {
 		
 		String[] hqlElements = StringUtils.split(query.getBaseQueryString());
 
+		
         int etIndex = ArrayUtils.indexOf(hqlElements, invokeField(query,targetObject.getTableAlias()));
         hqlElements[etIndex] = invokeField(query,targetObject.getTableAlias());
         String associtedObjectsInQueryString = "";
@@ -52,7 +54,12 @@ public final class CommandToSQL {
 						if (!dObject.getClassName().equals(targetObject.getClassName())) {
 							if (!objectsInView.contains(dObject.getClassName())) {
 								objectsInView.add(dObject.getClassName());
-								associtedObjectsInQueryString = associtedObjectsInQueryString + " , " + invokeField(query,dObject.getTableAlias());
+								if (tableAliasForInterventions != null && dObject.getClassName().equals(INTERVENTION_CLASS_NAME)) {
+									associtedObjectsInQueryString = associtedObjectsInQueryString + " , " + invokeField(query,tableAliasForInterventions);
+								} else {
+									associtedObjectsInQueryString = associtedObjectsInQueryString + " , " + invokeField(query,dObject.getTableAlias());
+								}
+								
 							}
 						}
 					}
@@ -72,7 +79,12 @@ public final class CommandToSQL {
 					DependentObject dobj = AdvancedSearchUiUtil.getDependentObjectByName(targetObject, parameter.getObjectName());
 					if (!dobj.getClassName().equals(targetObject.getClassName())) {
 						if (!objectsToJoin.contains(dobj.getClassName())) {
-							String joinMethodName = dobj.getJoinByMethod();
+							String joinMethodName = "";
+							if (dobj.getJoinByMethod().equals(INTERVENTION_JOIN_INXML) && tableAliasForInterventions != null && dobj.getClassName().equals(INTERVENTION_CLASS_NAME)) {
+								joinMethodName = interventionJoinMethodMap().get(tableAliasForInterventions);
+							} else {
+								joinMethodName = dobj.getJoinByMethod();
+							}
 							invokeMethod(query,joinMethodName,new Class[0],new Object[0]);
 							objectsToJoin.add(dobj.getClassName());
 						}
@@ -91,7 +103,14 @@ public final class CommandToSQL {
 					if (dobj.isOuterJoinRequired()) {
 						invokeMethod(query,OUTER_JOIN_PREFIX+dobj.getJoinByMethod(),new Class[0],new Object[0]);
 					} else {
-						invokeMethod(query,dobj.getJoinByMethod(),new Class[0],new Object[0]);
+						String joinMethodName = "";
+						if (dobj.getJoinByMethod().equals(INTERVENTION_JOIN_INXML) && tableAliasForInterventions != null && dobj.getClassName().equals(INTERVENTION_CLASS_NAME)) {
+							joinMethodName = interventionJoinMethodMap().get(tableAliasForInterventions);
+						} else {
+							joinMethodName = dobj.getJoinByMethod();
+						}
+						
+						invokeMethod(query,joinMethodName,new Class[0],new Object[0]);
 					}
 				}
 				// sometimes view attributes needs some default filtering also , like study identifiers ..
@@ -112,6 +131,11 @@ public final class CommandToSQL {
 		for(AdvancedSearchCriteriaParameter parameter: criteriaParameters){
 			if (parameter.getAttributeName() != null) {
 				String filterMethodName = parameter.getFilterByMethodInQueryClass();
+					if (parameter.getAttributeName().equals(STUDY_THERAPY_CODE_FIELD_NAME)) {
+						filterMethodName = interventionFilterMethodMap().get(tableAliasForInterventions);
+					}
+
+				
 
 				Class[] par=new Class[2];
 				Object[] obj = new Object[2];
@@ -157,5 +181,32 @@ public final class CommandToSQL {
 		mthd.invoke(query,obj);
 	}
 	
+	private static Map<String,String> interventionJoinMethodMap() {
+		Map<String,String> map = new HashMap<String,String>() ;
+		map.put("OTHER_INT_ALIAS", "joinOtherIntervention");
+		map.put("DEVICE_INT_ALIAS", "joinDeviceIntervention");
+		map.put("AGENT_INT_ALIAS", "joinAgentIntervention");
+		return map; 
+	}
+
+	private static Map<String,String> interventionFilterMethodMap() {
+		Map<String,String> map = new HashMap<String,String>() ;
+		map.put("OTHER_INT_ALIAS", "filterByOtherIntervention");
+		map.put("DEVICE_INT_ALIAS", "filterByDeviceIntervention");
+		map.put("AGENT_INT_ALIAS", "filterByAgentIntervention");
+		return map; 
+	}
+	
+	public static List<String> getAliasList() {
+		List<String> aliasList = new ArrayList<String>();
+		aliasList.add("OTHER_INT_ALIAS");
+		aliasList.add("DEVICE_INT_ALIAS");
+		aliasList.add("AGENT_INT_ALIAS");
+		return aliasList;
+	}
+	private static String INTERVENTION_JOIN_INXML = "joinStudyIntervention";
+	public static String STUDY_THERAPY_CODE_FIELD_NAME = "studyTherapyType.code";
+	public static String STUDY_THERAPY_VIEW_FIELD_NAME = "interventionName";
+	private static String INTERVENTION_CLASS_NAME = "gov.nih.nci.cabig.caaers.domain.StudyIntervention";
 
 }

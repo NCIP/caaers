@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.search;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AdvancedSearchRow{
 	List<AdvancedSearchColumn> columnList;
 	/**
@@ -18,5 +19,19 @@ public class AdvancedSearchRow{
 	 */
 	public void setColumnList(List<AdvancedSearchColumn> columnList) {
 		this.columnList = columnList;
+	}
+	@Override
+	public boolean equals(Object target){
+		AdvancedSearchRow targetRow = (AdvancedSearchRow)target;
+		for (int i= 0 ; i<columnList.size() ; i++) {
+			AdvancedSearchColumn sourceCol = columnList.get(i);
+			AdvancedSearchColumn targetCol = targetRow.getColumnList().get(i);
+			if (sourceCol.getValue() != null  && targetCol.getValue() != null) {
+				if (!sourceCol.getValue().equals(targetCol.getValue())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

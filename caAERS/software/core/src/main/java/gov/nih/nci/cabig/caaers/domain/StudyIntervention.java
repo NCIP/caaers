@@ -85,4 +85,7 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
         int result = getStudy() != null ? getStudy().hashCode() : 0;
         return result;
     }
+    
+    @Transient
+    public abstract String getInterventionName();
 }

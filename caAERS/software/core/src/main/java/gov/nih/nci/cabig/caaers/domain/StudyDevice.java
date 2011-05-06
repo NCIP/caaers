@@ -370,4 +370,10 @@ public class StudyDevice extends StudyIntervention {
         result = 31 * result + (getDeviceType() != null ? getDeviceType().hashCode() : 0);
         return result;
     }
+    
+    @Transient
+    @Override
+    public  String getInterventionName() {
+    	return getDisplayName();
+    }
 }

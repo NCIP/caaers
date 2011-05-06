@@ -89,4 +89,10 @@ public class OtherIntervention extends StudyIntervention {
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return super.hashCode();
     }
+    
+    @Transient
+    @Override
+    public  String getInterventionName() {
+    	return getName();
+    }
 }

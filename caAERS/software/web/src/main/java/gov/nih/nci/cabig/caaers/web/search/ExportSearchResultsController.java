@@ -195,13 +195,30 @@ public class ExportSearchResultsController extends AbstractCommandController {
 					parameters.add(p);
 		}
 		
-		AbstractQuery query = CommandToSQL.transform(command.getSearchTargetObject(), parameters);
-		command.setHql(query.getQueryString());
+		List<AbstractQuery> multipleQueries = new ArrayList<AbstractQuery>();
+		if (command.getAliasList().size()>0) {
+			for (String str:command.getAliasList()) {
+				AbstractQuery query = CommandToSQL.transform(command.getSearchTargetObject(), parameters,str);
+				
+				multipleQueries.add(query);
+			}
+		} else {
+			AbstractQuery query = CommandToSQL.transform(command.getSearchTargetObject(), parameters,null);
+			
+			multipleQueries.add(query);
+		}
+		command.setHql(multipleQueries);
+
 		
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
 		if(CommandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
-			multipleObjectList = (List<Object[]>) advancedSearchDao.search(query);
+			
+			for (AbstractQuery qry:multipleQueries){
+				List<Object[]> result = (List<Object[]>) advancedSearchDao.search(qry);
+				multipleObjectList.addAll(result);
+			}
+			
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -212,7 +229,10 @@ public class ExportSearchResultsController extends AbstractCommandController {
 				}
 		}
 		else{
-			singleObjectList = (List<Object>) advancedSearchDao.search(query);
+			for (AbstractQuery qry:multipleQueries){
+				List<Object[]> result = (List<Object[]>) advancedSearchDao.search(qry);
+				singleObjectList.addAll(result);
+			}
 			//command.setNumberOfResults(singleObjectList.size());
 			command.setAdvancedSearchRowList(processSingleObjectList(singleObjectList, command.getSearchTargetObject().getDependentObject().get(0)));
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())

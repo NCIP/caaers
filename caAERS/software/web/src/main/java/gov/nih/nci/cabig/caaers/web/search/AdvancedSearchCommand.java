@@ -1,13 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 public class AdvancedSearchCommand{
@@ -18,10 +20,11 @@ public class AdvancedSearchCommand{
 	private SearchTargetObject searchTargetObject;
 	private String searchName;
 	private String searchDescription;
-	private String hql;
+	private List<AbstractQuery> hql;
 	private List<ViewColumn> resultsViewColumnList;
 	private Integer numberOfResults;
 	private List<AdvancedSearchRow> advancedSearchRowList;
+	private List<String> aliasList = new ArrayList<String>();
     
     public AdvancedSearchCommand(){
 		
@@ -88,14 +91,14 @@ public class AdvancedSearchCommand{
 	/**
 	 * @return the hql
 	 */
-	public String getHql() {
+	public List<AbstractQuery> getHql() {
 		return hql;
 	}
 
 	/**
 	 * @param hql the hql to set
 	 */
-	public void setHql(String hql) {
+	public void setHql(List<AbstractQuery> hql) {
 		this.hql = hql;
 	}
 
@@ -142,6 +145,14 @@ public class AdvancedSearchCommand{
 	public void setAdvancedSearchRowList(
 			List<AdvancedSearchRow> advancedSearchRowList) {
 		this.advancedSearchRowList = advancedSearchRowList;
+	}
+
+	public List<String> getAliasList() {
+		return aliasList;
+	}
+
+	public void setAliasList(List<String> aliasList) {
+		this.aliasList = aliasList;
 	}
 	
 }

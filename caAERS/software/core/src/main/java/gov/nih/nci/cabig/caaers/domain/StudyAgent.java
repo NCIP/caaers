@@ -302,5 +302,11 @@ public class StudyAgent extends StudyIntervention {
         } else if (!otherAgent.equals(other.otherAgent)) return false;
         return true;
     }
+    
+    @Transient
+    @Override
+    public  String getInterventionName() {
+    	return getAgentName();
+    }
 
 }

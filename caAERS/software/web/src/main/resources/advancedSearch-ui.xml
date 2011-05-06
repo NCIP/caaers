@@ -281,63 +281,44 @@
 			</view-column>
 
 		</dependent-object>
-        <!--
+        
+
+  
         <dependent-object>
-			<class-name>gov.nih.nci.cabig.caaers.domain.StudyTherapy</class-name>
-			<display-name>Study therapy</display-name>
-			<table-alias>STUDY_THERAPY_ALIAS</table-alias>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyIntervention</class-name>
+			<display-name>Study Intervention</display-name>
+			<table-alias>STUDY_INT_ALIAS</table-alias> <!-- we dont use this alias , this is just dummy look at CommandToSQL.getAliasList() -->
 			<hidden>true</hidden>
-			<join-by-method>joinStudyTherapy</join-by-method>
+			<join-by-method>joinStudyIntervention</join-by-method>
 			<ui-attribute>
 				<name>studyTherapyType.code</name>
-				<label>Therapy types</label>
+				<label>Intervention types</label>
 				<data-type>Integer</data-type>
 				<field-type>drop-down</field-type>
-				<valid-value value="1" display-uri="Drug Administration"/>
-				<valid-value valAdvancedSearchViewTabue="2" display-uri="Radiation"/>
-				<valid-value value="3" display-uri="Surgery"/>
+				<valid-value value="1" display-uri="Agent"/>
 				<valid-value value="4" display-uri="Device"/>
+				<valid-value value="2" display-uri="Radiation"/>
+				<valid-value value="3" display-uri="Surgery"/> 
 				<valid-value value="5" display-uri="Behavioral"/>
+				<valid-value value="6" display-uri="Biological Vaccine"/>
+				<valid-value value="7" display-uri="Genetic"/>
+				<valid-value value="8" display-uri="Dietary Supplement"/>
+				<valid-value value="9" display-uri="Other"/>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
-				<filter-method>filterByStudyTherapy</filter-method>
+				<filter-method>filterByStudyIntervention</filter-method>
 			</ui-attribute>
 
 			<view-column>
-				<column-attribute>studyTherapyType</column-attribute>
-				<column-title>Therapy type</column-title>
+				<column-attribute>interventionName</column-attribute>
+				<column-title>Intervention</column-title>
 				<dependent-object-index>5</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
-		</dependent-object>
-        -->
-        
-		<dependent-object>
-			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
-			<display-name>StudyParticipantAssignment</display-name>
-			<table-alias>STUDY_PARTICIPANT_ALIAS</table-alias>
-			<hidden>true</hidden>
-			<join-by-method>joinStudyParticipantAssignment</join-by-method>
-			<outer-join-required>true</outer-join-required>
-			<ui-attribute>
-				<name>studySubjectIdentifier</name>
-				<label>Study subject identifier</label>
-				<data-type>String</data-type>
-				<field-type>text-field</field-type>
-				<operator name="=" display-uri="Equal To"/>				
-				<operator name="!=" display-uri="Not Equal To"/>
-				<operator name="like" display-uri="Like"/>
-				<filter-method>filterByStudySubjectIdentifier</filter-method>
-			</ui-attribute>
-			
-			<view-column>
-				<column-attribute>studySubjectIdentifier</column-attribute>
-				<column-title>Study subject identifier</column-title>
-				<dependent-object-index>5</dependent-object-index>
-				<view-column-index>0</view-column-index>
-			</view-column>
+		</dependent-object>  
+ 
 
-		</dependent-object>
+<!--  	
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Agent</class-name>
 			<display-name>Agent</display-name>
@@ -364,6 +345,34 @@
 			</view-column>
 
 		</dependent-object>
+-->				    
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
+			<display-name>StudyParticipantAssignment</display-name>
+			<table-alias>STUDY_PARTICIPANT_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinStudyParticipantAssignment</join-by-method>
+			<outer-join-required>true</outer-join-required>
+			<ui-attribute>
+				<name>studySubjectIdentifier</name>
+				<label>Study subject identifier</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="=" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByStudySubjectIdentifier</filter-method>
+			</ui-attribute>
+			
+			<view-column>
+				<column-attribute>studySubjectIdentifier</column-attribute>
+				<column-title>Study subject identifier</column-title>
+				<dependent-object-index>6</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+
+		</dependent-object>
+
 	</search-target-object>
 	
 	<!-- ParticipantQuery.java -->

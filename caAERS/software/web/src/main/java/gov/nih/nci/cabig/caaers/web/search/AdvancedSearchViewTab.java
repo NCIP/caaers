@@ -55,6 +55,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 			//return; //ignore if this is an ajax request
 		String action = (String) findInRequest(request, "_action");
 		List<ViewColumn> resultsViewColumnList = new ArrayList<ViewColumn>();
+		boolean isInterventionInView = false;
 		// Setup up the isInView attribute of the dependentObject if any of the attribute is selected.
 		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
 			dObject.setInView(false);
@@ -64,6 +65,9 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 				}
 				if(viewColumn.isSelected()) {
 					dObject.setInView(true);
+					if (viewColumn.getColumnAttribute().equals(CommandToSQL.STUDY_THERAPY_VIEW_FIELD_NAME)) {
+						isInterventionInView = true;
+					}
 				}
 			}
 		}
@@ -73,21 +77,47 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 					parameters.add(p);
 		}
 		//String query = "";
-		AbstractQuery queryObj = null;		
+		
+		List<AbstractQuery> multipleQueries = new ArrayList<AbstractQuery>();
 		try{
-			queryObj = CommandToSQL.transform(command.getSearchTargetObject(), parameters);
+			AbstractQuery queryObj = null;
+			List<String> aliasList = new ArrayList<String>();
+			
+			// hack for interventions to fire 3 quries and merge the results ...
+			for(AdvancedSearchCriteriaParameter parameter: parameters){
+				if ( (parameter.getAttributeName() != null && parameter.getAttributeName().equals(CommandToSQL.STUDY_THERAPY_CODE_FIELD_NAME)) || isInterventionInView) {
+					aliasList = CommandToSQL.getAliasList();
+				}
+			}
+			
+			if (aliasList.size()>0) {
+				command.setAliasList(aliasList);
+				for (String str:aliasList) {
+					queryObj = CommandToSQL.transform(command.getSearchTargetObject(), parameters , str);
+					System.out.println(queryObj.getQueryString());
+					multipleQueries.add(queryObj);
+				}
+			} else {
+				queryObj = CommandToSQL.transform(command.getSearchTargetObject(), parameters , null);
+				System.out.println(queryObj.getQueryString());
+				multipleQueries.add(queryObj);
+			}
 			
 			//query = commandToSQL.transform(command.getSearchTargetObject(), parameters, true);
 		}catch(Exception e){
 			e.printStackTrace();
 			errors.reject("EXP", "There was an exception while generating the HQL :" + e.getMessage());
 		}
-		System.out.println(queryObj.getQueryString());
+		
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
 		
 		if(CommandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){
-			multipleObjectList = (List<Object[]>) advancedSearchDao.search(queryObj);
+			for (AbstractQuery qry:multipleQueries){
+				List<Object[]> result = (List<Object[]>) advancedSearchDao.search(qry);
+				multipleObjectList.addAll(result);
+			}
+			
 			processMultipleObjectsList(multipleObjectList, command);
 			//command.setNumberOfResults(singleObjectList.size());
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -98,7 +128,12 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 				}
 		}
 		else{
-			singleObjectList = (List<Object>) advancedSearchDao.search(queryObj);
+			
+			for (AbstractQuery qry:multipleQueries){
+				List<Object[]> result = (List<Object[]>) advancedSearchDao.search(qry);
+				singleObjectList.addAll(result);
+			}
+			
 			//command.setNumberOfResults(singleObjectList.size());
 			command.setAdvancedSearchRowList(processSingleObjectList(singleObjectList, command.getSearchTargetObject().getDependentObject().get(0)));
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -108,7 +143,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 							resultsViewColumnList.add(vColumn);
 				}
 		}
-		command.setHql(queryObj.getQueryString());
+		command.setHql(multipleQueries);
 		command.setResultsViewColumnList(resultsViewColumnList);
 		command.setNumberOfResults(command.getAdvancedSearchRowList().size());
 		
@@ -132,7 +167,10 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 				if(dObject.isInView()){
 					Object obj = objectArr[i++];
 					BeanWrapper wrapper = null;
-					if (obj != null) {
+					boolean isString = false;
+					if (obj != null && obj instanceof String) {
+						isString = true;
+					} else if (obj != null) {
 						wrapper = new BeanWrapperImpl(obj);
 					}
 					for(ViewColumn viewColumn: dObject.getViewColumn()){
@@ -158,6 +196,18 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 										column.setLengthyValue(" ");
 									}
 								}
+							} else if (isString){
+								if(obj != null){
+									String lengthyValue = obj.toString();
+									column.setLengthyValue(obj);
+									if(lengthyValue.length() < 20)
+										column.setValue(lengthyValue);
+									else
+										column.setValue(lengthyValue.substring(0, 19) + " ...");
+								} else {
+									column.setValue(" ");
+									column.setLengthyValue(" ");									
+								}
 							} else {
 								column.setValue(" ");
 							}
@@ -166,11 +216,13 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 					}
 				}
 			}
-			rowList.add(row);
+			if (!rowList.contains(row)) {
+				rowList.add(row);
+			}
 		}
 		command.setAdvancedSearchRowList(rowList);
 	}
-	
+
 	public List<AdvancedSearchRow> processSingleObjectList(List<Object> objectList, DependentObject dObject){
 		List<AdvancedSearchRow> rowList = new ArrayList<AdvancedSearchRow>();
 		for(Object object: objectList){
