@@ -39,9 +39,17 @@ public class StudyQuery extends AbstractQuery {
     
     public static final String ORGANIZATION_ALIAS = "org";
     
-    public static final String STUDY_THERAPY_ALIAS = "d,i";
+    
+    
+    public static final String OTHER_INT_ALIAS = "i";
+    
+    public static final String DEVICE_INT_ALIAS = "d";
+    
+   	public static final String AGENT_INT_ALIAS = "sai";
     
     public static final String AGENT_ALIAS = "agt";
+    
+    
 
     private SimpleDateFormat dateFormat;
 
@@ -101,10 +109,28 @@ public class StudyQuery extends AbstractQuery {
         join("s.treatmentAssignmentsInternal as ta");
     }
     
-    public void joinStudyTherapy() {
+    public void joinOtherIntervention() {
+
+        leftOuterJoin("s.otherInterventions as i");
+
+    }
+    
+    public void joinDeviceIntervention() {
+        leftOuterJoin("s.studyDevices as d");
+
+    }
+    
+    public void joinAgentIntervention() {
+
+        leftOuterJoin("s.studyAgentsInternal as sai");
+    }
+    
+    public void joinStudyIntervention() {
         leftOuterJoin("s.studyDevices as d");
         leftOuterJoin("s.otherInterventions as i");
+        leftOuterJoin("s.studyAgentsInternal as sai");
     }
+    
 
     public void joinParticipantIdentifier() {
         joinParticipant();
@@ -159,10 +185,26 @@ public class StudyQuery extends AbstractQuery {
         
     }
  
-    public void filterByStudyTherapy(Integer code, String operator) {
+    public void filterByOtherIntervention(Integer code, String operator) {
+    	orWhere("i.studyTherapyType " + operator + " '" + code + "'" );
+
+    }
+    
+    public void filterByDeviceIntervention(Integer code, String operator) {
+  
+    	orWhere("d.studyTherapyType " + operator + " '" + code + "'" );
+    	
+    }
+    
+    public void filterByAgentIntervention(Integer code, String operator) {
+
+    	orWhere("sai.studyTherapyType " + operator + " '" + code + "'" );
+    }
+    
+    public void filterByStudyIntervention(Integer code, String operator) {
     	orWhere("i.studyTherapyType " + operator + " '" + code + "'" );
     	orWhere("d.studyTherapyType " + operator + " '" + code + "'" );
-    	orWhere("sagents.studyTherapyType " + operator + " '" + code + "'" );
+    	orWhere("sai.studyTherapyType " + operator + " '" + code + "'" );
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
