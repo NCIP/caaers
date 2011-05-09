@@ -899,6 +899,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
         			row.setGrpDue("");
         			row.setOtherDue("");
+
+                    //preselect the other one
+                    if(wrapper.getSubstitute() != null){
+                        ReportTableRow anotherRow = rowMap.get(wrapper.getSubstitute().getId());
+                        if(anotherRow != null) anotherRow.setPreSelected(true);
+                    }
+                    
     			}
     		}
     		
