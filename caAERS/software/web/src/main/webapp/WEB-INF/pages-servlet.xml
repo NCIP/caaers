@@ -571,7 +571,9 @@
     <bean name="/admin/deviceEdit" id="deviceEditController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.DeviceEditController" />
 
     <!-- DASHBOARD CONTROLLERS -->
-    <bean name="/dashboard/aeReporter" id="aeReporterDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.AEReporterDashboardController" autowire="byType" />
+    <bean name="/dashboard/aeReporter" id="aeReporterDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.AEReporterDashboardController" autowire="byType" >
+   			<property name="reportVersionRepository" ref="reportVersionRepository"/>
+    </bean>
     <bean name="/dashboard/study" id="studyDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.StudyDashboardController" autowire="byType" />
     <bean name="/dashboard/routingAndReview" id="rountinAndReviewDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.RoutingAndReviewDashboardController" autowire="byType" />
     <bean name="/dashboard/subject" id="subjectDashboard" class="gov.nih.nci.cabig.caaers.web.dashboard.SubjectDashboardController" autowire="byType" />
