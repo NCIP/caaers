@@ -317,6 +317,13 @@ public class AdverseEventTest extends AbstractTestCase {
     	assertNotNull(ae.getPostSubmissionUpdatedDate());
     	assertSame(d, ae.getPostSubmissionUpdatedDate());
     }
+
+
+    public void testIsAttributtedWith(){
+        AdverseEvent newAE = new AdverseEvent();
+        assertFalse(newAE.isAttributedWith(Attribution.DEFINITE));
+        assertTrue(adverseEvent.isAttributedWith(Attribution.DEFINITE));
+    }
     
 //
 //    public void testCopyAdverseEventTerm() {

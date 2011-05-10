@@ -4,11 +4,12 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.sql.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Rhett Sutphin
@@ -223,7 +224,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureConMedCount(1);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(5);
+        AttributionTab.AttributionBlock block = getBlocks().get(10);
         assertEquals(1, block.getRows().size());
         assertEquals("Concomitant medication", block.getDisplayName());
     }
@@ -232,13 +233,37 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureConMedCount(2);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(5);
+        AttributionTab.AttributionBlock block = getBlocks().get(10);
         assertEquals(2, block.getRows().size());
         assertEquals("Concomitant medications", block.getDisplayName());
     }
 
     public void testGetExpeditedReportSections(){
         assertSame(tab.getExpeditedReportSections()[0], tab.section()[0]);
+    }
+
+
+    public void testIsAssociatedToBusinessRules(){
+
+        assertFalse(tab.isAssociatedToBusinessRules(command));
+
+        HashMap<Integer, Collection<ExpeditedReportSection>> map = new HashMap<Integer , Collection<ExpeditedReportSection>>();
+        ArrayList<ExpeditedReportSection> list = new ArrayList<ExpeditedReportSection>();
+        list.add(ExpeditedReportSection.ATTRIBUTION_SECTION);
+        map.put(1, list);
+
+        command.setMandatorySectionMap(map);
+
+        ArrayList<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
+        ReportDefinition rd = new ReportDefinition();
+        rd.setAttributionRequired(true);
+        rdList.add(rd);
+
+        command.setSelectedReportDefinitions(rdList);
+
+        assertTrue(tab.isAssociatedToBusinessRules(command));
+
+
     }
 
     @SuppressWarnings( { "unchecked" })

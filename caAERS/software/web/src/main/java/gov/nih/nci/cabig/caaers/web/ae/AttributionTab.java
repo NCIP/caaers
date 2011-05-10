@@ -148,4 +148,12 @@ public class AttributionTab extends AeTab {
     	
     	return hasEmptyFields;
     }
+
+    @Override
+    public boolean isAssociatedToBusinessRules(ExpeditedAdverseEventInputCommand command) {
+        boolean associated = command.isSectionMandatory(ExpeditedReportSection.ATTRIBUTION_SECTION);
+        for(ReportDefinition rd : command.getSelectedReportDefinitions()) associated &= rd.getAttributionRequired();
+        return associated;
+    }
+    
 }

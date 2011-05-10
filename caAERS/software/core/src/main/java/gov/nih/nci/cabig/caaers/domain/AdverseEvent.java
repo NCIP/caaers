@@ -875,35 +875,23 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     @Transient
     public boolean isAttributedWith(Attribution... attributions) {
-        return containsAttribution(courseAgentAttributions, attributions)
-                || containsAttribution(concomitantMedicationAttributions, attributions)
-                || containsAttribution(otherCauseAttributions, attributions)
-                || containsAttribution(diseaseAttributions, attributions)
-                || containsAttribution(surgeryAttributions, attributions)
-                || containsAttribution(radiationAttributions, attributions)
-                || containsAttribution(deviceAttributions, attributions)
-                || containsAttribution(otherInterventionAttributions, attributions)
-                || containsAttribution(biologicalInterventionAttributions, attributions)
-                || containsAttribution(behavioralInterventionAttributions, attributions)
-                || containsAttribution(geneticInterventionAttributions, attributions)
-                || containsAttribution(dietarySupplementInterventionAttributions, attributions);
+        return containsAttribution(getAdverseEventAttributions(), attributions);
     }
 
     /**
      * Contains attribution.
      *
      * @param attributionList the attribution list
-     * @param attributions the attributions
+     * @param attributionsToFind the attributions
      * @return true, if successful
      */
-    public  boolean containsAttribution(
-            List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList,
-            Attribution... attributions) {
+    private  boolean containsAttribution(List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList,
+            Attribution... attributionsToFind) {
         if (attributionList == null || attributionList.isEmpty()) return false;
         for (AdverseEventAttribution<? extends DomainObject> aea : attributionList) {
         	if(aea.getAttribution() == null) return false;
-            for (Attribution att : attributions) {
-                if (aea.getAttribution().equals(att)) return true;
+            for (Attribution att : attributionsToFind) {
+                if (aea.isAttributedWith(att)) return true;
             }
         }
         return false;

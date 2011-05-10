@@ -264,7 +264,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         command.setRulesErrors(new HashMap<String, Boolean>());
         super.validate(command, commandBean, fieldGroups, errors);
         
-        if (!errors.hasErrors() && isAssociatedToBusinessRules()) {
+        if (!errors.hasErrors() && isAssociatedToBusinessRules(command)) {
             ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
 
             for (ValidationError vError : validationErrors.getErrors()) {
@@ -313,7 +313,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField), labelProperty);
     }
 
-    public boolean isAssociatedToBusinessRules(){
+    public boolean isAssociatedToBusinessRules(ExpeditedAdverseEventInputCommand command){
     	for(ExpeditedReportSection section : section()){
     		if(section.isAssociatedToBusinessRules()) return true;
     	}

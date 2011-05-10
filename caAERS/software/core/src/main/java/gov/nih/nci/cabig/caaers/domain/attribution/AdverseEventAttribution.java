@@ -127,4 +127,16 @@ public abstract class AdverseEventAttribution<T extends DomainObject> extends Ab
 
     }
 
+
+    /**
+     * Will return true if it is attributed with the specific attribution. 
+     * @param a - Attribution
+     * @return - true or false
+     */
+    @Transient
+    public boolean isAttributedWith(Attribution a){
+        if(a == null || getAttribution() == null) return false;
+        return getAttribution().equals(a);
+    }
+
 }

@@ -42,7 +42,7 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     List<ReportDefinition> getSelectedReportDefinitions();
     
     //all the applicable report definitions (used by context switching)
-    void setApplicableReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
+    void setApplicableReportDefinitions(List<ReportDefinition> applicableReportDefinitions);
     List<ReportDefinition> getApplicableReportDefinitions();
     
     //the report definitions, that are to be created
