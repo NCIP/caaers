@@ -47,6 +47,7 @@ public class ViewReportTab extends AeTab {
         for (ExpeditedReportSection section : ExpeditedReportSection.values()) {
 
             if (!section.isAssociatedToBusinessRules()) continue;
+            if(section.equals(ExpeditedReportSection.ATTRIBUTION_SECTION) && !command.shouldValidateAttributions())  continue;
 
             ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules( command.getAeReport(), section);
             for (ValidationError vError : validationErrors.getErrors()) {

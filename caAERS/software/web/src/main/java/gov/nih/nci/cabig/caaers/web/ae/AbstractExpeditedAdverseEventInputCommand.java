@@ -460,7 +460,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	if(mandatorySections == null || mandatorySections.isEmpty()) return false;
     	return mandatorySections.contains(section);
     }
-    
+
+
+    public boolean shouldValidateAttributions(){
+        boolean result = isSectionMandatory(ExpeditedReportSection.ATTRIBUTION_SECTION);
+        for(ReportDefinition rd : getSelectedReportDefinitions()) result &= rd.getAttributionRequired();
+        return result;
+    }
+
     public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
         if (studyDiseasesMap == null) {
             if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {

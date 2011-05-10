@@ -60,6 +60,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     Map<Integer, Collection<ExpeditedReportSection>> getMandatorySectionMap();
     void setMandatorySectionMap(Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap);
     boolean isSectionMandatory(ExpeditedReportSection section);
+
+    boolean shouldValidateAttributions();
     
     /**
      * Pre-initalize the mandatory lazy added fields in mandatory sections. (This is a biz-rule)
