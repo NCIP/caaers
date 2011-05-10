@@ -98,11 +98,10 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	public void testRemoveRule() throws Exception{
 		CreateRuleCommand command = setupCreateRuleCommand();
-		facade.getCaaersRulesEngineService().deleteRule("test RuleSet", "Rule 2");
 		replayMocks();
 		facade.removeRule(1);
 		verifyMocks();
-		assertEquals("Error in deleting rule", 1, command.getRuleSet().getRule().size());
+		assertTrue(command.getRuleSet().getRule().get(1).isMarkedDelete());
 	}
 	
 	public void testAddRule() throws Exception{
