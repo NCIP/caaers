@@ -71,8 +71,13 @@ public class ListAdverseEventsCommand {
         dataEntryStatus.clear();
         for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
             for (Report report : aeReport.getReports()) {
-                ReportSubmittability errorMessages = reportValidationService.isSubmittable(report);
-                reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
+                if(report.getStatus().equals(ReportStatus.AMENDED) || report.getStatus().equals(ReportStatus.COMPLETED)){
+                    reportsSubmittable.put(report.getId(), true);
+                }else{
+                    ReportSubmittability errorMessages = reportValidationService.isSubmittable(report);
+                    reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
+                }
+
             }
         }
         dataEntryStatus.putAll(reportsSubmittable);

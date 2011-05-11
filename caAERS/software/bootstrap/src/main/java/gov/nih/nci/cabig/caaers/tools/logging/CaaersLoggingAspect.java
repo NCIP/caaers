@@ -38,26 +38,36 @@ public class CaaersLoggingAspect {
 			"|| execution(public * gov.nih.nci.cabig.caaers.tools.Excel*.*(..))")
 	
 	public Object log(ProceedingJoinPoint call) throws Throwable  {
-		String userName = "[" + getUserLoginName() + "] - ";
 
-		long startTime = System.currentTimeMillis();
-		
         Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
 
-		if(logger.isDebugEnabled() || logger.isTraceEnabled()) log(logger, true, call, null, 0);
-		
+        //just proceed to call if Info is not enabled.
+        if(logger == null || !logger.isInfoEnabled()) return call.proceed();
+
+
+        boolean debugEnabled = logger.isDebugEnabled();
+
+        String userName = "" ;
+
+
+        if(debugEnabled){
+          userName =  "[" + getUserLoginName() + "] - ";
+          log(logger, true, call, null, 0, userName);
+        }
+
+        long startTime = System.currentTimeMillis();
+
+        //proceed with the call
         Object point =  call.proceed();
         
         long endTime = System.currentTimeMillis();
         long executionTime = (endTime - startTime);
-        if(logger.isInfoEnabled()){
-            if(executionTime > 500){
-            	logger.info(userName + "More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
-            }
+        if(executionTime > 500){
+            logger.info(userName + "More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
         }
-        
-        if(logger.isDebugEnabled() || logger.isTraceEnabled()){
-        	log(logger, false, call, point, executionTime);
+
+        if(debugEnabled){
+        	log(logger, false, call, point, executionTime, userName);
         }
         
         return point;
@@ -65,23 +75,23 @@ public class CaaersLoggingAspect {
 	
 
 
-	public void log(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
-              try{
-                StringBuilder sb = new StringBuilder("[").append(getUserLoginName()).append("] - ");
+	private void log(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time, String userName){
+           try{
+                StringBuilder sb = new StringBuilder("[").append(userName).append("] - ");
                 if(entry) {
+                    Object[] args = call.getArgs();
                     sb.append(entryMsgPrefix)
-                      .append(" [").append(call.toShortString()).append(" ] with params { ").append(String.valueOf(call.getArgs()[0])).append("}");
+                      .append(" [").append(call.toShortString()).append(" ] with params { ")
+                      .append(String.valueOf(args != null && args.length > 0 ? args[0] : ""))
+                      .append("}");
                 }else {
                     sb.append(exitMsgPrefix)
                    .append(" [").append(call.toShortString()).append(" ] with return as: {").append( String.valueOf(retVal) ).append("} - executionTime : ")
                    .append( time );
 
                 }
-                if(logger.isDebugEnabled()){
-                    logger.debug(sb.toString());
-                } else {
-                    logger.trace(sb.toString());
-                }
+
+                logger.debug(sb.toString());
 
            }catch(Exception e) {
 
