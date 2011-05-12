@@ -77,7 +77,7 @@ public abstract class BasicsTab extends AeTab {
                 attributionField,
                 timeOfEventField,
                 InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", "aeReport.adverseEvents.eventLocation"),
-                InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", "aeReport.adverseEvents.hospitalization", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
+                InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", "aeReport.adverseEvents.hospitalization", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.YES, Hospitalization.NO), "name", "displayName", "Please select")),
                 expectedField,
                 riskField);
     }
