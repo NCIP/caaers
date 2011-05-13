@@ -20,7 +20,7 @@ import javax.persistence.OrderBy;
  * @author Rhett Sutphin
  */
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CtcCategory extends AbstractImmutableDomainObject {
 
     /** The name. */
@@ -59,7 +59,7 @@ public class CtcCategory extends AbstractImmutableDomainObject {
      */
     @ManyToOne
     @JoinColumn(name = "version_id")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     public Ctc getCtc() {
         return ctc;
     }

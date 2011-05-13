@@ -22,7 +22,7 @@ import org.hibernate.annotations.*;
  * @author Rhett Sutphin
  */
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE )
 public class CtcTerm extends AbstractImmutableDomainObject {
 
     /** The term. */
@@ -176,7 +176,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
      * @return the category
      */
     @ManyToOne
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     public CtcCategory getCategory() {
         return category;
     }
@@ -216,7 +216,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     @OneToMany(mappedBy = "term")
     @Cascade(value={CascadeType.ALL})
     @OrderBy("grade")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<CtcGrade> getContextualGrades() {
         return contextualGrades;
