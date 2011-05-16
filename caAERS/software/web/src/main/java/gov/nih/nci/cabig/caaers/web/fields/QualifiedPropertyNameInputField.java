@@ -119,7 +119,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
             if (getValidators() == null || getValidators().length == 0) {
                 validatorClassName.append("validate-MAXLENGTH2000");
             } else {
-                validatorClassName.append("&&MAXLENGTH2000");
+                validatorClassName.append("$$MAXLENGTH2000");
             }
 
 

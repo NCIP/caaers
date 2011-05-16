@@ -95,7 +95,7 @@ public class InputFieldTest extends AbstractTestCase {
             }
         };
 
-        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH2000", field.getValidatorClassName());
     }
 
     public void testGetValidatorClassNameForRequiredTextAreaField() throws Exception {
@@ -105,7 +105,7 @@ public class InputFieldTest extends AbstractTestCase {
             }
         };
 
-        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH2000", field.getValidatorClassName());
     }
 
     public void testGetValidatorClassNameForNonRequiredTextField() throws Exception {
@@ -145,7 +145,7 @@ public class InputFieldTest extends AbstractTestCase {
             }
         };
 
-        assertEquals("commons-validations.js uses this class name for validation", "validate-DATE&&NOTEMPTY", field.getValidatorClassName());
+        assertEquals("commons-validations.js uses this class name for validation", "validate-DATE$$NOTEMPTY", field.getValidatorClassName());
     }
 
     private static class TestBean {

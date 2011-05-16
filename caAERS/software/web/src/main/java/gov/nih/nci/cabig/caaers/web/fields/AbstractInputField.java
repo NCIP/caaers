@@ -170,7 +170,7 @@ public abstract class AbstractInputField implements InputField {
 
                 } else {
 
-                    validatorClassNameBuffer.append(String.format("&&%s", validator.getValidatorCSSClassName()));
+                    validatorClassNameBuffer.append(String.format("$$%s", validator.getValidatorCSSClassName()));
 
                 }
             }
@@ -179,7 +179,7 @@ public abstract class AbstractInputField implements InputField {
             if (getValidators() == null || getValidators().length == 0) {
                 validatorClassNameBuffer.append("validate-MAXLENGTH2000");
             } else {
-                validatorClassNameBuffer.append("&&MAXLENGTH2000");
+                validatorClassNameBuffer.append("$$MAXLENGTH2000");
             }
 
 

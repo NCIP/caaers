@@ -14,11 +14,11 @@
 
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.name" text="" path="agent.name"/></div>
-            <div class="value"><ui:text path="agent.name" size="60" cssClass="${empty command.agent.name ? 'required' : 'valueOK'} validate-NOTEMPTY&&MAXLENGTH2000" title="Agent name"/></div>
+            <div class="value"><ui:text path="agent.name" size="60" cssClass="${empty command.agent.name ? 'required' : 'valueOK'} validate-NOTEMPTY$$MAXLENGTH2000" title="Agent name"/></div>
         </div>
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.nscNumber" text="" path="agent.nscNumber" /></div>
-            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}"  cssClass="required validate-NOTEMPTY&&MAXLENGTH2000" title="Agent identifier"/></div>
+            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}"  cssClass="required validate-NOTEMPTY$$MAXLENGTH2000" title="Agent identifier"/></div>
         </div>
 
 

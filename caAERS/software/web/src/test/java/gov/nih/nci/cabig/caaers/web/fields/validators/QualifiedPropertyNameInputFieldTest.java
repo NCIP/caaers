@@ -31,7 +31,7 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
             }
         };
 
-        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH2000", field.getValidatorClassName());
     }
 
     public void testGetValidatorClassNameForRequiredTextAreaField() throws Exception {
@@ -42,7 +42,7 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
             }
         };
 
-        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH2000", field.getValidatorClassName());
     }
 
     public void testGetValidatorClassNameForNonRequiredTextField() throws Exception {
@@ -78,7 +78,7 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
     public void testGetValidatorClassNameIfMultipleValidatorIsUsed() throws Exception {
         createField(InputFieldFactory.createEmailField("propertyName", "displayName", true));
 
-        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&EMAIL", field.getValidatorClassName());
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$EMAIL", field.getValidatorClassName());
     }
 
     public void testReadable(){
