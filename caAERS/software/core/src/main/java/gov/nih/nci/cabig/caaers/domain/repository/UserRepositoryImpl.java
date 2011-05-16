@@ -93,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
 			save(user);
 			sendCreateAccountEmail(user,changeURL);
 		}else{
-			updateCSMUser(user);
+			updateCSMUser(user,true);
             if(user.getId() == null){
                 save(user);
             }
@@ -229,8 +229,11 @@ public class UserRepositoryImpl implements UserRepository {
      * @param user the user
      */
     @Transactional(readOnly = false)
-    protected void updateCSMUser(User user){
+    protected void updateCSMUser(User user,boolean updatingDetails){
         try {
+        	if (updatingDetails) {
+        		user.getCsmUser().setPassword(decryptString(user.getCsmUser().getPassword()));
+        	}
             userProvisioningManager.modifyUser(user.getCsmUser());
         } catch (CSTransactionException e) {
             throw new CaaersSystemException("Couldn't update CSM user: ", e);
@@ -272,7 +275,7 @@ public class UserRepositoryImpl implements UserRepository {
         user.setPasswordLastSet(new Timestamp(new Date().getTime()));
         user.addPasswordToHistory(DigestUtils.shaHex(password), maxHistorySize);
         user.getCsmUser().setPassword((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + password);
-        updateCSMUser(user);
+        updateCSMUser(user,false);
         save(user);
     }
     
@@ -297,6 +300,21 @@ public class UserRepositoryImpl implements UserRepository {
     		throw new CaaersSystemException("Could not encrypt string",enX);
     	}
     }
+	
+	/**
+	 * Decrypt string.
+	 *
+	 * @param string the string
+	 * @return the string
+	 */
+	public String decryptString(String encryptedString){
+    	try{
+    		return new StringEncrypter().decrypt(encryptedString);
+    	}catch (StringEncrypter.EncryptionException enX) {
+    		throw new CaaersSystemException("Could not decrypt string",enX);
+    	}
+    }
+	
     
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#sendUserEmail(java.lang.String, java.lang.String, java.lang.String)
