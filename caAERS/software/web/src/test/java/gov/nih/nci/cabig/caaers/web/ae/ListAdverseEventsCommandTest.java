@@ -48,8 +48,10 @@ public class ListAdverseEventsCommandTest extends WebTestCase {
     private void setupCommand(){
     	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
     	Report report1 = Fixtures.createReport("report 1");
+        report1.setStatus(ReportStatus.INPROCESS);
     	report1.setId(1);
     	Report report2 = Fixtures.createReport("report 2");
+        report2.setStatus(ReportStatus.INPROCESS);
     	report2.setId(2);
     	aeReport.addReport(report1);
     	aeReport.addReport(report2);
