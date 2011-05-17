@@ -9,24 +9,7 @@ import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
 import gov.nih.nci.cabig.caaers.security.OriginalAuthenticationHolder;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.acegisecurity.AccessDeniedException;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -37,11 +20,16 @@ import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.GenericValidator;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 public final class FabricatedAuthenticationFilter implements Filter {
 
@@ -97,6 +85,15 @@ public final class FabricatedAuthenticationFilter implements Filter {
 				doProcessing(httpRequest, httpResponse, chain);
 				request.setAttribute(FILTER_APPLIED, true);
 			}
+
+            Authentication fabricatedAuth = SecurityContextHolder.getContext().getAuthentication();
+            if(fabricatedAuth != null){
+                GrantedAuthority[] fabAuthorities = fabricatedAuth.getAuthorities();
+                if(fabAuthorities == null || fabAuthorities.length < 1){
+                    throw new AccessDeniedException("=Your account permissions do not provide you access to this page.");
+                }
+            }
+
 			prepareRolesCollections(httpRequest);
 			chain.doFilter(httpRequest, httpResponse);
 		} finally {
