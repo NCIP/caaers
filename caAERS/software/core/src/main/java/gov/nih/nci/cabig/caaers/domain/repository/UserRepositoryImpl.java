@@ -18,6 +18,7 @@ import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
+import gov.nih.nci.security.util.StringEncrypter.EncryptionException;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -230,10 +231,20 @@ public class UserRepositoryImpl implements UserRepository {
      */
     @Transactional(readOnly = false)
     protected void updateCSMUser(User user,boolean updatingDetails){
+        
+    	if (updatingDetails) {
+    		String ds = null;
+    		try {
+    			ds = decryptString(user.getCsmUser().getPassword());
+    		} catch (CaaersSystemException cse) {
+    			logger.error(" no need to decrypt , as string is not encrypted");
+    		}
+    		if (ds != null) {
+    			user.getCsmUser().setPassword(ds);
+    		}
+    	}
+    	
         try {
-        	if (updatingDetails) {
-        		user.getCsmUser().setPassword(decryptString(user.getCsmUser().getPassword()));
-        	}
             userProvisioningManager.modifyUser(user.getCsmUser());
         } catch (CSTransactionException e) {
             throw new CaaersSystemException("Couldn't update CSM user: ", e);
