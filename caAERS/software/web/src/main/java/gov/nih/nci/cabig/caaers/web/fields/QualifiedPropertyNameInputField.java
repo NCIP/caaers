@@ -110,7 +110,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
 
                 } else {
 
-                    validatorClassName.append(String.format("&&%s", validator.getValidatorCSSClassName()));
+                    validatorClassName.append(String.format("$$%s", validator.getValidatorCSSClassName()));
 
                 }
             }
