@@ -49,7 +49,6 @@
 		<property name="target"><ref local="reportStatusResetJobTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
 				<value>auditInfoPopulatorInterceptor</value>
 			</list> 
 		</property> 
@@ -62,5 +61,9 @@
 	    <property name="volatility" value="true" />
 	    <property name="misfireInstruction" value="0" />
 	</bean>
+
+
+
+
 
 </beans>
