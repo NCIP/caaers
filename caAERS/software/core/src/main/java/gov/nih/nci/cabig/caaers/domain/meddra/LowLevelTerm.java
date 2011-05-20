@@ -56,5 +56,14 @@ public class LowLevelTerm extends AbstractMeddraDomainObject {
     		return getMeddraTerm();
     }
     
+    @Transient
+    public String getTerm() {
+    	if(getMeddraTerm() == null) 
+    		return getMeddraCode();
+    	else 
+    		// return getMeddraCode() + " - " + getMeddraTerm();
+    		return getMeddraTerm();
+    }
+    
     
 }

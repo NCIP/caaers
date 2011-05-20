@@ -177,23 +177,53 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 						if(viewColumn.isSelected()){
 							column = new AdvancedSearchColumn();
 							column.setColumnHeader(viewColumn.getColumnTitle());
+							boolean nestedPath = false ;
+							Object objValue = null;
+							String objectName = null;
 							if (wrapper != null) {
 								if(!viewColumn.isLengthy()){
-									if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
-										column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
-									else
-										column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+									
+									// check if we view column is nested path .. 
+									if (viewColumn.getColumnAttribute().indexOf(".") != -1) {
+										nestedPath = true;
+										objectName = viewColumn.getColumnAttribute().substring(0, viewColumn.getColumnAttribute().indexOf("."));
+										objValue = wrapper.getPropertyValue(objectName);
+										
+									}
+									// check if object is null , then only look for attribute in the object .. ex term.term 
+									if (nestedPath && objValue==null) {
+										column.setValue(wrapper.getPropertyValue(objectName));
+									} else {
+										if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null) {
+											column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
+										} else {
+											column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+										}
+									}
+									
 								}else{
-									if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
-										String lengthyValue = wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString();
-										column.setLengthyValue(lengthyValue);
-										if(lengthyValue.length() < 20)
-											column.setValue(lengthyValue);
-										else
-											column.setValue(lengthyValue.substring(0, 19) + " ...");
-									}else{
+									// check if we view column is nested path .. 
+									if (viewColumn.getColumnAttribute().indexOf(".") != -1) {
+										nestedPath = true;
+										objectName = viewColumn.getColumnAttribute().substring(0, viewColumn.getColumnAttribute().indexOf("."));
+										objValue = wrapper.getPropertyValue(objectName);
+										
+									}
+									if (nestedPath && objValue==null) {
 										column.setValue(" ");
 										column.setLengthyValue(" ");
+									} else {
+										if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
+											String lengthyValue = wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString();
+											column.setLengthyValue(lengthyValue);
+											if(lengthyValue.length() < 20)
+												column.setValue(lengthyValue);
+											else
+												column.setValue(lengthyValue.substring(0, 19) + " ...");
+										}else{
+											column.setValue(" ");
+											column.setLengthyValue(" ");
+										}
 									}
 								}
 							} else if (isString){
@@ -234,23 +264,50 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 				if(viewColumn.isSelected()){
 					column = new AdvancedSearchColumn();
 					column.setColumnHeader(viewColumn.getColumnTitle());
+					boolean nestedPath = false ;
+					Object objValue = null;
+					String objectName = null;
 					if(!viewColumn.isLengthy()){
-						if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
-							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
-						else
+						// check if we view column is nested path .. 
+						if (viewColumn.getColumnAttribute().indexOf(".") != -1) {
+							nestedPath = true;
+							objectName = viewColumn.getColumnAttribute().substring(0, viewColumn.getColumnAttribute().indexOf("."));
+							objValue = wrapper.getPropertyValue(objectName);
+							
+						}
+						if (nestedPath && objValue==null) {
 							column.setValue("");
+						} else {
+							if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null) {
+								column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
+							} else {
+								column.setValue("");
+							}
+						}
 							
 					}else{
-						if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
-							String lengthyValue = wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString();
-							column.setLengthyValue(lengthyValue);
-							if(lengthyValue.length() < 20)
-								column.setValue(lengthyValue);
-							else
-								column.setValue(lengthyValue.substring(0, 19) + " ...");
-						}else{
+						// check if we view column is nested path .. 
+						if (viewColumn.getColumnAttribute().indexOf(".") != -1) {
+							nestedPath = true;
+							objectName = viewColumn.getColumnAttribute().substring(0, viewColumn.getColumnAttribute().indexOf("."));
+							objValue = wrapper.getPropertyValue(objectName);
+							
+						}
+						if (nestedPath && objValue==null) {
 							column.setValue("");
 							column.setLengthyValue("");
+						} else {
+							if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
+								String lengthyValue = wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString();
+								column.setLengthyValue(lengthyValue);
+								if(lengthyValue.length() < 20)
+									column.setValue(lengthyValue);
+								else
+									column.setValue(lengthyValue.substring(0, 19) + " ...");
+							}else{
+								column.setValue("");
+								column.setLengthyValue("");
+							}
 						}
 					}
 					row.getColumnList().add(column);
