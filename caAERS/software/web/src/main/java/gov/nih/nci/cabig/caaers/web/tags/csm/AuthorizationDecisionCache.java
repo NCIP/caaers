@@ -35,7 +35,7 @@ public class AuthorizationDecisionCache implements Serializable{
 	 */
 	public void addDecision(String scopeDiscriminator, Object domainObject,
 			String privilege, Boolean allowed) {
-		addDecisionInternal((scopeDiscriminator+getEnityContextCacheKeyDiscriminator()),
+		addDecisionInternal((scopeDiscriminator+getEnityContextCacheKeyDiscriminator(domainObject)),
 				domainObject, privilege, allowed);
 	}
 
@@ -70,7 +70,7 @@ public class AuthorizationDecisionCache implements Serializable{
 	public Boolean isAuthorized(String scopeDiscriminator, Object domainObject,
 			String privilege) {
 		return isAuthorizedInternal(scopeDiscriminator
-				+ getEnityContextCacheKeyDiscriminator(), domainObject,
+				+ getEnityContextCacheKeyDiscriminator(domainObject), domainObject,
 				privilege);
 	}
 
@@ -121,8 +121,8 @@ public class AuthorizationDecisionCache implements Serializable{
      * http://jira.semanticbits.com/browse/CAAERS-4098
      * @return
      */
-    public Object getEnityContextCacheKeyDiscriminator(){
-       String key = CurrentEntityHolder.getEntityCacheKeyDiscriminator();
+    public Object getEnityContextCacheKeyDiscriminator(Object o){
+       String key = CurrentEntityHolder.getEntityCacheKeyDiscriminator(o);
        return StringUtils.isBlank(key) ? defaultKey : key;
     }
 	

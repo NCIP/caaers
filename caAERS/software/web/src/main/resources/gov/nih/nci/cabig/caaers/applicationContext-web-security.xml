@@ -24,6 +24,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:studyId" />
 		<entry key="/pages/study/export" value="gov.nih.nci.cabig.caaers.domain.Study:id" />
 		<entry key="/pages/admin/editOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:organizationId"/>
+        <entry key="/pages/ae/edit" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:aeReport" />
+        <entry key="/pages/participant/edit"  value="gov.nih.nci.cabig.caaers.domain.Participant:participantId" />
 	</util:map>
 	
 	<util:map id="filterByURLAndRoleListMap">		

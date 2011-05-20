@@ -24,7 +24,7 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
     }
 
     public void testGetCacheKeyDiscriminator() throws Exception {
-        assertEquals("0", cache.getEnityContextCacheKeyDiscriminator());
+        assertEquals("0", cache.getEnityContextCacheKeyDiscriminator(null));
     }
 
 

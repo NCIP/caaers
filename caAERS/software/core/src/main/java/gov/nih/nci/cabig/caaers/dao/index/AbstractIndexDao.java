@@ -58,6 +58,33 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
     }
 
     /**
+     * Lists out at what capacity a login have access to a particular entity.
+     *
+     * @param loginId   - The persons username
+     * @param id   - The database id of the entity
+     * @return   - a list of distinct rolenames
+     */
+    public List<String> findAssociatedRoleNames(String loginId, Integer id){
+        StringBuffer sb = new StringBuffer("select distinct role_code from ")
+                .append(indexTableName())
+                .append(" where login_id = '").append(loginId)
+                .append("' and ")
+                .append(entityIdColumnName())
+                .append(" = ")
+                .append(String.valueOf(id));
+        final List<String> roleNames = new ArrayList<String>();
+        getJdbcTemplate().query(sb.toString(), new RowMapper(){
+            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                int roleCode = rs.getInt(1);
+                roleNames.add(UserGroupType.getByCode(roleCode).getCsmName());
+                return null;
+            }
+        });
+        
+        return roleNames;
+    }
+
+    /**
      * Will return all the available index entries for a login-id
      * @param loginId
      * @return IndexEntry objects

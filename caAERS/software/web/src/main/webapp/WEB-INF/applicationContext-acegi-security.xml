@@ -25,6 +25,12 @@
     	p:researchStaffRepository-ref="researchStaffRepository" p:securityFacade-ref="caaersSecurityFacade"
     	p:investigatorRepository-ref="investigatorRepository" p:studyRepository-ref="studyRepository"
     	p:organizationRepository-ref="organizationRepository"
+        p:expeditedAdverseEventReportIndexDao-ref="expeditedAdverseEventReportIndexDao"
+        p:studyIndexDao-ref="studyIndexDao"
+        p:organizationIndexDao-ref="organizationIndexDao"
+        p:researchStaffIndexDao-ref="researchStaffIndexDao"
+        p:participantIndexDao-ref="participantIndexDao"
+        p:investigatorIndexDao-ref="investigatorIndexDao"
     	/>
         
     

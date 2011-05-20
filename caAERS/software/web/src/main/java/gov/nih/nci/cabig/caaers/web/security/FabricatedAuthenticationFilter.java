@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.dao.index.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -20,6 +21,7 @@ import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,6 +39,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private static final String INVESTIGATOR = "gov.nih.nci.cabig.caaers.domain.Investigator";
 	public static final String RESEARCH_STAFF = "gov.nih.nci.cabig.caaers.ResearchStaff";
 	public static final String ORGANIZATION = "gov.nih.nci.cabig.caaers.domain.Organization";
+    public static final String EXPEDITED_REPORT = "gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport";
+    public static final String SUBJECT = "gov.nih.nci.cabig.caaers.domain.Participant";
 	
 	private static final Log log = LogFactory
 			.getLog(FabricatedAuthenticationFilter.class);
@@ -54,6 +58,21 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	private OrganizationRepository organizationRepository;
 
 	private StudyRepository studyRepository;
+
+    private OrganizationIndexDao organizationIndexDao;
+
+    private StudyIndexDao studyIndexDao;
+
+    private ExpeditedAdverseEventReportIndexDao expeditedAdverseEventReportIndexDao;
+
+    private ResearchStaffIndexDao researchStaffIndexDao;
+
+    private InvestigatorIndexDao investigatorIndexDao;
+
+    private ParticipantIndexDao participantIndexDao;
+
+
+
 
 	private Map<String, String> filterByURLAndEntityMap = new HashMap<String, String>();
 
@@ -90,7 +109,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
             if(fabricatedAuth != null){
                 GrantedAuthority[] fabAuthorities = fabricatedAuth.getAuthorities();
                 if(fabAuthorities == null || fabAuthorities.length < 1){
-                    throw new AccessDeniedException("=Your account permissions do not provide you access to this page.");
+                    throw new AccessDeniedException("Your account permissions do not provide you access to this page.");
                 }
             }
 
@@ -160,27 +179,84 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	 * @throws ServletException
 	 * @throws ClassNotFoundException
 	 */
-	private void doProcessing(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain)
+	private void doProcessing(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		Authentication authentication = SecurityUtils.getAuthentication();
 		if (authentication != null) {
 			GrantedAuthority[] authorities = authentication.getAuthorities();
-			GrantedAuthority[] adjustedAuthorities = filterAuthorities(
-					authorities, request);
-			// do not set fabricated authentication if authorities are the same.
-			if (!CollectionUtils.disjunction(Arrays.asList(authorities),
-					Arrays.asList(adjustedAuthorities)).isEmpty()) {
-				OriginalAuthenticationHolder.setAuthentication(authentication);
-				FabricatedAuthentication fabricatedAuthentication = new FabricatedAuthentication(
-						authentication, adjustedAuthorities);
-				SecurityContextHolder.setContext(new SecurityContextImpl());
-				SecurityContextHolder.getContext().setAuthentication(
-						fabricatedAuthentication);
-			}
+			GrantedAuthority[] adjustedAuthorities = findAdjustedAuthorities(authorities, request);
+            FabricatedAuthentication fabricatedAuthentication = new FabricatedAuthentication(authentication,
+                    adjustedAuthorities);
+            SecurityContextHolder.setContext(new SecurityContextImpl());
+		    SecurityContextHolder.getContext().setAuthentication(fabricatedAuthentication);
+
 		}
 	}
+
+    private GrantedAuthority[] findAdjustedAuthorities(GrantedAuthority[] authorities, HttpServletRequest request){
+        ArrayList<GrantedAuthority> adjustedAuthorities = new ArrayList<GrantedAuthority>();
+
+        if(authorities != null && authorities.length > 0){
+
+            Collection<String> applicableRoleNames = new ArrayList<String>();
+
+            //default all roles in the authorities are applicable
+            for(GrantedAuthority authority : authorities) applicableRoleNames.add(authority.getAuthority());
+
+            URLToRoleListMapEntry urlRolesEntry = getURLToRolesEntryFromRequest(request);
+            if(urlRolesEntry != null){
+
+                //only retain those roles suggested for the url.
+                applicableRoleNames = CollectionUtils.intersection(applicableRoleNames, urlRolesEntry.getRoleNames());
+
+                URLToEntityIdMapEntry entityRolesEntry = getURLToEntityIdEntryFromRequest(request);
+                if(entityRolesEntry != null){
+                  //only retain those roles suggested for the entity.
+                  applicableRoleNames = CollectionUtils.intersection(applicableRoleNames, getSuggestedRolesForEntity(entityRolesEntry));
+
+                }
+            }
+
+            for(String roleName : applicableRoleNames) adjustedAuthorities.add(new GrantedAuthorityImpl(roleName));
+        }
+
+
+        return adjustedAuthorities.toArray(new GrantedAuthority[0]);
+    }
+
+
+    private List<String> getSuggestedRolesForEntity(URLToEntityIdMapEntry entityRolesEntry){
+
+        List<String> suggestedRoleNames = new ArrayList<String>();
+
+        String username = SecurityUtils.getUserLoginName();
+
+        if(entityRolesEntry.getClassName().equals(RESEARCH_STAFF)){
+            suggestedRoleNames = researchStaffIndexDao.findAssociatedRoleNames(username,
+                entityRolesEntry.getObjectId());
+        }else if(entityRolesEntry.getClassName().equals(INVESTIGATOR)){
+            suggestedRoleNames = investigatorIndexDao.findAssociatedRoleNames(username,
+                entityRolesEntry.getObjectId());
+        }else if(entityRolesEntry.getClassName().equals(STUDY)){
+            suggestedRoleNames = studyIndexDao.findAssociatedRoleNames(username,
+                entityRolesEntry.getObjectId());
+        }else if(entityRolesEntry.getClassName().equals(ORGANIZATION)){
+            suggestedRoleNames = organizationIndexDao.findAssociatedRoleNames(username,
+                entityRolesEntry.getObjectId());
+        }else if(entityRolesEntry.getClassName().equals(EXPEDITED_REPORT)){
+            suggestedRoleNames = expeditedAdverseEventReportIndexDao.findAssociatedRoleNames(username,
+                entityRolesEntry.getObjectId());
+        }else if(entityRolesEntry.getClassName().equals(SUBJECT)){
+            suggestedRoleNames = participantIndexDao.findAssociatedRoleNames(username,
+                entityRolesEntry.getObjectId());
+        }
+
+        return suggestedRoleNames;
+    }
+
+
+
 
 	/**
 	 * @param authorities
@@ -422,7 +498,55 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		this.organizationRepository = organizationRepository;
 	}
 
-	/**
+    public ExpeditedAdverseEventReportIndexDao getExpeditedAdverseEventReportIndexDao() {
+        return expeditedAdverseEventReportIndexDao;
+    }
+
+    public void setExpeditedAdverseEventReportIndexDao(ExpeditedAdverseEventReportIndexDao expeditedAdverseEventReportIndexDao) {
+        this.expeditedAdverseEventReportIndexDao = expeditedAdverseEventReportIndexDao;
+    }
+
+    public InvestigatorIndexDao getInvestigatorIndexDao() {
+        return investigatorIndexDao;
+    }
+
+    public void setInvestigatorIndexDao(InvestigatorIndexDao investigatorIndexDao) {
+        this.investigatorIndexDao = investigatorIndexDao;
+    }
+
+    public OrganizationIndexDao getOrganizationIndexDao() {
+        return organizationIndexDao;
+    }
+
+    public void setOrganizationIndexDao(OrganizationIndexDao organizationIndexDao) {
+        this.organizationIndexDao = organizationIndexDao;
+    }
+
+    public ParticipantIndexDao getParticipantIndexDao() {
+        return participantIndexDao;
+    }
+
+    public void setParticipantIndexDao(ParticipantIndexDao participantIndexDao) {
+        this.participantIndexDao = participantIndexDao;
+    }
+
+    public ResearchStaffIndexDao getResearchStaffIndexDao() {
+        return researchStaffIndexDao;
+    }
+
+    public void setResearchStaffIndexDao(ResearchStaffIndexDao researchStaffIndexDao) {
+        this.researchStaffIndexDao = researchStaffIndexDao;
+    }
+
+    public StudyIndexDao getStudyIndexDao() {
+        return studyIndexDao;
+    }
+
+    public void setStudyIndexDao(StudyIndexDao studyIndexDao) {
+        this.studyIndexDao = studyIndexDao;
+    }
+
+    /**
 	 * @author dkrylov
 	 * 
 	 */

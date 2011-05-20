@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
  * created. See http://jira.semanticbits.com/browse/CAAERS-4098.
  * 
  * @author dkrylov
- * @see http://jira.semanticbits.com/browse/CAAERS-4098
+ * @see https://jira.semanticbits.com/browse/CAAERS-4098
  */
 public final class CurrentEntityHolder {
 
@@ -22,7 +22,7 @@ public final class CurrentEntityHolder {
 	 * Sets {@link DomainObject}. It will be bound to the current
 	 * {@link Thread}.
 	 * 
-	 * @param authentication
+	 * @param domainObject
 	 */
 	public static void setEntity(DomainObject domainObject) {
 		holder.set(domainObject);
@@ -44,12 +44,18 @@ public final class CurrentEntityHolder {
 	 * @return
 	 */
 	public static String getEntityCacheKeyDiscriminator() {
-		String key = "";
-		DomainObject doObject = getEntity();
-		if (doObject!=null) {
-			key = doObject.getClass().getName()+NAME_ID_SEP+doObject.getId();
+		return getEntityCacheKeyDiscriminator(getEntity());
+	}
+
+    public static String getEntityCacheKeyDiscriminator(Object object){
+        String key = "";
+		if (object!=null) {
+			key = object.getClass().getName();
+            if(object instanceof DomainObject) {
+                key = key + NAME_ID_SEP + ((DomainObject)object).getId();
+            }
 		}
 		return key;
-	}
+    }
 
 }
