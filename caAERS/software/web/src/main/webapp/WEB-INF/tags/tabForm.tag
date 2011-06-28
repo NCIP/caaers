@@ -1,6 +1,7 @@
 <!-- BEGIN tags\tabForm.tag -->
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="tab" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Tab" %>
@@ -30,7 +31,7 @@
 </c:if>
 
 <c:if test="${not hideBox}">
-    <form:form name="${formName}" enctype="${enctype}" id="${empty formId ? 'command' : formId}">
+    <caaers:form name="${formName}" enctype="${enctype}" id="${empty formId ? 'command' : formId}">
     	<jsp:invoke fragment="header" />
     	<chrome:warningMessage/>
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">
@@ -59,11 +60,11 @@
         <c:forEach var="aTab" items="${flow.tabs}" varStatus="loopSt">
            <input type="hidden" name="_tabTitle${loopSt.index}" value="${aTab.shortTitle}"/>
         </c:forEach>
-    </form:form>
+    </caaers:form>
 </c:if>
 <c:if test="${hideBox}">
 	<chrome:warningMessage/>
-    <form:form name="${formName}" enctype="${enctype}"  id="${empty formId ? 'command' : formId}">
+    <caaers:form name="${formName}" enctype="${enctype}"  id="${empty formId ? 'command' : formId}">
     	<jsp:invoke fragment="header" />
     	<chrome:flashMessage/>
         <tags:tabFields tab="${tab}"/>
@@ -89,5 +90,5 @@
         <c:forEach var="aTab" items="${flow.tabs}" varStatus="loopSt">
            <input type="hidden" name="_tabTitle${loopSt.index}" value="${aTab.shortTitle}"/>
         </c:forEach>
-    </form:form>
+    </caaers:form>
 </c:if><!-- END tags\tabForm.tag -->
