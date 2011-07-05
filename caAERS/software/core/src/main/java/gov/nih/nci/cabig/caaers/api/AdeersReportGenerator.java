@@ -185,7 +185,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("C:\\Users\\IO\\Desktop\\expeditedAdverseEventReport-344.xml");
+            FileReader input = new FileReader("/Users/bijujoseph/workspace/caAERS/med1.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -194,7 +194,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
                 line = bufRead.readLine();
             }
 
-            aeg.generateMedwatchPdf(str1, "C:\\Users\\IO\\Desktop\\MedWatch-99.pdf");
+            aeg.generateMedwatchPdf(str1, "/Users/bijujoseph/workspace/caAERS/med1.pdf");
             // aeg.generateMedwatchPdf(str1, "C:\\medwatch-2.pdf");
         } catch (Exception e) {
             e.printStackTrace();

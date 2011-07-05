@@ -1,0 +1,1509 @@
+<AdverseEventReport>
+    <id>272</id>
+    <createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2011-06-28
+        15:13:47.993
+    </createdAt>
+    <AdverseEventReportingPeriod/>
+    <AdverseEventResponseDescription>
+        <eventDescription>One day the patient was sitting on the bench, he felt dizzy and fell down on the ground. A nurse nearby poured water on him, but unfortunately the water the nurse carrying was hot water. This caused outer body burning and internal bleeding. The patent was then sprayed with Burnol (liquid type). But to my wonder the patient was allergic to Yellow color and this basically caused him mad and he hit the Physician on his face. The physician is now in ICU for observation. </eventDescription>
+        <presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+            INTERVENTION_CONTINUES
+        </presentStatus>
+        <retreated>false</retreated>
+        <blindBroken>false</blindBroken>
+        <studyDrugInterrupted>false</studyDrugInterrupted>
+        <primaryTreatmentApproximateTime>
+            <hour>10</hour>
+            <minute>10</minute>
+            <type>0</type>
+        </primaryTreatmentApproximateTime>
+    </AdverseEventResponseDescription>
+    <Physician>
+        <firstName>Site</firstName>
+        <lastName>Physician</lastName>
+        <address/>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">phone</key>
+            <value xsi:type="java:java.lang.String">555-555-5555</value>
+        </ContactMechanism>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">fax</key>
+            <value xsi:type="java:java.lang.String">555-555-5555</value>
+        </ContactMechanism>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">e-mail</key>
+            <value xsi:type="java:java.lang.String">site.physician@gmail.com</value>
+        </ContactMechanism>
+    </Physician>
+    <Reporter>
+        <firstName>Biju</firstName>
+        <lastName>Joseph</lastName>
+        <address/>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">phone</key>
+            <value xsi:type="java:java.lang.String">8888888888</value>
+        </ContactMechanism>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">fax</key>
+            <value xsi:type="java:java.lang.String">8888888888</value>
+        </ContactMechanism>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">e-mail</key>
+            <value xsi:type="java:java.lang.String">biju.joseph.padupurackal@gmail.com</value>
+        </ContactMechanism>
+    </Reporter>
+    <DiseaseHistory>
+        <diagnosisDate/>
+        <CtepStudyDisease>
+            <id>56</id>
+            <leadDisease>true</leadDisease>
+            <DiseaseTerm>
+                <id>201</id>
+                <term>Ovarian epithelial cancer</term>
+                <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                <DiseaseCategory>
+                    <id>104</id>
+                    <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                </DiseaseCategory>
+            </DiseaseTerm>
+        </CtepStudyDisease>
+        <AnatomicSite>
+            <id>39</id>
+            <name>Ovary</name>
+            <category>Genitourinary</category>
+        </AnatomicSite>
+        <MetastaticDiseaseSite>
+            <id>150</id>
+            <AnatomicSite>
+                <id>21</id>
+                <name>Stomach</name>
+                <category>Gastrointestinal</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+        <MetastaticDiseaseSite>
+            <id>151</id>
+            <AnatomicSite>
+                <id>5</id>
+                <name>CSF</name>
+                <category>Central Nervous System</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+            <id>151</id>
+            <AnatomicSite>
+                <id>5</id>
+                <name>Nose bridge</name>
+                <category>Central Nervous System</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+        <MetastaticDiseaseSite>
+            <id>151</id>
+            <AnatomicSite>
+                <id>5</id>
+                <name>Upper left hand nails</name>
+                <category>Central Nervous System</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+            <id>151</id>
+            <AnatomicSite>
+                <id>5</id>
+                <name>Lower corner of leg</name>
+                <category>Central Nervous System</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+            <id>151</id>
+            <AnatomicSite>
+                <id>5</id>
+                <name>Neck</name>
+                <category>Central Nervous System</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+            <id>151</id>
+            <AnatomicSite>
+                <id>5</id>
+                <name>Middle fingers</name>
+                <category>Middle finger</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+    </DiseaseHistory>
+    <ParticipantHistory>
+        <height>
+            <quantity>100.0</quantity>
+            <unit>Centimeter</unit>
+        </height>
+        <weight>
+            <quantity>100.0</quantity>
+            <unit>Kilogram</unit>
+        </weight>
+        <baselinePerformanceStatus>0 = Normal Activity, asymptomatic</baselinePerformanceStatus>
+        <bsa>1.4334</bsa>
+    </ParticipantHistory>
+    <StudyParticipantAssignment>
+        <dateOfEnrollment>2008-10-02T00:00:00.000-04:00</dateOfEnrollment>
+        <StudySite>
+            <StudyInvestigator>
+                <id>169</id>
+                <roleCode>SI</roleCode>
+                <statusCode>true</statusCode>
+                <SiteInvestigator>
+                    <id>19</id>
+                    <Investigator>
+                        <id>30019</id>
+                        <firstName>Manuel</firstName>
+                        <lastName>Hidalgo</lastName>
+                        <nciIdentifier>26783</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(000)000-0000</phoneNumber>
+                        <faxNumber>(000)000-0000</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+            </StudyInvestigator>
+            <StudyInvestigator>
+                <id>199</id>
+                <roleCode>SI</roleCode>
+                <statusCode>true</statusCode>
+                <SiteInvestigator>
+                    <id>155</id>
+                    <Investigator>
+                        <id>100007</id>
+                        <firstName>Site</firstName>
+                        <lastName>Physician</lastName>
+                        <emailAddress>site.physician@gmail.com</emailAddress>
+                        <phoneNumber>555-555-5555</phoneNumber>
+                        <faxNumber>555-555-5555</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+            </StudyInvestigator>
+            <StudyInvestigator>
+                <id>217</id>
+                <roleCode>SI</roleCode>
+                <statusCode>false</statusCode>
+                <SiteInvestigator>
+                    <id>19</id>
+                    <Investigator>
+                        <id>30019</id>
+                        <firstName>Manuel</firstName>
+                        <lastName>Hidalgo</lastName>
+                        <nciIdentifier>26783</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(000)000-0000</phoneNumber>
+                        <faxNumber>(000)000-0000</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+            </StudyInvestigator>
+            <statusCode>false</statusCode>
+            <Study>
+                <id>22</id>
+                <multiInstitutionIndicator>true</multiInstitutionIndicator>
+                <shortTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary
+                    Peritoneal Carcinomas
+                </shortTitle>
+                <longTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary
+                    Peritoneal Carcinomas
+                </longTitle>
+                <description>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary
+                    Peritoneal Carcinomas
+                </description>
+                <phaseCode>Phase II Trial</phaseCode>
+                <status>Active - Trial is open to accrual</status>
+                <Ctc>
+                    <id>4</id>
+                    <name>CTCAE v4.0</name>
+                </Ctc>
+                <Identifier>
+                    <type>Protocol Authority Identifier</type>
+                    <value>5876</value>
+                    <primaryIndicator>true</primaryIndicator>
+                </Identifier>
+                <Identifier>
+                    <type>Coordinating Center Identifier</type>
+                    <value>5876</value>
+                    <primaryIndicator>false</primaryIndicator>
+                </Identifier>
+                <StudyAgent>
+                    <Agent>
+                        <id>443</id>
+                        <name>Alvocidib (flavopiridol)</name>
+                        <nscNumber>649890</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        NA_COMMERCIAL
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <id>240</id>
+                        <name>CISplatin</name>
+                        <nscNumber>119875</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        NA_COMMERCIAL
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <id>443</id>
+                        <name>Alvocidib (flavopiridol)</name>
+                        <nscNumber>649890</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <id>203</id>
+                        <name>Bevacizumab (rhuMAb VEGF)</name>
+                        <nscNumber>704865</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <otherAgent>Test Agent</otherAgent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <CtepStudyDisease>
+                    <id>56</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <CtepStudyDisease>
+                    <id>57</id>
+                    <leadDisease>false</leadDisease>
+                    <DiseaseTerm>
+                        <id>204</id>
+                        <term>Primary peritoneal carcinoma</term>
+                        <ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <CtepStudyDisease>
+                    <id>297</id>
+                    <leadDisease>false</leadDisease>
+                    <DiseaseTerm>
+                        <id>190</id>
+                        <term>Solid tumor, NOS</term>
+                        <ctepTerm>Solid tumor, NOS</ctepTerm>
+                        <DiseaseCategory>
+                            <id>95</id>
+                            <name>Solid Tumor, Miscellaneous</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <CtepStudyDisease>
+                    <id>298</id>
+                    <leadDisease>false</leadDisease>
+                    <DiseaseTerm>
+                        <id>98</id>
+                        <term>Hematopoietic malignancy, NOS</term>
+                        <ctepTerm>Hematopoietic malignancy, NOS</ctepTerm>
+                        <DiseaseCategory>
+                            <id>59</id>
+                            <name>Hematopoietic Neoplasm, Miscellaneous</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+            </Study>
+            <Organization>
+                <id>104094</id>
+                <name>Johns Hopkins University</name>
+                <nciInstituteCode>MD017</nciInstituteCode>
+                <SiteInvestigator>
+                    <id>48</id>
+                    <Investigator>
+                        <id>30048</id>
+                        <firstName>Judith</firstName>
+                        <lastName>Karp</lastName>
+                        <nciIdentifier>8140</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(000)000-0000</phoneNumber>
+                        <faxNumber>(000)000-0000</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>60</id>
+                    <Investigator>
+                        <id>30057</id>
+                        <firstName>Steven</firstName>
+                        <lastName>Gore</lastName>
+                        <nciIdentifier>15984</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(410) 614-1005</phoneNumber>
+                        <faxNumber>(410)955-8781</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>68</id>
+                    <Investigator>
+                        <id>30065</id>
+                        <firstName>Roberto</firstName>
+                        <lastName>Pili</lastName>
+                        <nciIdentifier>31509</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(000)000-0000</phoneNumber>
+                        <faxNumber>(000)000-0000</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>75</id>
+                    <Investigator>
+                        <id>30071</id>
+                        <firstName>Ross</firstName>
+                        <lastName>Donehower</lastName>
+                        <nciIdentifier>9973</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(000)000-0000</phoneNumber>
+                        <faxNumber>(000)000-0000</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>19</id>
+                    <Investigator>
+                        <id>30019</id>
+                        <firstName>Manuel</firstName>
+                        <lastName>Hidalgo</lastName>
+                        <nciIdentifier>26783</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>(000)000-0000</phoneNumber>
+                        <faxNumber>(000)000-0000</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>152</id>
+                    <Investigator>
+                        <id>30144</id>
+                        <firstName>Stuart</firstName>
+                        <lastName>Grossman</lastName>
+                        <nciIdentifier>12345</nciIdentifier>
+                        <emailAddress>default@abc.com</emailAddress>
+                        <phoneNumber>410-955-8837</phoneNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>171</id>
+                    <Investigator>
+                        <id>100042</id>
+                        <firstName>Ion</firstName>
+                        <lastName>Olaru</lastName>
+                        <emailAddress>ion.olaru@semanticbits.com</emailAddress>
+                        <phoneNumber>312-555-6666</phoneNumber>
+                    </Investigator>
+                </SiteInvestigator>
+                <SiteInvestigator>
+                    <id>155</id>
+                    <Investigator>
+                        <id>100007</id>
+                        <firstName>Site</firstName>
+                        <lastName>Physician</lastName>
+                        <emailAddress>site.physician@gmail.com</emailAddress>
+                        <phoneNumber>555-555-5555</phoneNumber>
+                        <faxNumber>555-555-5555</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+            </Organization>
+        </StudySite>
+        <Participant>
+            <firstName>Mary</firstName>
+            <lastName>Marshall</lastName>
+            <dateOfBirth>
+                <dayString>13</dayString>
+                <monthString>06</monthString>
+                <yearString>1962</yearString>
+            </dateOfBirth>
+            <gender>Female</gender>
+            <race>White</race>
+            <ethnicity>Not Reported</ethnicity>
+            <Identifier>
+                <type>MRN</type>
+                <value>may07-1a</value>
+                <primaryIndicator>true</primaryIndicator>
+            </Identifier>
+            <Identifier>
+                <type>MRN</type>
+                <value>123-aay</value>
+                <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+        </Participant>
+        <studySubjectIdentifier>123-aay</studySubjectIdentifier>
+    </StudyParticipantAssignment>
+    <ConcomitantMedication>
+        <name>Asprin</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>08</monthString>
+            <yearString>2008</yearString>
+        </startDate>
+        <endDate/>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+        <ConcomitantMedication>
+        <name>Pepto-Bismol</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>08</monthString>
+            <yearString>2008</yearString>
+        </startDate>
+        <endDate/>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+        <ConcomitantMedication>
+        <name>Prozac</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>08</monthString>
+            <yearString>2008</yearString>
+        </startDate>
+        <endDate/>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+        <ConcomitantMedication>
+        <name>OB-Complete</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>08</monthString>
+            <yearString>2008</yearString>
+        </startDate>
+        <endDate/>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+        <ConcomitantMedication>
+        <name>Procenic</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>08</monthString>
+            <yearString>2008</yearString>
+        </startDate>
+        <endDate/>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+        <ConcomitantMedication>
+        <name>Lavender Powder</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>08</monthString>
+            <yearString>2008</yearString>
+        </startDate>
+        <endDate/>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+    <AdverseEvent>
+        <gridId>PRY5ac8cbb6-86be-4922-a6be-22ada6f02c06</gridId>
+        <startDate>2011-06-01T00:00:00.000-04:00</startDate>
+        <endDate>2011-06-01T00:00:00.000-04:00</endDate>
+        <detailsForOther>jam</detailsForOther>
+        <expected>true</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1257</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">5:
+                Definite
+            </attribution>
+            <ConcomitantMedication>
+                <name>Asprin</name>
+                <startDate>
+                    <dayString>01</dayString>
+                    <monthString>08</monthString>
+                    <yearString>2008</yearString>
+                </startDate>
+                <endDate/>
+                <stillTakingMedications>true</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <OtherCause>
+                <text>Autoimmune disorder</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <CourseAgentAttribution>
+            <id>1258</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <CourseAgent>
+                <id>302</id>
+                <lastAdministeredDate>2011-06-05T00:00:00.000-04:00</lastAdministeredDate>
+                <administrationDelayAmount>4</administrationDelayAmount>
+                <administrationDelayUnits xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                          xsi:type="java:java.lang.String">MINUTES
+                </administrationDelayUnits>
+                <Dose>
+                    <amount>1</amount>
+                    <units>BVP</units>
+                </Dose>
+                <AgentAdjustment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                    DOSE_NOTCHANGED
+                </AgentAdjustment>
+                <StudyAgent>
+                    <Agent>
+                        <id>443</id>
+                        <name>Alvocidib (flavopiridol)</name>
+                        <nscNumber>649890</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <lotNumber>4</lotNumber>
+                <formulation>4</formulation>
+            </CourseAgent>
+        </CourseAgentAttribution>
+        <DiseaseAttribution>
+            <id>1259</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+                Probable
+            </attribution>
+            <DiseaseHistory>
+                <id>275</id>
+                <diagnosisDate/>
+                <CtepStudyDisease>
+                    <id>56</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <AnatomicSite>
+                    <id>39</id>
+                    <name>Ovary</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>150</id>
+                    <AnatomicSite>
+                        <id>21</id>
+                        <name>Stomach</name>
+                        <category>Gastrointestinal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>151</id>
+                    <AnatomicSite>
+                        <id>5</id>
+                        <name>CSF</name>
+                        <category>Central Nervous System</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>4361</id>
+                <term>Arteritis infective</term>
+                <ctepTerm>Arteritis infective</ctepTerm>
+                <ctepCode>10065744</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>411</id>
+                    <name>Infections and infestations</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Arteritis infective: jam</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>4361</id>
+                <term>Arteritis infective</term>
+                <ctepTerm>Arteritis infective</ctepTerm>
+                <ctepCode>10065744</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>411</id>
+                    <name>Infections and infestations</name>
+                </CtcCategory>
+            </term>
+            <full-name>Arteritis infective</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+            Possible
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+            Life-threatening consequences; urgent intervention indicated.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes
+        </hospitalization>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>home</eventLocation>
+        <Outcome>
+            <id>723</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOSPITALIZATION
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRNd110417a-6886-4b5f-8df2-e0404de5d7ae</gridId>
+        <startDate>2011-06-01T00:00:00.000-04:00</startDate>
+        <expected>true</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1262</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <ConcomitantMedication>
+                <name>Asprin</name>
+                <startDate>
+                    <dayString>01</dayString>
+                    <monthString>08</monthString>
+                    <yearString>2008</yearString>
+                </startDate>
+                <endDate/>
+                <stillTakingMedications>true</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <OtherCause>
+                <text>Autoimmune disorder</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <CourseAgentAttribution>
+            <id>1263</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <CourseAgent>
+                <id>302</id>
+                <lastAdministeredDate>2011-06-05T00:00:00.000-04:00</lastAdministeredDate>
+                <administrationDelayAmount>4</administrationDelayAmount>
+                <administrationDelayUnits xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                          xsi:type="java:java.lang.String">MINUTES
+                </administrationDelayUnits>
+                <Dose>
+                    <amount>1</amount>
+                    <units>BVP</units>
+                </Dose>
+                <AgentAdjustment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                    DOSE_NOTCHANGED
+                </AgentAdjustment>
+                <StudyAgent>
+                    <Agent>
+                        <id>443</id>
+                        <name>Alvocidib (flavopiridol)</name>
+                        <nscNumber>649890</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <lotNumber>4</lotNumber>
+                <formulation>4</formulation>
+            </CourseAgent>
+        </CourseAgentAttribution>
+        <DiseaseAttribution>
+            <id>1264</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <DiseaseHistory>
+                <id>275</id>
+                <diagnosisDate/>
+                <CtepStudyDisease>
+                    <id>56</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <AnatomicSite>
+                    <id>39</id>
+                    <name>Ovary</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>150</id>
+                    <AnatomicSite>
+                        <id>21</id>
+                        <name>Stomach</name>
+                        <category>Gastrointestinal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>151</id>
+                    <AnatomicSite>
+                        <id>5</id>
+                        <name>CSF</name>
+                        <category>Central Nervous System</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>3207</id>
+                <term>Nausea</term>
+                <ctepTerm>Nausea</ctepTerm>
+                <ctepCode>10028813</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>311</id>
+                    <name>GASTROINTESTINAL</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Nausea</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>3207</id>
+                <term>Nausea</term>
+                <ctepTerm>Nausea</ctepTerm>
+                <ctepCode>10028813</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>311</id>
+                    <name>GASTROINTESTINAL</name>
+                </CtcCategory>
+            </term>
+            <full-name>Nausea</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1:
+            Unrelated
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;
+            minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes
+        </hospitalization>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>home</eventLocation>
+        <Outcome>
+            <id>722</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOSPITALIZATION
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRNd110417a-6886-4b5f-8df2-e0404de5d7ae</gridId>
+        <startDate>2011-06-01T00:00:00.000-04:00</startDate>
+        <expected>true</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1262</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <ConcomitantMedication>
+                <name>Brufen</name>
+                <startDate>
+                    <dayString>01</dayString>
+                    <monthString>08</monthString>
+                    <yearString>2008</yearString>
+                </startDate>
+                <endDate/>
+                <stillTakingMedications>true</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <OtherCause>
+                <text>Autoimmune disorder</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <CourseAgentAttribution>
+            <id>1263</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <CourseAgent>
+                <id>302</id>
+                <lastAdministeredDate>2011-06-05T00:00:00.000-04:00</lastAdministeredDate>
+                <administrationDelayAmount>4</administrationDelayAmount>
+                <administrationDelayUnits xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                          xsi:type="java:java.lang.String">MINUTES
+                </administrationDelayUnits>
+                <Dose>
+                    <amount>1</amount>
+                    <units>BVP</units>
+                </Dose>
+                <AgentAdjustment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                    DOSE_NOTCHANGED
+                </AgentAdjustment>
+                <StudyAgent>
+                    <Agent>
+                        <id>443</id>
+                        <name>Alvocidib (flavopiridol)</name>
+                        <nscNumber>649890</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <lotNumber>4</lotNumber>
+                <formulation>4</formulation>
+            </CourseAgent>
+        </CourseAgentAttribution>
+        <DiseaseAttribution>
+            <id>1264</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <DiseaseHistory>
+                <id>275</id>
+                <diagnosisDate/>
+                <CtepStudyDisease>
+                    <id>56</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <AnatomicSite>
+                    <id>39</id>
+                    <name>Ovary</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>150</id>
+                    <AnatomicSite>
+                        <id>21</id>
+                        <name>Stomach</name>
+                        <category>Gastrointestinal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>151</id>
+                    <AnatomicSite>
+                        <id>5</id>
+                        <name>CSF</name>
+                        <category>Central Nervous System</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>3207</id>
+                <term>Ear pain</term>
+                <ctepTerm>Pain-Ear</ctepTerm>
+                <ctepCode>10028813</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>311</id>
+                    <name>GASTROINTESTINAL</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Nausea</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>3207</id>
+                <term>Nausea</term>
+                <ctepTerm>Nausea</ctepTerm>
+                <ctepCode>10028813</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>311</id>
+                    <name>GASTROINTESTINAL</name>
+                </CtcCategory>
+            </term>
+            <full-name>Ear Pain</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1:
+            Unrelated
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;
+            minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes
+        </hospitalization>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>home</eventLocation>
+        <Outcome>
+            <id>722</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOSPITALIZATION
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <Lab>
+        <id>70</id>
+        <labTerm>
+            <term>Red - blood</term>
+            <category>
+                <name>Chemistry</name>
+            </category>
+        </labTerm>
+        <units>mm3</units>
+        <baseline>
+            <value>1</value>
+            <date>2011-04-01T00:00:00.000-04:00</date>
+        </baseline>
+        <nadir>
+            <value>1</value>
+            <date>2011-04-01T00:00:00.000-04:00</date>
+        </nadir>
+        <recovery>
+            <value>1</value>
+            <date>2011-04-01T00:00:00.000-04:00</date>
+        </recovery>
+    </Lab>
+        <Lab>
+        <id>70</id>
+        <labTerm>
+            <term>WBC - fusion</term>
+            <category>
+                <name>Chemistry</name>
+            </category>
+        </labTerm>
+        <units>mm3</units>
+        <baseline>
+            <value>1</value>
+            <date>2011-07-01T00:00:00.000-04:00</date>
+        </baseline>
+        <nadir>
+            <value>1</value>
+            <date>2011-07-01T00:00:00.000-04:00</date>
+        </nadir>
+        <recovery>
+            <value>1</value>
+            <date>2011-07-01T00:00:00.000-04:00</date>
+        </recovery>
+    </Lab>
+        <Lab>
+        <id>70</id>
+        <labTerm>
+            <term>Cholesterol - blood</term>
+            <category>
+                <name>Chemistry</name>
+            </category>
+        </labTerm>
+        <units>mm3</units>
+        <baseline>
+            <value>1</value>
+            <date>2011-06-01T00:00:00.000-04:00</date>
+        </baseline>
+        <nadir>
+            <value>1</value>
+            <date>2011-06-01T00:00:00.000-04:00</date>
+        </nadir>
+        <recovery>
+            <value>1</value>
+            <date>2011-06-01T00:00:00.000-04:00</date>
+        </recovery>
+    </Lab>
+    <SAEReportPriorTherapy>
+        <id>345</id>
+        <PriorTherapy>
+            <id>13</id>
+            <text>No prior therapy</text>
+            <meddraTerm>10052052</meddraTerm>
+            <meddraCode>No previous exposure to drug NOS</meddraCode>
+        </PriorTherapy>
+        <other>some no prior therapy</other>
+        <startDate/>
+        <endDate/>
+    </SAEReportPriorTherapy>
+    <SAEReportPriorTherapy>
+        <id>346</id>
+        <PriorTherapy>
+            <id>17</id>
+            <text>Multi Agent</text>
+            <meddraTerm>10042609</meddraTerm>
+            <meddraCode>Surgery</meddraCode>
+        </PriorTherapy>
+        <other>test 2</other>
+        <startDate>
+            <dayString>03</dayString>
+            <monthString>01</monthString>
+            <yearString>2009</yearString>
+        </startDate>
+        <endDate>
+            <dayString>04</dayString>
+            <monthString>01</monthString>
+            <yearString>2009</yearString>
+        </endDate>
+        <PriorTherapyAgent>
+            <ChemoAgent><name>Aspirin</name></ChemoAgent>
+        </PriorTherapyAgent>
+        <PriorTherapyAgent>
+            <ChemoAgent><name>Prozac</name></ChemoAgent>
+        </PriorTherapyAgent>
+        <PriorTherapyAgent>
+            <ChemoAgent><name>Gax-X</name></ChemoAgent>
+        </PriorTherapyAgent>
+    </SAEReportPriorTherapy>
+        <SAEReportPriorTherapy>
+        <id>346</id>
+        <PriorTherapy>
+            <id>17</id>
+            <text>Surgery</text>
+            <meddraTerm>10042609</meddraTerm>
+            <meddraCode>Surgery</meddraCode>
+        </PriorTherapy>
+        <other>test 2</other>
+        <startDate>
+            <dayString>03</dayString>
+            <monthString>01</monthString>
+            <yearString>2009</yearString>
+        </startDate>
+        <endDate>
+            <dayString>04</dayString>
+            <monthString>01</monthString>
+            <yearString>2009</yearString>
+        </endDate>
+    </SAEReportPriorTherapy>
+    <Summary id="Study">
+        <value>(5876) Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal
+            Carcinomas
+        </value>
+    </Summary>
+    <Summary id="Participant">
+        <value>123-aay</value>
+    </Summary>
+    <Summary id="Report created at">
+        <value>2011-06-28 15:13:47.993</value>
+    </Summary>
+    <Summary id="Primary AE">
+        <value>Arteritis infective: jam</value>
+    </Summary>
+    <Summary id="AE count">
+        <value>2</value>
+    </Summary>
+    <Summary id="Public identifier">
+        <value>MD017-MD017</value>
+    </Summary>
+    <Summary id="Ticket number"/>
+    <Summary id="Next report due"/>
+    <Summary id="Course">
+        <value></value>
+    </Summary>
+    <TreatmentInformation>
+        <firstCourseDate>2011-06-01T00:00:00.000-04:00</firstCourseDate>
+        <treatmentDescription>Please be advised
+            SemanticBits office will be closed on Monday July 04, 2011 in observance of Independence Day. Time should be tracked accordingly in TimeIQ. If you should have any questions, please contact Christy Ventura.
+            Have a safe and Happy Holiday.</treatmentDescription>
+        <totalCourses>1</totalCourses>
+        <investigationalAgentAdministered>true</investigationalAgentAdministered>
+        <AdverseEventCourse>
+            <number>0</number>
+            <date>2008-07-01T00:00:00.000-04:00</date>
+        </AdverseEventCourse>
+        <CourseAgent>
+            <id>302</id>
+            <lastAdministeredDate>2011-06-05T00:00:00.000-04:00</lastAdministeredDate>
+            <administrationDelayAmount>4</administrationDelayAmount>
+            <administrationDelayUnits xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">MINUTES
+            </administrationDelayUnits>
+            <Dose>
+                <amount>1</amount>
+                <units>BVP</units>
+            </Dose>
+            <AgentAdjustment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                DOSE_NOTCHANGED
+            </AgentAdjustment>
+            <StudyAgent>
+                <Agent>
+                    <id>443</id>
+                    <name>Alvocidib (flavopiridol)</name>
+                    <nscNumber>649890</nscNumber>
+                </Agent>
+                <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND
+                </INDType>
+                <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                  xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                </studyTherapyType>
+            </StudyAgent>
+            <lotNumber>4</lotNumber>
+            <formulation>4</formulation>
+        </CourseAgent>
+    </TreatmentInformation>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Autoimmune disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Lung Disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Heart disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Sleeping disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Ear disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Eye disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>238</id>
+        <PreExistingCondition>
+            <id>2</id>
+            <text>Kidney disorder</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+
+    <OtherCause>
+        <text>Autoimmune disorder</text>
+    </OtherCause>
+    <AdditionalInformation>
+        <id>272</id>
+        <otherInformation>some other additional info</otherInformation>
+        <autopsyReport>true</autopsyReport>
+        <consults>false</consults>
+        <dischargeSummary>false</dischargeSummary>
+        <flowCharts>false</flowCharts>
+        <labReports>false</labReports>
+        <obaForm>false</obaForm>
+        <other>true</other>
+        <pathologyReport>false</pathologyReport>
+        <progressNotes>false</progressNotes>
+        <radiologyReports>false</radiologyReports>
+        <referralLetters>false</referralLetters>
+        <irbReport>false</irbReport>
+    </AdditionalInformation>
+    <Report>
+        <id>410</id>
+        <adeersReportTypeIndicator>Regular report</adeersReportTypeIndicator>
+        <ReportDefinition>
+            <id>51</id>
+            <duration>48</duration>
+            <label>MedWatchCtep</label>
+            <Group>
+                <code>RT_FDA</code>
+                <name>FDA Report</name>
+            </Group>
+            <timeScaleUnitType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOUR
+            </timeScaleUnitType>
+            <ReportDeliveryDefinition>
+                <entityName>biju.joseph@semanticbits.com</entityName>
+                <status>CREATED</status>
+            </ReportDeliveryDefinition>
+            <ReportDeliveryDefinition>
+                <entityName>REP</entityName>
+                <status>CREATED</status>
+            </ReportDeliveryDefinition>
+        </ReportDefinition>
+        <ReportDelivery>
+            <ReportDeliveryDefinition>
+                <entityName>biju.joseph@semanticbits.com</entityName>
+                <status>CREATED</status>
+            </ReportDeliveryDefinition>
+            <DeliveryStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                CREATED
+            </DeliveryStatus>
+        </ReportDelivery>
+        <ReportDelivery>
+            <ReportDeliveryDefinition>
+                <entityName>REP</entityName>
+                <status>CREATED</status>
+            </ReportDeliveryDefinition>
+            <DeliveryStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                CREATED
+            </DeliveryStatus>
+        </ReportDelivery>
+        <ReportVersion>
+            <reportVersionId>0</reportVersionId>
+            <ReportStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">PENDING
+            </ReportStatus>
+        </ReportVersion>
+        <emailRecipient>biju.joseph@semanticbits.com</emailRecipient>
+        <emailRecipient>biju.joseph.padupurackal@gmail.com</emailRecipient>
+        <applicableField>adverseEvents[]</applicableField>
+        <applicableField>adverseEvents[].grade</applicableField>
+        <applicableField>adverseEvents[].adverseEventCtcTerm</applicableField>
+        <applicableField>adverseEvents[].adverseEventCtcTerm.term</applicableField>
+        <applicableField>adverseEvents[].detailsForOther</applicableField>
+        <applicableField>adverseEvents[].startDate</applicableField>
+        <applicableField>adverseEvents[].endDate</applicableField>
+        <applicableField>adverseEvents[].attributionSummary</applicableField>
+        <applicableField>adverseEvents[].hospitalization</applicableField>
+        <applicableField>adverseEvents[].expected</applicableField>
+        <applicableField>adverseEvents[].participantAtRisk</applicableField>
+        <applicableField>adverseEvents[].eventLocation</applicableField>
+        <applicableField>adverseEvents[].eventApproximateTime.hourString</applicableField>
+        <applicableField>adverseEvents[].outcomes</applicableField>
+        <applicableField>reporter</applicableField>
+        <applicableField>reporter.title</applicableField>
+        <applicableField>reporter.firstName</applicableField>
+        <applicableField>reporter.middleName</applicableField>
+        <applicableField>reporter.lastName</applicableField>
+        <applicableField>reporter.contactMechanisms[e-mail]</applicableField>
+        <applicableField>reporter.contactMechanisms[phone]</applicableField>
+        <applicableField>reporter.contactMechanisms[fax]</applicableField>
+        <applicableField>reporter.address</applicableField>
+        <applicableField>reporter.address.street</applicableField>
+        <applicableField>reporter.address.city</applicableField>
+        <applicableField>reporter.address.state</applicableField>
+        <applicableField>reporter.address.zip</applicableField>
+        <applicableField>physician</applicableField>
+        <applicableField>physician.title</applicableField>
+        <applicableField>physician.firstName</applicableField>
+        <applicableField>physician.middleName</applicableField>
+        <applicableField>physician.lastName</applicableField>
+        <applicableField>physician.contactMechanisms[e-mail]</applicableField>
+        <applicableField>physician.contactMechanisms[phone]</applicableField>
+        <applicableField>physician.contactMechanisms[fax]</applicableField>
+        <applicableField>physician.address</applicableField>
+        <applicableField>physician.address.street</applicableField>
+        <applicableField>physician.address.city</applicableField>
+        <applicableField>physician.address.state</applicableField>
+        <applicableField>physician.address.zip</applicableField>
+        <applicableField>radiationInterventions[]</applicableField>
+        <applicableField>radiationInterventions[].administration</applicableField>
+        <applicableField>radiationInterventions[].dosage</applicableField>
+        <applicableField>radiationInterventions[].dosageUnit</applicableField>
+        <applicableField>radiationInterventions[].lastTreatmentDate</applicableField>
+        <applicableField>radiationInterventions[].fractionNumber</applicableField>
+        <applicableField>radiationInterventions[].daysElapsed</applicableField>
+        <applicableField>radiationInterventions[].adjustment</applicableField>
+        <applicableField>surgeryInterventions[]</applicableField>
+        <applicableField>surgeryInterventions[].interventionSite</applicableField>
+        <applicableField>surgeryInterventions[].interventionDate</applicableField>
+        <applicableField>behavioralInterventions[]</applicableField>
+        <applicableField>biologicalInterventions[]</applicableField>
+        <applicableField>geneticInterventions[]</applicableField>
+        <applicableField>dietaryInterventions[]</applicableField>
+        <applicableField>otherAEInterventions[]</applicableField>
+        <applicableField>medicalDevices[]</applicableField>
+        <applicableField>medicalDevices[].brandName</applicableField>
+        <applicableField>medicalDevices[].commonName</applicableField>
+        <applicableField>medicalDevices[].deviceType</applicableField>
+        <applicableField>medicalDevices[].manufacturerName</applicableField>
+        <applicableField>medicalDevices[].manufacturerCity</applicableField>
+        <applicableField>medicalDevices[].manufacturerState</applicableField>
+        <applicableField>medicalDevices[].modelNumber</applicableField>
+        <applicableField>medicalDevices[].lotNumber</applicableField>
+        <applicableField>medicalDevices[].catalogNumber</applicableField>
+        <applicableField>medicalDevices[].expirationDate</applicableField>
+        <applicableField>medicalDevices[].serialNumber</applicableField>
+        <applicableField>medicalDevices[].otherNumber</applicableField>
+        <applicableField>medicalDevices[].deviceOperator</applicableField>
+        <applicableField>medicalDevices[].otherDeviceOperator</applicableField>
+        <applicableField>medicalDevices[].implantedDate</applicableField>
+        <applicableField>medicalDevices[].explantedDate</applicableField>
+        <applicableField>medicalDevices[].deviceReprocessed</applicableField>
+        <applicableField>medicalDevices[].reprocessorName</applicableField>
+        <applicableField>medicalDevices[].reprocessorAddress</applicableField>
+        <applicableField>medicalDevices[].evaluationAvailability</applicableField>
+        <applicableField>medicalDevices[].returnedDate</applicableField>
+        <applicableField>responseDescription</applicableField>
+        <applicableField>responseDescription.eventDescription</applicableField>
+        <applicableField>responseDescription.dateRemovedFromProtocol</applicableField>
+        <applicableField>responseDescription.primaryTreatmentApproximateTime.hourString</applicableField>
+        <applicableField>responseDescription.presentStatus</applicableField>
+        <applicableField>responseDescription.recoveryDate</applicableField>
+        <applicableField>responseDescription.retreated</applicableField>
+        <applicableField>responseDescription.blindBroken</applicableField>
+        <applicableField>responseDescription.studyDrugInterrupted</applicableField>
+        <applicableField>responseDescription.reducedDose</applicableField>
+        <applicableField>responseDescription.reducedDate</applicableField>
+        <applicableField>responseDescription.daysNotGiven</applicableField>
+        <applicableField>responseDescription.autopsyPerformed</applicableField>
+        <applicableField>responseDescription.causeOfDeath</applicableField>
+        <applicableField>responseDescription.eventAbate</applicableField>
+        <applicableField>responseDescription.eventReappear</applicableField>
+        <applicableField>treatmentInformation</applicableField>
+        <applicableField>treatmentInformation.investigationalAgentAdministered</applicableField>
+        <applicableField>treatmentInformation.courseAgents[]</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].studyAgent</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].formulation</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].lotNumber</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].dose</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].dose.amount</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].dose.units</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].lastAdministeredDate</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].administrationDelayAmount</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].administrationDelayUnits</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].agentAdjustment</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].comments</applicableField>
+        <applicableField>treatmentInformation.treatmentAssignment</applicableField>
+        <applicableField>treatmentInformation.firstCourseDate</applicableField>
+        <applicableField>treatmentInformation.adverseEventCourse</applicableField>
+        <applicableField>treatmentInformation.adverseEventCourse.date</applicableField>
+        <applicableField>treatmentInformation.adverseEventCourse.number</applicableField>
+        <applicableField>treatmentInformation.totalCourses</applicableField>
+        <applicableField>labs[]</applicableField>
+        <applicableField>labs[].labTerm</applicableField>
+        <applicableField>labs[].units</applicableField>
+        <applicableField>labs[].baseline</applicableField>
+        <applicableField>labs[].baseline.value</applicableField>
+        <applicableField>labs[].baseline.date</applicableField>
+        <applicableField>labs[].nadir</applicableField>
+        <applicableField>labs[].nadir.value</applicableField>
+        <applicableField>labs[].nadir.date</applicableField>
+        <applicableField>labs[].recovery</applicableField>
+        <applicableField>labs[].recovery.value</applicableField>
+        <applicableField>labs[].recovery.date</applicableField>
+        <applicableField>labs[].site</applicableField>
+        <applicableField>labs[].labDate</applicableField>
+        <applicableField>labs[].infectiousAgent</applicableField>
+        <applicableField>otherCauses[]</applicableField>
+        <applicableField>otherCauses[].text</applicableField>
+        <applicableField>saeReportPriorTherapies[]</applicableField>
+        <applicableField>saeReportPriorTherapies[].priorTherapy</applicableField>
+        <applicableField>saeReportPriorTherapies[].other</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate.year</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate.month</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate.day</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate.year</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate.month</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate.day</applicableField>
+        <applicableField>saeReportPriorTherapies[].priorTherapyAgents[]</applicableField>
+        <applicableField>saeReportPriorTherapies[].priorTherapyAgents[].chemoAgent</applicableField>
+        <applicableField>saeReportPreExistingConditions[]</applicableField>
+        <applicableField>saeReportPreExistingConditions[].preExistingCondition</applicableField>
+        <applicableField>concomitantMedications[]</applicableField>
+        <applicableField>concomitantMedications[].agentName</applicableField>
+        <applicableField>concomitantMedications[].stillTakingMedications</applicableField>
+        <applicableField>concomitantMedications[].startDate</applicableField>
+        <applicableField>concomitantMedications[].startDate.year</applicableField>
+        <applicableField>concomitantMedications[].startDate.month</applicableField>
+        <applicableField>concomitantMedications[].startDate.day</applicableField>
+        <applicableField>concomitantMedications[].endDate</applicableField>
+        <applicableField>concomitantMedications[].endDate.year</applicableField>
+        <applicableField>concomitantMedications[].endDate.month</applicableField>
+        <applicableField>concomitantMedications[].endDate.day</applicableField>
+        <applicableField>participantHistory</applicableField>
+        <applicableField>participantHistory.height</applicableField>
+        <applicableField>participantHistory.height.quantity</applicableField>
+        <applicableField>participantHistory.height.unit</applicableField>
+        <applicableField>participantHistory.weight</applicableField>
+        <applicableField>participantHistory.weight.quantity</applicableField>
+        <applicableField>participantHistory.weight.unit</applicableField>
+        <applicableField>participantHistory.baselinePerformanceStatus</applicableField>
+        <applicableField>diseaseHistory</applicableField>
+        <applicableField>diseaseHistory.abstractStudyDisease</applicableField>
+        <applicableField>diseaseHistory.codedPrimaryDiseaseSite</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate.year</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate.month</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate.day</applicableField>
+        <applicableField>diseaseHistory.metastaticDiseaseSites[]</applicableField>
+        <applicableField>diseaseHistory.metastaticDiseaseSites[].codedSite</applicableField>
+        <applicableField>additionalInformation</applicableField>
+        <applicableField>additionalInformation.autopsyReport</applicableField>
+        <applicableField>additionalInformation.consults</applicableField>
+        <applicableField>additionalInformation.dischargeSummary</applicableField>
+        <applicableField>additionalInformation.flowCharts</applicableField>
+        <applicableField>additionalInformation.labReports</applicableField>
+        <applicableField>additionalInformation.obaForm</applicableField>
+        <applicableField>additionalInformation.pathologyReport</applicableField>
+        <applicableField>additionalInformation.progressNotes</applicableField>
+        <applicableField>additionalInformation.radiologyReports</applicableField>
+        <applicableField>additionalInformation.referralLetters</applicableField>
+        <applicableField>additionalInformation.irbReport</applicableField>
+        <applicableField>additionalInformation.other</applicableField>
+        <applicableField>additionalInformation.otherInformation</applicableField>
+        <submittedToFDA>No</submittedToFDA>
+    </Report>
+</AdverseEventReport>
