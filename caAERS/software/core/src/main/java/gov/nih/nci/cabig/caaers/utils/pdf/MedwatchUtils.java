@@ -31,7 +31,7 @@ public class MedwatchUtils {
     
     public static int possibleElements(NodeList nodes , int n , String commaSeperatedXPath){
 
-        if(nodes == null || nodes.getLength() == 0) return 0;
+        if(nodes == null || nodes.getLength() == 0) return 1;
         String[] xpath = StringUtils.isEmpty(commaSeperatedXPath) ? new String[]{"."} : commaSeperatedXPath.split(",");
         int l = 0;
         int k = 1;

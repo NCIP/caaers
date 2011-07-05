@@ -5,7 +5,7 @@
     </createdAt>
     <AdverseEventReportingPeriod/>
     <AdverseEventResponseDescription>
-        <eventDescription>One day the patient was sitting on the bench, he felt dizzy and fell down on the ground. A nurse nearby poured water on him, but unfortunately the water the nurse carrying was hot water. This caused outer body burning and internal bleeding. The patent was then sprayed with Burnol (liquid type). But to my wonder the patient was allergic to Yellow color and this basically caused him mad and he hit the Physician on his face. The physician is now in ICU for observation. </eventDescription>
+        <eventDescription> the story</eventDescription>
         <presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
             INTERVENTION_CONTINUES
         </presentStatus>
@@ -78,62 +78,8 @@
             <name>Ovary</name>
             <category>Genitourinary</category>
         </AnatomicSite>
-        <MetastaticDiseaseSite>
-            <id>150</id>
-            <AnatomicSite>
-                <id>21</id>
-                <name>Stomach</name>
-                <category>Gastrointestinal</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
-        <MetastaticDiseaseSite>
-            <id>151</id>
-            <AnatomicSite>
-                <id>5</id>
-                <name>CSF</name>
-                <category>Central Nervous System</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
-                <MetastaticDiseaseSite>
-            <id>151</id>
-            <AnatomicSite>
-                <id>5</id>
-                <name>Nose bridge</name>
-                <category>Central Nervous System</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
-        <MetastaticDiseaseSite>
-            <id>151</id>
-            <AnatomicSite>
-                <id>5</id>
-                <name>Upper left hand nails</name>
-                <category>Central Nervous System</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
-                <MetastaticDiseaseSite>
-            <id>151</id>
-            <AnatomicSite>
-                <id>5</id>
-                <name>Lower corner of leg</name>
-                <category>Central Nervous System</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
-                <MetastaticDiseaseSite>
-            <id>151</id>
-            <AnatomicSite>
-                <id>5</id>
-                <name>Neck</name>
-                <category>Central Nervous System</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
-                <MetastaticDiseaseSite>
-            <id>151</id>
-            <AnatomicSite>
-                <id>5</id>
-                <name>Middle fingers</name>
-                <category>Middle finger</category>
-            </AnatomicSite>
-        </MetastaticDiseaseSite>
+ 
+               
     </DiseaseHistory>
     <ParticipantHistory>
         <height>

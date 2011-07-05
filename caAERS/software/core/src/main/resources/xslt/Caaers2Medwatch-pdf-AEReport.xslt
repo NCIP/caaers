@@ -42,9 +42,9 @@
     <xsl:variable name="_cmdContinue" select="$_cmdCount &gt;= $_cmdPossible" />
 
 
-    <xsl:variable name="_tacContinue">mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, 80) != '' or
-    mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, 80) != ''</xsl:variable>
-    <xsl:variable name="_edContinue">mu:after(AdverseEventReport/AdverseEventResponseDescription/eventDescription, 300) != ''</xsl:variable>
+    <xsl:variable name="_tacContinue" select="mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, $_tacPossible) != '' or
+    mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible) != ''"></xsl:variable>
+    <xsl:variable name="_edContinue" select="mu:after(AdverseEventReport/AdverseEventResponseDescription/eventDescription, $_edPossible) != ''"></xsl:variable>
 
 
     <xsl:variable name="_cTenContinue" select="$_cmContinue or $_ptContinue or $_cmContinue" />
@@ -576,7 +576,7 @@
                                                         </xsl:for-each>
                                                         <xsl:if test="$_aeContinue = true()">
                                                             <fo:block text-align="right" xsl:use-attribute-sets="normal">
-                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continue... </xsl:text>
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                             </fo:block>
                                                         </xsl:if>
                                                         <fo:block xsl:use-attribute-sets="continue">Description of event:
@@ -588,7 +588,7 @@
                                                                    &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
                                                                    &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
                                                                    &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;Continue... </xsl:text>
+                                                                   &amp;#160;&amp;#160;Continued... </xsl:text>
                                                             </xsl:if>
                                                         </fo:block>
                                                    
@@ -638,7 +638,7 @@
                                                         </xsl:for-each>
                                                         <xsl:if test="$_lbContinue = true()">
 	                                                       <fo:block text-align="right" xsl:use-attribute-sets="normal">
-                                                               <xsl:text disable-output-escaping="yes">&amp;#160; Continue... </xsl:text>
+                                                               <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                            </fo:block>
 	                                                    </xsl:if>
                                                     </fo:table-cell>
@@ -722,7 +722,7 @@
                                                                 </xsl:if>
                                                                 </xsl:for-each>
                                                                <xsl:if test="$_msdsContinue = true()">
-                                                                   <xsl:text disable-output-escaping="yes">&amp;#160; Continue...</xsl:text>
+                                                                   <xsl:text disable-output-escaping="yes">&amp;#160; Continued...</xsl:text>
                                                                </xsl:if>
                                                             </fo:block>
                                                         </xsl:if>
@@ -745,7 +745,7 @@
                                                                     </xsl:if>
                                                                 </xsl:for-each>
                                                                 <xsl:if test="$_preCondContinue = true()">
-                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continue...</xsl:text>
+                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continued...</xsl:text>
                                                                 </xsl:if>
 
                                                             </fo:block>
@@ -779,7 +779,7 @@
                                                                     </xsl:if>
                                                                 </xsl:for-each>
                                                                 <xsl:if test="$_ptContinue = true()">
-                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continue...</xsl:text>
+                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continued...</xsl:text>
                                                                 </xsl:if>
 
                                                             </fo:block>
@@ -860,7 +860,7 @@
                                                                     &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
                                                                     &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
                                                                     &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
-                                                                    Continue... </xsl:text>
+                                                                    Continued... </xsl:text>
                                                             </xsl:if>
                                                         </fo:block>
 
@@ -1178,7 +1178,7 @@
                                                         </xsl:for-each>
                                                         <xsl:if test="$_cmContinue = true()">
                                                             <fo:block text-align="right" xsl:use-attribute-sets="normal">
-                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continue... </xsl:text>
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                             </fo:block>
                                                         </xsl:if>
                                                     </fo:table-cell>
@@ -1549,7 +1549,7 @@
                                                             </xsl:for-each>
                                                             <xsl:if test="$_cmdContinue = true()">
                                                                 <fo:block text-align="right" xsl:use-attribute-sets="normal">
-                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continue... </xsl:text>
+                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                                 </fo:block>
                                                             </xsl:if>
                                                         </xsl:if>
