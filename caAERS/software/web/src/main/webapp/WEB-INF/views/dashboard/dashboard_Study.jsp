@@ -18,8 +18,8 @@
                          <c:forEach var ="study" items="${studyList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a></td>
-                         		<td>${study.shortTitle}</td>
-                         		<td>${study.status}</td>
+                         		<td><c:out value="${study.shortTitle}" escapeXml="true" /> </td>
+                         		<td><c:out value="${study.status}" escapeXml="true" /> </td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">

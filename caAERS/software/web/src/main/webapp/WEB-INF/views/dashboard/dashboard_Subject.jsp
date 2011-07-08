@@ -19,9 +19,9 @@
                          <c:forEach var ="subject" items="${subjectList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                                 <td><a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>">${subject.assignments[0].studySubjectIdentifier}</a></td>
-                                <td>${subject.firstName}</td>
-                                <td>${subject.lastName}</td>
-                                <td>${subject.assignments[0].studySite.study.primaryIdentifier}</td>
+                                <td><c:out value="${subject.firstName}" escapeXml="true" /> </td>
+                                <td><c:out value="${subject.lastName}" escapeXml="true" /> </td>
+                                <td><c:out value="${subject.assignments[0].studySite.study.primaryIdentifier}" escapeXml="true" /> </td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(subjectList) == 0}">

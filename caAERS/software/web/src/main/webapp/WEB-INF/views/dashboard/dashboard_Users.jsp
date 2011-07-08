@@ -15,9 +15,9 @@
             <c:forEach items="${users}" var="u" varStatus="i">
             <tr class="${i.index % 2 == 0 ? 'alt' : ''}">
                 <td><a href="<c:url value="/pages/admin/editUser?id=${u.id}"/>">${u.userName}</a></td>
-                <td>${u.firstName}</td>
-                <td>${u.lastName}</td>
-                <td>${u.emailAddress}</td>
+                <td><c:out value="${u.firstName}" escapeXml="true" /> </td>
+                <td><c:out value="${u.lastName}" escapeXml="true" /> </td>
+                <td><c:out value="${u.emailAddress}" escapeXml="true" /> </td>
             </tr>
             </c:forEach>
             <c:if test="${fn:length(users) == 0}">

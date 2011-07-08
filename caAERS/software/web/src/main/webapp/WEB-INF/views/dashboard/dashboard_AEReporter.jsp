@@ -19,10 +19,10 @@
                 <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
                 <tr class="${ALT} taskTitleRow" id="prevROW_${index.index}">
                     <td valign="top"><tags:formatDate value="${task.date}" /></td>
-                    <td nowrap valign="top">${task.subjectFullName}</td>
-                    <td valign="top">${task.studyShortTitle}</td>
-                    <td valign="top">${task.status}</td>
-                    <td valign="top">${task.task}</td>
+                    <td nowrap valign="top"><c:out value="${task.subjectFullName}" escapeXml="true" /></td>
+                    <td valign="top"><c:out value="${task.studyShortTitle}" escapeXml="true" /></td>
+                    <td valign="top"><c:out value="${task.status}" escapeXml="true" /></td>
+                    <td valign="top"><c:out value="${task.task}" escapeXml="true" /></td>
                     <td valign="top" align="center"><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('reportingPeriod', ${task.reportingPeriodId});"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
                     <%--<td valign="top"><select name="s101"><option value="-">Please select</select></td>--%>
                 </tr>
@@ -244,11 +244,11 @@
             </c:if>
 
             <span id="_Description${rvDTO.rv.id}" style="display:none;">
-                <b style="color:yellow;">Report Name: </b>${rvDTO.reportName}<br>
-                <b style="color:yellow;">Study: </b>${rvDTO.studyShortTitle}<br>
-                <b style="color:yellow;">Participant: </b>${rvDTO.subjectFirstName}&nbsp;${rvDTO.subjectLastName}&nbsp(${rvDTO.subjectPrimaryIdentifier})<br>
-                <b style="color:yellow;">Study Site: </b>${rvDTO.studySiteName}&nbsp;(${rvDTO.studySiteCode})<br>
-                <b style="color:yellow;">Course: </b> Cycle #: ${rvDTO.periodCycle}&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
+                <b style="color:yellow;">Report Name: </b><c:out value="${rvDTO.reportName}" escapeXml="true" /> <br>
+                <b style="color:yellow;">Study: </b><c:out value="${rvDTO.studyShortTitle}" escapeXml="true" /> <br>
+                <b style="color:yellow;">Participant: </b><c:out value="${rvDTO.subjectFirstName}" escapeXml="true" /> &nbsp;<c:out value="${rvDTO.subjectLastName}" escapeXml="true" /> &nbsp(<c:out value="${rvDTO.subjectPrimaryIdentifier}" escapeXml="true" /> )<br>
+                <b style="color:yellow;">Study Site: </b><c:out value="${rvDTO.studySiteName}" escapeXml="true" />&nbsp;(${rvDTO.studySiteCode})<br>
+                <b style="color:yellow;">Course: </b> Cycle #: <c:out value="${rvDTO.periodCycle}" escapeXml="true" />&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
             </span>
             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
                 <c:set var="_s" value="${rvDTO.rv.reportStatus}" />

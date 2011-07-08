@@ -40,18 +40,18 @@
 
         		<div class="row">
                 	<div class="label">Primary identifier</div>
-                	<div class="value">${command.study.primaryIdentifier.value} </div>
+                	<div class="value"><c:out value="${command.study.primaryIdentifier.value}" escapeXml="true" /> </div>
             	</div>
            		<div class="row">
                 	<div class="label">Title</div>
-                	<div class="value"><c:out value="${command.study.shortTitle} " escapeXml="true" /></div>
+                	<div class="value"><c:out value="${command.study.shortTitle}" escapeXml="true" /></div>
             	</div>
             	<div class="row">
                 	<div class="label">Funding sponsor</div>
                 	<c:if test="${command.study.primaryFundingSponsorOrganization.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>                	
-                	<div class="value">${command.study.primaryFundingSponsorOrganization.name} </div>
+                	<div class="value"><c:out value="${command.study.primaryFundingSponsorOrganization.name}" escapeXml="true" />  </div>
             	</div>
 				<div class="row">
                 	<div class="label">Coordinating center</div>
@@ -59,7 +59,7 @@
                 	<c:if test="${command.study.studyCoordinatingCenter.organization.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>
-                	${command.study.studyCoordinatingCenter.organization.name} 
+                	<c:out value="${command.study.studyCoordinatingCenter.organization.name}" escapeXml="true" />
                 	</div>
             	</div>
 
@@ -84,7 +84,7 @@
             	<c:if test="${command.study.aeTerminology.term eq 'CTC'}">
             	<div class="row">
 	            	<div class="label">Other MedDRA</div>
-	            	<div class="value">${command.study.otherMeddra.name}</div>
+	            	<div class="value"><c:out value="${command.study.otherMeddra.name}" escapeXml="true" /> </div>
 	            </div>
             	</c:if>
 <%--
@@ -141,13 +141,13 @@
 			<c:if test="${not studyAgent.retired}">
 			<c:set var="activeAgentCnt" value="${activeAgentCnt + 1}" />
 			<tr>						
-				<td>${studyAgent.agentName}</td>
-				<td>${studyAgent.agent.nscNumber}</td>
-				<td>${studyAgent.indType.displayName }</td>
+				<td><c:out value="${studyAgent.agentName}" escapeXml="true" /> </td>
+				<td><c:out value="${studyAgent.agent.nscNumber}" escapeXml="true" /> </td>
+				<td><c:out value="${studyAgent.indType.displayName }" escapeXml="true" /> </td>
 				<td>
 					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
                          <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-                              ${sai.investigationalNewDrug.strINDNo},&nbsp;&nbsp;${sai.investigationalNewDrug.holderName}
+                              <c:out value="${sai.investigationalNewDrug.strINDNo}" escapeXml="true" />,&nbsp;&nbsp;<c:out value="${sai.investigationalNewDrug.holderName}" escapeXml="true" />
                          </c:forEach>
 					</c:if>
 				</td>
@@ -183,10 +183,10 @@
                     <c:if test="${not treatmentAssignment.retired}">
                     <c:set var="activeTACnt" value="${activeTACnt + 1}" />     
                     <tr class="results">
-                        <td>${treatmentAssignment.code}</td>
-                        <td>${treatmentAssignment.doseLevelOrder}</td>
-                        <td>${treatmentAssignment.description}</td>
-                        <td>${treatmentAssignment.comments}</td>
+                        <td><c:out value="${treatmentAssignment.code}" escapeXml="true" /> </td>
+                        <td><c:out value="${treatmentAssignment.doseLevelOrder}" escapeXml="true" /> </td>
+                        <td><c:out value="${treatmentAssignment.description}" escapeXml="true" /> </td>
+                        <td><c:out value="${treatmentAssignment.comments}" escapeXml="true" /> </td>
                     </tr>
                     </c:if>
             	</c:forEach>
@@ -213,7 +213,7 @@
                         <tr class="results">
                             <td>
                                 <c:if test="${studySite.organization.externalId != null}"><img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/></c:if>
-                                ${studySite.organization.name}
+                                <c:out value="${studySite.organization.name}" escapeXml="true" />
                             </td>
                             <td>${studySite.retired ? "<font color='black'>Retired</font>" : "<font color='black'>Active</font>"}</td>
                         </tr>
@@ -246,10 +246,10 @@
                                 <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
                                     <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                                 </c:if>
-                                    ${studyInvestigator.siteInvestigator.investigator.fullName}
+                                    <c:out value="${studyInvestigator.siteInvestigator.investigator.fullName}" escapeXml="true" />
                             </td>
-                            <td>${studyInvestigator.siteInvestigator.organization}</td>
-                            <td>${command.studyInvestigatorRoles[studyInvestigator.roleCode]}</td>
+                            <td><c:out value="${studyInvestigator.siteInvestigator.organization}" escapeXml="true" /> </td>
+                            <td><c:out value="${command.studyInvestigatorRoles[studyInvestigator.roleCode]}" escapeXml="true" /> </td>
                             <td>
                                 <c:if test="${studyInvestigator.active}">Active</c:if>
                                 <c:if test="${!studyInvestigator.active}">Inactive</c:if>
@@ -300,11 +300,11 @@
                                 <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
                                     <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                                 </c:if>
-                                    ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
+                                    <c:out value="${studyPersonnel.siteResearchStaff.researchStaff.fullName}" escapeXml="true" />
                             </td>
                             <%-- orgIndex 0 means a new Organiation in the list and should be rendered, all are rendered now --%>
-                            <td><c:if test="${orgIndex >= 0}">${studyPersonnel.siteResearchStaff.organization}</c:if></td>
-                            <td>${command.studyPersonnelRoles[studyPersonnel.roleCode]}</td>
+                            <td><c:if test="${orgIndex >= 0}"><c:out value="${studyPersonnel.siteResearchStaff.organization}" escapeXml="true" /> </c:if></td>
+                            <td><c:out value="${command.studyPersonnelRoles[studyPersonnel.roleCode]}" escapeXml="true" /> </td>
                             <td>
                                 <c:if test="${studyPersonnel.active}">Active</c:if>
                                 <c:if test="${!studyPersonnel.active}">Inactive</c:if>
@@ -339,8 +339,8 @@
 
                     <c:forEach items="${command.study.activeMeddraStudyDiseases}" var="studyDisease">
                         <tr class="results">
-                            <td>${studyDisease.term.meddraTerm}</td>
-                            <td>${studyDisease.term.meddraCode}</td>
+                            <td><c:out value="${studyDisease.term.meddraTerm}" escapeXml="true" /></td>
+                            <td><c:out value="${studyDisease.term.meddraCode}" escapeXml="true" /></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -367,7 +367,7 @@
                     <c:forEach items="${command.study.activeCtepStudyDiseases}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
-                            <td>${studyDisease.term.ctepTerm}</td>
+                            <td><c:out value="${studyDisease.term.ctepTerm}" escapeXml="true" /></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -392,7 +392,7 @@
 
                     <c:forEach items="${command.study.activeStudyConditions}" var="studyDisease">
                         <tr class="results">
-                            <td>${studyDisease.term.conditionName}</td>
+                            <td><c:out value="${studyDisease.term.conditionName}" escapeXml="true" /></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -441,9 +441,11 @@
         <c:forEach items="${command.study.activeStudyDevices}" var="sd">
             <c:if test="${!sd.retiredIndicator}">
                 <tr class="results">
-                    <td>${sd.brandName}
-                    <td>${sd.commonName}
-                    <td>${sd.deviceType}
+                    <td><c:out value="${sd.brandName}" escapeXml="true" /> </td>
+
+                    <td><c:out value="${sd.commonName}" escapeXml="true" /> </td>
+                    <td><c:out value="${sd.deviceType}" escapeXml="true" /> </td>
+
                 </tr>
             </c:if>
         </c:forEach>
@@ -461,9 +463,9 @@
         <c:forEach items="${command.study.otherInterventions}" var="oi">
             <c:if test="${!oi.retiredIndicator}">
                 <tr class="results">
-                    <td>${oi.name}
-                    <td>${oi.description}
-                    <td>${oi.studyTherapyType}
+                    <td><c:out value="${oi.name}" escapeXml="true" /> </td>
+                    <td><c:out value="${oi.description}" escapeXml="true" /> </td>
+                    <td><c:out value="${oi.studyTherapyType}" escapeXml="true" /> </td>
                 </tr>
             </c:if>
         </c:forEach>
@@ -493,10 +495,10 @@
 					${identifier.organization}</td>
 				</c:if>
 				<c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-					<td>${identifier.systemName}</td>
+					<td><c:out value="${identifier.systemName}" escapeXml="true" /> </td>
 				</c:if>
-				<td>${identifier.type}</td>
-				<td>${identifier.value}</td>
+				<td><c:out value="${identifier.type}" escapeXml="true" /> </td>
+				<td><c:out value="${identifier.value}" escapeXml="true" /> </td>
 			</tr>
 			</c:forEach>
 			<c:if test="${empty command.study.identifiersLazy}">
