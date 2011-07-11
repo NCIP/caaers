@@ -919,13 +919,15 @@
                                                                 (Indication)
                                                             </fo:inline>
                                                         </fo:block>
-                                                        <fo:block>
-                                                            <fo:inline font-size="6.5pt">
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose"/>
-                                                                of
-                                                            </fo:inline>
-                                                        </fo:block>
+                                                        <xsl:if test="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose">
+                                                            <fo:block>
+                                                                <fo:inline font-size="6.5pt">
+                                                                    <xsl:value-of
+                                                                            select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose"/>
+                                                                    of
+                                                                </fo:inline>
+                                                            </fo:block>
+                                                        </xsl:if>
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">
 
