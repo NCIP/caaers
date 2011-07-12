@@ -1,0 +1,4 @@
+cd /soft
+cd web
+ant -f ivy-build.xml deploy-caaers -Doffline=true
+cd ../
