@@ -541,7 +541,7 @@
   </class>
 
 
-  <class name="gov.nih.nci.cabig.caaers.domain.attribution.DietarySupplementIntervention">
+  <class name="gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention">
       <map-to xml="DietarySupplementIntervention"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
