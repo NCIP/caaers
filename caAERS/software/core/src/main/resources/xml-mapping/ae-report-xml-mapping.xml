@@ -527,7 +527,7 @@
   </class>
 
 
-  <class name="gov.nih.nci.cabig.caaers.domain.attribution.OtherAEIntervention">
+  <class name="gov.nih.nci.cabig.caaers.domain.OtherAEIntervention">
       <map-to xml="OtherAEIntervention"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
