@@ -44,4 +44,13 @@ public abstract class AbstractAEIntervention extends AbstractExpeditedReportColl
     public void setStudyIntervention(OtherIntervention studyIntervention) {
         this.studyIntervention = studyIntervention;
     }
+
+    public void copy(AbstractAEIntervention to){
+       to.setDescription(this.getDescription());
+       to.setId(this.getId());
+       OtherIntervention oi = new OtherIntervention();
+       to.setStudyIntervention(oi);
+       oi.setDescription(this.getStudyIntervention().getDescription());
+       oi.setName(this.getStudyIntervention().getName());
+    }
 }

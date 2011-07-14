@@ -804,9 +804,7 @@
                                             <fo:table-body>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="5" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">C. SUSPECT
-                                                            PRODUCT(S)
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="black-heading">C. SUSPECT PRODUCT(S)</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="14mm">
@@ -819,19 +817,24 @@
                                                                 labeled strength and mfr/labeler)
                                                             </fo:inline>
                                                         </fo:block>
-                                                        <xsl:for-each
-                                                                select="AdverseEventReport/TreatmentInformation/CourseAgent">
-                                                            <fo:block>
+                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent[1]//attribution">
+                                                            <xsl:sort select="." order="descending"/>
+                                                            <fo:block font-size="6.5pt">
                                                                 <xsl:variable name="iter" select="$iter+1"/>
-                                                                <fo:inline font-size="6.5pt">#
-                                                                    <xsl:number format="1 "/>
-                                                                </fo:inline>
-                                                                <fo:inline font-size="6.5pt">
-                                                                    <xsl:value-of select="StudyAgent/Agent/name"/>
-                                                                    <xsl:value-of select="StudyAgent/otherAgent"/>
-                                                                </fo:inline>
+
+                                                                <xsl:if test="contains(., '3') or contains(.,'4') or contains(.,'5')">
+
+                                                                    #<xsl:number format="1" value="position()"/> -
+                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
+                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
+                                                                    <xsl:value-of select="../SurgeryIntervention/OtherIntervention/name"/>
+                                                                    <xsl:value-of select="../RadiationIntervention/OtherIntervention/name"/>
+
+                                                                </xsl:if>
+
                                                             </fo:block>
                                                         </xsl:for-each>
+
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="14mm">
@@ -2940,6 +2943,7 @@
                     disable-output-escaping="yes">&amp;#160;</xsl:text>
         </fo:block>
     </xsl:template>
+
 
 
     <xsl:template match="AdverseEvent">

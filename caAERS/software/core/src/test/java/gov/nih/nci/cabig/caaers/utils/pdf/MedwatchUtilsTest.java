@@ -40,6 +40,13 @@ public class MedwatchUtilsTest extends TestCase {
         assertEquals("how", s2);
 
 
+        s = "Hello how";
+        s1 = MedwatchUtils.before(s, 80);
+        s2 = MedwatchUtils.after(s, 80);
+
+
+        assertEquals("Hello how", s1);
+        assertEquals("", s2);
     }
 
 

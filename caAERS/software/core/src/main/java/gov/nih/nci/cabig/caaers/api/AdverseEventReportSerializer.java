@@ -4,7 +4,9 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.utils.CaaersSerializerUtil;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -152,7 +154,7 @@ public class AdverseEventReportSerializer {
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation(),notApplicableFieldPaths));
 	    
 	    	//build MedicalDevices
-	    	List<MedicalDevice> medicalDeviceList = hibernateAdverseEventReport.getMedicalDevices();
+	    	List<MedicalDevice> medicalDeviceList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getMedicalDevices());
 
 	    	for (MedicalDevice medicalDevice: medicalDeviceList) {
                 MedicalDevice md = getMedicalDevice(medicalDevice);
@@ -160,7 +162,7 @@ public class AdverseEventReportSerializer {
 	    	}
 	    	
 	    	//	build RadiationInterventions
-	    	List<RadiationIntervention> radiationInterventionList = hibernateAdverseEventReport.getRadiationInterventions();
+	    	List<RadiationIntervention> radiationInterventionList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getRadiationInterventions());
 
 	    	for (RadiationIntervention radiationIntervention: radiationInterventionList) {
                 RadiationIntervention ri = getRadiationIntervention(radiationIntervention);
@@ -168,17 +170,71 @@ public class AdverseEventReportSerializer {
 	    	}
 	   	
 	    	//	build SurgeryInterventions
-	    	List<SurgeryIntervention> surgeryInterventionList = hibernateAdverseEventReport.getSurgeryInterventions();
+	    	List<SurgeryIntervention> surgeryInterventionList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getSurgeryInterventions());
 
 	    	for (SurgeryIntervention surgeryIntervention: surgeryInterventionList) {
                 SurgeryIntervention si = getSurgeryIntervention(surgeryIntervention);
                 if (si != null) aer.addSurgeryIntervention(getSurgeryIntervention(surgeryIntervention));
 	    	}
 
+            //behavioural
+            List<BehavioralIntervention> behavioralInterventions = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getBehavioralInterventions());
+            if(behavioralInterventions != null){
+              for(BehavioralIntervention bi : behavioralInterventions){
+                if(bi != null && bi.getStudyIntervention() != null){
+                    BehavioralIntervention biCopy = new BehavioralIntervention();
+                    bi.copy(biCopy);
+                    aer.addBehavioralIntervention(biCopy);
+                }
+              }
+            }
+
+            //biological
+            List<BiologicalIntervention> biologicalInterventions = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getBiologicalInterventions());
+            if(biologicalInterventions != null){
+                for(BiologicalIntervention bi : biologicalInterventions){
+                    if(bi != null && bi.getStudyIntervention() != null){
+                        BiologicalIntervention biCopy = new BiologicalIntervention();
+                        bi.copy(biCopy);
+                        aer.addBilogicalIntervention(biCopy);
+                    }
+                }
+            }
+
+            //genetic
+            List<GeneticIntervention> geneticInterventions = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getGeneticInterventions());
+            if(geneticInterventions != null){
+                for(GeneticIntervention gi : geneticInterventions){
+                    if(gi != null && gi.getStudyIntervention() != null){
+                        GeneticIntervention giCopy = new GeneticIntervention();
+                        gi.copy(giCopy);
+                        aer.addGeneticIntervention(giCopy);
+                    }
+                }
+            }
+            //dietaries
+            List<DietarySupplementIntervention> dietarySupplementInterventions = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getDietaryInterventions());
+            if(dietarySupplementInterventions != null){
+                for(DietarySupplementIntervention di : dietarySupplementInterventions){
+                    DietarySupplementIntervention diCopy = new DietarySupplementIntervention();
+                    di.copy(diCopy);
+                    aer.addDietarySupplementalIntervention(diCopy);
+                }
+            }
+            //other
+            List<OtherAEIntervention> otherInterventions = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getOtherAEInterventions());
+            if(otherInterventions != null){
+                for(OtherAEIntervention oi : otherInterventions){
+                    OtherAEIntervention oiCopy = new OtherAEIntervention();
+                    oi.copy(oiCopy);
+                    aer.addOtherAEIntervention(oiCopy);
+                }
+            }
+
 	    	aer.setAdditionalInformation(getAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation()));
 
 	    	//build medications
-	    	List<ConcomitantMedication> conMedList = hibernateAdverseEventReport.getConcomitantMedications();
+	    	List<ConcomitantMedication> conMedList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getConcomitantMedications());
 
 	    	for (ConcomitantMedication medication: conMedList) {
 	    		aer.addConcomitantMedication(getConcomitantMedication(medication));
@@ -186,14 +242,14 @@ public class AdverseEventReportSerializer {
 
 
 	    	//build Labs
-	    	List<Lab> labList = hibernateAdverseEventReport.getLabs();
+	    	List<Lab> labList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getLabs());
 
 	    	for (Lab lab: labList) {
 	    		aer.addLab(getLab(lab));
 	    	}
 
 	    	// build AEs
-	    	List<AdverseEvent> aeList = hibernateAdverseEventReport.getAdverseEvents();
+	    	List<AdverseEvent> aeList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getAdverseEvents());
 
 	    	for (int i=0; i<aeList.size(); i++) {
 	    		AdverseEvent ae = (AdverseEvent)aeList.get(i);
@@ -201,28 +257,28 @@ public class AdverseEventReportSerializer {
 	    	}
 
 	    	//build therapies
-	    	List<SAEReportPriorTherapy> thList = hibernateAdverseEventReport.getSaeReportPriorTherapies();
+	    	List<SAEReportPriorTherapy> thList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getSaeReportPriorTherapies());
 
 	    	for (SAEReportPriorTherapy therapy: thList) {
 	    		aer.addSaeReportPriorTherapies(getSAEReportPriorTherapy(therapy));
 	    	}
 
 	    	//Build pre existing conditions
-	    	List<SAEReportPreExistingCondition> peList = hibernateAdverseEventReport.getSaeReportPreExistingConditions();
+	    	List<SAEReportPreExistingCondition> peList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getSaeReportPreExistingConditions());
 
 	    	for (SAEReportPreExistingCondition pe: peList) {
 	    		aer.addSaeReportPreExistingCondition(getSAEReportPreExistingCondition(pe));
 	    	}
 
 	    	//Build other causes
-	    	List<OtherCause> ocList = hibernateAdverseEventReport.getOtherCauses();
+	    	List<OtherCause> ocList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getOtherCauses());
 
 	    	for (OtherCause oc: ocList) {
 	    		aer.addOtherCause(getOtherCause(oc));
 	    	}
 	    	
 	    	//Build reports
-	    	List<Report> reports = hibernateAdverseEventReport.getReports();
+	    	List<Report> reports = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getReports());
 	    	for (Report report: reports) {
 	    		if (reportId > 0 ) {
 	    			// generate report data only for selected report (when submitting to AdEERS)
@@ -423,6 +479,9 @@ public class AdverseEventReportSerializer {
 		   return s;
 		   
 	   }
+
+
+
 	   
 	   private MedicalDevice getMedicalDevice(MedicalDevice medicalDevice) throws Exception {
            if (medicalDevice.getStudyDevice() == null) return null;
@@ -616,7 +675,7 @@ public class AdverseEventReportSerializer {
                 if (!notApplicableFieldPaths.contains("diseaseHistory.abstractStudyDisease"))
 		    	    diseaseHistory.setAbstractStudyDisease(dh.getAbstractStudyDisease());
                 
-		    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
+		    	List<MetastaticDiseaseSite> mdsList = CaaersSerializerUtil.filter(dh.getMetastaticDiseaseSites());
 	
 		    	for (MetastaticDiseaseSite site: mdsList) {
 		    		diseaseHistory.addMetastaticDiseaseSite(site);
@@ -797,6 +856,11 @@ public class AdverseEventReportSerializer {
 		    	adverseEvent.setSurgeryAttributions(ae.getSurgeryAttributions());
 		    	adverseEvent.setRadiationAttributions(ae.getRadiationAttributions());
 		    	adverseEvent.setDeviceAttributions(ae.getDeviceAttributions());
+                adverseEvent.setOtherInterventionAttributions(null);
+                adverseEvent.setBehavioralInterventionAttributions(null);
+                adverseEvent.setBiologicalInterventionAttributions(null);
+                adverseEvent.setGeneticInterventionAttributions(null);
+                adverseEvent.setDietarySupplementInterventionAttributions(null);
 	
 	
 				if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
@@ -914,7 +978,7 @@ public class AdverseEventReportSerializer {
 			    	treatmentInformation.setTreatmentAssignment(taNew);
 		    	}
 	
-		    	List<CourseAgent> caList = trtInf.getCourseAgents();
+		    	List<CourseAgent> caList = CaaersSerializerUtil.filter(trtInf.getCourseAgents());
 	
 		    	for (CourseAgent ca: caList) {
 		    		CourseAgent ca1 = new CourseAgent();
@@ -969,6 +1033,7 @@ public class AdverseEventReportSerializer {
 			return mappingFile;
 		}
 
+
 //		public void setMappingFile(String mappingFile) {
 	//		this.mappingFile = mappingFile;
 		//}
@@ -1014,5 +1079,6 @@ public class AdverseEventReportSerializer {
 
 
 		}
+
 
 }

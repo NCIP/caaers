@@ -485,6 +485,75 @@
     </field> 
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.BehavioralIntervention">
+      <map-to xml="BehavioralIntervention"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element"/>
+    </field>
+    <field name="studyIntervention" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+  </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.GeneticIntervention">
+      <map-to xml="GeneticIntervention"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element"/>
+    </field>
+    <field name="studyIntervention" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+  </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.BiologicalIntervention">
+      <map-to xml="BiologicalIntervention"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element"/>
+    </field>
+    <field name="studyIntervention" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+  </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.attribution.OtherAEIntervention">
+      <map-to xml="OtherAEIntervention"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element"/>
+    </field>
+    <field name="studyIntervention" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+  </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.attribution.DietarySupplementIntervention">
+      <map-to xml="DietarySupplementIntervention"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element"/>
+    </field>
+    <field name="studyIntervention" type="gov.nih.nci.cabig.caaers.domain.OtherIntervention">
+      <bind-xml name="OtherIntervention"/>
+    </field>
+  </class>
+
   <class name="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention">
     <map-to xml="SurgeryIntervention"/>
 
@@ -865,8 +934,51 @@
        
   </class>
 
+    <class name="gov.nih.nci.cabig.caaers.domain.attribution.GeneticInterventionAttribution"
+      extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+      <map-to xml="GeneticInterventionAttribution"/>
+      <field name="cause" type="gov.nih.nci.cabig.caaers.domain.GeneticIntervention">
+        <bind-xml name="GeneticIntervention"/>
+      </field>
+    </class>
 
- 
+    <class name="gov.nih.nci.cabig.caaers.domain.attribution.BiologicalInterventionAttribution"
+      extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+      <map-to xml="BiologicalInterventionAttribution"/>
+      <field name="cause" type="gov.nih.nci.cabig.caaers.domain.BiologicalIntervention">
+        <bind-xml name="BiologicalIntervention"/>
+      </field>
+    </class>
+
+
+    <class name="gov.nih.nci.cabig.caaers.domain.attribution.BehavioralInterventionAttribution"
+      extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+      <map-to xml="BehavioralInterventionAttribution"/>
+      <field name="cause" type="gov.nih.nci.cabig.caaers.domain.BehavioralIntervention">
+        <bind-xml name="BehavioralIntervention"/>
+      </field>
+    </class>
+
+
+    <class name="gov.nih.nci.cabig.caaers.domain.attribution.DietarySupplementInterventionAttribution"
+      extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+      <map-to xml="DietarySupplementInterventionAttribution"/>
+      <field name="cause" type="gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention">
+        <bind-xml name="DietarySupplementIntervention"/>
+      </field>
+    </class>
+
+
+    <class name="gov.nih.nci.cabig.caaers.domain.attribution.OtherInterventionAttribution"
+      extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+      <map-to xml="OtherInterventionAttribution"/>
+      <field name="cause" type="gov.nih.nci.cabig.caaers.domain.OtherAEIntervention">
+        <bind-xml name="OtherAEIntervention"/>
+      </field>
+    </class>
+
+
+
 
     <class name="gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution"
       extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
@@ -1564,7 +1676,6 @@
         <bind-xml name="studyTherapyType"/>
        </field>
    </class>
-
 
   <class name="gov.nih.nci.cabig.caaers.domain.StudyTherapyType" verify-constructable="false">
     <map-to xml="StudyTherapyType" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>

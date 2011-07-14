@@ -8,6 +8,7 @@ import org.apache.xpath.XPathAPI;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.traversal.NodeIterator;
 
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,7 +29,9 @@ import java.io.StringWriter;
 public class MedwatchUtils {
 
     protected static final Log log = LogFactory.getLog(MedwatchUtils.class);
-    
+
+
+
     public static int possibleElements(NodeList nodes , int n , String commaSeperatedXPath){
 
         if(nodes == null || nodes.getLength() == 0) return 1;

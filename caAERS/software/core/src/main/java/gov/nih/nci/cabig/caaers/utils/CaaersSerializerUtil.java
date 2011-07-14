@@ -3,7 +3,11 @@ package gov.nih.nci.cabig.caaers.utils;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import gov.nih.nci.cabig.caaers.domain.Retireable;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,4 +80,23 @@ public class CaaersSerializerUtil {
 			}
 		}
 	}
+
+    /**
+     * Will filter off retired objects from teh input l
+     * @param l
+     * @param <T>
+     * @return
+     */
+    public static <T extends DomainObject> List<T> filter(List<T> l){
+        if( l == null) return l;
+        List<T> l2 = new ArrayList<T>(l.size());
+        for(T t : l){
+            if(t instanceof Retireable){
+                if( ((Retireable) t).isRetired()) continue;
+            }
+            l2.add(t);
+        }
+        return l2;
+    }
+    
 }
