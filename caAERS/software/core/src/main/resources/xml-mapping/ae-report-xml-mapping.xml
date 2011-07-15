@@ -52,6 +52,27 @@
       collection="arraylist">
       <bind-xml name="SurgeryIntervention"/>
     </field>
+    <field name="biologicalInterventions" type="gov.nih.nci.cabig.caaers.domain.BiologicalIntervention"
+      collection="arraylist">
+      <bind-xml name="BiologicalIntervention"/>
+    </field>
+    <field name="behavioralInterventions" type="gov.nih.nci.cabig.caaers.domain.BehavioralIntervention"
+      collection="arraylist">
+      <bind-xml name="BehavioralIntervention"/>
+    </field>
+      <field name="dietarySupplementInterventions" type="gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention"
+        collection="arraylist">
+        <bind-xml name="DietarySupplementIntervention"/>
+      </field>
+      <field name="geneticInterventions" type="gov.nih.nci.cabig.caaers.domain.GeneticIntervention"
+        collection="arraylist">
+        <bind-xml name="GeneticIntervention"/>
+      </field>
+      <field name="otherAEInterventions" type="gov.nih.nci.cabig.caaers.domain.OtherAEIntervention"
+        collection="arraylist">
+        <bind-xml name="OtherAEIntervention"/>
+      </field>
+
     <field name="medicalDevices" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice"
       collection="arraylist">
       <bind-xml name="MedicalDevice"/>
@@ -902,6 +923,27 @@
       type="gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution" collection="arraylist">
       <bind-xml name="DeviceAttribution"/>
     </field>
+     <field name="behavioralInterventionAttributions"
+      type="gov.nih.nci.cabig.caaers.domain.attribution.BehavioralInterventionAttribution" collection="arraylist">
+      <bind-xml name="BehavioralInterventionAttribution"/>
+    </field>
+    <field name="biologicalInterventionAttributions"
+      type="gov.nih.nci.cabig.caaers.domain.attribution.BiologicalInterventionAttribution" collection="arraylist">
+      <bind-xml name="BiologicalInterventionAttribution"/>
+    </field>
+      <field name="otherInterventionAttributions"
+        type="gov.nih.nci.cabig.caaers.domain.attribution.OtherInterventionAttribution" collection="arraylist">
+        <bind-xml name="OtherInterventionAttribution"/>
+      </field>
+          <field name="geneticInterventionAttributions"
+      type="gov.nih.nci.cabig.caaers.domain.attribution.GeneticInterventionAttribution" collection="arraylist">
+      <bind-xml name="GeneticInterventionAttribution"/>
+    </field>
+      <field name="dietarySupplementInterventionAttributions"
+        type="gov.nih.nci.cabig.caaers.domain.attribution.DietarySupplementInterventionAttribution" collection="arraylist">
+        <bind-xml name="DietarySupplementInterventionAttribution"/>
+      </field>
+
     <field name="adverseEventCtcTerm" type="gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm">
       <bind-xml name="AdverseEventCtcTerm"/>
     </field>
