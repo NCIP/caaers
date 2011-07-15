@@ -60,7 +60,7 @@
       collection="arraylist">
       <bind-xml name="BehavioralIntervention"/>
     </field>
-      <field name="dietarySupplementInterventions" type="gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention"
+      <field name="dietaryInterventions" type="gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention"
         collection="arraylist">
         <bind-xml name="DietarySupplementIntervention"/>
       </field>
