@@ -824,7 +824,8 @@
 
                                                                 <xsl:if test="contains(., '3') or contains(.,'4') or contains(.,'5')">
 
-                                                                    #<xsl:number format="1" value="position()"/> -
+                                                                    #<xsl:number format="1" value="position()"/>
+                                                                     <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
                                                                     <xsl:value-of select="../SurgeryIntervention/OtherIntervention/name"/>
