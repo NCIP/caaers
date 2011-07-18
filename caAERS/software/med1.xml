@@ -601,6 +601,96 @@
                 </OtherIntervention>
             </RadiationIntervention>
         </RadiationAttribution>
+        <BehavioralInterventionAttribution>
+            <id>1261</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <BehavioralIntervention>
+                <id>2</id>
+                <description>beh-01</description>
+                <OtherIntervention>
+                    <id>29</id>
+                    <name>beh-01</name>
+                    <description>beh-01</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">BEHAVIORAL
+                    </studyTherapyType>
+                </OtherIntervention>
+            </BehavioralIntervention>
+        </BehavioralInterventionAttribution>
+        <BiologicalInterventionAttribution>
+            <id>1262</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <BiologicalIntervention>
+                <id>2</id>
+                <description>Bio-01</description>
+                <OtherIntervention>
+                    <id>30</id>
+                    <name>Bio-01</name>
+                    <description>Bio-01</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">BIOLOGICAL_VACCINE
+                    </studyTherapyType>
+                </OtherIntervention>
+            </BiologicalIntervention>
+        </BiologicalInterventionAttribution>
+        <OtherInterventionAttribution>
+            <id>1265</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <OtherAEIntervention>
+                <id>3</id>
+                <description>Other-02</description>
+                <OtherIntervention>
+                    <id>33</id>
+                    <name>Other-02</name>
+                    <description>Other-02</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">OTHER
+                    </studyTherapyType>
+                </OtherIntervention>
+            </OtherAEIntervention>
+        </OtherInterventionAttribution>
+        <GeneticInterventionAttribution>
+            <id>1264</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <GeneticIntervention>
+                <id>2</id>
+                <description>Gen-01</description>
+                <OtherIntervention>
+                    <id>31</id>
+                    <name>Gen-01</name>
+                    <description>Gen-01</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">GENETIC
+                    </studyTherapyType>
+                </OtherIntervention>
+            </GeneticIntervention>
+        </GeneticInterventionAttribution>
+        <DietarySupplementInterventionAttribution>
+            <id>1263</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <DietarySupplementIntervention>
+                <id>2</id>
+                <description>Die-02</description>
+                <OtherIntervention>
+                    <id>32</id>
+                    <name>Die-02</name>
+                    <description>Die-02</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DIETARY_SUPPLEMENT
+                    </studyTherapyType>
+                </OtherIntervention>
+            </DietarySupplementIntervention>
+        </DietarySupplementInterventionAttribution>
         <AdverseEventCtcTerm other-required="false" med-dRA="false">
             <ctc-term>
                 <id>4318</id>
@@ -757,6 +847,96 @@
                 </OtherIntervention>
             </RadiationIntervention>
         </RadiationAttribution>
+        <BehavioralInterventionAttribution>
+            <id>1268</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <BehavioralIntervention>
+                <id>2</id>
+                <description>beh-01</description>
+                <OtherIntervention>
+                    <id>29</id>
+                    <name>beh-01</name>
+                    <description>beh-01</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">BEHAVIORAL
+                    </studyTherapyType>
+                </OtherIntervention>
+            </BehavioralIntervention>
+        </BehavioralInterventionAttribution>
+        <BiologicalInterventionAttribution>
+            <id>1269</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+                Probable
+            </attribution>
+            <BiologicalIntervention>
+                <id>2</id>
+                <description>Bio-01</description>
+                <OtherIntervention>
+                    <id>30</id>
+                    <name>Bio-01</name>
+                    <description>Bio-01</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">BIOLOGICAL_VACCINE
+                    </studyTherapyType>
+                </OtherIntervention>
+            </BiologicalIntervention>
+        </BiologicalInterventionAttribution>
+        <OtherInterventionAttribution>
+            <id>1272</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+                Probable
+            </attribution>
+            <OtherAEIntervention>
+                <id>3</id>
+                <description>Other-02</description>
+                <OtherIntervention>
+                    <id>33</id>
+                    <name>Other-02</name>
+                    <description>Other-02</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">OTHER
+                    </studyTherapyType>
+                </OtherIntervention>
+            </OtherAEIntervention>
+        </OtherInterventionAttribution>
+        <GeneticInterventionAttribution>
+            <id>1271</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+                Probable
+            </attribution>
+            <GeneticIntervention>
+                <id>2</id>
+                <description>Gen-01</description>
+                <OtherIntervention>
+                    <id>31</id>
+                    <name>Gen-01</name>
+                    <description>Gen-01</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">GENETIC
+                    </studyTherapyType>
+                </OtherIntervention>
+            </GeneticIntervention>
+        </GeneticInterventionAttribution>
+        <DietarySupplementInterventionAttribution>
+            <id>1270</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+                Possible
+            </attribution>
+            <DietarySupplementIntervention>
+                <id>2</id>
+                <description>Die-02</description>
+                <OtherIntervention>
+                    <id>32</id>
+                    <name>Die-02</name>
+                    <description>Die-02</description>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DIETARY_SUPPLEMENT
+                    </studyTherapyType>
+                </OtherIntervention>
+            </DietarySupplementIntervention>
+        </DietarySupplementInterventionAttribution>
         <AdverseEventCtcTerm other-required="false" med-dRA="false">
             <ctc-term>
                 <id>4309</id>

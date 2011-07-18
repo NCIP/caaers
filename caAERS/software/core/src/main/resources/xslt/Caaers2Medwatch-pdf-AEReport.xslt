@@ -17,6 +17,7 @@
     <xsl:variable name="_lbPossible" select="number(3)" />
      <xsl:variable name="_aePossible" select="number(3)" />
      <xsl:variable name="_cmPossible" select="number(4)" />
+     <xsl:variable name="_attPossible" select="number(4)" />
      <xsl:variable name="_cmdPossible" select="number(3)" />
      <xsl:variable name="_tacPossible" select="number(90)" />
      <xsl:variable name="_edPossible" select="number(300)" />
@@ -32,6 +33,8 @@
     <xsl:variable name="_cmCount" select="count(AdverseEventReport/ConcomitantMedication)" />
     <xsl:variable name="_cmdCount" select="count(AdverseEventReport/ConcomitantMedication)" />
     <xsl:variable name="_mdCount" select="count(AdverseEventReport/MedicalDevice)" />
+    <xsl:variable name="_attCount" select="count(AdverseEventReport/AdverseEvent[1]//attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
+
 
     <xsl:variable name="_aeContinue" select="$_aeCount &gt;= $_aePossible" />
     <xsl:variable name="_preCondContinue" select="$_pcCount &gt;= $_pcPossible" />
@@ -40,7 +43,7 @@
     <xsl:variable name="_lbContinue" select="$_lbCount &gt;= $_lbPossible" />
     <xsl:variable name="_cmContinue" select="$_cmCount &gt;= $_cmPossible" />
     <xsl:variable name="_cmdContinue" select="$_cmdCount &gt;= $_cmdPossible" />
-
+    <xsl:variable name="_attContinue" select="$_attCount &gt;= $_attPossible" />
 
     <xsl:variable name="_tacContinue" select="mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, $_tacPossible) != '' or
     mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible) != ''"></xsl:variable>
@@ -50,7 +53,7 @@
     <xsl:variable name="_cTenContinue" select="$_cmContinue or $_ptContinue or $_cmContinue" />
     <xsl:variable name="_bSevenContinue" select="$_preCondContinue or $_ptContinue or $_msdsContinue" />
     <xsl:variable name="_bFiveContinue" select="$_aeContinue or $_edContinue" />
-    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bSevenContinue or $_lbContinue or $_bFiveContinue or $_cTenContinue" />
+    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bSevenContinue or $_lbContinue or $_bFiveContinue or $_cTenContinue or $_attContinue" />
 
 
     <xsl:attribute-set name="tr-height-1">
@@ -820,21 +823,25 @@
                                                         <xsl:for-each select="/AdverseEventReport/AdverseEvent[1]//attribution">
                                                             <xsl:sort select="." order="descending"/>
                                                             <fo:block font-size="6.5pt">
-                                                                <xsl:variable name="iter" select="$iter+1"/>
 
-                                                                <xsl:if test="contains(., '3') or contains(.,'4') or contains(.,'5')">
-
+                                                                <xsl:if test="(position() &lt;= $_attPossible) and (contains(., '3') or contains(.,'4') or contains(.,'5'))">
+                                                                    
                                                                     #<xsl:number format="1" value="position()"/>
                                                                      <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
-                                                                    <xsl:value-of select="../SurgeryIntervention/OtherIntervention/name"/>
-                                                                    <xsl:value-of select="../RadiationIntervention/OtherIntervention/name"/>
+                                                                    <xsl:value-of select="..//OtherIntervention/name"/>
 
                                                                 </xsl:if>
 
                                                             </fo:block>
+
                                                         </xsl:for-each>
+                                                         <xsl:if test="$_attContinue = true()">
+                                                            <fo:block text-align="right" xsl:use-attribute-sets="normal">
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
+                                                            </fo:block>
+                                                        </xsl:if>
 
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -2755,6 +2762,38 @@
                                                 <!-- end prior therapy -->
                                             </fo:table-cell>
                                         </fo:table-row>
+                                    </xsl:if>
+                                        <!-- Intervention continue -->
+                                        <xsl:if test="$_attContinue = true()">
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block xsl:use-attribute-sets="label" font-style="italic" background-color='silver'>C. 1. Continued...</fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent[1]//attribution">
+                                                            <xsl:sort select="." order="descending"/>
+                                                            <fo:block font-size="6.5pt">
+
+                                                                <xsl:if test="($_attPossible &lt; position() ) and (contains(., '3') or contains(.,'4') or contains(.,'5'))">
+
+                                                                    #<xsl:number format="1" value="position()"/>
+                                                                     <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
+                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
+                                                                    <xsl:value-of select="..//OtherIntervention/name"/>
+
+                                                                </xsl:if>
+
+                                                            </fo:block>
+
+                                                        </xsl:for-each>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                        </xsl:if>
+                                        <!--Intervention econtinue (End) -->
+
                                         <!-- tac -->
                                         <xsl:if test="$_tacContinue = true()">
                                             <fo:table-row>
@@ -2794,7 +2833,6 @@
                                             </fo:table-row>
                                         </xsl:if>
                                         <!-- end conmed -->
-                                    </xsl:if>
 
                                 </fo:table-body>
                             </fo:table>
