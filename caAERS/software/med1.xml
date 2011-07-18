@@ -451,6 +451,46 @@
             <description>biju surgery</description>
         </OtherIntervention>
     </SurgeryIntervention>
+    <BiologicalIntervention>
+        <id>2</id>
+        <description>Bio-01</description>
+        <OtherIntervention>
+            <name>Bio-01</name>
+            <description>Bio-01</description>
+        </OtherIntervention>
+    </BiologicalIntervention>
+    <BehavioralIntervention>
+        <id>2</id>
+        <description>beh-01</description>
+        <OtherIntervention>
+            <name>beh-01</name>
+            <description>beh-01</description>
+        </OtherIntervention>
+    </BehavioralIntervention>
+    <DietarySupplementIntervention>
+        <id>2</id>
+        <description>Die-02</description>
+        <OtherIntervention>
+            <name>Die-02</name>
+            <description>Die-02</description>
+        </OtherIntervention>
+    </DietarySupplementIntervention>
+    <GeneticIntervention>
+        <id>2</id>
+        <description>Gen-01</description>
+        <OtherIntervention>
+            <name>Gen-01</name>
+            <description>Gen-01</description>
+        </OtherIntervention>
+    </GeneticIntervention>
+    <OtherAEIntervention>
+        <id>3</id>
+        <description>Other-02</description>
+        <OtherIntervention>
+            <name>Other-02</name>
+            <description>Other-02</description>
+        </OtherIntervention>
+    </OtherAEIntervention>
     <AdverseEvent>
         <gridId>PRYbfccde1d-4802-4899-9efd-19aae7ca22ce</gridId>
         <startDate>2011-03-03T00:00:00.000-05:00</startDate>

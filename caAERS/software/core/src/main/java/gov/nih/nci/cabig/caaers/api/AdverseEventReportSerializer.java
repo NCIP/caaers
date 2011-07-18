@@ -856,11 +856,11 @@ public class AdverseEventReportSerializer {
 		    	adverseEvent.setSurgeryAttributions(ae.getSurgeryAttributions());
 		    	adverseEvent.setRadiationAttributions(ae.getRadiationAttributions());
 		    	adverseEvent.setDeviceAttributions(ae.getDeviceAttributions());
-                adverseEvent.setOtherInterventionAttributions(null);
-                adverseEvent.setBehavioralInterventionAttributions(null);
-                adverseEvent.setBiologicalInterventionAttributions(null);
-                adverseEvent.setGeneticInterventionAttributions(null);
-                adverseEvent.setDietarySupplementInterventionAttributions(null);
+                adverseEvent.setOtherInterventionAttributions(ae.getOtherInterventionAttributions());
+                adverseEvent.setBehavioralInterventionAttributions(ae.getBehavioralInterventionAttributions());
+                adverseEvent.setBiologicalInterventionAttributions(ae.getBiologicalInterventionAttributions());
+                adverseEvent.setGeneticInterventionAttributions(ae.getGeneticInterventionAttributions());
+                adverseEvent.setDietarySupplementInterventionAttributions(ae.getDietarySupplementInterventionAttributions());
 	
 	
 				if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
