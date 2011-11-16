@@ -44,8 +44,10 @@
 		<antcall target="build-ccts-grid-services" inheritAll="true" inheritRefs="true"/>
 		
 		<!-- Then build caAERS's own NES grid services -->
+		<!--
 		<antcall target="build-sres-service" inheritAll="true" inheritRefs="true"/>
 		<antcall target="build-aees-service" inheritAll="true" inheritRefs="true"/>
+		-->
 	</target>
 	
 	<target name="build-sres-service" unless="skip.sres">
@@ -103,6 +105,7 @@
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
 		</subant>
+		<!--
 		<subant target="deployTomcat">
 				<property name="globus.webapp" value="${wsrf}"/>
 				<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
@@ -113,12 +116,15 @@
 				<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 				<fileset dir="${sres.nes.service.dir}" includes="build.xml"/>
 		</subant>
+		-->
 		<copy todir="${wsrf-root}/WEB-INF/lib" verbose="true">
 	        <fileset dir="${parent.dir}/grid/registration-consumer/build/dist" includes="caaers-registration-consumer.jar"/>
 			<fileset dir="${parent.dir}/grid/study-consumer/build/dist" includes="caaers-study-consumer.jar"/>
 			<fileset dir="${parent.dir}/grid/lab-consumer/build/dist" includes="caaers-lab-consumer.jar"/>
+			<!--
 			<fileset dir="${parent.dir}/grid/ess-ae/build/dist" includes="caaers-ess-ae.jar"/>
 			<fileset dir="${parent.dir}/grid/ess-sr/build/dist" includes="caaers-ess-sr.jar"/>
+			-->
 	    </copy> 
 		
 		<antcall target="resolve-dist" />

@@ -25,7 +25,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
         <param-name>webAppRootKey</param-name>
         <param-value>wsrfcaaers.root</param-value>
     </context-param>
-    
+ <!--    
 	<context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -36,7 +36,16 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 				classpath:applicationContext-nes-sr.xml
         </param-value>
     </context-param>
-
+ -->
+ 	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+				classpath:applicationContext-grid.xml
+                classpath:applicationContext-lab.xml
+				classpath:applicationContext-studyConsumer-grid.xml
+        </param-value>
+    </context-param>
+ 
     <context-param>
         <param-name>beringContextConfigLocation</param-name>
         <param-value>
