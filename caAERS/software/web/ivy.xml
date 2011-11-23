@@ -55,7 +55,7 @@
             <exclude org="dom4j" />
             <exclude org="asm" name="asm" rev="1.3.4" />
 			<exclude org="cglib" name="cglib"  />
-			<dependency org="ehcache"/>             
+			<exclude org="ehcache"/>             
 
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />

@@ -70,7 +70,7 @@
             
             <exclude org="asm" name="asm" rev="1.3.4" />
 			<exclude org="cglib" name="cglib"  />
-			<dependency org="ehcache"/>
+			<exclude org="ehcache"/>
             
 			<!--  <exclude conf="runtime,dist,distGrid" module="c3p0"/>  -->
 
