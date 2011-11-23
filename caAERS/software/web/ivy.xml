@@ -52,7 +52,10 @@
             <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
             <exclude org="pull-parser" conf="default,publish,dist,distGrid,compile,runtime" />
             <exclude name="*pull-parser*" conf="compile,runtime,default,master,dist,distGrid,publish" />
-             <exclude org="dom4j" />
+            <exclude org="dom4j" />
+            <exclude org="asm" name="asm" rev="1.3.4" />
+			<exclude org="cglib" name="cglib"  />
+			<dependency org="ehcache"/>             
 
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
