@@ -37,7 +37,8 @@
         	<exclude conf="runtime,dist,distGrid" name="servlet-api"  />
             <exclude org="net.sf.hibernate" />
         	<exclude conf="*" name="asm-1*" />
-        	<exclude org="objectweb" module="asm" conf="*"/>
+        	<exclude org="objectweb"  conf="*"/>
+        	<exclude org="objectweb" name="asm" conf="*" rev="1.3.4"/>
         	<exclude org="org.objectweb" module="asm" conf="*"/>
         	<exclude conf="distGrid" org="bouncycastle" name="bouncycastle-jce-jdk13" />
 			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
