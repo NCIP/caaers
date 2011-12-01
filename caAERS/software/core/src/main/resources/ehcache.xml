@@ -295,8 +295,8 @@
            maxElementsInMemory="5000"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
-           timeToIdleSeconds="1200"
-           timeToLiveSeconds="1200"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            diskPersistent="true"
            overflowToDisk="false"/>
 
@@ -304,8 +304,8 @@
            maxElementsInMemory="15000"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
-           timeToIdleSeconds="1200"
-           timeToLiveSeconds="1200"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            diskPersistent="true"
            overflowToDisk="false"/>
 
@@ -313,8 +313,8 @@
            maxElementsInMemory="1000000"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
-           timeToIdleSeconds="1200"
-           timeToLiveSeconds="1200"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            diskPersistent="true"
            overflowToDisk="false"/>
 
@@ -322,8 +322,8 @@
            maxElementsInMemory="500"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
-           timeToIdleSeconds="1200"
-           timeToLiveSeconds="1200"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            diskPersistent="true"
            overflowToDisk="false"/>
 
@@ -331,8 +331,8 @@
            maxElementsInMemory="10"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
-           timeToIdleSeconds="1200"
-           timeToLiveSeconds="1200"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            diskPersistent="true"
            overflowToDisk="false"/>
 
@@ -340,8 +340,8 @@
            maxElementsInMemory="500"
            eternal="true"
            memoryStoreEvictionPolicy="LRU"
-           timeToIdleSeconds="1200"
-           timeToLiveSeconds="1200"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            diskPersistent="true"
            overflowToDisk="false"/>
 
