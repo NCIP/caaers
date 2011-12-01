@@ -71,7 +71,7 @@ public class PersonAssignee extends Assignee {
 	 * @return the investigator
 	 */
 	@ManyToOne
-    @JoinColumn(name = "investigator_id")
+    @JoinColumn(name = "investigator_id", referencedColumnName = "id")
 	public Investigator getInvestigator() {
 		return investigator;
 	}
@@ -91,7 +91,7 @@ public class PersonAssignee extends Assignee {
 	 * @return the research staff
 	 */
 	@ManyToOne
-    @JoinColumn(name = "researchstaff_id")
+    @JoinColumn(name = "researchstaff_id", referencedColumnName = "id")
 	public ResearchStaff getResearchStaff() {
 		return researchStaff;
 	}

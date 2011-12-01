@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import org.hibernate.annotations.Parameter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;

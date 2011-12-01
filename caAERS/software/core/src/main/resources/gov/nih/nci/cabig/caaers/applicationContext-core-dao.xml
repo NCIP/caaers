@@ -455,7 +455,7 @@ This applicationContext contains the definition of the DAOs
 
                 <!-- caching -->
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
-                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.SingletonEhCacheProvider</prop>
 
             </props>
         </property>

@@ -8,6 +8,7 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import org.hibernate.annotations.Parameter;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,7 @@ import java.util.List;
 @GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
 public abstract class Investigator extends Person {
 	
-	/** The id. */
-	protected Integer id;
+
 	
 	/** The nci identifier. */
 	protected String nciIdentifier;
@@ -63,22 +63,7 @@ public abstract class Investigator extends Person {
         // register with lazy list helper study site.
         lazyListHelper.add(SiteInvestigator.class, new SiteInvestigatorFactory(this));
     }
-    
-    /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject#getId()
-     */
-    @Id 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="id-generator")
-    public Integer getId() {
-        return id;
-    }
-
-    /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject#setId(java.lang.Integer)
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+   
     
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.Person#getCaaersUser()

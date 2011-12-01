@@ -173,7 +173,7 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
                 return null;
             }
 
-            Map<String, Validator> validatorClasses = applicationContext.getBeansOfType(validatorClass.value());
+            Map<String, Validator> validatorClasses = ( Map<String, Validator>) applicationContext.getBeansOfType(validatorClass.value());
             if (validatorClasses != null && !validatorClasses.isEmpty()) {
                 Validator validator = validatorClasses.get(validatorClasses.keySet().iterator().next());
                 validator.initialize(annotation);

@@ -75,9 +75,7 @@
     </property>
   </bean>
   
-  <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
-    <property name="collectionClass" value="java.util.concurrent.CopyOnWriteArraySet" />
-  </bean>
+  <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster" />
     
   <bean id="eventFactory" class="gov.nih.nci.cabig.caaers.event.EventFactory" />  
     

@@ -338,6 +338,7 @@
             <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
                 <property name="cacheManager" ref="cacheManager"/>
                 <property name="cacheName" value="userCache"/>
+                <property name="overflowToDisk" value="false" />
             </bean>
         </property>
     </bean>

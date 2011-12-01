@@ -59,7 +59,7 @@ public class CSMCacheManager {
 	public static void addProtectionGroupRoleContextToCache(String cacheKey , String loginId , Set<ProtectionGroupRoleContext> protectionGroupRoleContexts) {
 		CacheManager cacheManager = getCacheManager();
 		if (cacheManager.getCache(cacheKey) == null) {
-			Cache cache = new Cache (cacheKey,0,true,false,TIME_TO_LIVEINCACHE_INSECONDS,IDLE_TIME_INSECONDS);
+			Cache cache = new Cache (cacheKey,0,false,false,TIME_TO_LIVEINCACHE_INSECONDS,IDLE_TIME_INSECONDS);
 			cacheManager.addCache(cache);
 			cacheManager.getCache(cacheKey).put(new Element(loginId+"_"+PROTECTION_GROUP_ROLE_CONTEXT , protectionGroupRoleContexts));
 		} else {
@@ -76,7 +76,7 @@ public class CSMCacheManager {
 	public static void addProtectionElementPrivilegeContextToCache(String cacheKey , String loginId , Set<ProtectionElementPrivilegeContext> protectionElementPrivilegeContexts) {
 		CacheManager cacheManager = getCacheManager();
 		if (cacheManager.getCache(cacheKey) == null) {
-			Cache cache = new Cache (cacheKey,0,true,false,TIME_TO_LIVEINCACHE_INSECONDS,IDLE_TIME_INSECONDS);
+			Cache cache = new Cache (cacheKey,0,false,false,TIME_TO_LIVEINCACHE_INSECONDS,IDLE_TIME_INSECONDS);
 			cacheManager.addCache(cache);
 			cacheManager.getCache(cacheKey).put(new Element(loginId+"_"+PROTECTION_ELEMENT_PRIVILEGE_CONTEXT , protectionElementPrivilegeContexts));
 		} else {
@@ -94,9 +94,7 @@ public class CSMCacheManager {
 		if (cacheManager.getCache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY) == null) {
 			synchronized (cacheManager) {
 				if (cacheManager.getCache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY) == null) {
-					Cache cache = new Cache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY, 0, true,
-							false, TIME_TO_LIVEINCACHE_INSECONDS,
-							IDLE_TIME_INSECONDS);
+					Cache cache = new Cache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY, 0, false, false, TIME_TO_LIVEINCACHE_INSECONDS, IDLE_TIME_INSECONDS);
 					cacheManager.addCache(cache);					
 				}
 			}

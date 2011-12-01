@@ -28,7 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.type.NullableType;
+import org.hibernate.type.IntegerType;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -433,7 +433,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 	                if(query instanceof NativeSQLQuery){
 	                    org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
 	                    setResultSetBoundaries(nativeQuery, firstResult, maxResults);
-	                    Map<String, NullableType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+	                    Map<String, IntegerType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
 	                    for(String key : scalarMap.keySet()){
 	                       nativeQuery.addScalar(key, scalarMap.get(key));
 	                    }

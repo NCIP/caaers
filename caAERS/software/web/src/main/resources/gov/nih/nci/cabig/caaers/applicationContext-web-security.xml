@@ -11,10 +11,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
-    <bean id="authCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean" 
-    	p:cacheManager-ref="cacheManager"/>
-    <bean id="authorizationDecisionCache" class="gov.nih.nci.cabig.caaers.web.tags.csm.AuthorizationDecisionCache"
-    	p:decisionCache-ref="authCache"/>
+    <bean id="authCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean" p:cacheManager-ref="cacheManager" p:overflowToDisk="false" />
+    <bean id="authorizationDecisionCache" class="gov.nih.nci.cabig.caaers.web.tags.csm.AuthorizationDecisionCache" p:decisionCache-ref="authCache"/>
 
 	<!--
 		This map defines rules for filtering granted authorities by FabricatedAuthenticationFilter.  

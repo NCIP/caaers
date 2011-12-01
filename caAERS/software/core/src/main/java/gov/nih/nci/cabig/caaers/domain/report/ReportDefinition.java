@@ -13,6 +13,8 @@ import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
+
+import org.hibernate.annotations.Parameter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.*;

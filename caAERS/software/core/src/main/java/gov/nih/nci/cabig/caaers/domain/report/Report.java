@@ -12,10 +12,12 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
+
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.*;

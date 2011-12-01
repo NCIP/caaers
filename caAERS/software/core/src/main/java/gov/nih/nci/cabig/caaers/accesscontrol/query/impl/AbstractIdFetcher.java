@@ -18,7 +18,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.type.NullableType;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -103,7 +104,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
        AbstractQuery query;
        if(nativeQuery){
          query = new NativeSQLQuery(sql);
-         ((NativeSQLQuery)query).setScalar("id", Hibernate.INTEGER);
+         ((NativeSQLQuery)query).setScalar("id", StandardBasicTypes.INTEGER);
        }else{
            query = new HQLQuery(sql);
        }
@@ -173,7 +174,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 if(query instanceof NativeSQLQuery){
                     org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
-                    Map<String, NullableType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+                    Map<String, IntegerType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
                     for(String key : scalarMap.keySet()){
                        nativeQuery.addScalar(key, scalarMap.get(key));
                     }

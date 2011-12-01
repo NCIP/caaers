@@ -28,65 +28,59 @@
     		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
   		</publications>
 
-        <dependencies>
-
-			<!-- exclusions based on class loading -->
-            <exclude conf="*" name="logkit"  />
-			<exclude conf="*" name="spring-aop"  />
-            <exclude conf="*" name="spring-context"  />
-			<exclude conf="*" name="spring-beans"  />
-			<exclude conf="*" name="spring-core"  />
-			<exclude conf="*" name="spring-dao"  />
-			<exclude conf="*" name="spring-hibernate3"  />
-			<exclude conf="*" name="spring-jdbc"  />
-			<exclude conf="*" name="spring-remoting"  />
-			<exclude conf="*" name="spring-support"  />
-			<exclude conf="*" name="spring-web"  />
-			<exclude conf="*" name="spring-webmvc"  />
-			<exclude conf="runtime,dist,distGrid" module="avalon-framework"  />
-			<exclude conf="runtime,dist,distGrid" module="logkit"  />
-			<exclude conf="dist,distGrid" name="jsp-api" />
-        	<exclude conf="dist,distGrid" module="servlet-api"  />
-        	<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
-            <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
-            <exclude org="pull-parser" />
-            <exclude name="pull-parser" />
-
-            <dependency org="xml-apis"  name="xml-apis" rev="2.0.2" conf="build->default(*);runtime->default(*)" />
+        <dependencies defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)"  >
+            <exclude org="org.springframework" module="spring-dao" />
+            <exclude org="org.springframework" module="spring-support" />
+            <exclude org="org.springframework" module="spring-remoting" />
 
             <!-- Semanticbits Ant related tasks -->
-			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0" conf="build->default(*)"/>
+			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0"/>
 
-			<!--  Spring framework -->
-			<dependency org="org.springframework" name="spring" rev="2.5.6" force="true"
-                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"
-                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+            <!-- CTMS commons dependencies -->
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"   transitive="false" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"   transitive="false" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"   transitive="false" />
 
-        	<dependency org="commons-lang" name="commons-lang" rev="2.4" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+            <!-- apache commons -->
+            <dependency org="commons-lang" name="commons-lang" rev="2.4" />
+            <dependency org="commons-collections" name="commons-collections" rev="3.2.1"/>
 
+            <!-- Spring framework -->
+            <dependency org="org.springframework" name="spring-core" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-beans" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-aop" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-aspects" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-tx" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-jdbc" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-context-support" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-orm" rev="3.0.6.RELEASE"/>
+            <dependency org="org.springframework" name="spring-webmvc" rev="3.0.6.RELEASE"/>
+            <dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"  />
+			
+			<!-- Bean Shell (Spring & Hibernate)-->
+			<dependency org="org.beanshell" name="bsh" rev="2.0b4"/>
+			
+            <!-- ASM dependency (Spring & Hibernate) 2.2.3 -->
+            <dependency org="asm" name="asm-commons" rev="3.2"/>
+            <dependency org="asm" name="asm" rev="3.2"/>
 
-			<!--  dependency on aspectJ -->
-			<dependency org="aspectj" name="aspectjrt" rev="1.5.3" force="true" conf="build->compile(*),runtime(*),master(*)"/>
-			<dependency org="aspectj" name="aspectjweaver" rev="1.5.3" force="true" conf="build->compile(*),runtime(*),master(*)"/>
+            <!-- CGLIB No dependency (needed for Spring)-->
+            <dependency org="cglib" name="cglib-nodep" rev="2.2"/>
+
+            <!--  dependency on aspectJ -->
+			<dependency org="org.aspectj" name="aspectjrt" rev="1.6.12"/>
+			<dependency org="org.aspectj" name="aspectjweaver" rev="1.6.12"/>
 
         	<!-- compile only dependencies -->
         	<dependency org="ant" name="ant" rev="1.6.5" conf="build->master(*)"/>
 
-			<!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"   transitive="false"
-                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"   transitive="false"
-                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"   transitive="false"
-                        conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-            <!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)" />-->
-            <dependency  org="org.slf4j" name="slf4j-simple" rev="1.5.11" force="true" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)" />
-            <dependency org="org.slf4j" name="slf4j-api" rev="1.5.11" force="true" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)" />
 
-            
-            <!-- Testing dependencies -->
-        	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
+            <!-- Logging-->
+            <dependency  org="org.slf4j" name="slf4j-simple" rev="1.6.1" force="true"  />
+            <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" force="true"  />
+
+            <!-- Test -->
+            <dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>
         	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>

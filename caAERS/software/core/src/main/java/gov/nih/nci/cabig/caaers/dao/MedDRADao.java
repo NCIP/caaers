@@ -200,7 +200,7 @@ public class MedDRADao {
     	Map<String, Integer> resultMap = new HashMap<String, Integer>();
     	String sql = "select meddra_code, id from " + table_name + " where version_id = " + version_id;
     	
-    	List<Map> preResult = jdbcTemplate.queryForList(sql);
+    	List<Map<String, Object>> preResult = jdbcTemplate.queryForList(sql);
 		
 		for (Map map : preResult) {
 			String meddra_code = map.get("meddra_code").toString();

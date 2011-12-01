@@ -64,7 +64,7 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
     @SuppressWarnings("unchecked")
 	protected void migrateSuperUsers(CaaersDataMigrationContext context){
     	
-    	List<Map> csmUsers = getCsmUsers("caaers_super_user");
+    	List<Map<String, Object>> csmUsers = getCsmUsers("caaers_super_user");
         if(CollectionUtils.isEmpty(csmUsers)) return;
 
         
@@ -155,7 +155,7 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 		
     	for(String groupName : EXISTING_GROUPS){
     		
-    		List<Map> csmUsers = getCsmUsers(groupName);
+    		List<Map<String, Object>> csmUsers = getCsmUsers(groupName);
     		for (Map map : csmUsers) {
     			String loginName = map.get("login_name").toString();
     			String userId = map.get("user_id").toString();
@@ -204,7 +204,7 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	protected List<Map> getCsmUsers(String groupName){
+	protected List<Map<String, Object>> getCsmUsers(String groupName){
     	
     	String usersSql = "select cu.login_name,cu.user_id " +
 							"from " +
@@ -214,7 +214,7 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 							"cg.group_id = cug.group_id and " +
 							"cg.group_name = '" + groupName + "'";
 
-		List<Map> csmUsers = getJdbcTemplate().queryForList(usersSql);
+    	 List<Map<String, Object>> csmUsers = getJdbcTemplate().queryForList(usersSql);
 		return csmUsers;
     }
     
@@ -223,9 +223,9 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	protected List<Map> getAllCsmUsers(){
+	protected  List<Map<String, Object>> getAllCsmUsers(){
     	String usersSql = "select login_name,user_id from csm_user ";
-    	List<Map> csmUsers = getJdbcTemplate().queryForList(usersSql);
+    	 List<Map<String, Object>> csmUsers = getJdbcTemplate().queryForList(usersSql);
     	return csmUsers;
     }
     
@@ -390,7 +390,7 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 	protected void migrateSiteResearchStaffRole(CaaersDataMigrationContext context){
 
     	for(String groupName : EXISTING_GROUPS){
-    		List<Map> siteResearchStaffRoles = getSiteResearchStaffRoles(groupName);
+    		 List<Map<String, Object>> siteResearchStaffRoles = getSiteResearchStaffRoles(groupName);
     		for(Map map : siteResearchStaffRoles){
 
     			if(StringUtils.equals("caaers_study_cd", groupName)){
@@ -431,12 +431,12 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	protected List<Map> getSiteResearchStaffRoles(String roleCode){
+	protected  List<Map<String, Object>> getSiteResearchStaffRoles(String roleCode){
     	String siteResearchStaffRoleSql = "select start_date,end_date,site_research_staffs_id from site_rs_staff_roles " +
 											"where " +
 											"role_code = '"+roleCode+"'";
 
-		List<Map> siteResearchStaffRoles = getJdbcTemplate().queryForList(siteResearchStaffRoleSql);
+    	 List<Map<String, Object>> siteResearchStaffRoles = getJdbcTemplate().queryForList(siteResearchStaffRoleSql);
 		return siteResearchStaffRoles;
     }
     
@@ -500,7 +500,7 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
 	protected void migrateStudyPersonnelRole(CaaersDataMigrationContext context){
     	for(String groupName : EXISTING_GROUPS){
     		
-    		List<Map> studyPersonnel = getStudyPersonnel(groupName);
+    		 List<Map<String, Object>> studyPersonnel = getStudyPersonnel(groupName);
     		for(Map map : studyPersonnel){
 
     			if(StringUtils.equals("caaers_study_cd", groupName)){
@@ -538,13 +538,13 @@ public class UserDataMigrator extends CaaersDataMigratorTemplate  {
      * @return
      */
     @SuppressWarnings("unchecked")
-	protected List<Map> getStudyPersonnel(String roleCode){
+	protected  List<Map<String, Object>> getStudyPersonnel(String roleCode){
     	String studyPersonnelSql = "select study_sites_id,role_code,retired_indicator,start_date,end_date,site_research_staffs_id " +
 					    			"from study_personnel " +
 					    			"where " +
 					    			"role_code = '"+roleCode+"'";
 
-    	List<Map> studyPersonnel = getJdbcTemplate().queryForList(studyPersonnelSql);
+    	 List<Map<String, Object>> studyPersonnel = getJdbcTemplate().queryForList(studyPersonnelSql);
     	return studyPersonnel;
     }
     

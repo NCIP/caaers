@@ -77,7 +77,7 @@ public abstract class CaaersDataMigratorTemplate implements  CaaersDataMigrator{
         //check the status_code
         String query = "SELECT STATUS_CODE, RUNDATE FROM caaers_bootstrap_log WHERE OPERATION_CODE = " + migratorId();
 
-        List<Map> l = getJdbcTemplate().queryForList(query);
+        List<Map<String, Object>> l = getJdbcTemplate().queryForList(query);
         boolean noDataFound = CollectionUtils.isEmpty(l);
         CaaersDataMigrationContext context = new CaaersDataMigrationContext( isOralceDB(), isPostgresDB());
 

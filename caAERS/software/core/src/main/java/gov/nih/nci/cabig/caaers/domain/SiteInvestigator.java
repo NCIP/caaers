@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import org.hibernate.annotations.Parameter;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

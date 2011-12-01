@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -188,7 +189,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     }
     
     protected final void dumpResults(final String sql) {
-        List<Map<String, String>> rows = new JdbcTemplate(getDataSource()).query(sql,
+        List<Map<String, Object>> rows = new JdbcTemplate(getDataSource()).query(sql,
                         new ColumnMapRowMapper() {
                             @Override
                             protected Object getColumnValue(ResultSet rs, int index)
@@ -202,9 +203,10 @@ public abstract class CaaersDbTestCase extends DbTestCase {
             Map<String, Integer> colWidths = new HashMap<String, Integer>();
             for (String colName : rows.get(0).keySet()) {
                 colWidths.put(colName, colName.length());
-                for (Map<String, String> row : rows) {
-                    colWidths.put(colName, Math.max(colWidths.get(colName), row.get(colName)
-                                    .length()));
+                for (Map<String, Object> row : rows) {
+                    colWidths.put(colName, Math.max(colWidths.get(colName), 
+                    		row.get(colName).toString().length())
+                    		);
                 }
             }
 
@@ -214,9 +216,11 @@ public abstract class CaaersDbTestCase extends DbTestCase {
             }
             dump.append('\n');
 
-            for (Map<String, String> row : rows) {
+            for (Map<String, Object> row : rows) {
                 for (String colName : row.keySet()) {
-                    StringUtils.appendWithPadding(row.get(colName), colWidths.get(colName), false,
+                    StringUtils.appendWithPadding(
+                    					row.get(colName).toString(), 
+                    					colWidths.get(colName), false,
                                     dump);
                     dump.append(" | ");
                 }
@@ -318,6 +322,28 @@ public abstract class CaaersDbTestCase extends DbTestCase {
 		public boolean isUserInRole(String arg0) {
 			// TODO Auto-generated method stub
 			return false;
+		}
+		public Object resolveReference(String arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		public String getHeader(String arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		public Iterator<String> getHeaderNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		public String[] getHeaderValues(String arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		public Iterator<String> getParameterNames() {
+			// TODO Auto-generated method stub
+			return null;
 		}
     }
 }

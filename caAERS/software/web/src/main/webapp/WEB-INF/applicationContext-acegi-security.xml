@@ -209,6 +209,7 @@
     </bean>
     <bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean" lazy-init="true">
         <property name="cacheManager" ref="cacheManager" />
+        <property name="overflowToDisk" value="false" />
         <property name="cacheName">
             <value>ticketCache</value>
         </property>

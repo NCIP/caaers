@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.*;
 
+import org.hibernate.annotations.Parameter;
+
  
 /**
  * 

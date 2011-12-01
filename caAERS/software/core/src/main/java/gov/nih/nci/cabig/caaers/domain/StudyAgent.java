@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
+import org.hibernate.annotations.Parameter;
+
  
 /**
  * This class represents the StudyAgent domain object associated with the Adverse event report.
