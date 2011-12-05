@@ -99,8 +99,8 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
      *
      * @return the study agent ind associations
      */
-    @OneToMany(mappedBy = "investigationalNewDrug")
-    @Cascade( { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "investigationalNewDrug", orphanRemoval = true)
+    @Cascade( { CascadeType.DELETE  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
         return studyAgentINDAssociations;

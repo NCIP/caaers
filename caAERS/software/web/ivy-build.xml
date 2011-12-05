@@ -10,7 +10,7 @@
 	 -->
 	
 	<!-- Logic that finds the conf to be used while making war -->
-	<condition property="webConf" value="distGrid" else="dist">
+	<condition property="webConf" value="publish,distGrid" else="publish,dist">
 		<istrue value="${cctsWAR}"/>
 	</condition>
 	
@@ -69,9 +69,7 @@
          <move file="${war.dir}/WEB-INF/classes/label.properties" todir="${war.dir}/WEB-INF" />
          <move file="${war.dir}/WEB-INF/classes/help.properties" todir="${war.dir}/WEB-INF" />
          <move file="${war.dir}/WEB-INF/classes/error_messages.properties" todir="${war.dir}/WEB-INF" />
-         	<delete file="${war.dir}/WEB-INF/lib/asm-1.3.4.jar" failonerror="false" />
-	 	<delete file="${war.dir}/WEB-INF/lib/cglib-2.1_3.jar" failonerror="false"/>
-	 	<delete file="${war.dir}/WEB-INF/lib/ehcache-1.2.3.jar" failonerror="false"/>
+
 
 	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
 	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		

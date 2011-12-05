@@ -127,8 +127,8 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
      *
      * @return the site research staff roles
      */
-    @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SiteResearchStaffRole> getSiteResearchStaffRoles() {
 		return siteResearchStaffRoles;
@@ -165,8 +165,8 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
      *
      * @return the study personnels
      */
-    @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<StudyPersonnel> getStudyPersonnels() {
 		return studyPersonnels;

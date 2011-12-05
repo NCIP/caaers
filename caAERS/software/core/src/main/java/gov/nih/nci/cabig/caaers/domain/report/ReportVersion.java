@@ -339,8 +339,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
      *
      * @return the submitter
      */
-    @OneToOne(mappedBy = "reportVersion")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToOne(mappedBy = "reportVersion", orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL  })
     public Submitter getSubmitter() {
         return submitter;
     }
@@ -484,9 +484,9 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
      *
      * @return the contents
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name="report_version_id" ,nullable=false)
-    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value={CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportContent> getContents() {
 		return contents;
@@ -506,8 +506,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
      *
      * @return the reported advers events
      */
-    @OneToMany(mappedBy="reportVersion")
-    @Cascade(value={CascadeType.SAVE_UPDATE, CascadeType.REMOVE, CascadeType.EVICT, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy="reportVersion", orphanRemoval = true)
+    @Cascade(value={CascadeType.SAVE_UPDATE, CascadeType.REMOVE, CascadeType.DETACH})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportedAdverseEvent> getReportedAdversEvents() {
 		return reportedAdversEvents;
@@ -555,9 +555,9 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
      *
      * @return the report trackings internal
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "report_version_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<ReportTracking> getReportTrackingsInternal() {
 		return reportTrackings;

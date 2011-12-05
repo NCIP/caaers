@@ -118,7 +118,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      */
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = { CascadeType.EVICT})
+    @Cascade(value = { CascadeType.DETACH})
     public Study getStudy() {
         return study;
     }
@@ -128,8 +128,8 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      *
      * @return the study investigators internal
      */
-    @OneToMany(mappedBy = "studyOrganization")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studyOrganization", orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL })
     @UniqueObjectInCollection(message = "Duplicates found in StudyInvestigator list")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyInvestigator> getStudyInvestigatorsInternal() {
@@ -164,8 +164,8 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      *
      * @return the study personnels internal
      */
-    @OneToMany(mappedBy = "studyOrganization", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studyOrganization", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL })
     @UniqueObjectInCollection(message = "Duplicates found in StudyPersonnel list")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyPersonnel> getStudyPersonnelsInternal() {

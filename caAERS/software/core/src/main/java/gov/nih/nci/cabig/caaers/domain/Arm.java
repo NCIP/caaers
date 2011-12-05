@@ -108,8 +108,8 @@ private List<SolicitedAdverseEvent> solicitedAdverseEvents=new ArrayList<Solicit
      *
      * @return the solicited adverse events
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @JoinColumn(name = "arm_id", nullable=false)
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SolicitedAdverseEvent> getSolicitedAdverseEvents() {

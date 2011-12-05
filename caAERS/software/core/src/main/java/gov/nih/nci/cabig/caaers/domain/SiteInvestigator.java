@@ -83,8 +83,8 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
      *
      * @return the study investigators
      */
-    @OneToMany(mappedBy = "siteInvestigator", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "siteInvestigator", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyInvestigator> getStudyInvestigators() {
         return studyInvestigators;

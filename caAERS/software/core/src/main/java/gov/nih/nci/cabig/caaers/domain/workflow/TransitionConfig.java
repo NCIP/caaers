@@ -51,9 +51,9 @@ public class TransitionConfig extends AbstractMutableDomainObject {
 	 *
 	 * @return the owners
 	 */
-	@OneToMany
+	@OneToMany (orphanRemoval = true)
     @JoinColumn(name = "transition_config_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<TransitionOwner> getOwners() {
 		return owners;

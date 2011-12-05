@@ -100,9 +100,9 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	 *
 	 * @return the task configs
 	 */
-	@OneToMany
+	@OneToMany (orphanRemoval = true)
     @JoinColumn(name = "workflow_config_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<TaskConfig> getTaskConfigs() {
 		return taskConfigs;

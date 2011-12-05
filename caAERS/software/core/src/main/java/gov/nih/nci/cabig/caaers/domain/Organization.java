@@ -239,10 +239,10 @@ public abstract class Organization extends AbstractMutableDomainObject {
      *
      * @return the study organizations
      */
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, orphanRemoval = true)
     @OrderBy
     // order by ID for testing consistency
-    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.DELETE  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
@@ -287,8 +287,8 @@ public abstract class Organization extends AbstractMutableDomainObject {
      *
      * @return the site investigators
      */
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.DELETE })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<SiteInvestigator> getSiteInvestigators() {
         return siteInvestigators;
@@ -308,8 +308,8 @@ public abstract class Organization extends AbstractMutableDomainObject {
      *
      * @return the site research staffs
      */
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.DELETE  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<SiteResearchStaff> getSiteResearchStaffs() {
 		return siteResearchStaffs;
@@ -330,8 +330,8 @@ public abstract class Organization extends AbstractMutableDomainObject {
      *
      * @return the report definitions
      */
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.DELETE  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportDefinition> getReportDefinitions() {
         return reportDefinitions;

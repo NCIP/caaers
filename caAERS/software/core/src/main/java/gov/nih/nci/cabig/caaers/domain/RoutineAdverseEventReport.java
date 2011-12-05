@@ -234,13 +234,13 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
      *
      * @return the adverse events internal
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "routine_report_id", nullable = true)
     @IndexColumn(name = "routine_list_index")
     @Cascade(value = {
             // Manually-managing PERSIST cascades due to cascade ordering issue
-            CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DELETE_ORPHAN })
+            CascadeType.DELETE,CascadeType.DETACH, CascadeType.LOCK, CascadeType.MERGE,
+            CascadeType.REFRESH })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<AdverseEvent> getAdverseEventsInternal() {
         return lazyListHelper.getInternalList(AdverseEvent.class);

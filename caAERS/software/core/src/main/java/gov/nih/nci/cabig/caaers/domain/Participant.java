@@ -396,10 +396,10 @@ public class Participant extends Person {
      *
      * @return the assignments
      */
-    @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY, orphanRemoval = true)
     @OrderBy
     // order by ID for testing consistency
-    @Cascade(value = {CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE })
     @UniqueObjectInCollection(message = "Duplicate Assignement found in Assignments list")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantAssignment> getAssignments() {
@@ -486,8 +486,8 @@ public class Participant extends Person {
      * @see gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject#getIdentifiers()
      */
     @Override
-    @OneToMany
-    @Cascade({CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
+    @OneToMany(orphanRemoval = true)
+    @Cascade({CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE })
     @JoinColumn(name = "participant_id")
     @UniqueObjectInCollection(message = "Duplicate Identifier found in Identifiers list")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)

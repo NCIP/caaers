@@ -115,9 +115,9 @@ public class TaskConfig extends AbstractMutableDomainObject{
 	 *
 	 * @return the assignees
 	 */
-	@OneToMany
+	@OneToMany (orphanRemoval = true)
     @JoinColumn(name = "task_config_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<Assignee> getAssignees(){
 		return assignees;
@@ -147,9 +147,9 @@ public class TaskConfig extends AbstractMutableDomainObject{
 	 *
 	 * @return the transitions
 	 */
-	@OneToMany
+	@OneToMany (orphanRemoval = true)
     @JoinColumn(name = "task_config_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<TransitionConfig> getTransitions() {
 		return transitions;

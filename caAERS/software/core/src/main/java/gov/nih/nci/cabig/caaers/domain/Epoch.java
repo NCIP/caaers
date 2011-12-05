@@ -82,8 +82,8 @@ public class Epoch extends AbstractMutableRetireableDomainObject {
      *
      * @return the arms
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @JoinColumn(name = "epoch_id", nullable = false)
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Arm> getArms() {

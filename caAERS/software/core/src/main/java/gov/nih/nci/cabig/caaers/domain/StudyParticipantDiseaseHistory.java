@@ -243,9 +243,9 @@ public class StudyParticipantDiseaseHistory extends AbstractMutableDomainObject 
      *
      * @return the metastatic disease sites internal
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "spa_disease_history_id")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantMetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
         return listHelper.getInternalList(StudyParticipantMetastaticDiseaseSite.class);

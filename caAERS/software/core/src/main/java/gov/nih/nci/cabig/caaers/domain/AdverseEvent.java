@@ -230,7 +230,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     @ManyToOne
     @JoinColumn(name = "reporting_period_id", nullable = true)
-    @Cascade(value = {CascadeType.LOCK, CascadeType.EVICT})
+    @Cascade(value = {CascadeType.LOCK, CascadeType.DETACH})
     public AdverseEventReportingPeriod getReportingPeriod() {
         return reportingPeriod;
     }
@@ -249,10 +249,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the course agent attributions
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'CA'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -275,10 +275,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the concomitant medication attributions
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'CM'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -304,10 +304,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the other cause attributions
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'OC'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -332,10 +332,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the disease attributions
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'DH'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -360,10 +360,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the surgery attributions
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'SI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -388,10 +388,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the radiation attributions
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'RI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -416,10 +416,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the device attributions
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'DV'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -430,10 +430,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return deviceAttributions;
     }
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'OI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -444,10 +444,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return otherInterventionAttributions;
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'BI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -458,10 +458,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return biologicalInterventionAttributions;
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'HI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -472,10 +472,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return behavioralInterventionAttributions;
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'GI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -486,10 +486,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return geneticInterventionAttributions;
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "cause_type = 'DI'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // it is pretty lame that this is necessary
@@ -643,8 +643,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the adverse event term
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public AbstractAdverseEventTerm getAdverseEventTerm() {
         return adverseEventTerm;
     }
@@ -1169,9 +1169,9 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the outcomes
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "adverse_event_id", nullable=false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Outcome> getOutcomes() {
         if (outcomes == null) outcomes = new ArrayList<Outcome>();

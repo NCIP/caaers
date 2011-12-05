@@ -215,8 +215,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the adverse events
      */
-    @OneToMany(mappedBy = "reportingPeriod")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "reportingPeriod", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<AdverseEvent> getAdverseEvents() {
@@ -503,8 +503,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the ae reports
      */
-    @OneToMany(mappedBy = "reportingPeriod")
-    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "reportingPeriod", orphanRemoval = true)
+    @Cascade(value = { CascadeType.DELETE})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ExpeditedAdverseEventReport> getAeReports() {
     	if(this.aeReports == null) this.aeReports = new ArrayList<ExpeditedAdverseEventReport>();
@@ -563,10 +563,10 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the review comments internal
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "rp_id", nullable = true)
     @IndexColumn(name = "list_index", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportingPeriodReviewComment> getReviewCommentsInternal() {
     	if(reviewComments == null) reviewComments = new ArrayList<ReportingPeriodReviewComment>();

@@ -156,8 +156,8 @@ public abstract class Investigator extends Person {
      *
      * @return the site investigators internal
      */
-    @OneToMany(mappedBy = "investigator", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "investigator", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<SiteInvestigator> getSiteInvestigatorsInternal() {
         return lazyListHelper.getInternalList(SiteInvestigator.class);

@@ -99,8 +99,8 @@ public class StudyAgent extends StudyIntervention {
      *
      * @return the study agent ind associations internal
      */
-    @OneToMany(mappedBy = "studyAgent", fetch = FetchType.LAZY)
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studyAgent", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
         return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);

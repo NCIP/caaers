@@ -178,10 +178,10 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
      *
      * @return the prior therapy agents internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "spa_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<StudyParticipantPriorTherapyAgent> getPriorTherapyAgentsInternal() {
         return priorTherapyAgents;

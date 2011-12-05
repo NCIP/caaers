@@ -12,9 +12,9 @@
         		description="Dependencies required for build time, all classpath should have this"/>
         	<conf name="publish" visibility="public"
         		description="Dependencies along with this module is published in repository" />
-        	<conf name="distGrid" visibility="public"  extends="publish"
+        	<conf name="distGrid" visibility="public"
         		description="Dependencies that are required in grid distribution of this module" />
-        	<conf name="dist" visibility="public"  extends="publish"
+        	<conf name="dist" visibility="public"
         		description="Dependencies needed for standalone distribution" />
         	<conf name="runtime" visibility="public"
         		description="The dependencies that are needed for runtime" extends="build" />
@@ -61,7 +61,7 @@
 
             <!-- caAERS module dependencies -->
             <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration"
-                conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+                conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid,publish"/>
 
             <!-- Connection Pool  -->
             <dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.2">
@@ -178,10 +178,10 @@
             <!--</dependency>-->
 
             <!-- Servlet & JSP -->
-            <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build->default(*);test->default(*)"/>
+            <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="build->default(*);test->default(*)"/>
             <!-- apache commons EL -->
-            <dependency org="jspapi" name="jsp-api" rev="2.0" transitive="true" />
-            <dependency org="commons-el" name="commons-el" rev="1.0" transitive="true" />
+            <dependency org="jspapi" name="jsp-api" rev="2.0" conf="build->default(*);test->default(*)"/>
+            <dependency org="commons-el" name="commons-el" rev="1.0"  />
 
 
             <!-- JSRs -->

@@ -12,9 +12,9 @@
         		description="Dependencies required for build time, all classpath should have this"/>
         	<conf name="publish" visibility="public"
         		description="Dependencies along with this module is published in repository" />
-        	<conf name="distGrid" visibility="public"  extends="publish"
+        	<conf name="distGrid" visibility="public"
         		description="Dependencies that are required in grid distribution of this module" />
-        	<conf name="dist" visibility="public"  extends="publish"
+        	<conf name="dist" visibility="public"
         		description="Dependencies needed for standalone distribution" />
         	<conf name="runtime" visibility="public"
         		description="The dependencies that are needed for runtime" extends="build" />
@@ -32,9 +32,11 @@
         <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
 
         	<!--  JSP-API-* should be excluded -->
-        	<exclude org="cglib" module="cglib" />
-        	<exclude conf="runtime,dist,distGrid" name="jsp-api" />
-        	<exclude conf="runtime,dist,distGrid" name="servlet-api"  />
+        	<exclude org="jsp-api" module="jspapi" conf="dist,distGrid" />
+        	<exclude org="javax.servlet" module="jspapi" conf="dist,distGrid" />
+        	<exclude org="servletapi" module="servletapi" conf="dist,distGrid" />
+        	<exclude org="javax.servlet" module="servlet-api" conf="dist,distGrid" />
+            <exclude org="cglib" module="cglib" conf="*" />
             <exclude org="net.sf.hibernate" />
             <exclude org="hibernate" />
         	<exclude conf="*" org="objectweb" module="asm"/>
@@ -59,7 +61,9 @@
 
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"
-				conf="build->default;dist->dist;distGrid->distGrid">
+				conf="build->default;dist->dist,publish;distGrid->distGrid,publish">
+                <exclude conf="*" org="javax.servlet" module="servletapi" />
+                <exclude conf="*" org="jspapi" module="jspapi" />
 			</dependency>
 
             <dependency org="org.springframework" name="spring-webmvc" rev="3.0.6.RELEASE">

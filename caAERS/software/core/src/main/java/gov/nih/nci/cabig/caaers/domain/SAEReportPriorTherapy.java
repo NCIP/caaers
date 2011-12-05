@@ -163,10 +163,10 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
      *
      * @return the prior therapy agents internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "ae_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<PriorTherapyAgent> getPriorTherapyAgentsInternal() {
         return lazyListHelper.getInternalList(PriorTherapyAgent.class);

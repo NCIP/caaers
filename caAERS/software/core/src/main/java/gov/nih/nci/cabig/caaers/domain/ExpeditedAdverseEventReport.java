@@ -645,7 +645,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     @IndexColumn(name = "list_index", nullable = false)
     @Cascade(value = {
             // Manually-managing PERSIST cascades due to cascade ordering issue
-            CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
+            CascadeType.DELETE, CascadeType.DETACH, CascadeType.LOCK, CascadeType.MERGE,
             CascadeType.REFRESH})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<AdverseEvent> getAdverseEventsInternal() {
@@ -669,10 +669,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the labs internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<Lab> getLabsInternal() {
         return lazyListHelper.getInternalList(Lab.class);
@@ -694,10 +694,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the medical devices internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<MedicalDevice> getMedicalDevicesInternal() {
         return lazyListHelper.getInternalList(MedicalDevice.class);
@@ -719,10 +719,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the radiation interventions internal
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<RadiationIntervention> getRadiationInterventionsInternal() {
         return lazyListHelper.getInternalList(RadiationIntervention.class);
@@ -744,55 +744,55 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the surgery interventions internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<SurgeryIntervention> getSurgeryInterventionsInternal() {
         return lazyListHelper.getInternalList(SurgeryIntervention.class);
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<BehavioralIntervention> getBehavioralInterventionsInternal() {
         return lazyListHelper.getInternalList(BehavioralIntervention.class);
     }
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<BiologicalIntervention> getBiologicalInterventionsInternal() {
         return lazyListHelper.getInternalList(BiologicalIntervention.class);
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<GeneticIntervention> getGeneticInterventionsInternal() {
         return lazyListHelper.getInternalList(GeneticIntervention.class);
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<DietarySupplementIntervention> getDietarySupplementInterventionsInternal() {
         return lazyListHelper.getInternalList(DietarySupplementIntervention.class);
     }
 
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<OtherAEIntervention> getOtherAEInterventionsInternal() {
         return lazyListHelper.getInternalList(OtherAEIntervention.class);
@@ -834,10 +834,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the concomitant medications internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<ConcomitantMedication> getConcomitantMedicationsInternal() {
         return lazyListHelper.getInternalList(ConcomitantMedication.class);
@@ -859,10 +859,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the sae report pre existing conditions internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<SAEReportPreExistingCondition> getSaeReportPreExistingConditionsInternal() {
         return lazyListHelper.getInternalList(SAEReportPreExistingCondition.class);
@@ -884,10 +884,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the other causes internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     protected List<OtherCause> getOtherCausesInternal() {
         return lazyListHelper.getInternalList(OtherCause.class);
@@ -909,10 +909,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the sae report prior therapies internal
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<SAEReportPriorTherapy> getSaeReportPriorTherapiesInternal() {
         return lazyListHelper.getInternalList(SAEReportPriorTherapy.class);
@@ -934,8 +934,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the treatment information
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public TreatmentInformation getTreatmentInformation() {
         if (treatmentInformation == null) setTreatmentInformation(new TreatmentInformation());
         return treatmentInformation;
@@ -956,8 +956,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the additional information
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public AdditionalInformation getAdditionalInformation() {
         if (additionalInformation == null) setAdditionalInformation(new AdditionalInformation());
         return additionalInformation;
@@ -978,8 +978,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the response description
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public AdverseEventResponseDescription getResponseDescription() {
         if (responseDescription == null) setResponseDescription(new AdverseEventResponseDescription());
         return responseDescription;
@@ -1002,7 +1002,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @return the reporter
      */
     @OneToOne(mappedBy = "expeditedReport",  fetch=FetchType.LAZY)
-    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
+    @Cascade(value = {CascadeType.DELETE, CascadeType.DETACH, CascadeType.LOCK, CascadeType.REMOVE})
     public Reporter getReporter() {
         return reporter;
     }
@@ -1026,7 +1026,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @return the physician
      */
     @OneToOne(mappedBy = "expeditedReport", fetch=FetchType.LAZY)
-    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE, CascadeType.MERGE})
+    @Cascade(value = {CascadeType.DELETE, CascadeType.DETACH, CascadeType.LOCK, CascadeType.REMOVE, CascadeType.MERGE})
     public Physician getPhysician() {
         return physician;
     }
@@ -1068,8 +1068,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @return the participant history
      */
-    @OneToOne(mappedBy = "report", fetch=FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(mappedBy = "report", fetch=FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL })
     public ParticipantHistory getParticipantHistory() {
         if (participantHistory == null) setParticipantHistory(new ParticipantHistory());
         return participantHistory;
@@ -1091,7 +1091,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @return the reports
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
-    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT,
+    @Cascade(value = {CascadeType.DELETE, CascadeType.DETACH,
             CascadeType.LOCK, CascadeType.REMOVE})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // Manually manage update-style reassociates and saves

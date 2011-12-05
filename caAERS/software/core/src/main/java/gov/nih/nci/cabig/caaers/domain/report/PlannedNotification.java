@@ -106,9 +106,9 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
      *
      * @return the recipients
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "plnf_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<Recipient> getRecipients() {
 
@@ -129,9 +129,9 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
      *
      * @return the attachments
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "plnf_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<NotificationAttachment> getAttachments() {
         return attachments;

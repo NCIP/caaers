@@ -267,9 +267,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      *
      * @return the reporting periods
      */
-    @OneToMany(mappedBy = "assignment")
+    @OneToMany(mappedBy = "assignment", orphanRemoval = true)
     @OrderBy(clause = "start_date desc")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
     	return reportingPeriods;
@@ -304,8 +304,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      *
      * @return the pre existing conditions
      */
-    @OneToMany(mappedBy = "assignment")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "assignment", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
         return preExistingConditions;
@@ -325,8 +325,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      *
      * @return the concomitant medications
      */
-    @OneToMany(mappedBy = "assignment")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "assignment", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantConcomitantMedication> getConcomitantMedications() {
         return concomitantMedications;
@@ -346,8 +346,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      *
      * @return the prior therapies
      */
-    @OneToMany(mappedBy = "assignment")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "assignment", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantPriorTherapy> getPriorTherapies() {
         return priorTherapies;
@@ -367,8 +367,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      *
      * @return the disease history
      */
-    @OneToOne(mappedBy = "assignment")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(mappedBy = "assignment", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public StudyParticipantDiseaseHistory getDiseaseHistory() {
         return diseaseHistory;
     }

@@ -397,9 +397,9 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      *
      * @return the scheduled notifications
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "rpsh_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ScheduledNotification> getScheduledNotifications() {
         return notifications;
@@ -477,8 +477,8 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      *
      * @return the report deliveries
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report", orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportDelivery> getReportDeliveries() {
         return deliveries;
@@ -613,10 +613,10 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      *
      * @return the report versions
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportVersion> getReportVersions() {
         return reportVersions;
@@ -1010,10 +1010,10 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      *
      * @return the review comments internal
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "report_id", nullable = true )
     @IndexColumn(name = "list_index", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportReviewComment> getReviewCommentsInternal() {
     	if(reviewComments == null) reviewComments = new ArrayList<ReportReviewComment>();

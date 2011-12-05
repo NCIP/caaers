@@ -101,8 +101,8 @@ public class StudySite extends StudyOrganization {
      *
      * @return the study participant assignments
      */
-    @OneToMany(mappedBy = "studySite")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studySite", orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyParticipantAssignment> getStudyParticipantAssignments() {
         return studyParticipantAssignments;
@@ -125,8 +125,8 @@ public class StudySite extends StudyOrganization {
      *
      * @return the study site workflow configs
      */
-    @OneToMany(mappedBy = "studySite")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studySite", orphanRemoval = true)
+    @Cascade(value = { CascadeType.ALL  })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
 	public List<StudySiteWorkflowConfig> getStudySiteWorkflowConfigs() {
     	if(studySiteWorkflowConfigs == null) studySiteWorkflowConfigs = new ArrayList<StudySiteWorkflowConfig>();

@@ -598,8 +598,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the study devices
      */
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyDevice> getStudyDevices() {
@@ -630,8 +630,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the other interventions
      */
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<OtherIntervention> getOtherInterventions() {
@@ -990,8 +990,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the disease terminology
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "study", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public DiseaseTerminology getDiseaseTerminology() {
         if (diseaseTerminology == null) {
             diseaseTerminology = new DiseaseTerminology();
@@ -1014,8 +1014,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the ae terminology
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "study", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     public AeTerminology getAeTerminology() {
         if (aeTerminology == null) {
             aeTerminology = new AeTerminology();
@@ -1037,8 +1037,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      * @see gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject#getIdentifiers()
      */
     @Override
-    @OneToMany
-    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(orphanRemoval = true)
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name = "STU_ID")
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -1080,8 +1080,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the study agents internal
      */
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<StudyAgent> getStudyAgentsInternal() {
@@ -1102,9 +1102,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the ctep study diseases
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "term_type = 'ctep'")
     @OrderBy
     @UniqueObjectInCollection(message = "Duplicates found in CtepStudyDiseases list")
@@ -1138,9 +1138,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the meddra study diseases
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "term_type = 'meddra'")
     @OrderBy
     @UniqueObjectInCollection(message = "Duplicates found in MeddraStudyDiseases list")
@@ -1421,8 +1421,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the study organizations
      */
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @UniqueObjectInCollection(message = "Duplicates found in StudyOrganizations list")
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -1450,8 +1450,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the treatment assignments internal
      */
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<TreatmentAssignment> getTreatmentAssignmentsInternal() {
@@ -1708,8 +1708,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the report formats
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "study", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @Deprecated
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ReportFormat> getReportFormats() {
@@ -1945,8 +1945,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the epochs
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
     @JoinColumn(name="study_id", nullable = false)
     @OrderBy("epochOrder")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
@@ -2103,9 +2103,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the study conditions
      */
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "term_type = 'dcp'")
     @OrderBy
     @UniqueObjectInCollection(message = "Duplicate - Same condition is associated to the study more than ones")
@@ -2138,9 +2138,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the expected ae ctc terms
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @Where(clause = "term_type = 'ctep'")
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<ExpectedAECtcTerm> getExpectedAECtcTerms() {
@@ -2171,10 +2171,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @return the expected ae meddra low level terms
      */
-    @OneToMany
+    @OneToMany (orphanRemoval = true)
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.ALL})
     @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than once")
     @Where(clause = "term_type = 'meddra'")
     public List<ExpectedAEMeddraLowLevelTerm> getExpectedAEMeddraLowLevelTerms() {
