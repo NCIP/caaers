@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.task;
 
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Biju Joseph
  */
-public class TaskGroup {
+public class TaskGroup implements Serializable{
 
     private String displayName;
 
