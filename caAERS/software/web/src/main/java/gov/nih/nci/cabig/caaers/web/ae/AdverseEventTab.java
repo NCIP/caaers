@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +59,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	
 	public AdverseEventTab(String longTitle, String shortTitle, String viewName){
 		super(longTitle, shortTitle, viewName);
-        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEvent.class), new ReadonlyFieldDecorator());
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEventReportingPeriod.class), new ReadonlyFieldDecorator());
 	}
 	
 	@Override

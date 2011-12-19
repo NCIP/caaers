@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
@@ -49,7 +50,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
-        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEvent.class), new ReadonlyFieldDecorator());
+        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEventReportingPeriod.class), new ReadonlyFieldDecorator());
     }
 
     @Override
