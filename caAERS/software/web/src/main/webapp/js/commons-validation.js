@@ -58,7 +58,7 @@ function validateFields(formFields, displayError) {
                     (vPattern.toLowerCase().indexOf('negative') == 0 && element.value >= 0) ||
                     (vPattern.toLowerCase().indexOf('identifier') == 0 && !isCaAERSIdentifier(element.value)) ||
                     (vPattern.toLowerCase().indexOf('decimal') ==0 && !isDecimal(element.value) )) {
-                    if (displayError) ValidationManager.showError(element, vPatternError);
+                    if (displayError) ValidationManager.showError(element, patternError);
                     validForm = false;
                     continue;
                 }
