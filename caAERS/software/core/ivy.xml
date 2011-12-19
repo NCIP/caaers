@@ -43,10 +43,6 @@
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
 			<!-- <exclude conf="runtime,dist,distGrid" module="commons-codec"  /> -->
 			<exclude conf="dist,distGrid" module="hsqldb" />
-			<exclude conf="dist,distGrid" name="jta" />
-			<exclude conf="dist,distGrid" module="collection-setter-injector" />
-			<exclude conf="dist,distGrid" module="commons-beanutils-core" />
-			<exclude conf="dist,distGrid" module="commons-configuration" />
 			<exclude conf="dist,distGrid" org="cryptix"  />
 			<exclude conf="dist,distGrid" module="icu4j" />
 			<exclude conf="dist,distGrid" module="jgss" />
