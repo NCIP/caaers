@@ -107,7 +107,8 @@
 		<copy-resources src="${webservice.xsd.src}" dest="${main.src}/../webapp/WEB-INF/classes/gov/nih/nci/cabig/caaers" filter="false"/>
 		<copy-resources src="${main.src.resources}/xfire" dest="${main.src}/../webapp/WEB-INF/classes/META-INF/xfire"  filter="false" />
 		<echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml">&lt;Context path="/caaers" docBase="${main.src}/../webapp/" reloadable="true" debug="9" /></echo>
-	</target>
+        <delete file="${main.src}/../webapp/WEB-INF/lib/jsp-api*" />
+    </target>
 	
 	<!--=================================================================
 		target :undeploy-caaers

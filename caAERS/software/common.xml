@@ -261,7 +261,7 @@
     	============================================================ -->
     <target name="resolve" depends="clean-lib, init, load-ivy" unless="already.resolved"
     	description="--> resolve and retrieve dependencies with ivy">
-    	<condition property="configs" value="${resolve.confs}" else="default">
+    	<condition property="configs" value="${resolve.confs}" else="runtime">
     		<isset property="resolve.confs"/>
     	</condition>
     	<condition property="to.dir" value="${resolve.to.dir}" else="${lib.dir}">

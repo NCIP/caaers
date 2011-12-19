@@ -32,10 +32,9 @@
         <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
 
         	<!--  JSP-API-* should be excluded -->
-        	<exclude org="jsp-api" module="jspapi" conf="dist,distGrid" />
-        	<exclude org="javax.servlet" module="jspapi" conf="dist,distGrid" />
-        	<exclude org="servletapi" module="servletapi" conf="dist,distGrid" />
-        	<exclude org="javax.servlet" module="servlet-api" conf="dist,distGrid" />
+        	<exclude org="jspapi" module="jsp-api" conf="publish,default,dist,distGrid" />
+        	<exclude org="javax.servlet" module="servlet-api" conf="publish,default,dist,distGrid" />
+            <exclude org="javax.servlet" module="jsp-api" conf="publish,default,dist,distGrid" />
             <exclude org="cglib" module="cglib" conf="*" />
             <exclude org="net.sf.hibernate" />
             <exclude org="hibernate" />
@@ -94,7 +93,7 @@
             <!-- JSTL   dependency -->
             <dependency org="jstl" name="jstl" rev="1.1.2" force="true"/>
             <dependency org="taglibs" name="standard" rev="1.1.2" force="true"/>
-            
+
             <!-- Servlet & JSP -->
             <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build->default(*);test->default(*)"/>
             <dependency org="jspapi" name="jsp-api" rev="2.0" transitive="true" conf="build->default(*);test->default(*)"/>

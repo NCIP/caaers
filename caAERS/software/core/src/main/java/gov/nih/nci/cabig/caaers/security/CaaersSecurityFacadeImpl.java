@@ -189,9 +189,9 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	 */
 	private List<String> getRolesFromRolePrivilegeMapping(String objectId, String privilege) {
 		List<String> privilegedRoles = CSMCacheManager.getRolesFromCache(objectId, privilege);
-		if (privilegedRoles==null) {		
+		if (privilegedRoles==null || privilegedRoles.isEmpty()) {
 			privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);
-			if (privilegedRoles!=null) {
+			if (privilegedRoles!=null || !privilegedRoles.isEmpty()) {
 				CSMCacheManager.addRolePrivilegeMappingToCache(objectId, privilege, privilegedRoles);
 			}
 		}
