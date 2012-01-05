@@ -46,11 +46,16 @@ import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
 
+import java.lang.Object;
+import java.lang.Runnable;
+import java.lang.String;
 import java.rmi.RemoteException;
 import java.security.Principal;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -758,78 +763,97 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	
     @SuppressWarnings("unused")
     private static class StubWebRequest implements WebRequest {
-        public String getParameter(final String paramName) {
-            return null;
+        public String getHeader(String s) {
+            return null;  
         }
 
-        public String[] getParameterValues(final String paramName) {
-            return null;
+        public String[] getHeaderValues(String s) {
+            return new String[0];  
         }
 
-        public Map getParameterMap() {
-            return Collections.emptyMap();
+        public Iterator<String> getHeaderNames() {
+            return null;  
+        }
+
+        public String getParameter(String s) {
+            return null;  
+        }
+
+        public String[] getParameterValues(String s) {
+            return new String[0];  
+        }
+
+        public Iterator<String> getParameterNames() {
+            return null;  
+        }
+
+        public Map<String, String[]> getParameterMap() {
+            return null;  
         }
 
         public Locale getLocale() {
-            return null;
+            return null;  
         }
 
-        public Object getAttribute(final String name, final int scope) {
-            return null;
+        public String getContextPath() {
+            return null;  
         }
 
-        public void setAttribute(final String name, final Object value, final int scope) {
+        public String getRemoteUser() {
+            return null;  
         }
 
-        public void removeAttribute(final String name, final int scope) {
+        public Principal getUserPrincipal() {
+            return null;  
         }
 
-        public void registerDestructionCallback(final String name, final Runnable callback,
-                        final int scope) {
+        public boolean isUserInRole(String s) {
+            return false;  
+        }
+
+        public boolean isSecure() {
+            return false;  
+        }
+
+        public boolean checkNotModified(long l) {
+            return false;  
+        }
+
+        public String getDescription(boolean b) {
+            return null;  
+        }
+
+        public Object getAttribute(String s, int i) {
+            return null;  
+        }
+
+        public void setAttribute(String s, Object o, int i) {
+            
+        }
+
+        public void removeAttribute(String s, int i) {
+            
+        }
+
+        public String[] getAttributeNames(int i) {
+            return new String[0];  
+        }
+
+        public void registerDestructionCallback(String s, Runnable runnable, int i) {
+            
+        }
+
+        public Object resolveReference(String s) {
+            return null;  
         }
 
         public String getSessionId() {
-            return null;
-        }
-        public String getDescription(boolean b){
-            return null;
+            return null;  
         }
 
-        public boolean checkNotModified(long l){
-            return true;
-        }
-
-        public String[] getAttributeNames(int scope){
-            return null;
-        }
         public Object getSessionMutex() {
-            return null;
+            return null;  
         }
-
-		public String getContextPath() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public String getRemoteUser() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public Principal getUserPrincipal() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public boolean isSecure() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean isUserInRole(String arg0) {
-			// TODO Auto-generated method stub
-			return false;
-		}
     }
 
 	public void setGridServicesAuthorizationHelper(
