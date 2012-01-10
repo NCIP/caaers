@@ -40,6 +40,8 @@ class TreatmentAssignmentStudyIntervention extends edu.northwestern.bioinformati
             t.addColumn("grade4frequency", "float");
             t.addColumn("grade5frequency", "float");
         };
+
+        // execute('alter table study_devices add constraint fk_stdy_dvc_dvc_id foreign key (device_id) references devices (id)')
     }
 
     void down() {
