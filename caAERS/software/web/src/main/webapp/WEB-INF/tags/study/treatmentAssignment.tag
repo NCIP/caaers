@@ -60,6 +60,25 @@
         </div>
     </div>
 
+    ${title}
+    <hr>
+        <c:if test="${fn:length(command.study.studyAgents) > 0}">
+            <h4>Agents</h4>
+            <table width="100%" border="0" cellspacing="1" cellpadding="4" class="tablecontent">
+            <tr>
+                <th>Name</th>
+                <th align="RIGHT">Include</th>
+            </tr>
+            <c:forEach items="${command.study.studyAgents}" varStatus="status" var="oi">
+            <tr>
+                <td align="LEFT">${oi}</td>
+                <td align="RIGHT"><input type='checkbox'></td>
+            </tr>
+            </c:forEach>
+            </table>
+        </c:if>
+    <hr>
+
 <%-- BODY --%>
     </jsp:body>
 </chrome:division>

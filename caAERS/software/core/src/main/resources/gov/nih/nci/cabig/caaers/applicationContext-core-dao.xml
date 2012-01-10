@@ -225,6 +225,15 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
 				
 				<value>gov.nih.nci.cabig.caaers.domain.User</value>
+
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentStudyIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentOtherIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedCtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
+
             </list>
         </property>
         <property name="entityInterceptor">
@@ -415,6 +424,14 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.security.RolePrivilege</value>
 				
 				<value>gov.nih.nci.cabig.caaers.domain.User</value>
+
+				<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentStudyIntervention</value>
+				<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentAgent</value>
+				<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentDevice</value>
+				<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentOtherIntervention</value>
+				<value>gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedCtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
             </list>
         </property>
         <!--
@@ -627,6 +644,7 @@ This applicationContext contains the definition of the DAOs
     	<property name="investigatorDao" ref="investigatorDao"/>
     </bean>
 		
+	<bean id="treatmentAssignmentStudyInterventionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentStudyInterventionDao" />
 
     <!-- Factory beans end here-->
 

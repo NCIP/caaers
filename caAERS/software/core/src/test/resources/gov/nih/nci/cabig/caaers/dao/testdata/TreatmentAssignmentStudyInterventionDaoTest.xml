@@ -1,0 +1,56 @@
+<dataset>
+
+    <STUDIES
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title"
+            long_title="Long Title"
+            description="Description"
+            grid_id=""
+            load_status="1"
+            type="LOCAL"
+            />
+
+    <treatment_assignment id="-11"
+                          code="TAC-12345"
+                          study_id="-2"/>
+
+    <treatment_assignment id="-12"
+                          code="TAC-12346"
+                          study_id="-2"/>
+
+    <treatment_assignment id="-13"
+                          code="TAC-12347"
+                          study_id="-2"/>
+
+
+    <ctc_versions id="3" name="CTCAE v3.0" />
+    <meddra_versions id="4" name="MEDDRA v9" />
+    <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
+    <CTC_TERMS id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />
+    <CTC_TERMS id="3010" category_id="302" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043883" other_required="0" />
+    <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="HMT-01" />
+    <ctc_grades />
+
+    <!--  Remove the referenced tables period -->
+    <epochs/>
+    <ae_reporting_periods/>
+    <ae_reports/>
+    <adverse_events/>
+    <study_agents/>
+    <disease_terminologies />
+    <terminologies />
+
+    <treatment_assignment_study_interventions />
+    <treatment_assignment_agents />
+    <treatment_assignment_devices />
+    <treatment_assignment_other_interventions />
+    <study_interventions_expected_aes />
+
+<!--
+    <treatment_assignment_study_interventions id="1" />
+    <treatment_assignment_study_interventions id="2" />
+    <treatment_assignment_study_interventions id="3" />
+    <treatment_assignment_study_interventions id="4" />
+-->
+</dataset>

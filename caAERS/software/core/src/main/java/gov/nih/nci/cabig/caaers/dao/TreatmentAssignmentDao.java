@@ -4,6 +4,9 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentAgent;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentDevice;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignmentOtherIntervention;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,4 +80,15 @@ public class TreatmentAssignmentDao extends GridIdentifiableDao<TreatmentAssignm
         return getHibernateTemplate().find("from TreatmentAssignment ta order by ta.id");
     }
 
+    public List<TreatmentAssignmentAgent> getTreatmentAssignmentAgents() {
+        return getHibernateTemplate().find("from TreatmentAssignmentAgent");
+    }
+
+    public List<TreatmentAssignmentDevice> getTreatmentAssignmentDevices() {
+        return getHibernateTemplate().find("from TreatmentAssignmentDevice");
+    }
+
+    public List<TreatmentAssignmentOtherIntervention> getTreatmentAssignmentOthers() {
+        return getHibernateTemplate().find("from TreatmentAssignmentOtherIntervention");
+    }
 }

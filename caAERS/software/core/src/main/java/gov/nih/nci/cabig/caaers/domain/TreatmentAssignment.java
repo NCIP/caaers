@@ -1,21 +1,21 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
- 
+
 /**
  * This class represents the TreatmentAssignment domain object associated with the Adverse event
  * report. Domain object representing Study Therapy
@@ -44,6 +44,8 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
 
     /** The comments. */
     private String comments;
+
+    protected List<TreatmentAssignmentStudyIntervention> treatmentAssignmentStudyInterventions = new ArrayList<TreatmentAssignmentStudyIntervention>();
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.StudyChild#getStudy()
@@ -164,9 +166,20 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         this.comments = comments;
     }
 
+    @OneToMany(mappedBy = "treatmentAssignment", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    public List<TreatmentAssignmentStudyIntervention> getTreatmentAssignmentStudyInterventions() {
+        return treatmentAssignmentStudyInterventions;
+    }
+
+    public void setTreatmentAssignmentStudyInterventions(List<TreatmentAssignmentStudyIntervention> treatmentAssignmentStudyInterventions) {
+        this.treatmentAssignmentStudyInterventions = treatmentAssignmentStudyInterventions;
+    }
+
     /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
+    * @see java.lang.Object#hashCode()
+    */
     @Override
     public int hashCode() {
         final int prime = 31;
