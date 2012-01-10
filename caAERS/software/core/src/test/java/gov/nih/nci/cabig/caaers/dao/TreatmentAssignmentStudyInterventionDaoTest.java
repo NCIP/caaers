@@ -13,6 +13,7 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
 
     private TreatmentAssignmentDao tadao = getApplicationContext().getBean("treatmentAssignmentDao", TreatmentAssignmentDao.class);
     private CtcTermDao ctcTermDao = getApplicationContext().getBean("ctcTermDao", CtcTermDao.class);
+    private StudyAgentDao studyAgentDao = getApplicationContext().getBean("studyAgentDao", StudyAgentDao.class);
 
     public void testLoadTreatmentAssignment() {
         TreatmentAssignment ta = tadao.getById(-11);
@@ -68,9 +69,11 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
     public void testSaveStudyInterventionExpectedTerms() {
         CtcTerm t = ctcTermDao.getById(3012);
         TreatmentAssignment ta = tadao.getById(-11);
+        StudyAgent studyAgent = studyAgentDao.getById(-1000);
 
         TreatmentAssignmentAgent taa = new TreatmentAssignmentAgent();
         taa.setTreatmentAssignment(ta);
+        taa.setStudyAgent(studyAgent);
 
         StudyInterventionExpectedCtcTerm term = new StudyInterventionExpectedCtcTerm();
         term.setTerm(t);

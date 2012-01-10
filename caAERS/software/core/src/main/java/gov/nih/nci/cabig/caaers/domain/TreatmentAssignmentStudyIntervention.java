@@ -25,6 +25,7 @@ public abstract class TreatmentAssignmentStudyIntervention extends AbstractMutab
     protected TreatmentAssignment treatmentAssignment;
     protected List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs = new ArrayList<AbstractStudyInterventionExpectedAE>();
 
+    @Transient
     public abstract StudyIntervention getStudyIntervention();
 
     @ManyToOne

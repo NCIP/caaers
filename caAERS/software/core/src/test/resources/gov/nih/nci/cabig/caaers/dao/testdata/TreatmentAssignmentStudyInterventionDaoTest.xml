@@ -11,18 +11,14 @@
             type="LOCAL"
             />
 
-    <treatment_assignment id="-11"
-                          code="TAC-12345"
-                          study_id="-2"/>
+    <treatment_assignment id="-11" code="TAC-12345" study_id="-2"/>
+    <treatment_assignment id="-12" code="TAC-12346" study_id="-2"/>
+    <treatment_assignment id="-13" code="TAC-12347" study_id="-2"/>
 
-    <treatment_assignment id="-12"
-                          code="TAC-12346"
-                          study_id="-2"/>
+    <agents id="-990" name="abcd" description="description of agent -990" nsc="123" />
+    <agents id="-991" name="abcd" description="description of agent -991" nsc="456" />
 
-    <treatment_assignment id="-13"
-                          code="TAC-12347"
-                          study_id="-2"/>
-
+    <study_agents id="-1000" study_id="-2" agent_id="-990" />
 
     <ctc_versions id="3" name="CTCAE v3.0" />
     <meddra_versions id="4" name="MEDDRA v9" />
