@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
 
 <%@attribute name="index" required="true" type="java.lang.Integer"%>
 <%@attribute name="ta" required="true" type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment"%>
@@ -60,25 +61,13 @@
         </div>
     </div>
 
-    ${title}
-    <hr>
-        <c:if test="${fn:length(command.study.studyAgents) > 0}">
-            <h4>Agents</h4>
-            <table width="100%" border="0" cellspacing="1" cellpadding="4" class="tablecontent">
-            <tr>
-                <th>Name</th>
-                <th align="RIGHT">Include</th>
-            </tr>
-            <c:forEach items="${command.study.studyAgents}" varStatus="status" var="oi">
-            <tr>
-                <td align="LEFT">${oi}</td>
-                <td align="RIGHT"><input type='checkbox'></td>
-            </tr>
-            </c:forEach>
-            </table>
-        </c:if>
-    <hr>
-
+    <div style="padding-left:130px;">
+        <chrome:division title="Please choose interventions for ${title}" collapsable="true" collapsed="false" id="${ta}">
+            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentAgentsHelpers}" sectionTitle="Agents" />
+            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentDevicesHelpers}" sectionTitle="Devices" />
+            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentOthersHelpers}" sectionTitle="Other interventions" />
+        </chrome:division>
+    </div>
 <%-- BODY --%>
     </jsp:body>
 </chrome:division>
