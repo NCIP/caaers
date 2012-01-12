@@ -56,6 +56,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     private StudyRepository studyRepository;
     private LowLevelTermDao lowLevelTermDao;
     private DeviceDao deviceDao;
+    private TreatmentAssignmentDao treatmentAssignmentDao;
 
     private Configuration configuration;
 
@@ -393,5 +394,13 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     public void setDeviceDao(DeviceDao deviceDao) {
         this.deviceDao = deviceDao;
+    }
+
+    public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+        return treatmentAssignmentDao;
+    }
+
+    public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
+        this.treatmentAssignmentDao = treatmentAssignmentDao;
     }
 }

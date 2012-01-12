@@ -177,6 +177,35 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         this.treatmentAssignmentStudyInterventions = treatmentAssignmentStudyInterventions;
     }
 
+    public void addInterventionToTreatmentAssignment(StudyIntervention ti) {
+        TreatmentAssignmentStudyIntervention tasi = null;
+        switch (ti.getStudyTherapyType()) {
+            case DRUG_ADMINISTRATION:{
+                TreatmentAssignmentAgent taa = new TreatmentAssignmentAgent();
+                taa.setStudyAgent((StudyAgent)ti);
+                tasi = taa;
+            }; break;
+            case DEVICE:{
+                TreatmentAssignmentDevice tad = new TreatmentAssignmentDevice();
+                tad.setStudyDevice((StudyDevice)ti);
+                tasi = tad;
+            }; break;
+            case OTHER:{
+                TreatmentAssignmentOtherIntervention tao = new TreatmentAssignmentOtherIntervention();
+                tao.setOtherIntervention((OtherIntervention)ti);
+                tasi = tao;
+            }; break;
+        }
+        if (tasi == null) return;
+        tasi.setTreatmentAssignment(this);
+        getTreatmentAssignmentStudyInterventions().add(tasi);
+    }
+
+    public void addTreatmentAssignmentStudyIntervention(TreatmentAssignmentStudyIntervention tasi) {
+        tasi.setTreatmentAssignment(this);
+        getTreatmentAssignmentStudyInterventions().add(tasi);
+    }
+
    /**
      * This method returns true if this TreatmentAssignment object is associated with the StudyIntervention through
     * a TreatmentAssignmentStudyIntervention object.

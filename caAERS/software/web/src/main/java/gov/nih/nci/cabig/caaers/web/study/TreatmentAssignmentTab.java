@@ -1,17 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyIntervention;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Saurabh Agrawal
@@ -30,12 +31,20 @@ public class TreatmentAssignmentTab extends StudyTab {
     }
 
     @Override
+    public Map<String, Object> referenceData(StudyCommand command) {
+        Map<String, Object> rd = super.referenceData(command);
+        command.buildTreatmentAssignmentInterventionHelpers();
+        return rd;
+    }
+
+    @Override
     public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeTreatmentAssignment".equals(action)) {
         	command.deleteTreatmentAssignmentAtIndex(Integer.parseInt(selected));
         }
+        command.syncTreatmentAssignmentInterventionHelpers();
     }
 
     @Override

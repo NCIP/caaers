@@ -97,6 +97,11 @@ public class StudyCommand {
 
     private boolean mustFireEvent;
 
+    // TAC related Interventions
+    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentAgentsHelpers;
+    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentDevicesHelpers;
+    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentOthersHelpers;
+
     public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
     	this.investigationalNewDrugDao = investigationalNewDrugDao;
@@ -640,6 +645,50 @@ public class StudyCommand {
         }
     }
 
+    private <T extends StudyIntervention> void buildSpecificTreatmentassignmentInterventionHelper(List<T> interventions, List<TreatmentAssignment> tas, List<TreatmentAssignmentInterventionHelper> destination) {
+        for (StudyIntervention si : interventions) {
+            for (TreatmentAssignment ta : tas) {
+                TreatmentAssignmentInterventionHelper h = new TreatmentAssignmentInterventionHelper();
+                h.setStudyIntervention(si);
+                h.setTreatmentAssignment(ta);
+                h.setSelected(ta.hasIntervention(si));
+                destination.add(h);
+            }
+        }
+    }
+
+    public void buildTreatmentAssignmentInterventionHelpers() {
+
+        if (this.getStudy() == null || this.getStudy().getId() == null) return;
+
+        List<TreatmentAssignment> tas = study.getActiveTreatmentAssignments();
+
+        treatmentAssignmentAgentsHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
+        treatmentAssignmentDevicesHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
+        treatmentAssignmentOthersHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
+
+        buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveStudyAgents(), tas, treatmentAssignmentAgentsHelpers);
+        buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveStudyDevices(), tas, treatmentAssignmentDevicesHelpers);
+        buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveOtherInterventions(), tas, treatmentAssignmentOthersHelpers);
+
+    }
+
+    public void syncTreatmentAssignmentInterventionHelpers() {
+
+        for (TreatmentAssignmentInterventionHelper taih : treatmentAssignmentAgentsHelpers) {
+            if (!taih.isSelected()) {
+                if (taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention())) {
+                    taih.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(taih.getStudyIntervention());
+                }
+            } else {
+                if (!taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention())) {
+                    taih.getTreatmentAssignment().addInterventionToTreatmentAssignment(taih.getStudyIntervention());
+                }
+            }
+        }
+
+    }
+
     public StudyRepository getStudyRepository() {
         return studyRepository;
     }
@@ -710,5 +759,29 @@ public class StudyCommand {
 
     public void setPrimaryStudyIdenifier(Integer primaryStudyIdenifier) {
         this.primaryStudyIdenifier = primaryStudyIdenifier;
+    }
+
+    public List<TreatmentAssignmentInterventionHelper> getTreatmentAssignmentAgentsHelpers() {
+        return treatmentAssignmentAgentsHelpers;
+    }
+
+    public void setTreatmentAssignmentAgentsHelpers(List<TreatmentAssignmentInterventionHelper> treatmentAssignmentAgentsHelpers) {
+        this.treatmentAssignmentAgentsHelpers = treatmentAssignmentAgentsHelpers;
+    }
+
+    public List<TreatmentAssignmentInterventionHelper> getTreatmentAssignmentDevicesHelpers() {
+        return treatmentAssignmentDevicesHelpers;
+    }
+
+    public void setTreatmentAssignmentDevicesHelpers(List<TreatmentAssignmentInterventionHelper> treatmentAssignmentDevicesHelpers) {
+        this.treatmentAssignmentDevicesHelpers = treatmentAssignmentDevicesHelpers;
+    }
+
+    public List<TreatmentAssignmentInterventionHelper> getTreatmentAssignmentOthersHelpers() {
+        return treatmentAssignmentOthersHelpers;
+    }
+
+    public void setTreatmentAssignmentOthersHelpers(List<TreatmentAssignmentInterventionHelper> treatmentAssignmentOthersHelpers) {
+        this.treatmentAssignmentOthersHelpers = treatmentAssignmentOthersHelpers;
     }
 }
