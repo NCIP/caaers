@@ -177,6 +177,21 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         this.treatmentAssignmentStudyInterventions = treatmentAssignmentStudyInterventions;
     }
 
+   /**
+     * This method returns true if this TreatmentAssignment object is associated with the StudyIntervention through
+    * a TreatmentAssignmentStudyIntervention object.
+     * @param i - StudyIntervention
+     * @return boolean
+     */
+    @Transient
+    public boolean hasIntervention(StudyIntervention i) {
+        List<TreatmentAssignmentStudyIntervention> tasis = getTreatmentAssignmentStudyInterventions();
+        for (TreatmentAssignmentStudyIntervention tasi : tasis) {
+            if (tasi.getStudyIntervention().equals(i)) return true;
+        }
+        return false;
+    }
+
     /* (non-Javadoc)
     * @see java.lang.Object#hashCode()
     */

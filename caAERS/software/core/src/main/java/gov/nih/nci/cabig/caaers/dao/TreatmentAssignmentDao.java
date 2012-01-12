@@ -80,15 +80,15 @@ public class TreatmentAssignmentDao extends GridIdentifiableDao<TreatmentAssignm
         return getHibernateTemplate().find("from TreatmentAssignment ta order by ta.id");
     }
 
-    public List<TreatmentAssignmentAgent> getTreatmentAssignmentAgents() {
-        return getHibernateTemplate().find("from TreatmentAssignmentAgent");
+    public List<TreatmentAssignmentAgent> getTreatmentAssignmentAgentsByStudyId(int studyId) {
+        return getHibernateTemplate().find("from TreatmentAssignmentAgent taa where taa.studyAgent.study.id = ?", new Object[] {studyId});
     }
 
-    public List<TreatmentAssignmentDevice> getTreatmentAssignmentDevices() {
-        return getHibernateTemplate().find("from TreatmentAssignmentDevice");
+    public List<TreatmentAssignmentDevice> getTreatmentAssignmentDevicesByStudyId(int studyId) {
+        return getHibernateTemplate().find("from TreatmentAssignmentDevice tad where tad.studyDevice.study.id = ?", new Object[] {studyId});
     }
 
-    public List<TreatmentAssignmentOtherIntervention> getTreatmentAssignmentOthers() {
-        return getHibernateTemplate().find("from TreatmentAssignmentOtherIntervention");
+    public List<TreatmentAssignmentOtherIntervention> getTreatmentAssignmentOthersByStudyId(int studyId) {
+        return getHibernateTemplate().find("from TreatmentAssignmentOtherIntervention toi where toi.otherIntervention.study.id = ? ", new Object[] {studyId});
     }
 }

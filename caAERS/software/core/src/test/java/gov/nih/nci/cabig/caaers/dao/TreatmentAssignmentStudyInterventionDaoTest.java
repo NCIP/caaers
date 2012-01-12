@@ -14,6 +14,8 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
     private TreatmentAssignmentDao tadao = getApplicationContext().getBean("treatmentAssignmentDao", TreatmentAssignmentDao.class);
     private CtcTermDao ctcTermDao = getApplicationContext().getBean("ctcTermDao", CtcTermDao.class);
     private StudyAgentDao studyAgentDao = getApplicationContext().getBean("studyAgentDao", StudyAgentDao.class);
+    private StudyDeviceDao studyDeviceDao = getApplicationContext().getBean("studyDeviceDao", StudyDeviceDao.class);
+    private OtherInterventionDao otherInterventionDao = getApplicationContext().getBean("otherInterventionDao", OtherInterventionDao.class);
 
     public void testLoadTreatmentAssignment() {
         TreatmentAssignment ta = tadao.getById(-11);
@@ -25,29 +27,39 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
     public void testAddTreatmentAssignmentAgent() {
         TreatmentAssignmentAgent taa = new TreatmentAssignmentAgent();
         TreatmentAssignment ta = tadao.getById(-11);
+        StudyAgent studyAgent = studyAgentDao.getById(-1000);
+
         taa.setTreatmentAssignment(ta);
+        taa.setStudyAgent(studyAgent);
         getDao().save(taa);
         assertEquals(1, getDao().getAll().size());
-        assertEquals(1, tadao.getTreatmentAssignmentAgents().size());
+        assertEquals(1, tadao.getTreatmentAssignmentAgentsByStudyId(-2).size());
     }
 
     public void testAddDifferentTreatmentAssignments() {
         TreatmentAssignment ta = tadao.getById(-11);
+        StudyAgent studyAgent = studyAgentDao.getById(-1000);
+        StudyDevice studyDevice = studyDeviceDao.getById(-2000);
+        OtherIntervention otherIntervention = otherInterventionDao.getById(-3000);
 
         TreatmentAssignmentAgent taa = new TreatmentAssignmentAgent();
         taa.setTreatmentAssignment(ta);
+        taa.setStudyAgent(studyAgent);
         getDao().save(taa);
 
         TreatmentAssignmentDevice tad1 = new TreatmentAssignmentDevice();
         tad1.setTreatmentAssignment(ta);
+        tad1.setStudyDevice(studyDevice);
         getDao().save(tad1);
 
         TreatmentAssignmentDevice tad2 = new TreatmentAssignmentDevice();
         tad2.setTreatmentAssignment(ta);
+        tad2.setStudyDevice(studyDevice);
         getDao().save(tad2);
 
         TreatmentAssignmentOtherIntervention tao = new TreatmentAssignmentOtherIntervention();
         tao.setTreatmentAssignment(ta);
+        tao.setOtherIntervention(otherIntervention);
         getDao().save(tao);
 
         assertEquals(4, getDao().getAll().size());
@@ -60,9 +72,11 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
 
         assertEquals(4, ta.getTreatmentAssignmentStudyInterventions().size());
 
-        assertEquals(1, tadao.getTreatmentAssignmentAgents().size());
-        assertEquals(2, tadao.getTreatmentAssignmentDevices().size());
-        assertEquals(1, tadao.getTreatmentAssignmentOthers().size());
+        assertEquals(1, tadao.getTreatmentAssignmentAgentsByStudyId(-2).size());
+        assertEquals(2, tadao.getTreatmentAssignmentDevicesByStudyId(-2).size());
+        assertEquals(1, tadao.getTreatmentAssignmentOthersByStudyId(-2).size());
+
+        assertEquals(0, tadao.getTreatmentAssignmentDevicesByStudyId(-3).size());
 
     }
 

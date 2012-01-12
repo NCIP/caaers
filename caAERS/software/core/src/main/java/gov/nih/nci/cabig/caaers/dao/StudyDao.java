@@ -4,16 +4,7 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -181,7 +172,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
             	ht.initialize(saa.getInvestigationalNewDrug());
             }
         }
-        
+
+        for (TreatmentAssignment ta : study.getTreatmentAssignments()) {
+            ht.initialize(ta.getTreatmentAssignmentStudyInterventions());
+            log.debug("Treatment Assignments Study Interventions initialized.");
+        }
+
         return study;
     }
 

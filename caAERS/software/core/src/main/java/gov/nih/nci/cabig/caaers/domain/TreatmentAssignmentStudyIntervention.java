@@ -20,13 +20,15 @@ import java.util.List;
 @Table(name = "treatment_assignment_study_interventions")
 @Inheritance(strategy = InheritanceType.JOINED)
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ta_si_id") })
-public abstract class TreatmentAssignmentStudyIntervention extends AbstractMutableDomainObject implements Serializable {
+public class TreatmentAssignmentStudyIntervention extends AbstractMutableDomainObject implements Serializable {
 
     protected TreatmentAssignment treatmentAssignment;
     protected List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs = new ArrayList<AbstractStudyInterventionExpectedAE>();
 
     @Transient
-    public abstract StudyIntervention getStudyIntervention();
+    public StudyIntervention getStudyIntervention() {
+        throw new RuntimeException("This method can't be called on the parent class.");
+    };
 
     @ManyToOne
     @JoinColumn(name = "treatment_assignment_id", nullable = false)
