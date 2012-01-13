@@ -71,7 +71,7 @@
 		<attribute name="resolveId"/>
 		<sequential>
 			<ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance" keep="true"/>
-			<ivy:retrieve pattern="@{libDir}/[artifact]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+			<ivy:retrieve pattern="@{libDir}/[artifact]-[type]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 		</sequential>
 	</macrodef>
 	
@@ -290,7 +290,7 @@
     <target name="report" depends="resolve" description="--> generates a report of dependencies">
     	<echo message="Executing in ${ant.project.name}" />
     	<mkdir dir="${build.dir}/dependency-reports"/>
-        <ivy:report todir="${build.dir}/dependency-reports" resolveId="[org]-[module]" settingsRef="caaers.ivy.instance" />
+        <ivy:report todir="${build.dir}/dependency-reports" resolveId="[org]-[module]" settingsRef="caaers.ivy.instance" conf="runtime,dist,distGrid" />
     </target>
     
     <!-- =============================================================== 

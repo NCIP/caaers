@@ -18,7 +18,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.drools.util.StringUtils;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;

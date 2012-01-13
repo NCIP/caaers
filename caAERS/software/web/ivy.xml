@@ -31,6 +31,9 @@
         <!-- dependencies for the web module -->
         <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
 
+            <exclude type="source" />
+            <exclude type="javadoc" />
+
         	<!--  JSP-API-* should be excluded -->
         	<exclude org="jspapi" module="jsp-api" conf="publish,default,dist,distGrid" />
         	<exclude org="javax.servlet" module="servlet-api" conf="publish,default,dist,distGrid" />
@@ -65,7 +68,7 @@
                 <exclude conf="*" org="jspapi" module="jspapi" />
 			</dependency>
 
-            <dependency org="org.springframework" name="spring-webmvc" rev="3.0.6.RELEASE">
+            <dependency org="org.springframework" name="spring-webmvc" rev="3.0.7.RELEASE">
                  <exclude org="org.apache.axis" />
                  <exclude org="struts" />
                  <exclude org="javax.faces" />
@@ -84,8 +87,10 @@
 			<dependency org="net.sf.ehcache" name="ehcache-web" rev="2.0.4"/>
 
 			<!--  CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}" force="true" transitive="false" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}"  />
 
+            <!-- CAS/WebSSO -->
+            <dependency org="cas" name="casclient" rev="2.0.11"/>
 
 			<!-- JAWR -->
 			 <dependency org="net.jawr" name="jawr" rev="2.1" />
@@ -102,8 +107,8 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration">
               <exclude org="pull-parser" />
             </dependency>
-			<dependency org="org.springframework" name="spring-mock" rev="3.0.6.RELEASE" conf="test->default(*)" />
-             <dependency org="org.springframework" name="spring-test" rev="3.0.6.RELEASE" force="true" conf="test->default" />
+			<dependency org="org.springframework" name="spring-mock" rev="3.0.7.RELEASE" conf="test->default(*)" />
+             <dependency org="org.springframework" name="spring-test" rev="3.0.7.RELEASE" force="true" conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>

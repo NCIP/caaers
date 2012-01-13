@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import com.ibm.icu.util.Calendar;
 
 import junit.framework.TestCase;
+
+import java.util.Calendar;
+
 /**
  * 
  * @author Biju Joseph
