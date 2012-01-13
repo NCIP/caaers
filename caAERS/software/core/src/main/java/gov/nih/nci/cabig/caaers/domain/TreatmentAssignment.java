@@ -190,11 +190,12 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
                 tad.setStudyDevice((StudyDevice)ti);
                 tasi = tad;
             }; break;
-            case OTHER:{
+            default:{
                 TreatmentAssignmentOtherIntervention tao = new TreatmentAssignmentOtherIntervention();
                 tao.setOtherIntervention((OtherIntervention)ti);
                 tasi = tao;
-            }; break;
+                break;
+            }
         }
         if (tasi == null) return;
         tasi.setTreatmentAssignment(this);
@@ -206,19 +207,20 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         getTreatmentAssignmentStudyInterventions().add(tasi);
     }
 
-   /**
-     * This method returns true if this TreatmentAssignment object is associated with the StudyIntervention through
-    * a TreatmentAssignmentStudyIntervention object.
+    /**
+     * This method returns the association TreatmentAssignmentStudyInterventionobject
+     * if this TreatmentAssignment object is associated with the StudyIntervention through
+     * a TreatmentAssignmentStudyIntervention object.
      * @param i - StudyIntervention
      * @return boolean
      */
     @Transient
-    public boolean hasIntervention(StudyIntervention i) {
+    public TreatmentAssignmentStudyIntervention hasIntervention(StudyIntervention i) {
         List<TreatmentAssignmentStudyIntervention> tasis = getTreatmentAssignmentStudyInterventions();
         for (TreatmentAssignmentStudyIntervention tasi : tasis) {
-            if (tasi.getStudyIntervention().equals(i)) return true;
+            if (tasi.getStudyIntervention().equals(i)) return tasi;
         }
-        return false;
+        return null;
     }
 
     /* (non-Javadoc)

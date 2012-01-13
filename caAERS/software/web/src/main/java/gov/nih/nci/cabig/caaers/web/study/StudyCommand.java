@@ -651,7 +651,7 @@ public class StudyCommand {
                 TreatmentAssignmentInterventionHelper h = new TreatmentAssignmentInterventionHelper();
                 h.setStudyIntervention(si);
                 h.setTreatmentAssignment(ta);
-                h.setSelected(ta.hasIntervention(si));
+                h.setSelected(ta.hasIntervention(si) != null);
                 destination.add(h);
             }
         }
@@ -673,20 +673,30 @@ public class StudyCommand {
 
     }
 
-    public void syncTreatmentAssignmentInterventionHelpers() {
-
-        for (TreatmentAssignmentInterventionHelper taih : treatmentAssignmentAgentsHelpers) {
+    private void syncSpecificTreatmentAssignmentInterventionHelpers(List<TreatmentAssignmentInterventionHelper> taihList) {
+        for (TreatmentAssignmentInterventionHelper taih : taihList) {
             if (!taih.isSelected()) {
-                if (taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention())) {
-                    taih.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(taih.getStudyIntervention());
+                TreatmentAssignmentStudyIntervention tasi = taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention());
+                if (tasi != null) {
+                    if (taih.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(tasi)) {
+                        System.out.println("Element removed: " + tasi);
+                    } else {
+                        System.out.println("Element was not found: " + tasi);
+                    }
                 }
             } else {
-                if (!taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention())) {
+                if (taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention()) == null) {
                     taih.getTreatmentAssignment().addInterventionToTreatmentAssignment(taih.getStudyIntervention());
+                    System.out.println("Element added: " + taih.getStudyIntervention());
                 }
             }
         }
+    }
 
+    public void syncTreatmentAssignmentInterventionHelpers() {
+        syncSpecificTreatmentAssignmentInterventionHelpers(treatmentAssignmentAgentsHelpers);
+        syncSpecificTreatmentAssignmentInterventionHelpers(treatmentAssignmentDevicesHelpers);
+        syncSpecificTreatmentAssignmentInterventionHelpers(treatmentAssignmentOthersHelpers);
     }
 
     public StudyRepository getStudyRepository() {

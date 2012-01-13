@@ -8,6 +8,7 @@
 <%@attribute name="ta" required="true" type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment"%>
 <%@attribute name="studyInterventionsHelper" required="true" type="java.util.Collection"%>
 <%@attribute name="sectionTitle" required="true" type="java.lang.String"%>
+<%@attribute name="property" required="true" type="java.lang.String"%>
 
 <c:if test="${fn:length(studyInterventionsHelper) > 0}">
     <h4>${sectionTitle}</h4>
@@ -19,12 +20,12 @@
         <th align="RIGHT" width="10%">Include</th>
     </tr>
 
-    <c:forEach items="${studyInterventionsHelper}" var="siHelper">
+    <c:forEach items="${studyInterventionsHelper}" var="siHelper" varStatus="i">
     <c:if test="${siHelper.treatmentAssignment == ta}">
         <tr>
             <td align="LEFT">${siHelper.studyIntervention.interventionName}</td>
             <td align="LEFT">${siHelper.studyIntervention.studyTherapyType.displayName}</td>
-            <td align="RIGHT"><input type='checkbox' <c:if test="${siHelper.selected}">checked="checked"</c:if>></td>
+            <td align="RIGHT"><ui:checkbox path="${property}[${i.index}].selected" /></td>
         </tr>
     </c:if>
     </c:forEach>

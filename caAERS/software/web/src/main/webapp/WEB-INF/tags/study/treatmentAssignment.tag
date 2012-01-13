@@ -63,9 +63,9 @@
 
     <div style="padding-left:130px;">
         <chrome:division title="Please choose interventions for ${title}" collapsable="true" collapsed="false" id="${ta}">
-            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentAgentsHelpers}" sectionTitle="Agents" />
-            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentDevicesHelpers}" sectionTitle="Devices" />
-            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentOthersHelpers}" sectionTitle="Other interventions" />
+            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentAgentsHelpers}" sectionTitle="Agents" property="treatmentAssignmentAgentsHelpers"/>
+            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentDevicesHelpers}" sectionTitle="Devices" property="treatmentAssignmentDevicesHelpers"/>
+            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentOthersHelpers}" sectionTitle="Other interventions" property="treatmentAssignmentOthersHelpers"/>
         </chrome:division>
     </div>
 <%-- BODY --%>
