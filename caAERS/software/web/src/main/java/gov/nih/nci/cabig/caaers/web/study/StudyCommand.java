@@ -22,6 +22,8 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Ion C. Olaru
@@ -30,6 +32,8 @@ import org.apache.commons.collections.map.HashedMap;
  */
 
 public class StudyCommand {
+
+    private static final Log log = LogFactory.getLog(StudyCommand.class);
 
     private Study study;
     private int studySiteIndex = -1; 
@@ -679,15 +683,15 @@ public class StudyCommand {
                 TreatmentAssignmentStudyIntervention tasi = taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention());
                 if (tasi != null) {
                     if (taih.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(tasi)) {
-                        System.out.println("Element removed: " + tasi);
+                        log.debug("Element removed: " + tasi);
                     } else {
-                        System.out.println("Element was not found: " + tasi);
+                        log.debug("Element was not found: " + tasi);
                     }
                 }
             } else {
                 if (taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention()) == null) {
                     taih.getTreatmentAssignment().addInterventionToTreatmentAssignment(taih.getStudyIntervention());
-                    System.out.println("Element added: " + taih.getStudyIntervention());
+                    log.debug("Element added: " + taih.getStudyIntervention());
                 }
             }
         }
