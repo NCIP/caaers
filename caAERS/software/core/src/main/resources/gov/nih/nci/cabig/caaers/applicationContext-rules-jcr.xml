@@ -80,7 +80,7 @@
 	
 	
 	<bean id="rulesPropertyConfigurer"
-		class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" ref="rulesPropertiesFileLoader" />
 			
 		<!-- have to use a separate prefix/suffix to avoid maven filtering in everything
@@ -91,9 +91,9 @@
 		<property name="placeholderSuffix">
 			<value>]</value>
 		</property>
-		<property name="useNullForUnresolvablePlaceholders">
-			<value>true</value>
-		</property>
+        <property name="ignoreResourceNotFound"><value>true</value></property>
+        <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
+
 	</bean>
 	
 </beans>

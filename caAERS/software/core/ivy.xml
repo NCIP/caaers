@@ -30,7 +30,7 @@
   		</publications>
 
 
-        <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)"  >
+        <dependencies defaultconfmapping="build,dist,distGrid->default(*)">
 
             <exclude type="source" />
             <exclude type="javadoc" />
@@ -40,6 +40,7 @@
             <exclude org="hibernate" />
             <exclude org="ehcache" />
             <exclude org="cglib" module="cglib" />
+            <exclude org="springframework"/>
 
 			<!-- exclusion based on class loading -->
 
@@ -56,9 +57,9 @@
 			<exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
             <exclude conf="*" org="apache" />
             <exclude conf="*" org="pull-parser" />
-            <exclude org="jspapi" module="jsp-api" conf="publish,default,dist,distGrid" />
-            <exclude org="javax.servlet" module="servlet-api" conf="publish,default,dist,distGrid" />
-            <exclude org="javax.servlet" module="jsp-api" conf="publish,default,dist,distGrid" />
+            <exclude org="jspapi" module="jsp-api" />
+            <exclude org="javax.servlet" module="servlet-api" conf="dist,distGrid" />
+            <exclude org="javax.servlet" module="jsp-api"  />
 
 
             <!-- caAERS module dependencies -->
@@ -74,13 +75,21 @@
             <dependency org="com.semanticbits.security.contentfilter" name="contentfilter" rev="0.4" conf="build,dist,distGrid->default"  />
 
             <!-- CTMS commons related -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="${ctms.version}" conf="build,dist,distGrid->runtime"/>    <!-- Incorrect Ivy, so not transitive -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" conf="build,dist,distGrid->runtime" />
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="${ctms.version}" conf="build,dist,distGrid->runtime">
+                <exclude org="org.slf4j"     />
+            </dependency>
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" conf="build,dist,distGrid->runtime" >
+                <exclude org="org.slf4j"     />
+            </dependency>
 
             <!--Home grown infrastructure jar for COPPA  -->
-            <dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="1.2.1" conf="*->publish,distGrid"/>
+            <dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="1.2.1" conf="*->publish,distGrid">
+                <exclude org="org.slf4j"     />
+            </dependency>
             <!-- C3PR esb client -->
-            <dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9.6_M2" conf="build,dist,distGrid->distGrid"/>
+            <dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9.6_M2" conf="build,dist,distGrid->distGrid">
+                <exclude org="org.slf4j"     />
+            </dependency>
 
             <!-- caGrid and related JARs -->
             <dependency org="caGrid" name="cds" rev="1.4" >
@@ -211,9 +220,9 @@
             <!--</dependency>-->
 
             <!-- Servlet & JSP -->
-            <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="build->default(*);test->default(*)"/>
+            <dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="build,test->default(*)"/>
             <!-- apache commons EL -->
-            <dependency org="jspapi" name="jsp-api" rev="2.0" conf="build->default(*);test->default(*)"/>
+            <dependency org="javax.servlet.jsp" name="jsp-api" rev="2.1" conf="build,test->default(*)"/>
             <dependency org="commons-el" name="commons-el" rev="1.0"  />
 
 

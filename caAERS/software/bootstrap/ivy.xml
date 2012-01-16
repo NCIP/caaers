@@ -28,23 +28,30 @@
     		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
   		</publications>
 
-        <dependencies defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)"  >
+        <dependencies defaultconfmapping="build,dist,distGrid->default(*)">
 
             <exclude type="source" />
             <exclude type="javadoc" />
 
+            <exclude org="springframework"  />
             <exclude org="org.springframework" module="spring-dao" />
             <exclude org="org.springframework" module="spring-support" />
             <exclude org="org.springframework" module="spring-remoting" />
             <exclude org="ant" module="ant" />
 
             <!-- Semanticbits Ant related tasks -->
-			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0"/>
+			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0" conf="build->default(*)" />
 
             <!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"  conf="build,dist,distGrid->runtime"  />
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  conf="build,dist,distGrid->runtime"  />
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"  conf="build,dist,distGrid->runtime" />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"  conf="build,dist,distGrid->runtime"  >
+                <exclude org="org.slf4j"     />
+            </dependency>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  conf="build,dist,distGrid->runtime"  >
+                <exclude org="org.slf4j"     />
+            </dependency>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"  conf="build,dist,distGrid->runtime" >
+                <exclude org="org.slf4j"     />
+            </dependency>
 
             <!-- apache commons -->
             <dependency org="commons-lang" name="commons-lang" rev="2.4" />

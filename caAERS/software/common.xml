@@ -287,10 +287,11 @@
     <!-- ========================================================== 
           target: report              
     	============================================================ -->
-    <target name="report" depends="resolve" description="--> generates a report of dependencies">
+    <target name="report"  depends="init, load-ivy" description="--> generates a report of dependencies">
     	<echo message="Executing in ${ant.project.name}" />
     	<mkdir dir="${build.dir}/dependency-reports"/>
-        <ivy:report todir="${build.dir}/dependency-reports" resolveId="[org]-[module]" settingsRef="caaers.ivy.instance" conf="runtime,dist,distGrid" />
+        <ivy:resolve file="${ivy.file}" conf="runtime,dist,distGrid" resolveid="[org]-[module]-rep" haltonfailure="false" settingsRef="caaers.ivy.instance" keep="true"/>
+        <ivy:report todir="${build.dir}/dependency-reports" resolveId="[org]-[module]-rep" settingsRef="caaers.ivy.instance"   />
     </target>
     
     <!-- =============================================================== 

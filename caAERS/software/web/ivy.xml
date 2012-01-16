@@ -29,18 +29,19 @@
   		</publications>
 
         <!-- dependencies for the web module -->
-        <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
+        <dependencies defaultconfmapping="build,dist,distGrid->default(*)">
 
             <exclude type="source" />
             <exclude type="javadoc" />
 
         	<!--  JSP-API-* should be excluded -->
-        	<exclude org="jspapi" module="jsp-api" conf="publish,default,dist,distGrid" />
+        	<exclude org="jspapi" module="jsp-api"  />
+            <exclude org="javax.servlet" module="jsp-api"  />
         	<exclude org="javax.servlet" module="servlet-api" conf="publish,default,dist,distGrid" />
-            <exclude org="javax.servlet" module="jsp-api" conf="publish,default,dist,distGrid" />
             <exclude org="cglib" module="cglib" conf="*" />
             <exclude org="net.sf.hibernate" />
             <exclude org="hibernate" />
+            <exclude org="springframework" />
         	<exclude conf="*" org="objectweb" module="asm"/>
         	<exclude conf="distGrid" org="bouncycastle" name="bouncycastle-jce-jdk13" />
 			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
@@ -87,7 +88,9 @@
 			<dependency org="net.sf.ehcache" name="ehcache-web" rev="2.0.4"/>
 
 			<!--  CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}"  />
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}">
+                <exclude org="org.slf4j"     />
+			</dependency>
 
             <!-- CAS/WebSSO -->
             <dependency org="cas" name="casclient" rev="2.0.11"/>
@@ -100,10 +103,11 @@
             <dependency org="taglibs" name="standard" rev="1.1.2" force="true"/>
 
             <!-- Servlet & JSP -->
-            <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build->default(*);test->default(*)"/>
-            <dependency org="jspapi" name="jsp-api" rev="2.0" transitive="true" conf="build->default(*);test->default(*)"/>
-            
-			<!-- Testing dependencies -->
+            <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build,test->default(*)"/>
+            <dependency org="javax.servlet.jsp" name="jsp-api" rev="2.1" conf="build,test->default(*)"/>
+
+
+            <!-- Testing dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration">
               <exclude org="pull-parser" />
             </dependency>
