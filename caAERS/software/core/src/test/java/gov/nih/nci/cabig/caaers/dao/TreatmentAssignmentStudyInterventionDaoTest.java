@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<TreatmentAssignmentStudyInterventionDao> {
 
-    private TreatmentAssignmentDao tadao = getApplicationContext().getBean("treatmentAssignmentDao", TreatmentAssignmentDao.class);
-    private CtcTermDao ctcTermDao = getApplicationContext().getBean("ctcTermDao", CtcTermDao.class);
-    private StudyAgentDao studyAgentDao = getApplicationContext().getBean("studyAgentDao", StudyAgentDao.class);
-    private StudyDeviceDao studyDeviceDao = getApplicationContext().getBean("studyDeviceDao", StudyDeviceDao.class);
-    private OtherInterventionDao otherInterventionDao = getApplicationContext().getBean("otherInterventionDao", OtherInterventionDao.class);
+    private TreatmentAssignmentDao tadao = (TreatmentAssignmentDao)getApplicationContext().getBean("treatmentAssignmentDao");
+    private CtcTermDao ctcTermDao = (CtcTermDao)getApplicationContext().getBean("ctcTermDao");
+    private StudyAgentDao studyAgentDao = (StudyAgentDao)getApplicationContext().getBean("studyAgentDao");
+    private StudyDeviceDao studyDeviceDao = (StudyDeviceDao)getApplicationContext().getBean("studyDeviceDao");
+    private OtherInterventionDao otherInterventionDao = (OtherInterventionDao)getApplicationContext().getBean("otherInterventionDao");
 
     public void testLoadTreatmentAssignment() {
         TreatmentAssignment ta = tadao.getById(-11);
