@@ -1,5 +1,6 @@
 <ivysettings>
-	<settings defaultResolver="caaers-resolver" validate="false" />
+    <property name="ivy.checksums" value=""/>
+    <settings defaultResolver="caaers-resolver" validate="false" />
     <caches default="caAERSCache">
         <cache name="caAERSCache" basedir="${user.home}/.ivy2/caAERS"/>
     </caches>
