@@ -31,17 +31,32 @@ This file is the is the settings file used by IVY.  It is a good starting point 
 				<artifact pattern="${ivy.local-enterprise.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
 				<ivy pattern="${ivy.local-enterprise.repo}/[organisation]/[module]/[revision]/ivy.xml" />
 			</filesystem>           
-			<url name="remote-enterprise-ivy-repo">
-				<!-- Enterprise repository -->
-				<artifact pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-				<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
-			</url>  
-			<url name="ncicb-ivy-repo">
-				<!-- duplicate entry for Enterprise repository to not break existing caches -->
-				<artifact pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-				<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
-			</url>  
+			<!--<url name="remote-enterprise-ivy-repo">-->
+				<!--&lt;!&ndash; Enterprise repository &ndash;&gt;-->
+				<!--<artifact pattern="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />-->
+				<!--<ivy pattern="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />-->
+			<!--</url>  -->
+			<!--<url name="ncicb-ivy-repo">-->
+				<!--&lt;!&ndash; duplicate entry for Enterprise repository to not break existing caches &ndash;&gt;-->
+				<!--<artifact pattern="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />-->
+				<!--<ivy pattern="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />-->
+			<!--</url>  -->
 			<!-- this is where you can publish to, either your own code or for testing new thirdparty files -->
+            <url name="semanticbits-ivy-repo">
+                <!-- remote enterprise repository -->
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/jars/[artifact]-[revision].[ext]" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/zips/[artifact]-[revision].[ext]" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/xmls/[artifact]-[revision].[ext]" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/ivy-[revision].xml" />
+                <ivy pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/ivy-[revision].xml" />
+            </url>
+            <!-- Nexus NCI -->
+            <ibiblio name="maven2-NCI-3rdparty" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/thirdparty"
+                    />
+            <ibiblio name="maven2-NCI-m2central" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/central"
+                    />
+            <ibiblio name="maven2-NCI-jboss" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/jboss"
+                    />
 		</chain>
 	</resolvers>
 </ivysettings>

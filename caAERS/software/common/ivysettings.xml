@@ -1,5 +1,5 @@
 <ivysettings>
-	<property name="nci.ivy.repo" value="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo" />
+	<property name="nci.ivy.repo" value="https://ncisvn.nci.nih.gov/svn/commonlibrary/trunk/ivy-repo" />
 	<settings defaultResolver="nci-chain" />
 	<caches defaultCacheDir="${user.home}/.ivy2-${ant.project.name}" useOrigin="true"/>
 	<resolvers>
@@ -9,10 +9,25 @@
 				<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
 				<ivy pattern="${local.repo.dir}/[organisation]/[module]/[revision]/ivy.xml" />
 			</filesystem> 
-			<url name="ncicb-ivy-repo" m2compatible="false">
-				<ivy pattern="${nci.ivy.repo}/[organisation]/[module]/[revision]/ivy.xml" />
-				<artifact pattern="${nci.ivy.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-			</url>
+			<!--<url name="ncicb-ivy-repo" m2compatible="false">-->
+				<!--<ivy pattern="${nci.ivy.repo}/[organisation]/[module]/[revision]/ivy.xml" />-->
+				<!--<artifact pattern="${nci.ivy.repo}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />-->
+			<!--</url>-->
+            <url name="semanticbits-ivy-repo">
+                <!-- remote enterprise repository -->
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/jars/[artifact]-[revision].[ext]" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/zips/[artifact]-[revision].[ext]" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/xmls/[artifact]-[revision].[ext]" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/ivy-[revision].xml" />
+                <ivy pattern="http://repo.semanticbits.com/ivy-repo/bda/[organisation]/[module]/ivy-[revision].xml" />
+            </url>
+            <!-- Nexus NCI -->
+            <ibiblio name="maven2-NCI-3rdparty" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/thirdparty"
+                    />
+            <ibiblio name="maven2-NCI-m2central" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/central"
+                    />
+            <ibiblio name="maven2-NCI-jboss" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/jboss"
+                    />
 		</chain>
 	</resolvers>
 </ivysettings>
