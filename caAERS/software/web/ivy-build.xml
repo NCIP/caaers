@@ -122,7 +122,14 @@
 	<!--=================================================================
 		target :deploy-caaers
 	==================================================================== -->
-	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context" />
+	<target name="deploy-caaers" depends="set-confs,common.clean-lib-dir,undeploy-caaers, compile, copy-caaers-context">
+    </target>
+    <!--=================================================================
+         target :set-confs
+     ==================================================================== -->
+    <target name="set-confs">
+        <property name="resolve.confs" value="dist" />
+    </target>
 		
 <target name="TomStart">
     <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">

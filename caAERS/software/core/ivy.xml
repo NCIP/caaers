@@ -64,22 +64,30 @@
 
             <!-- caAERS module dependencies -->
             <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration"
-                conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid,publish"/>
+                        conf="build->default;dist->dist,publish;distGrid->distGrid,publish">
+                <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
+            </dependency>
 
             <!-- Rules Jar -->
             <dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.3.5" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j" />
+                <exclude org="gov.nih.nci.cabig.ctms" />
             </dependency>
 
             <!-- content filtering -->
             <dependency org="com.semanticbits.security.contentfilter" name="contentfilter" rev="0.4" conf="build,dist,distGrid->default"  />
 
             <!-- CTMS commons related -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization" rev="${ctms.version}" conf="build,dist,distGrid->runtime">
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization"
+                        rev="${ctms.version}" conf="build,dist,distGrid->runtime">
                 <exclude org="org.slf4j"     />
+                <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
             </dependency>
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}" conf="build,dist,distGrid->runtime" >
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}"
+                        conf="build,dist,distGrid->runtime" >
                 <exclude org="org.slf4j"     />
+                <exclude org="javax.servlet" />
+                <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
             </dependency>
 
             <!--Home grown infrastructure jar for COPPA  -->

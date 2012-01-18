@@ -88,9 +88,10 @@
 			<dependency org="net.sf.ehcache" name="ehcache-web" rev="2.0.4"/>
 
 			<!--  CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}">
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}" conf="build,dist,distGrid->runtime">
                 <exclude org="org.slf4j"     />
-			</dependency>
+                <exclude org="javax.servlet"     />
+            </dependency>
 
             <!-- CAS/WebSSO -->
             <dependency org="cas" name="casclient" rev="2.0.11"/>
@@ -112,7 +113,7 @@
               <exclude org="pull-parser" />
             </dependency>
 			<dependency org="org.springframework" name="spring-mock" rev="3.0.7.RELEASE" conf="test->default(*)" />
-             <dependency org="org.springframework" name="spring-test" rev="3.0.7.RELEASE" force="true" conf="test->default" />
+             <dependency org="org.springframework" name="spring-test" rev="3.0.7.RELEASE"  conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>

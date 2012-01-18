@@ -70,6 +70,7 @@
 		<attribute name="confs"/>
 		<attribute name="resolveId"/>
 		<sequential>
+            <echo message="Confs is @{confs}"   />
 			<ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance" keep="true"/>
 			<ivy:retrieve pattern="@{libDir}/[artifact]-[type]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 		</sequential>
@@ -261,6 +262,7 @@
     	============================================================ -->
     <target name="resolve" depends="clean-lib, init, load-ivy" unless="already.resolved"
     	description="--> resolve and retrieve dependencies with ivy">
+        <echo message="Executing resolve in ${ant.project.name}" />
     	<condition property="configs" value="${resolve.confs}" else="runtime">
     		<isset property="resolve.confs"/>
     	</condition>
@@ -298,7 +300,7 @@
           target: compile              
          ============================================================= -->
     <target name="compile" depends="resolve" description="--> compile the project">
-    	<echo message="Executing in ${ant.project.name}" />
+    	<echo message="Executing in ${ant.project.name} :: ${resolve.confs}" />
     	<copy-resources src="${main.src.resources}" dest="${classes.dir}" filter="true"/>
     	<javac srcdir="${generated.src.dir}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5" includeantruntime="false"/>
         <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5" includeantruntime="false"/>
