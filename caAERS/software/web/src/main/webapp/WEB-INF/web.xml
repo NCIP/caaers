@@ -248,7 +248,7 @@
         </init-param>
         <init-param>
             <param-name>compilerTargetVM</param-name>
-            <param-value>1.4</param-value>
+            <param-value>1.5</param-value>
         </init-param>
         <init-param>
             <param-name>fork</param-name>
