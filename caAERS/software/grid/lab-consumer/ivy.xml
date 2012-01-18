@@ -30,87 +30,22 @@
     </publications>
 
     <!-- dependencies for the rules module -->
-    <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)"  >
-
-
-        <!--  JSP-API-* should be excluded -->
-        <exclude org="jspapi" module="jsp-api" conf="publish,default,dist,distGrid" />
-        <exclude org="javax.servlet" module="servlet-api" conf="publish,default,dist,distGrid" />
-        <exclude org="javax.servlet" module="jsp-api" conf="publish,default,dist,distGrid" />
-        <exclude org="cglib" module="cglib" conf="*" />
-        <exclude org="net.sf.hibernate" />
-        <exclude org="hibernate" />
-        <exclude conf="*" org="objectweb" module="asm"/>
-        <exclude conf="distGrid" org="bouncycastle" name="bouncycastle-jce-jdk13" />
-        <exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
-        <exclude conf="distGrid" org="globus" module="jcog" />
-        <exclude conf="distGrid" org="*" name="cog*"/>
-        <exclude conf="distGrid" org="cryptix" name="cryptix" />
-        <exclude conf="distGrid" org="cryptix" name="cryptix-impl" />
-        <exclude conf="distGrid" org="cryptix" name="cryptix-asn1" />
-        <exclude conf="distGrid" org="*" name="gss"/>
-        <exclude conf="distGrid" org="*" name="puretls" />
-        <exclude conf="*" org="org.slf4j" name="slf4j-log4j12"/>
-        <exclude conf="dist,distGrid,runtime" org="org.apache.commons" module="com.springsource.org.apache.commons.attributes" />
-        <exclude conf="*" name="com.springsource.org.apache.commons.attributes" />
-        <exclude org="pull-parser" conf="default,publish,dist,distGrid,compile,runtime" />
-        <exclude name="*pull-parser*" conf="compile,runtime,default,master,dist,distGrid,publish" />
-
-
-        <!-- exclusion based on class loading -->
-        <exclude conf="runtime,dist,distGrid" name="logkit"  />
+    <dependencies>
 
         <!--  caAERS other modules -->
-        <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"
-                    conf="build->default;dist->dist,publish;distGrid->distGrid,publish">
+        <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" conf="*->publish,distGrid">
             <exclude conf="*" org="javax.servlet" module="servletapi" />
             <exclude conf="*" org="jspapi" module="jspapi" />
         </dependency>
 
-
-
-
-			<dependency org="gov.nih.nci.ccts.grid"
-					name="LabConsumerService-client" rev="2.8" transitive="false" />
-			<dependency org="gov.nih.nci.ccts.grid"
-						name="LabConsumerService-common" rev="2.8" transitive="false" />
-			<dependency org="gov.nih.nci.ccts.grid"
-						name="LabConsumerService-stubs" rev="2.8" transitive="false" />
-        	
-            <!--  AXIS unofficial versions -->
-            <dependency org="axis" name="axis" rev="1.4" />
-            <dependency org="axis-unofficial" name="addressing" rev="1.0" />
-
-
-            <!--  Globus-caGRID  -->
-			<!-- 
-			<dependency org="org.globus" name="globus-wsrf-mds-aggregator" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-mds-aggregator-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-servicegroup" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-servicegroup-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="wsrf-core" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="wsrf-core-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="cog-jglobus" rev="1.2" />
-			 -->
-			<!-- Mobius  -->
-			<!-- 
-			<dependency org="org.projectmobius" name="mobius-common-client" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-factories" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-gme-client" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-mako-client" rev="1.1" />
-			<dependency org="org.projectmobius" name="mobius-tools" rev="1.1" />
-			 -->
-            <!--  Castor -->
-            <dependency org="castor" name="castor" rev="0.9.9"/>
-
-
-            <!-- Servlet & JSP -->
-            <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="build->default(*);test->default(*)"/>
+        <!-- Lab consumer jars -->
+        <dependency org="gov.nih.nci.ccts.grid" name="LabConsumerService" rev="2.9.1" conf="build->distGrid">
+            <exclude name="LabConsumerService-service" />
+        </dependency>
 
 
         <!-- Test/Runtime dependencies -->
         <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"  conf="test->test" />
-
 
 
         </dependencies>

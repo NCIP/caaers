@@ -6,14 +6,11 @@
 	<property name="wsrf-caaers" value="wsrf-caaers"/>
 	<property name="ccts.grid-services.working.location" value="${build.dir}/working"/>
 	<!--Working tomcat folder or file name 	-->
-	<property name="ccts.grid-services.working.tomcat.file" value="apache-tomcat-5.5.20"/>
+	<property name="ccts.grid-services.working.tomcat.file" value="apache-tomcat-6.0.20"/>
 	<!--Working globus folder or file name-->
 	<property name="ccts.grid-services.working.globus.file" value="ws-core-4.0.3"/>
 	
-	<property name="registration.consumer.grid.service.dir" value="RegistrationConsumerGridService-caGrid1.3.1"/>
-	<property name="study.consumer.grid.service.dir" value="StudyConsumerGridService-caGrid1.3.1"/>
-	<property name="lab.consumer.grid.service.dir" value="LabConsumerService-caGrid13"/>	
-	<property name="aees.nes.service.dir" value="${basedir}/introduce/AdverseEventEnterpriseService"/>	
+	<property name="aees.nes.service.dir" value="${basedir}/introduce/AdverseEventEnterpriseService"/>
 	<property name="sres.nes.service.dir" value="${basedir}/introduce/SafetyReportingEnterpriseService"/>
 	
 	
@@ -89,21 +86,25 @@
 	================================================================== -->	
 	<target name="deploy-grid-services" >	
 		<property name="wsrf-root" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}"/>
+        <echo message="${ccts.grid-services.location}"/>
+        <echo message="${registration.consumer.grid.service.dir}"/>
+        <echo message="${ccts.grid-services.working.location}"/>
+        <echo message="${ccts.grid-services.working.tomcat.file}"/>
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/ivy-build.xml"/>
 		</subant>
-
+           <echo message="done reg" />
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-			<fileset dir="${ccts.grid-services.location}" includes="${study.consumer.grid.service.dir}/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${study.consumer.grid.service.dir}/ivy-build.xml"/>
 		</subant>	
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/ivy-build.xml"/>
 		</subant>
 		<!--
 		<subant target="deployTomcat">
@@ -130,7 +131,6 @@
 		<antcall target="resolve-dist" />
 		<antcall target="update-wsdd" />
 		
-		<echo message=""></echo>
 		<delete>
 		    <fileset dir="${wsrf-root}/WEB-INF/lib" includes="cog-jglobus-1.2.jar"/>
 			<fileset dir="${wsrf-root}/WEB-INF/lib" includes="caGrid-core-1.2.jar"/>
