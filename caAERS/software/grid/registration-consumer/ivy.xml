@@ -38,8 +38,8 @@
             <exclude org="jdom" module="jdom" conf="*" />
 
             <!-- removal based on https://tracker.nci.nih.gov/browse/CAAERS-3195 -->
-            <exclude org="globus" module="jcog" conf="*" />
-            <exclude org="globus" module="jcogfx" conf="*" />
+            <exclude org="globus" module="jcog" conf="dist,distGrid" />
+            <exclude org="globus" module="jcogfx" conf="dist,distGrid" />
 
             <!--  caAERS other modules -->
             <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"  conf="*->publish,distGrid">
