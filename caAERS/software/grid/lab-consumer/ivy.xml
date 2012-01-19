@@ -48,7 +48,7 @@
         </dependency>
 
         <!-- Lab consumer jars -->
-        <dependency org="gov.nih.nci.ccts.grid" name="LabConsumerService" rev="2.9.1" conf="build->distGrid">
+        <dependency org="gov.nih.nci.ccts.grid" name="LabConsumerService" rev="2.9.2" conf="build->distGrid">
             <exclude name="LabConsumerService-service" />
             <exclude org="org.hibernate" />
             <exclude org="org.springframework" />

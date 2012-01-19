@@ -49,7 +49,7 @@
 
 
             <!--  C3PR registration stubs/skeltons -->
-			<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer" conf="*->distGrid" rev="2.9.1">
+			<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer" conf="*->distGrid" rev="2.9.2">
                 <exclude name="RegistrationConsumer-service" />
                 <exclude org="org.hibernate" />
                 <exclude org="org.springframework" />

@@ -47,7 +47,7 @@
         </dependency>
 
         <!-- Study Consumer service dependency -->
-        <dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer" rev="2.9.1" conf="build->distGrid">
+        <dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer" rev="2.9.2" conf="build->distGrid">
             <exclude name="StudyConsumer-service" />
             <exclude org="org.hibernate" />
             <exclude org="org.springframework" />
