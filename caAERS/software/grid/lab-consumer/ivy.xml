@@ -31,6 +31,15 @@
 
     <!-- dependencies for the rules module -->
     <dependencies>
+        <!-- caGrid :: core, cds has test files with normal publishing -->
+        <exclude org="junit" conf="runtime,dist,distGrid" />
+        <exclude org="clarkware" module="jdepend " conf="runtime,dist,distGrid" />
+        <exclude org="ant" module="ant" conf="*" />
+        <exclude org="jdom" module="jdom" conf="*" />
+
+        <!-- removal based on https://tracker.nci.nih.gov/browse/CAAERS-3195 -->
+        <exclude org="globus" module="jcog" conf="*" />
+        <exclude org="globus" module="jcogfx" conf="*" />
 
         <!--  caAERS other modules -->
         <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" conf="*->publish,distGrid">
@@ -41,6 +50,8 @@
         <!-- Lab consumer jars -->
         <dependency org="gov.nih.nci.ccts.grid" name="LabConsumerService" rev="2.9.1" conf="build->distGrid">
             <exclude name="LabConsumerService-service" />
+            <exclude org="org.hibernate" />
+            <exclude org="org.springframework" />
         </dependency>
 
 
