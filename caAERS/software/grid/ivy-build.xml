@@ -247,7 +247,9 @@
 
         <delete>
             <fileset dir="${wsrf-root}/WEB-INF/lib" includes="bouncycastle-jce-jdk13-125-cagrid1.0.jar" />
-            <fileset dir="${wsrf-root}/WEB-INF/lib" includes="cog*.jar"/>
+            <fileset dir="${wsrf-root}/WEB-INF/lib" includes="cog-url*.jar"/>
+            <fileset dir="${wsrf-root}/WEB-INF/lib" includes="cog-tomcat*.jar"/>
+            <fileset dir="${wsrf-root}/WEB-INF/lib" includes="cog-axis*.jar"/>
             <fileset dir="${wsrf-root}/WEB-INF/lib" includes="cryptix*.jar"/>
             <fileset dir="${wsrf-root}/WEB-INF/lib" includes="puretls*.jar"/>
             <fileset dir="${wsrf-root}/WEB-INF/lib" includes="caGrid-core-1.2.jar"/>
