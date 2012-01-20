@@ -62,6 +62,9 @@
                 <exclude conf="*" org="javax.servlet" module="servletapi" />
                 <exclude conf="*" org="jspapi" module="jspapi" />
             </dependency>
+
+            <dependency org="globus" name="cog-jglobus" rev="4.0.3-patched" />
+
             <dependency org="com.oopsconsultancy" name="xmltask" rev="v1.14.2"
                         conf="build->default;runtime->default"/>
 
