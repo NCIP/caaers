@@ -14,7 +14,9 @@ import javax.jws.soap.SOAPBinding;
  * Exposes the ParticipantManagementWebservie, and will delegate all the requests to ParticipantServiceImpl
  * @author Biju Joseph
  */
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ParticipantService", serviceName="ParticipantService")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ParticipantService",
+        serviceName="ParticipantService",
+        targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 
 public class ParticipantManagementWebService implements ParticipantService {
@@ -24,7 +26,8 @@ public class ParticipantManagementWebService implements ParticipantService {
      * @param xmlParticipants
      */
     @WebMethod
-    public CaaersServiceResponse createParticipant(@WebParam(name="Participants") Participants xmlParticipants){
+    public CaaersServiceResponse createParticipant(@WebParam(name="Participants",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants){
         return impl.createParticipant(xmlParticipants);
     }
     /**
@@ -33,7 +36,8 @@ public class ParticipantManagementWebService implements ParticipantService {
      */
 
     @WebMethod
-    public CaaersServiceResponse updateParticipant(@WebParam(name="Participants") Participants xmlParticipants){
+    public CaaersServiceResponse updateParticipant(@WebParam(name="Participants",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants){
         return impl.updateParticipant(xmlParticipants);
     }
 

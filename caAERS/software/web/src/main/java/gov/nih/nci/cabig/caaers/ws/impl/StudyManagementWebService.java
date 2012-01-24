@@ -14,7 +14,9 @@ import javax.jws.soap.SOAPBinding;
  * Will expose the webservice methods and delegates it to StudyProcessorImpl
  * @author Biju Joseph
  */
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.StudyProcessor", serviceName="StudyService")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.StudyProcessor",
+        serviceName="StudyService",
+        targetNamespace="http://webservice.caaers.cabig.nci.nih.gov")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class StudyManagementWebService implements StudyProcessor {
     
@@ -27,17 +29,9 @@ public class StudyManagementWebService implements StudyProcessor {
      * @param xmlStudies
      */
     @WebMethod
-    public CaaersServiceResponse createStudy(@WebParam(name="Studies") Studies xmlStudies){
+    public CaaersServiceResponse createStudy(@WebParam(name="Studies",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies){
         return impl.createStudy(xmlStudies);
-    }
-
-
-    public StudyProcessorImpl getImpl() {
-        return impl;
-    }
-
-    public void setImpl(StudyProcessorImpl impl) {
-        this.impl = impl;
     }
 
     /**
@@ -47,9 +41,18 @@ public class StudyManagementWebService implements StudyProcessor {
      * @param xmlStudies
      */
     @WebMethod
-    public CaaersServiceResponse updateStudy(@WebParam(name="Studies") Studies xmlStudies){
+    public CaaersServiceResponse updateStudy(@WebParam(name="Studies",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies){
         return impl.updateStudy(xmlStudies);
     }
 
 
+
+    public StudyProcessorImpl getImpl() {
+        return impl;
+    }
+
+    public void setImpl(StudyProcessorImpl impl) {
+        this.impl = impl;
+    }
 }

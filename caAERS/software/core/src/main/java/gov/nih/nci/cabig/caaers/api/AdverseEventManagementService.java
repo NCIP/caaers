@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
 
 import javax.jws.WebMethod;
@@ -31,26 +32,29 @@ public interface AdverseEventManagementService {
      *	7. Course/cycle cannot overlap with an existing course/cycle.<br/>
 	 *	8. Baseline treatment type cannot start after an existing Non-Baseline treatment type.<br/>
 	 *	9. Non-Baseline treatment type cannot start before an existing Baseline treatment type.		<br/>
-	 * @param importAdverseEvents
+	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage") gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Update Adverse Events for a Study Participant Assignment on a given Course/Cycle.
-	 * @param importAdverseEvents
+	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name="AdverseEventsInputMessage") gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name="AdverseEventsInputMessage",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Delete Adverse Events for a Study Participant Assignment on a given Course/Cycle.
-	 * @param importAdverseEvents
+	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="AdverseEventsInputMessage") gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="AdverseEventsInputMessage",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 }

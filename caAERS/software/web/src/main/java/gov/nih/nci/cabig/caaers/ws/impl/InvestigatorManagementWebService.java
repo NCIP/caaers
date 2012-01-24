@@ -16,13 +16,16 @@ import javax.jws.soap.SOAPBinding;
  */
 
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService", serviceName="InvestigatorMigratorService")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService",
+        serviceName="InvestigatorMigratorService",
+        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/investigator")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class InvestigatorManagementWebService implements InvestigatorMigratorService {
     private DefaultInvestigatorMigratorService impl;
 
     @WebMethod
-    public CaaersServiceResponse saveInvestigator(@WebParam(name="Staff") Staff staff) {
+    public CaaersServiceResponse saveInvestigator(@WebParam(name="Staff",
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/investigator") Staff staff) {
         return  impl.saveInvestigator(staff);
     }
 

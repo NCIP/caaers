@@ -10,6 +10,7 @@ import javax.jws.WebService;
 public interface ResearchStaffMigratorService {
 
 	@WebMethod
-	public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff") gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff) ;
-	
+	public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff",
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff") gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff) ;
+
 }

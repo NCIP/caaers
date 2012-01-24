@@ -11,6 +11,7 @@ import javax.jws.WebService;
 public interface InvestigatorMigratorService {
 	
 	@WebMethod
-	public CaaersServiceResponse saveInvestigator(@WebParam(name="Staff") gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff) ;
+	public CaaersServiceResponse saveInvestigator(@WebParam(name="Staff",
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/investigator") gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff) ;
 	
 }
