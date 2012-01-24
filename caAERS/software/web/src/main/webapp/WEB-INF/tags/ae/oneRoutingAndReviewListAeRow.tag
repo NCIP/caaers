@@ -5,7 +5,7 @@
 <%@attribute name="isDCPStudy" type="java.lang.Boolean" required="true" description="True, if it is a DCP study" %>
 <%@attribute name="width" required="true" type="java.lang.String" %>
 
-<% String currClass=index%2==0? "odd":"even"; %>
+<% String currClass=( ( (index.intValue() % 2) ==0) ? "odd":"even"); %>
 <tr align="center"  class="<%= currClass %>">
 	<td width="35%" align="left">${ae.adverseEventTerm.universalTerm}
 		<div class="divNotes">
