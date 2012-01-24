@@ -6,39 +6,22 @@ import gov.nih.nci.cabig.caaers.api.ParticipantService;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
-import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
-import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
-import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
-import gov.nih.nci.cabig.caaers.webservice.participant.Response;
+import gov.nih.nci.cabig.caaers.webservice.participant.*;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
 import gov.nih.nci.security.util.StringUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -47,8 +30,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ParticipantService", serviceName="ParticipantService")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class ParticipantServiceImpl extends AbstractImportService implements ParticipantService,ApplicationContextAware,MessageSourceAware {
 	
 	private static Log logger = LogFactory.getLog(ParticipantServiceImpl.class);

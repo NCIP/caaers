@@ -39,7 +39,7 @@
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-web-validator.xml" />
 	<import
-		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-xfire.xml" />		
+		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-wsbeans.xml" />
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml" />
 	<import

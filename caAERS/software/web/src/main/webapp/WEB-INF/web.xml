@@ -71,17 +71,14 @@
             <param-value>openSessionInViewInterceptor</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
         <url-pattern>/pages/*</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
         <url-pattern>/public/*</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
         <url-pattern>/dwr/*</url-pattern>
@@ -95,7 +92,6 @@
         <url-pattern>/j_acegi_security_check</url-pattern>
     </filter-mapping>
 
-    
 	<filter>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<filter-class>
@@ -108,7 +104,6 @@
 			</param-value>	
 		</init-param>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -134,13 +129,11 @@
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>/pages/*</url-pattern>
 	</filter-mapping>
-	
-	
+
     <filter>
         <filter-name>Sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>Sitemesh</filter-name>
         <url-pattern>/*</url-pattern>
@@ -154,11 +147,11 @@
             <param-value>configuration, buildInfo</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>BeansInRequestFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <filter>
   		<filter-name>AuditInfoFilter</filter-name>
   		<filter-class>gov.nih.nci.cabig.caaers.web.AuditInfoFilter</filter-class>
@@ -167,6 +160,7 @@
         <filter-name>AuditInfoFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <filter>
   		<filter-name>eXtremeExport</filter-name>
   		<filter-class>org.extremecomponents.table.filter.ExportFilter</filter-class>
@@ -190,7 +184,6 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>pages</servlet-name>
         <url-pattern>/pages/*</url-pattern>
@@ -201,7 +194,6 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>3</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>public</servlet-name>
         <url-pattern>/public/*</url-pattern>
@@ -215,29 +207,11 @@
          <param-value>true</param-value>
       </init-param>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>dwr-invoker</servlet-name>
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
     
-    <servlet>
-    	<servlet-name>XFireServlet</servlet-name>
-	    <servlet-class>
-        	org.codehaus.xfire.transport.http.XFireConfigurableServlet
-    	</servlet-class>
-	</servlet>
-
-	 <servlet-mapping>
-    	<servlet-name>XFireServlet</servlet-name>
-	    <url-pattern>/servlet/XFireServlet/*</url-pattern>
-  	</servlet-mapping>
-
-  	<servlet-mapping>
-	    <servlet-name>XFireServlet</servlet-name>
-    	<url-pattern>/services/*</url-pattern>
-	</servlet-mapping>
-
     <!-- Overriding to make sure the compile is 1.4 -->
     <servlet>
         <servlet-name>jsp</servlet-name>
@@ -260,96 +234,91 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
-	<error-page>
-        <error-code>403</error-code>
-        <location>/accessDenied.jsp</location>
-    </error-page>
-
-    <error-page>
-        <error-code>500</error-code>
-        <location>/decorated-error.jsp</location>
-    </error-page>
-
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/decorated-error.jsp</location>
-    </error-page>
-    
-    <security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Secure URLs</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-	
-	<!--  Session Timeout is set to 45 mins. -->
-	 <session-config>
-      <session-timeout>45</session-timeout> 
-    </session-config>
 
     <!-- JAWR config start -->
+    <servlet>
+        <servlet-name>JavascriptServlet</servlet-name>
+        <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
 
-        <servlet>
-            <servlet-name>JavascriptServlet</servlet-name>
-            <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
+        <init-param>
+            <param-name>configLocation</param-name>
+            <param-value>/jawr.properties</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>CSSServlet</servlet-name>
+        <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
 
-            <init-param>
-                <param-name>configLocation</param-name>
-                <param-value>/jawr.properties</param-value>
-            </init-param>
-            <load-on-startup>1</load-on-startup>
-        </servlet>
-
-        <servlet>
-            <servlet-name>CSSServlet</servlet-name>
-            <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
-
-            <!-- Location in classpath of the config file -->
-            <init-param>
-                <param-name>configLocation</param-name>
-                <param-value>/jawr.properties</param-value>
-            </init-param>
-            <init-param>
-                <param-name>type</param-name>
-                <param-value>css</param-value>
-            </init-param>
-            <load-on-startup>1</load-on-startup>
-        </servlet>
-
-        <servlet-mapping>
-            <servlet-name>JavascriptServlet</servlet-name>
-            <url-pattern>*.zjs</url-pattern>
-        </servlet-mapping>
-
-        <servlet-mapping>
-            <servlet-name>CSSServlet</servlet-name>
-            <url-pattern>*.zcss</url-pattern>
-        </servlet-mapping>
-
-        <!-- JAWR config end -->
+        <!-- Location in classpath of the config file -->
+        <init-param>
+            <param-name>configLocation</param-name>
+            <param-value>/jawr.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>type</param-name>
+            <param-value>css</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JavascriptServlet</servlet-name>
+        <url-pattern>*.zjs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CSSServlet</servlet-name>
+        <url-pattern>*.zcss</url-pattern>
+    </servlet-mapping>
+    <!-- JAWR config end -->
     
-    	 <!-- Servlet which loads the log4j change monitor -->
-		<servlet>
-			<servlet-name>log4jConfigLoader</servlet-name>
-			<servlet-class>gov.nih.nci.cabig.caaers.web.utils.Log4jConfigLoader</servlet-class>
-			    <init-param>
-      				<param-name>log4j-init-file</param-name>
-      				<param-value>WEB-INF/log4j.xml</param-value>
-    			</init-param>
-			<load-on-startup>1</load-on-startup>   
-		</servlet>
+    <!-- Servlet which loads the log4j change monitor -->
+    <servlet>
+        <servlet-name>log4jConfigLoader</servlet-name>
+        <servlet-class>gov.nih.nci.cabig.caaers.web.utils.Log4jConfigLoader</servlet-class>
+            <init-param>
+                <param-name>log4j-init-file</param-name>
+                <param-value>WEB-INF/log4j.xml</param-value>
+            </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
     <servlet>
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>gov.nih.nci.cabig.caaers.web.utils.ImageServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ImageServlet</servlet-name>
         <url-pattern>/ImageRenderer</url-pattern>
   </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CXFServlet</servlet-name>
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CXFServlet</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+
+    <error-page><error-code>403</error-code><location>/accessDenied.jsp</location></error-page>
+    <error-page> <error-code>500</error-code> <location>/decorated-error.jsp</location></error-page>
+    <error-page><exception-type>java.lang.Throwable</exception-type><location>/decorated-error.jsp</location></error-page>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secure URLs</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!--  Session Timeout is set to 45 mins. -->
+    <session-config>
+        <session-timeout>45</session-timeout>
+    </session-config>
+
 
 </web-app>
 	

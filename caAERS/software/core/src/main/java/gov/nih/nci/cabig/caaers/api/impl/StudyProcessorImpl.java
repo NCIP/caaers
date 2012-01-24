@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -46,8 +44,7 @@ import org.springframework.context.MessageSourceAware;
  * @author Biju Joseph
  *
  */
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.StudyProcessor", serviceName="StudyService")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
+
 public class StudyProcessorImpl extends AbstractImportService implements StudyProcessor,ApplicationContextAware,MessageSourceAware {
 	
 	

@@ -21,13 +21,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService", serviceName="ResearchStaffMigratorService")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class DefaultResearchStaffMigratorService extends DefaultMigratorService implements ResearchStaffMigratorService {
 	
 	private static final Log logger = LogFactory.getLog(DefaultResearchStaffMigratorService.class);

@@ -1,3 +1,5 @@
+
+
 package gov.nih.nci.cabig.caaers.audit;
 
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -34,7 +36,8 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 			 		if(userName != null){
 			 			oldAuditInfo = (DataAuditInfo) DataAuditInfo.getLocal();
 			 			String url = fromUrl == null ? Thread.currentThread().getName() : fromUrl;
-			 			DataAuditInfo.setLocal(new DataAuditInfo(userName, "127.0.0.1", new Date(), url));
+                        DataAuditInfo newAuditInfo = AuditUtils.generateDataAuditInfo(userName,"127.0.0.1",url) ;
+			 			DataAuditInfo.setLocal(newAuditInfo);
 			 		}
 			 	}
 			 	

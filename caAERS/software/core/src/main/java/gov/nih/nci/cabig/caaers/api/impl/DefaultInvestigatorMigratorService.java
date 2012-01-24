@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -32,8 +30,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService", serviceName="InvestigatorMigratorService")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class DefaultInvestigatorMigratorService extends DefaultMigratorService implements InvestigatorMigratorService {
 	private static final Log logger = LogFactory.getLog(DefaultInvestigatorMigratorService.class);
 	

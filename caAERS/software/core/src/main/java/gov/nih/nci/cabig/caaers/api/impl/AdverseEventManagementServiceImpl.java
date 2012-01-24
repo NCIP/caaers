@@ -47,8 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -63,8 +62,6 @@ import org.springframework.mail.SimpleMailMessage;
 
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.AdverseEventManagementService", serviceName="AdverseEventManagementService")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class AdverseEventManagementServiceImpl extends AbstractImportService implements AdverseEventManagementService , ApplicationContextAware {
 	
 	protected BusinessRulesExecutionServiceImpl executionService;
