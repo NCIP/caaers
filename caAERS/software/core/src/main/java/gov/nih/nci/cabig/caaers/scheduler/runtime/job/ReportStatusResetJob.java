@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
+import gov.nih.nci.cabig.caaers.audit.AuditUtils;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 
 import java.io.Serializable;
 
+import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.Job;
@@ -25,8 +27,11 @@ public class ReportStatusResetJob  implements Job, Serializable {
 	public void execute(JobExecutionContext jobContext) {
 		
 		if(logger.isDebugEnabled()) logger.debug("Running ReportStatusResetJob");
-		
 		try {
+
+            DataAuditInfo auditInfo = AuditUtils.generateDataAuditInfo("SYSTEM", "127.0.0.1","quartz-job");
+            DataAuditInfo.setLocal(auditInfo);
+                    
 			//fetch the scheduler
 			Scheduler scheduler = jobContext.getScheduler();
 			
