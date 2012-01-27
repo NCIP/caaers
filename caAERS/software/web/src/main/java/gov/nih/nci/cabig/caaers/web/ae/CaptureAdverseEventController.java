@@ -222,6 +222,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	 */
 	@Override
 	protected void initBinder(HttpServletRequest request,ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(request,binder);
 		ControllerTools.registerDomainObjectEditor(binder,  participantDao);
         ControllerTools.registerDomainObjectEditor(binder,  studyDao);
         ControllerTools.registerDomainObjectEditor(binder,  adverseEventReportingPeriodDao);
