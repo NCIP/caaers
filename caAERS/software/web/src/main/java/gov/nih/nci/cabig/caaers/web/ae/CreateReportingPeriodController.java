@@ -119,8 +119,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
     @Override
     protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, NumberFormat.getInstance(), true));
         ControllerTools.registerDomainObjectEditor(binder, epochDao);
         ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);

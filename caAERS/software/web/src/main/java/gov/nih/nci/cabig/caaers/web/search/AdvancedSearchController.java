@@ -82,14 +82,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 		return null;
 	}
-	
-	@Override
-    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
-        super.initBinder(request, binder);
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
-    }
-	
+
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
 

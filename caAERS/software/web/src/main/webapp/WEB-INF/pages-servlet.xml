@@ -23,7 +23,7 @@
     </property>
   </bean>
   <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
-
+  <bean id="webBindingInitializer" class="gov.nih.nci.cabig.caaers.CaaersDataBindingInitializer" />
     <!-- =========================== View resolvers ====================================
 -->
   <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
@@ -365,7 +365,7 @@
 
 
 
-  
+
   	<bean name="participantEditTask" id="participantEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
     <bean name="studyEditTask" id="studyEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Study" p:linkName="editStudyController"/>
     <bean name="aeEditTask" id="aeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Report Adverse Events" p:linkName="editAdverseEventController"/>

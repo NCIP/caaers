@@ -80,11 +80,11 @@ public class RoutingAndReviewController extends SimpleFormController{
     
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(request, binder);
         ControllerTools.registerGridDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "organization", organizationDao);
         //ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(ReviewStatus.class, new EnumByNameEditor(ReviewStatus.class));
         binder.registerCustomEditor(ReportStatus.class, new EnumByNameEditor(ReportStatus.class));
     }

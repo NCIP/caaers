@@ -74,15 +74,6 @@ public abstract class OrganizationController<C extends Organization> extends
      */
     protected abstract void layoutTabs(Flow<C> flow);
 
-    @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
-        super.initBinder(request, binder);
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-
-    }
-
-
     /**
      * Override this in sub controller if summary is needed
      * 

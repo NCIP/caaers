@@ -55,7 +55,6 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         ControllerTools.registerDomainObjectEditor(binder, configPropertyDao);

@@ -148,6 +148,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(request, binder);
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
@@ -186,8 +187,6 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, otherInterventionDao);
 
         
-        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
