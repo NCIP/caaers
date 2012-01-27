@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
+import gov.nih.nci.cabig.caaers.web.task.TaskGroup;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
@@ -104,7 +107,9 @@ public class AuthorizationDecisionCache implements Serializable{
      * @return
      */
     public Object getEnityContextCacheKey(Object o){
-       if(o instanceof DomainObject) return CurrentEntityHolder.getEntityCacheKeyDiscriminator(o);
+       if(o instanceof DomainObject || o instanceof Tab) return CurrentEntityHolder.getEntityCacheKeyDiscriminator(o);
+       if(o instanceof Task) return Task.class.getName() + ((Task) o) .getUrl();
+       if(o instanceof TaskGroup) return TaskGroup.class.getName() + ((TaskGroup) o).getDisplayName();
        return o;
     }
 	

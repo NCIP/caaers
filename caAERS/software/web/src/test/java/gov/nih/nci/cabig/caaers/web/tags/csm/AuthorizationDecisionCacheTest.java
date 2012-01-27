@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.web.study.DetailsTab;
+import gov.nih.nci.cabig.caaers.web.study.StudyDetailsTabTestCase;
 import net.sf.ehcache.CacheManager;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import junit.framework.Test;
@@ -29,6 +31,9 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
         LocalStudy study = new LocalStudy();
         study.setId(3);
         assertEquals("gov.nih.nci.cabig.caaers.domain.LocalStudy_3", cache.getEnityContextCacheKey(study));
+
+        DetailsTab t = new DetailsTab();
+        assertEquals("gov.nih.nci.cabig.caaers.web.study.DetailsTab", cache.getEnityContextCacheKey(t));
         
         assertNull(cache.getEnityContextCacheKey(null));
         
