@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import net.sf.ehcache.CacheManager;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import junit.framework.Test;
@@ -18,13 +19,19 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
     public void setUp() throws Exception {
        super.setUp();
        cache = new AuthorizationDecisionCache();
-       if (CacheManager.getInstance().getCache("authCache")==null)
-    	   CacheManager.getInstance().addCache("authCache");
-       cache.setDecisionCache(CacheManager.getInstance().getEhcache("authCache"));
+       cache.setMaxElementsToCache(5);
     }
 
-    public void testGetCacheKeyDiscriminator() throws Exception {
-        assertEquals("0", cache.getEnityContextCacheKeyDiscriminator(null));
+    public void testGetEnityContextCacheKey() throws Exception {
+        String s = "hello";
+        assertSame(s, cache.getEnityContextCacheKey(s));
+
+        LocalStudy study = new LocalStudy();
+        study.setId(3);
+        assertEquals("gov.nih.nci.cabig.caaers.domain.LocalStudy_3", cache.getEnityContextCacheKey(study));
+        
+        assertNull(cache.getEnityContextCacheKey(null));
+        
     }
 
 
@@ -33,27 +40,45 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
     }
 
      public void testIsAuthorizedAfterAdd(){
-      assertNull( cache.isAuthorized("","hi", "hello") );
-      cache.addDecision("","hi", "hello", true);
-      assertTrue(cache.isAuthorized("","hi", "hello"));
+      assertNull( cache.isAuthorized("x","hi", "hello") );
+      cache.addDecision("x","hi", "hello", true);
+      assertTrue(cache.isAuthorized("x","hi", "hello"));
     }
 
     public void testAddDecision(){
       
-      cache.addDecision("","hi", "hello", true);
-      cache.addDecision("","hi","man", false);
+      cache.addDecision("x","hi", "hello", true);
+      cache.addDecision("x","hi","man", false);
       
-      assertTrue(cache.isAuthorized("","hi", "hello"));
-      assertFalse(cache.isAuthorized("","hi", "man"));
-      assertNull(cache.isAuthorized("","hi","boy"));
+      assertTrue(cache.isAuthorized("x","hi", "hello"));
+      assertFalse(cache.isAuthorized("x","hi", "man"));
+      assertNull(cache.isAuthorized("x","hi","boy"));
+
+        cache.addDecision("a","hi", "hello", true);
+        assertTrue(cache.isAuthorized("a","hi", "hello"));
+
+        cache.addDecision("b","hi", "hello", true);
+        cache.addDecision("c","hi", "hello", true);
+        cache.addDecision("d","hi", "hello", true);
+        cache.addDecision("e","hi", "hello", true);
+        cache.addDecision("f","hi", "hello", true);
+        cache.addDecision("g","hi", "hello", true);
+        
+        assertNull(cache.isAuthorized("a","hi", "hello"));
+        
+        assertTrue(cache.isAuthorized("f","hi", "hello"));
+        
+
     }
 
 
     public void testClear(){
-      cache.addDecision("","hi", "hello", true);
-      cache.addDecision("","hi","man", false);
+      cache.addDecision("x","hi", "hello", true);
+      assertTrue(cache.isAuthorized("x","hi", "hello"));
+
+      cache.addDecision("x","hi","man", false);
       cache.clear();
 
-      assertTrue(cache.getDecisionCache().getKeys().isEmpty());  
+      assertNull(cache.isAuthorized("x", "hi", "hello"));
     }
 }

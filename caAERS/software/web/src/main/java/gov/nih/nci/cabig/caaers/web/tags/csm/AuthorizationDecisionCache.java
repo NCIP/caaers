@@ -1,16 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.tags.csm;
 
 import gov.nih.nci.cabig.caaers.security.CurrentEntityHolder;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class caches the result of authorization calls made in the current session. 
@@ -21,9 +19,19 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class AuthorizationDecisionCache implements Serializable{
 
-    private static final String defaultKey = "0";
+    private int maxElementsToCache = 600;
 	    
-    private Ehcache decisionCache;
+    private LinkedHashMap<String, HashMap<Object,AuthorizationDecisionCacheEntry >> decisionCache;
+    
+    public AuthorizationDecisionCache(){
+        //Initalize the LRU cache.
+        decisionCache = new LinkedHashMap<String, HashMap<Object, AuthorizationDecisionCacheEntry>>(){
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, HashMap<Object, AuthorizationDecisionCacheEntry>> eldest) {
+                return size() > maxElementsToCache;
+            }
+        };
+    }
 	
 
 	/**
@@ -33,29 +41,26 @@ public class AuthorizationDecisionCache implements Serializable{
 	 * @param privilege
 	 * @param allowed
 	 */
-	public void addDecision(String scopeDiscriminator, Object domainObject,
-			String privilege, Boolean allowed) {
-		addDecisionInternal((scopeDiscriminator+getEnityContextCacheKeyDiscriminator(domainObject)),
-				domainObject, privilege, allowed);
+	public void addDecision(String scopeDiscriminator, Object domainObject,String privilege, Boolean allowed) {
+		addDecisionInternal(scopeDiscriminator,domainObject, privilege, allowed);
 	}
 
-	private void addDecisionInternal(Object key,
-			Object domainObject, String privilege, Boolean allowed) {
+	private void addDecisionInternal(String key,Object domainObject, String privilege, Boolean allowed) {
 		if (domainObject == null)
 			return;
-		HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = (HashMap<Object, AuthorizationDecisionCacheEntry>) (decisionCache
-				.get(key) != null ? decisionCache.get(key).getObjectValue()
-				: null);
-		if (decisionMap == null) {
-			decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
-			Element element = new Element(key, decisionMap);
-			decisionCache.put(element);
-		}
 
-		AuthorizationDecisionCacheEntry entry = decisionMap.get(domainObject);
-		if (entry == null) {
+        HashMap<Object,AuthorizationDecisionCacheEntry > decisionMap = decisionCache.get(key);
+        if(decisionMap == null){
+            decisionMap = new HashMap<Object,AuthorizationDecisionCacheEntry >();
+            decisionCache.put(key, decisionMap);
+        }
+
+        Object decisionMapKey = getEnityContextCacheKey(domainObject);
+
+        AuthorizationDecisionCacheEntry entry = decisionMap.get(decisionMapKey);
+        if (entry == null) {
 			entry = new AuthorizationDecisionCacheEntry(domainObject);
-			decisionMap.put(domainObject, entry);
+			decisionMap.put(decisionMapKey, entry);
 		}
 		entry.addDecision(privilege, allowed);
 	}
@@ -67,53 +72,30 @@ public class AuthorizationDecisionCache implements Serializable{
 	 * @param privilege
 	 * @return
 	 */
-	public Boolean isAuthorized(String scopeDiscriminator, Object domainObject,
-			String privilege) {
-		return isAuthorizedInternal(scopeDiscriminator
-				+ getEnityContextCacheKeyDiscriminator(domainObject), domainObject,
-				privilege);
+	public Boolean isAuthorized(String scopeDiscriminator, Object domainObject,String privilege) {
+		return isAuthorizedInternal(scopeDiscriminator,domainObject,privilege);
 	}
 
     private Boolean isAuthorizedInternal(Object key, Object domainObject, String privilege){
 
+        if (domainObject == null)  return null;
 
-		HashMap<Object, AuthorizationDecisionCacheEntry> decisionMap = (HashMap<Object, AuthorizationDecisionCacheEntry>) (decisionCache
-				.get(key) != null ? decisionCache.get(key).getObjectValue()
-				: null);
-        if(decisionMap == null){
-            decisionMap = new HashMap<Object, AuthorizationDecisionCacheEntry>();
-            decisionCache.put(new Element(key,decisionMap));
-        }
-        AuthorizationDecisionCacheEntry entry = null;
-		if(decisionMap.containsKey(domainObject)){
-			entry = decisionMap.get(domainObject);
-		}else{
-			entry = new AuthorizationDecisionCacheEntry(domainObject);
-			decisionMap.put(domainObject, entry);
-		}
+        HashMap<Object,AuthorizationDecisionCacheEntry > decisionMap = decisionCache.get(key);
+        if(decisionMap == null) return null;
+
+        Object decisionMapKey = getEnityContextCacheKey(domainObject);
+        AuthorizationDecisionCacheEntry entry = decisionMap.get(decisionMapKey);
+        if(entry == null) return null;
+
 		return entry.isAuthorized(privilege);
     }
 	
 	public void clear(){
-		decisionCache.removeAll();
+		decisionCache.clear();
 	}
 
-
     public void clear(String scopeDiscriminator){
-        List keys = decisionCache.getKeys();
-        List keysToRemove =  new ArrayList();
-        if(keys != null){
-            for(Iterator it = keys.iterator(); it.hasNext(); ){
-                if(StringUtils.startsWith(String.valueOf(it.next()), scopeDiscriminator)){
-                    keysToRemove.add(it);
-                }
-            }
-
-            for(Object o : keysToRemove){
-                decisionCache.remove(o);
-            }
-
-        }
+        decisionCache.remove(scopeDiscriminator);
     }
 
     /**
@@ -121,9 +103,9 @@ public class AuthorizationDecisionCache implements Serializable{
      * http://jira.semanticbits.com/browse/CAAERS-4098
      * @return
      */
-    public Object getEnityContextCacheKeyDiscriminator(Object o){
-       String key = CurrentEntityHolder.getEntityCacheKeyDiscriminator(o);
-       return StringUtils.isBlank(key) ? defaultKey : key;
+    public Object getEnityContextCacheKey(Object o){
+       if(o instanceof DomainObject) return CurrentEntityHolder.getEntityCacheKeyDiscriminator(o);
+       return o;
     }
 	
 	@SuppressWarnings("serial")
@@ -155,12 +137,11 @@ public class AuthorizationDecisionCache implements Serializable{
 		
 	}
 
-	public Ehcache getDecisionCache() {
-		return decisionCache;
-	}
+    public int getMaxElementsToCache() {
+        return maxElementsToCache;
+    }
 
-	public void setDecisionCache(Ehcache decisionCache) {
-		this.decisionCache = decisionCache;
-	}
-
+    public void setMaxElementsToCache(int maxElementsToCache) {
+        this.maxElementsToCache = maxElementsToCache;
+    }
 }
