@@ -226,5 +226,15 @@ public class StudyTest extends TestCase {
         AbstractExpectedAE ese = study.checkExpectedAEUniqueness();
         assertSame(ese, aae2);
     }
+    
+    
+    public void testInitializeEpochsIfNecessary(){
+        List<Epoch> epochList = study.getEpochs();
+        assertTrue(epochList == null || epochList.isEmpty());
+        study.initializeEpocsIfNecessary();
+        epochList = study.getEpochs();
+        assertFalse(epochList.isEmpty());
+        assertEquals(3, epochList.size());
+    }
 
 }

@@ -27,26 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class AgentsTab extends StudyTab {
 
-    @Deprecated
-    public static int IND_TYPE_NOT_USED = 0;
-
-    @Deprecated
-    public static int IND_TYPE_CTEP = 1;
-
-    @Deprecated
-    public static int IND_TYPE_OTHER = 2;
-
-    @Deprecated
-    public static int IND_TYPE_NA_COMMERCIAL_AGENT = 3;
-
-    @Deprecated
-    public static int IND_TYPE_EXEMPT = 4;
-
-    @Deprecated
-    public static int IND_TYPE_DCP_IND = 5;
-
-    @Deprecated
-    public static int CTEP_IND = -111;
 
     private LinkedHashMap<Object, Object> indTypeMap = new LinkedHashMap<Object, Object>();
     private AgentSpecificAdverseEventListService agentSpecificAdverseEventListService;
@@ -255,9 +235,9 @@ public class AgentsTab extends StudyTab {
         return modelAndView;
         
     }
-    
+
     /**
-     * This method will add IND to the study agent. 
+     * This method will add IND to the study agent.
      * @param request
      * @param object
      * @param errors
@@ -270,7 +250,7 @@ public class AgentsTab extends StudyTab {
         ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentINDSection");
         modelAndView.getModel().put("indfields", createINDFieldGroup(command, studyAgentIndex));
         modelAndView.getModel().put("index", studyAgentIndex);
-        
+
         return modelAndView;
     }
 

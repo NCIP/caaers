@@ -21,8 +21,7 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin, Priyatam
  */
 public abstract class StudyTab extends TabWithFields<StudyCommand> {
-    // TODO: This should be named after the class, but the existing context instance
-    // is named like this. Alternate TODO: get rid of this bogus class entirely.
+
 
     private ConfigProperty configurationProperty;
     protected static final Log log = LogFactory.getLog(StudyTab.class);
@@ -39,9 +38,6 @@ public abstract class StudyTab extends TabWithFields<StudyCommand> {
         this.configurationProperty = configProperty;
     }
 
-    protected void addConfigMapToRefdata(Map<String, Object> refdata, String name) {
-        refdata.put(name, getConfigurationProperty().getMap().get(name));
-    }
 
     protected Map<Object, Object> collectOptions(List list, String nameProperty, String valueProperty, String... exclusionProperties) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
@@ -75,14 +71,6 @@ public abstract class StudyTab extends TabWithFields<StudyCommand> {
         }
 
         return list;
-    }
-
-    public String fieldValuesAsString(List<InputField> fields, BeanWrapper bean) {
-        StringBuilder sb = new StringBuilder();
-        for (InputField field : fields) {
-            sb.append(String.valueOf(bean.getPropertyValue(field.getPropertyName())));
-        }
-        return sb.toString();
     }
 
     public void rejectFields(List<InputField> fields, Errors errors, String errorMessage) {

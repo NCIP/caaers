@@ -240,6 +240,21 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     	if(StringUtils.isEmpty(request.getParameter("_action")))  	super.populateSaveConfirmationMessage(refdata, request, command, errors, page);
     }
 
+    /**
+     * Will make sure it will reload the study from database for every request. This will discard the study loaded in previous session.
+     * @param request   - The HttpServletRequest
+     * @param oCommand  - An instance of StudyCommand
+     * @return
+     * @throws Exception
+     */
+    @Override
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+        StudyCommand cmd = (StudyCommand) super.currentFormObject(request, oCommand);
+        if(cmd.getStudy().getId() != null){
+            cmd.reloadStudy();
+        }
+        return cmd;
+    }
 
     /**
      * {@inheritDoc}

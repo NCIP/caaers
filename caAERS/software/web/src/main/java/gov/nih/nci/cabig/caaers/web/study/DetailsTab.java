@@ -39,15 +39,8 @@ public class DetailsTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
-        // TODO : to be removed from reference data, as they are no longer used.
-        refdata.put("ctcVersion", ctcDao.getAll()); // remove
-        if (command.getStudy().getAeTerminology() != null && command.getStudy().getAeTerminology().getTerm() == null) {
+        if (command.getStudy().getAeTerminology().getTerm() == null) {
             command.getStudy().getAeTerminology().setTerm(Term.CTC);
-        };
-
-        if (command.getStudy().getAeTerminology() != null && command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == null) {
-          //  command.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
-            // diseaseTerminology.diseaseCodeTerm
         }
         return refdata;
     }
@@ -58,15 +51,10 @@ public class DetailsTab extends StudyTab {
 
         // TODO: Add validation for when terminology.term = Term.CTC
         List<Ctc> ctcList = ctcDao.getAll();
-        for(Ctc ctc : ctcList){
-        	ctc.getCategories().size();
-        }
 
         InputFieldGroup fieldGroup = null,
-                reportFormatFieldGroup = null,
-                fundSponsorFieldGroup = null,
-                coordinatingCenterFieldGroup = null;
-                // dcpCodeFieldGroup = null;
+                        fundSponsorFieldGroup = null,
+                        coordinatingCenterFieldGroup = null;
 
         if (fieldGroup == null) {
             // set up the fields
@@ -75,20 +63,8 @@ public class DetailsTab extends StudyTab {
             InputField shortTitleField = InputFieldFactory.createTextArea("study.shortTitle", "Title", true);
             InputFieldAttributes.setColumns(shortTitleField, 100);
             fields.add(shortTitleField);
-/*
-            InputField longTitleField = InputFieldFactory.createTextArea("study.longTitle", "Long title", true);
-            InputFieldAttributes.setColumns(longTitleField, 70);
-            fields.add(longTitleField);
-            InputField precisField = InputFieldFactory.createTextArea("study.precis", "Precis", false);
-            InputFieldAttributes.setColumns(precisField, 70);
-            fields.add(precisField);
-            InputField descField = InputFieldFactory.createTextArea("study.description", "Description", false);
-            InputFieldAttributes.setColumns(descField, 70);
-            fields.add(descField);
-*/
 
             fields.add(InputFieldFactory.createSelectField("study.phaseCode", "Phase", true, collectOptionsFromConfig("phaseCodeRefData", "desc", "desc")));
-//            fields.add(InputFieldFactory.createSelectField("study.status", "Status", true, collectOptionsFromConfig("statusRefData", "code", "desc")));
 
             Map<Object, Object> options = new LinkedHashMap<Object, Object>();
             options.put("", "Please select");
@@ -99,8 +75,6 @@ public class DetailsTab extends StudyTab {
             verbatimFirstOptions.put(Boolean.FALSE, "No");
             verbatimFirstOptions.put(Boolean.TRUE, "Yes");
 
-//            fields.add(InputFieldFactory.createSelectField("study.multiInstitutionIndicator", "Multi Institutional", true, options));
-//            fields.add(InputFieldFactory.createSelectField("study.adeersReporting", "AdEERS  reporting required", true, options));
             fields.add(InputFieldFactory.createSelectField("study.verbatimFirst", "verbatimFirst", false, verbatimFirstOptions));
             fields.add(InputFieldFactory.createLabelField("dataEntryStatus", "Data Entry Status", false));
 
@@ -110,36 +84,6 @@ public class DetailsTab extends StudyTab {
 
         }
 
-/*
-        if (reportFormatFieldGroup == null) {
-            reportFormatFieldGroup = new DefaultInputFieldGroup("rfFieldGroup");
-            List<InputField> fields = reportFormatFieldGroup.getFields();
-
-            InputField caaersXMLTypeField = InputFieldFactory.createCheckboxField("study.caaersXMLType", "caAERS XML");
-            InputFieldAttributes.setSize(caaersXMLTypeField, 50);
-            fields.add(caaersXMLTypeField);
-
-            InputField adeersPDFTypeField = InputFieldFactory.createCheckboxField("study.adeersPDFType", "AdEERS PDF");
-            InputFieldAttributes.setSize(adeersPDFTypeField, 50);
-            fields.add(adeersPDFTypeField);
-
-            InputField ciomsPDFTypeField = InputFieldFactory.createCheckboxField("study.ciomsPDFType", "CIOMS Form");
-            InputFieldAttributes.setSize(ciomsPDFTypeField, 50);
-            fields.add(ciomsPDFTypeField);
-
-            InputField ciomsSaePDFTypeField = InputFieldFactory.createCheckboxField("study.ciomsSaePDFType", "CIOMS SAE Form");
-            InputFieldAttributes.setSize(ciomsSaePDFTypeField, 50);
-            fields.add(ciomsSaePDFTypeField);
-
-            InputField dcpSAEPDFTypeField = InputFieldFactory.createCheckboxField("study.dcpSAEPDFType", "DCP SAE Form");
-            InputFieldAttributes.setSize(dcpSAEPDFTypeField, 50);
-            fields.add(dcpSAEPDFTypeField);
-
-            InputField medwatchPDFTypeField = InputFieldFactory.createCheckboxField("study.medwatchPDFType", "MedWatch PDF");
-            InputFieldAttributes.setSize(medwatchPDFTypeField, 50);
-            fields.add(medwatchPDFTypeField);
-        }
-*/
 
         if (fundSponsorFieldGroup == null) {
             fundSponsorFieldGroup = new DefaultInputFieldGroup("fsFieldGroup");
@@ -198,25 +142,13 @@ public class DetailsTab extends StudyTab {
             sdFields.add(InputFieldFactory.createSelectField("study.diseaseTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersions, "id", "name")));
         }
 
-/*
-        if (dcpCodeFieldGroup == null) {
-            dcpCodeFieldGroup = new DefaultInputFieldGroup("dcpFieldGroup");
-            List<InputField> fields = dcpCodeFieldGroup.getFields();
-            Map<Object, Object> designOpts = new LinkedHashMap<Object, Object>();
-            designOpts.put("", "Please select");
-            designOpts.putAll(collectOptions(Arrays.asList(Design.values()), null, "displayName"));
-            fields.add(InputFieldFactory.createSelectField("study.design", "Study design", false, designOpts));
-        }
-*/
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(fieldGroup);
-        //map.addInputFieldGroup(reportFormatFieldGroup);
         map.addInputFieldGroup(fundSponsorFieldGroup);
         map.addInputFieldGroup(coordinatingCenterFieldGroup);
         map.addInputFieldGroup(studyCodeFieldGroup);
         map.addInputFieldGroup(studyDiseaseCodeFieldGroup);
-        // map.addInputFieldGroup(dcpCodeFieldGroup);
 
         return map;
     }
@@ -237,12 +169,6 @@ public class DetailsTab extends StudyTab {
                 errors.rejectValue(field.getPropertyName(), "STU_006",new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
             }
 
-/*
-            if (command.getStudy().getOtherMeddra() == null) {
-                InputField field = fieldGroups.get("scFieldGroup").getFields().get(3);
-                errors.rejectValue(field.getPropertyName(), "STU_006",new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
-            }
-*/
         }
 
         // Disease coding terminology
@@ -291,19 +217,6 @@ public class DetailsTab extends StudyTab {
     public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
         super.postProcess(request, command, errors);
 
-/*
-        String action = request.getParameter("_action");
-
-        //
-        if (action != null && action.equals("deleteCS")) {
-
-        }
-
-        //
-        if (action != null && action.equals("deleteFS")) {
-
-        }
-*/
 
         if (errors.hasErrors()) {
             return;

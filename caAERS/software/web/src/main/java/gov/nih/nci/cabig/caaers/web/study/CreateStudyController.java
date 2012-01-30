@@ -91,9 +91,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         ccIdentifier.setPrimaryIndicator(false);
         ccIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         study.addIdentifier(ccIdentifier);
-        study.addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
-        study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
-        study.addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
+        study.initializeEpocsIfNecessary();
         
         command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
         command.setAllPersonnelRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));

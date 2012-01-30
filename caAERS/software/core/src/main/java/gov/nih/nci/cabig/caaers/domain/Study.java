@@ -222,11 +222,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
         lazyListHelper.add(StudyDevice.class, new StudyChildInstantiateFactory<StudyDevice>(this, StudyDevice.class));
         lazyListHelper.add(OtherIntervention.class, new StudyChildInstantiateFactory<OtherIntervention>(this, OtherIntervention.class));
-        lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(TreatmentAssignment.class));
+        lazyListHelper.add(TreatmentAssignment.class, new StudyChildInstantiateFactory<TreatmentAssignment>(this, TreatmentAssignment.class));
 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());
-        setStudyAgentsInternal(new ArrayList<StudyAgent>());
     }
 
     // / LOGIC
@@ -2053,7 +2052,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 		return false;
 		
 	}
-	
+
 	/**
 	 * Gets the ctc categories.
 	 *
@@ -2391,5 +2390,17 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     public void setStudyPurpose(String studyPurpose) {
         this.studyPurpose = studyPurpose;
+    }
+
+
+    /**
+     * Will initialize the Epochs.
+     */
+    public void initializeEpocsIfNecessary(){
+        if (getEpochs() == null || getEpochs().isEmpty()) {
+            addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
+            addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
+            addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
+        }
     }
 }

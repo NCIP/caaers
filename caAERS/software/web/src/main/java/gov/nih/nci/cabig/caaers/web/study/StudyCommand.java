@@ -512,7 +512,8 @@ public class StudyCommand {
    
     public void reloadStudy(){
     	Integer oldStudyId = study.getId();
-    	Study loaded = studyDao.getStudyDesignById(oldStudyId.intValue());
+//    	Study loaded = studyDao.getStudyDesignById(oldStudyId.intValue());
+        Study loaded = studyDao.getById(oldStudyId);
     	setStudy(loaded);
     }
     
@@ -520,20 +521,8 @@ public class StudyCommand {
      * This method will save a study into the DB
      */
     public void save(){
-
         //save the study by merging it.
-         Study mergedStudy = studyRepository.merge(study);
-         studyDao.initialize(mergedStudy);
-
-         // poperly set the  report formats
-         mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
-         mergedStudy.setCaaersXMLType(study.getCaaersXMLType());
-         mergedStudy.setCiomsPDFType(study.getCiomsPDFType());
-         mergedStudy.setCiomsSaePDFType(study.getCiomsSaePDFType());
-         mergedStudy.setDcpSAEPDFType(study.getDcpSAEPDFType());
-         mergedStudy.setMedwatchPDFType(study.getMedwatchPDFType());
-
-         setStudy(mergedStudy);
+        studyRepository.save(study);
     }
 
     public List<ConfigProperty> getAllPersonnelRoles() {
