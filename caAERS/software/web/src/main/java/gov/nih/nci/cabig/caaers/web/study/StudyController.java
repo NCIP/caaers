@@ -166,9 +166,17 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
         populateMustFireEvent(request, command, tab);
 
-    	//do not save if it is an AJAX request, 
+        boolean asyncReqParamPresent = isAjaxRequest(request);
+        
+        //save an Ajax request when it is "a remove" task
+        Object removeTask = findInRequest(request, "task");
+        if(asyncReqParamPresent && "remove".equals(String.valueOf(removeTask))){
+            return true;
+        }
+
+    	//do not save if it is an AJAX request,
         Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null || isAjaxRequest(request)) return false;
+        if (isAjax != null || asyncReqParamPresent) return false;
 
         //do not save if there is a sub-action specified in the request
         String action = (String) findInRequest(request, "_action");
@@ -176,9 +184,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
             return false;
         }
 
-
-        
-        // always save - otherwise 
+        // always save - otherwise
         return true; 
     }
 
