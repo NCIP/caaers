@@ -63,30 +63,39 @@
             	<div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
         	</div>
         </csmauthz:accesscontrol>
-            <c:forEach items="${command.conf}" var="entry" varStatus="status">
-                    <div class="row">
-                        <div class="label"><form:label path="conf[${entry.key}].value" id="conf[${entry.key}].value">${entry.value.property.name}</form:label></div>
-                        <div class="value">
-                            <c:set var="beanPath">conf[${entry.key}].value</c:set>
-                            <c:choose>
-                                <c:when test="${entry.value.property.controlType == 'boolean'}">
-                                    <div>
-                                        <label><form:radiobutton path="${beanPath}" id="${beanPath}" value="true"/> Yes</label>
-                                        <label><form:radiobutton path="${beanPath}" id="${beanPath}" value="false"/> No</label>
-                                    </div>
-                                </c:when>
-                                <c:when test="${entry.value.property.controlType == 'text'}">
-                                    <div><form:input path="${beanPath}" id="${beanPath}"/></div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div>Unimplemented control type ${entry.value.controlType} for ${beanPath}</div>
-                                </c:otherwise>
-                            </c:choose>
-                            <p class="description">${entry.value.property.description}</p>
-                            <c:if test="${not empty entry.value.default}"><p class="description">(Default: ${entry.value.default})</p></c:if>
-                        </div>
-                    </div>
-            </c:forEach>
+            
+
+
+            <admin:oneConfigEntry entry="${command.conf['labViewerBaseUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['pscBaseUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['esbUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
+
+
+            <admin:oneConfigEntry entry="${command.conf['paLimit'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['poLimit'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['autoCompleterChars'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['autoCompleterDelay'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['caaersBaseHelpUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['caaersBaseUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['enableWorkflow'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['httpSessionWarning'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['httpSessionWarningWait'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['unidentifiedMode'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['synchronousSpringEvents'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['showDebugInformation'].property}"/>
+
+
+            <admin:oneConfigEntry entry="${command.conf['smtpAddress'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['smtpPort'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['smtpSSLEnabled'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['smtpUser'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['smtpPassword'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['systemFromEmail'].property}"/>
+
 
         <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
         </chrome:box>
