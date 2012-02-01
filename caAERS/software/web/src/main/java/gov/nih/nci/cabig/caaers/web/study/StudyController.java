@@ -178,12 +178,6 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null || asyncReqParamPresent) return false;
 
-        //do not save if there is a sub-action specified in the request
-        String action = (String) findInRequest(request, "_action");
-        if (StringUtils.isNotEmpty(action)) {
-            return false;
-        }
-
         // always save - otherwise
         return true; 
     }
