@@ -289,25 +289,16 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
-    	ExpeditedAdverseEventInputCommand expeditedCommand = (ExpeditedAdverseEventInputCommand) oCommand;
-    	try {
-			log.debug("In currentFormObject :" + oCommand );
-		
-			expeditedCommand.reassociate();
-			log.debug("After calling reassociate");
-			
-			 if(expeditedCommand.getStudy() != null){
-				 DiseaseCodeTerm diseaseCodingTerm = expeditedCommand.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
-				 request.setAttribute("diseaseCodingTerm", diseaseCodingTerm);
-			 }
-			
-			expeditedCommand = (ExpeditedAdverseEventInputCommand)super.currentFormObject(request, oCommand);
-			log.debug("After calling super class currentFormObject :" + oCommand);
-			
-		} catch (HibernateOptimisticLockingFailureException  e) {
-			log.warn("Optimistic locking error, while reassociating the report", e);
-			request.setAttribute("OPTIMISTIC_LOCKING_ERROR", e);
-		}
+        EditExpeditedAdverseEventCommand expeditedCommand = (EditExpeditedAdverseEventCommand) super.currentFormObject(request, oCommand);
+        ExpeditedAdverseEventReport aeReport = expeditedCommand.getAeReport();
+        if(aeReport != null && aeReport.getId() != null){
+            expeditedCommand.setAeReport(reportDao.getById(aeReport.getId()));
+        }
+        if(expeditedCommand.getStudy() != null){
+            DiseaseCodeTerm diseaseCodingTerm = expeditedCommand.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
+            request.setAttribute("diseaseCodingTerm", diseaseCodingTerm);
+        }
+
         return expeditedCommand;
     }
 

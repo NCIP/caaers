@@ -727,9 +727,7 @@ public class CreateAdverseEventAjaxFacade {
 			Object cmd = extractCommand();
 			ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
 			
-			command.reassociate();
-			
-			//create a new adverse event. 
+			//create a new adverse event.
 			AdverseEvent ae = new AdverseEvent();
 			ae.setReport(command.getAeReport());
 			ae.setGradedDate(new Date());
@@ -780,8 +778,7 @@ public class CreateAdverseEventAjaxFacade {
     	Object cmd = extractCommand();
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
     	
-    	command.reassociate();
-    	
+
         list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (targetIndex >= list.size()) {
             log.debug("Attempted to move past the end; " + targetIndex + " >= " + list.size());
@@ -861,8 +858,6 @@ public class CreateAdverseEventAjaxFacade {
     @SuppressWarnings({"unchecked"})
     public AjaxOutput remove(String listProperty, int indexToDelete) {
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-        command.reassociate(); //reassociate to session
-        command.getStudy(); //this is to fix the LazyInit execption on "Save&Continue" after a delete(GForge #11981, comments has the details) 
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
@@ -1007,8 +1002,6 @@ public class CreateAdverseEventAjaxFacade {
      
     	Integer reportId = Integer.parseInt(reportIdString);
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
-    	command.getStudy();
     	String userId = getUserId();
     	
     	Report report = null;
@@ -1023,7 +1016,6 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput editReviewComment(String comment, Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	String userId = getUserId();
     	Report report = null;
     	for(Report r: command.getAeReport().getActiveReports())
@@ -1036,7 +1028,6 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput deleteReviewComment(Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	String userId = getUserId();
     	Report report = null;
     	for(Report r: command.getAeReport().getActiveReports())
@@ -1056,7 +1047,6 @@ public class CreateAdverseEventAjaxFacade {
 
         try {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-            command.reassociate();
             command.getAeReport().getReports();
             command.getAeReport().setPhysicianSignOff(physicianSignOff);
             saveIfAlreadyPersistent(command);
@@ -1111,7 +1101,6 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput retrieveNextTransitions(String reportId){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	Report selectedReport = null;
     	if(reportId != null)
     		selectedReport = reportDao.getById(Integer.parseInt(reportId));
@@ -1127,7 +1116,6 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput retrieveReviewCommentsAndActions(String reportId){
     	
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	// Determine the report in context
     	/*Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
     	for(ReportDefinition rd: command.getSelectedReportDefinitions())
@@ -1151,7 +1139,6 @@ public class CreateAdverseEventAjaxFacade {
         AjaxOutput out = new AjaxOutput();
         try{
         	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    		command.reassociate();
 			Report report = null;
 			if(reportId != null)
 				report = reportDao.getById(Integer.parseInt(reportId));

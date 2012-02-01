@@ -136,10 +136,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public abstract StudyParticipantAssignment getAssignment();
     public abstract Participant getParticipant();
     public abstract Study getStudy();
-    
-    public void flush() {
-    	reportDao.flush();
-    }
+
     
     public void save(){
         aeReport.autoGenerateOtherCauses();

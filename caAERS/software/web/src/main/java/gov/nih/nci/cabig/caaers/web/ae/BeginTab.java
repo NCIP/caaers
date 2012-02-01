@@ -30,9 +30,6 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
         this.instructions = instructions;
     }
 
-    public void onBind(HttpServletRequest request, T command, Errors errors) {
-        super.onBind(request, command, errors);
-    }
 
     @Override
     public Map<String, Object> referenceData() {

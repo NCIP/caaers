@@ -73,25 +73,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         return command;
     }
     
-    @Override
-    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
-    	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
-    	
-    	if(!command.getReportSubmitted()){
-    		log.debug("In currentFormObject :" + command);
-    		command.reassociate();
-    		log.debug("After calling reassociate");
-    		command = (SubmitExpeditedAdverseEventCommand)super.currentFormObject(request, command);
-    		log.debug("After calling super class currentFormObject : " + command);
-    	}else{
-    		//ExpeditedAdverseEventReport aeReport = reportDao.getById(command.getAeReport().getId());
-    		//command.setLastVersion(aeReport.getReports().get(Integer.parseInt(command.getReportIndex())).getLastVersion());
-    		//Report report = reportDao.getById(command.getAeReport().getReports().get(Integer.parseInt(command.getReportIndex())).getId());
-		 	//command.setLastVersion(report.getLastVersion());
-    	}
-        return command;
-    }
-    
+
     @Override
 	protected boolean shouldSave(HttpServletRequest request,ExpeditedAdverseEventInputCommand oCommand,Tab<ExpeditedAdverseEventInputCommand> tab) {
     	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;

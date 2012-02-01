@@ -621,7 +621,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      */
     @Transient
     public StudyParticipantAssignment getAssignment() {
-        return reportingPeriod.getAssignment();
+        return getReportingPeriod().getAssignment();
     }
 
     /**

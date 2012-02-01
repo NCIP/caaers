@@ -139,17 +139,9 @@ public class LabsTab extends AeTab {
         for(Lab lab : command.getAeReport().getLabs()){
 
             if (StringUtils.isEmpty(lab.getName()) && StringUtils.isEmpty(lab.getOther())) {
-//                if (StringUtils.isEmpty(lab.getName())) {
                     propertyName = String.format("aeReport.labs[%d].labTerm", i);
                     errors.rejectValue(propertyName, "SAE_029", new Object[]{lab.getName()}, "Missing Lab Name");
-/*
 
-                    if (StringUtils.isEmpty(lab.getOther())) {
-                        propertyName = String.format("aeReport.labs[%d].other", i);
-                        errors.rejectValue(propertyName, "SAE_030", new Object[]{lab.getName()}, "Missing Lab Other Information");
-                    }
-*/
-//                }
             }
             i++;
         }

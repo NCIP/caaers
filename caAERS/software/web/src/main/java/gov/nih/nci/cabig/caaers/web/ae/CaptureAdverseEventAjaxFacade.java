@@ -65,7 +65,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	AjaxOutput ajaxOutput = new AjaxOutput();
     	
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-        command.reassociate();
         int index = command.getAdverseEvents().size();
         
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
@@ -121,7 +120,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	AjaxOutput ajaxOutput = new AjaxOutput();
 
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-        command.reassociate();
         int index = command.getAdverseEvents().size();
 
         boolean isMeddra = command.getAdverseEventReportingPeriod().getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
@@ -170,7 +168,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         AdverseEvent actualTerm = null;
 
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-        // command.reassociate();
 
         // get the actual term from the command
         actualTerm = command.getAdverseEvents().get(realIndex);
@@ -271,7 +268,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput addReviewComment(String comment, String reportinPeriodIdString){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId);
     	
@@ -287,7 +283,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput editReviewComment(String comment, Integer commentId, String reportingPeriodIdString){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.editReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId, commentId);
     	
@@ -296,7 +291,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput deleteReviewComment(Integer commentId, String reportingPeriodIdString){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.deleteReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), commentId);
     	
@@ -319,11 +313,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput retrieveReviewComments(){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	try {
-			command.reassociate();
-		} catch (Exception e) {
-			log.warn("Error while reassociating, we can ignore this, as the parent page refresh call might have ended in validation error", e);
-		}
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
     }
     
@@ -340,7 +329,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput validateAndAdvanceWorkflow(String transitionToTake){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	AjaxOutput output = new AjaxOutput();
     	Errors errors = new BindException(command.getAdverseEventReportingPeriod(), "adverseEventReportingPeriod");
 		
@@ -361,7 +349,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput advanceWorkflow(String transitionToTake){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
     	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(command.getAdverseEventReportingPeriod().getWorkflowId(), transitionToTake, command.getAdverseEventReportingPeriod(), getUserId());
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());

@@ -141,8 +141,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return referenceData;
 	}
 	
-	
-	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 		
@@ -215,9 +213,20 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		
 		return modelAndView;
 	}
-	
-	
-	/**
+
+    @Override
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+        CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) super.currentFormObject(request, oCommand);
+        if(cmd.getAdverseEventReportingPeriod() != null && cmd.getAdverseEventReportingPeriod().getId() != null){
+            cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(cmd.getAdverseEventReportingPeriod().getId()));
+            cmd.setStudy(cmd.getAdverseEventReportingPeriod().getStudy());
+            cmd.setParticipant(cmd.getParticipant());
+        }
+        
+        return cmd;
+    }
+
+    /**
 	 * Will bind editors for this flow
 	 */
 	@Override
