@@ -133,7 +133,7 @@ public class TreatmentAssignmentTab extends StudyTab {
             log.debug("Wrong <index> for <treatment assignmen> list.");
         } else if (index >=0) {
             TreatmentAssignment ta = tas.get(index);
-            if (ta.getId() != null) ta.retire(); else tas.remove(index);
+            ta.retire();
         }
 
         int size = tas.size();

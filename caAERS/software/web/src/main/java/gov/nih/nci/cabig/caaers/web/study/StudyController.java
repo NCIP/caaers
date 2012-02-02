@@ -250,6 +250,11 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
         StudyCommand cmd = (StudyCommand) super.currentFormObject(request, oCommand);
+        boolean asyncReqParamPresent = isAjaxRequest(request);
+        Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null || asyncReqParamPresent) return cmd;
+
+        //only reload for non-ajax requests
         if(cmd.getStudy().getId() != null){
             cmd.reloadStudy();
         }

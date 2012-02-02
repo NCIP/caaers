@@ -417,11 +417,7 @@ public class StudyCommand {
      */
     public StudyAgent deleteStudyAgentAtIndex(int index){
     	StudyAgent studyAgent = getStudy().getStudyAgents().get(index);
-    	if(studyAgent.getId() == null) {
-    		getStudy().getStudyAgents().remove(index);
-    	}else{
-    		studyAgent.retire();
-    	}
+        studyAgent.retire();
     	return studyAgent;
     }
     
@@ -430,7 +426,10 @@ public class StudyCommand {
      * @param index
      */
     public void deleteTreatmentAssignmentAtIndex(int index){
-    	delete(study.getTreatmentAssignments(), index);
+        List<TreatmentAssignment> treatmentAssignments = study.getTreatmentAssignments();
+        if(treatmentAssignments.size() > index){
+            treatmentAssignments.get(index).retire();
+        }
     }
     
     /**
@@ -438,7 +437,10 @@ public class StudyCommand {
      * @param index
      */
     public void deleteStudySiteAtIndex(int index){
-    	delete(study.getStudySites(), index);
+        List<StudySite> sites = study.getStudySites();
+        if(sites.size() > index){
+            sites.get(index).retire();
+        }
     }
     
     /**
@@ -471,7 +473,10 @@ public class StudyCommand {
      * @param index
      */
     public void deleteSiteInvestigatorAtIndex(int studyOrgIndex, int index){
-    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators(), index);
+        List<StudyInvestigator> investigators = study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators();
+        if(investigators.size() > index){
+            investigators.get(index).retire();
+        }
     }
     
     /**
@@ -480,7 +485,10 @@ public class StudyCommand {
      * @param index
      */
     public void deleteStudyPersonAtIndex(int studyOrgIndex, int index){
-    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyPersonnels(), index);
+        List<StudyPersonnel> personnelList = study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyPersonnels();
+        if(personnelList.size() > index){
+            personnelList.get(index).retire();
+        }
     }
     
     /**

@@ -710,8 +710,13 @@ public class CreateStudyAjaxFacade {
      * Remove an expected term from the Study
      * */
     public AjaxOutput removeStudyTerm(int _index) {
-        Study study = ((StudyCommand)extractCommand()).getStudy();
-        
+        StudyCommand command = (StudyCommand)extractCommand();
+        if(command.getStudy().getId() != null){
+            Study study = studyRepository.getById(command.getStudy().getId());
+            command.setStudy(study);
+        }
+        Study study = command.getStudy();
+
         boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
         List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
         // System.out.println("Removing element " + _index + " out of " + studyTerms.size());
@@ -726,6 +731,9 @@ public class CreateStudyAjaxFacade {
 
         AjaxOutput ajaxOutput = new AjaxOutput();
         ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", study.getId(), params));
+        if(study.getId() != null){
+            command.save();
+        }
 
         return ajaxOutput;
     }
@@ -737,11 +745,16 @@ public class CreateStudyAjaxFacade {
 
         AjaxOutput ajaxOutput = new AjaxOutput();
         StudyCommand command = (StudyCommand)extractCommand();
+        if(command.getStudy().getId() != null){
+            Study study = studyRepository.getById(command.getStudy().getId());
+            command.setStudy(study);
+        }
+
         boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 
         List studyTerms = (isMeddra) ? command.getStudy().getExpectedAEMeddraLowLevelTerms() : command.getStudy().getExpectedAECtcTerms();
         int firstIndex = studyTerms.size();
-        Set<Integer> terms = new HashSet<Integer>();
+        HashSet<Integer> terms = new HashSet<Integer>();
         for (int i=0; i<studyTerms.size(); i++) {
             terms.add(((AbstractExpectedAE)studyTerms.get(i)).getTerm().getId());
         }
@@ -776,26 +789,17 @@ public class CreateStudyAjaxFacade {
             }
         }
 
-        Study mergeStudy = command.getStudy();
-        if (command.getStudy().getId() != null) {
-            mergeStudy = studyDao.merge(command.getStudy());
-            command.setStudy(mergeStudy);
-            saveCommand(command);
+        if(command.getStudy().getId() != null){
+            command.save();
         }
 
-        // 
-/*
-        if (!removedTerms.isEmpty()) {
-            String[] removedTermsArray = removedTerms.toArray(new String[]{});
-            ajaxOutput.setObjectContent(removedTermsArray);
-        }
-*/
+
         int lastIndex = studyTerms.size() - 1;
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
         params.put("firstIndex", Integer.toString(firstIndex));
         params.put("lastIndex", Integer.toString(lastIndex));
         params.put("isSingle", Boolean.toString(true));
-        ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", mergeStudy.getId(), params));
+        ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", command.getStudy().getId(), params));
 
         return ajaxOutput;
     }
@@ -837,18 +841,8 @@ public class CreateStudyAjaxFacade {
 	}
 
     public AjaxOutput fetchSiteReseachStaffActiveRoles(int rsID){
-    	//WebContext webCtx = WebContextFactory.get();
-        //HttpServletRequest request = webCtx.getHttpServletRequest();
-        //SiteResearchStaff srs = siteResearchStaffDao.getById(rsID);
-    	
     	StudyCommand command = (StudyCommand)extractCommand();
     	AjaxOutput out = new AjaxOutput();
-    	
-//    	HashMap hm = new HashMap();
-//        for (SiteResearchStaffRole role : srs.getSiteResearchStaffRoles()) {
-//            if (role.isActive()) hm.put(role.getRoleCode(), command.getStudyPersonnelRoles().get(role.getRoleCode()));
-//        }
-
     	out.setObjectContent(command.getStudyPersonnelRoles());
     	return out;
     }

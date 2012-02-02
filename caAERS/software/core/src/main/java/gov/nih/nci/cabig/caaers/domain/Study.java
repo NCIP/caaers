@@ -601,8 +601,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-    public List<StudyDevice> getStudyDevices() {
-        return this.studyDevices;
+    public List<StudyDevice> getStudyDevicesInternal() {
+        return lazyListHelper.getInternalList(StudyDevice.class);
+    }
+
+    @Transient
+    public List<StudyDevice> getStudyDevices(){
+        return lazyListHelper.getLazyList(StudyDevice.class);
     }
 
     /**
@@ -610,8 +615,12 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @param studyDevices the new study devices
      */
-    public void setStudyDevices(final List<StudyDevice> studyDevices) {
-        this.studyDevices = studyDevices;
+    public void setStudyDevicesInternal(final List<StudyDevice> studyDevices) {
+        lazyListHelper.setInternalList(StudyDevice.class, studyDevices);
+    }
+    
+    public void setStudyDevices(final List<StudyDevice> studyDeviceList){
+        setStudyDevicesInternal(studyDeviceList);
     }
 
     /**
@@ -633,8 +642,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    public List<OtherIntervention> getOtherInterventionsInternal() {
+        return lazyListHelper.getInternalList(OtherIntervention.class);
+    }
+
+    @Transient
     public List<OtherIntervention> getOtherInterventions() {
-        return this.otherInterventions;
+        return lazyListHelper.getLazyList(OtherIntervention.class);
     }
 
     /**
@@ -652,9 +666,14 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      *
      * @param otherInterventions the new other interventions
      */
-    public void setOtherInterventions(final List<OtherIntervention> otherInterventions) {
-        this.otherInterventions = otherInterventions;
+    public void setOtherInterventionsInternal(final List<OtherIntervention> otherInterventions) {
+        lazyListHelper.setInternalList(OtherIntervention.class, otherInterventions);
     }
+    public void setOtherInterventions(final List<OtherIntervention> otherInterventions) {
+        setOtherInterventions(otherInterventions);
+    }
+
+
 
     /**
      * Will return the {@link StudyAgent}s that are not retired.

@@ -219,8 +219,6 @@ public class AgentsTab extends StudyTab {
         	log.debug("Unable to delete study agents, INVALID INDEX :"  + index);
         }else{
         	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
-            // delete
-            // System.out.println("Synchronizing(DELETE) for: " + sa.getAgent().getName());
             command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), sa, true);
         }
         
@@ -318,8 +316,7 @@ public class AgentsTab extends StudyTab {
             log.debug("Wrong <index> for <otherInterventions> list.");
         } else if (index >=0) {
             OtherIntervention o = (OtherIntervention)list.get(index);
-            o.setRetiredIndicator(true);
-            // list.remove(o);
+            o.retire();
         }
         //
 
@@ -355,7 +352,7 @@ public class AgentsTab extends StudyTab {
             log.debug("Wrong <index> for <StudyDevice> list.");
         } else if (index >=0) {
             StudyDevice o = (StudyDevice)list.get(index);
-            o.setRetiredIndicator(true);
+            o.retire();
         }
         //
 
