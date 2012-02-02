@@ -464,11 +464,11 @@ public class StudyRepository {
 
     @Transactional(readOnly = false)
     public void save(Study study){
-    	associateSiteToWorkflowConfig(study.getStudySites());
+        studyDao.save(study);
     	//Provision instances an Investigator or ResearchStaff has access to in CSM
     	//provisionStudyTeam(study);
     	//Save the study
-        studyDao.save(study);
+        associateSiteToWorkflowConfig(study.getStudySites());
     }
     
     /**
