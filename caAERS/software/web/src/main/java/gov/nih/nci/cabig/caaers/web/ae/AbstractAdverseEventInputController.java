@@ -290,6 +290,10 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
         EditExpeditedAdverseEventCommand expeditedCommand = (EditExpeditedAdverseEventCommand) super.currentFormObject(request, oCommand);
+        //reuse existing command for Ajax requests
+        if( request.getParameter(AJAX_SUBVIEW_PARAMETER) != null || isAjaxRequest(request)) return expeditedCommand;
+
+
         ExpeditedAdverseEventReport aeReport = expeditedCommand.getAeReport();
         if(aeReport != null && aeReport.getId() != null){
             expeditedCommand.setAeReport(reportDao.getById(aeReport.getId()));
