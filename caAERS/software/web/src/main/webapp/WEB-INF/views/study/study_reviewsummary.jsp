@@ -102,25 +102,7 @@
                 	<div id="data-entry-status-div" class="value">${command.dataEntryStatus} </div>
             	</div>		
        </chrome:division>
-    <chrome:division title="Report Formats">
-    	<!--[if lte IE 6]>
-		<br>
-		<br>
-		<![endif]-->
-        <ul>
-            <c:forEach items="${command.study.reportFormats}" var="report">
-                <li class="results">${report.reportFormatType.displayName}</li>
-            </c:forEach>
-        </ul>
-		
-		<c:if test="${empty command.study.reportFormats}">
-		
-		No report format is selected for this study
 
-		</c:if>																		
-
-    </chrome:division>       
-    
     <chrome:division title="Agents">
     	<br/>
     	<!--[if lte IE 6]>
