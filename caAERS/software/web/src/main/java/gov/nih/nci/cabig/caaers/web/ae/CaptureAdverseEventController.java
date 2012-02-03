@@ -217,6 +217,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
         CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) super.currentFormObject(request, oCommand);
+        //reuse existing command for Ajax requests
+        if(findInRequest(request,AJAX_SUBVIEW_PARAMETER) != null || isAjaxRequest(request)) return cmd;
+
         if(cmd.getAdverseEventReportingPeriod() != null && cmd.getAdverseEventReportingPeriod().getId() != null){
             cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(cmd.getAdverseEventReportingPeriod().getId()));
             cmd.setStudy(cmd.getAdverseEventReportingPeriod().getStudy());
