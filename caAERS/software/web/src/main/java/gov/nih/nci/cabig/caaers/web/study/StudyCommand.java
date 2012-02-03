@@ -475,7 +475,12 @@ public class StudyCommand {
     public void deleteSiteInvestigatorAtIndex(int studyOrgIndex, int index){
         List<StudyInvestigator> investigators = study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators();
         if(investigators.size() > index){
-            investigators.get(index).retire();
+            StudyInvestigator i = investigators.get(index);
+            if(i.getId() != null) 
+                i.retire();
+            else
+                investigators.remove(index);
+                
         }
     }
     
@@ -487,7 +492,11 @@ public class StudyCommand {
     public void deleteStudyPersonAtIndex(int studyOrgIndex, int index){
         List<StudyPersonnel> personnelList = study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyPersonnels();
         if(personnelList.size() > index){
-            personnelList.get(index).retire();
+            StudyPersonnel p =  personnelList.get(index);
+            if(p.getId() != null) 
+                p.retire(); 
+            else 
+                personnelList.remove(index);
         }
     }
     
