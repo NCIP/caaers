@@ -11,6 +11,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.FileSystemResource;
@@ -26,7 +28,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 public class CaaersJavaMailSender extends JavaMailSenderImpl implements InitializingBean {
 	
 	public static boolean SUPRESS_MAIL_SEND_EXCEPTION = false;
-	
+    private static final Log logger = LogFactory.getLog(CaaersJavaMailSender.class);
     private Configuration configuration;
 
     public String getHost() {
@@ -63,31 +65,51 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
         throw unsupported("password");
     }
     
+    public String getProtocol(){
+        boolean isSSL = configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED);
+        return isSSL ? "smtps" : "smtp";
+    }
+
+    public void setProtocol(){
+        throw unsupported("mail protocol");
+    }
+    
     /**
      * We will check the configuration, and populate the propertes in the JavaMailSenderImpl bean.
      */
     public void afterPropertiesSet() throws Exception {
     	Properties properties = new Properties();
-    	
-    	if (StringUtils.isNotBlank(getPassword()) || StringUtils.isNotBlank(getUsername())) {
-    		properties.setProperty("mail.smtp.auth", "true");
-    	}
-    	
-    	if(configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED)){
-    		
-//    		properties.setProperty("mail.smtp.starttls.enable", "true");
-//
-//    		properties.put("mail.transport.protocol", "smtps");
-//    		properties.put("mail.smtps.host", configuration.get(Configuration.SMTP_ADDRESS));
-//    		properties.put("mail.smtps.auth", "true");
+        boolean hasUsername = StringUtils.isNotEmpty(getUsername());
+        boolean hasPassword = StringUtils.isNotEmpty(getPassword());
+        boolean isSSL = configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED);
+        String baseMailPropertyName = "mail.smtp.";
+        if(isSSL){
+            baseMailPropertyName = "mail.smtps.";
+            properties.setProperty( baseMailPropertyName + "starttls.enable", "true");
+            properties.setProperty( baseMailPropertyName + "timeout", "16000");
+        }
+    	if(hasUsername || hasPassword) {
+            properties.setProperty(baseMailPropertyName + "auth", "true");
+        }
 
-            properties.setProperty("mail.smtp.auth", "true");
-            properties.setProperty("mail.smtp.starttls.enable", "true");
-            properties.setProperty("mail.smtp.timeout", "8500");        		
+    	if (StringUtils.isNotBlank(getPassword()) || StringUtils.isNotBlank(getUsername())) {
+    		properties.setProperty(baseMailPropertyName + "auth", "true");
     	}
+        if(logger.isDebugEnabled()){
+            properties.put(baseMailPropertyName + "debug", "true");
+        }
+
     	if (!properties.isEmpty()) {
     		setJavaMailProperties(properties);
     	}
+        if(logger.isDebugEnabled()){
+            logger.debug("Mail properties : " + String.valueOf(properties));
+            logger.debug("Mail host : " + String.valueOf(getHost()));
+            logger.debug("Mail username : " + String.valueOf(getUsername()));
+            logger.debug("Mail password : " + String.valueOf(getPassword()));
+            logger.debug("Mail port : " + String.valueOf(getPort()));
+            logger.debug("Mail protocol : " + String.valueOf(getProtocol()));
+        }
     }
     
     
