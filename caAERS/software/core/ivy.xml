@@ -41,6 +41,7 @@
             <exclude org="ehcache" />
             <exclude org="cglib" module="cglib" />
             <exclude org="springframework"/>
+            <exclude org="org.springframework" module="spring" />
 
 			<!-- exclusion based on class loading -->
 
@@ -79,12 +80,12 @@
 
             <!-- CTMS commons related -->
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-suite-authorization"
-                        rev="${ctms.version}" conf="build,dist,distGrid->runtime">
+                        rev="${ctms.version}" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j"     />
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
             </dependency>
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}"
-                        conf="build,dist,distGrid->runtime" >
+                        conf="build,dist,distGrid->default" >
                 <exclude org="org.slf4j"     />
                 <exclude org="javax.servlet" />
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />

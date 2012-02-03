@@ -42,6 +42,7 @@
             <exclude org="net.sf.hibernate" />
             <exclude org="hibernate" />
             <exclude org="springframework" />
+            <exclude org="org.springframework" module="spring" />
         	<exclude conf="*" org="objectweb" module="asm"/>
         	<exclude conf="distGrid" org="bouncycastle" name="bouncycastle-jce-jdk13" />
 			<exclude conf="distGrid" org="org.globus" module="cog-jglobus" />
@@ -88,7 +89,7 @@
 			<dependency org="net.sf.ehcache" name="ehcache-web" rev="2.0.4"/>
 
 			<!--  CTMS commons dependencies -->
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}" conf="build,dist,distGrid->runtime">
+            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j"     />
                 <exclude org="javax.servlet"     />
             </dependency>

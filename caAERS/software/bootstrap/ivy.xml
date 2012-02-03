@@ -43,14 +43,14 @@
 			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0" conf="build->default(*)" />
 
             <!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"  conf="build,dist,distGrid->runtime"  >
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}"  conf="build,dist,distGrid->default"  >
                 <exclude org="org.slf4j"     />
             </dependency>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  conf="build,dist,distGrid->runtime"  >
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  conf="build,dist,distGrid->default"  >
                 <exclude org="org.slf4j"     />
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit" />
             </dependency>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"  conf="build,dist,distGrid->runtime" >
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}"  conf="build,dist,distGrid->default" >
                 <exclude org="org.slf4j"     />
             </dependency>
 
