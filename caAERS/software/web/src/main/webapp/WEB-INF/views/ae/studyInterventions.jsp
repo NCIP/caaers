@@ -277,8 +277,9 @@ function updateMedicalDevice(i, studyDeviceId){
                 <div id="_agents">
 					
                     <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
-                    <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
+                    <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="_oagent">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="agent" value="${command.aeReport.treatmentInformation.courseAgents[newIndex]}" />
                         <c:set var="collapsed" value="${agent.studyAgent != null}" />
                         <c:if test="${!agent.studyAgent.retiredIndicator}">
                         	<ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="${collapsed}"/>
@@ -299,8 +300,9 @@ function updateMedicalDevice(i, studyDeviceId){
                     <tags:indicator id="device_AjaxIndicator" />
                 <div id="_devices">
                 <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
-                <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
+                <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="_odevice">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                    <c:set var="device" value="${command.aeReport.medicalDevices[newIndex]}"  />
                     <ae:oneMedicalDevice index="${newIndex}" device="${device}" collapsed="true"/>
                 </c:forEach>
             </div>
@@ -318,8 +320,9 @@ function updateMedicalDevice(i, studyDeviceId){
                     <tags:indicator id="radiation_AjaxIndicator" />
                 <div id="_radiations">
                     <c:set var="size" value="${fn:length(command.aeReport.radiationInterventions)}" />
-                    <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="radiation">
+                    <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="_oradiation">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="radiation" value="${command.aeReport.radiationInterventions[newIndex]}" />
                         <ae:oneRadiationIntervention index="${newIndex}" radiation="${radiation}" collapsed="true"/>
                     </c:forEach>
                 </div>
@@ -337,8 +340,9 @@ function updateMedicalDevice(i, studyDeviceId){
                     <tags:indicator id="surgery_AjaxIndicator" />
                 <div id="_surgeries">
                     <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
-                    <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
+                    <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="_osurgery">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="surgery" value="${command.aeReport.surgeryInterventions[newIndex]}" />
                         <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}" collapsed="true"/>
                     </c:forEach>
                 </div>
@@ -356,8 +360,9 @@ function updateMedicalDevice(i, studyDeviceId){
                     <tags:indicator id="behavioral_AjaxIndicator" />
                 <div id="_behaviorals">
                     <c:set var="size" value="${fn:length(command.aeReport.behavioralInterventions)}" />
-                    <c:forEach items="${command.aeReport.behavioralInterventions}" varStatus="status" var="behavioral">
+                    <c:forEach items="${command.aeReport.behavioralInterventions}" varStatus="status" var="_obehavioral">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="behavioral" value="${command.aeReport.behavioralInterventions[newIndex]}" />
                         <ae:oneBehavioralIntervention index="${newIndex}" behavioral="${behavioral}" collapsed="true"/>
                     </c:forEach>
                 </div>
@@ -375,8 +380,9 @@ function updateMedicalDevice(i, studyDeviceId){
                     <tags:indicator id="biological_AjaxIndicator" />
                 <div id="_biologicals">
                     <c:set var="size" value="${fn:length(command.aeReport.biologicalInterventions)}" />
-                    <c:forEach items="${command.aeReport.biologicalInterventions}" varStatus="status" var="biological">
+                    <c:forEach items="${command.aeReport.biologicalInterventions}" varStatus="status" var="_obiological">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="biological" value="${command.aeReport.biologicalInterventions[newIndex]}" />
                         <ae:oneBiologicalIntervention index="${newIndex}" biological="${biological}" collapsed="true"/>
                     </c:forEach>
                 </div>
@@ -394,8 +400,9 @@ function updateMedicalDevice(i, studyDeviceId){
                         <tags:indicator id="genetic_AjaxIndicator" />
                     <div id="_genetics">
                         <c:set var="size" value="${fn:length(command.aeReport.geneticInterventions)}" />
-                        <c:forEach items="${command.aeReport.geneticInterventions}" varStatus="status" var="genetic">
+                        <c:forEach items="${command.aeReport.geneticInterventions}" varStatus="status" var="_ogenetic">
                             <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                            <c:set var="genetic" value="${command.aeReport.geneticInterventions[newIndex]}" />
                             <ae:oneGeneticIntervention index="${newIndex}" genetic="${genetic}" collapsed="true"/>
                         </c:forEach>
                     </div>
@@ -413,8 +420,9 @@ function updateMedicalDevice(i, studyDeviceId){
                         <tags:indicator id="dietary_AjaxIndicator" />
                     <div id="_dietaries">
                         <c:set var="size" value="${fn:length(command.aeReport.dietaryInterventions)}" />
-                        <c:forEach items="${command.aeReport.dietaryInterventions}" varStatus="status" var="dietary">
+                        <c:forEach items="${command.aeReport.dietaryInterventions}" varStatus="status" var="_odietary">
                             <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                            <c:set var="dietary" value="${command.aeReport.dietaryInterventions[newIndex]}" />
                             <ae:oneDietaryIntervention index="${newIndex}" dietary ="${dietary}" collapsed="true"/>
                         </c:forEach>
                     </div>
@@ -433,8 +441,9 @@ function updateMedicalDevice(i, studyDeviceId){
                         <tags:indicator id="otherAE_AjaxIndicator" />
                     <div id="_otherAEs">
                         <c:set var="size" value="${fn:length(command.aeReport.otherAEInterventions)}" />
-                        <c:forEach items="${command.aeReport.otherAEInterventions}" varStatus="status" var="otherAE">
+                        <c:forEach items="${command.aeReport.otherAEInterventions}" varStatus="status" var="_otherAE">
                             <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                            <c:set var="otherAE" value="${command.aeReport.otherAEInterventions[newIndex]}" />
                             <ae:oneOtherAEIntervention index="${newIndex}" otherAE = "${otherAE}" collapsed="true"/>
                         </c:forEach>
                     </div>
