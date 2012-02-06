@@ -343,6 +343,9 @@
 				<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
 				<div style="display:none" id="deleted-message"><b><font color="green">Course/Cycle deleted successfully</font></b></div>
 				</div>
+                    <div class="value">
+                <tags:errors path="adverseEventReportingPeriod"/>
+                        </div>
 	            <div id="course-details" class="value selection" style="display:none">
 					<div class="row">
 							<div class="label">Start date</div>
@@ -363,10 +366,10 @@
 						<div class="row" id="treatment-description-value">
 
 						</div>
+
 					</div>
+
 				</div>
-				<tags:errors path="adverseEventReportingPeriod"/>
-				
 			</div>
         </chrome:box>
     </div>
