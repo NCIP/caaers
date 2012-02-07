@@ -57,7 +57,7 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     private Double grade5Frequency;
     
     /** The expected. */
-    private boolean expected = false;
+    private boolean expected = true;
 
     /**
      * Gets the agent.
