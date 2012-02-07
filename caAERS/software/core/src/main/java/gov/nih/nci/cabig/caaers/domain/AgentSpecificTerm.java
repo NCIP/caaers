@@ -37,6 +37,27 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     
     /** The other toxicity. */
     private String otherToxicity;
+    
+    /** The expectedness frequency. */
+    private Double expectednessFrequency;
+    
+    /** The grade1 frequency. */
+    private Double grade1Frequency;
+    
+    /** The grade2 frequency. */
+    private Double grade2Frequency;
+    
+    /** The grade3 frequency. */
+    private Double grade3Frequency;
+    
+    /** The grade4 frequency. */
+    private Double grade4Frequency;
+    
+    /** The grade5 frequency. */
+    private Double grade5Frequency;
+    
+    /** The expected. */
+    private boolean expected = false;
 
     /**
      * Gets the agent.
@@ -148,4 +169,60 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     public void setOtherToxicity(String otherToxicity) {
         this.otherToxicity = otherToxicity;
     }
+
+	public Double getExpectednessFrequency() {
+		return expectednessFrequency;
+	}
+
+	public void setExpectednessFrequency(Double expectednessFrequency) {
+		this.expectednessFrequency = expectednessFrequency;
+	}
+
+	public Double getGrade1Frequency() {
+		return grade1Frequency;
+	}
+
+	public void setGrade1Frequency(Double grade1Frequency) {
+		this.grade1Frequency = grade1Frequency;
+	}
+
+	public Double getGrade2Frequency() {
+		return grade2Frequency;
+	}
+
+	public void setGrade2Frequency(Double grade2Frequency) {
+		this.grade2Frequency = grade2Frequency;
+	}
+
+	public Double getGrade3Frequency() {
+		return grade3Frequency;
+	}
+
+	public void setGrade3Frequency(Double grade3Frequency) {
+		this.grade3Frequency = grade3Frequency;
+	}
+
+	public Double getGrade4Frequency() {
+		return grade4Frequency;
+	}
+
+	public void setGrade4Frequency(Double grade4Frequency) {
+		this.grade4Frequency = grade4Frequency;
+	}
+
+	public Double getGrade5Frequency() {
+		return grade5Frequency;
+	}
+
+	public void setGrade5Frequency(Double grade5Frequency) {
+		this.grade5Frequency = grade5Frequency;
+	}
+
+	public boolean isExpected() {
+		return expected;
+	}
+
+	public void setExpected(boolean expected) {
+		this.expected = expected;
+	}
 }
