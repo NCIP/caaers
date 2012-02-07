@@ -46,3 +46,10 @@
 </c:if>
 
 </td>
+<td><ui:text path="agentSpecificTerms[${index}].grade1Frequency" readonly="false" size="3"/>%</td>
+<td><ui:text path="agentSpecificTerms[${index}].grade2Frequency" readonly="false" size="3"/>%</td>
+<td><ui:text path="agentSpecificTerms[${index}].grade3Frequency" readonly="false" size="3"/>%</td>
+<td><ui:text path="agentSpecificTerms[${index}].grade4Frequency" readonly="false" size="3"/>%</td>
+<td><ui:text path="agentSpecificTerms[${index}].grade5Frequency" readonly="false" size="3"/>%</td>
+<td><ui:checkbox path="agentSpecificTerms[${index}].expected" readonly="false"/></td>
+<td><ui:text path="agentSpecificTerms[${index}].expectednessFrequency" readonly="false" size="3"/>%</td>
