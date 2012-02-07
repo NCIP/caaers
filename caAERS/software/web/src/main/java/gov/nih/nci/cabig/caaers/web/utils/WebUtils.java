@@ -60,7 +60,7 @@ public class WebUtils {
             BeanWrapper wrappedItem = new BeanWrapperImpl(item);
             Object value = extractProperty(wrappedItem, itemValueProperty);
             Object label = extractProperty(wrappedItem, itemLabelProperty);
-            options.put(value, label);
+            options.put(String.valueOf(value), label);
         }
         return options;
     }
@@ -103,7 +103,7 @@ public class WebUtils {
     			Object label2 = extractProperty(wrappedItem, itemLabel2Property);
     			if(separator == null)
     				separator = "-";
-    			options.put(value, label1.toString() + separator + label2.toString());
+    			options.put(String.valueOf(value), label1.toString() + separator + label2.toString());
     	}
     	return options;
     }
