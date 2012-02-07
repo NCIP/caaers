@@ -350,7 +350,7 @@ public class CreateStudyAjaxFacade {
         } else if (type == 2) {
             command.getStudy().getIdentifiersLazy().add(new OrganizationAssignedIdentifier());
         }
-
+        studyDao.save(command.getStudy());
         request.setAttribute("type", type);
         setRequestAttributes(request, command.getStudy().getIdentifiersLazy().size() - 1, index, "studyIdentifierSection");
         String url = getCurrentPageContextRelative(WebContextFactory.get());
