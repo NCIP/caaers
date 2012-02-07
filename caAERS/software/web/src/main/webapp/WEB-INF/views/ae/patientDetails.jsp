@@ -458,7 +458,7 @@
         </jsp:attribute>
         <jsp:attribute name="value">
           <ui:autocompleter path="${cpsField.propertyName}"
-					  initialDisplayValue="${empty command.aeReport.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}" enableClearButton="true">
+					  initialDisplayValue="${empty command.aeReport.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here' : command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}" enableClearButton="true">
             <jsp:attribute name="populatorJS"> function(autocompleter, text) {
               createAE.matchAnatomicSite(text, function(values) {
               autocompleter.setChoices(values)

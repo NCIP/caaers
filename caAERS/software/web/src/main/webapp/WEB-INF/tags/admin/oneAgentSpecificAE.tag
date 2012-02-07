@@ -12,7 +12,7 @@
 <td>${!term.medDRA ? term.term.category.ctc.name : term.term.meddraVersion.name}</td>
 <td>
 <c:if test="${isOtherSpecify}">
-                <c:set var="initValue" value="Begin typing here..."/>
+                <c:set var="initValue" value="Begin typing here"/>
                 <c:if test="${not empty term.otherMeddraTerm && not empty term.otherMeddraTerm.meddraTerm}">
                     <c:set var="initValue" value="${term.otherMeddraTerm.meddraTerm}"/>
                 </c:if>

@@ -605,7 +605,7 @@ function initSearchField() {
 }
 function addEventHandlersForAutoCompleter(theInput){
 
-        var message = '(Begin typing here)';
+        var message = 'Begin typing here';
 
           /* Add event handlers */
         Event.observe(theInput, 'focus', clearDefaultText);
@@ -620,7 +620,7 @@ function addEventHandlersForAutoCompleter(theInput){
 function clearDefaultText(e) {
     var target = window.event ? window.event.srcElement : e ? e.target : null;
     if (!target) return;
-    if (target.value == '(Begin typing here)') {
+    if (target.value == 'Begin typing here') {
         target.value = '';
         target.className = 'required autocomplete';
     }
@@ -631,7 +631,7 @@ function replaceDefaultText(e) {
     var target = window.event ? window.event.srcElement : e ? e.target : null;
     if (!target) return;
     if (target.value == '' ) {
-        target.value = '(Begin typing here)';
+        target.value = 'Begin typing here';
         target.className = 'required pending-search';
     }
 

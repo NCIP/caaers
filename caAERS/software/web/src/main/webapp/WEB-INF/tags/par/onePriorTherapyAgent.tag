@@ -19,7 +19,7 @@
 		<table width="100%">
  			<tr>
   				<td width="99%">
-                      <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.fullName : 'Begin typing here...'}"/>
+                      <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.fullName : 'Begin typing here'}"/>
                       <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"
                       	initialDisplayValue="${initValue}"
                         title="PriorTherapy agent"

@@ -147,7 +147,7 @@
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
                                     <ui:autocompleter path="sponsor" enableClearButton="true" required="false" title="Sponsor"
-                                    	initialDisplayValue="${empty command.sponsor ? 'Begin typing here...' : command.sponsor.fullName}">
+                                    	initialDisplayValue="${empty command.sponsor ? 'Begin typing here' : command.sponsor.fullName}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text) {
                 							authorRule.matchOrganization(text, function(values) {
@@ -180,7 +180,7 @@
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
                                     <ui:autocompleter path="institution" enableClearButton="true" required="false" title="Institution"
-                                    	initialDisplayValue="${empty command.institution ? 'Begin typing here...' : command.institution.fullName}">
+                                    	initialDisplayValue="${empty command.institution ? 'Begin typing here' : command.institution.fullName}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text) {
         									authorRule.matchSites(text, function(values) {
@@ -213,7 +213,7 @@
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
                                     <ui:autocompleter path="study" enableClearButton="true" required="false" title="Study"
-                                    	initialDisplayValue="${empty command.study ? 'Begin typing here...' : command.study.shortTitle}">
+                                    	initialDisplayValue="${empty command.study ? 'Begin typing here' : command.study.shortTitle}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text){
                                            var institutionId = '';

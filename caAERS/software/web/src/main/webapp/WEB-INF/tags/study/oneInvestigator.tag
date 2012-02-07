@@ -27,7 +27,7 @@
                           size="${_invField.attributes.size}"
                           title="${_invField.displayName}"
                           enableClearButton="${_invField.attributes.enableClear}"
-                          initialDisplayValue="Begin typing here..."/>
+                          initialDisplayValue="Begin typing here"/>
     </td>
 
     <td style="border-right:none;">

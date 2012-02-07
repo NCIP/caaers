@@ -52,7 +52,7 @@
 			size="${_agentField.attributes.size}"
 			title="${field.displayName}"
 			enableClearButton="${_agentField.attributes.enableClear}" 
-			initialDisplayValue="Begin typing here..." 
+			initialDisplayValue="Begin typing here"
 			displayNamePath="${agentNamePath}" >
 			<jsp:attribute name="populatorJS"> 
 			 function(autocompleter, text) {
@@ -152,7 +152,7 @@
 			size="${_indField.attributes.size}"
 			title="${_indField.displayName}"
 			enableClearButton="${_indField.attributes.enableClear}" 
-			initialDisplayValue="Begin typing here..." 
+			initialDisplayValue="Begin typing here"
 			displayNamePath="${_indField.propertyName}.numberAndHolderName">
 		<jsp:attribute name="populatorJS">
 			function(autocompleter, text) {

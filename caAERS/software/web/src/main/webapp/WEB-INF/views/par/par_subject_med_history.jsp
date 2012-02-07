@@ -329,7 +329,7 @@
 				</jsp:attribute>
 				<jsp:attribute name="value">
 					<ui:autocompleter path="assignment.diseaseHistory.codedPrimaryDiseaseSite"
-					  initialDisplayValue="${empty command.assignment.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.assignment.diseaseHistory.codedPrimaryDiseaseSite.name}" enableClearButton="true">
+					  initialDisplayValue="${empty command.assignment.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here' : command.assignment.diseaseHistory.codedPrimaryDiseaseSite.name}" enableClearButton="true">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text) {
                 				createAE.matchAnatomicSite(text, function(values) {

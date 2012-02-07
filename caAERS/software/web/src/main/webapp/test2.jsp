@@ -258,7 +258,7 @@ aaaaaa
 
 
 
-	<input size="70" type="text" id="studyAgents[0].agent-input" title="Agent"  value="Begin typing here..."
+	<input size="70" type="text" id="studyAgents[0].agent-input" title="Agent"  value="Begin typing here"
 	class="autocomplete  "/>
 
 
@@ -310,7 +310,7 @@ aaaaaa
 			if(AE.hash.get('studyAgents[0].agent') == '0'){
                 var el = $('studyAgents[0].agent-input');
                 if (el.value == '') {
-                el.value = 'Begin typing here...';
+                el.value = 'Begin typing here';
                 el.addClassName('pending-search');
 
 				AE.hash.set('studyAgents[0].agent' , '1');
@@ -802,7 +802,7 @@ aaaaaa
 
 
 
-	<input size="70" type="text" id="studyAgents[1].agent-input" title="Agent"  value="Begin typing here..."
+	<input size="70" type="text" id="studyAgents[1].agent-input" title="Agent"  value="Begin typing here"
 	class="autocomplete  "/>
 
 
@@ -854,7 +854,7 @@ aaaaaa
 			if(AE.hash.get('studyAgents[1].agent') == '0'){
                 var el = $('studyAgents[1].agent-input');
                 if (el.value == '') {
-                el.value = 'Begin typing here...';
+                el.value = 'Begin typing here';
                 el.addClassName('pending-search');
 
 				AE.hash.set('studyAgents[1].agent' , '1');
@@ -1346,7 +1346,7 @@ aaaaaa
 
 
 
-	<input size="70" type="text" id="studyAgents[2].agent-input" title="Agent"  value="Begin typing here..."
+	<input size="70" type="text" id="studyAgents[2].agent-input" title="Agent"  value="Begin typing here"
 	class="autocomplete  "/>
 
 
@@ -1398,7 +1398,7 @@ aaaaaa
 			if(AE.hash.get('studyAgents[2].agent') == '0'){
                 var el = $('studyAgents[2].agent-input');
                 if (el.value == '') {
-                el.value = 'Begin typing here...';
+                el.value = 'Begin typing here';
                 el.addClassName('pending-search');
 
 				AE.hash.set('studyAgents[2].agent' , '1');

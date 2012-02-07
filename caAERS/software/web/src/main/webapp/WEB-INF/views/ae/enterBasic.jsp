@@ -170,7 +170,7 @@
             
             clearSelectedTerm: function() {
                 $(this._ctcTermInputId()).className = 'pending-search'
-                $(this._ctcTermInputId()).value = '(Begin typing here)'
+                $(this._ctcTermInputId()).value = 'Begin typing here'
 /*
                 $(this._detailsForOtherId()).value = ""
                 AE.slideAndHide(this._detailsForOtherRowId())

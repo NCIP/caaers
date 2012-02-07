@@ -449,7 +449,7 @@
                                                 <div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
 												<div class="value">
 													<ui:autocompleter path="roleMembershipHelper[${index.index}].selectedSiteForDisplay"
-														initialDisplayValue="Begin typing here..." enableClearButton="true">
+														initialDisplayValue="Begin typing here" enableClearButton="true">
 														<jsp:attribute name="populatorJS">
 															function(autocompleter, text) {
 											         				user.restrictOrganization(text, function(values) {
@@ -511,7 +511,7 @@
                                                     <div class="label"><caaers:message code="LBL_Study"/>&nbsp; </div>
 													<div class="value">
 														<ui:autocompleter path="roleMembershipHelper[${index.index}].selectedStudyForDisplay"
-															initialDisplayValue="Begin typing here..." enableClearButton="true">
+															initialDisplayValue="Begin typing here" enableClearButton="true">
 															<jsp:attribute name="populatorJS">
 																
 																function(autocompleter, text) {

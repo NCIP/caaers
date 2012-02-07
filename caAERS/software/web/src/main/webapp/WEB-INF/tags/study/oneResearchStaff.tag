@@ -24,7 +24,7 @@
 			size="${_staffField.attributes.size}"
 			title="${_staffField.displayName}"
 			enableClearButton="${_staffField.attributes.enableClear}" 
-			initialDisplayValue="Begin typing here..." />
+			initialDisplayValue="Begin typing here" />
 	 </td>
 
     <td style="border-right:none; width:300px;">

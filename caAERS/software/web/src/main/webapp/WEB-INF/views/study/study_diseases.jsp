@@ -88,7 +88,7 @@ function acCreate(mode) {
         $(mode.basename).value = ""
         var ctcDiseaseField = $(mode.basename + "-input")
         ctcDiseaseField.addClassName('pending-search');
-        ctcDiseaseField.value = 'Begin typing here...';
+        ctcDiseaseField.value = 'Begin typing here';
     });
 
     new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices", mode.populator, {
@@ -303,7 +303,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
 
-					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here..."></ui:autocompleter>
+					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here"></ui:autocompleter>
                     
                     <p id="disease-selected" style="display: none"></p>
 
@@ -337,7 +337,7 @@ Event.observe(window, "load", function() {
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
-					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
+					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here" size="38"/>
                     <tags:button color="blue" type="button" value="Add disease" size="small" icon="add" onclick="fireAction('addMeddraStudyDisease','0');"/>
             </chrome:division>
             </c:if>
@@ -345,7 +345,7 @@ Event.observe(window, "load", function() {
             <c:if test="${diseaseTerminology == 'OTHER' }">
             <chrome:division title="Other, Specify">
 					<p><tags:instructions code="study.study_disease.other" /></p>
-					<ui:autocompleter path="condition" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38" />
+					<ui:autocompleter path="condition" enableClearButton="true" initialDisplayValue="Begin typing here" size="38" />
                     <tags:button color="blue" type="button" value="Add condition" size="small" icon="add" onclick="fireAction('addOtherCondition','0');"/>
             </chrome:division>
             </c:if>

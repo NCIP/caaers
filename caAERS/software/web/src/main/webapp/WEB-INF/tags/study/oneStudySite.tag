@@ -22,7 +22,7 @@
 			size="${_siteField.attributes.size}"
 			title="${field.displayName}"
 			enableClearButton="${_siteField.attributes.enableClear}" 
-			initialDisplayValue="Begin typing here..." />
+			initialDisplayValue="Begin typing here" />
 	 </td>
 	<td style="border-left:none;"><tags:button id="${status.index}" color="red" type="button" value="" size="small" icon="x" onclick="javascript:fireDelete(${index},'${cssClass}-${index}');"/></td>
 </tr>

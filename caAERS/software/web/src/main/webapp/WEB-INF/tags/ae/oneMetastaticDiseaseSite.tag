@@ -27,7 +27,7 @@
                 <caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.codedSite" />
             </jsp:attribute>
             <jsp:attribute name="value">
-                <c:set var="initValue" value="${not empty anatomicSite.name ? anatomicSite.name : 'Begin typing here...'}"/>
+                <c:set var="initValue" value="${not empty anatomicSite.name ? anatomicSite.name : 'Begin typing here'}"/>
                 <ui:autocompleter path="${siteField.propertyName}" readonly="false" mandatory="${siteField.attributes.mandatory}" displayNamePath="${siteField.propertyName}.name" initialDisplayValue="${initValue}" enableClearButton="true">
                       <jsp:attribute name="populatorJS"> function(autocompleter, text) {
                           createAE.matchAnatomicSite(text, function(values) {

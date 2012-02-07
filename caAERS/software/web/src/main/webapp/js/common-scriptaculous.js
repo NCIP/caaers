@@ -197,7 +197,7 @@ AE.resetAutocompleter = function(propertyName){
 	if(el){
 		el.value='';
 		var elInput = $(propertyName + '-input');
-		elInput.value="Begin typing here...";
+		elInput.value="Begin typing here";
 		elInput.addClassName('pending-search');
         // Insertion.Before(document.body, "<font color='white'>Reset.</font><br>");
         ValidationManager.setInvalidState($(propertyName + '-input'));

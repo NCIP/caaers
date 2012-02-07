@@ -25,7 +25,7 @@
     <div class="row">
         <div class="label"><input type='radio' name='other${index}' id="radioDevice${index}" value="0" onclick="toggleDeviceOrOther(${index})" checked="true">&nbsp;Device</div>
         <div class="value">
-            <ui:autocompleter path="study.studyDevices[${index}].device" initialDisplayValue="Begin typing here..." size="40" title="Study Device">
+            <ui:autocompleter path="study.studyDevices[${index}].device" initialDisplayValue="Begin typing here" size="40" title="Study Device">
                           <jsp:attribute name="populatorJS">
                               function(autocompleter, text){
                                   createStudy.fetchDevicesByText(text, function(values) {

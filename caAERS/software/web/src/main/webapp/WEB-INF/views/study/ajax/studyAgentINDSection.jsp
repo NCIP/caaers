@@ -17,7 +17,7 @@
 			size="${_indField.attributes.size}"
 			title="${_indField.displayName}"
 			enableClearButton="${_indField.attributes.enableClear}" 
-			initialDisplayValue="Begin typing here..." 
+			initialDisplayValue="Begin typing here"
 			displayNamePath="${_indField.propertyName}.numberAndHolderName">
 		<jsp:attribute name="populatorJS">
 			function(autocompleter, text) {

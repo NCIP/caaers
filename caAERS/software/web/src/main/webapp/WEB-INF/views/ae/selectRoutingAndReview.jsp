@@ -40,7 +40,7 @@
 					<jsp:attribute name="label">Study
 					</jsp:attribute>
 					<jsp:attribute name="value">
-						<ui:autocompleter path="study"  initialDisplayValue="${empty command.study  ? 'Begin typing here...' : command.study.shortTitle}" enableClearButton="true" size="50">
+						<ui:autocompleter path="study"  initialDisplayValue="${empty command.study  ? 'Begin typing here' : command.study.shortTitle}" enableClearButton="true" size="50">
 								<jsp:attribute name="populatorJS">
 									function(autocompleter, text) {
        	         					createAE.matchStudies(text, $('participant').value, ${command.ignoreCompletedStudy}, function(values) {
@@ -60,7 +60,7 @@
 					<jsp:attribute name="label">Subject
 					</jsp:attribute>
 					<jsp:attribute name="value">
-						<ui:autocompleter path="participant"  initialDisplayValue="${empty command.participant  ? 'Begin typing here...' : command.participant.fullName}" 
+						<ui:autocompleter path="participant"  initialDisplayValue="${empty command.participant  ? 'Begin typing here' : command.participant.fullName}"
 							enableClearButton="true" size="50">
 							<jsp:attribute name="populatorJS">
 								function(autocompleter, text) {
@@ -81,7 +81,7 @@
 					<jsp:attribute name="label">Study site
 					</jsp:attribute>
 					<jsp:attribute name="value">
-						<ui:autocompleter path="organization"  initialDisplayValue="${empty command.organization  ? 'Begin typing here...' : command.organization.fullName}" enableClearButton="true" size="50">
+						<ui:autocompleter path="organization"  initialDisplayValue="${empty command.organization  ? 'Begin typing here' : command.organization.fullName}" enableClearButton="true" size="50">
 							<jsp:attribute name="populatorJS">
 								function(autocompleter, text){
         							routingAndReview.matchSites(text, $('study').value, function(values) {

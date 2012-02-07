@@ -9,7 +9,7 @@
 <td width="100%">
 <c:set var="ctcTerm" value="study.expectedAECtcTerms[${index}]" />
 <c:if test="${isOtherSpecify}">
-                <c:set var="initValue" value="Begin typing here..."/>
+                <c:set var="initValue" value="Begin typing here"/>
                 <c:if test="${not empty studyTerm.otherMeddraTerm && not empty studyTerm.otherMeddraTerm.meddraTerm}">
                     <c:set var="initValue" value="${studyTerm.otherMeddraTerm.meddraTerm}"/>
                 </c:if>

@@ -35,7 +35,7 @@
     <ui:row path="aeReport.surgeryInterventions[${index}].interventionSite">
          <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[2]}"/></jsp:attribute>
          <jsp:attribute name="value">
-             <c:set var="initValue" value="${not empty surgery.interventionSite ? surgery.interventionSite.name : 'Begin typing here...'}"/>
+             <c:set var="initValue" value="${not empty surgery.interventionSite ? surgery.interventionSite.name : 'Begin typing here'}"/>
              <ui:autocompleter path="aeReport.surgeryInterventions[${index}].interventionSite" initialDisplayValue="${initValue}" enableClearButton="true" 
              	field="${fieldGroup.fields[2]}">
 						<jsp:attribute name="populatorJS">
@@ -72,7 +72,7 @@
         var selectedValue = fieldObject.value;
         var surgeryInterventionDate = $("aeReport.surgeryInterventions[${index}].interventionDate").value;
         
-        if (selectedValue != "Begin typing here...")
+        if (selectedValue != "Begin typing here")
             $(titleID).innerHTML = "" + selectedValue + " (" + surgeryInterventionDate + ")";
 
     }

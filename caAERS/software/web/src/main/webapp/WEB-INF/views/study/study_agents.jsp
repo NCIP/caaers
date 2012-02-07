@@ -105,7 +105,7 @@ function toggleDeviceOrOther(index) {
         if (_fieldHelper) _fieldHelper.show();
     } else {
         if (_field_input) {
-            _field_input.value = 'Begin typing here...';
+            _field_input.value = 'Begin typing here';
             _field_input.disable();
             _field.clear();
 /*
@@ -132,7 +132,7 @@ function toggleAgentOrOther(index) {
 	}else{
 		if(agentField) { 
 			agentField.clear(); 
-			agentField_Input.value = 'Begin typing here...';
+			agentField_Input.value = 'Begin typing here';
 			agentField_Input.disable();
 		}
 		if(otherField) otherField.enable();
