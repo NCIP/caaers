@@ -17,7 +17,7 @@
 <%@attribute name="size" description="Specifies the display size of the text field" %>
 <%@attribute name="maxlength" description="Specifies max allowed characters" %>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
-
+<%@attribute name="pattern" description="Specifies the patter for HTML5 validation" %>
 
 <c:set var="_required" value="${required or (not empty field and field.required)}" />
 <c:set var="_mandatory" value="${mandatory or (not empty field and field.attributes.mandatory)}" />
@@ -31,7 +31,7 @@
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" 
 	readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
         <jsp:attribute name="field">
-        <form:input path="${path}" id="${path}" disabled="${disabled}" size="${size}" title="${title}" 
+        <form:input path="${path}" id="${path}" disabled="${disabled}" size="${size}" title="${title}" pattern="${pattern }"
         	cssClass=" ${cssValue} ${validationCss} ${cssClass}" maxlength="${empty maxlength ? '2000' : maxlength}" htmlEscape="true"/>
             <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
                 <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
