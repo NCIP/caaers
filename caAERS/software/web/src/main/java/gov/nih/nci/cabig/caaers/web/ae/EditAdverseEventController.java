@@ -83,6 +83,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
                 adverseEventRoutingAndReviewRepository, evaluationService);
     	command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
     	
+        if(request.getParameter("aeReport") != null){
+           int reportId = WebUtils.getIntParameter(request,"aeReport");
+            ExpeditedAdverseEventReport aeReport = reportDao.getById(reportId);
+            command.setAeReport(aeReport);
+        }
     	
         return command;
     }

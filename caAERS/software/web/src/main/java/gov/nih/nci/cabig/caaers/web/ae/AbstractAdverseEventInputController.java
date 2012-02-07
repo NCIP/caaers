@@ -148,12 +148,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+        binder.setDisallowedFields("aeReport","study","participant");
         super.initBinder(request, binder);
-        ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
-        ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
-        ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
-        ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", reportingPeriodDao);
-
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         ControllerTools.registerDomainObjectEditor(binder, conditionDao);

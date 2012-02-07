@@ -128,9 +128,9 @@ public class ExpeditedAdverseEventReportDao extends
         }
         
         // delegate to ReportDao to save reports so that it can control transactionality
-        for (Report r : report.getReports()) {
-            reportDao.save(r);
-        }
+//        for (Report r : report.getReports()) {
+//            reportDao.save(r);
+//        }
     }
     
     /**
