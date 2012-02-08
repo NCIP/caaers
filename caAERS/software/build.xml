@@ -122,7 +122,6 @@
 		target : clean-caaers-cache
 	====================================================================== -->
 	<target name="clean-caaers-cache" depends="load-ivy" description="Cleans the ivy cache">
-		<ivy:cleancache/>
 		<delete dir="${ivy.jar.dir}/../cache/gov.nih.nci.cabig.caaers"/>
 	</target>
 	
