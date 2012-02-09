@@ -2,105 +2,73 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
 /**
  * @author Rhett Sutphin
  */
-public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEventCommand {
-    // Used in SubmitReport
-    private String reportIndex;
-
+public class SubmitExpeditedAdverseEventCommand{
     private String reportId;
-
     private String from;
     
-    private Boolean reportSubmitted = false;
-    
+    private Boolean submissionInprogress = false;
     private ReportVersion lastVersion;
-    
     private List<ReportDelivery> reportDeliveries;
+    
+    private boolean unidentifiedMode;
+    private boolean workflowEnabled;
+    protected ReportRepository reportRepository;
+    
+    private Report report;
+    private ReportDao reportDao;
+
+    private Map<String, String> summary;
     
     // //// LOGIC
 
-    public SubmitExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao, StudyDao studyDao,
-                    ReportDefinitionDao reportDefinitionDao,
-                    StudyParticipantAssignmentDao assignmentDao,
-                    AdverseEventReportingPeriodDao reportingPeriodDao,
-                    ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
-                    AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
-        super(expeditedAeReportDao,studyDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
+    public SubmitExpeditedAdverseEventCommand(Report report, boolean unidentifiedMode, ReportDao reportDao, ReportRepository reportRepository) {
+        this.report = report;
+        this.reportRepository = reportRepository;
+        this.reportDao = reportDao;
+        this.unidentifiedMode = unidentifiedMode;
         reportDeliveries = new ArrayList<ReportDelivery>();
+        summary = report.getAeReport().getSummary(unidentifiedMode);
+        summary.put("Report Name", report.getName());
     }
-    
+
+    public Map<String,String> getSummary(){
+        return summary;
+    }
     public void refreshReportDeliveries(Report report){
     	reportDeliveries.clear();
     	reportDeliveries.addAll(reportRepository.findReportDeliveries(report));
     }
 
-    @Override
-    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-        super.setAeReport(aeReport);
-        if(aeReport != null){
-        	getReportIndex();
-        	aeReport.getReports().get(((int) (Integer.parseInt(reportIndex)))).getLastVersion().addSubmitter();
-        }
+    public Report getReport() {
+        return report;
     }
-    
-    public Report findReportToSubmit(){
-    	Report report = null;
-    	if(reportId != null){
-    		for(Report r : getAeReport().getReports()){
-        		if(r.getId().toString().equals(reportId)) report = r;
-        	}
-    	}
-    	
-    	return report;
+    public void setReport(Report report) {
+        this.report = report;
     }
 
-    public String getReportIndex() {
-    	reportIndex = "";
-        for (int i = 0; i < getAeReport().getReports().size(); i++) {
-            if (getAeReport().getReports().get(i).getId().toString().equals(reportId)) {
-                this.reportIndex = String.valueOf(i);
-            }
-        }
-        return reportIndex;
+    public ExpeditedAdverseEventReport getAeReport(){
+        return report.getAeReport();
+    }
+
+    public void setAeReport(ExpeditedAdverseEventReport ignore){
+
     }
     
-    public void refreshAeReport(Integer aeReportId){
-    	assignmentDao.reassociate(getAssignment());
-    	//reset the adverse event report in the command
-    	for(ExpeditedAdverseEventReport aeReport: getAssignment().getAeReports()){
-    		if(aeReport.getId().equals(aeReportId)){
-    			setAeReport(aeReport);
-    			break;
-    		}
-    	}
-    }
-    
-    @Override
     public void save(){
-    	reportDao.modifyOrSaveReviewStatusAndComments(aeReport);
-    }
-
-    public void setReportIndex(String reportIndex) {
-        this.reportIndex = reportIndex;
+    	reportDao.save(report);
     }
 
     public String getReportId() {
@@ -119,12 +87,12 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
         this.from = from;
     }
 
-    public Boolean getReportSubmitted(){
-    	return reportSubmitted;
+    public Boolean isSubmissionInprogress(){
+    	return submissionInprogress;
     }
     
-    public void setReportSubmitted(Boolean reportSubmitted){
-    	this.reportSubmitted = reportSubmitted;
+    public void setSubmissionInprogress(Boolean submissionInprogress){
+    	this.submissionInprogress = submissionInprogress;
     }
     
     public void setLastVersion(ReportVersion lastVersion){
@@ -137,4 +105,36 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     public List<ReportDelivery> getReportDeliveries() {
 		return reportDeliveries;
 	}
+
+    public boolean isUnidentifiedMode() {
+        return unidentifiedMode;
+    }
+
+    public void setUnidentifiedMode(boolean unidentifiedMode) {
+        this.unidentifiedMode = unidentifiedMode;
+    }
+
+    public ReportRepository getReportRepository() {
+        return reportRepository;
+    }
+
+    public void setReportRepository(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
+    }
+
+    public ReportDao getReportDao() {
+        return reportDao;
+    }
+
+    public void setReportDao(ReportDao reportDao) {
+        this.reportDao = reportDao;
+    }
+
+
+    public boolean getWorkflowEnabled() {
+        return workflowEnabled;
+    }
+    public void setWorkflowEnabled(boolean workflowEnabled) {
+        this.workflowEnabled = workflowEnabled;
+    }
 }

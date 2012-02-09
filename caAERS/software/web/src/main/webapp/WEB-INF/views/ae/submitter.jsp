@@ -5,7 +5,6 @@
     <title>${tab.longTitle}</title>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
-    	var reportIndex = ${empty command.reportIndex ? 'null' : command.reportIndex}
         var NAME_FIELDS = [
             'firstName', 'middleName', 'lastName'
         ]
@@ -25,7 +24,7 @@
 
         function clear(person) {
             PERSON_FIELDS.each(function (field) {
-                $("aeReport.reports[" + reportIndex + "]" + person + "." + field).value = ''
+                $("report." + person + "." + field).value = ''
             })
         }
 
@@ -62,13 +61,13 @@
 
         function updateSubmitterFromReporter() {
             PERSON_FIELDS.each(function(field) {
-                $("aeReport.reports[" + reportIndex + "].lastVersion.submitter." + field).value = $('aeReport.Reporter.' + field).innerHTML
+                $("report.lastVersion.submitter." + field).value = $('aeReport.Reporter.' + field).innerHTML
             })
         }
         
         function updateSubmitterFromPhysician() {
             PERSON_FIELDS.each(function(field) {
-                $("aeReport.reports[" + reportIndex + "].lastVersion.submitter." + field).value = $('aeReport.Physician.' + field).innerHTML
+                $("report.lastVersion.submitter." + field).value = $('aeReport.Physician.' + field).innerHTML
             })
         }
 
@@ -77,7 +76,7 @@
             $('physician_same_as_submitter').observe("click", updateSubmitterWithPhysician)
 
             //default to reporter, if entering first time. 
-            var fNField = $("aeReport.reports[" + reportIndex + "].lastVersion.submitter.firstName");
+            var fNField = $("report.lastVersion.submitter.firstName");
             if(fNField){
                 if(fNField.value == ''){
                 	$('reporter_same_as_submitter').click();

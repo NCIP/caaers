@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Sameer Sawant
  */
-public class SubmitReportResultTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
+public class SubmitReportResultTab extends TabWithFields<SubmitExpeditedAdverseEventCommand> {
 	
 	protected EvaluationService evaluationService;
 	protected ReportDao reportDao;
@@ -26,27 +26,19 @@ public class SubmitReportResultTab extends TabWithFields<ExpeditedAdverseEventIn
 	
 	@Override
     @SuppressWarnings("unchecked")
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(SubmitExpeditedAdverseEventCommand command) {
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		return map;
 	}
 	
 	@Override
-	public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand oCommand) {
-		 SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
+	public Map<String, Object> referenceData(SubmitExpeditedAdverseEventCommand command) {
 		 // Set the correct ReportVersion
-		 Report report = reportDao.getById(command.getAeReport().getReports().get(Integer.parseInt(command.getReportIndex())).getId());
-		 command.setLastVersion(report.getLastVersion());
-		 command.setReportSubmitted(true);
-   
-		 Map<String, Object> refdata = super.referenceData(request,command);
+		 command.setSubmissionInprogress(true);
+		 Map<String, Object> refdata = super.referenceData(command);
 	     return refdata;
 	 }
-	 
-	 public void setEvaluationService(EvaluationService evaluationService){
-		 this.evaluationService = evaluationService;
-	 }
-	 
+
 	 public void setReportDao(ReportDao reportDao){
 		 this.reportDao = reportDao;
 	 }

@@ -150,13 +150,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	assignment.synchronizeMedicalHistoryFromReportToAssignment(aeReport);
     	assignmentDao.save(assignment);
     }
-    
-    public void reassociate() {
-    	if (getAeReport().getId() != null) {
-            ExpeditedAdverseEventReport merged = reportDao.merge(getAeReport());
-            setAeReport(merged);
-        }
-    }
+
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
     	if(aeReport != null){

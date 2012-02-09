@@ -10,9 +10,9 @@
         Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
     }
 </script>
-<c:set var="theReport" value="${command.aeReport.reports[command.reportIndex] }"/>
-<c:set var="reportStatus" value="${command.lastVersion.reportStatus}"/>
-<c:set var="lastVersion" value="${command.lastVersion}"/>
+<c:set var="theReport" value="${command.report }"/>
+<c:set var="reportStatus" value="${command.report.lastVersion.reportStatus}"/>
+<c:set var="lastVersion" value="${command.report.lastVersion}"/>
 
 <div id="reportNameId" class="row">
 	<div class="label">Report Name</div>

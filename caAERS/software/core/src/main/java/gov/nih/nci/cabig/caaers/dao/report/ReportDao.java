@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import java.sql.SQLException;
 import java.util.*;
 
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.0
  */
 @Transactional(readOnly = true)
-public class ReportDao extends GridIdentifiableDao<Report> {
+public class ReportDao extends GridIdentifiableDao<Report> implements MutableDomainObjectDao<Report>{
 
     /*
      * (non-Javadoc)

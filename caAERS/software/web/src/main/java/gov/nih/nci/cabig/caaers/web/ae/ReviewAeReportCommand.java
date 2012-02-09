@@ -36,20 +36,7 @@ public class ReviewAeReportCommand extends EditExpeditedAdverseEventCommand{
 		super(reportDao);
 		this.rpDao = rpDao;
 	}
-	
-	@Override
-	public void reassociate(){
-		if(this.aeReport != null && this.aeReport.getId() != null){
-			reportDao.reassociate(this.aeReport);
-			if(reportId != null){
-				for(Report r: this.aeReport.getReports())
-					if(r.getId().equals(reportId))
-						rpDao.reassociate(r);
-			}
-				
-		}
-	}
-	
+
 	public void setReportId(Integer reportId){
 		this.reportId = reportId;
 	}

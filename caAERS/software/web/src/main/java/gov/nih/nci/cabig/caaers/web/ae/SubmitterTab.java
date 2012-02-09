@@ -23,7 +23,7 @@ import org.springframework.validation.Errors;
  * @author Krikor Krumlian
  * @author Biju Joseph
  */
-public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
+public class SubmitterTab extends TabWithFields<SubmitExpeditedAdverseEventCommand> {
 
     public SubmitterTab() {
         super("Submitter info", "Submitter", "ae/submitter");
@@ -31,20 +31,16 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
 
     @Override
     @SuppressWarnings("unchecked")
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
-        if (reportIndex == null) {
-            throw new CaaersSystemException("Report Index Not Defined");
-        }
+    public InputFieldGroupMap createFieldGroups(SubmitExpeditedAdverseEventCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addInputFieldGroup(createPersonGroup("reports[" + reportIndex + "].lastVersion.submitter", "submitter"));
+        map.addInputFieldGroup(createPersonGroup("report.lastVersion.submitter", "submitter"));
         return map;
     }
 
     private InputFieldGroup createPersonGroup(String person, String name) {
         String groupName = name == null ? person : name;
         InputFieldGroup group = new DefaultInputFieldGroup(groupName, StringUtils.capitalize(person)+ " details");
-        String base = "aeReport." + person + '.';
+        String base = person + '.';
         group.getFields().add(InputFieldFactory.createTextField(base + "firstName", "First name", true));
         group.getFields().add(InputFieldFactory.createTextField(base + "middleName","Middle name", false));
         group.getFields().add(InputFieldFactory.createTextField(base + "lastName", "Last name", true));

@@ -78,14 +78,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-    	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao,studyDao, reportDefinitionDao, 
+    	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(expeditedAdverseEventReportDao,studyDao, reportDefinitionDao,
     				assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository,
                 adverseEventRoutingAndReviewRepository, evaluationService);
     	command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
     	
         if(request.getParameter("aeReport") != null){
            int reportId = WebUtils.getIntParameter(request,"aeReport");
-            ExpeditedAdverseEventReport aeReport = reportDao.getById(reportId);
+            ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(reportId);
             command.setAeReport(aeReport);
         }
     	

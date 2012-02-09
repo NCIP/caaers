@@ -36,6 +36,7 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 	private RenderDecisionManager renderDecisionManager;
 	private ReportRepository reportRepository;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+    private Report report;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -54,10 +55,9 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	public void testFetchReportSubmissionStatus() throws Exception{
-		SubmitExpeditedAdverseEventCommand command = setupSubmitExpeditedAdverseEventCommand();
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 		aeReport.setId(1);
-		Report report = new Report();
+		report = new Report();
 		ReportVersion reportVersion =  report.getLastVersion();
 		reportVersion.setReportStatus(ReportStatus.COMPLETED);
 		aeReport.addReport(report);
@@ -72,14 +72,5 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
         verifyMocks();
         assertEquals("Incorrect object set in ajaxOutput when the ReportStatus was COMPLETE", "COMPLETED", output.getObjectContent());
 	}
-	
-	private SubmitExpeditedAdverseEventCommand setupSubmitExpeditedAdverseEventCommand(){
-		SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(aeReportDao,  studyDao,
-				reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager,
-				reportRepository, adverseEventRoutingAndReviewRepository);
-		
-		session.setAttribute(SubmitReportController.class.getName() + ".FORM.command", command);
-	    expect(webContext.getSession()).andReturn(session).anyTimes();
-		return command;
-	}
+
 }

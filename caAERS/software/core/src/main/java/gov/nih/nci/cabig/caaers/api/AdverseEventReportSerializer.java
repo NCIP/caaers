@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.utils.CaaersSerializerUtil;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
@@ -768,21 +769,21 @@ public class AdverseEventReportSerializer {
                 if (hibernateStudy.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) {
                     List<CtepStudyDisease> dl = hibernateStudy.getCtepStudyDiseases();
                     for (CtepStudyDisease dis : dl) {
-                        s.addCtepStudyDisease(dis);
+                        s.addCtepStudyDisease(getCtepStudyDisease(dis));
                     }
                 }
 
                 if (hibernateStudy.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
                     List<MeddraStudyDisease> dl = hibernateStudy.getMeddraStudyDiseases();
                     for (MeddraStudyDisease dis : dl) {
-                        s.addMeddraStudyDisease(dis);
+                        s.addMeddraStudyDisease(getMeddraStudyDisease(dis));
                     }
                 }
 
                 if (hibernateStudy.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.OTHER) {
                     List<StudyCondition> dl = hibernateStudy.getStudyConditions();
                     for (StudyCondition dis : dl) {
-                        s.addStudyCondition(dis);
+                        s.addStudyCondition(getStudyCondition(dis));
                     }
                 }
 
@@ -807,7 +808,52 @@ public class AdverseEventReportSerializer {
 	    	//System.out.println("STUDY INVES INTERNAL >>>>>>>>>>>>>>> " + ss.getStudyInvestigatorsInternal().size());
 	    	return studySite;
 	    }
-	    
+
+
+        private CtepStudyDisease getCtepStudyDisease(CtepStudyDisease hcsd){
+            DiseaseTerm diseaseTerm = new DiseaseTerm();
+            diseaseTerm.setCtepTerm(hcsd.getTerm().getCtepTerm());
+            diseaseTerm.setId(hcsd.getTerm().getId());
+            diseaseTerm.setMeddraCode(hcsd.getTerm().getMeddraCode());
+            diseaseTerm.setTerm(hcsd.getTerm().getTerm());
+            DiseaseCategory dc = new DiseaseCategory();
+            dc.setName(hcsd.getTerm().getCategory().getName());
+            diseaseTerm.setCategory(dc);
+
+            CtepStudyDisease csd = new CtepStudyDisease();
+            csd.setDiseaseTerm(diseaseTerm);
+            csd.setLeadDisease(hcsd.getLeadDisease());
+            csd.setId(hcsd.getId());
+            return csd;
+        }
+        private MeddraStudyDisease getMeddraStudyDisease(MeddraStudyDisease hmsd){
+            LowLevelTerm l = new LowLevelTerm();
+            l.setId(hmsd.getId());
+            l.setMeddraCode(hmsd.getTerm().getMeddraCode());
+            l.setMeddraTerm(hmsd.getTerm().getMeddraTerm());
+            MeddraVersion mv = new MeddraVersion();
+            mv.setName(hmsd.getTerm().getMeddraVersion().getName());
+            mv.setId(hmsd.getTerm().getMeddraVersion().getId());
+            l.setMeddraVersion(mv);
+
+            MeddraStudyDisease md = new MeddraStudyDisease();
+            md.setTerm(l);
+            md.setLeadDisease(hmsd.getLeadDisease());
+            md.setId(hmsd.getId());
+            return md;
+
+        }
+        private StudyCondition getStudyCondition(StudyCondition hsc){
+            Condition c = new Condition();
+            c.setConditionName(hsc.getTerm().getConditionName());
+            c.setId(hsc.getTerm().getId());
+            StudyCondition sc = new StudyCondition();
+            sc.setTerm(c);
+            sc.setLeadDisease(hsc.getLeadDisease());
+            sc.setId(hsc.getId());
+            return sc;
+        }
+    
 	    private StudyAgent getStudyAgent(StudyAgent sa) {
 	    	StudyAgent studyAgent = new StudyAgent();
 	    	studyAgent.setIndType(sa.getIndType());

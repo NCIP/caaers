@@ -218,9 +218,6 @@ public class ReportSubmissionService {
     	
     	//save the report
     	reportDao.save(context.report);
-    	expeditedAdverseEventReportDao.save(report.getAeReport());
-    	reportDao.flush();
-
      }
     
     /**

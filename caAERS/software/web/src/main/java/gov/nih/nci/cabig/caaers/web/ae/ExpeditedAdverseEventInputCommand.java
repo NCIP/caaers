@@ -55,7 +55,6 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
      * AdverseEventReport and AdverseEvent
      */
     Map<String, List<List<Attribution>>> getAttributionMap();
-    void reassociate();
     Collection<ExpeditedReportSection> getMandatorySections();
     Map<Integer, Collection<ExpeditedReportSection>> getMandatorySectionMap();
     void setMandatorySectionMap(Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap);

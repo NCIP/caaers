@@ -21,8 +21,6 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -31,7 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -63,7 +60,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     protected AgentDao agentDao;
 
-    protected ExpeditedAdverseEventReportDao reportDao;
+    protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
     protected StudyAgentDao studyAgentDao;
 
@@ -292,7 +289,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
         ExpeditedAdverseEventReport aeReport = expeditedCommand.getAeReport();
         if(aeReport != null && aeReport.getId() != null){
-            expeditedCommand.setAeReport(reportDao.getById(aeReport.getId()));
+            expeditedCommand.setAeReport(expeditedAdverseEventReportDao.getById(aeReport.getId()));
         }
         if(expeditedCommand.getStudy() != null){
             DiseaseCodeTerm diseaseCodingTerm = expeditedCommand.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
@@ -318,7 +315,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     protected ExpeditedAdverseEventReportDao getDao() {
-        return reportDao;
+        return expeditedAdverseEventReportDao;
     }
 
     @Override
@@ -348,8 +345,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         this.agentDao = agentDao;
     }
 
-    public void setReportDao(ExpeditedAdverseEventReportDao reportDao) {
-        this.reportDao = reportDao;
+    public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
     public void setStudyAgentDao(StudyAgentDao studyAgentDao) {

@@ -15,7 +15,6 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
@@ -30,6 +29,8 @@ import static org.easymock.EasyMock.expect;
 public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	SubmitReportResultTab tab;
 	SubmitExpeditedAdverseEventCommand command;
+    
+    ExpeditedAdverseEventReport aeReport;
 	
 	ExpeditedAdverseEventReportDao expeditedAeReportDao;
 	ReportDefinitionDao reportDefinitonDao;
@@ -42,11 +43,12 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	ReportDao reportDao;
     StudyDao studyDao;
 	HttpServletRequest request;
+    Report report;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		tab = new SubmitReportResultTab();
-		
+		aeReport = registerMockFor(ExpeditedAdverseEventReport.class);
 		expeditedAeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitonDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
@@ -60,19 +62,14 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
         studyDao = registerDaoMockFor(StudyDao.class);
 		tab.setReportDao(reportDao);
 		
-		command = new SubmitExpeditedAdverseEventCommand(expeditedAeReportDao,studyDao, reportDefinitonDao, assignmentDao, reportingPeriodDao,
-				expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
-		setupCommand();
 	}
 	
 	private void setupCommand(){
-		Report report = Fixtures.createReport("10 day report");
-		report.setId(1);
-		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-		aeReport.addReport(report);
-		command.setReportIndex("0");
+        Report report = Fixtures.createReport("10 day report");
+        report.setAeReport(aeReport);
+        report.setId(1);
+        command = new SubmitExpeditedAdverseEventCommand(report, true, reportDao, reportRepository);
 		command.setReportId("1");
-		command.setAeReport(aeReport);
 	}
 	
 	public void testReferenceData() throws Exception{
@@ -82,7 +79,7 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 		replayMocks();
 		Map<String, Object> refdata = tab.referenceData(request, command);
 		verifyMocks();
-		assertTrue("Report submitted flag not set to true", command.getReportSubmitted());
+		assertTrue("Report submitted flag not set to true", command.isSubmissionInprogress());
 	}
 	
 }

@@ -5,11 +5,10 @@
 		<title>${tab.longTitle}</title>
    		<tags:dwrJavascriptLink objects="submitReport"/>
    		<script type="text/javascript">
-    		var reportIndex = ${empty command.reportIndex ? 'null' : command.reportIndex}
     		var timer;
     		
         	function checkReportSubmissionStatus(){
-        		submitReport.fetchReportSubmissionStatus(${command.aeReport.id}, ${command.reportIndex}, function(result){
+        		submitReport.fetchReportSubmissionStatus(${command.aeReport.id}, ${command.report.id}, function(result){
         			if(result.objectContent == "COMPLETED" || result.objectContent == "FAILED" || result.objectContent == "WITHDRAW_FAILED"){
         				$('reportStatusRowId').innerHTML = result.htmlContent;
         				clearTimeout(timer);
@@ -18,8 +17,8 @@
         			}
         			// make the report name as link if the report submission failed.
         			if(result.objectContent == "FAILED" || result.objectContent == "WITHDRAW_FAILED"){
-        				//$('reportNameId').innerHTML = "<div><a href=\"/pages/ae/edit?aeReport=" + '${command.lastVersion.report.aeReport.id}'
-        				// + "\">" + '${command.lastVersion.report.reportDefinition.label}' + "</a></div>";
+        				//$('reportNameId').innerHTML = "<div><a href=\"/pages/ae/edit?aeReport=" + '${command.report.lastVersion.report.aeReport.id}'
+        				// + "\">" + '${command.report.lastVersion.report.reportDefinition.label}' + "</a></div>";
         				//$('report-label').style.display = 'none';
         				$('report-link').style.display = '';
         			}
@@ -116,8 +115,8 @@
                                 DISPLAY ALL SUCTOME REPORTS ASSIATES TO DATA COLLECTION
                                 --%>
 
-                                <c:if test="${command.aeReport.reports[command.reportIndex].reportDefinition.reportFormatType.code == 7}">
-                                    <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${command.reportId}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>(Custom) ${command.aeReport.reports[command.reportIndex].reportDefinition.label}</a></li>
+                                <c:if test="${command.report.reportDefinition.reportFormatType.code == 7}">
+                                    <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${command.reportId}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>(Custom) ${command.report.reportDefinition.label}</a></li>
                                     <c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
                                 </c:if>
 
@@ -131,9 +130,6 @@
 							Export</a>
 						</div>
 					</c:if>
-                <c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
-                    <c:if test="${status.index == command.reportIndex}">
-                        <c:set var="reportId" value="${report.id}"/>
                         <div id="reportStatusRowId">
                            
                             <c:if test="${report.reportDefinition.amendable == true}">
@@ -151,18 +147,18 @@
                                     Submission Status
                                 </div>
                                 <div id="reportSubmissionStatus" class="value">
-                                    <c:if test="${command.lastVersion.reportStatus == 'COMPLETED'}">
-                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>
+                                    <c:if test="${command.report.lastVersion.reportStatus == 'COMPLETED'}">
+                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.report.lastVersion.reportStatus}" lastVersion="${command.report.lastVersion}"/>
                                     </c:if>
-                                    <c:if test="${(command.lastVersion.reportStatus == 'FAILED') or (command.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}">
-                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>
+                                    <c:if test="${(command.report.lastVersion.reportStatus == 'FAILED') or (command.report.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}">
+                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.report.lastVersion.reportStatus}" lastVersion="${command.report.lastVersion}"/>
                                     </c:if>
-                                    <c:if test="${command.lastVersion.reportStatus == 'INPROCESS'}">
+                                    <c:if test="${command.report.lastVersion.reportStatus == 'INPROCESS'}">
                                         <span class="dueOn"><i>Submission to AdEERS in process</i></span>
                                     </c:if>
                                 </div>
                             </div>
-                            <c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}">
+                            <c:if test="${(command.report.lastVersion.reportStatus == 'PENDING') or (command.report.lastVersion.reportStatus == 'FAILED')}">
                                 <div style="float:left;">
                                     <c:set var="href">
                                         <c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&report=${report.id}"/>
@@ -172,8 +168,6 @@
                                 <br style="clear:both;"/>
                             </c:if>
                         </div>
-                    </c:if>
-                </c:forEach>
     			<input type="hidden" name="_finish"/>		
 			</jsp:attribute>
 			<jsp:attribute name="tabControls">

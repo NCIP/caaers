@@ -24,15 +24,15 @@ public class SubmitReportAjaxFacade extends CreateAdverseEventAjaxFacade{
     
     /**
      * This method fetches the ReportStatus of the report. Its used in the SubmitReportController page.
-     * @param Integer aeReportId
+     * @param String aeReportId
+     * @param String reportId
      * @return
      */
-    public AjaxOutput fetchReportSubmissionStatus(String aeReportId, String reportIndex){
+    public AjaxOutput fetchReportSubmissionStatus(String aeReportId, String reportId){
     	AjaxOutput output = new AjaxOutput();
-    	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) extractCommand();
-    	ExpeditedAdverseEventReport aeReport = aeReportDao.getById(Integer.parseInt(aeReportId));
-    	Report report = aeReport.getReports().get(Integer.parseInt(reportIndex));
+    	Report report = reportDao.getById(Integer.parseInt(reportId));
     	Map<String, String> params = new LinkedHashMap<String, String>();
+        params.put("reportId", reportId);
     	if(report.getLastVersion().getReportStatus().equals(ReportStatus.FAILED)){
     		output.setHtmlContent(renderAjaxView("reportSubmissionStatus", Integer.parseInt(aeReportId), params));
     		output.setObjectContent("FAILED");

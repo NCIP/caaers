@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
@@ -28,26 +26,21 @@ import org.springframework.validation.Errors;
 /**
  * @author Krikor Krumlian
  */
-public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
+public class SubmitReportTab extends TabWithFields<SubmitExpeditedAdverseEventCommand> {
 
 	protected final Log log = LogFactory.getLog(getClass());
 	protected ReportSubmissionService reportSubmissionService;
 	
     public SubmitReportTab() {
         super("Submission", "Recipients", "ae/submitReport");
-
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
-        if (reportIndex == null) {
-            throw new CaaersSystemException("Report Index Not Defined");
-        }
+    public InputFieldGroupMap createFieldGroups(SubmitExpeditedAdverseEventCommand command) {
+
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup ccReport = new DefaultInputFieldGroup("ccReport");
-        InputField cc = InputFieldFactory.createTextArea("aeReport.reports[" + reportIndex + "].lastVersion.ccEmails", "Cc");
+        InputField cc = InputFieldFactory.createTextArea("report.lastVersion.ccEmails", "Cc");
         InputFieldAttributes.setColumns(cc, 50);
         ccReport.getFields().add(cc);
         map.addInputFieldGroup(ccReport);
@@ -55,18 +48,15 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
     }
     
     @Override
-    public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
-    	SubmitExpeditedAdverseEventCommand submitCommand = (SubmitExpeditedAdverseEventCommand) command;
-    	String reportIndex = submitCommand.getReportIndex();
-        Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
+    public Map<String, Object> referenceData(SubmitExpeditedAdverseEventCommand submitCommand) {
+        Report report = submitCommand.getReport();
     	submitCommand.refreshReportDeliveries(report);
-    	return  super.referenceData(request, submitCommand);
+    	return  super.referenceData( submitCommand);
     }
 
     @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
-        Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
+    protected void validate(SubmitExpeditedAdverseEventCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        Report report = command.getReport();
         ReportVersion lastVersion = report.getLastVersion();
         String emailString =lastVersion.getCcEmails();
 
@@ -88,19 +78,23 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
     }
 
     @Override
-    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
-    	int targetPage = WebUtils.getTargetPage(request);
-    	if( targetPage < 2) return; //only process if we are moving forward.
-    	
-    	log.debug("In postProcess");
-        SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) cmd;
-        Integer reportIndex = Integer.valueOf(command.getReportIndex());
+    public void postProcess(HttpServletRequest request, SubmitExpeditedAdverseEventCommand command, Errors errors) {
+        log.debug("In postProcess");
 
-        log.debug("Report Index :" + reportIndex.intValue());
-        ExpeditedAdverseEventReport aeReport = command.getAeReport();
-        Report report = aeReport.getReports().get(((int) reportIndex));
-        if(report.isActive() && (!command.getReportSubmitted()) ){
-        	reportSubmissionService.submitReport(report);
+        int targetPage = WebUtils.getTargetPage(request);
+
+        if(log.isDebugEnabled()) log.debug("Should process SubmitReportTab:postProcess (back button) ? " + !(targetPage < 2) );
+    	if( targetPage < 2) return; //only process if we are moving forward.
+
+    	if(log.isDebugEnabled()) log.debug("Should process SubmitReportTab:postProcess (errors) ? " + !errors.hasErrors() );
+        if(errors.hasErrors()) return;
+
+        if(log.isDebugEnabled()) log.debug("Report active ? " + command.getReport().isActive());
+        if(log.isDebugEnabled()) log.debug("Report submitted already ? " + command.isSubmissionInprogress());
+
+    	if(command.getReport().isActive() && (!command.isSubmissionInprogress()) ){
+        	reportSubmissionService.submitReport(command.getReport());
+            command.setSubmissionInprogress(true);
         }
     }
     

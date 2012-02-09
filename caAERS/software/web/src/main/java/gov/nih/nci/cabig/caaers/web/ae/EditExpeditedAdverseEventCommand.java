@@ -23,8 +23,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	
     private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
     private String task; // will tell the action we perform on the current item.
-    private StudyDao studyDao;
-    
+
     
     // //// LOGIC
 
@@ -42,7 +41,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
             EvaluationService evaluationService) {
     	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao, adverseEventRoutingAndReviewRepository);
     		this.evaluationService = evaluationService;
-            this.studyDao = studyDao;
     }
 
     
@@ -50,13 +48,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	reportingPeriodDao.save(aeReport.getReportingPeriod());
     }
     
-    @Override
-    public void reassociate() {
-        super.reassociate();
-        assignmentDao.reassociate(getAssignment());
-        if(getAeReport().getId() != null) studyDao.lock(aeReport.getStudy());
-    }
-    
+
     /**
      * This method returns the type of the command object (aeReport)
      */
