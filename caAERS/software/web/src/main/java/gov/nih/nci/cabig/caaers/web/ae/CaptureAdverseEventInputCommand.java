@@ -471,8 +471,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
-		initialize();
-		
 	}
 	
 	public void setCtcCategories(List<CtcCategory> ctcCategories) {
