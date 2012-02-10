@@ -1,5 +1,6 @@
 <dataset>
-
+    <treatment_assignment_agents />
+    <treatment_assignment />
 	<agents
 		id="1001"
 		name="Agent Name – 01"
