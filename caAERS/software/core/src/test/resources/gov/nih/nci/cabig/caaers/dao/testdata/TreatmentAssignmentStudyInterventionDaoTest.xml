@@ -41,16 +41,16 @@
     <disease_terminologies />
     <terminologies />
 
-    <treatment_assignment_study_interventions />
-    <treatment_assignment_agents />
-    <treatment_assignment_devices />
-    <treatment_assignment_other_interventions />
-    <study_interventions_expected_aes />
+    <ta_study_interventions />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <study_interventions_exp_aes />
 
 <!--
-    <treatment_assignment_study_interventions id="1" />
-    <treatment_assignment_study_interventions id="2" />
-    <treatment_assignment_study_interventions id="3" />
-    <treatment_assignment_study_interventions id="4" />
+    <ta_study_interventions id="1" />
+    <ta_study_interventions id="2" />
+    <ta_study_interventions id="3" />
+    <ta_study_interventions id="4" />
 -->
 </dataset>

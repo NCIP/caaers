@@ -7,7 +7,7 @@ import javax.persistence.*;
  *         Date: 1/5/12 -1:45 PM
  */
 @Entity
-@Table(name = "treatment_assignment_devices")
+@Table(name = "ta_devices")
 public class TreatmentAssignmentDevice extends TreatmentAssignmentStudyIntervention {
 
     private StudyDevice studyDevice;

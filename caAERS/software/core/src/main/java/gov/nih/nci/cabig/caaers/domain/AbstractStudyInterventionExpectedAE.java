@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "study_interventions_expected_aes")
+@Table(name = "study_interventions_exp_aes")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@org.hibernate.annotations.Parameter(name = "sequence", value = "seq_si_aes_id")})
 @DiscriminatorColumn(name = "term_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject> extends AbstractMutableDomainObject implements AbstractTerm  {
@@ -79,7 +79,7 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     }
 
     @ManyToOne
-    @JoinColumn(name = "treatment_assignment_study_intervention_id", nullable = false)
+    @JoinColumn(name = "ta_study_intervention_id", nullable = false)
     public TreatmentAssignmentStudyIntervention getTreatmentAssignmentStudyIntervention() {
         return treatmentAssignmentStudyIntervention;
     }

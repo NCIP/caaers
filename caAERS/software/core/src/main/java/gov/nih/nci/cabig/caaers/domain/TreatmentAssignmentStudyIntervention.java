@@ -17,7 +17,7 @@ import java.util.List;
  *         Date: 1/5/12 -1:45 PM
  */
 @Entity
-@Table(name = "treatment_assignment_study_interventions")
+@Table(name = "ta_study_interventions")
 @Inheritance(strategy = InheritanceType.JOINED)
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ta_si_id") })
 public class TreatmentAssignmentStudyIntervention extends AbstractMutableDomainObject implements Serializable {
