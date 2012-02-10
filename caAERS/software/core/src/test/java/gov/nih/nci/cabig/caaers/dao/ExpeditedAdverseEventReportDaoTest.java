@@ -676,46 +676,6 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         assertNotNull("Anatomic site deleted", anatomicSiteDao.getById(-33));
     }
 
-    public void testSearchExpeditedReportByCtcTermPartial() throws Exception {
-        List<ExpeditedAdverseEventReport> results;
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("ctcTerm", "Auditory/Ear");
-        results = getDao().searchExpeditedReports(m);
-        assertEquals("Wrong number of results", 1, results.size());
-    }
-
-    public void testSearchExpeditedReportByParticipant() throws Exception {
-        List<ExpeditedAdverseEventReport> results;
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("participantFirstName", "Michael");
-        m.put("participantLastName", "Jordan");
-        m.put("participantEthnicity", "ethnicity");
-        m.put("participantGender", "Male");
-        m.put("participantDateOfBirth","01/02/2006");
-        m.put("participantIdentifier", "13js77");
-        results = getDao().searchExpeditedReports(m);
-        assertEquals("Wrong number of results", 1, results.size());
-    }
-
-    public void testSearchExpeditedReportByStudy() throws Exception {
-        List<ExpeditedAdverseEventReport> results;
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("studyShortTitle", "That");
-        m.put("studyIdentifier", "nci_test");
-        results = getDao().searchExpeditedReports(m);
-        assertEquals("Wrong number of results", 1, results.size());
-    }
-    //10043882
-    public void testSearchExpeditedReportByCtepCodeAndCategory() throws Exception {
-        List<ExpeditedAdverseEventReport> results;
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("ctcCtepCode", "10043882");
-        m.put("ctcCategory", "auditory/ear");
-        results = getDao().searchExpeditedReports(m);
-        assertEquals("Wrong number of results", 1, results.size());
-    }
-    
-   
     public void testSerializeExpeditedAdverseEventReport() throws Exception {
 
     	ExpeditedAdverseEventReport aer = getDao().getById(-1);
@@ -769,11 +729,6 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         void setupReport(ExpeditedAdverseEventReport report);
 
         void assertCorrect(ExpeditedAdverseEventReport loaded);
-    }
-    
-    public void testGetByCriteria(){
-    	 List<ExpeditedAdverseEventReport> reports = getDao().getByCriteria(null, null);
-    	 assertTrue(reports.isEmpty());
     }
     
     public void testReassociate(){

@@ -30,7 +30,6 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 public abstract class SearchController extends SimpleFormController {
 
-    public static final int SEARCH_EXPEDITED_REPORT = 3;
     public static final int SEARCH_IND = 5;
     public static final int SEARCH_ORGANIZATION = 6;
     public static final int SEARCH_RESEARCHSTAFF = 7;
@@ -93,9 +92,6 @@ public abstract class SearchController extends SimpleFormController {
                     break;
                 case 1:
                     viewData = searchFacade.getParticipantTable(null, prop, value, request);
-                    break;
-                case SEARCH_EXPEDITED_REPORT:
-                    viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
                     break;
                 case 4:
                     break;

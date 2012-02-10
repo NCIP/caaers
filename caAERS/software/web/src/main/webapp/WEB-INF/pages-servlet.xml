@@ -464,8 +464,7 @@
   <bean name="/search/participant" id="participantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
   <bean name="/participant/search" id="searchParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
 
-  <bean name="/search/report" id="reportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
-  	
+
   <bean name="/search/listSearch" id="listSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ListSearchController"/>
   
   <bean name="/search/advancedSearch" id="advancedSearchController" autowire="byType" 	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>
