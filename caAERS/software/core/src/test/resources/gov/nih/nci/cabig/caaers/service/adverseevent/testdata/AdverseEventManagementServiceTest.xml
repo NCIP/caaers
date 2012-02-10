@@ -229,7 +229,7 @@
      	order_no="1"
      	study_id="-4"
      	/>
-
+     <ta_study_interventions />
      <treatment_assignment
      	id="1001"
      	code="TAC1"

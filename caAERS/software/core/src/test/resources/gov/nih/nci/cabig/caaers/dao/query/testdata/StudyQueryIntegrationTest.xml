@@ -1,5 +1,5 @@
 <dataset>
-    <treatment_assignment_agents />
+    <ta_agents />
     <treatment_assignment />
     <ORGANIZATIONS
             id="-1001"

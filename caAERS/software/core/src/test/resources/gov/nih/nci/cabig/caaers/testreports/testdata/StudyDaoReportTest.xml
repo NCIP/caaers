@@ -399,6 +399,7 @@
 	<study_agents />
     <ind_holders/>
     <study_agent_inds/>
+    <ta_study_interventions />
     <treatment_assignment/>
     <epochs/>
     <arms/>
