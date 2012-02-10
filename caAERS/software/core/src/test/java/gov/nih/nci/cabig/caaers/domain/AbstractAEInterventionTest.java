@@ -23,6 +23,6 @@ public class AbstractAEInterventionTest extends TestCase {
         assertEquals(8, (int)bi.getId());
         assertEquals("x", bi.getDescription());
 
-        assertEquals(bi2.getStudyIntervention().getName(), "x");
+        assertEquals("n" , bi2.getStudyIntervention().getName());
     }
 }
