@@ -1,5 +1,4 @@
 <dataset>
-	<site_investigators />
     <!-- TODO: expand to allow multiple XML files so that this doesn't have to be
         copy/pasted -->
     <ctc_versions
@@ -21,6 +20,7 @@
             name="blood/bone marrow"
             version_id="3"
             />
+
     <ctc_terms
             id="3007"
             category_id="302"
@@ -37,6 +37,14 @@
             ctep_code="10043882"
             other_required="0"
             />
+
+    <MEDDRA_LLT
+            id="-11"
+            meddra_code="2"
+            meddra_term="Hello World"
+            />
+
+
     <agents id="-101"/>
     <agents id="-102"/>            
             
@@ -46,29 +54,78 @@
             name="CALGB"
             description_text="CALGB"
             nci_institute_code="DEFAULT"
-            /> 
-            
-     <studies id="-100" short_title="Min"  load_status="1" />        
-           
-     <STUDIES id="-2"
-            multi_institution_indicator="0"
-            short_title="Short Title"
-            long_title="Long Title"
-            description="Description"
-            grid_id=""
+            />
+
+
+    <PARTICIPANTS
+            id="-88"
+            instituitional_patient_number="eerr"
+            institution="ddd"
+            first_name="ddd"
+            last_name="dd"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2007"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
             load_status="1" />
 
-            
-    <STUDY_ORGANIZATIONS
-            id="-1000"
-            version="1"
-           start_date="2006-10-10"
-            study_id="-2"
-            site_id="-1003"
-            type="SST" />        
-            
-    
-            
+    <PARTICIPANTS
+            id="-3"
+            instituitional_patient_number="P00X"
+            institution="Hospital"
+            first_name="XXX"
+            last_name="YYY"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+
+    <PARTICIPANTS
+            id="-4"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+
+
+    <IDENTIFIERS
+            id="-200"
+            participant_id="-3"
+            value="13js77"
+            type="MRN"
+            system_name="system name"
+            organization_id="-1003"
+            discriminator_column="1"/>
+    <IDENTIFIERS
+            id="-201"
+            value="11112"
+            type="MRN"
+            participant_id="-4"
+            system_name="system name"
+            discriminator_column="2"/>
+
+
+    <studies id="-100" short_title="Min"  load_status="1" />
+
+    <!-- Study : -100 -->
     <TERMINOLOGIES
             id="-11"
             term_code="1"
@@ -77,76 +134,31 @@
             />
 
     <EPOCHS
-            id="-1010"
+            id="-1012"
             name="test epoch 1"
             order_no="1"
             study_id="-100"
             />
-	
-	<PARTICIPANTS
-        id="-3"
-        instituitional_patient_number="P00X"
-        institution="Hospital"
-        first_name="XXX"
-        last_name="YYY"
-        birth_day="02"
-        birth_month="01"
-        birth_year="2006"
-        gender="Female"
-        ethnicity="ethnicity"
-        race="race"
-        middle_name="m"
-        maiden_name="m" 
-        load_status="1" />
-        
-        
-	<PARTICIPANTS
-        id="-4"
-        instituitional_patient_number="P001"
-        institution="Hospital"
-        first_name="Dilbert"
-        last_name="Scott"
-        birth_day="02"
-        birth_month="01"
-        birth_year="2006"
-        gender="Female"
-        ethnicity="ethnicity"
-        race="race"
-        middle_name="m"
-        maiden_name="m" 
-        load_status="1" />
-    
-    
-    <IDENTIFIERS
-            id="-200"
-            participant_id="-3"
-            stu_id="-2"
-            value="13js77"
-            type="MRN"
-            system_name="system name"
-            organization_id="-1003"
-            discriminator_column="1"/>    
-  	<IDENTIFIERS
-        id="-201"
-        value="11112"
-        type="MRN"
-        participant_id="-4"
-        system_name="system name"
-        discriminator_column="2"/>      
-        
-        
-    <participant_assignments
-            id="-6"
-            participant_id="-4"
-            study_site_id="-1000"
-            date_of_enrollment="2004-01-05"   load_status="1" />
-            
-            
+
     <TREATMENT_ASSIGNMENT
             id="1001"
             code="adverseEventReportingPeriodCode"
             study_id="-100"
             />
+
+    <STUDY_ORGANIZATIONS
+            id="-1005"
+            version="1"
+            start_date="2006-10-10"
+            study_id="-100"
+            site_id="-1003"
+            type="SST" />
+
+    <participant_assignments
+            id="-12"
+            participant_id="-3"
+            study_site_id="-1005"
+            date_of_enrollment="2004-01-05"   load_status="1" />
 
     <AE_REPORTING_PERIODS
             id="1001"
@@ -154,9 +166,76 @@
             end_date="2008-05-25"
             description="test object 1001"
             treatment_assignment_id="1001"
-            assignment_id="-6"
-            epoch_id="-1010"
+            assignment_id="-12"
+            epoch_id="-1012"
             />
+    <AE_REPORTS
+            id="-19"
+            reporting_period_id="1001"
+            created_at="2007-04-04 13:22:32.055"
+            />
+    <ADVERSE_EVENTS
+            id="-3"
+            reporting_period_id="1001"
+            report_id="-19"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some big AE"
+            low_level_term_id="-11"
+            event_time_zone="0"
+            event_time_minute="0"
+            event_time_hour="0"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            solicited="1"
+            />
+
+    <AE_TERMS
+            id="-9"
+            adverse_event_id="-3"
+            term_id="-11"
+            term_type="meddra"
+            />
+
+
+
+    <TREATMENTS
+            id="-21"
+            report_id="-19"
+            />
+
+    <!-- Study : -2 -->
+
+    <STUDIES id="-2"
+             multi_institution_indicator="0"
+             short_title="Short Title"
+             long_title="Long Title"
+             description="Description"
+             grid_id=""
+             load_status="1" />
+
+    <EPOCHS
+            id="-1010"
+            name="test epoch 1"
+            order_no="1"
+            study_id="-2"
+            />
+    <STUDY_ORGANIZATIONS
+            id="-1000"
+            version="1"
+           start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1003"
+            type="SST" />
+
+    <participant_assignments
+            id="-6"
+            participant_id="-4"
+            study_site_id="-1000"
+            date_of_enrollment="2004-01-05"   load_status="1" />
 
     <AE_REPORTING_PERIODS
             id="1002"
@@ -168,15 +247,11 @@
             epoch_id="-1010"
             />
 
-    <AE_REPORTS
-            id="-19"
-            reporting_period_id="1001"
-            created_at="2007-04-04 13:22:32.055"
-            />
 
-    <TREATMENTS
-            id="-21"
-            report_id="-19"
+    <AE_REPORTS
+            id="-17"
+            reporting_period_id="1002"
+            created_at="2007-04-04 13:22:32.055"
             />
 
     <ADVERSE_EVENTS
@@ -194,10 +269,8 @@
             event_time_hour="12"
             event_time_minute="3"
             event_time_zone="1"
-            low_level_term_id="-11"
             solicited="1"
             />
-            
 
     <ADVERSE_EVENTS
             id="-2"
@@ -215,43 +288,21 @@
             event_time_minute="3"
             event_time_zone="1"
             />
-            
-    <ADVERSE_EVENTS
-            id="-3"
-            reporting_period_id="1001"
-            report_id="-19"
-            grade_code="5"
-            hospitalization_code="0"
-            attribution_summary_code="3"
-            expected="1"
-            participant_at_risk="1"
-            comments="That was some big AE"
-            low_level_term_id="-11"
-            event_time_zone="0"
-        	event_time_minute="0"
-        	event_time_hour="0"
+
+    <AE_TERMS
+            id="-8"
+            adverse_event_id="-2"
+            term_id="3012"
+            term_type="ctep"
             />
 
     <AE_TERMS
-            id="-9"
-            adverse_event_id="-3"
-            term_id="-11"
-            term_type="meddra"
-            />
-   
-
-    <MEDDRA_LLT
-            id="-11"
-            meddra_code="2"
-            meddra_term="Hello World"
+            id="-91"
+            adverse_event_id="-5"
+            term_id="3007"
+            term_type="ctep"
             />
 
-
-    <AE_REPORTS
-            id="-17"
-            reporting_period_id="1002"
-            created_at="2007-04-04 13:22:32.055"
-            />
     <TREATMENTS
             id="-17"
             report_id="-17"
@@ -262,23 +313,6 @@
     <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/>
     
 
-
-    <AE_TERMS
-            id="-8"
-            adverse_event_id="-2"
-            term_id="3012"
-            term_type="ctep"
-            />
-            
- 
-
-
-    <AE_TERMS
-            id="-91"
-            adverse_event_id="-5"
-            term_id="3007"
-            term_type="ctep"
-            />           
 
     <COURSE_AGENTS
             id="-23"

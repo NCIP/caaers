@@ -428,31 +428,6 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 //			fail("should not throw exception");
 //		}
 //    }
-    
-    public void testSearchAdverseEventsBasedOnParticipant(){
-    	Map<String, Object> props = new HashMap<String, Object>();
-    	props.put("participantIdentifier", "11112");
-    	props.put("participantFirstName", "Dilbert");
-    	props.put("participantLastName", "Scott");
-    	props.put("participantEthnicity", "ethnicity");
-    	props.put("participantGender", "Female");
-    	//props.put("participantDateOfBirth", "01/02/2006");
-    	
-    	try {
-    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
-    		assertNotNull(aes);
-    		assertEquals(2, aes.size());
-    		// commented this , as it is failing for oracle ..
-    		//assertEquals(new Integer(-5), aes.get(0).getId());
-    		
-    		
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail("should not throw exception");
-		}
-    }
-    
     public void testGetByStudy(){
     	Study s = studyDao.getById(-2);
     	
@@ -471,11 +446,11 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     public void testGetByParticipant(){
     	Participant p = participantDao.getById(-4);
     	List<AdverseEvent> aes = getDao().getByParticipant(p);
-    	assertEquals(3, aes.size());
+    	assertEquals(2, aes.size());
     }
     
     public void testGetByParticipantHavingNoAssingment(){
-    	Participant p = participantDao.getById(-3);
+    	Participant p = participantDao.getById(-88);
     	List<AdverseEvent> aes = getDao().getByParticipant(p);
     	assertEquals(0, aes.size());
     }
