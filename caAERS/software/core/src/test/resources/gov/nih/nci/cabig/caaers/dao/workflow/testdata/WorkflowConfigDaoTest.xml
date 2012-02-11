@@ -1,5 +1,4 @@
 <dataset>
-    <treatment_assignment />
  	<ORGANIZATIONS
             id="-1001"
             version="1"
@@ -37,6 +36,14 @@
             study_id="-2"
             site_id="-1003"
             type="SST"/>
+
+    <treatment_assignment />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
+    <study_interventions_exp_aes />
+
 	<workflow_configuration
 		id="1000"
 		workflow_definition_name="reportingperiod_coordinating_center"

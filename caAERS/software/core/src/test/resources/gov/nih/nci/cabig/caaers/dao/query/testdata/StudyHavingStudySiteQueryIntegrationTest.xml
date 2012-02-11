@@ -68,7 +68,8 @@
     <ta_devices />
     <ta_other_interventions />
     <ta_study_interventions/>
-	
+    <study_interventions_exp_aes />
+
 	<STUDY_ORGANIZATIONS
             id="-1000"
             version="1"
@@ -149,6 +150,13 @@
             study_id="-4"
             site_id="-1003"
             type="SST"/>
+
+    <treatment_assignment />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
+    <study_interventions_exp_aes />
 
     <ind_holders />
     <site_investigators />

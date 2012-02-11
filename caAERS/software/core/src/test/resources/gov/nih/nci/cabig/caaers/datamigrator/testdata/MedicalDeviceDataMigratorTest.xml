@@ -1,7 +1,30 @@
 <dataset>
 
 
-     <STUDIES id="-2"
+    <ORGANIZATIONS
+            id="-1003"
+            version="1"
+            name="CALGB"
+            description_text="CALGB"
+            nci_institute_code="DEFAULT"
+            />
+
+    <PARTICIPANTS
+            id="-4"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+    <STUDIES id="-2"
             multi_institution_indicator="0"
             short_title="Short Title"
             long_title="Long Title"
@@ -9,13 +32,6 @@
             grid_id=""
             load_status="1" />
 
-        <ORGANIZATIONS
-            id="-1003"
-            version="1"
-            name="CALGB"
-            description_text="CALGB"
-            nci_institute_code="DEFAULT"
-            /> 
 
     <STUDY_ORGANIZATIONS
             id="-1000"
@@ -27,21 +43,6 @@
 
 
 
-	<PARTICIPANTS
-        id="-4"
-        instituitional_patient_number="P001"
-        institution="Hospital"
-        first_name="Dilbert"
-        last_name="Scott"
-        birth_day="02"
-        birth_month="01"
-        birth_year="2006"
-        gender="Female"
-        ethnicity="ethnicity"
-        race="race"
-        middle_name="m"
-        maiden_name="m"
-        load_status="1" />
 
 
     <participant_assignments
@@ -89,5 +90,10 @@
     <study_devices />
     <ind_holders />
     <site_investigators />
-    
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
+    <study_interventions_exp_aes />
+
 </dataset>
