@@ -1,6 +1,5 @@
 <dataset>
-    <ta_agents />
-    <treatment_assignment />
+
     <ORGANIZATIONS
             id="-1001"
             version="1"
@@ -24,6 +23,8 @@
             description_text="NUCC"
             nci_institute_code="WAKE"/>
 
+    <ta_agents />
+    <treatment_assignment />
     <STUDIES
             id="-2"
             multi_institution_indicator="0"
