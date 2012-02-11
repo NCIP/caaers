@@ -414,9 +414,16 @@
     <ctc_grades/>
 
 	<study_agents />
+    <study_devices />
     <ind_holders/>
     <study_agent_inds/>
-    <treatment_assignment/>
+
+    <treatment_assignment />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
+
     <epochs/>
     <arms/>
     <solicited_events/>
@@ -432,6 +439,5 @@
     <study_therapy id="-4" study_id="-3" study_therapy_type="4" />
     <study_therapy id="-5" study_id="-3" study_therapy_type="5" />
     <study_index/>
-    <study_devices />
 
 </dataset>

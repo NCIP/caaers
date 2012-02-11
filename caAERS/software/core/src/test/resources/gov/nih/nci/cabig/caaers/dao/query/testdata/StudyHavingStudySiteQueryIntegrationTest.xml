@@ -14,8 +14,6 @@
             description_text="CALGB"
             nci_institute_code="DEFAULT"
             />
-
-
     <ORGANIZATIONS
             id="-1003"
             version="1"
@@ -23,8 +21,6 @@
             description_text="NUCC"
             nci_institute_code="WAKE"/>
 
-    <ta_agents />
-    <treatment_assignment />
     <STUDIES
             id="-2"
             multi_institution_indicator="0"
@@ -66,7 +62,12 @@
             load_status="1"
              data_entry_status="1"
             />
-	
+
+    <treatment_assignment />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
 	
 	<STUDY_ORGANIZATIONS
             id="-1000"
@@ -152,5 +153,6 @@
     <ind_holders />
     <site_investigators />
     <site_research_staffs />
-    <treatment_assignment />
+
+
 </dataset>

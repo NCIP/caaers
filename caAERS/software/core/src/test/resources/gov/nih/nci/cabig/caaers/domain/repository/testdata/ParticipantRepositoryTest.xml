@@ -99,5 +99,10 @@
 	<ae_reports />
 	<disease_terminologies />
 	<identifiers />
+
     <treatment_assignment />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
 </dataset>
