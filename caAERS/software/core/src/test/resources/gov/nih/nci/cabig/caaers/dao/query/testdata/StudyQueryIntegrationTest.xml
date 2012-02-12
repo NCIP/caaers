@@ -179,6 +179,7 @@
             />
     <study_devices />
 
+    <disease_terminologies />
 
     <treatment_assignment />
     <ta_study_interventions/>
