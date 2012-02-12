@@ -90,10 +90,11 @@
     <study_devices />
     <ind_holders />
     <site_investigators />
+
+    <ta_study_interventions/>
     <ta_agents />
     <ta_devices />
     <ta_other_interventions />
-    <ta_study_interventions/>
     <study_interventions_exp_aes />
 
 </dataset>

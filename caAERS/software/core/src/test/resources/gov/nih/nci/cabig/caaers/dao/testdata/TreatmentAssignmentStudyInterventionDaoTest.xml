@@ -41,12 +41,13 @@
     <disease_terminologies />
     <terminologies />
 
-    <ta_study_interventions />
+
+    <treatment_assignment />
+    <ta_study_interventions/>
     <ta_agents />
     <ta_devices />
     <ta_other_interventions />
     <study_interventions_exp_aes />
-
 <!--
     <ta_study_interventions id="1" />
     <ta_study_interventions id="2" />
