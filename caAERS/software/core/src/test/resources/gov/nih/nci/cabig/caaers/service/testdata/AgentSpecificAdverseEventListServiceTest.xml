@@ -38,11 +38,11 @@
     <CTC_TERMS id="4012" category_id="402" term="Nosea42" ctep_term="Nosea40" ctep_code="100438832" other_required="0" />
     <CTC_TERMS id="4013" category_id="402" term="Nosea43" ctep_term="Nosea40" ctep_code="100438843" other_required="0" />
 
-    <agent_terms id="-1" agent_id="-990" term_id="4010" term_type="ctep" />
-    <agent_terms id="-2" agent_id="-990" term_id="4011" term_type="ctep" />
-    <agent_terms id="-3" agent_id="-990" term_id="4012" term_type="ctep" />
-    <agent_terms id="-4" agent_id="-990" term_id="4013" term_type="ctep" />
-    <agent_terms id="-5" agent_id="-990" term_id="3012" term_type="ctep" />
+    <agent_terms id="-1" agent_id="-990" term_id="4010" term_type="ctep" expected="1"/>
+    <agent_terms id="-2" agent_id="-990" term_id="4011" term_type="ctep"  expected="1"/>
+    <agent_terms id="-3" agent_id="-990" term_id="4012" term_type="ctep"  expected="1"/>
+    <agent_terms id="-4" agent_id="-990" term_id="4013" term_type="ctep"  expected="1"/>
+    <agent_terms id="-5" agent_id="-990" term_id="3012" term_type="ctep"  expected="1"/>
 
     <ctc_grades />
     <identifiers />
