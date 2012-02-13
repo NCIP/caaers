@@ -2,6 +2,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@attribute name="title" required="true"%>
 <%@attribute name="formName"%>
 <%@attribute name="enctype"%>
@@ -17,7 +18,7 @@
 <chrome:box title="${title}" id="${boxId}" cssClass="${boxClass}">
 	<c:set var="flashMessage" scope="request"><jsp:invoke fragment="flashMessage"/></c:set>
     <chrome:flashMessage/>
-    <form:form name="${formName}" enctype="${enctype}">
+    <caaers:form name="${formName}" enctype="${enctype}">
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
             <tags:jsErrorsMessage/>
@@ -30,5 +31,5 @@
 				<jsp:invoke fragment="navButtons" />
 			</div>
    		 </div>
-    </form:form>
+    </caaers:form>
 </chrome:box>
