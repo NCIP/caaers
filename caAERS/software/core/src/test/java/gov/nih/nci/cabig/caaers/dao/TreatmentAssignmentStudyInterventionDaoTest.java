@@ -104,10 +104,6 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
 
     }
 
-    @Override
-    protected DatabaseOperation getTearDownOperation() throws Exception {
-        return DatabaseOperation.REFRESH;
-    }
 
 /*
     @Override
