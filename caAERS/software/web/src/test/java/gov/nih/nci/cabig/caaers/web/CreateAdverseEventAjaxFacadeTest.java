@@ -365,7 +365,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     
     public void testUpdatePhysicianSignOff() throws Exception{
     	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-    	assignmentDao.reassociate(command.getAeReport().getAssignment());
     	expect(webContext.getCurrentPage()).andReturn("pages/ae/edit");
     	expect(webContext.forwardToString("pages/ae/edit?aeReport=0&subview=submitReportValidationSection")).andReturn("The Html");
     	replayMocks();
@@ -457,7 +456,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderAdverseEventsWithValidParams() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 1, 2).getChanges();
         verifyMocks();
@@ -470,7 +468,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderMoveToEnd() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 0, 3).getChanges();
         verifyMocks();
@@ -496,7 +493,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderMoveToBeginning() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 2, 0).getChanges();
         verifyMocks();
@@ -510,7 +506,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderReturnsFalseWhenTargetOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 1, 4).getChanges();
         verifyMocks();
@@ -521,7 +516,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderReturnsFalseWhenObjectOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 4, 1).getChanges();
         verifyMocks();
@@ -532,7 +526,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderChangeListIncludesDisplayName() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 2, 0).getChanges();
         verifyMocks();
@@ -548,9 +541,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
-        assignmentDao.reassociate(assignment);
-        expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new LocalStudy());
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(3);
         expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
@@ -564,9 +554,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testDeleteFromTop() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
-        assignmentDao.reassociate(assignment);
-        expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new LocalStudy());
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(0);
         expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
@@ -584,9 +571,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testDeleteInMiddle() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
-        assignmentDao.reassociate(assignment);
-        expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new LocalStudy());
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(2);
         expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
@@ -602,9 +586,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testDeleteOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
-        assignmentDao.reassociate(assignment);
-        expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new LocalStudy());
 
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 4).getChanges();
@@ -619,7 +600,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	Integer aeTermId = 5;
     	 CtcTerm term = registerMockFor(CtcTerm.class);
         // mock - expectations
-        assignmentDao.reassociate(assignment);
         expect(ctcTermDao.getById(aeTermId)).andReturn(term);
         reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
@@ -638,7 +618,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	Integer aeTermId = 5;
     	 CtcTerm term = registerMockFor(CtcTerm.class);
         // mock - expectations
-        assignmentDao.reassociate(assignment);
         expect(ctcTermDao.getById(aeTermId)).andReturn(term);
         reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
@@ -655,7 +634,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	Integer aeTermId = 5;
     	 LowLevelTerm term = registerMockFor(LowLevelTerm.class);
         // mock - expectations
-        assignmentDao.reassociate(assignment);
         expect(lowLevelTermDao.getById(aeTermId)).andReturn(term);
         reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
@@ -674,7 +652,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	Integer aeTermId = 5;
     	 LowLevelTerm term = registerMockFor(LowLevelTerm.class);
         // mock - expectations
-        assignmentDao.reassociate(assignment);
         expect(lowLevelTermDao.getById(aeTermId)).andReturn(term);
         reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");

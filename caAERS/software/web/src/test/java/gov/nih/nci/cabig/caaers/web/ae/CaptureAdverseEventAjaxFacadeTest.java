@@ -152,8 +152,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
-        studyDao.lock(command.getStudy());
-        adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
@@ -182,8 +180,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 			}
 		};
 		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
-		adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
-		studyDao.lock(command.getStudy());
 		replayMocks();
 		AjaxOutput output = facade.validateAndAdvanceWorkflow("Submit to Data Coordinator");
 		assertNotNull("AjaxOutput not populated with errors", output);
@@ -206,8 +202,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 			}
 		};
 		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
-		adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
-		studyDao.lock(command.getStudy());
 		replayMocks();
 		AjaxOutput output = facade.validateAndAdvanceWorkflow("Submit to Data Coordinator");
 		assertNull("ObjectContent populated incorrectly when there were no errors", output.getObjectContent());
@@ -224,8 +218,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
-        studyDao.lock(command.getStudy());
-        adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth).anyTimes();
         expect(auth.getPrincipal()).andReturn(user).anyTimes();
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN").anyTimes();
@@ -249,8 +241,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
-        studyDao.lock(command.getStudy());
-        adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth).anyTimes();
         expect(auth.getPrincipal()).andReturn(user).anyTimes();
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN").anyTimes();
