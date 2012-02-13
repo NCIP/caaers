@@ -140,7 +140,7 @@
 	<!-- <form:form/> tag -->
 	<tag>
 		<name>form</name>
-		<tag-class>org.springframework.web.servlet.tags.form.FormTag</tag-class>
+		<tag-class>gov.nih.nci.cabig.caaers.web.tags.FormTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Renders an HTML 'form' tag and exposes a binding path to inner tags for binding.</description>
 		<attribute>

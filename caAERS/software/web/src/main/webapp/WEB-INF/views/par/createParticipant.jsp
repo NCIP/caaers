@@ -1,9 +1,8 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <script type="text/javascript">
     Spring.addDecoration(new Spring.ElementDecoration({
@@ -50,7 +49,7 @@
 
 </script>
 
-<form:form id="participant" method="post" modelAttribute="participantCommand">
+<caaers:form id="participant" method="post" modelAttribute="participantCommand">
 
 
     <chrome:division title="Participant Details">
@@ -86,4 +85,4 @@
         </div>
 
     </chrome:division>
-</form:form>
+</caaers:form>

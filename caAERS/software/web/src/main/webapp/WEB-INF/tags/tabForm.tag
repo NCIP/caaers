@@ -31,7 +31,7 @@
 </c:if>
 
 <c:if test="${not hideBox}">
-    <caaers:form name="${formName}" enctype="${enctype}" id="${empty formId ? 'command' : formId}">
+    <caaers:form name="${formName}" enctype="${enctype}" id="${empty formId ? 'command' : formId}" validate="false">
     	<jsp:invoke fragment="header" />
     	<chrome:warningMessage/>
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">
