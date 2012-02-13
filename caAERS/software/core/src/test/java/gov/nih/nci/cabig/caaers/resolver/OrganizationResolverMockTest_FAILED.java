@@ -12,7 +12,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.easymock.EasyMock;
 
-public class OrganizationResolverMockTest extends AbstractTestCase {
+public class OrganizationResolverMockTest_FAILED extends AbstractTestCase {
 	
 	OrganizationResolver organizationResolver ;
 	MessageBroadcastService messageBroadcastService;

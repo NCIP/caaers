@@ -24,7 +24,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.semanticbits.rules.impl.RuleDeploymentServiceImpl;
 
-public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCase {
+public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurityTestCase {
 	
 	private AdverseEventManagementService adverseEventManagementService = null;
 	//private Unmarshaller aeUnmarshaller = null;

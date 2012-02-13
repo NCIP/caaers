@@ -107,7 +107,7 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
 
            service.makeRuleSetReadable(rs1);
 
-           assertCorrectValuesInList(r1.getReadableRule().getLine(), "If", "\tnull &nbsp;&nbsp; &nbsp;&nbsp;&#147; prefix &#148; &nbsp; is  &nbsp; 'B' ", "And","\tnull &nbsp;&nbsp; &nbsp;&nbsp;&#147; prefix &#148; &nbsp; is  &nbsp; 'B' ");
+           assertCorrectValuesInList(r1.getReadableRule().getLine(), "If", "\t &nbsp;&nbsp;&nbsp; prefix  is  'B' ", "And","\t &nbsp;&nbsp;&nbsp; prefix  is  'B' ");
            assertCorrectValuesInList(r1.getReadableAction(), "Hello", "Below");
            assertEquals("Rule-1", r1.getMetaData().getName());
            assertEquals("Rule-3", r3.getMetaData().getName());
@@ -121,7 +121,7 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
 
            service.makeRuleSetReadable(rs1);
 
-           assertCorrectValuesInList(r2.getReadableRule().getLine(), "If", "\tnull &nbsp;&nbsp; &nbsp;&nbsp;&#147; prefix &#148; &nbsp; is  &nbsp; 'B' ");
+           assertCorrectValuesInList(r2.getReadableRule().getLine(), "If", "\t &nbsp;&nbsp;&nbsp; prefix  is  'B' ");
            assertCorrectValuesInList(r2.getReadableAction(), "NA");
 
        }
@@ -134,7 +134,7 @@ public class CaaersRulesEngineServiceTest extends AbstractTestCase {
 
            service.makeRuleSetReadable(rs1);
 
-           assertCorrectValuesInList(r3.getReadableRule().getLine(), "If", "\tnull &nbsp;&nbsp; &nbsp;&nbsp;&#147; prefix &#148; &nbsp; is  &nbsp; 'B' ");
+           assertCorrectValuesInList(r3.getReadableRule().getLine(), "If", "\t &nbsp;&nbsp;&nbsp; prefix  is  'B' ");
            assertCorrectValuesInList(r3.getReadableAction(), "Additional Info");
            assertEquals("Rule-1", r3.getMetaData().getName());
 
