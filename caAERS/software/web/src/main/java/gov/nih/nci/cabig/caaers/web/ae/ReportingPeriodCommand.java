@@ -48,7 +48,6 @@ public class ReportingPeriodCommand {
     		this.reportingPeriod = reportingPeriod;
     		this.editFlow = true;
     	}
-        this.getReportingPeriod().getEpoch();
     	this.mode = mode;
     }
     
