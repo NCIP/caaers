@@ -97,6 +97,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	
 	public void testIsAssociatedToLabAlers(){
 		StudyParticipantAssignment assignment = Fixtures.createAssignment();
+        command.setAssignment(assignment);
 		reportingPeriod.setAssignment(assignment);
 		assertFalse(command.isAssociatedToLabAlerts());
 	}
