@@ -209,8 +209,7 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 	public void testOpenStudy(){
 		command.getStudy().setDataEntryStatus(false);
 		assertEquals("Inprogress", command.getDataEntryStatus());
-		EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(command.getStudy());
-		EasyMock.expect(studyDao.initialize(command.getStudy())).andReturn(command.getStudy());
+		studyRepository.save(command.getStudy());
 		replayMocks();
 		command.openStudy();
 		verifyMocks();
@@ -244,7 +243,7 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 
         Study s = Fixtures.createStudy("test");
 
-        EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(s);
+        studyRepository.save(command.getStudy());
         EasyMock.expect(studyDao.initialize(s)).andReturn(s);
         replayMocks();
 
@@ -268,7 +267,7 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
         Study s = Fixtures.createStudy("test");
 
         command.getStudy().setId(5);
-        EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(s);
+        studyRepository.save(command.getStudy());
         EasyMock.expect(studyDao.initialize(s)).andReturn(s);
         replayMocks();
 
