@@ -96,8 +96,8 @@ public class InterventionsTabTest extends AeTabTestCase {
         InputFieldGroup group = getFieldGroup("courseAgent0");
         Map<Object, Object> actualOptions = getActualSelectFieldOptions(group.getFields(), "aeReport.treatmentInformation.courseAgents[0].studyAgent");
         assertEquals("Wrong number of options: " + actualOptions, 3, actualOptions.size());
-        assertEquals("Missing option for sa 0", "Agent 1", actualOptions.get(166));
-        assertEquals("Missing option for sa 1", "Agent 2", actualOptions.get(267));
+        assertEquals("Missing option for sa 0", "Agent 1", actualOptions.get("166"));
+        assertEquals("Missing option for sa 1", "Agent 2", actualOptions.get("267"));
     }
 
     public void testRadiationFieldProperties() throws Exception {
