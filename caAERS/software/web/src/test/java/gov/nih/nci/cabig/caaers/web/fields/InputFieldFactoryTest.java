@@ -104,7 +104,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade.getName());
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode().toString()), grade.getName());
         }
     }
 
@@ -120,7 +120,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode().toString()), grade
                     .getName());
         }
     }
@@ -132,7 +132,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
         List<Object> actualKeys = new LinkedList<Object>(actual.keySet());
         assertEquals("Wrong number of options", items.size(), actualKeys.size());
         for (int i = 0; i < items.size(); i++) {
-            assertEquals("Wrong key at " + i, items.get(i).getCode(), actualKeys.get(i));
+            assertEquals("Wrong key at " + i, items.get(i).getCode().toString(), actualKeys.get(i));
         }
     }
 
@@ -153,7 +153,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode().toString()), grade
                     .toString());
         }
     }
