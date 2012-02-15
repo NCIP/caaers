@@ -67,17 +67,22 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
 
     public void testBindAssignment() throws Exception {
         StudyParticipantAssignment expectedAssignment = Fixtures.setId(3, new StudyParticipantAssignment());
+
         Participant p = new Participant();
         Study s = new LocalStudy();
+        expectedAssignment.setParticipant(p);
+        expectedAssignment.setStudySite(Fixtures.createStudySite(Fixtures.createOrganization("test"), 1));
+        expectedAssignment.getStudySite().setStudy(s);
         String expectedGridId = "a-grid-id";
 
         request.setParameter("studySubjectGridId", expectedGridId);
-        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
+//        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
         
-        mockCommand.setAssignment(expectedAssignment);
         mockCommand.setAssignment(expectedAssignment);
         mockCommand.setParticipant(p);
         mockCommand.setStudy(s);
+//        mockCommand.setParticipant(p);
+//        mockCommand.setStudy(s);
         mockCommand.updateSubmittability();
         mockCommand.updateSubmittabilityBasedOnReportStatus();
         mockCommand.updateSubmittabilityBasedOnWorkflow();
