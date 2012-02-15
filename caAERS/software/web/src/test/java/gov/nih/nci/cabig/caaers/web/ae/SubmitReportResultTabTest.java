@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -48,7 +49,8 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	protected void setUp() throws Exception {
 		super.setUp();
 		tab = new SubmitReportResultTab();
-		aeReport = registerMockFor(ExpeditedAdverseEventReport.class);
+		aeReport = Fixtures.createSavableExpeditedReport();
+        aeReport.setReportingPeriod(Fixtures.createReportingPeriod());
 		expeditedAeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitonDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
@@ -73,9 +75,9 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	}
 	
 	public void testReferenceData() throws Exception{
+        setupCommand();
 		Report report = Fixtures.createReport("10 day report");
 		report.setId(1);
-		expect(reportDao.getById(1)).andReturn(report);
 		replayMocks();
 		Map<String, Object> refdata = tab.referenceData(request, command);
 		verifyMocks();
