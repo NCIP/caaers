@@ -68,11 +68,10 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 		facade.setAeReportDao(aeReportDao);
         facade.setReportDao(reportDao);
         expect(reportDao.getById(1)).andReturn(report).anyTimes();
-		expect(aeReportDao.getById(1)).andReturn(aeReport);
 		expect(webContext.getCurrentPage()).andReturn("/pages/ae/submitReport");
-        expect(webContext.forwardToString("/pages/ae/submitReport?aeReport=1&subview=reportSubmissionStatus")).andReturn("The HTML");
+        expect(webContext.forwardToString("/pages/ae/submitReport?reportId=1&aeReport=1&subview=reportSubmissionStatus")).andReturn("The HTML");
         replayMocks();
-        AjaxOutput output = facade.fetchReportSubmissionStatus("1", "0");
+        AjaxOutput output = facade.fetchReportSubmissionStatus("1", "1");
         verifyMocks();
         assertEquals("Incorrect object set in ajaxOutput when the ReportStatus was COMPLETE", "COMPLETED", output.getObjectContent());
 	}
