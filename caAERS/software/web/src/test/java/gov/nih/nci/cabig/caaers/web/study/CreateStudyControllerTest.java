@@ -155,7 +155,7 @@ public class CreateStudyControllerTest extends WebTestCase {
         request.setAttribute("_target0", "1");
         request.setMethod("POST");
 
-        expect(studyRepository.merge(command.getStudy())).andReturn(newStudy);
+        studyRepository.save(command.getStudy());
         webControllerValidator.validate(EasyMock.eq(request), EasyMock.eq(command), (BindException) EasyMock.anyObject());
         EasyMock.expectLastCall().anyTimes();
         expect(studyDao.initialize(newStudy)).andReturn(newStudy);
