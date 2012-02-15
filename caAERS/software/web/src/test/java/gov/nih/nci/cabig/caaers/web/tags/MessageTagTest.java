@@ -5,6 +5,12 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import org.easymock.classextension.EasyMock;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.mock.web.MockPageContext;
+import org.springframework.mock.web.MockServletContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.jsp.PageContext;
+
 /**
  * 
  * @author Biju Joseph
@@ -17,14 +23,18 @@ public class MessageTagTest extends AbstractTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		messageSource = registerMockFor(MessageSource.class);
-		
+        ServletContext sc = new MockServletContext();
+        PageContext pg = new MockPageContext(sc);
+
 		tag = new MessageTag(){
+
 			@Override
 			protected MessageSource getMessageSource() {
 				return  messageSource;
 			}
 			
 		};
+        tag.setPageContext(pg);
 		
 	}
 

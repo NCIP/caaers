@@ -168,10 +168,9 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 
 		command.deleteSiteInvestigatorAtIndex(0, 1);
 		
-		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().size());
+		assertEquals(1, command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().size());
 		assertFalse(command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(0).isRetired());
-		assertTrue(command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(1).isRetired());
-		
+
 		assertEquals(1, command.getStudy().getStudySites().get(0).getActiveStudyInvestigators().size());
 	}
 	
@@ -199,10 +198,9 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 		command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().get(1).setId(2);
 		
 		command.deleteStudyPersonAtIndex(0, 1);
-		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().size());
+		assertEquals(1, command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().size());
 		assertFalse(command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().get(0).isRetired());
-		assertTrue(command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().get(1).isRetired());
-		
+
 		assertEquals(1, command.getStudy().getStudySites().get(0).getActiveStudyPersonnel().size());
 	}
 	
@@ -242,6 +240,7 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
     public void testSave(){
 
         Study s = Fixtures.createStudy("test");
+        command.setStudy(s);
 
         studyRepository.save(command.getStudy());
         EasyMock.expect(studyDao.initialize(s)).andReturn(s);
@@ -253,8 +252,6 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
         command.save();
 
         assertSame(s, command.getStudy());
-        assertTrue(command.getStudy().getAdeersPDFType());
-        assertFalse(command.getStudy().getCaaersXMLType());
 
         verifyMocks();
 
@@ -265,20 +262,16 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
     public void testSave_EditingStudy(){
 
         Study s = Fixtures.createStudy("test");
-
-        command.getStudy().setId(5);
+        s.setId(5);
+        command.setStudy(s);
         studyRepository.save(command.getStudy());
         EasyMock.expect(studyDao.initialize(s)).andReturn(s);
         replayMocks();
 
-        command.getStudy().setAdeersPDFType(true);
-        command.getStudy().setCaaersXMLType(false);
 
         command.save();
 
         assertSame(s, command.getStudy());
-        assertTrue(command.getStudy().getAdeersPDFType());
-        assertFalse(command.getStudy().getCaaersXMLType());
 
         verifyMocks();
 

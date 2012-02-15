@@ -132,7 +132,6 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     	assertEquals("Inprogress", command.getDataEntryStatus());
 
         studyRepository.save(command.getStudy());
-		EasyMock.expect(studyDao.initialize(command.getStudy())).andReturn(command.getStudy());
 		replayMocks();
     	assertEquals("Complete", facade.openStudy());
     	verifyMocks();
