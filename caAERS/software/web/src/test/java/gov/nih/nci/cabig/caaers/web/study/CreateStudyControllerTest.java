@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -16,6 +17,7 @@ import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.ctms.web.tabs.StaticTabConfigurer;
 import org.easymock.classextension.EasyMock;
+import org.springframework.context.MessageSource;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +30,7 @@ import java.util.*;
  */
 @CaaersUseCases({CREATE_STUDY})
 public class CreateStudyControllerTest extends WebTestCase {
+    MessageSource messageSource;
 
     private CreateStudyController controller;
     private StudyCommand command;
@@ -55,6 +58,7 @@ public class CreateStudyControllerTest extends WebTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        SecurityTestUtils.switchToSuperuser();
         studyDao = registerDaoMockFor(StudyDao.class);
         investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
         configuration = registerMockFor(Configuration.class);
@@ -73,6 +77,8 @@ public class CreateStudyControllerTest extends WebTestCase {
         configProperty = registerMockFor(ConfigProperty.class);
         map = registerMockFor(Map.class);
         webControllerValidator = registerMockFor(WebControllerValidator.class);
+        messageSource = registerMockFor(MessageSource.class);
+        
 
         //create the command
         command = new StudyCommand(studyDao, investigationalNewDrugDao);
@@ -102,6 +108,7 @@ public class CreateStudyControllerTest extends WebTestCase {
         controller.setDeviceDao(deviceDao);
         controller.setInvestigationalNewDrugDao(investigationalNewDrugDao);
         controller.setWebControllerValidator(webControllerValidator);
+        controller.setMessageSource(messageSource);
 
         StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(ctcDao, organizationDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao, meddraVersionDao);
         tabConfigurer.addBean("configurationProperty", configProperty);
@@ -110,6 +117,10 @@ public class CreateStudyControllerTest extends WebTestCase {
 
         expect(configProperty.getMap()).andReturn(map).anyTimes();
         expect(map.get(EasyMock.anyObject())).andReturn(new ArrayList<Lov>()).anyTimes();
+        expect(messageSource.getMessage((String)EasyMock.anyObject(),
+                    (Object[])EasyMock.anyObject(),
+                    (String)EasyMock.anyObject(),
+                    (Locale)EasyMock.anyObject() )).andReturn("Hello").anyTimes();
     }
 
     /*
@@ -146,6 +157,7 @@ public class CreateStudyControllerTest extends WebTestCase {
      */
     public void testSaveInCreateFlow() throws Exception {
         Study newStudy = new LocalStudy();
+        command.setStudy(newStudy);
         newStudy.addStudyOrganization(Fixtures.createStudyCoordinatingCenter(null));
 
         assertNull(session.getAttribute("gov.nih.nci.cabig.caaers.web.study.CreateStudyController.FORM.command"));
