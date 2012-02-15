@@ -76,7 +76,11 @@ public class CreateStudyControllerTest extends WebTestCase {
 
         //create the command
         command = new StudyCommand(studyDao, investigationalNewDrugDao);
+        Organization o = Fixtures.createOrganization("test");
         Study study = new LocalStudy();
+        study.addStudyOrganization(Fixtures.createStudyCoordinatingCenter(o));
+        study.addStudyOrganization(Fixtures.createStudyFundingSponsor(o));
+        study.addStudyOrganization(Fixtures.createStudySite(o,1));
         study.setDataEntryStatus(false);
         command.setStudy(study);
         command.setStudyRepository(studyRepository);
@@ -158,7 +162,6 @@ public class CreateStudyControllerTest extends WebTestCase {
         studyRepository.save(command.getStudy());
         webControllerValidator.validate(EasyMock.eq(request), EasyMock.eq(command), (BindException) EasyMock.anyObject());
         EasyMock.expectLastCall().anyTimes();
-        expect(studyDao.initialize(newStudy)).andReturn(newStudy);
 
         replayMocks();
 
