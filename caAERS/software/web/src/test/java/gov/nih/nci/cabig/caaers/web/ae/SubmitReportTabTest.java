@@ -1,73 +1,75 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import org.easymock.classextension.EasyMock;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 /**
  * 
  * @author Biju Joseph
  * 
  */
-public class SubmitReportTabTest extends SubmitFlowTabTestCase {
-
+public class SubmitReportTabTest extends WebTestCase {
+    protected SubmitExpeditedAdverseEventCommand command;
+    protected Errors errors;
+    protected ExpeditedAdverseEventReport aeReport;
 	ReportSubmissionService reportSubmissionService;
 	Report report;
-    ExpeditedAdverseEventReport aeReport;
-	ReportDelivery delivery;
-	SubmitReportTab tab;
-    ReportDao reportDao;
     ReportRepository reportRepository;
-    Map<String, String> summary = new HashMap<String,String>();
+    ReportDao reportDao;
+	SubmitReportTab tab;
 
 	protected void setUp() throws Exception {
-		super.setUp();
-        reportSubmissionService = registerMockFor(ReportSubmissionService.class);
+        super.setUp();
+        report = Fixtures.createReport("test");
+        aeReport = Fixtures.createSavableExpeditedReport();
+        aeReport.setReportingPeriod(Fixtures.createReportingPeriod());
+        aeReport.addReport(report);
+        reportDao = registerDaoMockFor(ReportDao.class);
         reportRepository = registerMockFor(ReportRepository.class);
-        aeReport = registerMockFor(ExpeditedAdverseEventReport.class);
-        reportDao = registerDaoMockFor(ReportDao.class);
-        reportDao = registerDaoMockFor(ReportDao.class);
+
+        command = createCommand();
+
+        errors = new BindException(command, "command");
+        reportSubmissionService = registerMockFor(ReportSubmissionService.class);
         errors = new BindException(command, "command");
         tab = createTab();
+
 	}
 
 	public void testReferenceDataHttpServletRequestExpeditedAdverseEventInputCommand() {
-		report = Fixtures.createReport("test");
-        report.setAeReport(aeReport);
 
 		report.setId(new Integer(1));
-		delivery = new ReportDelivery();
 		command.setReportId("1");
-		
-		EasyMock.expect(reportRepository.findReportDeliveries(report)).andReturn(Arrays.asList(delivery));
-		EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(new TreatmentInformation());
-		EasyMock.expect(aeReport.getSummary(true)).andReturn(summary).anyTimes();
-		EasyMock.expect(aeReport.getReporter()).andReturn(new Reporter());
-		EasyMock.expect(aeReport.getPhysician()).andReturn(new Physician());
-		
+        EasyMock.expect(reportRepository.findReportDeliveries(report)).andReturn(new ArrayList<ReportDelivery>()).anyTimes();
 		replayMocks();
-		assertTrue(command.getReportDeliveries().isEmpty());
-		
 		command.setAeReport(aeReport);
-		
 		tab.referenceData(request, command);
-		assertEquals(1,command.getReportDeliveries().size());
+		assertEquals(0,command.getReportDeliveries().size());
 		verifyMocks();
 		
 	}
@@ -80,9 +82,9 @@ public class SubmitReportTabTest extends SubmitFlowTabTestCase {
 		verifyMocks();
 	}
 
-	@Override
 	public SubmitExpeditedAdverseEventCommand createCommand() {
-		SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(report, true, reportDao, reportRepository);
+        SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(report, true, reportDao, reportRepository);
+        
 		return command;
 	}
 
