@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.message.MessageImpl;
 import org.easymock.classextension.EasyMock;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -16,10 +17,17 @@ public class AuditInfoPopulatorWSInterceptorTest extends AbstractTestCase {
     AuditInfoPopulatorWSInterceptor interceptor;
 
     public void  setUp(){
+        SecurityTestUtils.switchToSuperuser();
        m = registerMockFor(Message.class);
+        request = new MockHttpServletRequest("GET", "hello/audit");
         request.setRemoteAddr("11.11.11.11");
         request.setServletPath("hello/audit");
-        EasyMock.expect(m.get(EasyMock.anyObject())).andReturn(request).anyTimes();
+        m = new MessageImpl(){
+            @Override
+            public Object get(Object key) {
+                return request;
+            }
+        };
         interceptor = new AuditInfoPopulatorWSInterceptor();
     }
 
@@ -35,6 +43,7 @@ public class AuditInfoPopulatorWSInterceptorTest extends AbstractTestCase {
     }
 
     public void testHandleMessageNoLogin() throws Exception {
+
         interceptor.handleMessage(m);
         DataAuditInfo i = (DataAuditInfo)DataAuditInfo.getLocal();
         assertEquals("SYSTEM", i.getUsername());
