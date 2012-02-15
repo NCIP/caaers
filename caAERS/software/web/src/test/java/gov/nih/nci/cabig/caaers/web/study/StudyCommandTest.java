@@ -243,7 +243,6 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
         command.setStudy(s);
 
         studyRepository.save(command.getStudy());
-        EasyMock.expect(studyDao.initialize(s)).andReturn(s);
         replayMocks();
 
         command.getStudy().setAdeersPDFType(true);
@@ -265,7 +264,6 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
         s.setId(5);
         command.setStudy(s);
         studyRepository.save(command.getStudy());
-        EasyMock.expect(studyDao.initialize(s)).andReturn(s);
         replayMocks();
 
 

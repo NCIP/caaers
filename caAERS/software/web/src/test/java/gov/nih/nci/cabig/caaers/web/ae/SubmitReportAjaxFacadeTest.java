@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -37,6 +38,7 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 	private ReportRepository reportRepository;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     private Report report;
+    private ReportDao reportDao;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -50,7 +52,7 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 		reportRepository = registerMockFor(ReportRepository.class);
         studyDao = registerDaoMockFor(StudyDao.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
-	
+	    reportDao = registerDaoMockFor(ReportDao.class);
 		facade = new SubmitReportAjaxFacade();
 	}
 	
@@ -64,6 +66,8 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 		SubmitReportAjaxFacade facadeMock = registerMockFor(SubmitReportAjaxFacade.class);
 		expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();
 		facade.setAeReportDao(aeReportDao);
+        facade.setReportDao(reportDao);
+        expect(reportDao.getById(1)).andReturn(report).anyTimes();
 		expect(aeReportDao.getById(1)).andReturn(aeReport);
 		expect(webContext.getCurrentPage()).andReturn("/pages/ae/submitReport");
         expect(webContext.forwardToString("/pages/ae/submitReport?aeReport=1&subview=reportSubmissionStatus")).andReturn("The HTML");
