@@ -71,7 +71,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         Study s = new LocalStudy();
         String expectedGridId = "a-grid-id";
 
-        request.setParameter("assignment", expectedGridId);
+        request.setParameter("studySubjectGridId", expectedGridId);
         expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
         
         mockCommand.setAssignment(expectedAssignment);
