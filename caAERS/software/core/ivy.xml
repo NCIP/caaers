@@ -120,7 +120,8 @@
             <dependency org="c3p0" name="c3p0" rev="0.8.5.2" />   <!-- c3po, by CSM -->
 
             <!-- Databases -->
-            <dependency org="postgresql" name="postgresql" rev="8.4-702.jdbc4" conf="build,dist,distGrid->default" />
+            <dependency org="postgresql" name="postgresql" rev="9.0-801.jdbc4"  conf="build,dist,distGrid->default"/>
+
             <dependency org="oracle" name="ojdbc14" rev="10.2.0.2"  />
 
             <!-- Migration -->
