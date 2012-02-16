@@ -25,7 +25,6 @@
             <ivy pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/ivy-[revision].xml" />
             <artifact pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]" />
         </url>
-rama
         <!-- NCI IVY repository -->
         <url name="nci-ivy-repo" >
           <ivy pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml" />
