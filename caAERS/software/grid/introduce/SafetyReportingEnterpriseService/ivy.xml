@@ -35,7 +35,7 @@
         <dependencies>
 
             <!--
-               Will pull from https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/globus/mds/4.0.3/
+               Will pull from https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/globus/mds/4.0.3/
                     globus_wsrf_mds_aggregator.jar
                     globus_wsrf_mds_aggregator_stubs.jar
                     globus_wsrf_servicegroup.jar

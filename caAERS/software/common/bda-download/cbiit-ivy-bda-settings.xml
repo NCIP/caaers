@@ -33,8 +33,8 @@ This file is the is the settings file used by IVY.  It is a good starting point 
 			</filesystem>           
 			<url name="cbiit-ivy-repo">
 				<!-- remote enterprise repository -->
-				<artifact pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-				<ivy pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml" />
+				<artifact pattern="https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+				<ivy pattern="https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml" />
 			</url>  
 			<!--<ibiblio name="cbiit-maven-mirror" m2compatible="true" root="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk" changingPattern=".*SNAPSHOT" />-->
 			<url name="cbiit-maven-mirror" m2compatible="true">
