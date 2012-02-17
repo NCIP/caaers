@@ -92,6 +92,7 @@
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j"     />
                 <exclude org="javax.servlet"     />
+                <exclude org="org.hibernate" />
             </dependency>
 
             <!-- CAS/WebSSO -->

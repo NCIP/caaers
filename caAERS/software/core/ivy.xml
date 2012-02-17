@@ -85,12 +85,14 @@
                         rev="${ctms.version}" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j"     />
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
+                <exclude org="org.hibernate" />
             </dependency>
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}"
                         conf="build,dist,distGrid->default" >
                 <exclude org="org.slf4j"     />
                 <exclude org="javax.servlet" />
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
+                <exclude org="org.hibernate" />
             </dependency>
 
             <!--Home grown infrastructure jar for COPPA  -->
