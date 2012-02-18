@@ -29,7 +29,7 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 
 	<property name="ivy.src.url" value="https://ncisvn.nci.nih.gov/svn/deprecated-ivy-repo/apache/ivy/2.0.0-beta2/${ivy.file}" />
 	<property name="ivy-core.src.url" value="https://ncisvn.nci.nih.gov/svn/deprecated-ivy-repo/apache/ivy-core/2.0.0-beta2/${ivy-core.file}" />
-	<property name="ivy-bda.src.url.base" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download" />
+	<property name="ivy-bda.src.url.base" value="https://ncisvn.nci.nih.gov/svn/automation/trunk/software/bda-download" />
 
 	<property name="ivy.dest.file" value="${lib.dir}/${ivy.file}" />
 	<property name="ivy-core.dest.file" value="${lib.dir}/${ivy-core.file}" />
