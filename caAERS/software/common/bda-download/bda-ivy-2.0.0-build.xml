@@ -23,11 +23,11 @@ This ant build file downloads the bda project from the official NCICB Ivy Reposi
 	<property name="bda.local.repo.dir" location="${software.dir}/../../bda-local-ivy-repo" />
 	<property name="bda.version" value="0.9.0" />
 
-	<property name="ivy.jar.file" value="ivy-2.0.0.jar" />
+	<property name="ivy.jar.file" value="ivy-2.2.0.jar" />
 	<property name="ivy.settings.file" value="ivy-bda-settings.xml" />
 	<property name="ivy.bda.file" value="ivy-bda-2.0.0.xml" />
 
-	<property name="ivy.src.url" value="https://ncisvn.nci.nih.gov/svn/maven-mirror/trunk/org/apache/ivy/ivy/2.0.0/${ivy.jar.file}" />
+	<property name="ivy.src.url" value="http://repo1.maven.org/maven2/org/apache/ivy/ivy/2.2.0/${ivy.jar.file}" />
 	<property name="ivy-bda.src.url.base" value="http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-download" />
 
 	<property name="ivy.dest.file" value="${lib.dir}/${ivy.jar.file}" />
