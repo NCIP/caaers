@@ -2,21 +2,15 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+
+import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
@@ -39,6 +33,8 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	private ReportDefinitionDao reportDefinitionDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
 	private StudyDao studyDao;
+    private CtcTermDao ctcTermDao;
+    LowLevelTermDao lowLevelTermDao;
     private StudyParticipantAssignment assignment;
 	private EvaluationService evaluationService;
 	private StudySite  studySite;
@@ -55,6 +51,8 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
 		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+        ctcTermDao = registerDaoMockFor(CtcTermDao.class);
+        lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
 		
 		assignment = registerMockFor(StudyParticipantAssignment.class);
         evaluationService = registerMockFor(EvaluationService.class);
@@ -62,6 +60,11 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         study  = registerMockFor(Study.class);
         
 		facade = new CaptureAdverseEventAjaxFacade();
+        facade.setCtcTermDao(ctcTermDao);
+        facade.setLowLevelTermDao(lowLevelTermDao);
+        facade.setStudyDao(studyDao);
+        facade.setReportingPeriodDao(adverseEventReportingPeriodDao);
+
 		
 	}
 	
@@ -75,7 +78,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	 * 
 	 */
 	public void testDeleteAdverseEvent(){
-		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
 		facade.setReportingPeriodDao(adverseEventReportingPeriodDao);
 		
 		assertFalse(command.getAdverseEventReportingPeriod().getAdverseEvents().get(1).isRetired());
@@ -97,18 +100,17 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		assertEquals(CaptureAdverseEventController.class , controllers[0]);
 	}
 	
-	private CaptureAdverseEventInputCommand setupCaptureAdverseEventCommand() {
-		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao , studyDao, aeReportDao);
-		command.setStudy(new LocalStudy());
-		AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+	private CaptureAdverseEventInputCommand setupCaptureAdverseEventCommand(Term term) {
+		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,
+                assignmentDao, evaluationService, reportDefinitionDao , studyDao, aeReportDao);
+	
+		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod(1,
+                DateUtils.formatDate(DateUtils.yesterday()),
+                DateUtils.formatDate(DateUtils.today()));
 		reportingPeriod.setId(1);
-		StudyParticipantAssignment assignment = new StudyParticipantAssignment();
-		assignment.setStudySite(new StudySite());
-		assignment.getStudySite().setStudy(command.getStudy());
-		
-		reportingPeriod.setAssignment(assignment);
-		//expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
-		//expect(studySite.getStudy()).andReturn(study).anyTimes();
+        reportingPeriod.getStudy().setId(-1);
+        reportingPeriod.getStudy().setAeTerminology(Fixtures.createAeTerminology(term));
+
 		AdverseEvent ae0 = new AdverseEvent();
 		Fixtures.createAdverseEventCtcTerm(ae0, Fixtures.createCtcTerm("a0", "c0"));
 		reportingPeriod.addAdverseEvent(setId(0, ae0));
@@ -143,7 +145,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	public void testAddReviewComment() throws Exception{
-        CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+        CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
         SecurityContext context = registerMockFor(SecurityContext.class);
         Authentication auth =  registerMockFor(Authentication.class);
         User user = registerMockFor(User.class);
@@ -172,7 +174,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	 * @throws Exception
 	 */
 	public void testValidateAndAdvanceWorkflowWithErrors() throws Exception{
-		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator(){
 			public void validate(Object obj, Errors e) {
 				AdverseEventReportingPeriod adverseEventReportingPeriod = (AdverseEventReportingPeriod) obj;
@@ -196,7 +198,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	 * @throws Exception
 	 */
 	public void testValidateAndAdvanceWorkflowWithNoErros() throws Exception{
-		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator(){
 			public void validate(Object obj, Errors e) {
 			}
@@ -209,7 +211,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	public void testEditReviewComment() throws Exception{
-		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
         SecurityContext context = registerMockFor(SecurityContext.class);
         Authentication auth =  registerMockFor(Authentication.class);
         User user = registerMockFor(User.class);
@@ -232,7 +234,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	public void testDeleteReviewComment() throws Exception{
-		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
 		SecurityContext context = registerMockFor(SecurityContext.class);
 		Authentication auth =  registerMockFor(Authentication.class);
         User user = registerMockFor(User.class);
@@ -252,4 +254,49 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         facade.deleteReviewComment(1, command.getAdverseEventReportingPeriod().getId().toString());
         verifyMocks();
 	}
+
+    public void testAddObservedAE_SingleTermCTC() throws Exception{
+        CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.CTC);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().clear(); 
+        assertEquals(0, command.getAdverseEventReportingPeriod().getAdverseEvents().size());
+        request.setServletPath("abcd");
+        session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
+
+        expect(ctcTermDao.getById(1)).andReturn(Fixtures.createCtcTerm("a", "b"));
+        expect(studyDao.getById(-1)).andReturn(command.getAdverseEventReportingPeriod().getStudy());
+
+        expect(webContext.getCurrentPage()).andReturn("abcd");
+        expect(webContext.forwardToString("abcd?index=0&aeReport=0&subview=observedAdverseEventSection")).andReturn("abcdefg");
+
+        adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod()) ;
+
+        
+        replayMocks();
+        facade.addObservedAE(new int[]{1});
+        verifyMocks();
+        assertEquals(1, command.getAdverseEventReportingPeriod().getAdverseEvents().size());
+    }
+
+
+    public void testAddObservedAE_SingleTermMeddra() throws Exception {
+        CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand(Term.MEDDRA);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().clear();
+        assertEquals(0, command.getAdverseEventReportingPeriod().getAdverseEvents().size());
+        request.setServletPath("abcd");
+        session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
+
+        expect(lowLevelTermDao.getById(1)).andReturn(Fixtures.createLowLevelTerm("a", "b"));
+        expect(studyDao.getById(-1)).andReturn(command.getAdverseEventReportingPeriod().getStudy());
+
+        expect(webContext.getCurrentPage()).andReturn("abcd");
+        expect(webContext.forwardToString("abcd?index=0&aeReport=0&subview=observedAdverseEventSection")).andReturn("abcdefg");
+
+        adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod()) ;
+
+
+        replayMocks();
+        facade.addObservedAE(new int[]{1});
+        verifyMocks();
+        assertEquals(1, command.getAdverseEventReportingPeriod().getAdverseEvents().size());
+    }
 }

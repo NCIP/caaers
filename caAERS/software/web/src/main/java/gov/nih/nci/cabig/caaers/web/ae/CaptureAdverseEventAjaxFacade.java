@@ -65,6 +65,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	AjaxOutput ajaxOutput = new AjaxOutput();
     	
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+
         int index = command.getAdverseEvents().size();
         
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
@@ -77,6 +78,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         if(filteredTermIDs.isEmpty()) return ajaxOutput;
         
         boolean isMeddra = command.getAdverseEventReportingPeriod().getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+        Study study = studyDao.getById(command.getAdverseEventReportingPeriod().getStudy().getId());
         for (int id : filteredTermIDs) {
             AdverseEvent ae = new AdverseEvent();
             ae.setSolicited(false);
@@ -96,7 +98,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
                 aeCtc.setCtcTerm(ctc);
                 ae.setAdverseEventCtcTerm(aeCtc);
                 aeCtc.setAdverseEvent(ae);
-                if (command.getAdverseEventReportingPeriod().getStudy().isExpectedAdverseEventTerm(ctc)) {
+                if (study.isExpectedAdverseEventTerm(ctc)) {
                     if (!ctc.isOtherRequired())
                         ae.setExpected(new Boolean(Boolean.TRUE));
                 }

@@ -298,6 +298,14 @@ public class Fixtures {
     	cTerm.setContextualGrades(new ArrayList<CtcGrade>());
     	return cTerm;
     }
+    
+    public static LowLevelTerm createLowLevelTerm(String code, String name){
+        LowLevelTerm llt = new LowLevelTerm();
+        llt.setId(-1);
+        llt.setMeddraCode(code);
+        llt.setMeddraTerm(name);
+        return  llt;
+    }
 
     public static Ctc createCtcaeV3() {
         Ctc v3 = setId(3, new Ctc());
@@ -307,6 +315,13 @@ public class Fixtures {
         v3.getCategories().add(createCtcCategory(v3, "AUDITORY/EAR"));
         v3.getCategories().add(createCtcCategory(v3, "BLOOD/BONE MARROW"));
         return v3;
+    }
+    
+    public static MeddraVersion createMeddraV9(){
+        MeddraVersion mv = new MeddraVersion();
+        mv.setName("MeDDRA v9");
+        mv.setId(-1);
+        return mv;
     }
 
     private static CtcCategory createCtcCategory(final Ctc ctc, final String name) {
@@ -789,5 +804,18 @@ public class Fixtures {
 
   public static PreExistingCondition createPreExistingCondtion(String name){
       return new PreExistingCondition(name);
+  }
+    
+    
+  public static AeTerminology createAeTerminology(Term t){
+      AeTerminology aet  = new AeTerminology();
+      aet.setTerm(t);
+      if(t == Term.CTC) {
+        aet.setCtcVersion( Fixtures.createCtcaeV3());     
+      }else {
+          aet.setMeddraVersion(Fixtures.createMeddraV9());
+      }
+      aet.setId(-32);
+      return aet;
   }
 }
