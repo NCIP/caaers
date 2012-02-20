@@ -48,6 +48,9 @@ public class StudyAgent extends StudyIntervention {
     
     /** The part of lead ind. */
     private Boolean partOfLeadIND;
+    
+    /** The treatment assignment agents */
+    private List<TreatmentAssignmentAgent> treatmentAssignmentAgents;
 
     /*
      * Constructor -- Initializes participation at create time
@@ -310,5 +313,26 @@ public class StudyAgent extends StudyIntervention {
     public  String getInterventionName() {
     	return getAgentName();
     }
+    
+    /*
+     * Determined whether this has IND of CTEP and is Lead
+     * 
+     */
+    @Transient
+     public boolean isCTEPLead() {
+         return (!isRetired() && getIndType() != null && getIndType().equals(INDType.CTEP_IND) && getPartOfLeadIND()); 
+     }
+
+    @OneToMany(mappedBy = "studyAgentInternal", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+	public List<TreatmentAssignmentAgent> getTreatmentAssignmentAgents() {
+		return treatmentAssignmentAgents;
+	}
+
+	public void setTreatmentAssignmentAgents(
+			List<TreatmentAssignmentAgent> treatmentAssignmentAgents) {
+		this.treatmentAssignmentAgents = treatmentAssignmentAgents;
+	}
 
 }

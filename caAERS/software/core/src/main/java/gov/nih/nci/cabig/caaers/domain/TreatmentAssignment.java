@@ -167,6 +167,7 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
     }
 
     @OneToMany(mappedBy = "treatmentAssignment", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OrderBy
     @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<TreatmentAssignmentStudyIntervention> getTreatmentAssignmentStudyInterventions() {
@@ -221,6 +222,11 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
             if (tasi.getStudyIntervention().equals(i)) return tasi;
         }
         return null;
+    }
+    
+    @Transient
+    public boolean isHavingInterventions(){
+    	return getTreatmentAssignmentStudyInterventions().size() > 0;
     }
 
     /* (non-Javadoc)

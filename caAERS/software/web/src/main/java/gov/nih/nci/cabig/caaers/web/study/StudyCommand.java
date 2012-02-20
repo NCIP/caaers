@@ -102,9 +102,9 @@ public class StudyCommand {
     private boolean mustFireEvent;
 
     // TAC related Interventions
-    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentAgentsHelpers;
-    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentDevicesHelpers;
-    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentOthersHelpers;
+    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentAgentsHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
+    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentDevicesHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
+    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentOthersHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
 
     public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
@@ -523,6 +523,38 @@ public class StudyCommand {
 //    	Study loaded = studyDao.getStudyDesignById(oldStudyId.intValue());
         Study loaded = studyDao.getById(oldStudyId);
     	setStudy(loaded);
+    	
+    	//reload the TreatmentAssignmentInterventionHelpers
+    	List<TreatmentAssignmentInterventionHelper> all = new ArrayList<TreatmentAssignmentInterventionHelper>();
+    	all.addAll(treatmentAssignmentAgentsHelpers);
+    	all.addAll(treatmentAssignmentDevicesHelpers);
+    	all.addAll(treatmentAssignmentOthersHelpers);
+    	for(TreatmentAssignmentInterventionHelper taih : all){
+    		taih.setTreatmentAssignment(getTreatmentAssignmentFromStudy(study, taih.getTreatmentAssignment()));
+    		taih.setStudyIntervention(getStudyInterventionFromStudy(study, taih.getStudyIntervention()));
+    	}
+    }
+    
+    private TreatmentAssignment getTreatmentAssignmentFromStudy(Study study, TreatmentAssignment treatmentAssignment){
+    	for(TreatmentAssignment ta : study.getTreatmentAssignments()){
+    		if(ta.getId().equals(treatmentAssignment.getId())) return ta;
+    	}
+    	return null;
+    }
+    
+    private StudyIntervention getStudyInterventionFromStudy(Study study, StudyIntervention studyIntervention){
+    	List<? extends StudyIntervention> studyInterventions = null;
+    	if (studyIntervention instanceof StudyAgent) {
+    		studyInterventions = study.getStudyAgents();
+		}else if (studyIntervention instanceof StudyDevice) {
+    		studyInterventions = study.getStudyDevices();
+		}else{
+			studyInterventions = study.getOtherInterventions();
+		}
+    	for(StudyIntervention si : studyInterventions){
+    		if(si.getId().equals(studyIntervention.getId())) return si;
+    	}
+    	return null;
     }
     
     /**
@@ -604,36 +636,21 @@ public class StudyCommand {
         }
     }
 
-    /*
-    * Determined whether a StudyAgent has IND of CTEP and is Lead
-    * */
-    public boolean isCTEPLead(StudyAgent sa) {
-        return (sa.getIndType() != null && sa.getIndType().equals(INDType.CTEP_IND) && sa.getPartOfLeadIND()); 
-    }
-
     public void synchronizeStudyWithAgentAEList(AgentSpecificAdverseEventListService service, Study s, boolean deleted) {
 
-        boolean hasLeadCTEPInds = false;
-
-        for (StudyAgent sa : s.getStudyAgents()) {
-            if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
-            if (isCTEPLead(sa))
-                hasLeadCTEPInds = true;
-        }
-
-        if (hasLeadCTEPInds) {
+        if (s.hasLeadCTEPInds()) {
 
             // delete all not needed
             for (StudyAgent sa : s.getStudyAgents()) {
                 if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
-                if (!isCTEPLead(sa))
+                if (!sa.isCTEPLead())
                     service.synchronizeStudyWithAgent(s, sa.getAgent(), true);
             }
 
             // synchronzie the remaining agents
             for (StudyAgent sa : s.getStudyAgents()) {
                 if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
-                if (isCTEPLead(sa))
+                if (sa.isCTEPLead())
                     service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
             }
 
@@ -668,6 +685,11 @@ public class StudyCommand {
         treatmentAssignmentDevicesHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
         treatmentAssignmentOthersHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
 
+        //initialize agent specific terms
+        for(StudyAgent sa: getStudy().getActiveStudyAgents()){
+        	if(sa.getAgent()!=null) sa.getAgent().getAgentSpecificTerms().size();
+        }
+        
         buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveStudyAgents(), tas, treatmentAssignmentAgentsHelpers);
         buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveStudyDevices(), tas, treatmentAssignmentDevicesHelpers);
         buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveOtherInterventions(), tas, treatmentAssignmentOthersHelpers);

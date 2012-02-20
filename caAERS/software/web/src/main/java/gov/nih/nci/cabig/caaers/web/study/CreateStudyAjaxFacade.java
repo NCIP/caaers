@@ -737,6 +737,28 @@ public class CreateStudyAjaxFacade {
 
         return ajaxOutput;
     }
+    
+    /**
+     * Remove an expected term from the Study
+     * */
+    public AjaxOutput removeTATerm(int _ta_index, int _tas_index, int _tasae_index) {
+        StudyCommand command = (StudyCommand)extractCommand();
+        if(command.getStudy().getId() != null){
+            Study study = studyRepository.getById(command.getStudy().getId());
+            command.setStudy(study);
+        }
+        Study study = command.getStudy();
+
+        study.getTreatmentAssignments().get(_ta_index).getTreatmentAssignmentStudyInterventions().get(_tas_index).getAbstractStudyInterventionExpectedAEs().remove(_tasae_index);
+
+        AjaxOutput ajaxOutput = new AjaxOutput();
+        ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", study.getId(), new HashMap<String, String>()));
+        if(study.getId() != null){
+            command.save();
+        }
+
+        return ajaxOutput;
+    }
 
     /**
      * Add an expected AE to the Study

@@ -14,9 +14,22 @@ import javax.persistence.*;
 @DiscriminatorValue(value = "meddra")
 public class StudyInterventionExpectedMeddraLowLevelTerm extends AbstractStudyInterventionExpectedAE<LowLevelTerm> {
 
-    /* (non-Javadoc)
+    public StudyInterventionExpectedMeddraLowLevelTerm(
+			TreatmentAssignmentStudyIntervention treatmentAssignmentStudyIntervention,
+			AgentSpecificTerm agentSpecificTerm, boolean expected) {
+		super(treatmentAssignmentStudyIntervention, agentSpecificTerm, expected);
+		// TODO Auto-generated constructor stub
+	}
+
+	public StudyInterventionExpectedMeddraLowLevelTerm() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#getFullName()
      */
+	@Override
     @Transient
     public String getFullName() {
     	if(getTerm() == null) return "";
@@ -26,7 +39,7 @@ public class StudyInterventionExpectedMeddraLowLevelTerm extends AbstractStudyIn
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#getTerm()
      */
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "term_id")
     @Cascade(value = {CascadeType.LOCK})
     @Override
@@ -65,6 +78,7 @@ public class StudyInterventionExpectedMeddraLowLevelTerm extends AbstractStudyIn
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#isMedDRA()
      */
+    @Override
     @Transient
     public boolean isMedDRA() {
     	return true;

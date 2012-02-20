@@ -2422,4 +2422,22 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
             addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
         }
     }
+    
+    public boolean hasLeadCTEPInds(){
+        for (StudyAgent sa : getStudyAgents()) {
+            if (sa == null || sa.getAgent() == null) continue;
+            if (sa.isCTEPLead())
+                return true;
+        }
+        return false;
+    }
+    
+    @Transient
+    public boolean isHavingTreatmentLevelInterventions(){
+    	for(TreatmentAssignment ta: getTreatmentAssignments()){
+    		if(ta.isHavingInterventions())
+    			return true;
+    	}
+    	return false;
+    }
 }

@@ -17,6 +17,15 @@
                $('termsDiv').innerHTML = ajaxOutput.htmlContent;
            });
        }
+       
+       function removeTATerm(index1, index2, index3) {
+           if(!confirm( "Are you sure you want to delete this?" )) return false;
+
+           createStudy.removeTATerm(index1, index2, index3, function(ajaxOutput) {
+               $('expectedAEsForTA').innerHTML = ajaxOutput.htmlContent;
+           });
+       }
+
 
        Object.extend(RPCreatorClass.prototype, {
            initialize : function() {
@@ -98,6 +107,9 @@
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="singleFields">
         <study:expectedAEs />
+        <div id="expectedAEsForTA">
+        <study:expectedAEsForTA />
+        </div>
     </jsp:attribute>
 </tags:tabForm>
 

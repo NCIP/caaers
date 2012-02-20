@@ -1,16 +1,27 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * @author Ion C. Olaru
@@ -41,6 +52,7 @@ public class TreatmentAssignmentStudyIntervention extends AbstractMutableDomainO
     }
 
     @OneToMany(mappedBy = "treatmentAssignmentStudyIntervention", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OrderBy
     @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<AbstractStudyInterventionExpectedAE> getAbstractStudyInterventionExpectedAEs() {

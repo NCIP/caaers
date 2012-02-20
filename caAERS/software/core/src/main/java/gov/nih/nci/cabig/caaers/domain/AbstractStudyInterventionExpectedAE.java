@@ -2,12 +2,18 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-import org.hibernate.annotations.*;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author Ion C. Olaru
@@ -29,8 +35,21 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     private double grade3Frequency;
     private double grade4Frequency;
     private double grade5Frequency;
+    /** The expected. */
+    private boolean expected = true;
 
-    public double getExpectednessFrequency() {
+    public AbstractStudyInterventionExpectedAE(TreatmentAssignmentStudyIntervention treatmentAssignmentStudyIntervention, AgentSpecificTerm agentSpecificTerm, boolean expected){
+    	this.expected = expected;
+    	this.treatmentAssignmentStudyIntervention = treatmentAssignmentStudyIntervention;
+    	this.term = (T)agentSpecificTerm.getTerm();
+    }
+    
+	public AbstractStudyInterventionExpectedAE() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public double getExpectednessFrequency() {
         return expectednessFrequency;
     }
 
@@ -96,4 +115,28 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     public void setTerm(T term) {
         this.term = term;
     }
+
+	public boolean isExpected() {
+		return expected;
+	}
+
+	public void setExpected(boolean expected) {
+		this.expected = expected;
+	}
+	
+	/**
+     * Checks if is med dra.
+     *
+     * @return true, if is med dra
+     */
+    @Transient
+    public abstract boolean isMedDRA();
+    
+    /**
+     * Gets the full name.
+     *
+     * @return the full name
+     */
+    @Transient
+    public abstract String getFullName();
 }

@@ -1,17 +1,22 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import java.io.Serializable;
 
  
 /**
@@ -36,6 +41,9 @@ public class Agent extends AbstractIdentifiableDomainObject implements Serializa
 
     /** The display name. */
     private String displayName;
+    
+    /** The display name. */
+    private List<AgentSpecificTerm> agentSpecificTerms = new ArrayList<AgentSpecificTerm>();
 
     /**
      * Gets the description.
@@ -143,5 +151,17 @@ public class Agent extends AbstractIdentifiableDomainObject implements Serializa
         result = 29 * result + (nscNumber != null ? nscNumber.hashCode() : 0);
         return result;
     }
+
+    @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
+    @Cascade({ CascadeType.LOCK })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    //@Transient
+	public List<AgentSpecificTerm> getAgentSpecificTerms() {
+		return agentSpecificTerms;
+	}
+
+	public void setAgentSpecificTerms(List<AgentSpecificTerm> agentSpecificTerms) {
+		this.agentSpecificTerms = agentSpecificTerms;
+	}
 
 }
