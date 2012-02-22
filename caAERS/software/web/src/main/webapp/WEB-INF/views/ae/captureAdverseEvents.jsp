@@ -72,7 +72,7 @@
 
         deleteAdverseEvent:function(indx) {
 
-        	 if (!confirm("Are you sure you want to delete this?"))
+        	 if (!confirm("Are you sure you want to delete this?\n\n<caaers:message code="undoableDeleteAEOperation" />"))
                  return false;
              captureAE.deleteAdverseEvent(indx, '', function(ajaxOutput) {
                  $('ae-section-' + indx).remove();
