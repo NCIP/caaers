@@ -308,7 +308,14 @@ function refreshGrades(index) {
 
                         <%--<c:if test="${!command.study.verbatimFirst}">--%>
 						<p>
-                            <c:if test="${empty command.study.aeTerminology.meddraVersion}"><tags:instructions code="instruction_ae_oae"/></c:if>
+                            <c:if test="${empty command.study.aeTerminology.meddraVersion}">
+                                <c:if test="${!command.study.verbatimFirst}">
+                                    <tags:instructions code="instruction_ae_oae"/>
+                                </c:if>
+                                <c:if test="${command.study.verbatimFirst}">
+                                    <tags:instructions code="instruction_ae_oae_verbatimFirst"/>
+                                </c:if>
+                            </c:if>
                             <c:if test="${not empty command.study.aeTerminology.meddraVersion}"><tags:instructions code="instruction_ae_oae_meddra"/></c:if>
                             <div class="instructions row" style="position:relative; top:-20px;"><div class="label"></div><div class="value">${command.adverseEventReportingPeriod.epoch.descriptionText}</div></div>
 						</p>
