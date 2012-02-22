@@ -147,6 +147,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         if (command.getAssignment() != null) {
             StudySite site = studySiteDao.getById(command.getAssignment().getStudySite().getId());
             command.setStudy(site.getStudy());
+            command.refreshStudyDiseases();
         }
     }
 
