@@ -1,16 +1,18 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.easymock.classextension.EasyMock;
 /**
  * 
  * @author Biju Joseph
  *
  */
-public class StudyAgentTest extends TestCase {
+public class StudyAgentTest extends AbstractTestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -117,6 +119,97 @@ public class StudyAgentTest extends TestCase {
 		
 		HashSet<StudyAgent> set = new HashSet<StudyAgent>(agents);
 		assertEquals(4, set.size());
+		
+	}
+	
+	public void testIsCTEPLead(){
+		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.CTEP_IND);
+		sa.setPartOfLeadIND(true);
+		assertTrue(sa.isCTEPLead());
+		
+		sa.setRetiredIndicator(true);
+		sa.setIndType(INDType.CTEP_IND);
+		sa.setPartOfLeadIND(true);
+		assertFalse(sa.isCTEPLead());
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(null);
+		sa.setPartOfLeadIND(true);
+		assertFalse(sa.isCTEPLead());
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.DCP_IND);
+		sa.setPartOfLeadIND(true);
+		assertFalse(sa.isCTEPLead());
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.CTEP_IND);
+		sa.setPartOfLeadIND(false);
+		assertFalse(sa.isCTEPLead());
+	}
+	
+	public void testShouldHonor1(){
+		Study study = registerMockFor(Study.class);
+		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+		sa.setStudy(study);
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.CTEP_IND);
+		sa.setPartOfLeadIND(true);		
+		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(true).times(2);
+		replayMocks();
+		assertTrue(sa.shouldHonor());
+		verifyMocks();
+		
+	}
+	
+	public void testShouldHonor2(){
+		Study study = registerMockFor(Study.class);
+		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+		sa.setStudy(study);
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.DCP_IND);
+		sa.setPartOfLeadIND(true);		
+		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(false);
+		replayMocks();
+		assertTrue(sa.shouldHonor());
+		verifyMocks();
+	}
+	
+	public void testShouldHonor3(){
+		Study study = registerMockFor(Study.class);
+		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+		sa.setStudy(study);
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.DCP_IND);
+		sa.setPartOfLeadIND(true);		
+		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(true);
+		replayMocks();
+		assertFalse(sa.shouldHonor());
+		verifyMocks();
+	}
+	
+	public void testShouldHonor4(){
+		Study study = registerMockFor(Study.class);
+		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+		sa.setStudy(study);
+		
+		sa.setRetiredIndicator(false);
+		sa.setIndType(INDType.CTEP_IND);
+		sa.setPartOfLeadIND(true);		
+		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(false);
+		replayMocks();
+		try {
+			sa.shouldHonor();
+			fail();
+		} catch (Exception e) {
+			verifyMocks();
+		}
 		
 	}
 }

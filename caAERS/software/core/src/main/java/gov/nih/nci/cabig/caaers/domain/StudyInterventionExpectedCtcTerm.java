@@ -21,9 +21,9 @@ import org.hibernate.annotations.CascadeType;
 public class StudyInterventionExpectedCtcTerm extends AbstractStudyInterventionExpectedAE<CtcTerm> {
 
     public StudyInterventionExpectedCtcTerm(
-			TreatmentAssignmentStudyIntervention treatmentAssignmentStudyIntervention,
+    		TreatmentAssignmentAgent treatmentAssignmentAgent,
 			AgentSpecificTerm agentSpecificTerm, boolean expected) {
-		super(treatmentAssignmentStudyIntervention, agentSpecificTerm, expected);
+		super(treatmentAssignmentAgent, agentSpecificTerm, expected);
 		// TODO Auto-generated constructor stub
 	}
     

@@ -2,6 +2,7 @@
 <%@attribute name="index" type="java.lang.Integer" required="true" %>
 <%@attribute name="term" type="gov.nih.nci.cabig.ctms.domain.DomainObject" required="true" %>
 <%@attribute name="pathToAECollection" type="java.lang.String" %>
+<%@attribute name="showTerminology" type="java.lang.String" %>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
@@ -10,6 +11,7 @@
 
 <%-- <c:set var="meddraVersionID" value="${not empty command.meddraVersion ? command.meddraVersion.id : 0}" /> --%>
 <c:if test="${empty pathToAECollection}"><c:set var="pathToAECollection" value="agentSpecificTerms" /></c:if>
+<c:if test="${empty showTerminology}"><c:set var="showTerminology" value="true" /></c:if>
 
 <c:choose>
 	<c:when test="${term.medDRA }">
@@ -46,8 +48,9 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
-
+<c:if test="${showTerminology }">
 <td>${!term.medDRA ? term.term.category.ctc.name : term.term.meddraVersion.name}</td>
+</c:if>
 <td>
 <c:if test="${isOtherSpecify}">
                 <c:set var="initValue" value="Begin typing here"/>

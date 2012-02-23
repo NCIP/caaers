@@ -702,6 +702,9 @@ public class StudyCommand {
                 TreatmentAssignmentStudyIntervention tasi = taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention());
                 if (tasi != null) {
                     if (taih.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(tasi)) {
+                    	if (tasi instanceof TreatmentAssignmentAgent) {
+							taih.getTreatmentAssignment().removeExpectedAEs((TreatmentAssignmentAgent) tasi);
+						}
                         log.debug("Element removed: " + tasi);
                     } else {
                         log.debug("Element was not found: " + tasi);

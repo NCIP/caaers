@@ -15,9 +15,9 @@ import javax.persistence.*;
 public class StudyInterventionExpectedMeddraLowLevelTerm extends AbstractStudyInterventionExpectedAE<LowLevelTerm> {
 
     public StudyInterventionExpectedMeddraLowLevelTerm(
-			TreatmentAssignmentStudyIntervention treatmentAssignmentStudyIntervention,
+    		TreatmentAssignmentAgent treatmentAssignmentAgent,
 			AgentSpecificTerm agentSpecificTerm, boolean expected) {
-		super(treatmentAssignmentStudyIntervention, agentSpecificTerm, expected);
+		super(treatmentAssignmentAgent, agentSpecificTerm, expected);
 		// TODO Auto-generated constructor stub
 	}
 

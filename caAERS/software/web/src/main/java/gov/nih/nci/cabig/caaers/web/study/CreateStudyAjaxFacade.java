@@ -749,7 +749,7 @@ public class CreateStudyAjaxFacade {
         }
         Study study = command.getStudy();
 
-        study.getTreatmentAssignments().get(_ta_index).getTreatmentAssignmentStudyInterventions().get(_tas_index).getAbstractStudyInterventionExpectedAEs().remove(_tasae_index);
+        ((TreatmentAssignmentAgent)(study.getTreatmentAssignments().get(_ta_index).getTreatmentAssignmentStudyInterventions().get(_tas_index))).getAbstractStudyInterventionExpectedAEs().remove(_tasae_index);
 
         AjaxOutput ajaxOutput = new AjaxOutput();
         ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", study.getId(), new HashMap<String, String>()));

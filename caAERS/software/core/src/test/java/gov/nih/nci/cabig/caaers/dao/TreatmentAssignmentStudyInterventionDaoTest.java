@@ -99,7 +99,7 @@ public class TreatmentAssignmentStudyInterventionDaoTest extends DaoTestCase<Tre
         term.setGrade4Frequency(0.4);
         term.setGrade5Frequency(0.5);
         term.setOtherMeddraTerm(null);
-        taa.addAbstractStudyInterventionExpectedAEs(term);
+        //taa.addAbstractStudyInterventionExpectedAEs(term);
         getDao().save(taa);
 
     }
