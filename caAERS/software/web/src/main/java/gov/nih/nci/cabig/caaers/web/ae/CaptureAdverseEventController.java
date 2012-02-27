@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -63,8 +64,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private static final String SELECTED_STUDY_ID = "pre_selected_study_id";
 	private static final String SELECTED_PARTICIPANT_ID = "pre_selected_participant_id";
 	private static final String SELECTED_COURSE_ID = "pre_selected_reporting_period_id";
-	
-	
+
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
 	private StudyParticipantAssignmentDao assignmentDao;
@@ -83,7 +83,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
 	private Configuration configuration;
-	
+    private AdverseEventReportingPeriodService adverseEventReportingPeriodService;
+
 	private Logger log = Logger.getLogger(getClass());
 
     public boolean getUnidentifiedMode(){
@@ -404,10 +405,14 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected CaptureAdverseEventInputCommand save(final CaptureAdverseEventInputCommand command, final Errors errors){
-		if(!errors.hasErrors())
-			command.save();
-		
-		return command;
+
+        if (!errors.hasErrors()) {
+            log.debug(String.format(">>> Reporting Period has %d reports.", command.getAdverseEventReportingPeriod().getAeReports().size()));
+            adverseEventReportingPeriodService.synchronizeReports(command.getAdverseEventReportingPeriod());
+            command.save();
+        }
+
+        return command;
 	}
 	
 	public ParticipantDao getParticipantDao() {
@@ -523,4 +528,12 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
 		this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
 	}
+
+    public AdverseEventReportingPeriodService getAdverseEventReportingPeriodService() {
+        return adverseEventReportingPeriodService;
+    }
+
+    public void setAdverseEventReportingPeriodService(AdverseEventReportingPeriodService adverseEventReportingPeriodService) {
+        this.adverseEventReportingPeriodService = adverseEventReportingPeriodService;
+    }
 }

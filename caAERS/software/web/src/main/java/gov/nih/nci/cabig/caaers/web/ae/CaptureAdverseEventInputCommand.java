@@ -157,6 +157,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
                 }
 			}
+
+            // ToDo - delegate to gov.nih.nci.cabig.caaers.domain.repository.AdverseEventReportingPeriodRepository
 			adverseEventReportingPeriodDao.save(this.getAdverseEventReportingPeriod());
 		}
     }
