@@ -536,6 +536,7 @@ public class StudyCommand {
     }
     
     private TreatmentAssignment getTreatmentAssignmentFromStudy(Study study, TreatmentAssignment treatmentAssignment){
+    	if(treatmentAssignment.getId() == null) return treatmentAssignment;
     	for(TreatmentAssignment ta : study.getTreatmentAssignments()){
     		if(ta.getId().equals(treatmentAssignment.getId())) return ta;
     	}
