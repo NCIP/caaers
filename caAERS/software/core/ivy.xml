@@ -63,7 +63,8 @@
             <exclude org="jspapi" module="jsp-api" />
             <exclude org="javax.servlet" module="servlet-api" conf="dist,distGrid" />
             <exclude org="javax.servlet" module="jsp-api"  />
-
+            <!-- to remove jprov -->
+            <exclude org="eracom" module="protecttoolkit-j" />
 
             <!-- caAERS module dependencies -->
             <dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration"
