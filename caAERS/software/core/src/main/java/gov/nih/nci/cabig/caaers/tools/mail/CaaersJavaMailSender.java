@@ -66,8 +66,8 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     }
     
     public String getProtocol(){
-        boolean isSSL = configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED);
-        return isSSL ? "smtps" : "smtp";
+        String protocolValue = configuration.get(Configuration.SMTP_PROTOCOL);
+        return protocolValue == null ? "smtp" : protocolValue;
     }
 
     public void setProtocol(){
@@ -79,22 +79,19 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
      */
     public void afterPropertiesSet() throws Exception {
     	Properties properties = new Properties();
-        boolean hasUsername = StringUtils.isNotEmpty(getUsername());
-        boolean hasPassword = StringUtils.isNotEmpty(getPassword());
+        boolean hasUsername = StringUtils.isNotBlank(getUsername());
+        boolean hasPassword = StringUtils.isNotBlank(getPassword());
         boolean isSSL = configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED);
         String baseMailPropertyName = "mail.smtp.";
         if(isSSL){
             baseMailPropertyName = "mail.smtps.";
             properties.setProperty( baseMailPropertyName + "starttls.enable", "true");
-            properties.setProperty( baseMailPropertyName + "timeout", "16000");
+            properties.setProperty( baseMailPropertyName + "timeout", "8000");
         }
     	if(hasUsername || hasPassword) {
             properties.setProperty(baseMailPropertyName + "auth", "true");
         }
 
-    	if (StringUtils.isNotBlank(getPassword()) || StringUtils.isNotBlank(getUsername())) {
-    		properties.setProperty(baseMailPropertyName + "auth", "true");
-    	}
         if(logger.isDebugEnabled()){
             properties.put(baseMailPropertyName + "debug", "true");
         }

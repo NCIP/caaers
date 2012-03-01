@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationPropertyEditor;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,9 +15,11 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class ConfigurationController extends SimpleFormController {
     private Configuration configuration;
+    private CaaersJavaMailSender caaersJavaMailSender;
 
     public ConfigurationController() {
         setCommandClass(ConfigurationCommand.class);
@@ -38,10 +42,20 @@ public class ConfigurationController extends SimpleFormController {
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
+        if(caaersJavaMailSender != null) caaersJavaMailSender.afterPropertiesSet();           //SUITE-626
         return new ModelAndView("redirectToConfiguration", "updated", true);
     }
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+    
+    @Required
+    public CaaersJavaMailSender getCaaersJavaMailSender() {
+        return caaersJavaMailSender;
+    }
+
+    public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
+        this.caaersJavaMailSender = caaersJavaMailSender;
     }
 }

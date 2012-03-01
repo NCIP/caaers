@@ -1,4 +1,5 @@
 <%@attribute name="entry" type="gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty" required="true" description="A config entry" %>
+<%@attribute name="options" type="java.util.Map" description="The control will be a drop down and select options that is to be displayed"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -11,6 +12,9 @@
     <div class="value">
         <c:set var="beanPath">conf[${entry.key}].value</c:set>
         <c:choose>
+            <c:when test="${not empty options}">
+                <div><form:select path="${beanPath}" id="${beanPath}" items="${options}"/></div>
+            </c:when>
             <c:when test="${entry.controlType == 'boolean'}">
                 <div>
                     <label><form:radiobutton path="${beanPath}" id="${beanPath}" value="true"/> Yes</label>

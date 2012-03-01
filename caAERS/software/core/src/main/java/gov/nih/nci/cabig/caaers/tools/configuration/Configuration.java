@@ -28,6 +28,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> SMTP_USER = PROPERTIES.add(new DefaultConfigurationProperty.Text("smtpUser"));
     public static final ConfigurationProperty<String> SMTP_PASSWORD = PROPERTIES.add(new DefaultConfigurationProperty.Text("smtpPassword"));
     public static final ConfigurationProperty<Boolean> SMTP_SSL_ENABLED = PROPERTIES.add(new DefaultConfigurationProperty.Bool("smtpSSLEnabled"));
+    public static final ConfigurationProperty<String> SMTP_PROTOCOL = PROPERTIES.add(new DefaultConfigurationProperty.Text("smtpProtocol"));
     public static final ConfigurationProperty<String> SYSTEM_FROM_EMAIL = PROPERTIES.add(new DefaultConfigurationProperty.Text("systemFromEmail"));
     public static final ConfigurationProperty<String> CAAERS_BASE_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("caaersBaseUrl"));
     public static final ConfigurationProperty<String> CAAERS_HELP_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("caaersBaseHelpUrl"));

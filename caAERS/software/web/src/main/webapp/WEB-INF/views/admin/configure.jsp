@@ -56,14 +56,14 @@
     <form:form action="${action}" cssClass="standard">
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
-		
+            <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
 		<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
         	<div class="row">
             	<div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
             	<div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
         	</div>
         </csmauthz:accesscontrol>
-            
+
 
 
             <admin:oneConfigEntry entry="${command.conf['labViewerBaseUrl'].property}"/>
@@ -91,13 +91,14 @@
 
             <admin:oneConfigEntry entry="${command.conf['smtpAddress'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpPort'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['smtpProtocol'].property}" options="${command.emailProtocols}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpSSLEnabled'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpUser'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpPassword'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['systemFromEmail'].property}"/>
 
 
-        <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
+
         </chrome:box>
 
         <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">

@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,13 +15,20 @@ public class ConfigurationCommand {
     protected Configuration configuration;
 
     private Map<String, BoundProperty<?>> conf;
+    Map<String, String> protocols = new HashMap<String, String>();
 
     public ConfigurationCommand(Configuration configuration) {
         this.configuration = configuration;
-        conf = new TreeMap<String, BoundProperty<?>>();
+        conf = new LinkedHashMap<String, BoundProperty<?>>();
         for (ConfigurationProperty<?> property : configuration.getProperties().getAll()) {
             conf.put(property.getKey(), new BoundProperty(property));
         }
+        protocols.put("smtp", "smtp");
+        protocols.put("smtps", "smtps");
+    }
+    
+    public Map<String, String> getEmailProtocols(){
+        return protocols;
     }
 
     public Map<String, BoundProperty<?>> getConf() {
