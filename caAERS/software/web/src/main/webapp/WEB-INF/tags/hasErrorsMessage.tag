@@ -10,9 +10,9 @@
 <%
     // remove duplicate messages from the header
     if (messages != null) {
-        HashSet  serverSideErrorHash = new HashSet();
-        for (int i = 0 ; i < messages.size(); i++) {
-            serverSideErrorHash.add(messages.get(i).toString());
+        HashSet<String> serverSideErrorHash = new HashSet<String>();
+        for (Object s : messages) {
+            serverSideErrorHash.add(s.toString());
         }
         request.setAttribute("serverSideErrorHash", serverSideErrorHash);
     }
