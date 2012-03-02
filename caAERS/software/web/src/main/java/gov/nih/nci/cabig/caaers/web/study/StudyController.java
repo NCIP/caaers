@@ -151,20 +151,9 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     }
 
-    protected void populateMustFireEvent(HttpServletRequest request, final C command , final Tab<C> tab){
-
-        command.setMustFireEvent(false);
-
-        if(tab instanceof PersonnelTab || tab instanceof InvestigatorsTab || command.getStudy().getId() == null){
-            command.setMustFireEvent(true);
-        }
-        
-    }
 
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final C command, final Tab<C> tab) {
-
-        populateMustFireEvent(request, command, tab);
 
         boolean asyncReqParamPresent = isAjaxRequest(request);
         
@@ -270,15 +259,9 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         if(errors.hasErrors()) return null;
         command.save();
 
-/*
-        if(eventFactory != null && command.isMustFireEvent()){
-           eventFactory.publishEntityModifiedEvent(command.getStudy());
-        }
-*/
-
         return null;
     }
-    
+
     // /BEAN PROPERTIES
 
     public AgentDao getAgentDao() {
@@ -398,6 +381,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         this.studyRepository = studyRepository;
     }
 
+    @Required
     public EventFactory getEventFactory() {
         return eventFactory;
     }

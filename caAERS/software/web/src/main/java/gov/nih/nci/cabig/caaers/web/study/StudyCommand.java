@@ -4,26 +4,20 @@ import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
-import javax.persistence.Transient;
-
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
-import gov.nih.nci.cabig.caaers.webservice.*;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.collections15.ListUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ion C. Olaru
@@ -100,11 +94,6 @@ public class StudyCommand {
     boolean isStudyCreator = SecurityUtils.checkAuthorization(UserGroupType.study_creator);
 
     private boolean mustFireEvent;
-
-    // TAC related Interventions
-    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentAgentsHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
-    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentDevicesHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
-    private List<TreatmentAssignmentInterventionHelper> treatmentAssignmentOthersHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
 
     public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
@@ -524,7 +513,7 @@ public class StudyCommand {
         Study loaded = studyDao.getById(oldStudyId);
     	setStudy(loaded);
     	
-    	//reload the TreatmentAssignmentInterventionHelpers
+/*    	//reload the TreatmentAssignmentInterventionHelpers
     	List<TreatmentAssignmentInterventionHelper> all = new ArrayList<TreatmentAssignmentInterventionHelper>();
     	all.addAll(treatmentAssignmentAgentsHelpers);
     	all.addAll(treatmentAssignmentDevicesHelpers);
@@ -533,6 +522,7 @@ public class StudyCommand {
     		taih.setTreatmentAssignment(getTreatmentAssignmentFromStudy(study, taih.getTreatmentAssignment()));
     		taih.setStudyIntervention(getStudyInterventionFromStudy(study, taih.getStudyIntervention()));
     	}
+*/
     }
     
     private TreatmentAssignment getTreatmentAssignmentFromStudy(Study study, TreatmentAssignment treatmentAssignment){
@@ -664,67 +654,67 @@ public class StudyCommand {
         }
     }
 
-    private <T extends StudyIntervention> void buildSpecificTreatmentassignmentInterventionHelper(List<T> interventions, List<TreatmentAssignment> tas, List<TreatmentAssignmentInterventionHelper> destination) {
-        for (StudyIntervention si : interventions) {
-            for (TreatmentAssignment ta : tas) {
-                TreatmentAssignmentInterventionHelper h = new TreatmentAssignmentInterventionHelper();
-                h.setStudyIntervention(si);
-                h.setTreatmentAssignment(ta);
-                h.setSelected(ta.hasIntervention(si) != null);
-                destination.add(h);
+    public void populateTreatmentAssignmentSelectedStudyInterventionIds(){
+       if(getStudy() == null) return;
+       for(TreatmentAssignment ta : getStudy().getActiveTreatmentAssignments()) {
+           ta.regenerateAllInterventionIdList();
+       }
+    }
+
+    public void synchronizeTreatmentAssignmentSelectedInterventions(){
+        for(TreatmentAssignment treatmentAssignment : study.getActiveTreatmentAssignments()){
+            //all selected IDs
+            List<Integer> studyAgentIds = new ArrayList<Integer>(treatmentAssignment.getSelectedStudyAgentInterventionIds());
+            List<Integer> studyDeviceIds =  new ArrayList<Integer>(treatmentAssignment.getSelectedStudyDeviceInterventionIds());
+            List<Integer> otherInterventionIds =  new ArrayList<Integer>(treatmentAssignment.getSelectedOtherInteterventionIds());
+
+            //exiting association ids
+            treatmentAssignment.regenerateAllInterventionIdList();
+            List<Integer> existingStudyAgentIds = treatmentAssignment.getSelectedStudyAgentInterventionIds();
+            List<Integer> existingStudyDeviceIds = treatmentAssignment.getSelectedStudyDeviceInterventionIds();
+            List<Integer> existingOtherInterventionIds = treatmentAssignment.getSelectedOtherInteterventionIds();
+
+            //object ids to remove
+            List<Integer> unwantedStudyAgentIds = ListUtils.subtract(existingStudyAgentIds, studyAgentIds);
+            List<Integer> unwantedStudyDeviceIds = ListUtils.subtract(existingStudyDeviceIds, studyDeviceIds);
+            List<Integer> unwantedOtherInterventionIds = ListUtils.subtract(existingOtherInterventionIds, otherInterventionIds);
+
+            //object ids to add
+            List<Integer> newStudyAgentIds = ListUtils.subtract(studyAgentIds,existingStudyAgentIds);
+            List<Integer> newStudyDeviceIds = ListUtils.subtract(studyDeviceIds,existingStudyDeviceIds);
+            List<Integer> newOtherInterventionIds = ListUtils.subtract(otherInterventionIds, existingOtherInterventionIds);
+
+            //remove the unwanted ones 
+            for(Integer id : unwantedStudyAgentIds){
+                StudyAgent studyAgent = study.findStudyAgentById(id);
+                treatmentAssignment.removeInterventionFromTreatmentAssignment(studyAgent);
+            }
+            for(Integer id : unwantedStudyDeviceIds){
+                StudyDevice studyDevice = study.findStudyDeviceById(id);
+                treatmentAssignment.removeInterventionFromTreatmentAssignment(studyDevice);
+            }
+            for(Integer id : unwantedOtherInterventionIds){
+                OtherIntervention otherIntervention = study.findOtherInterventionById(id);
+                treatmentAssignment.removeInterventionFromTreatmentAssignment(otherIntervention);
+            }
+
+
+            //add the new ones
+            for(Integer id : newStudyAgentIds) {
+                StudyAgent studyAgent = study.findStudyAgentById(id);
+                if(studyAgent != null) treatmentAssignment.addInterventionToTreatmentAssignment(studyAgent);
+            }
+            for(Integer id : newStudyDeviceIds){
+                StudyDevice studyDevice = study.findStudyDeviceById(id);
+                if(studyDevice != null) treatmentAssignment.addInterventionToTreatmentAssignment(studyDevice);
+            }
+            for(Integer id : newOtherInterventionIds){
+                OtherIntervention otherIntervention = study.findOtherInterventionById(id);
+                if(otherIntervention != null) treatmentAssignment.addInterventionToTreatmentAssignment(otherIntervention);
             }
         }
     }
 
-    public void buildTreatmentAssignmentInterventionHelpers() {
-
-        if (this.getStudy() == null || this.getStudy().getId() == null) return;
-
-        List<TreatmentAssignment> tas = study.getActiveTreatmentAssignments();
-
-        treatmentAssignmentAgentsHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
-        treatmentAssignmentDevicesHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
-        treatmentAssignmentOthersHelpers = new ArrayList<TreatmentAssignmentInterventionHelper>();
-
-        //initialize agent specific terms
-        for(StudyAgent sa: getStudy().getActiveStudyAgents()){
-        	if(sa.getAgent()!=null) sa.getAgent().getAgentSpecificTerms().size();
-        }
-        
-        buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveStudyAgents(), tas, treatmentAssignmentAgentsHelpers);
-        buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveStudyDevices(), tas, treatmentAssignmentDevicesHelpers);
-        buildSpecificTreatmentassignmentInterventionHelper(getStudy().getActiveOtherInterventions(), tas, treatmentAssignmentOthersHelpers);
-
-    }
-
-    private void syncSpecificTreatmentAssignmentInterventionHelpers(List<TreatmentAssignmentInterventionHelper> taihList) {
-        for (TreatmentAssignmentInterventionHelper taih : taihList) {
-            if (!taih.isSelected()) {
-                TreatmentAssignmentStudyIntervention tasi = taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention());
-                if (tasi != null) {
-                    if (taih.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(tasi)) {
-                    	if (tasi instanceof TreatmentAssignmentAgent) {
-							taih.getTreatmentAssignment().removeExpectedAEs((TreatmentAssignmentAgent) tasi);
-						}
-                        log.debug("Element removed: " + tasi);
-                    } else {
-                        log.debug("Element was not found: " + tasi);
-                    }
-                }
-            } else {
-                if (taih.getTreatmentAssignment().hasIntervention(taih.getStudyIntervention()) == null) {
-                    taih.getTreatmentAssignment().addInterventionToTreatmentAssignment(taih.getStudyIntervention());
-                    log.debug("Element added: " + taih.getStudyIntervention());
-                }
-            }
-        }
-    }
-
-    public void syncTreatmentAssignmentInterventionHelpers() {
-        syncSpecificTreatmentAssignmentInterventionHelpers(treatmentAssignmentAgentsHelpers);
-        syncSpecificTreatmentAssignmentInterventionHelpers(treatmentAssignmentDevicesHelpers);
-        syncSpecificTreatmentAssignmentInterventionHelpers(treatmentAssignmentOthersHelpers);
-    }
 
     public StudyRepository getStudyRepository() {
         return studyRepository;
@@ -798,27 +788,4 @@ public class StudyCommand {
         this.primaryStudyIdenifier = primaryStudyIdenifier;
     }
 
-    public List<TreatmentAssignmentInterventionHelper> getTreatmentAssignmentAgentsHelpers() {
-        return treatmentAssignmentAgentsHelpers;
-    }
-
-    public void setTreatmentAssignmentAgentsHelpers(List<TreatmentAssignmentInterventionHelper> treatmentAssignmentAgentsHelpers) {
-        this.treatmentAssignmentAgentsHelpers = treatmentAssignmentAgentsHelpers;
-    }
-
-    public List<TreatmentAssignmentInterventionHelper> getTreatmentAssignmentDevicesHelpers() {
-        return treatmentAssignmentDevicesHelpers;
-    }
-
-    public void setTreatmentAssignmentDevicesHelpers(List<TreatmentAssignmentInterventionHelper> treatmentAssignmentDevicesHelpers) {
-        this.treatmentAssignmentDevicesHelpers = treatmentAssignmentDevicesHelpers;
-    }
-
-    public List<TreatmentAssignmentInterventionHelper> getTreatmentAssignmentOthersHelpers() {
-        return treatmentAssignmentOthersHelpers;
-    }
-
-    public void setTreatmentAssignmentOthersHelpers(List<TreatmentAssignmentInterventionHelper> treatmentAssignmentOthersHelpers) {
-        this.treatmentAssignmentOthersHelpers = treatmentAssignmentOthersHelpers;
-    }
 }

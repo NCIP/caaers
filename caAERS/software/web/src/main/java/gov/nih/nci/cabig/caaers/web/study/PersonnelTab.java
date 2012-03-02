@@ -86,6 +86,8 @@ class PersonnelTab extends StudyTab {
             }
         }
 
+        command.setMustFireEvent(true);
+
     }
 
     @Override

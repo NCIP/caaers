@@ -78,6 +78,8 @@ class InvestigatorsTab extends StudyTab {
                 }
             }
         }
+
+        command.setMustFireEvent(true);
     }
 
     @Override

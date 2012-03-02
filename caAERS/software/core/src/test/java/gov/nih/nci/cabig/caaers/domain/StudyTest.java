@@ -236,5 +236,41 @@ public class StudyTest extends TestCase {
         assertFalse(epochList.isEmpty());
         assertEquals(3, epochList.size());
     }
+    
+    public void testFindStudyAgentById(){
+      StudyAgent sa1 = Fixtures.createStudyAgent(1, "x");
+      study.addStudyAgent(sa1); 
+      StudyAgent sa2 = Fixtures.createStudyAgent(2, "x");
+      study.addStudyAgent(sa2);  
+        
+      assertSame(sa1, study.findStudyAgentById(1));  
+      assertSame(sa2, study.findStudyAgentById(2)); 
+      assertNull(study.findStudyAgentById(88));
+      assertNull( study.findStudyDeviceById(22));
+    }
+
+    public void testFindStudyDeviceById(){
+        StudyDevice sd1 = Fixtures.createStudyDevice(1);
+        study.addStudyDevice(sd1);
+       StudyDevice sd2 = Fixtures.createStudyDevice(2);
+        study.addStudyDevice(sd2);
+        assertSame(sd1, study.findStudyDeviceById(1));
+        assertSame(sd2, study.findStudyDeviceById(2));
+        assertNull( study.findStudyDeviceById(22));
+        assertNull(study.findStudyAgentById(1));
+       
+    }
+
+    public void testFindOtherInterventionById(){
+        OtherIntervention o2 = Fixtures.createOtherIntervention(2, "x", StudyTherapyType.DIETARY_SUPPLEMENT);
+        OtherIntervention o1 = Fixtures.createOtherIntervention(1, "x", StudyTherapyType.DIETARY_SUPPLEMENT);
+        study.addOtherIntervention(o1);
+        study.addOtherIntervention(o2);
+        assertSame(o1, study.findOtherInterventionById(1));
+        assertSame(o2, study.findOtherInterventionById(2));
+        assertNull( study.findOtherInterventionById(99));
+        assertNull( study.findStudyDeviceById(1));
+        assertNull(study.findStudyAgentById(1));
+    }
 
 }

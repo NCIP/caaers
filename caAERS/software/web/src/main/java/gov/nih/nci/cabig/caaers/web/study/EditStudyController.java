@@ -121,8 +121,13 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
-        Study study = ((StudyCommand)command).getStudy();
-        studyDao.merge(study);
+        
+        StudyCommand studyCommand = (StudyCommand) command;
+        studyCommand.save();
+        //only if we visited Personnel, Investigators page - mustFireEvent will be true,
+        if(studyCommand.isMustFireEvent())  getEventFactory().publishEntityModifiedEvent(studyCommand.getStudy());
+
+        
         return new ModelAndView(new RedirectView("search"));
     }
 

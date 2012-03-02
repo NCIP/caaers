@@ -63,9 +63,7 @@
 
     <div style="padding-left:130px;">
         <chrome:division title="Please choose interventions for ${title}" collapsable="true" collapsed="false" id="${ta}">
-            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentAgentsHelpers}" sectionTitle="Agents" property="treatmentAssignmentAgentsHelpers"/>
-            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentDevicesHelpers}" sectionTitle="Devices" property="treatmentAssignmentDevicesHelpers"/>
-            <study:treatmentAssignmentStudyInterventions ta="${ta}" studyInterventionsHelper="${command.treatmentAssignmentOthersHelpers}" sectionTitle="Other interventions" property="treatmentAssignmentOthersHelpers"/>
+            <ui:checkboxes path="study.treatmentAssignments[${index}].selectedStudyAgentInterventionIds" items="${command.study.activeStudyAgents}" itemValueProperty="id" itemLabelProperty="interventionName" />
         </chrome:division>
     </div>
 <%-- BODY --%>

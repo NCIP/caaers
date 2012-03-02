@@ -126,6 +126,11 @@ public class Fixtures {
         return assignment;
     }
 
+    public static StudyAgent createStudyAgent(Integer id, String agentName){
+        StudyAgent sa = createStudyAgent(agentName);
+        sa.setId(id);
+        return sa;
+    }
     public static StudyAgent createStudyAgent(final String agentName) {
         StudyAgent agent = new StudyAgent();
         agent.setAgent(new Agent());
@@ -776,6 +781,11 @@ public class Fixtures {
       return d;
   }
 
+  public static StudyDevice createStudyDevice(Integer id){
+     StudyDevice sd = createStudyDevice();
+      sd.setId(id);
+      return sd;
+  }
   public static StudyDevice createStudyDevice(){
       Device d = createDevice();
       StudyDevice sd = new StudyDevice();
@@ -787,6 +797,14 @@ public class Fixtures {
       
       sd.setDevice(d);
       return sd;
+  }
+    
+  public static OtherIntervention createOtherIntervention(Integer id, String name, StudyTherapyType  therapy){
+      OtherIntervention oi = new OtherIntervention();
+      oi.setName(name);
+      oi.setId(id);
+      oi.setStudyTherapyType(therapy);
+      return oi;
   }
 
   public static User createUser(String loginId, String name){

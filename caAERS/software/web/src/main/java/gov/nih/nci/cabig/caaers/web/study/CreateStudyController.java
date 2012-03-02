@@ -108,11 +108,11 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
 
-        StudyCommand cmd = (StudyCommand) command;
-        // saveResearchStaff the study by calling merge, as the study might be assocated
-        // to different copy of same object (eg: Organization, with same id)
-        // in different screens (hibernate session)
-        studyDao.merge(cmd.getStudy());
+        StudyCommand studyCommand = (StudyCommand) command;
+        studyCommand.save();
+
+        //fire the modification event
+        getEventFactory().publishEntityModifiedEvent(studyCommand.getStudy());
 
         ModelAndView mv = new ModelAndView("forward:view?type=confirm", errors.getModel());
 

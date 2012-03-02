@@ -50,6 +50,10 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
     protected List<TreatmentAssignmentStudyIntervention> treatmentAssignmentStudyInterventions = new ArrayList<TreatmentAssignmentStudyIntervention>();
     protected List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs = new ArrayList<AbstractStudyInterventionExpectedAE>();
     
+    private List<Integer> selectedStudyAgentInterventionIds;
+    private List<Integer> selectedStudyDeviceInterventionIds;
+    private List<Integer> selectedOtherInteterventionIds;
+    
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "treatment_assignment_id", nullable = false)
     @OrderBy
@@ -194,6 +198,13 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         this.treatmentAssignmentStudyInterventions = treatmentAssignmentStudyInterventions;
     }
 
+    public void removeInterventionFromTreatmentAssignment(StudyIntervention studyIntervention){
+        TreatmentAssignmentStudyIntervention taStudyIntervention = hasIntervention(studyIntervention);
+        if(taStudyIntervention != null){
+            if(taStudyIntervention instanceof TreatmentAssignmentAgent) removeExpectedAEs((TreatmentAssignmentAgent) taStudyIntervention);
+            getTreatmentAssignmentStudyInterventions().remove(taStudyIntervention);
+        }
+    }
     public void addInterventionToTreatmentAssignment(StudyIntervention ti) {
         TreatmentAssignmentStudyIntervention tasi = null;
         switch (ti.getStudyTherapyType()) {
@@ -229,21 +240,68 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
      * This method returns the association TreatmentAssignmentStudyInterventionobject
      * if this TreatmentAssignment object is associated with the StudyIntervention through
      * a TreatmentAssignmentStudyIntervention object.
-     * @param i - StudyIntervention
+     * @param studyIntervention - StudyIntervention
      * @return boolean
      */
     @Transient
-    public TreatmentAssignmentStudyIntervention hasIntervention(StudyIntervention i) {
-        List<TreatmentAssignmentStudyIntervention> tasis = getTreatmentAssignmentStudyInterventions();
-        for (TreatmentAssignmentStudyIntervention tasi : tasis) {
-            if (tasi.getStudyIntervention().equals(i)) return tasi;
+    public TreatmentAssignmentStudyIntervention hasIntervention(StudyIntervention studyIntervention) {
+        for (TreatmentAssignmentStudyIntervention taStudyIntervention : getTreatmentAssignmentStudyInterventions()) {
+            if (taStudyIntervention.getStudyIntervention().equals(studyIntervention)) return taStudyIntervention;
         }
         return null;
     }
     
     @Transient
     public boolean isHavingInterventions(){
-    	return getTreatmentAssignmentStudyInterventions().size() > 0;
+    	return !getTreatmentAssignmentStudyInterventions().isEmpty();
+    }
+
+    @Transient
+    public List<Integer> getSelectedStudyAgentInterventionIds() {
+        if(selectedStudyAgentInterventionIds == null) selectedStudyAgentInterventionIds = new ArrayList<Integer>();
+        return selectedStudyAgentInterventionIds;
+    }
+
+    public void setSelectedStudyAgentInterventionIds(List<Integer> selectedStudyAgentInterventionIds) {
+        this.selectedStudyAgentInterventionIds = selectedStudyAgentInterventionIds;
+    }
+    @Transient
+    public List<Integer> getSelectedStudyDeviceInterventionIds() {
+        if(selectedStudyDeviceInterventionIds == null) selectedStudyDeviceInterventionIds = new ArrayList<Integer>();
+        return selectedStudyDeviceInterventionIds;
+    }
+
+    public void setSelectedStudyDeviceInterventionIds(List<Integer> selectedStudyDeviceInterventionIds) {
+        this.selectedStudyDeviceInterventionIds = selectedStudyDeviceInterventionIds;
+    }
+    @Transient
+    public List<Integer> getSelectedOtherInteterventionIds() {
+        if(selectedOtherInteterventionIds == null) selectedOtherInteterventionIds = new ArrayList<Integer>();
+        return selectedOtherInteterventionIds;
+    }
+
+    public void setSelectedOtherInteterventionIds(List<Integer> selectedOtherInteterventionIds) {
+        this.selectedOtherInteterventionIds = selectedOtherInteterventionIds;
+    }
+    
+    public void regenerateAllInterventionIdList(){
+        getSelectedOtherInteterventionIds().clear();
+        getSelectedStudyDeviceInterventionIds().clear();
+        getSelectedStudyAgentInterventionIds().clear();
+        
+        for(TreatmentAssignmentStudyIntervention taStudyIntervention : getTreatmentAssignmentStudyInterventions()){
+            StudyIntervention studyIntervention = taStudyIntervention.getStudyIntervention();
+            if(studyIntervention == null) continue;
+            Integer id = studyIntervention.getId();
+            if(id == null) continue; //will never happen, but some crappy tests do not populate ids correctly
+            if(studyIntervention instanceof StudyAgent) {
+                getSelectedStudyAgentInterventionIds().add(id);
+            } else if (studyIntervention instanceof StudyDevice){
+                getSelectedStudyDeviceInterventionIds().add(id);
+            } else if( studyIntervention instanceof OtherIntervention){
+                getSelectedOtherInteterventionIds().add(id);
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -271,9 +329,8 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+        if(!(obj instanceof TreatmentAssignment)) return false;
+
         final TreatmentAssignment other = (TreatmentAssignment) obj;
         if (code == null) {
             if (other.code != null) {

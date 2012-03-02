@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
@@ -774,6 +775,29 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
        }
        return ois;
    }
+    
+    public StudyAgent findStudyAgentById(Integer id){
+        for(StudyAgent studyAgent : getStudyAgents()){
+            if(ObjectUtils.equals(id, studyAgent.getId())) return studyAgent;
+        }
+        return null;
+    }
+
+    public StudyDevice findStudyDeviceById(Integer id){
+        for(StudyDevice studyDevice : getStudyDevices()){
+            if(ObjectUtils.equals(id, studyDevice.getId())) return studyDevice;
+        }
+        return null;
+    }
+
+    public OtherIntervention findOtherInterventionById(Integer id){
+        for(OtherIntervention otherIntervention : getOtherInterventions()){
+            if(ObjectUtils.equals(id, otherIntervention.getId())) return otherIntervention;
+        }
+        return null;
+    }
+
+
 
 
     /**

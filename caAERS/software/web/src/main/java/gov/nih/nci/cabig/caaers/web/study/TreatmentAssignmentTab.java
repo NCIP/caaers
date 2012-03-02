@@ -33,7 +33,7 @@ public class TreatmentAssignmentTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(StudyCommand command) {
         Map<String, Object> rd = super.referenceData(command);
-        command.buildTreatmentAssignmentInterventionHelpers();
+        command.populateTreatmentAssignmentSelectedStudyInterventionIds();
         return rd;
     }
 
@@ -44,7 +44,7 @@ public class TreatmentAssignmentTab extends StudyTab {
         if ("removeTreatmentAssignment".equals(action)) {
         	command.deleteTreatmentAssignmentAtIndex(Integer.parseInt(selected));
         }
-        command.syncTreatmentAssignmentInterventionHelpers();
+        command.synchronizeTreatmentAssignmentSelectedInterventions();
     }
 
     @Override
