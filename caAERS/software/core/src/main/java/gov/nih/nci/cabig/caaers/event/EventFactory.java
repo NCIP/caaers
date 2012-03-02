@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.Collection;
 
+import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
@@ -32,29 +33,36 @@ public class EventFactory implements ApplicationContextAware{
     public  void publishEntityModifiedEvent(final DomainObject entity){
         publishEntityModifiedEvent(entity, true);
     }
+    public  void publishEntityModifiedEvent(final Authentication authentication, final DomainObject entity){
+        publishEntityModifiedEvent(authentication, entity, true);
+    }
 
-    public void publishEntityModifiedEvent(final DomainObject entity, boolean async){
+    public void publishEntityModifiedEvent(final DomainObject entity, boolean  async){
+         publishEntityModifiedEvent(SecurityUtils.getAuthentication(), entity, async);
+    }
+
+    public void publishEntityModifiedEvent(final Authentication authentication , final DomainObject entity, boolean  async){
 
         EntityModificationEvent event = null;
         
         if(entity instanceof Study){
-           event = new StudyModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new StudyModificationEvent(authentication, entity);
         }else if (entity instanceof ResearchStaff){
-           event = new ResearchStaffModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new ResearchStaffModificationEvent(authentication, entity);
         }else if (entity instanceof Investigator){
-           event = new InvestigatorModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new InvestigatorModificationEvent(authentication, entity);
         }else if (entity instanceof ExpeditedAdverseEventReport){
-           event = new ExpeditedReportModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new ExpeditedReportModificationEvent(authentication, entity);
         }else if (entity instanceof AdverseEventReportingPeriod){
-           event = new CourseModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new CourseModificationEvent(authentication, entity);
         }else if (entity instanceof Participant){
-           event = new SubjectModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new SubjectModificationEvent(authentication, entity);
         }else if (entity instanceof Organization) {
-           event = new OrganizationModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new OrganizationModificationEvent(authentication, entity);
         }else if (entity instanceof AdverseEvent) {
-        	event = new AdverseEventModificationEvent(SecurityUtils.getAuthentication(), entity);
+        	event = new AdverseEventModificationEvent(authentication, entity);
         }else if (entity instanceof Report){
-           event = new ReportModificationEvent(SecurityUtils.getAuthentication(), entity);
+           event = new ReportModificationEvent(authentication, entity);
         }
 
         if(async){

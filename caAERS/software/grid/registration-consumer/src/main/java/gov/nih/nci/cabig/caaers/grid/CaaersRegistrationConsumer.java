@@ -1,5 +1,5 @@
 package gov.nih.nci.cabig.caaers.grid;
-
+  import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -30,6 +30,8 @@ import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.common.RegistrationConsumerI;
 import gov.nih.nci.ccts.grid.stubs.types.InvalidRegistrationException;
 import gov.nih.nci.ccts.grid.stubs.types.RegistrationConsumptionException;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
+import org.acegisecurity.Authentication;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -76,6 +78,9 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private GridServicesAuthorizationHelper gridServicesAuthorizationHelper;
 
+    private EventFactory eventFactory;
+
+
     // @Transactional(readOnly=false)
     public void commit(Registration registration) throws RemoteException,
                     InvalidRegistrationException {
@@ -109,7 +114,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         
         boolean associatedToCC = false;
         boolean associatedToSS = false;
-        
+        Participant participant = null;
         try {
         	associatedToCC = gridServicesAuthorizationHelper.authorizedRegistrationConsumer(ccIdentifierType.getHealthcareSite().getNciInstituteCode(),ccIdentifierType.getValue());
         	associatedToSS = gridServicesAuthorizationHelper.authorizedRegistrationConsumer(registration.getStudySite().getHealthcareSite(0).getNciInstituteCode(),ccIdentifierType.getValue());
@@ -158,15 +163,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                     findMedicalRecordNumber(registration.getParticipant()) : subjectIdentifierType.getValue();
 
             //fetch the participant
-            Participant participant = fetchParticipant(subjectIdValue,site);
+            participant = fetchParticipant(subjectIdValue,site);
             
             if (participant == null) {
                 participant = createParticipant(registration, createSubjectIdentifier(subjectIdValue, site));
             }
             createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
             participantDao.save(participant);
-            logger.info("End of registration-register");
-            return registration;
+
         } catch (InvalidRegistrationException e) {
             throw e;
         } catch (RegistrationConsumptionException e) {
@@ -175,6 +179,19 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             logger.error("Error while registering", e);
             throw new RemoteException("Error while registering", e);
         }
+
+
+        //recreate index for the grid-user
+        try{
+            String gridUserName = GridServicesAuthorizationHelper.getUserNameFromGridIdentity();
+            Authentication gridAuthObject = SecurityUtils.createAuthentication(gridUserName, "dummy");
+            if(eventFactory != null && participant != null) eventFactory.publishEntityModifiedEvent(gridAuthObject, participant, false); //fire it synchronously
+        }catch (Exception e) {
+            //log the warning!!!
+            logger.warn("Error while recreating the security indexes", e);
+        }
+        logger.info("End of registration-register");
+        return registration;
     }
 
     private RegistrationConsumptionException getRegistrationConsumptionException(String message) {
@@ -600,4 +617,13 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 			GridServicesAuthorizationHelper gridServicesAuthorizationHelper) {
 		this.gridServicesAuthorizationHelper = gridServicesAuthorizationHelper;
 	}
+
+    @Required
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

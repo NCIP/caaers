@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.TestingAuthenticationToken;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.User;
 import org.apache.commons.lang.StringUtils;
 
@@ -258,5 +260,10 @@ public final class SecurityUtils {
         
         return new String[0];
 
+    }
+    
+    public static Authentication createAuthentication(String userName, String password, GrantedAuthority... grantedAuthorities){
+        Authentication auth = new UsernamePasswordAuthenticationToken(userName, "ignored", grantedAuthorities);
+         return  auth;
     }
 }

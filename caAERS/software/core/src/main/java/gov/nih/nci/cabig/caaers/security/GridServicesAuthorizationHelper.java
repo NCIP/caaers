@@ -23,17 +23,22 @@ public class GridServicesAuthorizationHelper {
 	private UserProvisioningManager userProvisioningManager;
 	private UserRepository userRepository;
 	private ProvisioningSessionFactory provisioningSessionFactory;
+
+    public static String  getUserNameFromGridIdentity(){
+        String gridIdentity = SecurityManager.getManager().getCaller();
+        String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
+        return userName;
+    }
 	
 	/**
 	 * This method checks if the user has registrar role & checks Site & Study Scope to provide the right decision.
 	 *  
-	 * @param userName
+	 * @param siteIdetifier
 	 * @return
 	 */
 	public boolean authorizedRegistrationConsumer(String siteIdetifier, String studyIdentifier){
-		String gridIdentity = SecurityManager.getManager().getCaller();
-		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
+
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(getUserNameFromGridIdentity());
 		if(csmUser == null){
 			return false;
 		}
@@ -78,13 +83,12 @@ public class GridServicesAuthorizationHelper {
 	/**
 	 * This method checks if the user has study_creator or study_qa_manager role & checks Site Scope to provide the right decision
 	 * 
-	 * @param userName
+	 * @param siteIdetifier
 	 * @return
 	 */
 	public boolean authorizedStudyConsumer(String siteIdetifier){
-		String gridIdentity = SecurityManager.getManager().getCaller();
-		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
+
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(getUserNameFromGridIdentity());
 		if(csmUser == null){
 			return false;
 		}
@@ -122,13 +126,10 @@ public class GridServicesAuthorizationHelper {
 	/**
 	 * This method checks if the user has lab_data_user role.
 	 * If user has this role, method will return true.
-	 * @param userName
 	 * @return
 	 */
 	public boolean authorizedLabConsumer(){
-		String gridIdentity = SecurityManager.getManager().getCaller();
-		String userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(getUserNameFromGridIdentity());
 		if(csmUser == null){
 			return false;
 		}

@@ -27,7 +27,9 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.GridServicesAuthorizationHelper;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -45,7 +47,10 @@ import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
+import org.acegisecurity.Authentication;
 
+import java.lang.Exception;
 import java.lang.Object;
 import java.lang.Runnable;
 import java.lang.String;
@@ -73,6 +78,7 @@ import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
 import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.context.request.WebRequest;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 /**
  * @author Srini
@@ -101,6 +107,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     private Integer rollbackInterval;
     
     private GridServicesAuthorizationHelper gridServicesAuthorizationHelper;
+
+    private EventFactory eventFactory;
     
 
     public void commit(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
@@ -201,12 +209,14 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      */
     public void createStudy(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException, StudyCreationException {
+
+        gov.nih.nci.cabig.caaers.domain.Study study = null;
     	try {
         	logger.info("Begining of studyConsumer : createStudy");
         	
             if (studyDto == null) throw getInvalidStudyException("null input");
 
-            gov.nih.nci.cabig.caaers.domain.Study study = null;
+           
             OrganizationAssignedIdentifierType idType = (OrganizationAssignedIdentifierType)findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             String ccIdentifier = idType.getValue();
             
@@ -233,7 +243,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             populateStudyDetails(studyDto, study, coppaIdentifier);
             studyDao.save(study);
             logger.info("Created the study :" + study.getId());
-            logger.info("End of studyConsumer : createStudy");
+
         } catch (InvalidStudyException e) {
             throw e;
         } catch (StudyCreationException e) {
@@ -241,7 +251,19 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         } catch (Exception e) {
             logger.error("Error while creating study", e);
             throw new RemoteException("Unable to create study", e);
-        } 
+        }
+
+        //recreate index for the grid-user
+        try{
+            String gridUserName = GridServicesAuthorizationHelper.getUserNameFromGridIdentity();
+            Authentication gridAuthObject = SecurityUtils.createAuthentication(gridUserName, "dummy");
+           if(eventFactory != null && study != null) eventFactory.publishEntityModifiedEvent(gridAuthObject, study, false); //fire it synchronously
+        }catch (Exception e) {
+            //log the warning!!!
+            logger.warn("Error while recreating the security indexes", e);
+        }
+
+        logger.info("End of studyConsumer : createStudy");
 
     }
     
@@ -689,6 +711,14 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     // /CONFIGURATION
 
+    @Required
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 
     @Required
     public SiteInvestigatorDao getSiteInvestigatorDao() {
