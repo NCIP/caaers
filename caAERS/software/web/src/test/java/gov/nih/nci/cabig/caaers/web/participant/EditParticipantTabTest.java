@@ -77,7 +77,8 @@ public class EditParticipantTabTest extends AbstractTabTestCase<EditParticipantT
 
     public void testPostProcess() {
         StudySite ss = new StudySite() ;
-        ss.setStudy(new LocalStudy());
+        ss.setStudy(command.getStudy());
+        command.getStudy().setDiseaseTerminology(Fixtures.createDiseaseTerminology(command.getStudy()));
         ss.setId(-1000);
         command.getAssignment().setStudySite(ss);
         EasyMock.expect(studySiteDao.getById(-1000)).andReturn(ss).times(1);
