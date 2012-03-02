@@ -1,11 +1,12 @@
 <AdverseEventReport>
     <id>268</id>
+
     <createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2011-04-03
         18:04:52.781
     </createdAt>
     <AdverseEventReportingPeriod/>
     <AdverseEventResponseDescription>
-        <eventDescription>the story</eventDescription>
+        <eventDescription>the story</eventDesZzcription>
         <presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">RECOVERING
         </presentStatus>
         <retreated>false</retreated>
