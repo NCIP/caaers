@@ -82,12 +82,18 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
         boolean hasUsername = StringUtils.isNotBlank(getUsername());
         boolean hasPassword = StringUtils.isNotBlank(getPassword());
         boolean isSSL = configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED);
+
+        Integer optedTimeout = configuration.get(Configuration.SMTP_TIMEOUT);
+        Integer actualTimeout = optedTimeout == null ? 4000 : optedTimeout;
         String baseMailPropertyName = "mail.smtp.";
+
+
         if(isSSL){
             baseMailPropertyName = "mail.smtps.";
             properties.setProperty( baseMailPropertyName + "starttls.enable", "true");
-            properties.setProperty( baseMailPropertyName + "timeout", "8000");
         }
+        properties.setProperty( baseMailPropertyName + "timeout", actualTimeout.toString() );
+
     	if(hasUsername || hasPassword) {
             properties.setProperty(baseMailPropertyName + "auth", "true");
         }

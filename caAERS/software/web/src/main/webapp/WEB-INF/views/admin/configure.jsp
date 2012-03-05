@@ -91,6 +91,7 @@
 
             <admin:oneConfigEntry entry="${command.conf['smtpAddress'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpPort'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['smtpTimeout'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpProtocol'].property}" options="${command.emailProtocols}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpSSLEnabled'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['smtpUser'].property}"/>

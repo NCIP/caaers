@@ -25,6 +25,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> CAEXCHANGE_NONGRID_PASSWORD = PROPERTIES.add(new DefaultConfigurationProperty.Text("caExchangeNonGridPassword"));
     public static final ConfigurationProperty<String> SMTP_ADDRESS = PROPERTIES.add(new DefaultConfigurationProperty.Text("smtpAddress"));
     public static final ConfigurationProperty<Integer> SMTP_PORT = PROPERTIES.add(new DefaultConfigurationProperty.Int("smtpPort"));
+    public static final ConfigurationProperty<Integer> SMTP_TIMEOUT = PROPERTIES.add(new DefaultConfigurationProperty.Int("smtpTimeout"));
     public static final ConfigurationProperty<String> SMTP_USER = PROPERTIES.add(new DefaultConfigurationProperty.Text("smtpUser"));
     public static final ConfigurationProperty<String> SMTP_PASSWORD = PROPERTIES.add(new DefaultConfigurationProperty.Text("smtpPassword"));
     public static final ConfigurationProperty<Boolean> SMTP_SSL_ENABLED = PROPERTIES.add(new DefaultConfigurationProperty.Bool("smtpSSLEnabled"));
