@@ -40,7 +40,12 @@
  	 	 		paramHash.set(itemType,val);
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
- 	 	 		var url = $('command').action + "?subview"; //make the ajax request
+ 	 	 		var url = $('command').action;     //make the ajax request
+                  if(url.indexOf('?') > 0){
+                      url = url + "&subview";
+                  } else {
+                      url = url + "?subview";
+                  }
 				this.insertContent(container, url, paramHash, function() {}, false);
  	 		},
 
@@ -59,7 +64,8 @@
                     }
                     this.populateDeafultParameters(itemType, paramHash);
 
-                    var url = $('command').action + "?subview"; //make the ajax request
+                    var url = $('command').action; //make the ajax request
+
                     var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
                     var newLoc = replaceHtml($(loc) , '');
 
@@ -85,7 +91,12 @@
  	 	 		}
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
- 	 	 		var url = $('command').action + "?subview"; //make the ajax request
+ 	 	 		var url = $('command').action; //make the ajax request
+                if(url.indexOf('?') > 0) {
+                  url = url + "&subview";
+                }else {
+                  url = url + "?subview";
+                }
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
  	 	 		$(loc).innerHTML = '';
 				this.insertContent(container, url, paramHash.merge(sectionHash), function(){}, true);

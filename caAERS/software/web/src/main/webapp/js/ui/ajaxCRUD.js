@@ -86,8 +86,11 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
      */
     _generateSubmissionURL:function(commandForm){
     	var url = $(commandForm).action;
-    	if(url.indexOf('?') > 0) return url + '&subview';
-    	return url + '?subview';
+        if(url.indexOf('?') > 0) {
+            url = url + "&subview";
+        }else {
+            url = url + "?subview";
+        }
     },
 
     _insertContent: function(container, url, params, onCompleteCallBack, insertionLocation) {

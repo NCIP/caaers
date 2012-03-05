@@ -197,7 +197,12 @@ function updateMedicalDevice(i, studyDeviceId){
 
             this._populateDeafultParameters(itemType, paramHash);
 
-            var url = $('command').action + "?subview"; 
+            var url = $('command').action;
+            if(url.indexOf('?') > 0) {
+                url = url + "&subview";
+            }else {
+                url = url + "?subview";
+            }
             this._insertContent(container, url, paramHash, function() {}.bind(this));
         },
 
@@ -218,7 +223,12 @@ function updateMedicalDevice(i, studyDeviceId){
             paramHash.set('currentItem', itemType);
             paramHash.set('index', index);
             this._populateDeafultParameters(itemType, paramHash);
-            var url = $('command').action + "?subview";
+            var url = $('command').action;
+            if(url.indexOf('?') > 0) {
+                url = url + "&subview";
+            }else {
+                url = url + "?subview";
+            }
             var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
             this._updateContent(container, url, paramHash.merge(sectionHash), function (transport) {
             }.bind(this));

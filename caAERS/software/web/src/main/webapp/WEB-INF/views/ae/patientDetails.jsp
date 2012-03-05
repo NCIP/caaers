@@ -36,7 +36,12 @@
  	 	 		// paramHash.set(itemType, val);
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
- 	 	 		var url = $('command').action + "?subview"; //make the ajax request
+ 	 	 		var url = $('command').action; //make the ajax request
+                  if(url.indexOf('?') > 0) {
+                      url = url + "&subview";
+                  }else {
+                      url = url + "?subview";
+                  }
 				this.insertContent(container, url, paramHash, function() {}.bind(this), false);
  	 		},
 
@@ -53,7 +58,12 @@
                     }
                     this.populateDeafultParameters(itemType, paramHash);
 
-                    var url = $('command').action + "?subview"; //make the ajax request
+                    var url = $('command').action; //make the ajax request
+                 if(url.indexOf('?') > 0) {
+                     url = url + "&subview";
+                 }else {
+                     url = url + "?subview";
+                 }
                     var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
                     var newLoc = replaceHtml($(loc) , '');
 
@@ -81,7 +91,12 @@
  	 	 		}
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
- 	 	 		var url = $('command').action + "?subview"; //make the ajax request
+ 	 	 		var url = $('command').action; //make the ajax request
+                 if(url.indexOf('?') > 0) {
+                     url = url + "&subview";
+                 }else {
+                     url = url + "?subview";
+                 }
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
 
                 this.insertContent(loc, url, paramHash.merge(sectionHash), function () {}.bind(this), true);
@@ -431,6 +446,9 @@
           <tags:renderLabel field="${fieldGroups['disease'].fields[0]}" />
         </jsp:attribute>
         <jsp:attribute name="value">
+            <%--${fieldGroups['disease'].fields[0].attributes.options} and--%>
+            <%--${fieldGroups['disease'].fields[0].propertyName} and--%>
+            <%--${command.aeReport.diseaseHistory.abstractStudyDisease.class.name}--%>
           <tags:renderInputs field="${fieldGroups['disease'].fields[0]}" />
         </jsp:attribute>
         <jsp:attribute name="embededJS">

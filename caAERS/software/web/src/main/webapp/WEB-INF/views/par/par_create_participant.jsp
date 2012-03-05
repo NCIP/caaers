@@ -65,7 +65,12 @@
     function removeOrganizationIdentifier(container, index) {
         var paramHash = populateParameters("removeOrganizationIdentifier", "par/ajax/par_OrganizationIdentifiersSection");
         paramHash.set("index", index);
-        var url = $('command').action + "?subview"
+        var url = $('command').action;
+        if(url.indexOf('?') > 0) {
+            url = url + "&subview";
+        }else {
+            url = url + "?subview";
+        }
 
         var identifiersParams = Form.serializeElements(formElements($('organizationIdentifierTable')), true);
         paramHash = paramHash.merge(identifiersParams);
@@ -85,7 +90,12 @@
 
     function addSystemIdentifier(container) {
         var paramHash = populateParameters("addSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
-        var url = $('command').action + "?subview"
+        var url = $('command').action;
+        if(url.indexOf('?') > 0){
+            url = url + "&subview";
+        } else{
+            url = url + "?subview";
+        }
 
         new Ajax.Updater(container, url, {
             parameters: paramHash.toQueryString(), onSuccess: onAddSystemIdentifier, insertion: Insertion.Bottom, evalScripts : true
@@ -106,7 +116,12 @@
     function removeSystemIdentifier(container, index) {
         var paramHash = populateParameters("removeSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
         paramHash.set("index", index);
-        var url = $('command').action + "?subview"
+        var url = $('command').action;
+        if(url.indexOf('?') > 0) {
+            url = url +  "&subview";
+        }else{
+            url = url + "?subview";
+        }
 
         var identifiersParams = Form.serializeElements(formElements($('systemIdentifierTable')), true);
         paramHash = paramHash.merge(identifiersParams);

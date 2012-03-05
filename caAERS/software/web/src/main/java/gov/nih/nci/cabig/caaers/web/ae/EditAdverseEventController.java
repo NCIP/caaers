@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -355,7 +356,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
          
          return false;
     }
-    
+
+    @Override
+    protected boolean shouldSave(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Tab<ExpeditedAdverseEventInputCommand> tab) {
+        String task = request.getParameter("task");
+        if(StringUtils.equals("remove", task)) return true;   //for delete requests save the object.
+        return super.shouldSave(request, command, tab);
+    }
+
     @Override
     protected ExpeditedAdverseEventInputCommand save(ExpeditedAdverseEventInputCommand command, Errors errors) {
     	command.save();

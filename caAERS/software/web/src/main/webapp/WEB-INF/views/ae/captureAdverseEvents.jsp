@@ -256,7 +256,12 @@ function refreshGrades(index) {
      paramHash.set('action', 'refreshGrades');
      paramHash.set('adverseEvents[' + index + '].ctcTerm', $('adverseEvents[' + index + '].ctcTerm').value);
 
-     var url = $('command').action + "?subview"
+     var url = $('command').action;
+    if(url.indexOf('?') > 0) {
+        url = url + "&subview";
+    }else {
+        url = url + "?subview";
+    }
 
      new Ajax.Request(url, {
             parameters : paramHash.toQueryString(),
