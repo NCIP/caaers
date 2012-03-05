@@ -654,6 +654,13 @@ public class StudyCommand {
         }
     }
 
+    public List<StudyIntervention> getAllActiveInterventions(){
+        List<StudyIntervention>  activeInterventions = new ArrayList<StudyIntervention>();
+        activeInterventions.addAll(getStudy().getActiveStudyAgents());
+        activeInterventions.addAll(getStudy().getActiveStudyDevices());
+        activeInterventions.addAll(getStudy().getActiveOtherInterventions());
+        return activeInterventions;
+    }
     public void populateTreatmentAssignmentSelectedStudyInterventionIds(){
        if(getStudy() == null) return;
        for(TreatmentAssignment ta : getStudy().getActiveTreatmentAssignments()) {

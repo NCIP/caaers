@@ -33,6 +33,7 @@ public class TreatmentAssignmentTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(StudyCommand command) {
         Map<String, Object> rd = super.referenceData(command);
+        command.getAllActiveInterventions(); //this is to initialize the study agents.
         command.populateTreatmentAssignmentSelectedStudyInterventionIds();
         return rd;
     }

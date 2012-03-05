@@ -91,6 +91,7 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         }else {
             url = url + "?subview";
         }
+        return url;
     },
 
     _insertContent: function(container, url, params, onCompleteCallBack, insertionLocation) {
