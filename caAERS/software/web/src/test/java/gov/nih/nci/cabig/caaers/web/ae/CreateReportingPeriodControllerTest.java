@@ -29,10 +29,7 @@ import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -705,5 +702,28 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
     	controller.convertAeFromObservedToSolicited(reportingPeriod, 1, Term.MEDDRA);
     	assertTrue("Ae not converted to solicited as expected", reportingPeriod.getAdverseEvents().get(0).getSolicited());
     	
+    }
+
+
+    public void testCreateEpochOptions(){
+        StudyParticipantAssignment assignment1 = Fixtures.createAssignment();
+        command = new ReportingPeriodCommand(assignment1, null, null);
+
+        Map<Object, Object> m = controller.createEpochOptions(command);
+        assertEquals(1, m.size());
+
+        Epoch e1 = new Epoch("e1", 1);
+        e1.setId(1);
+        Epoch e2 = new Epoch("e2", 2);
+        e2.setId(2);
+        assignment1.getStudySite().getStudy().addEpoch(e1) ;
+        assignment1.getStudySite().getStudy().addEpoch(e2) ;
+
+
+         m = controller.createEpochOptions(command);
+        assertEquals(3, m.size());
+        assertEquals("e1", m.get("1"));
+        assertEquals("e2", m.get("2"));
+
     }
 }

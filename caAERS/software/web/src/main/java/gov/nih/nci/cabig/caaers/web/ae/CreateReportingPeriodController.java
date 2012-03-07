@@ -447,7 +447,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         Study study = rpCommand.getAssignment().getStudySite().getStudy();
         List<Epoch> epochList = study.getEpochs();
         for (Epoch epoch : epochList) {
-            epochMap.put(epoch.getId(), epoch.getName());
+            epochMap.put(epoch.getId().toString(), epoch.getName());
         }
         return epochMap;
     }
