@@ -45,7 +45,7 @@ public class StudyCondition extends AbstractStudyDisease<Condition> {
      */
     public boolean equals(Object obj) {
         if (obj == null) return false;
-        if (!(obj instanceof StudyCondition)) return false;
+        if ( obj == null || !(obj instanceof StudyCondition)) return false;
 
         if (this.getId() != null && ((StudyCondition)obj).getId() != null) {
             return (this.getId().intValue() == ((StudyCondition)obj).getId().intValue()); 
