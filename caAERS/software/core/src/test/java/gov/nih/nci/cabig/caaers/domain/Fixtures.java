@@ -133,6 +133,7 @@ public class Fixtures {
     }
     public static StudyAgent createStudyAgent(final String agentName) {
         StudyAgent agent = new StudyAgent();
+        agent.setPartOfLeadIND(false);
         agent.setAgent(new Agent());
         agent.getAgent().setName(agentName);
         return agent;
@@ -412,6 +413,25 @@ public class Fixtures {
         treatmentAssignment.setDescription("description_"+arg);
         treatmentAssignment.setDoseLevelOrder(Integer.valueOf(2));
         return treatmentAssignment;
+    }
+    
+    public static TreatmentAssignmentAgent createTreatementAssignmentStudyIntervention(TreatmentAssignment tac, StudyAgent sa){
+        TreatmentAssignmentAgent ts = new TreatmentAssignmentAgent();
+        ts.setTreatmentAssignment(tac);
+        ts.setStudyAgent(sa);
+        return ts;
+    }
+    public static TreatmentAssignmentDevice createTreatementAssignmentStudyIntervention(TreatmentAssignment tac, StudyDevice sa){
+        TreatmentAssignmentDevice ts = new TreatmentAssignmentDevice();
+        ts.setTreatmentAssignment(tac);
+        ts.setStudyDevice(sa);
+        return ts;
+    }
+    public static TreatmentAssignmentOtherIntervention createTreatementAssignmentStudyIntervention(TreatmentAssignment tac, OtherIntervention sa){
+        TreatmentAssignmentOtherIntervention ts = new TreatmentAssignmentOtherIntervention();
+        ts.setTreatmentAssignment(tac);
+        ts.setOtherIntervention(sa);
+        return ts;
     }
 
     public static StudyFundingSponsor createStudyFundingSponsor(final Organization organization) {
