@@ -199,6 +199,16 @@ public class InputFieldFactoryTest extends AbstractTestCase {
         assertEquals(field.getPropertyName(), "fieldName");
         assertEquals(InputField.Category.HIDDEN, field.getCategory());
     }
+    
+    public void testCreateAutocompleterField(){
+        InputField field = InputFieldFactory.createAutocompleterField("fieldName", "Test", true);
+        assertTrue((Boolean)field.getAttributes().get(InputField.ENABLE_CLEAR));
+        InputFieldAttributes.disableAutoCompleterClearButton(field);
+        assertNull((Boolean)field.getAttributes().get(InputField.ENABLE_CLEAR));
+        InputFieldAttributes.enableAutoCompleterClearButton(field);
+        assertTrue((Boolean)field.getAttributes().get(InputField.ENABLE_CLEAR));
+
+    }
 
 
 }

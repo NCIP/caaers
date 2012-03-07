@@ -124,11 +124,15 @@ public class InputFieldFactory {
     }
 
     public static InputField createAutocompleterField(String propertyName, String displayName, FieldValidator... validators) {
-        return createInputField(AUTOCOMPLETER, propertyName, displayName, validators);
+        InputField field =  createInputField(AUTOCOMPLETER, propertyName, displayName, validators);
+        InputFieldAttributes.enableAutoCompleterClearButton(field);
+        return field;
     }
 
     public static InputField createAutocompleterField(String propertyName, String displayName, boolean required) {
-        return createInputField(AUTOCOMPLETER, propertyName, displayName, required);
+        InputField field =  createInputField(AUTOCOMPLETER, propertyName, displayName, required);
+        InputFieldAttributes.enableAutoCompleterClearButton(field);
+        return field;
     }
 
     public static InputField createInplaceTextEditorField(String propertyName, String displayName, boolean required) {

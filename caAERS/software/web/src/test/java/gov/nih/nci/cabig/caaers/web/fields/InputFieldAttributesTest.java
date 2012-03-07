@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class InputFieldAttributesTest extends AbstractTestCase {
     private InputField field = InputFieldFactory.createInputField(Category.TEXT);
@@ -61,5 +62,13 @@ public class InputFieldAttributesTest extends AbstractTestCase {
     public void testGetColumns() throws Exception {
         field.getAttributes().put(COLS, 97);
         assertEquals(97, (int) InputFieldAttributes.getColumns(field));
+    }
+    
+    public void testEnableAutocompleterClearButton(){
+        field = InputFieldFactory.createAutocompleterField("test", "hello", false);
+        InputFieldAttributes.enableAutoCompleterClearButton(field);
+        assertTrue((Boolean)field.getAttributes().get(InputField.ENABLE_CLEAR));
+        InputFieldAttributes.disableAutoCompleterClearButton(field);
+        assertNull((Boolean)field.getAttributes().get(InputField.ENABLE_CLEAR));
     }
 }

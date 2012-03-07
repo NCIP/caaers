@@ -59,7 +59,13 @@ public class InputFieldAttributes {
     public static void enableAutoCompleterClearButton(InputField field) {
         field.getAttributes().put(InputField.ENABLE_CLEAR, true);
     }
-    
+
+
+    public static void disableAutoCompleterClearButton(InputField field) {
+        field.getAttributes().remove(InputField.ENABLE_CLEAR);
+    }
+
+
     public static void setHelpProperty(InputField field, String helpKey){
     	field.getAttributes().put(InputField.HELP, helpKey);
     }
