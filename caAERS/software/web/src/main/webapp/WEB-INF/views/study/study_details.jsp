@@ -286,7 +286,8 @@
 
         <div class="row" style="display: ${hasCC ? 'none' : ''}" id="_cc_autocompleter">
             <div class="label"><ui:label path="${ccField.propertyName}" labelProperty="${ccField.attributes.labelProperty}" text="${ccField.displayName}" mandatory="${ccField.attributes.mandatory}" required="${ccField.required}"/></div>
-            <div class="value"><ui:autocompleter path="${ccField.propertyName}" />&nbsp;<c:if test="${hasCC}"><tags:button icon="x" size="small" value="Cancel" color="red" onclick="_cancel('_cc');" type="button" hoverTitle="Cancel"/></c:if></div>
+            <div class="value"><ui:autocompleter path="${ccField.propertyName}" enableClearButton="true" initialDisplayValue="Begin typing here" />
+            </div>
         </div>
 
         <tags:renderRow field="${fieldGroups.ccFieldGroup.fields[1]}" />
@@ -304,7 +305,8 @@
 
         <div class="row" style="display: ${hasFS ? 'none' : ''}" id="_fs_autocompleter">
             <div class="label"><ui:label path="${fsField.propertyName}" labelProperty="${fsField.attributes.labelProperty}" text="${fsField.displayName}" mandatory="${fsField.attributes.mandatory}" required="${fsField.required}"/></div>
-            <div class="value"><ui:autocompleter path="${fsField.propertyName}" />&nbsp;<c:if test="${hasFS}"><tags:button icon="x" size="small" value="Cancel" color="red" onclick="_cancel('_fs');" type="button" hoverTitle="Cancel"/></c:if></div>
+            <div class="value"><ui:autocompleter path="${fsField.propertyName}" enableClearButton="true" initialDisplayValue="Begin typing here" />
+            </div>
         </div>
 
         <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[1]}" />

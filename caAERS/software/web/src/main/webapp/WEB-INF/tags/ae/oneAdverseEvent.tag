@@ -55,7 +55,7 @@
         <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
             <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
             <jsp:attribute name="value">
-                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${empty adverseEvent.lowLevelTerm ? 'Begin typing here' : adverseEvent.lowLevelTerm.meddraTerm}">
+                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${empty adverseEvent.lowLevelTerm ? 'Begin typing here' : adverseEvent.lowLevelTerm.meddraTerm}" enableClearButton="true">
                     <jsp:attribute name="populatorJS">
                         function(autocompleter, text) {
                             var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};

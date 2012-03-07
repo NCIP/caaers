@@ -25,7 +25,7 @@
     <jsp:attribute name="value">
 
                     <c:set var="initValue" value="${not empty anatomicSite ? anatomicSite.name : 'Begin typing here'}"/>
-                      <ui:autocompleter path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" initialDisplayValue="${initValue}" size="50" required="true" title="Metastatic disease site">
+                      <ui:autocompleter path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" enableClearButton="true" initialDisplayValue="${initValue}" size="50" required="true" title="Metastatic disease site">
                           <jsp:attribute name="populatorJS">
                               function(autocompleter, text) {
                                   createAE.matchAnatomicSite(text, function(values) {

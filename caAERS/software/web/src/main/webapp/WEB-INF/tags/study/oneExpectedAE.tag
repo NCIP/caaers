@@ -17,7 +17,7 @@
                 <c:out value="${studyTerm.fullName}" /><br>
 
             <c:if test="${not empty command.study.otherMeddra}">
-                <ui:autocompleter path="study.expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}" readonly="false">
+                <ui:autocompleter path="study.expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}" readonly="false" enableClearButton="true">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
                                     var terminologyVersionId = ${empty command.study.otherMeddra.id ? 0 : command.study.otherMeddra.id};

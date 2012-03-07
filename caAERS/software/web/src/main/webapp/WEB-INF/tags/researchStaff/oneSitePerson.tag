@@ -33,7 +33,7 @@
                             <div class="label"><ui:label path="sitePersonnel[${index}].organization" labelProperty="organization" text="" required="true"/></div>
                             <div class="value">
                                 <c:set var="initValue" value="${not empty orgName ? orgName : 'Begin typing here'}"/>
-                                        <ui:autocompleter path="sitePersonnel[${index}].organization" initialDisplayValue="${initValue}" required="true" title="Organization name">
+                                        <ui:autocompleter path="sitePersonnel[${index}].organization" initialDisplayValue="${initValue}" required="true" title="Organization name" enableClearButton="true">
                                             <jsp:attribute name="embededJS"></jsp:attribute>
                                             <jsp:attribute name="populatorJS">
                                                 function(autocompleter, text) {

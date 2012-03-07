@@ -23,6 +23,7 @@
                       <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"
                       	initialDisplayValue="${initValue}"
                         title="PriorTherapy agent"
+                        enableClearButton="true"
                       	readonly="${not empty agent.chemoAgent}"
                       	displayNamePath="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName" required="true">
                           <jsp:attribute name="populatorJS">
