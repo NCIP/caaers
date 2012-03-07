@@ -166,8 +166,8 @@ public class StudyTest extends TestCase {
 	 * This method tests {@link Study#getActiveStudyDiseases()}
 	 */
 	public void testGetActiveStudyDiseases_StudyCondition(){
-		StudyCondition d1 = Fixtures.createStudyCondition(study, null);
-		StudyCondition d2 = Fixtures.createStudyCondition(study, null);
+		StudyCondition d1 = Fixtures.createStudyCondition(study, (Condition)null);
+		StudyCondition d2 = Fixtures.createStudyCondition(study, (Condition)null);
 		d2.retire();
 		
 		List<StudyCondition> diseases = new ArrayList<StudyCondition>();

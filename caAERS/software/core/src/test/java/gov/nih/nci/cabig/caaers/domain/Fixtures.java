@@ -532,13 +532,22 @@ public class Fixtures {
 		
     }
     
+
     public static StudyCondition createStudyCondition(Study s, gov.nih.nci.cabig.caaers.domain.Condition c){
     	StudyCondition sc = new StudyCondition();
     	sc.setTerm(c);
     	s.addStudyCondition(sc);
     	return sc;
     }
-    
+
+
+    public static StudyCondition createStudyCondition(Study s, String name){
+        StudyCondition sc = new StudyCondition();
+        sc.setTerm(new gov.nih.nci.cabig.caaers.domain.Condition());
+        sc.getTerm().setConditionName(name);
+        s.addStudyCondition(sc);
+        return sc;
+    }
     public static AdverseEventReportingPeriod createReportingPeriod(){
     	AdverseEventReportingPeriod rp = new AdverseEventReportingPeriod();
     	Study s = createStudy("Test");

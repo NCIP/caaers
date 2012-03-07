@@ -5,20 +5,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
@@ -137,8 +124,8 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 	public void testDeleteStudyConditionAtIndex(){
 	    Fixtures.createDiseaseTerminology(command.getStudy());
 	    command.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
-	    Fixtures.createStudyCondition(command.getStudy(), null);
-	    Fixtures.createStudyCondition(command.getStudy(), null);
+	    Fixtures.createStudyCondition(command.getStudy(), (Condition) null);
+	    Fixtures.createStudyCondition(command.getStudy(), (Condition)null);
 		assertEquals(2, command.getStudy().getStudyConditions().size());
 		assertFalse(command.getStudy().getStudyConditions().get(1).isRetired());
 		command.getStudy().getStudyConditions().get(1).setId(1);
