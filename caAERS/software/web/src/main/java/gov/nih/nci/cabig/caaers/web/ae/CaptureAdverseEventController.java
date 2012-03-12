@@ -83,7 +83,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
 	private Configuration configuration;
-    private AdverseEventReportingPeriodService adverseEventReportingPeriodService;
 
 	private Logger log = Logger.getLogger(getClass());
 
@@ -408,7 +407,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 
         if (!errors.hasErrors()) {
             log.debug(String.format(">>> Reporting Period has %d reports.", command.getAdverseEventReportingPeriod().getAeReports().size()));
-            adverseEventReportingPeriodService.synchronizeReports(command.getAdverseEventReportingPeriod());
             command.save();
         }
 
@@ -528,12 +526,4 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
 		this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
 	}
-
-    public AdverseEventReportingPeriodService getAdverseEventReportingPeriodService() {
-        return adverseEventReportingPeriodService;
-    }
-
-    public void setAdverseEventReportingPeriodService(AdverseEventReportingPeriodService adverseEventReportingPeriodService) {
-        this.adverseEventReportingPeriodService = adverseEventReportingPeriodService;
-    }
 }

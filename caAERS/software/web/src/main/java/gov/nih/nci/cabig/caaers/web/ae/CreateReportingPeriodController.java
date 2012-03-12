@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
+import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
@@ -67,6 +68,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private String TAB_NAME = "gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab";
     
     private EventFactory eventFactory;
+    private AdverseEventReportingPeriodService adverseEventReportingPeriodService;
 
     public CreateReportingPeriodController() {
         setFormView(viewName);
@@ -264,6 +266,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
         
         	adverseEventReportingPeriodDao.save(reportingPeriod);
 
+            adverseEventReportingPeriodService.synchronizeReports(command.getReportingPeriod());
+
+
         	//initialize the solicited AEs
         	if (reportingPeriod.getEpoch() != null) {
         		for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
@@ -335,7 +340,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
      * Before its done a check is made to see if the AE being converted is retired or not. This is needed because the soft delete
      * can eventually lead to the possibility of 2 or more adverse events with the same term in the reporting period.
      * @param reportingPeriod
-     * @param termd
+     * @param term
      * @param term
      */
     protected void convertAeFromObservedToSolicited(AdverseEventReportingPeriod reportingPeriod, Integer termId, Term term){
@@ -573,4 +578,13 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	public void setEventFactory(EventFactory eventFactory) {
 		this.eventFactory = eventFactory;
 	}
+
+    public AdverseEventReportingPeriodService getAdverseEventReportingPeriodService() {
+        return adverseEventReportingPeriodService;
+    }
+
+    public void setAdverseEventReportingPeriodService(AdverseEventReportingPeriodService adverseEventReportingPeriodService) {
+        this.adverseEventReportingPeriodService = adverseEventReportingPeriodService;
+    }
+
 }
