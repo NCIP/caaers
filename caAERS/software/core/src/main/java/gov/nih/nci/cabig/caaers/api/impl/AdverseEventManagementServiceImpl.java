@@ -27,6 +27,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -76,6 +77,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	
 	private AdverseEventConverter adverseEventConverter;
 	private AdverseEventEvaluationService adverseEventEvaluationService;
+	private AdverseEventReportingPeriodService adverseEventReportingPeriodService;
 	private MailSender mailSender;
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
@@ -227,6 +229,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     			caaersServiceResponse.setResponses(adverseEventResponses);
 				return caaersServiceResponse;
     		}
+
 			AdverseEventReportingPeriod adverseEventReportingPeriod = null;
 			if (criteria.getCourse() != null) {
 				try {
@@ -569,7 +572,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		    	} else {
 		    		throw new CaaersSystemException(errors.get(0));
 		    	}
-			}			
+			} else {
+                //
+                adverseEventReportingPeriodService.synchronizeReports(adverseEventReportingPeriod);
+            }
 		}	
 		return adverseEventReportingPeriod;
 	}
@@ -989,6 +995,11 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		this.adverseEventIndexDao = adverseEventIndexDao;
 	}
 
-    
+    public AdverseEventReportingPeriodService getAdverseEventReportingPeriodService() {
+        return adverseEventReportingPeriodService;
+    }
 
+    public void setAdverseEventReportingPeriodService(AdverseEventReportingPeriodService adverseEventReportingPeriodService) {
+        this.adverseEventReportingPeriodService = adverseEventReportingPeriodService;
+    }
 }
