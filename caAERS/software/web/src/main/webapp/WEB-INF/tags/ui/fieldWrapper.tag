@@ -15,8 +15,14 @@
 <%@attribute name="readonlyDisplayFormat" description="The formatting to be used for readonly display text" %>
 <%@attribute name="displayNamePath" description="This path is used to display the text, when the field is readOnly, if not specified 'path' is used as default " %>
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
-
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
+<%@attribute name="displayError" type="java.lang.Boolean" %>
+
+<c:if test="${empty displayError}" >
+    <c:set var="displayError" value="true" />
+</c:if>
+
+
 <caaers:renderFilter elementID="${path}">
 	<c:if test="${not readonly}">
 	<c:set var="validationCss" scope="request">${validationJSClass}${required ? not empty validationJSClass ? '$$NOTEMPTY':'validate-NOTEMPTY' :''}</c:set>
@@ -34,8 +40,10 @@
 	<c:remove var="dNproperty" scope="request"/>
 	</c:if>
 	
-	<ui:helpLink path="${path}"/>	
-	<tags:errors path="${path}"/>
-	<tags:errors path="${path}.*"/>
+	<ui:helpLink path="${path}"/>
+    <c:if test="${displayError}">
+        <tags:errors path="${path}"/>
+        <tags:errors path="${path}.*"/>
+    </c:if>
 	<c:if test="${not empty embededJS}"><script>${embededJS}</script></c:if>
 </caaers:renderFilter>

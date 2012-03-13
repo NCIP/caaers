@@ -24,6 +24,11 @@
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
 <%@attribute name="enableClearButton" type="java.lang.Boolean" description="If true, will enable the clear button" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
+<%@attribute name="displayError" type="java.lang.Boolean" %>
+
+<c:if test="${empty displayError}" >
+    <c:set var="displayError" value="true" />
+</c:if>
 
 <c:set var="_required" value="${required or (not empty field and field.required)}" />
 <c:set var="_mandatory" value="${mandatory or (not empty field and field.attributes.mandatory)}" />
@@ -34,7 +39,7 @@
 <c:if test="${empty fieldValue and _mandatory and _required}"><c:set var="cssValue" value="mandatory required" /></c:if>
 <c:if test="${not empty fieldValue and (_mandatory or _required)}"><c:set var="cssValue" value="valueOK" /></c:if>
 
-<ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}">
+<ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}" displayError="${displayError}">
 <jsp:attribute name="field">
   <input
           size="${empty size ? '50' : size}"
