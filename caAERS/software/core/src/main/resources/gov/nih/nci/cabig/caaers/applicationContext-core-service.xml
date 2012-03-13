@@ -328,14 +328,11 @@ default-lazy-init="true">
 	</bean>
     
 	<bean id="caaersRulesEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService">
-		<property name="ruleEngineService" ref="ruleEngineService"/>
-		<property name="ruleAuthoringService" ref="ruleAuthoringService"/>
-		<property name="repositoryService" ref="jcrService"/>
-		<property name="reportDefinitionDao" ref="reportDefinitionDao"/>
-		<property name="organizationDao" ref="organizationDao"/>
-        <property name="studyDao" ref="studyDao" />
-		<property name="configPropertyDao" ref="configPropertyDao" />
-		<property name="ruleDeploymentService" ref="ruleDeploymentService" />
+		<property name="configPropertyDao"  ref="configPropertyDao"/>
+        <property name="organizationDao"  ref="organizationDao" />
+        <property name="reportDefinitionDao" ref="reportDefinitionDao" />
+        <property name="ruleSetDao" ref="ruleSetDao" />
+        <property name="ruleEngineService" ref="ruleEngineService" />
 	</bean>
 
    <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />

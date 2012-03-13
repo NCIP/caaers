@@ -73,7 +73,7 @@
             </dependency>
 
             <!-- Rules Jar -->
-            <dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.3.6" conf="build,dist,distGrid->default">
+            <dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.3.7" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j" />
                 <exclude org="gov.nih.nci.cabig.ctms" />
             </dependency>

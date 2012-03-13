@@ -1,11 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import com.semanticbits.rules.api.RepositoryService;
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.api.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
@@ -29,13 +24,14 @@ public class CreateRuleCommandTest extends AbstractTestCase {
     CaaersRulesEngineService caaersRulesEngineService;
     ReportDefinitionDao reportDefinitionDao;
     OrganizationDao organizationDao;
+    StudyDao studyDao;
 
     public  void setUp(){
 
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 
         command = new CreateRuleCommand(caaersRulesEngineService,
-                reportDefinitionDao, organizationDao);
+                reportDefinitionDao, organizationDao, studyDao);
     }
 
     //checks the mandatory options

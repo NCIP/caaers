@@ -33,21 +33,6 @@ public class CaaersRuleUtilTest extends CaaersTestCase {
     }
 
 
-    public void testCreateCategory() throws Exception {
-        CaaersRuleUtil.createCategory(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C/D");
-        assertTrue(RuleUtil.categoryExist(caaersRulesEngineService.getRuleAuthoringService(), "/A"));
-        assertTrue(RuleUtil.categoryExist(caaersRulesEngineService.getRuleAuthoringService(), "/A/B"));
-        assertTrue(RuleUtil.categoryExist(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C"));
-    }
-
-
-    public void testCreateCategoryMultipleTimes() throws Exception {
-       Category c1 =  CaaersRuleUtil.createCategory(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C/D/E");
-       Category c2 =  CaaersRuleUtil.createCategory(caaersRulesEngineService.getRuleAuthoringService(), "/A/B/C/D/E");
-
-       assertEquals(c1.getPath(), c2.getPath());
-    }
-
 
     public void testMultiplexAndEvaluate(){
         B b = new B();

@@ -362,9 +362,9 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		} catch (Exception e) {
 			System.out.println("registering for first time");
 		}
-		deploymetService.registerRuleXml(
-				"gov.nih.nci.cabig.caaers.rules.reporting_basics_section",
-				ruleXml);
+//		deploymetService.registerRuleXml(
+//				"gov.nih.nci.cabig.caaers.rules.reporting_basics_section",
+//				ruleXml);
 		assertTrue("Rule deployed", true);
 	}
 

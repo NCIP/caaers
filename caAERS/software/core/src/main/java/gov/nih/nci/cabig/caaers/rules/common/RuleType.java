@@ -8,10 +8,12 @@ public enum RuleType {
 
     private String name;
     private String desc;
+    private String packageName;
 
     RuleType(String name, String desc) {
         this.name = name;
         this.desc = desc;
+        this.packageName = "gov.nih.nci.cabig.caaers.rules";
     }
 
     public String getName() {
@@ -20,6 +22,17 @@ public enum RuleType {
 
     public String getDescription() {
         return desc;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public static RuleType getByName(String name){
+        for(RuleType t : values()){
+            if(t.getName().equals(name)) return t;
+        }
+        return null;
     }
 
 }

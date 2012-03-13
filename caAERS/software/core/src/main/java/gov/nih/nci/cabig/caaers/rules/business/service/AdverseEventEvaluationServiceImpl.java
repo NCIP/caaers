@@ -3,20 +3,17 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 import com.semanticbits.rules.api.BusinessRulesExecutionService;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.exception.RuleException;
-import com.semanticbits.rules.exception.RuleSetNotFoundException;
 import com.semanticbits.rules.impl.RuleEvaluationResult;
 import com.semanticbits.rules.objectgraph.FactResolver;
 import com.semanticbits.rules.utils.RuleUtil;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
-import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
-import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
-import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.rules.common.*;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -55,6 +52,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * 
      */
     public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception {
+        
+
 
         ExpeditedAdverseEventReport aer = ae.getReport();
         String message = evaluateSponsorTarget(ae, study, null, aer, RuleType.REPORT_SCHEDULING_RULES);
@@ -212,6 +211,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
                     ReportDefinition reportDefinition, 
                     ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
 
+
         String sponsor_define_study_level_evaluation = null;
         String sponsor_level_evaluation = null;
         String final_result = null;
@@ -295,7 +295,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         
         for(ExpeditedReportSection section : sections){
 	        // 2. fetch the bindUri
-	        String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE, "reporting_" + section.name());
+	        String bindURI = "gov.nih.nci.cabig.caaers.rules.reporting_" + CaaersRuleUtil.getStringWithoutSpaces(section.name());
 	
 	        try {
 	            List<Object> output = fireRules(input, bindURI);
@@ -308,7 +308,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	                    }
 	                }
 	            }
-	        } catch (RuleSetNotFoundException e) {
+	        } catch (RuleException e) {
 	            log.debug("There exist no reporting validation business rules for this AE, ignoring exception",e);
 	        }
         }
@@ -330,13 +330,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     private String sponsorLevelRules(AdverseEvent ae, Study study,
                     ReportDefinition reportDefinition, 
                     ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
-        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.SPONSOR_LEVEL,
-                study.getPrimaryFundingSponsorOrganization().getId().toString(), null, null, ruleType.getName());
+        String bindURI = fetchBindURI(ruleType, RuleLevel.Sponsor, study.getPrimaryFundingSponsorOrganization().getId() , null) ;
 
-
-        RuleSet ruleSetForSponsor = caaersRulesEngineService.getRuleSetByPackageName(bindURI, true);
-
-        if (ruleSetForSponsor == null) {
+        if (bindURI == null) {
             return "no_rules_found";
         }
 
@@ -363,15 +359,12 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     private String sponsorDefinedStudyLevelRules(AdverseEvent ae, Study study,
                     ReportDefinition reportDefinition,ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
 
-        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.SPONSOR_DEFINED_STUDY_LEVEL,
-                study.getPrimaryFundingSponsorOrganization().getId().toString(), null, study.getId().toString(), ruleType.getName());
 
+        //check if sponsor-study has rules ?
+        String bindURI = fetchBindURI(ruleType, RuleLevel.SponsorDefinedStudy,
+                study.getPrimaryFundingSponsorOrganization().getId(), study.getId());
 
-        RuleSet ruleSetForSponsorDefinedStudy = caaersRulesEngineService.getRuleSetByPackageName(bindURI, true);
-        
-        if (ruleSetForSponsorDefinedStudy == null) {
-            return "no_rules_found";
-        }
+        if(bindURI == null) return "no_rules_found";
 
         //evaluate the rules. 
 
@@ -400,11 +393,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
                      ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
 
 
-        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.INSTITUTION_DEFINED_STUDY_LEVEL,
-                null, organization.getId().toString(), study.getId().toString(), ruleType.getName());
-
-        RuleSet ruleSetForInstitutionDefinedStudy = caaersRulesEngineService.getRuleSetByPackageName(bindURI, true);
-        if (ruleSetForInstitutionDefinedStudy == null) {
+        String bindURI = fetchBindURI(ruleType, RuleLevel.InstitutionDefinedStudy, organization.getId(), study.getId());
+        if (bindURI == null) {
             return "no_rules_found";
         }
 
@@ -434,52 +424,16 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
                     ReportDefinition reportDefinition,
                     ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
 
-        String bindURI = caaersRulesEngineService.constructPackageName(CaaersRulesEngineService.INSTITUTIONAL_LEVEL,
-                        null, organization.getId().toString(),null, ruleType.getName());
-
-        RuleSet ruleSetForInstiution = caaersRulesEngineService.getRuleSetByPackageName(bindURI, true);
-
-        if (ruleSetForInstiution == null) {
-            return "no_rules_found";
-        }
+        String bindURI = fetchBindURI(ruleType, RuleLevel.Institution, organization.getId(), null);
+        if(bindURI == null) return "no_rules_found";
 
 
         try {
             return this.getEvaluationObject(ae, study, organization,
                             reportDefinition, bindURI, aer).getMessage();
         } catch (Exception e) {
-            throw new Exception(e.getMessage(), e);
+            throw new CaaersSystemException(e.getMessage(), e);
         }
-
-    }
-
-    /**
-     * Will generate the package name/bind url
-     * @param sponsorOrInstitutionName
-     * @param studyName
-     * @param type
-     * @param ruleSetName
-     * @return
-     */
-    private String getBindURI(String sponsorOrInstitutionName, String studyName,
-                    final CategoryConfiguration type, String ruleSetName) {
-        // include the package name
-        StringBuffer sb = new StringBuffer(type.getPackagePrefix());
-
-        // include study name
-        if (CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.equals(type) || CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.equals(type)) {
-            sb.append(".").append(RuleUtil.getStringWithoutSpaces(studyName));
-        }
-
-        // include sponsor/institution name
-        if (CategoryConfiguration.SPONSOR_BASE.equals(type) || CategoryConfiguration.INSTITUTION_BASE.equals(type)
-                        || CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.equals(type)
-                        || CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.equals(type)) {
-            sb.append(".").append(RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName));
-        }
-
-        // always include the ruleSetName
-        return sb.append(".").append(RuleUtil.getStringWithoutSpaces(ruleSetName)).toString();
 
     }
 
@@ -529,29 +483,25 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
                     Organization organization, ReportDefinition reportDefinition, String bindURI,
                     ExpeditedAdverseEventReport aer) throws Exception {
         // holder for the returned object
-        AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
+        AdverseEventEvaluationResult eventEvaluationResult = new AdverseEventEvaluationResult();
 
 
         // fire the rules and AdverseEventEvaluationResult from the output.
         List<Object> outputObjects = fireRules(generateInput(aer, reportDefinition, ae, study, organization), bindURI);
 
-        if (outputObjects == null) {
-            // no_rules_found
-            evaluationForSponsor.setMessage("no_rules_found");
-            return evaluationForSponsor;
-        }
-        
+        if (outputObjects == null) return eventEvaluationResult; //no rules found
+
         //populate the correct message.
         for(Object o : outputObjects) {
             if (o instanceof RuleEvaluationResult){
-            	evaluationForSponsor.setMessage(((RuleEvaluationResult)o).getMessage());
+                eventEvaluationResult.setRuleEvaluationResult(((RuleEvaluationResult)o));
             	break;
             }
 
         }
 
         // return AdverseEventEvaluationResult.
-        return evaluationForSponsor;
+        return eventEvaluationResult;
 
     }
 
@@ -568,17 +518,13 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         List<Object> outputObjects = null;
         try {
             outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
-        }catch (RuleSetNotFoundException e){
+        }catch (RuleException e){
         	log.debug("No rule registered under :" + bindURI, e);
-        } catch (RuleException e) {
             throw e;
         } catch (Exception ex) {
             log.error("Unable to fire the rule : " + bindURI);
             log.error("Rule might have been be un deployed  , please look at the exception . ", ex);
-            if (ex.getMessage().indexOf("local class incompatible") != -1) {
-                throw new RuleException(ex.getMessage(), ex);
-            }
-
+            throw new CaaersSystemException(ex.getMessage(), ex);
         }
 
         return outputObjects;
@@ -677,6 +623,23 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         if(sb.length() > 0) return sb.toString();
 
         return "OPTIONAL";
+    }
+    
+    public String fetchBindURI(RuleType ruleType, RuleLevel level, Integer orgId, Integer studyId){
+        RuleSetQuery query = new RuleSetQuery();
+        query.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+        query.filterByRuleType(ruleType);
+        if(level != null){
+            query.filterByRuleLevel(level);
+            if(orgId != null) query.filterByOrganizationId(orgId);
+            if(studyId != null && level.isStudyBased()) query.filterByStudyId(studyId);
+        }
+
+        
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> ruleSets = caaersRulesEngineService.searchRuleSets(query);
+        if(ruleSets == null || ruleSets.isEmpty()) return null;
+        return ruleSets.get(0).getRuleBindURI();
+        
     }
 
 

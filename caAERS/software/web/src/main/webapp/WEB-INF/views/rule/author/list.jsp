@@ -73,14 +73,14 @@ YAHOO.example.Data = {
     rsList: [
 <c:forEach items="${command.ruleSets}" var="rs" varStatus="status">
         {
-            rsLevel: "${empty rs.level ? 'NA' : rs.level}",
-            rsDescription: "${rs.description}",
-            rsOrganization: "${empty rs.organization ? 'NA' : rs.organization}",
-            rsStudyID: "${rs.study}",
-            rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>"
+            rsLevel: "${empty rs.ruleLevel ? 'NA' : rs.ruleLevel.description}",
+            rsDescription: "${rs.ruleType.name}",
+            rsOrganization: "${empty rs.organization ? 'NA' : rs.organization.fullName}",
+            rsStudyID: "${rs.study.shortTitle}",
+            rsStatus: "<div id='status-${rs.id}'>${rs.status}</div>"
 
             ,
-            rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.name}', 'status-${rs.id}')\">" +
+            rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.ruleBindURI}', 'status-${rs.id}')\">" +
             			"<option value=\"\">Please select</option>" +
                         "<option value=\"\">View/Edit</option>" +
                        <c:if test="${hasRuleCreate}">
@@ -219,6 +219,11 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </chrome:division>
     </csmauthz:accesscontrol>
 </chrome:box>
+<div id="rule-debug">
+    <p>Stage Area : (${command.allFromSageArea})</p>
+    <p>Deploy Area : (${command.allFromDeployArea})</p>
+    <p>Runtime Area : (${command.allFromRuntimeEngine})</p>
 
+</div>
 </body>
 </html>

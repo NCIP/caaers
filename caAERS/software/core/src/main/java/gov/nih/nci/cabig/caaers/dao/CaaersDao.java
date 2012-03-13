@@ -340,7 +340,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      */
     @Transactional(readOnly = false)
     public void save(T o){
-    	getHibernateTemplate().save(o);
+    	getHibernateTemplate().saveOrUpdate(o);
     }
     @Transactional(readOnly = false)
     public void refresh(T o){

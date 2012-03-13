@@ -1,0 +1,23 @@
+<dataset>
+
+    <ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="National Cancer Institute"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+
+    <STUDIES
+            id="-1"
+            multi_institution_indicator="0"
+            short_title="Shorter"
+            long_title="Lengthy Title" description="Different description"
+            grid_id="f2321"
+            load_status="1"
+            />
+    <ind_holders />
+    <site_investigators />
+    <disease_terminologies />
+    <rule_sets />
+</dataset>

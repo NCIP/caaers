@@ -124,6 +124,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
             runTest();
         } catch (Throwable throwable) {
             shouldFlush = false;
+            log.error(throwable);
             throw throwable;
         } finally {
             tearDown();

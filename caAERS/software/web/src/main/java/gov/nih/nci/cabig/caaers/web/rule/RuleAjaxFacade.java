@@ -380,29 +380,6 @@ public class RuleAjaxFacade {
         return ObjectTools.reduceAll(sites, "id", "name", "nciInstituteCode");
     }
 
-    
-//  BJ: could not find any references to this method, so commenting it. (later to be removed)
-//    /*
-//     * This method returns a list of Field names based on the Domain object. This is only used for
-//     * rules UI
-//     */
-//    public List<Field> getFieldNames(int domainObjectIndex) {
-//        ServletContext servletContext = WebContextFactory.get().getServletContext();
-//
-//        RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi");
-//
-//        if (ruleUi != null && ruleUi.getCondition() != null && ruleUi.getCondition().size() > 0
-//                        && ruleUi.getCondition().get(0).getDomainObject() != null
-//                        && ruleUi.getCondition().get(0).getDomainObject().size() > 0) {
-//            if (ruleUi.getCondition().get(0).getDomainObject().size() > domainObjectIndex) {
-//                List<Field> fields = ruleUi.getCondition().get(0).getDomainObject().get(
-//                                domainObjectIndex).getField();
-//                return fields;
-//            }
-//        }
-//
-//        return null;
-//    }
 
     /*
      * This method returns a Rule UI domain object based on the index

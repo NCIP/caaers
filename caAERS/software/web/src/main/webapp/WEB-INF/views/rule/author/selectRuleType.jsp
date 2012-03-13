@@ -20,134 +20,86 @@
     	<tags:dwrJavascriptLink objects="authorRule"/>
     	<title>Select Rule Level</title>
 
-	    <script type="text/javascript">
-	    	
-			function setRuleSetName(ruleSetElement)
-    		{
-                var ruleType = ruleSetElement.options[ruleSetElement.selectedIndex].value;
-	    		$("hiddenRuleSetName").value= ruleType;
-                if(ruleType == 'Field Rules'){
-                  $('ruleLevel').selectedIndex = 0;
-                  displayRuleTypeInput($('ruleLevel'));
-                  hideRow('ruleLevelDiv');
-                }else{
-                  showRow('ruleLevelDiv');
-                }
-    		}
-    		
-    		function displayRuleTypeInput(level)
-			{
-				$("level").value = level.value;
-				
-				if(level.value == 'Please select a Rule level')
-				{
-					$("level").value = '';
-					Effect.Fade("sponsorName-details");
-					Effect.Fade("institutionName-details");
-					Effect.Fade("categoryIdentifier-details");
-				}
-					 
-				if (level.value == 'Sponsor')
-				{
-					Effect.Appear("sponsorName-details");
-					Effect.Fade("categoryIdentifier-details");
-					Effect.Fade("institutionName-details");
-				}
-				
-				if (level.value == 'SponsorDefinedStudy')
-				{
-					Effect.Appear("sponsorName-details");
-					Effect.Appear("categoryIdentifier-details");
-					Effect.Fade("institutionName-details");
-				}
-
-				if (level.value == 'Institution')
-				{
-					Effect.Appear("institutionName-details");
-					Effect.Fade("categoryIdentifier-details");
-					Effect.Fade("sponsorName-details");
-				}
-
-				if (level.value == 'InstitutionDefinedStudy')
-				{
-					Effect.Appear("institutionName-details");
-					Effect.Appear("categoryIdentifier-details");
-					Effect.Fade("sponsorName-details");
-				}	 
-			}
-			
-			function initializeSelectElements(){
-				if(${initializeLevelSelect}){
-					var sel = $('ruleLevel');
-					for(var i = 0; i < sel.options.length; i++){
-						if(sel.options[i].value == '${initialLevel}'){
-							sel.selectedIndex = i;
-						}
-					}
-				}
-				if(${initializeRuleSetNameSelect}){
-					var sel = $('ruleSetName');
-					for(var i = 0; i < sel.options.length; i++){
-						if(sel.options[i].value == '${initialRuleSet}')
-							sel.selectedIndex = i;
-					}
-				}
-			}
-			
-			Event.observe(window, "load", function(){
-				initSearchField();
-				initializeSelectElements();
-				displayRuleTypeInput($('ruleLevel'));
-				
-				//remove the query string from form url
-	    		removeQueryStringFromForm('command');	            				
-			});
-    		
-    	</script>
 	</head>
 	<body>
+
+    <script type="text/javascript">
+
+
+
+        Event.observe(window, "load", function(){
+
+
+            //remove the query string from form url
+            removeQueryStringFromForm('command');
+        });
+
+    </script>
 		<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" title="Select Rule Type">
     		<jsp:attribute name="singleFields">
     			<tags:instructions code="ruletype" /> 
     			<div class="row"  id="ruleSetDiv">
-            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleSetName">Type</label></div>
+            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="caaersRuleSet.ruleTypeName">Type</label></div>
             			<div class="value">
-                			<select id="ruleSetName" onChange="setRuleSetName(this)">
-                    			<option value="">Please select</option>
-				                <option value="SAE Reporting Rules">SAE Reporting Rules </option>
-                				<option value="Mandatory Sections Rules">Mandatory Sections Rules</option>
-                                <option value="Field Rules">Field Rules</option>
-				            </select>
-				            <tags:errors path="ruleSetName"/>
+                            <ui:select path="caaersRuleSet.ruleTypeName" options="${command.ruleTypeOptions}" cssClass="required">
+                                <jsp:attribute name="embededJS">
+                                    $('caaersRuleSet.ruleTypeName').observe('change', function(evt){
+                                         var el = $(evt.element());
+								         var optionText = el.options[el.selectedIndex].text;
+                                        $('caaersRuleSet.ruleLevelName').selectedIndex = 0;
+                                         AE.resetAutocompleter('caaersRuleSet.sponsor')
+                                         AE.resetAutocompleter('caaersRuleSet.study')
+                                         hideRow('ruleLevelDiv');
+                                         hideRow('sponsorName-details');
+                                         hideRow('categoryIdentifier-details');
+                                         if(optionText != 'Field Rules' ){
+                                             showRow('ruleLevelDiv');
+                                         }
+                                    });
+                                </jsp:attribute>
+                            </ui:select>
         				</div>
         			</div>
 				
-    				<div class="row"  id="ruleLevelDiv" style="display:none;">
-            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleLevelName">Level</label></div>
+    				<div class="row"  id="ruleLevelDiv" style="${empty command.caaersRuleSet.ruleLevelName ? 'display:none' : ''};">
+            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="caaersRuleSet.ruleLevelName">Level</label></div>
             			<div class="value">
-            				<form:hidden path="level"/>
-                			<select id="ruleLevel" onChange="displayRuleTypeInput(this)" value="${level }">
-                    			<option value="Please select a Rule level">Please select</option>
-				                <option value="Sponsor">Sponsor rules </option>
-                				<option value="Institution">Institution rules</option>
-                				<option value="SponsorDefinedStudy">Sponsor defined rules for a study</option>
-                				<option value="InstitutionDefinedStudy">Institution defined rules for a study</option>
-				            </select>
-				            <tags:errors path="level"/>
+                            <ui:select path="caaersRuleSet.ruleLevelName" options="${command.ruleLevelOptions}">
+                                <jsp:attribute name="embededJS">
+                                      $('caaersRuleSet.ruleLevelName').observe('change', function(evt){
+                                         var el = $(evt.element());
+								         var optionText = el.options[el.selectedIndex].value;
+                                         AE.resetAutocompleter('caaersRuleSet.sponsor')
+                                         AE.resetAutocompleter('caaersRuleSet.study')
+                                         hideRow('sponsorName-details');
+                                         hideRow('categoryIdentifier-details');
+                                         if(optionText){
+                                            showRow('sponsorName-details');
+                                            if(optionText == 'InstitutionDefinedStudy'  || optionText == 'SponsorDefinedStudy' )  {
+                                                showRow('categoryIdentifier-details')
+                                            }
+
+                                         }
+                                    });
+                                </jsp:attribute>
+                            </ui:select>
+
         				</div>
         			</div>
 
         			
         			<div class="autoclear" id="criteria-div">		
-						
-						<div title="Select sponsor" id="sponsorName-details" style="display:none">
+
+						<div title="Select sponsor" id="sponsorName-details"  style="${empty command.caaersRuleSet.ruleLevelName ? 'display:none' : ''}" >
+
                             <ui:row path="sponsor">
                                 <jsp:attribute name="label">
-                                    <ui:label required="true" text="Sponsor" path="sponsor"/>
+                                    <ui:label required="true" text="Organization" path="caaersRuleSet.sponsor"/>
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
-                                    <ui:autocompleter path="sponsor" enableClearButton="true" required="false" title="Sponsor"
-                                    	initialDisplayValue="${empty command.sponsor ? 'Begin typing here' : command.sponsor.fullName}">
+                                    <ui:autocompleter path="caaersRuleSet.sponsor" enableClearButton="true" required="false" title="Sponsor"
+                                                      initialDisplayValue="${empty command.caaersRuleSet.sponsor ? 'Begin typing here' : command.caaersRuleSet.sponsor.fullName}">
+
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text) {
                 							authorRule.matchOrganization(text, function(values) {
@@ -161,75 +113,33 @@
 						                	return organization.name + nciInstituteCode;
             							}
                                     </jsp:attribute>
-                                    <jsp:attribute name="optionsJS">
-                                    	{
-                                    		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("sponsor").value = selectedChoice.id;
-                                    		}
-                                    	}
-                                    </jsp:attribute>
-                                    </ui:autocompleter>
-                                </jsp:attribute>
-                            </ui:row>
-						</div>
-						
-						<div title="Select institution" id="institutionName-details" style="display:none" class="pane">
-							<ui:row path="institution">
-                                <jsp:attribute name="label">
-                                    <ui:label required="true" text="Organization" path="institution"/>
-                                </jsp:attribute>
-                                <jsp:attribute name="value">
-                                    <ui:autocompleter path="institution" enableClearButton="true" required="false" title="Institution"
-                                    	initialDisplayValue="${empty command.institution ? 'Begin typing here' : command.institution.fullName}">
-                                    <jsp:attribute name="populatorJS">
-                                    	function(autocompleter, text) {
-        									authorRule.matchSites(text, function(values) {
-												autocompleter.setChoices(values)
-        									})
-        								}
-                                    </jsp:attribute>
-                                    <jsp:attribute name="selectorJS">
-                                    	function(organization) {
-	        								var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
-        									return organization.name + nciInstituteCode;
-        								}
-                                    </jsp:attribute>
-                                    <jsp:attribute name="optionsJS">
-                                    	{
-                                    		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("institution").value = selectedChoice.id;
-                                    		}
-                                    	}
-                                    </jsp:attribute>
+
                                     </ui:autocompleter>
                                 </jsp:attribute>
                             </ui:row>
 						</div>
 
-						<div title="Select study" id="categoryIdentifier-details" style="display:none" class="pane">
-							<ui:row path="study">
+
+						<div title="Select study" id="categoryIdentifier-details" style="${ ( ('SponsorDefinedStudy' eq command.caaersRuleSet.ruleLevelName) or ('InstitutionDefinedStudy' eq command.caaersRuleSet.ruleLevelName)) ? '' : 'display:none'  } " class="pane">
+							<ui:row path="caaersRuleSet.study">
                                 <jsp:attribute name="label">
-                                    <ui:label required="true" text="Study" path="study"/>
+                                    <ui:label required="true" text="Study" path="caaersRuleSet.study"/>
                                 </jsp:attribute>
                                 <jsp:attribute name="value">
-                                    <ui:autocompleter path="study" enableClearButton="true" required="false" title="Study"
-                                    	initialDisplayValue="${empty command.study ? 'Begin typing here' : command.study.shortTitle}">
+
+                                    <ui:autocompleter path="caaersRuleSet.study" enableClearButton="true" required="false" title="Study"
+                                    	initialDisplayValue="${empty command.caaersRuleSet.study ? 'Begin typing here' : command.caaersRuleSet.study.shortTitle}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text){
-                                           var institutionId = '';
-                                           var sponsorId = '';
-                                           if($('institution')){
-                                              institutionId = $F('institution');
-                                           }
-                                           if($('sponsor')){
-                                              sponsorId = $F('sponsor');
-                                           }
-										   if(institutionId != '') {
-												authorRule.matchStudiesByInstitution(text, institutionId, function(values) {
+
+                                           var sponsorId = $F('caaersRuleSet.sponsor');
+
+
+										   if('InstitutionDefinedStudy' == $F('caaersRuleSet.ruleLevelName')) {
+												authorRule.matchStudiesByInstitution(text, sponsorId, function(values) {
 													autocompleter.setChoices(values)
 												})
-											}
-											if(sponsorId != '') {
+											} else  {
 												authorRule.matchStudies(text,sponsorId, function(values) {
 													autocompleter.setChoices(values)
 												})
@@ -242,20 +152,13 @@
 											return study.shortTitle;
         								}
                                     </jsp:attribute>
-                                    <jsp:attribute name="optionsJS">
-                                    	{
-                                    		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                                    			$("study").value = selectedChoice.id;
-                                    		}
-                                    	}
-                                    </jsp:attribute>
+
                                     </ui:autocompleter>
                                 </jsp:attribute>
                             </ui:row>
 						</div>
 					</div>
 					
-    			<form:hidden id="hiddenRuleSetName" path="ruleSetName"/>
     		</jsp:attribute>
     	</tags:tabForm>
 	</body>

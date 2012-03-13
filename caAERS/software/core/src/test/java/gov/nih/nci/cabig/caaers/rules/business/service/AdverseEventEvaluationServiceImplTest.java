@@ -40,7 +40,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		businessRulesExecutionService = new BusinessRulesExecutionService(){
-			public List<Object> fireRules(String arg0, List<Object> arg1) {
+			public List<Object> fireRules(String arg0, List<Object> arg1,AgendaFilter... filters ) {
 				return evaluationResult;
 			}
 		};
@@ -82,10 +82,10 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
 		EasyMock.expect(study.getPrimaryFundingSponsorOrganization()).andReturn(Fixtures.createOrganization("test",1)).anyTimes();
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
-        EasyMock.expect(caaersRulesEngineService.constructPackageName("SponsorDefinedStudy", "1", null, "1", "SAE Reporting Rules")).andReturn("abcd").anyTimes();
-		EasyMock.expect(caaersRulesEngineService.getRuleSetByPackageName("abcd", true)).andReturn(new RuleSet()).anyTimes();
+//        EasyMock.expect(caaersRulesEngineService.constructPackageName("SponsorDefinedStudy", "1", null, "1", "SAE Reporting Rules")).andReturn("abcd").anyTimes();
+//		EasyMock.expect(caaersRulesEngineService.getRuleSetByPackageName("abcd", true)).andReturn(new RuleSet()).anyTimes();
 		//frame the evalutaion result
-		RuleEvaluationResult result1 = new RuleEvaluationResult();
+		RuleEvaluationResult result1 = new RuleEvaluationResult("x");
 		result1.setMessage("ADVERSE_EVENT_SECTION");
 		evaluationResult.add(result1);
 		
@@ -114,7 +114,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
 		
 		//frame the evalutaion result
-		RuleEvaluationResult result1 = new RuleEvaluationResult();
+		RuleEvaluationResult result1 = new RuleEvaluationResult("x");
 		result1.setMessage("ADVERSE_EVENT_SECTION");
 		evaluationResult.add(result1);
 		
@@ -137,7 +137,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(study.getShortTitle()).andReturn("test").anyTimes();
 		
 		//frame the evalutaion result
-		RuleEvaluationResult result1 = new RuleEvaluationResult();
+		RuleEvaluationResult result1 = new RuleEvaluationResult("x");
 		result1.setMessage("ADVERSE_EVENT_SECTION");
 		evaluationResult.add(result1);
 		
@@ -159,7 +159,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
     //checks that agenda filter is created and passed in the input
     public void testEvaluateFieldLevelRulesAgnedaFilterAvailable(){
        impl.setBusinessRulesExecutionService(new BusinessRulesExecutionService(){
-           public List<Object> fireRules(String bindingURI, List<Object> objects) {
+           public List<Object> fireRules(String bindingURI, List<Object> objects, AgendaFilter... filters) {
                boolean hasAgendaFilter = false;
                for(Object o : objects) hasAgendaFilter |= (o instanceof AgendaFilter);
                if(!hasAgendaFilter) throw new RuntimeException("Agenda filter not present in input");

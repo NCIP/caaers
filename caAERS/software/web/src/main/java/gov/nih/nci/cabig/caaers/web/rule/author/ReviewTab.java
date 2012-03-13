@@ -16,10 +16,6 @@ import com.semanticbits.rules.utils.RuleUtil;
 
 public class ReviewTab extends DefaultTab {
 
-    public ReviewTab(String longTitle, String shortTitle, String viewName) {
-        super(longTitle, shortTitle, viewName);
-    }
-
     public ReviewTab() {
         super("Review and Submit", "Summary", "rule/author/review");
     }
@@ -28,11 +24,8 @@ public class ReviewTab extends DefaultTab {
     public Map<String, Object> referenceData(RuleInputCommand command) {
 
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
-
-        // Retrieve RuleSet based on the one chosen by the user.
-        createRuleCommand.retrieveRuleSet();
-
-        return super.referenceData(command);
+        createRuleCommand.cleanRuleSetAndMakeReadable();
+        return super.referenceData(command) ;
 
     }
 }

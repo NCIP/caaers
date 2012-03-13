@@ -1,6 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.dao.RuleSetDao;
+import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
+import gov.nih.nci.cabig.caaers.domain.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -12,6 +17,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,54 +28,11 @@ import java.util.Map;
  */
 public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
     private static final Log logger = LogFactory.getLog(SelectRuleTypeTab.class);
-    private static final String RULE_LEVEL_FIELD_GROUP = "RuleLevel";
-
-    public SelectRuleTypeTab(String longTitle, String shortTitle, String viewName) {
-        super(longTitle, shortTitle, viewName);
-    }
+    
+    private RuleSetDao ruleSetDao;
 
     public SelectRuleTypeTab() {
         super("Rule Type", "Rule Type", "rule/author/selectRuleType");
-    }
-
-    @Override
-    public Map<String, Object> referenceData(RuleInputCommand cmd) {
-        Map<String, Object> refdata = super.referenceData();
-        
-        CreateRuleCommand command = (CreateRuleCommand) cmd;
-        boolean initializeLevelSelect = false;
-        boolean initializeRuleSetNameSelect = false;
-        String initialLevel = "Please select a Rule level";
-        String initialRuleSet = "Please select a RuleSet Name";
-        if(command.getLevel() != null && !command.getLevel().equals("")){
-        	initializeLevelSelect = true;
-        	initialLevel = command.getLevel();
-        }
-        if(command.getRuleSetName() != null && !command.getRuleSetName().equals("")){
-        	initializeRuleSetNameSelect = true;
-        	initialRuleSet = command.getRuleSetName();
-        }
-        refdata.put("initializeLevelSelect", initializeLevelSelect);
-        refdata.put("initializeRuleSetNameSelect", initializeRuleSetNameSelect);
-        refdata.put("initialLevel", initialLevel);
-        refdata.put("initialRuleSet", initialRuleSet);
-        
-
-        return refdata;
-    }
-    
-    @Override
-    public Map<String, InputFieldGroup> createFieldGroups(RuleInputCommand cmd) {
-    	InputFieldGroupMap fieldMap = new InputFieldGroupMap();
-    	
-    	return fieldMap;
-    }
-    
-    @Override
-    public void postProcess(HttpServletRequest arg0, RuleInputCommand arg1, Errors arg2) {
-        logger.debug("In SelectRuleTab post process");
-        super.postProcess(arg0, arg1, arg2);
-
     }
 
     /**
@@ -86,34 +49,60 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
     @Override
     public void validate(RuleInputCommand cmd, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         CreateRuleCommand command = (CreateRuleCommand) cmd;
-        String level = command.getLevel();
-        String ruleSetName = command.getRuleSetName();
+        ValidationErrors validationErrors = command.getCaaersRuleSet().validate();
+        logger.info(validationErrors.toString());
+        if(validationErrors.hasErrors()){
+            if(validationErrors.containsErrorWithCode("RUL_025")){
+                errors.rejectValue("caaersRuleSet.ruleTypeName", "RUL_025");
+                return;
+            }
 
-        if(StringUtils.isEmpty(ruleSetName)){
-           errors.rejectValue("ruleSetName", "RUL_010");
-           return;
-        }
-        //for field level rules ignore further validations. 
-        if(StringUtils.equals(ruleSetName,  RuleType.FIELD_LEVEL_RULES.getName())) {
-            return;
-        }
+            if(validationErrors.containsErrorWithCode("RUL_014")) errors.rejectValue("caaersRuleSet.ruleLevelName", "RUL_014");
 
-        if(StringUtils.isEmpty(level)){
-           errors.rejectValue("level", "RUL_014");
-           return;
+            if(validationErrors.containsErrorWithCode("RUL_011")) {
+                errors.rejectValue("caaersRuleSet.sponsor", "RUL_011");
+                errors.rejectValue("caaersRuleSet.institution", "RUL_011");
+            }
+            if(validationErrors.containsErrorWithCode("RUL_012")) errors.rejectValue("caaersRuleSet.study", "RUL_012");
         }
+        
+        //check if there exist another rule-set ?
+        if(!errors.hasErrors()){
+            RuleSetQuery ruleSetQuery = new RuleSetQuery();
+            ruleSetQuery.filterByRuleType(command.getCaaersRuleSet().getRuleType());
+            if(command.getCaaersRuleSet().getRuleLevel() != null) ruleSetQuery.filterByRuleLevel(command.getCaaersRuleSet().getRuleLevel());
+            if(command.getCaaersRuleSet().getOrganization() != null) ruleSetQuery.filterByOrganizationId(command.getCaaersRuleSet().getOrganization().getId());
+            if(command.getCaaersRuleSet().getStudy() != null) ruleSetQuery.filterByStudyId(command.getCaaersRuleSet().getStudy().getId());
+            if(command.getCaaersRuleSet().getId() != null) ruleSetQuery.ignoreRuleSetId(command.getCaaersRuleSet().getId());
+            
+            List<RuleSet>  ruleSets = (List<RuleSet>)ruleSetDao.search(ruleSetQuery);
+            if(!ruleSets.isEmpty()){
+                logger.error("Duplicate ruleset identified " + String.valueOf(ruleSets));
+              errors.reject("RUL_026", "For the same input configuration, another rule set exist. Please edit that instead.");
+            }
+        }
+    }
 
-        if(command.isSponsorBased() && command.getSponsor() == null){
-           errors.rejectValue("sponsor", "RUL_011");
-        }
-        if(command.isInstitutionBased() && command.getInstitution() == null){
-           errors.rejectValue("institution", "RUL_013"); 
-        }
-        if(command.isStudyBased() && command.getStudy() == null){
-           errors.rejectValue("study", "RUL_012");
-        }
+    @Override
+    public void postProcess(HttpServletRequest request, RuleInputCommand command, Errors errors) {
+        super.postProcess(request, command, errors);
+        CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
+
 
     }
-    
 
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(RuleInputCommand cmd) {
+        InputFieldGroupMap fieldMap = new InputFieldGroupMap();
+
+        return fieldMap;
+    }
+
+    public RuleSetDao getRuleSetDao() {
+        return ruleSetDao;
+    }
+
+    public void setRuleSetDao(RuleSetDao ruleSetDao) {
+        this.ruleSetDao = ruleSetDao;
+    }
 }

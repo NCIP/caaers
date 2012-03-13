@@ -15,23 +15,39 @@
 
     <tx:annotation-driven/>
 
-    <bean id="ruleAuthoringService" class="com.semanticbits.rules.impl.RuleAuthoringServiceImpl">
-    	<property name="ruleServiceContext" ref="ruleServiceContext" />
+
+    <bean id="rulesServiceProvider" class="org.drools.jsr94.rules.RuleServiceProviderImplEx" />
+
+    <bean id="rulesAdministrator" class="org.springmodules.jsr94.factory.RuleAdministratorFactoryBean">
+        <property name="serviceProvider" ref="rulesServiceProvider" />
+    </bean>
+    <bean id="rulesRuntime" class="org.springmodules.jsr94.factory.RuleRuntimeFactoryBean">
+        <property name="serviceProvider" ref="rulesServiceProvider" />
+    </bean>
+
+    <bean id="ruleSource" class="org.drools.jsr94.rules.RuleSourceEx">
+        <property name="ruleRuntime" ref="rulesRuntime" />
+    </bean>
+    <bean id="jsr94Template"  class="org.springmodules.jsr94.core.Jsr94Template">
+        <property name="ruleSource"  ref="ruleSource" />
     </bean>
 
     <bean id="ruleDeploymentService" class="com.semanticbits.rules.impl.RuleDeploymentServiceImpl">
-    	<property name="ruleServiceContext" ref="ruleServiceContext" />
+        <property name="ruleAdministrator" ref="rulesAdministrator" />
+        <property name="ruleRuntime" ref="rulesRuntime" />
+        <property name="ruleRepository"  ref="ruleRepository"/>
     </bean>
+
 
 
     <bean id="ruleEngineService" autowire="byType" class="com.semanticbits.rules.impl.RulesEngineServiceImpl">
-    	<property name="repositoryService" ref="jcrService" />
-    	<property name="ruleAuthoringService" ref="ruleAuthoringService" />
+    	<property name="ruleRepository" ref="ruleRepository" />
     	<property name="ruleDeploymentService" ref="ruleDeploymentService" />
     </bean>
 
+
     <bean id="businessRulesExecutionService" class="com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl">
-    	<property name="ruleServiceContext" ref="ruleServiceContext" />
+        <property name="jsr94Template"  ref="jsr94Template" />
     </bean>
 
     <bean id="rulesLoader" class="com.semanticbits.rules.impl.SystemRulesDeployer">
@@ -39,15 +55,6 @@
         <constructor-arg value="gov.nih.nci.cabig.caaers.rules.deploy" index="1"/>
     </bean>
 
-	<bean id="ruleServiceContext" class="com.semanticbits.rules.impl.RuleServiceContext">
-		<property name="repositoryService" ref="jcrService" />
-		<property name="ruleExecutionSetRepository" ref="ruleExecutionSetRepository" />
-	</bean>
-	
-	<bean id="ruleExecutionSetRepository" class="com.semanticbits.rules.impl.RuleExecutionSetRepositoryImpl">
-		<property name="repositoryService" ref="jcrService" />
-	</bean>
-	
 	<bean id="evaluationService" autowire="byType" class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl" />
         
     <bean id="adverseEventEvaluationService" class="gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl" autowire="no">

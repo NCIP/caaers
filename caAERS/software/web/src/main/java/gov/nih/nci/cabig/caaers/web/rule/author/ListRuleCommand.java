@@ -1,22 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import com.semanticbits.rules.impl.RulesEngineServiceImpl;
+import gov.nih.nci.cabig.caaers.domain.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
-import gov.nih.nci.cabig.caaers.utils.CollectionFilterer;
-import gov.nih.nci.cabig.caaers.utils.Filterer;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
-
-import java.rmi.RemoteException;
-import java.util.Iterator;
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.brxml.RuleSet;
+import java.rmi.RemoteException;
+import java.util.List;
+
 
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
+ * @author Biju Joseph
  */
 public class ListRuleCommand implements RuleInputCommand {
 
@@ -30,25 +27,18 @@ public class ListRuleCommand implements RuleInputCommand {
     private boolean updated = false;
 
     private MultipartFile ruleSetFile1;
+
+    private CaaersRulesEngineService caaersRulesEngineService;
     // Done with attributes related to import rule
 
     public ListRuleCommand(CaaersRulesEngineService caaersRulesEngineService) throws RemoteException {
+        this.caaersRulesEngineService = caaersRulesEngineService;
         populateRuleSets(caaersRulesEngineService);
     }
     
     public void populateRuleSets(CaaersRulesEngineService caaersRulesEngineService){
     	setRuleSets(null);
     	ruleSets = caaersRulesEngineService.getAllRuleSets();
-        
-        Filterer filterer = new CollectionFilterer(ruleSets); 
-        Iterator collectionIter = filterer.iterator();
-        while (collectionIter.hasNext()) {
-        	RuleSet ruleSet = (RuleSet)collectionIter.next();
-        	if (ruleSet.getDescription().equals("The default rule package")) {
-        		filterer.remove(ruleSet);
-        	}
-        }
-        ruleSets = (List<RuleSet>) filterer.getFilteredObject();
     }
 
     public List<RuleSet> getRuleSets() {
@@ -100,4 +90,18 @@ public class ListRuleCommand implements RuleInputCommand {
         this.errorMessage = errorMessage;
     }
     // Done with getters and setters related to import rule.
+
+
+
+    //------------------ only for debuging ---------------------
+    public List<String> getAllFromSageArea(){
+        return ((RulesEngineServiceImpl)caaersRulesEngineService.getRuleEngineService() ).getRuleRepository().listAllFromStageArea();
+    }
+    public List<String> getAllFromDeployArea(){
+        return ((RulesEngineServiceImpl)caaersRulesEngineService.getRuleEngineService() ).getRuleRepository().listAllFromDeployArea();
+    }
+
+    public List<String> getAllFromRuntimeEngine(){
+        return  ((RulesEngineServiceImpl)caaersRulesEngineService.getRuleEngineService() ).getRuleDeploymentService().listRegisterdRuleSets();
+    }
 }

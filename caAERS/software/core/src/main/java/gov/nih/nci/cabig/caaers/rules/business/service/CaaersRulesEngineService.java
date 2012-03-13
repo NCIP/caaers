@@ -1,19 +1,19 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import com.semanticbits.rules.api.RepositoryService;
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.api.RuleDeploymentService;
 import com.semanticbits.rules.api.RulesEngineService;
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.Condition;
-import com.semanticbits.rules.impl.RuleAuthoringServiceImpl;
+import com.semanticbits.rules.brxml.RuleSet;
+import com.semanticbits.rules.exception.RuleException;
 import com.semanticbits.rules.utils.BRXMLHelper;
 import com.semanticbits.rules.utils.RuleUtil;
 import com.semanticbits.rules.utils.XMLUtil;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.RuleSetDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -24,20 +24,23 @@ import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.drools.repository.PackageItem;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 /**
  *
@@ -57,161 +60,110 @@ public class CaaersRulesEngineService {
     public static final String INSTITUTION_DEFINED_STUDY_LEVEL = RuleLevel.InstitutionDefinedStudy.getName();
 
 	private RulesEngineService ruleEngineService;
-	private RuleAuthoringService ruleAuthoringService;
-    private RepositoryService repositoryService;
+
+    private RuleSetDao ruleSetDao;
     private ReportDefinitionDao reportDefinitionDao;
     private OrganizationDao organizationDao;
     private StudyDao studyDao;
     private ConfigPropertyDao configPropertyDao;
-    private RuleDeploymentService ruleDeploymentService;
 
     //BJ: refactored , extracted from CreateRulesCommand.
     private String[] columnsToTrash = {"studySDO", "organizationSDO", "adverseEventEvaluationResult", "factResolver", "ruleEvaluationResult"};
 
-    public CaaersRulesEngineService() {
-        ruleAuthoringService = new RuleAuthoringServiceImpl();
+    /**
+     * Will return the rule-set from the rules engine, and returns it after necessary clean-up
+     * @param bindURI
+     * @return
+     */
+    public RuleSet getRuleSet(String bindURI){
+        RuleSet ruleSet =  ruleEngineService.getRuleSet(bindURI);
+        cleanRuleSet(ruleSet);
+        makeRuleSetReadable(ruleSet);
+        return  ruleSet;
     }
 
     /**
-     * Will create and register the ruleset with authoring service.
-     * @param packageName   - The package name of ruleset
-     * @param ruleSetName   - The rule name.
-     * @param subject       - Subject to be set in the rule metadata
-     * @param coverage         - The coverage of the rule.
-     * @return              - A ruleset
+     * Will load the rule-set identified by the ID and exports it.
+     * @param bindURI - The binding URI
      */
-    public RuleSet createRuleset(String packageName, String ruleSetName, String subject, String coverage){
-        //create
-       if(log.isDebugEnabled()) log.debug("Ruleset dosent exist, so going to create it");
-
-       RuleSet ruleSet = new RuleSet();
-       ruleSet.setName(packageName);
-       ruleSet.setStatus("Draft");
-       ruleSet.setDescription(ruleSetName);
-       ruleSet.setSubject(subject);
-       ruleSet.setCoverage(coverage);
-
-       if (ruleSet.getImport().size() == 0) {
-           ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-       }
-
-       ruleAuthoringService.createRuleSet(ruleSet);
-       return ruleSet;
-    }
-
-
-
-    /**
-     * This method will create a rule set  in the system.
-     * Will take care of creating the category and ruleset if they do not exist
-     * @param ruleSet          - The rule to create
-     * @param packageName   - The package name
-     * @param path          - The path to register the rule in authoring system.
-     * @param ruleSetName   - The name of ruleset
-     * @param subject       - The subject for the ruleset
-     * @param state         - The coverage of the ruleset
-     * @return              - The ID of the rule.
-     * @throws Exception
-     */
-    public void createOrUpdateRuleSet(RuleSet ruleSet, String packageName, String path, String ruleSetName, String subject, String state) throws Exception{
-
-        //find the category
-        Category category = CaaersRuleUtil.createCategory(ruleAuthoringService , path);
-
-        //find the ruleset, if it dosent exist create.
-        RuleSet existingRuleSet = getRuleSetByPackageName(packageName, true);
-
-        //if there is no ruleset create it.
-        if(existingRuleSet == null) createRuleset(packageName, ruleSetName, subject, state);
-
-        for(Rule rule : ruleSet.getRule()){
-
-
-            if(rule.getId() == null){
-             //create
-                //add the category in the rule.
-                if(rule.getMetaData() == null) rule.setMetaData(new MetaData());
-                rule.getMetaData().getCategory().clear();
-                rule.getMetaData().getCategory().add(category);
-                rule.getMetaData().setPackageName(packageName);
-
-                String uuid = ruleAuthoringService.createRule(rule);
-                log.info("UUID of rule :" + uuid);
-            }else{
-              //update
-                ruleEngineService.updateRule(rule);
-            }
-        }
-
-    }
-
-    /**
-     * Will delete the rule from the ruleset.
-     * @param ruleSetName
-     * @param ruleName
-     */
-    public void deleteRule(String ruleSetName, String ruleName) throws Exception{
-        ruleEngineService.deleteRule(ruleSetName, ruleName);
-    }
-
+    @Transactional(readOnly = true)
+   public String exportRules(String bindURI) {
+      try{
+          String xml = ruleEngineService.exportRuleSetXML(bindURI);
+          return xml;
+      }catch (RuleException ruleEx){
+        log.error("Error while retrieving the rules for bindURI : " + bindURI, ruleEx);
+        throw new CaaersSystemException("Error pulling the rules xml [" + ruleEx.getMessage() + "]", ruleEx);
+      }
+   }
+    
+    
     /**
      * This method will import the rules XML.
      * CAAERS-2325 - requires the use of NCI-code and Sponsor-ID of study to identify the study and organization.
      *
      * @param fileName - The file to import.
      * @return - A list of ReportDefinition  names
-     * @throws Exception
      */
-    public List<String> importRules(String fileName) throws Exception {
+    @Transactional
+    public List<String> importRules(String fileName) throws CaaersSystemException {
 
         File f = new File(fileName);
         if(!f.isFile() || !f.exists()){
-             throw new Exception("This is not a valid file name or this is a directory");
+             throw new CaaersSystemException("The file :" + fileName + "do not exist");
         }
+        
+        String xml = null;
+        try{
 
-        String xml = FileUtils.readFileToString(f);
+            xml = FileUtils.readFileToString(f);
+            
+        }catch (IOException ioe){
+            throw  new CaaersSystemException("Unable to import rule file : " + ioe.getMessage(), ioe);
+        }
 
         RuleSet ruleSet = (RuleSet) XMLUtil.unmarshal(xml);
         List<Rule> rules = ruleSet.getRule();
 
         if (rules.size() == 0) {
-            throw new Exception("There is nothing to import !");
+            throw new CaaersSystemException("The provided rule file has nothing to import");
         }
 
         log.info("Importing ruleSet :" + ruleSet.getName() );
 
         //--------- Modify the package names ----------------------
         reconcileRuleSet(ruleSet);
+
+        RuleType ruleType = parseRuleType(ruleSet.getName());
+        RuleLevel ruleLevel = parseRuleLevel(ruleSet.getName());
         String strOrgId = parseOrganizationId(ruleSet.getName());
-        Organization org = null;
+        String strStudyId = parseStudyId(ruleSet.getName());
 
-        if(StringUtils.isNotBlank(strOrgId)) org = organizationDao.getById(Integer.parseInt(strOrgId));
-
-
+        
         if(log.isInfoEnabled()){
-            log.info("Rule set name:" + ruleSet.getName());
-            log.info("Rule set id:" + ruleSet.getId());
-            log.info("Rule set desc:" + ruleSet.getDescription());
+            log.info("RuleSet : name (package name) : " + ruleSet.getName());
+            log.info("Rule Set Type : " + String.valueOf(ruleType));
+            log.info("Rule Set Level : " + String.valueOf(ruleLevel));
+            log.info("Rule Set orgId : " + String.valueOf(strOrgId));
+            log.info("Rule Set studyId : " + String.valueOf(strStudyId));
+        }
+        
+        Organization organization = null;
+        if(StringUtils.isNotBlank(strOrgId)){
+            organization = organizationDao.getById(Integer.parseInt(strOrgId));    
+        }
+        
+        Study study = null;
+        if(StringUtils.isNotBlank(strStudyId)){
+            study = studyDao.getById(Integer.parseInt(strStudyId));
         }
 
-        // delete rule set if exists
-        try {
-        	ruleEngineService.deleteRuleSet(ruleSet.getName());
-        } catch (Exception e) {
-            // not able to delete which is fine...
-            log.debug("May not be an issue", e);
-        }
-
-        //throw away the ID associated to each rule, so that it wiil issue a create rule.
-        for(Rule rule : rules){
-            rule.setId(null);
-        }
 
         //Find the report definitions required to be created.
-        Set<String> reportDefinitionNames = new HashSet<String>();
+        HashSet<String> reportDefinitionNames = new HashSet<String>();
         List<String> reportDefinitionsCreated = new ArrayList<String>();
 
-        boolean isAssociatedToDCP = org == null ? false : org.getNciInstituteCode().equals("DCP");
+        boolean isAssociatedToDCP = organization == null ? false : organization.getNciInstituteCode().equals("DCP");
         boolean isSAERule =  ruleSet.getDescription().equals(RuleType.REPORT_SCHEDULING_RULES.getName());
         if ( isSAERule && !isAssociatedToDCP ) {
 
@@ -226,40 +178,196 @@ public class CaaersRulesEngineService {
             ConfigProperty expeditedConfigProperty = configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_GROUP, "RT_AdEERS");
             // check report definitions for this org
             for (String rd : reportDefinitionNames) {
-                    ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
-                    if (reportDefinition == null && !rd.equals("IGNORE")) {
-                        //if(log.isInfoEnabled()) log.info("need to create .." + rd);
-                        ReportDefinition newRd = new ReportDefinition();
-                        newRd.setEnabled(false);
-                        newRd.setName(rd);
-                        newRd.setLabel(rd);
-                        newRd.setOrganization(org);
-                        newRd.setAmendable(true);
-                        newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
-                        newRd.setDuration(2);
-                        newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
-                        newRd.setGroup(expeditedConfigProperty);
-                        newRd.setPhysicianSignOff(false);
-                        reportDefinitionDao.save(newRd);
-                        reportDefinitionsCreated.add(rd);
-                    }
+                if(StringUtils.equals("IGNORE", rd)) continue;
+                ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, organization.getId());
+                if(reportDefinition != null) continue;
+
+                //create a new report definition.
+                ReportDefinition newRd = new ReportDefinition();
+                newRd.setEnabled(false);
+                newRd.setName(rd);
+                newRd.setLabel(rd);
+                newRd.setOrganization(organization);
+                newRd.setAmendable(true);
+                newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
+                newRd.setDuration(2);
+                newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
+                newRd.setGroup(expeditedConfigProperty);
+                newRd.setPhysicianSignOff(false);
+                reportDefinitionDao.save(newRd);
+                reportDefinitionsCreated.add(rd);
 
             }
         }
+        
 
-        //find the path to deploy from category
-        Category cat = ruleSet.getRule().get(0).getMetaData().getCategory().get(0);
-        String catPath = cat.getPath();
+        gov.nih.nci.cabig.caaers.domain.RuleSet domainRuleSet = createOrFindRuleSet( ruleType, ruleLevel, organization, study, true);
 
-        //create the rule set
-        createOrUpdateRuleSet(ruleSet, ruleSet.getName(), catPath,ruleSet.getDescription(), ruleSet.getSubject(), ruleSet.getCoverage());
-
-        //deploy the ruleset
-        ruleEngineService.deployRuleSet(ruleSet);
-
+        saveOrUpdateRuleSet(domainRuleSet, ruleSet);
+        deployRuleSet(domainRuleSet.getRuleBindURI());
 
         return reportDefinitionsCreated;
     }
+
+    @Transactional
+    public void saveOrUpdateRuleSet(gov.nih.nci.cabig.caaers.domain.RuleSet domainRuleSet, RuleSet ruleSet) {
+
+         saveOrUpdateRuleSet(domainRuleSet);
+
+        //add imports if necessary
+        if(CollectionUtils.isEmpty(ruleSet.getImport())){
+            ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+        }
+
+        //correct package names
+        RuleType ruleType = domainRuleSet.getRuleType();
+        RuleLevel ruleLevel = domainRuleSet.getRuleLevel();
+        Integer orgId = domainRuleSet.getOrganization() == null ? null : domainRuleSet.getOrganization().getId();
+        Integer studyId = domainRuleSet.getStudy() == null ? null : domainRuleSet.getStudy().getId();
+        String packageName = constructPackageName(domainRuleSet.getRuleType(), domainRuleSet.getRuleLevel(), orgId, studyId);
+        ruleSet.setName(packageName);
+
+        //correct subject
+        String nciCode = domainRuleSet.getOrganization() == null ? "" : domainRuleSet.getOrganization().getNciInstituteCode();
+        String studyPrimaryId = domainRuleSet.getStudy() == null ? "" : domainRuleSet.getStudy().getPrimaryIdentifierValue();
+        String newSubject = constructSubject(ruleType, ruleLevel, nciCode, studyPrimaryId);
+        ruleSet.setSubject(newSubject);
+
+        //correct description
+        ruleSet.setDescription(ruleType.getName());
+
+
+
+        List<Rule> rules = ruleSet.getRule();
+
+        // delete columns which are marked as delete .
+        for(Rule rule : rules){
+            List<Column> colsToDelete = new ArrayList<Column>();
+            for(Column col : rule.getCondition().getColumn()){
+                if(col.isMarkedDelete()) colsToDelete.add(col);
+            }
+            if(!colsToDelete.isEmpty())  rule.getCondition().getColumn().removeAll(colsToDelete);
+        }
+        
+        for (Rule rule : rules) {
+
+            //add rule-id if it is empty
+            if(rule.getId() == null) rule.setId("r-" + UUID.randomUUID().toString());
+
+            boolean termSelected = false;
+
+            for (Column col : rule.getCondition().getColumn()) {
+                if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+                if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+                if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
+                    termSelected = true;
+                }
+            }
+
+            // modify category if term selecetd
+            for (Column col : rule.getCondition().getColumn()) {
+                if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+                if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+                if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
+                    if (termSelected) {
+                        if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
+                            String expr = col.getExpression();
+                            String eval = col.getFieldConstraint().get(0)
+                                    .getLiteralRestriction().get(0).getEvaluator();
+                            String value = col.getFieldConstraint().get(0)
+                                    .getLiteralRestriction().get(0).getValue().get(0);
+                            expr = expr.replaceAll("'0'", "'" + value + "'");
+                            expr = expr.replaceAll("'>'", "'" + eval + "'");
+                            col.setExpression(expr);
+                        } else {
+                            col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
+                        }
+                    } else {
+                        if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
+                            String expr = col.getExpression();
+                            String eval = col.getFieldConstraint().get(0)
+                                    .getLiteralRestriction().get(0).getEvaluator();
+                            String value = col.getFieldConstraint().get(0)
+                                    .getLiteralRestriction().get(0).getValue().get(0);
+                            expr = expr.replaceAll("'0'", "'" + value + "'");
+                            expr = expr.replaceAll("'>'", "'" + eval + "'");
+                            col.setExpression(expr);
+                        }
+                    }
+                }
+            }
+
+            replaceCommaSeperatedStringToList(rule.getCondition());
+ 
+
+            if(!hasFactResolverColumn(rule.getCondition())) rule.getCondition().getColumn().add(createCriteriaForFactResolver());
+
+            if(rule.getMetaData() == null) rule.setMetaData(new MetaData());
+            rule.getMetaData().setPackageName(packageName);
+            rule.getMetaData().setDescription("Setting Description since its mandatory by JBoss Repository config");
+            if(ruleLevel != null){
+                
+                String organizationName = ( domainRuleSet.getOrganization() != null) ? domainRuleSet.getOrganization().getName() : null;
+                String sponsorName =  null;
+                String institutionName = null;
+
+                if(ruleLevel.isInstitutionBased()) institutionName = organizationName;
+                if(ruleLevel.isSponsorBased()) sponsorName = organizationName;
+
+                String studyShortTitle = (domainRuleSet.getStudy() != null) ?  domainRuleSet.getStudy().getShortTitle() : null;
+
+                populateCategoryBasedColumns(rule, ruleLevel.getName(), sponsorName, institutionName, studyShortTitle);   
+            }
+            
+
+        }
+
+        //save the rules in staging area.
+        ruleEngineService.saveOrUpdateRuleSet(domainRuleSet.getRuleBindURI(), ruleSet);
+    }
+
+    private gov.nih.nci.cabig.caaers.domain.RuleSet saveOrUpdateRuleSet(gov.nih.nci.cabig.caaers.domain.RuleSet domainRuleSet){
+        if(log.isDebugEnabled()) log.debug("Before saving RuleSet : " + String.valueOf(domainRuleSet));
+        ValidationErrors errors = domainRuleSet.validate();
+
+        if(errors.hasErrors()) throw new CaaersSystemException("Unable to save domain RuleSet : " + String.valueOf(errors));
+
+        ruleSetDao.save(domainRuleSet);
+        if(log.isDebugEnabled()) log.debug("After saving RuleSet : " + String.valueOf(domainRuleSet));
+        return domainRuleSet;
+    }
+
+    @Transactional(readOnly = true)
+    public gov.nih.nci.cabig.caaers.domain.RuleSet createOrFindRuleSet(RuleType ruleType, RuleLevel ruleLevel, Organization organization, Study study, boolean enabled){
+        RuleSetQuery ruleSetQuery = new RuleSetQuery();
+        ruleSetQuery.filterByRuleType(ruleType);
+        if(ruleLevel != null) ruleSetQuery.filterByRuleLevel(ruleLevel);
+        if(organization != null) ruleSetQuery.filterByOrganizationId(organization.getId());
+        if(study != null) ruleSetQuery.filterByStudyId(study.getId());
+        
+        
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> existingRuleSets = (List<gov.nih.nci.cabig.caaers.domain.RuleSet>) ruleSetDao.search(ruleSetQuery);
+        gov.nih.nci.cabig.caaers.domain.RuleSet domainRuleSet;
+        if(!existingRuleSets.isEmpty()){
+            domainRuleSet = existingRuleSets.get(0);
+            if(log.isDebugEnabled()) log.debug("Found Ruleset in the database [ruleType : " + String.valueOf(ruleType) + ", ruleLevel : " + String.valueOf(ruleLevel) + "Organization " + String.valueOf(organization) + ", study " + String.valueOf(study) + "]:" + String.valueOf(domainRuleSet));
+        }else {
+            domainRuleSet = new gov.nih.nci.cabig.caaers.domain.RuleSet();
+            domainRuleSet.setRuleBindURI(CaaersRuleUtil.getRandomBindURI());
+            domainRuleSet.setRuleLevel(ruleLevel);
+            domainRuleSet.setRuleType(ruleType);
+            domainRuleSet.setStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+            domainRuleSet.setOrganization(organization);
+            domainRuleSet.setStudy(study);
+            if(log.isDebugEnabled()) log.debug("Created new Ruleset [ruleType : " + String.valueOf(ruleType) + ", ruleLevel : " + String.valueOf(ruleLevel) + "Organization " + String.valueOf(organization) + ", study " + String.valueOf(study) + "]:" + String.valueOf(domainRuleSet));
+
+        }
+
+        domainRuleSet.setStatus(enabled ? gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED : gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_DISABLED);
+
+        return domainRuleSet;
+    }
+
 
 
     /**
@@ -348,215 +456,108 @@ public class CaaersRulesEngineService {
         if(study != null) strStudyId = String.valueOf(study.getId());
 
         //update the package name on the ruleset
-        String newPackageName = constructPackageName(level, strOrgId,strOrgId, strStudyId, ruleSet.getDescription());
+        RuleLevel ruleLevel = (StringUtils.isBlank(level) ? null : RuleLevel.getByName(level));
+        RuleType ruleType = RuleType.getByName(ruleSet.getDescription());     
+        Integer orgId = (org != null) ? org.getId() : null;
+        Integer studyId = study != null ? study.getId() : null;
+        
+        String newPackageName = constructPackageName(ruleType, ruleLevel, orgId, studyId);
         ruleSet.setName(newPackageName);
 
 
-        //update the subject
-        StringBuilder subject = new StringBuilder(ruleSet.getDescription()).append("||");
-            subject.append(StringUtils.isEmpty(level)? " " : level);
-            subject.append("||");
-            subject.append(org != null ? org.getNciInstituteCode() : " " );
-            subject.append("||");
-            subject.append(org != null ? org.getNciInstituteCode() : " ");
-            subject.append("||");
-            subject.append(study != null ? study.getPrimaryIdentifierValue() : " ");
-        ruleSet.setSubject(subject.toString());
+        //update the subject  \
+
+        String nciCode = org == null ? "" : org.getNciInstituteCode();
+        String studyPrimaryId = study == null ? "" : study.getPrimaryIdentifierValue();
+        String newSubject = constructSubject(ruleType, ruleLevel, nciCode, studyPrimaryId);
+        ruleSet.setSubject(newSubject);
 
 
         //update the path.
         String path = generatePath(level, ruleSet.getDescription(), org, org, study);
         for(Rule rule : ruleSet.getRule()){
+            List<Category> categories = rule.getMetaData().getCategory();
+            if(categories == null){
+                categories = new ArrayList<Category>();
+                rule.getMetaData().setCategory(categories);
+            }
+            if(categories.isEmpty()) {
+              Category category = new Category();
+              category.setMetaData(new MetaData());
+              categories.add(category);
+            }
+            if(categories.get(0).getMetaData() == null){
+                categories.get(0).setMetaData(new MetaData());
+            }
+
             rule.getMetaData().getCategory().get(0).setPath(path);
             rule.getMetaData().getCategory().get(0).getMetaData().setName(RuleUtil.getStringWithoutSpaces(ruleSet.getDescription()));
         }
 
         if(log.isDebugEnabled()){
             log.debug("New Package Name :" + newPackageName);
-            log.debug("New Subject :" + subject.toString());
+            log.debug("New Subject :" + newSubject);
             log.debug("New Path :" + path);
         }
+    }
+    
+    public String constructSubject(RuleType ruleType, RuleLevel ruleLevel, String nciCode, String studyPrimaryId){
+        StringBuilder sb = new StringBuilder(ruleType.getName()).append("||")
+                .append(ruleLevel == null ? " " : ruleLevel.getName()).append("||")
+                .append(nciCode == null ? " " : nciCode).append("||")
+                .append(nciCode == null ? " " : nciCode).append("||")
+                .append(studyPrimaryId == null ? " " : nciCode);
+        return sb.toString();
     }
 
 
     /**
      * This method is used to unDeploy a ruleSet
      *
-     * @param  ruleSetName - The bind URI
+     * @param  bindURI - The bind URI
      * @exception RemoteException
      */
-    public void unDeployRuleSet(String ruleSetName) throws RemoteException {
-        String bindUri = ruleSetName;
+    @Transactional
+    public void unDeployRuleSet(String bindURI) throws RemoteException {
+        gov.nih.nci.cabig.caaers.domain.RuleSet domainRuleSet = ruleSetDao.getByBindURI(bindURI);
+        if(domainRuleSet == null)
+            throw new CaaersSystemException("Unable to find RuleSet having rulesBindURI:" + bindURI);
 
-        try {
-            ruleDeploymentService.registerRuleSet(bindUri, ruleSetName);
-        } catch (Exception e) {
-            // A hack... for the first time this exception will be there...ignore...
+        ruleEngineService.undeployRuleSet(bindURI);
+        domainRuleSet.setStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_DISABLED);
+        ruleSetDao.save(domainRuleSet);
+    }
 
-        }
-        ruleDeploymentService.deregisterRuleSet(bindUri);
-        PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
-        item.updateCoverage("Not Enabled");
-        repositoryService.getRulesRepository().save();
+    /**
+     * Will remove the rule-set
+     * @param bindURI
+     */
+    @Transactional
+    public void deleteRuleSet(String bindURI){
+        ruleEngineService.deleteRuleSet(bindURI);
+        ruleSetDao.deleteRuleSet(bindURI);
     }
 
     /**
      * This method is used to deploy a ruleSet
      *
-     * @param  ruleSetName - The bind URI
+     * @param  bindURI - The bind URI
      * @exception RemoteException
      */
-    public void deployRuleSet(String ruleSetName) throws RemoteException {
-        String bindUri = ruleSetName;
+    @Transactional
+    public void deployRuleSet(String bindURI) {
+        gov.nih.nci.cabig.caaers.domain.RuleSet domainRuleSet = ruleSetDao.getByBindURI(bindURI);
+        if(domainRuleSet == null)
+            throw new CaaersSystemException("Unable to find RuleSet having rulesBindURI:" + bindURI);
 
-        try {
-            ruleDeploymentService.deregisterRuleSet(bindUri);
-        } catch (Exception e) {
-            // A hack... for the first time this exception will be there...ignore...
-        }
-
-        try {
-            ruleDeploymentService.registerRuleSet(bindUri, ruleSetName);
-            PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
-            item.updateCoverage("Enabled");
-            repositoryService.getRulesRepository().save();
-
-            // getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RemoteException("Error deploying ruleset", e);
-        }
+        ruleEngineService.deployRuleSet(bindURI);
+        domainRuleSet.setStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+        ruleSetDao.save(domainRuleSet);
     }
 
-    /**
-     * This method will save a rule set.
-     *
-     * Note: The subject of the ruleset will be framed using the login
-     *  RuleSetName || level || Sponsor-NCI-Code || Institution-NCI-Code || Study Primary ID
-     *
-     * @param ruleSet - The ruleset to save
-     * @param level    - The level
-     * @param ruleSetName  - The ruleset name eg: SAE Reporting Rules
-     * @param sponsor     - The sponsor of the study
-     * @param institution - The site, where the subject belongs
-     * @param study       - The study on which adverse event occured
-     * @throws Exception
-     */
-    public void saveRuleSet(RuleSet ruleSet,String level,String ruleSetName,Organization  sponsor,
-                            Organization institution,Study study) throws Exception{
-    	try {
-
-                String sponsorId = (sponsor != null)? sponsor.getId().toString() : null;
-                String studyId = (study != null) ? study.getId().toString() : null;
-                String institutionId = (institution != null) ? institution.getId().toString() : null;
-
-                String sponsorName = (sponsor != null) ? sponsor.getName() : null;
-                String institutionName = (institution != null) ? institution.getName() : null;
-                String studyShortTitle = (study != null) ?  study.getShortTitle() : null;
-                String pathToDeploy = generatePath(level, ruleSetName, sponsor, institution, study);
-                String packageName = constructPackageName(level, sponsorId,institutionId, studyId, ruleSetName);
-
-
-                //set additional attributes in ruleset
-                ruleSet.setDescription(ruleSetName);
-                ruleSet.setCoverage("Not Enabled");
-                StringBuilder subject = new StringBuilder(ruleSetName).append("||");
-                subject.append(StringUtils.isEmpty(level)? " " : level);
-                subject.append("||");
-                subject.append(sponsor != null? sponsor.getNciInstituteCode() : " ");
-                subject.append("||");
-                subject.append(institution != null ? institution.getNciInstituteCode() : " ");
-                subject.append("||");
-                subject.append(study != null ? study.getPrimaryIdentifierValue() : " ");
-
-                ruleSet.setSubject(subject.toString());
-
-                List<Rule> rules = ruleSet.getRule();
-
-                // delete columns which are marked as delete .
-                for (Rule rule : rules) {
-                    boolean termSelected = false;
-
-                    List<Column> colsToDelete = new ArrayList<Column>();
-                    for (Column col : rule.getCondition().getColumn()) {
-                        if (col.isMarkedDelete()) {
-                            colsToDelete.add(col);
-                        }
-
-                    }
-
-                    for (Column col : colsToDelete) {
-                        rule.getCondition().getColumn().remove(col);
-                    }
-
-                    for (Column col : rule.getCondition().getColumn()) {
-                        if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
-                            termSelected = true;
-                        }
-                    }
-
-                    // modify category if term selecetd
-                    for (Column col : rule.getCondition().getColumn()) {
-                        if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
-                            if (termSelected) {
-                                if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
-                                    String expr = col.getExpression();
-                                    String eval = col.getFieldConstraint().get(0)
-                                                    .getLiteralRestriction().get(0).getEvaluator();
-                                    String value = col.getFieldConstraint().get(0)
-                                                    .getLiteralRestriction().get(0).getValue().get(0);
-                                    expr = expr.replaceAll("'0'", "'" + value + "'");
-                                    expr = expr.replaceAll("'>'", "'" + eval + "'");
-                                    col.setExpression(expr);
-                                } else {
-                                    col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
-                                }
-                            } else {
-                                if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
-                                    String expr = col.getExpression();
-                                    String eval = col.getFieldConstraint().get(0)
-                                                    .getLiteralRestriction().get(0).getEvaluator();
-                                    String value = col.getFieldConstraint().get(0)
-                                                    .getLiteralRestriction().get(0).getValue().get(0);
-                                    expr = expr.replaceAll("'0'", "'" + value + "'");
-                                    expr = expr.replaceAll("'>'", "'" + eval + "'");
-                                    col.setExpression(expr);
-                                }
-                            }
-                        }
-                    }
-
-                    // get comma seperated values ....
-                    for (Column col : rule.getCondition().getColumn()) {
-                        String value = col.getFieldConstraint().get(0).getLiteralRestriction().get(0)
-                                        .getValue().get(0);
-                        if (value.contains(",")) {
-                            List<String> values = RuleUtil.charSeparatedStringToStringList(value, ",");
-                            col.getFieldConstraint().get(0).getLiteralRestriction().get(0).setValue(
-                                            values);
-                        }
-
-                    }
-                    rule.getCondition().getColumn().add(createCriteriaForFactResolver());
-
-                    if(rule.getMetaData() == null) rule.setMetaData(new MetaData());
-                    rule.getMetaData().setPackageName(packageName);
-                    rule.getMetaData().setDescription("Setting Description since its mandatory by JBoss Repository config");
-                    populateCategoryBasedColumns(rule, level, sponsorName, institutionName, studyShortTitle);
-
-                }
-
-
-                if(log.isDebugEnabled())log.debug("Generated Path : " + pathToDeploy );
-
-                createOrUpdateRuleSet(ruleSet, packageName, pathToDeploy, ruleSetName, subject.toString(), ruleSet.getCoverage());
-
-
-    	}catch (Exception e){
-    		e.printStackTrace();
-            throw new Exception("Error saving a  ruleset", e);
-    	}
+    @Transactional(readOnly = true)
+    public List<gov.nih.nci.cabig.caaers.domain.RuleSet> searchRuleSets(RuleSetQuery query){
+        return (List<gov.nih.nci.cabig.caaers.domain.RuleSet>) ruleSetDao.search(query);
     }
 
     /**
@@ -613,6 +614,30 @@ public class CaaersRulesEngineService {
 
         return column;
 
+    }
+    
+    
+    private boolean hasFactResolverColumn(Condition condition){
+        for(Column c : condition.getColumn()){
+            if(StringUtils.equals(c.getIdentifier(), "factResolver")) return true;
+        }
+        return false;
+    }
+    
+    private void replaceCommaSeperatedStringToList(Condition condition){
+        for (Column col : condition.getColumn()) {
+            if(CollectionUtils.isEmpty(col.getFieldConstraint())) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if(CollectionUtils.isEmpty(fc.getLiteralRestriction())) continue;
+            LiteralRestriction lr = fc.getLiteralRestriction().get(0);
+            if( CollectionUtils.isEmpty(lr.getValue()) ) continue;
+            String value = lr.getValue().get(0);
+            if (StringUtils.contains(value, ",")) {
+                List<String> values = CaaersRuleUtil.charSeparatedStringToStringList(value, ",");
+                col.getFieldConstraint().get(0).getLiteralRestriction().get(0).setValue(values);
+            }
+
+        }
     }
 
     /**
@@ -737,46 +762,16 @@ public class CaaersRulesEngineService {
 
     }
 
-    /*
-     * This method constructs the package name based on the Command object
-     */
-    public String constructPackageName(String level, String sponsorName, String institutionName, String studyShortTitle, String ruleSetName) {
-
-        StringBuilder sb = new StringBuilder();
-
-        if(StringUtils.equals(level, SPONSOR_LEVEL)){
-            sb.append(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix())
-                    .append(".").append(modifyOrganizationName(sponsorName));
-        }else if(StringUtils.equals(level, SPONSOR_DEFINED_STUDY_LEVEL)){
-            sb.append(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix())
-                    .append(".").append(modifyOrganizationName(sponsorName))
-                    .append(".").append(modifyStudyName(studyShortTitle));
-        }else if(StringUtils.equals(level, INSTITUTIONAL_LEVEL)){
-            sb.append(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix())
-                     .append(".").append(modifyOrganizationName(institutionName));
-        }else if(StringUtils.equals(level, INSTITUTION_DEFINED_STUDY_LEVEL)){
-            sb.append(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix())
-                    .append(".").append(modifyOrganizationName(institutionName))
-                    .append(".").append(modifyStudyName(studyShortTitle));
-        }else if (StringUtils.isBlank(level) && RuleType.FIELD_LEVEL_RULES.getName().equals(ruleSetName)){
-            sb.append(CategoryConfiguration.CAAERS_BASE.getPackagePrefix());
-        }
-
-        sb.append(".").append(RuleUtil.getStringWithoutSpaces(ruleSetName));
-
-        if(log.isDebugEnabled()){
-            log.debug("level : " + level);
-            log.debug(" sponsorName : " + sponsorName);
-            log.debug("institutionName:" + institutionName);
-            log.debug("studyShortTitle:" + studyShortTitle);
-            log.debug("ruleSetName : " + ruleSetName);
-            log.debug("Package name : " + sb.toString());
-        }
-
+    public String constructPackageName(RuleType ruleType, RuleLevel ruleLevel, Integer orgId, Integer studyId){
+        StringBuilder sb = new StringBuilder(ruleType.getPackageName());
+        if(ruleLevel != null )sb.append(".").append(ruleLevel.getPackageName());
+        if(orgId != null) sb.append(".ORG_").append(orgId);
+        if(studyId != null)sb.append(".STU_").append(studyId);
+        sb.append(".").append(CaaersRuleUtil.getStringWithoutSpaces(ruleType.getName()));
+        if(log.isDebugEnabled()) log.debug("New Package : " + sb.toString());
         return sb.toString();
-
-
     }
+
 
     /**
      * This method will prefix "ORG_" to the organization name.
@@ -797,31 +792,34 @@ public class CaaersRulesEngineService {
     }
 
     /**
+     * Will return the RuleType from package name.
+     * @param packageName
+     * @return
+     */
+    public RuleType parseRuleType(String packageName){
+
+        if(StringUtils.contains(packageName, "sae_reporting_rules")) return RuleType.REPORT_SCHEDULING_RULES;
+        if(StringUtils.contains(packageName, "field_rules")) return RuleType.FIELD_LEVEL_RULES;
+        if(StringUtils.contains(packageName, "mandatory_sections_rules")) return RuleType.MANDATORY_SECTIONS_RULES;
+
+        return null;
+    }
+    
+    /**
      * Will parse and return the level, given a package name.
      * @param packageName
      * @return
      */
-    public String parseRuleLevel(String packageName){
+    public RuleLevel parseRuleLevel(String packageName){
 
-      String prefix = StringUtils.substringBefore(packageName , ".ORG_");
+        String prefix = StringUtils.substringBefore(packageName , ".ORG_");
 
-      if(StringUtils.equals(prefix, CategoryConfiguration.SPONSOR_BASE.getPackagePrefix())){
-         return SPONSOR_LEVEL;
-      }
+        if(StringUtils.equals(prefix, "gov.nih.nci.cabig.caaers.rules.sponsor.study")) return RuleLevel.SponsorDefinedStudy;
+        if(StringUtils.equals(prefix, "gov.nih.nci.cabig.caaers.rules.sponsor")) return RuleLevel.Sponsor;
+        if(StringUtils.equals(prefix, "gov.nih.nci.cabig.caaers.rules.institution.study")) return RuleLevel.InstitutionDefinedStudy;
+        if(StringUtils.equals(prefix, "gov.nih.nci.cabig.caaers.rules.institution")) return RuleLevel.Institution;
 
-      if(StringUtils.equals(prefix, CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix())){
-         return SPONSOR_DEFINED_STUDY_LEVEL;
-      }
-
-      if(StringUtils.equals(prefix, CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix())){
-         return INSTITUTIONAL_LEVEL;
-      }
-
-      if(StringUtils.equals(prefix, CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix())){
-         return INSTITUTION_DEFINED_STUDY_LEVEL;
-      }
-
-      return null;
+        return null;
     }
 
     /**
@@ -984,6 +982,7 @@ public class CaaersRulesEngineService {
      * @return - List of String containin the field involved in the ruleSets
      *
      */
+    @Transactional(readOnly = true)
     public List<String> getFieldsUsedInSAERules(ExpeditedAdverseEventReport r) throws Exception {
 
         List<String> fields = new ArrayList<String>();
@@ -1010,37 +1009,63 @@ public class CaaersRulesEngineService {
      */
     private List<RuleSet> getRuleSetsByExpeditedReport(ExpeditedAdverseEventReport aeReport) throws Exception {
         List<RuleSet> rs = new ArrayList<RuleSet>();
-
-        RuleSet r1;
-
-        // lookup the Sponsor Study level Rules
-        String packageName = constructPackageName(SPONSOR_DEFINED_STUDY_LEVEL, aeReport.getStudy().getPrimaryFundingSponsorOrganization().getId().toString(),
-                null, aeReport.getStudy().getId().toString(), RuleType.REPORT_SCHEDULING_RULES.getName());
-        r1 = getRuleSetByPackageName(packageName);
-
-        // if there is no Sponsor Study level RuleSet, check Sponsor level Rules
-        if (r1 == null) {
-            packageName = constructPackageName(SPONSOR_LEVEL, aeReport.getStudy().getPrimaryFundingSponsorOrganization().getId().toString(),
-                null, null, RuleType.REPORT_SCHEDULING_RULES.getName());
-            r1 = getRuleSetByPackageName(packageName);
+        RuleSet r1 = null;
+        //checking for sponsor + study
+        RuleSetQuery sponsorStudyQuery = new RuleSetQuery();
+        sponsorStudyQuery.filterByOrganizationId(aeReport.getStudy().getPrimaryFundingSponsorOrganization().getId());
+        sponsorStudyQuery.filterByStudyId(aeReport.getStudy().getId());
+        sponsorStudyQuery.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
+        sponsorStudyQuery.filterByRuleLevel(RuleLevel.SponsorDefinedStudy);
+        sponsorStudyQuery.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> sponsorStudyruleSets = searchRuleSets(sponsorStudyQuery);
+        if(!sponsorStudyruleSets.isEmpty()){
+           r1 = getRuleSet(sponsorStudyruleSets.get(0).getRuleBindURI()); 
         }
-        if (r1 != null) rs.add(r1);
+        
+        //checking sponsor
+        if(r1 == null){
+            RuleSetQuery sponsorQuery = new RuleSetQuery();
+            sponsorQuery.filterByOrganizationId(aeReport.getStudy().getPrimaryFundingSponsorOrganization().getId());
+            sponsorQuery.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
+            sponsorQuery.filterByRuleLevel(RuleLevel.Sponsor);
+            sponsorQuery.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+            List<gov.nih.nci.cabig.caaers.domain.RuleSet> sponsorRuleSets = searchRuleSets(sponsorQuery);
+            if(!sponsorRuleSets.isEmpty()){
+                r1 = getRuleSet(sponsorRuleSets.get(0).getRuleBindURI());
+            } 
+        }
 
+        if(r1 != null) rs.add(r1);
+
+        r1 = null;
 
         //find institution based or institution based study rule sets.
-
-        StudySite assignmentStudySite = aeReport.getReportingPeriod().getAssignment().getStudySite();
-        packageName = constructPackageName(INSTITUTION_DEFINED_STUDY_LEVEL, null,
-                assignmentStudySite.getOrganization().getId().toString(), aeReport.getStudy().getId().toString(), RuleType.REPORT_SCHEDULING_RULES.getName());
-        r1 = getRuleSetByPackageName(packageName);
-
-        // if there is no Institution Study level RuleSet, check Institution level Rules
-        if(r1 == null){
-            packageName = constructPackageName(INSTITUTIONAL_LEVEL, null,
-                assignmentStudySite.getOrganization().getId().toString(), null, RuleType.REPORT_SCHEDULING_RULES.getName());
-            r1 = getRuleSetByPackageName(packageName);
+        RuleSetQuery institutionStudyQuery = new RuleSetQuery();
+        institutionStudyQuery.filterByOrganizationId(aeReport.getStudySite().getOrganization().getId());
+        institutionStudyQuery.filterByStudyId(aeReport.getStudy().getId());
+        institutionStudyQuery.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
+        institutionStudyQuery.filterByRuleLevel(RuleLevel.InstitutionDefinedStudy);
+        institutionStudyQuery.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> institutionStudyruleSets = searchRuleSets(institutionStudyQuery);
+        if(!institutionStudyruleSets.isEmpty()){
+            r1 = getRuleSet(institutionStudyruleSets.get(0).getRuleBindURI());
         }
-        if (r1 != null) rs.add(r1);
+
+        //checking sponsor
+        if(r1 == null){
+            RuleSetQuery institutionQuery = new RuleSetQuery();
+            institutionQuery.filterByOrganizationId(aeReport.getStudySite().getOrganization().getId());
+            institutionQuery.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
+            institutionQuery.filterByRuleLevel(RuleLevel.Institution);
+            institutionQuery.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+            List<gov.nih.nci.cabig.caaers.domain.RuleSet> institutionRuleSets = searchRuleSets(institutionQuery);
+            if(!institutionRuleSets.isEmpty()){
+                r1 = getRuleSet(institutionRuleSets.get(0).getRuleBindURI());
+            }
+        }
+
+        if(r1 != null) rs.add(r1);
+
 
         return rs;
     }
@@ -1055,126 +1080,73 @@ public class CaaersRulesEngineService {
 
 
 
-    /**
-     * This method will retrive the ruleset identified by package name.
-     * @param packageName
-     * @return
-     */
-    public RuleSet getRuleSetByPackageName(String packageName){
-        return getRuleSetByPackageName(packageName, false) ;
-    }
-
-
-    /**
-     * This method will retrive the ruleset identified by package name.
-     * @param packageName
-     * @param cached - If true will return from cache
-     * @return
-     */
-    public RuleSet getRuleSetByPackageName(String packageName, boolean cached){
-        RuleSet ruleSet = ruleAuthoringService.getRuleSet(packageName, cached);
-        cleanRuleSet(ruleSet);
-        makeRuleSetReadable(ruleSet);
-        return ruleSet;
-    }
 
     /**
      * Retrieves the ruleset configured for Input fields
      * @return
      */
-    public RuleSet getFieldRuleSet(String rulesetName){
-        return getFieldRuleSet(rulesetName,true);
+    @Transactional(readOnly = true)
+    public RuleSet getFieldRuleSet(){
+        RuleSetQuery ruleSetQuery = new RuleSetQuery();
+        ruleSetQuery.filterByRuleType(RuleType.FIELD_LEVEL_RULES);
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> ruleSets = searchRuleSets(ruleSetQuery);
+        if(!ruleSets.isEmpty()) {
+            return getRuleSet(ruleSets.get(0).getRuleBindURI());
+        }
+        return null;
     }
+
+
 
     /**
-     * Retrieves the ruleset configured for input fields
-     * @param fromCache - if true will be retrieved from cache.
-     * @return
+     * Will return all the rule-set objects availbalbe in caAERS
      */
-    public RuleSet getFieldRuleSet(String rulesetName, boolean fromCache){
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.CAAERS_BASE.getPackagePrefix(), null, rulesetName);
-        return getRuleSetByPackageName(packageName, fromCache);
+    @Transactional(readOnly = true)
+    public List<gov.nih.nci.cabig.caaers.domain.RuleSet> getAllRuleSets(){
+        return (List<gov.nih.nci.cabig.caaers.domain.RuleSet>) ruleSetDao.search(new RuleSetQuery());
     }
-
-    /**
-     * Will retrieve a ruleset from the repository based on the unique ID of the ruleset.
-     * @param ruleSetId
-     * @return
-     */
-    public RuleSet getRuleSetById(String ruleSetId){
-
-      //the only way is to get all the rulesets, then return the matching one.
-      List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
-      RuleSet rs = null;
-      for(RuleSet ruleSet : ruleSets){
-          if(ruleSet.getId().equals(ruleSetId)){
-            rs = ruleSet;
-            break;
-          }
-      }
-
-      //set the meta-data in the rule set.
-      if(rs != null){
-          String packageName = rs.getName();
-          rs.setLevel(parseRuleLevel(packageName));
-          rs.setOrganization(parseOrganizationId(packageName));
-          rs.setStudy(parseStudyId(packageName));
-
-      }
-
-      return rs;
-
-    }
-
-    /**
-     * Will retrieve all the rule sets.
-     * Note: The default ruleset created by rules engine is removed from the list, as it is not requrired for the caAERS.
-     * @return
-     */
-    public List<RuleSet> getAllRuleSets(){
-       List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
-       List<RuleSet> allRuleSets = new ArrayList<RuleSet>();
-
-       for(RuleSet ruleSet : ruleSets){
-
-           if (ruleSet.getDescription().equals("The default rule package")) continue;
-
-           allRuleSets.add(ruleSet);
-
-           //populate the other attributes like Organization, level, Study etc.
-           String[] subjectParts = StringUtils.split(ruleSet.getSubject(), "||");
-           if(subjectParts.length < 4) continue;
-
-           String levelCode = subjectParts[1].trim();
-
-           if(StringUtils.isBlank(levelCode)) continue;
-
-           String orgNCICode = subjectParts[2].trim();
-           if(StringUtils.isEmpty(orgNCICode)){
-               orgNCICode = subjectParts[3].trim();
-           }
-           String studyPrimaryIDValue = subjectParts[4].trim();
-           ruleSet.setOrganization(orgNCICode);
-           ruleSet.setStudy(studyPrimaryIDValue);
-
-           for(RuleLevel rl : RuleLevel.values()){
-              if(StringUtils.equals(rl.getName(), levelCode)){
-                   ruleSet.setLevel(rl.getDescription());
-              }
-           }
-
-       }
-       return allRuleSets;
-    }
-
-
-	public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
-
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
+    
+//
+//    /**
+//     * Will retrieve all the rule sets.
+//     * Note: The default ruleset created by rules engine is removed from the list, as it is not requrired for the caAERS.
+//     * @return
+//     */
+//    public List<RuleSet> getAllRuleSets(){
+//       List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
+//       List<RuleSet> allRuleSets = new ArrayList<RuleSet>();
+//
+//       for(RuleSet ruleSet : ruleSets){
+//
+//           if (ruleSet.getDescription().equals("The default rule package")) continue;
+//
+//           allRuleSets.add(ruleSet);
+//
+//           //populate the other attributes like Organization, level, Study etc.
+//           String[] subjectParts = StringUtils.split(ruleSet.getSubject(), "||");
+//           if(subjectParts.length < 4) continue;
+//
+//           String levelCode = subjectParts[1].trim();
+//
+//           if(StringUtils.isBlank(levelCode)) continue;
+//
+//           String orgNCICode = subjectParts[2].trim();
+//           if(StringUtils.isEmpty(orgNCICode)){
+//               orgNCICode = subjectParts[3].trim();
+//           }
+//           String studyPrimaryIDValue = subjectParts[4].trim();
+//           ruleSet.setOrganization(orgNCICode);
+//           ruleSet.setStudy(studyPrimaryIDValue);
+//
+//           for(RuleLevel rl : RuleLevel.values()){
+//              if(StringUtils.equals(rl.getName(), levelCode)){
+//                   ruleSet.setLevel(rl.getDescription());
+//              }
+//           }
+//
+//       }
+//       return allRuleSets;
+//    }
 
 	public RulesEngineService getRuleEngineService() {
 		return ruleEngineService;
@@ -1182,14 +1154,6 @@ public class CaaersRulesEngineService {
 
 	public void setRuleEngineService(RulesEngineService ruleEngineService) {
 		this.ruleEngineService = ruleEngineService;
-	}
-
-	public RuleAuthoringService getRuleAuthoringService() {
-		return ruleAuthoringService;
-	}
-
-	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
-		this.ruleAuthoringService = ruleAuthoringService;
 	}
 
 	public ReportDefinitionDao getReportDefinitionDao() {
@@ -1207,13 +1171,6 @@ public class CaaersRulesEngineService {
 		this.configPropertyDao = configPropertyDao;
 	}
 
-	public RuleDeploymentService getRuleDeploymentService() {
-        return ruleDeploymentService;
-    }
-
-    public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
-        this.ruleDeploymentService = ruleDeploymentService;
-    }
 
     public StudyDao getStudyDao() {
         return studyDao;
@@ -1221,5 +1178,13 @@ public class CaaersRulesEngineService {
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
+    }
+
+    public RuleSetDao getRuleSetDao() {
+        return ruleSetDao;
+    }
+
+    public void setRuleSetDao(RuleSetDao ruleSetDao) {
+        this.ruleSetDao = ruleSetDao;
     }
 }

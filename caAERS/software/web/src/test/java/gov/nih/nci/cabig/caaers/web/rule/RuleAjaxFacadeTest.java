@@ -1,29 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.easymock.EasyMock;
-
-import com.semanticbits.rules.api.RepositoryService;
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.api.RuleDeploymentService;
-import com.semanticbits.rules.api.RulesEngineService;
-import com.semanticbits.rules.brxml.Column;
-import com.semanticbits.rules.brxml.Condition;
-import com.semanticbits.rules.brxml.MetaData;
-import com.semanticbits.rules.brxml.Rule;
-import com.semanticbits.rules.brxml.RuleSet;
-import com.semanticbits.rules.impl.RepositoryServiceImpl;
-import com.semanticbits.rules.impl.RuleAuthoringServiceImpl;
-import com.semanticbits.rules.impl.RuleDeploymentServiceImpl;
-import com.semanticbits.rules.impl.RulesEngineServiceImpl;
-
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.NotificationDao;
+import com.semanticbits.rules.brxml.*;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -34,6 +11,13 @@ import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
+import org.easymock.EasyMock;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.easymock.EasyMock.expect;
 
 /**
  * @author Sameer Sawant
@@ -45,6 +29,7 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 	private CaaersRulesEngineService caaersRulesEngineService;
 	private ReportDefinitionDao reportDefinitionDao;
 	private OrganizationDao organizationDao;
+    private StudyDao studyDao;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -59,7 +44,7 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	private CreateRuleCommand setupCreateRuleCommand(){
-		CreateRuleCommand command = new CreateRuleCommand(caaersRulesEngineService, reportDefinitionDao,  organizationDao);
+		CreateRuleCommand command = new CreateRuleCommand(caaersRulesEngineService, reportDefinitionDao,  organizationDao, studyDao);
 		command.setRuleSet(new RuleSet());
 		List<Rule> rulesList = new ArrayList<Rule>();
 		rulesList.add(new Rule());

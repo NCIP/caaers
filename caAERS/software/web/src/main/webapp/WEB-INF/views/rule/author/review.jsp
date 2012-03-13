@@ -31,7 +31,7 @@
 </head>
 <body>
 
-    <tags:tabForm tab="${tab}" flow="${flow}"  saveButtonLabel="${command.mode eq 'create' ? 'Save &amp; Enable' : 'Save'}"  willSave="false" hideTabControls="${not command.ruleManager}">
+    <tags:tabForm tab="${tab}" flow="${flow}"  saveButtonLabel="${command.createMode  ? 'Save &amp; Enable' : 'Save'}"  willSave="false" hideTabControls="${not command.ruleManager}">
     <jsp:attribute name="instructions">
     	<tags:instructions code="rulereview" />
     </jsp:attribute>
@@ -46,40 +46,39 @@
             <div class="row " >
    				 <div class="label">Rule Set Name</div>
    				 <div class="value" >
-					${command.ruleSetName}
+					${command.caaersRuleSet.ruleType.name}
     			</div>
 			</div>
-            <c:if test="${not empty command.level}">
+            <c:if test="${not empty command.caaersRuleSet.ruleLevel}">
              <div class="row " >
    				 <div class="label">Rule Set Level</div>
    				 <div class="value" >
-					${command.levelDescription}
+					${command.caaersRuleSet.ruleLevel.description}
     			</div>
 			</div>
             <div class="row " >
                     <div class="label">Organization Name</div>
                     <div class="value" >
-                    ${command.sponsor.fullName}
-                    ${command.institution.fullName}
+                    ${command.caaersRuleSet.organization.fullName}
                 </div>
             </div>
             <div class="row " >
                     <div class="label">Organization Role</div>
                     <div class="value" >
-                        <c:if test="${not empty command.sponsor.fullName}">
+                        <c:if test="${command.caaersRuleSet.ruleLevel.sponsorBased}">
                             Sponsor
                         </c:if>
-                        <c:if test="${not empty command.institution.fullName}">
+                        <c:if test="${command.caaersRuleSet.ruleLevel.institutionBased}">
                             Institution
                         </c:if>
                 </div>
             </div>
 
-            <c:if test="${not empty command.study}">
+            <c:if test="${not empty command.caaersRuleSet.study}">
                 <div class="row " >
                         <div class="label">Study</div>
                         <div class="value" >
-                                    (${command.study.primaryIdentifierValue}) ${command.study.shortTitle}
+                                    (${command.caaersRuleSet.study.primaryIdentifierValue}) ${command.caaersRuleSet.study.shortTitle}
                     </div>
                 </div>
             </c:if>

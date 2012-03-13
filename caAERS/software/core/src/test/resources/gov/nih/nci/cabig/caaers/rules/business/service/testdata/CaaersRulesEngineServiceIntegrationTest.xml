@@ -1,0 +1,18 @@
+<dataset>
+
+    <ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="Cancer Therapy Evaluation Program"
+            description_text="CTEP"
+            nci_institute_code="CTEP"
+            />
+    <ORGANIZATIONS
+            id="-1002"
+            version="1"
+            name="Cancer and Leukemia Group B"
+            description_text="Cancer and Leukemia Group B"
+            nci_institute_code="CALGB"
+            />
+
+</dataset>

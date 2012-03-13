@@ -739,7 +739,7 @@ div#createNew h3, div.section h3 {
 					
 					fieldDropDown.value='category';
 					
-				       createAE.getCtcCategoryByStudy(${not empty command.study ? command.study.id : 0}, function(categories) {
+				       createAE.getCtcCategoryByStudy(${not empty command.caaersRuleSet.study ? command.caaersRuleSet.study.id : 0}, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -785,7 +785,7 @@ div#createNew h3, div.section h3 {
 			{
 
 				                
-				          createAE.getCtcCategoryByStudy(${not empty command.study ? command.study.id : 0}, function(categories) {
+				          createAE.getCtcCategoryByStudy(${not empty command.caaersRuleSet.study ? command.caaersRuleSet.study.id : 0}, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -866,11 +866,11 @@ div#createNew h3, div.section h3 {
 					var criteria1 = "" ;
 					
 					if (selectedField.value == 'reportDefinitionName') { 
-						criteria1 = '${command.organization.id}';
+						criteria1 = '${command.caaersRuleSet.organization.id}';
 					}
 					
 					if (selectedField.value == 'treatmentAssignmentCode') { 
-						criteria1 = '${command.study.id}';
+						criteria1 = '${command.caaersRuleSet.study.id}';
 					}
 										
 					authorRule.getAjaxObjects(selectedField.value , criteria1 , function(values) {
@@ -1245,13 +1245,13 @@ div#createNew h3, div.section h3 {
 	  <tags:instructions code="3rules" />
       <div class="row">
         <div id="allRules">
-          <c:forEach varStatus="ruleStatus"
-				items="${command.ruleSet.rule}">
+          <c:set var="ruleSize" value="${fn:length(command.ruleSet.rule)}" />
+          <c:forEach varStatus="ruleStatus" items="${command.ruleSet.rule}">
             <c:set var="ruleCount" value="${ruleStatus.index}" />
             <c:set var="collapsedKey" value="ruleSet.rule[${ruleCount}]" />
-            <c:set var="collapsedCheck" value="${!command.errorsForFields[collapsedKey]}"/>
+            <c:set var="collapsedCheck" value="${!command.errorsForFields[collapsedKey] and ruleSize lt 2}"/>
             <div id="rule-${ruleCount + 1}">
-              <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" collapsed="${collapsedCheck}" deleteParams="${ruleCount + 1}" enableDelete="true">
+              <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" collapsed="${collapsedCheck}" deleteParams="${ruleCount + 1}" enableDelete="true" >
               <div id="rule-condition-action-container-${ruleCount + 1}">
                 <div class="row" value="${command.ruleSet.rule[ruleCount]}"
 					id="rule-${ruleCount + 1}-columns">
@@ -1543,11 +1543,11 @@ div#createNew h3, div.section h3 {
 					var criteria1 = "" ;
 					
 					if (criteria == 'reportDefinitionName') { 
-						criteria1 = '${command.organization.id}';
+						criteria1 = '${command.caaersRuleSet.organization.id}';
 					}
 					
 					if (criteria == 'treatmentAssignmentCode') { 
-						criteria1 = '${command.study.id}';
+						criteria1 = '${command.caaersRuleSet.study.id}';
 					}
 					
 
@@ -1686,39 +1686,30 @@ div#createNew h3, div.section h3 {
                   <div id="action-template" class="lineitem">
                     <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
                       <c:choose>
-                        <c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
+                        <c:when test='${command.caaersRuleSet.ruleType.name == "Mandatory Sections Rules"}'>
                           <c:forEach var="reportSectionName" items="${command.reportSectionNames}">
                             <form:option value="${reportSectionName}">${reportSectionName.displayName}</form:option>
                           </c:forEach>
                         </c:when>
-                        <c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
+                        <c:when test='${command.caaersRuleSet.ruleType.name == "SAE Reporting Rules"}'>
                           <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
                             <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
                           </c:forEach>
                           <form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
                         </c:when>
-                        <c:when test="${command.ruleSetName eq 'Field Rules'}">
+                        <c:when test="${command.caaersRuleSet.ruleType.name eq 'Field Rules'}">
                           <c:forEach var="mandatoryness" items="${command.mandatoryOptions}">
                             <form:option value="${mandatoryness.name}">${mandatoryness.displayName}</form:option>
                           </c:forEach>
                         </c:when>
-                        <c:otherwise>
-                          <form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
-                          <form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
-                          <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
-                            <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
-                          </c:forEach>
-                        </c:otherwise>
+
                       </c:choose>
-                      <c:forEach items="${notifications}" var="notification">
-                        <form:option value="${notification.id}">${notification.name}</form:option>
-                      </c:forEach>
+
                     </form:select>
                     <tags:errors path="ruleSet.rule[${ruleCount}].action"/>
                   </div>
                  
-                  <c:if test="${ruleCount} == 0">
-                  </c:if>
+
                 </div>
               </div>
               </chrome:division>

@@ -1,86 +1,87 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
-import java.rmi.RemoteException;
-import java.util.*;
-
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.semanticbits.rules.api.RuleAuthoringService;
-import com.semanticbits.rules.brxml.Category;
-import com.semanticbits.rules.brxml.Column;
-import com.semanticbits.rules.brxml.FieldConstraint;
-import com.semanticbits.rules.brxml.LiteralRestriction;
-import com.semanticbits.rules.brxml.MetaData;
 import com.semanticbits.rules.utils.RuleUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.util.*;
+
 public class CaaersRuleUtil {
-	
+//
     public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
     public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
-	 
-	private static final Log log = LogFactory.getLog(CaaersRuleUtil.class);
+//
+//	private static final Log log = LogFactory.getLog(CaaersRuleUtil.class);
 
-    /**
-     * Will return the category identified the path if exists, otherwise creates. 
-     * @param authService
-     * @param path
-     * @return
-     * @throws Exception
-     */
-    public static Category  createCategory(RuleAuthoringService authService, String path) throws Exception{
-        if(StringUtils.isEmpty(path)) return null;
 
-        if(RuleUtil.categoryExist(authService, path)){
-            return authService.getCategory(path);
-        }
+    public static String getStringWithoutSpaces(String str) {
+        return RuleUtil.getStringWithoutSpaces(str);
+    }
 
-        int i = path.lastIndexOf('/');
-        
-        String childPath = null;
-        String parentPath = null;
-
-        if(path.length() > i){
-            childPath = path.substring(i+1);
-        }
-
-        if(i >= 0){
-            parentPath = path.substring(0,i);
-
-        }
-
-        if(!StringUtils.equals(parentPath, "/")) createCategory(authService, parentPath);
-
-        CategoryConfiguration c = CategoryConfiguration.findByName(childPath);
-        if(c != null){
-            if(!RuleUtil.categoryExist(authService, c.getPath())){
-                RuleUtil.createCategory(authService, parentPath,c.getName(),c.getDescription());
-                log.debug(" -->" + parentPath + "/" + c.getName());
-            }
-
-        }else{
-            if(!RuleUtil.categoryExist(authService, childPath)){
-                RuleUtil.createCategory(authService, parentPath,childPath,childPath);
-                log.debug(" -->" + parentPath + "/" + childPath);
-            }
-        }
-
-        return authService.getCategory(path);
-
+    public static List charSeparatedStringToStringList(String aString, String chr) {
+        return RuleUtil.charSeparatedStringToStringList(aString, chr);
+    }
+    
+    public static String getRandomBindURI(){
+        return "rs_" + System.currentTimeMillis();
     }
 
 
-
-    
+//
+//    /**
+//     * Will return the category identified the path if exists, otherwise creates. 
+//     * @param authService
+//     * @param path
+//     * @return
+//     * @throws Exception
+//     */
+//    public static Category  createCategory(RuleAuthoringService authService, String path) throws Exception{
+//        if(StringUtils.isEmpty(path)) return null;
+//
+//        if(RuleUtil.categoryExist(authService, path)){
+//            return authService.getCategory(path);
+//        }
+//
+//        int i = path.lastIndexOf('/');
+//        
+//        String childPath = null;
+//        String parentPath = null;
+//
+//        if(path.length() > i){
+//            childPath = path.substring(i+1);
+//        }
+//
+//        if(i >= 0){
+//            parentPath = path.substring(0,i);
+//
+//        }
+//
+//        if(!StringUtils.equals(parentPath, "/")) createCategory(authService, parentPath);
+//
+//        CategoryConfiguration c = CategoryConfiguration.findByName(childPath);
+//        if(c != null){
+//            if(!RuleUtil.categoryExist(authService, c.getPath())){
+//                RuleUtil.createCategory(authService, parentPath,c.getName(),c.getDescription());
+//                log.debug(" -->" + parentPath + "/" + c.getName());
+//            }
+//
+//        }else{
+//            if(!RuleUtil.categoryExist(authService, childPath)){
+//                RuleUtil.createCategory(authService, parentPath,childPath,childPath);
+//                log.debug(" -->" + parentPath + "/" + childPath);
+//            }
+//        }
+//
+//        return authService.getCategory(path);
+//
+//    }
+//
+//
+//
+//    
     /**
-     * This method will parse the rules result and return the list of 
+     * This method will parse the rules result and return the list of
      * report definition names.
      * @param message
      * @return

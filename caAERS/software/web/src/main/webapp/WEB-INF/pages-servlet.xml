@@ -507,7 +507,6 @@
   -->
 
   <bean name="/rule/export" id="exportRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController"></bean>
-  <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
   <bean name="/rule/create" id="createRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController"></bean>
   <bean name="/rule/read" id="readRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController"></bean>
   <bean name="/rule/list" id="listRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController"></bean>

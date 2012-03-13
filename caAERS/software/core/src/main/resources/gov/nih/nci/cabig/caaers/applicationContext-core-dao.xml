@@ -233,6 +233,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedCtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RuleSet</value>
 
             </list>
         </property>
@@ -432,6 +433,7 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedCtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RuleSet</value>
             </list>
         </property>
         <!--
@@ -645,6 +647,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
 		
 	<bean id="treatmentAssignmentStudyInterventionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentStudyInterventionDao" />
+	<bean id="ruleSetDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RuleSetDao" />
 
     <!-- Factory beans end here-->
 
