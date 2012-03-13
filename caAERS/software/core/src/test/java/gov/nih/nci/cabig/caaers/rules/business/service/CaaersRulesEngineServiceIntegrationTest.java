@@ -24,10 +24,6 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
 
     }
 
-    public void testExportRules() throws Exception {
-
-    }
-
     public void testImportRules() throws Exception {
         
         InputStream in = RuleUtil.getResouceAsStream("sae_reporting_rules_sponsor_org_ctep.xml");
