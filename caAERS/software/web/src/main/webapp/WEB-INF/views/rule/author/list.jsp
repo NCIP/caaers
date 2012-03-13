@@ -219,7 +219,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </chrome:division>
     </csmauthz:accesscontrol>
 </chrome:box>
-<div id="rule-debug">
+<div id="rule-debug" style="display:none;">
     <p>Stage Area : (${command.allFromSageArea})</p>
     <p>Deploy Area : (${command.allFromDeployArea})</p>
     <p>Runtime Area : (${command.allFromRuntimeEngine})</p>
