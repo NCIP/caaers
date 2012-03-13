@@ -36,7 +36,7 @@ public class OrganizationAssignedIdentifier extends Identifier {
      * @return the organization
      */
     @ManyToOne
-    @JoinColumn(name = "organization_id", nullable = false)
+    @JoinColumn(name = "organization_id", nullable = true)
     @Cascade(value = { CascadeType.LOCK })
     public Organization getOrganization() {
         return organization;

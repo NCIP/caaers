@@ -123,17 +123,19 @@ public class IdentifiersTab extends StudyTab {
             if (!set.add(identifier)) {
                 errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate, already an identifier of this type is present");
             }
-            
-            if(identifier instanceof SystemAssignedIdentifier){
-            	if(StringUtils.isEmpty( ((SystemAssignedIdentifier)identifier).getSystemName())){
-            		errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011","System Name is required..!");
-            	}
-            }else{
-            	if(((OrganizationAssignedIdentifier)identifier).getOrganization() == null){
-            		errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
-            	}
+
+            if (identifier instanceof SystemAssignedIdentifier) {
+                if (StringUtils.isEmpty(((SystemAssignedIdentifier) identifier).getSystemName())) {
+                    errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011", "System Name is required..!");
+                    continue;
+                }
+            } else {
+                if (((OrganizationAssignedIdentifier) identifier).getOrganization() == null) {
+                    errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
+                    continue;
+                }
             }
-            
+
 //            BJ : To be determined by Paul, whether this is necessary.
 //            //0- is sponsor identifier
 //            if(i > 0 && identifier.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
@@ -144,12 +146,12 @@ public class IdentifiersTab extends StudyTab {
 //            if(i > 1 && identifier.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
 //            	errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_022","More than one Coordinating Center identifier is not allowed");
 //            }
-            
+
             Study aStudy = command.checkForDuplicateStudyByIdentifier(identifier);
-        	if(aStudy != null){
-        		errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_021", new Object[]{aStudy.getShortTitle(), aStudy.getPrimaryIdentifierValue()}, 
-        				"The primary identifier you choose for this study is present in another study");
-        	}
+            if (aStudy != null) {
+                errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_021", new Object[]{aStudy.getShortTitle(), aStudy.getPrimaryIdentifierValue()},
+                        "The primary identifier you choose for this study is present in another study");
+            }
         }
     }
 
