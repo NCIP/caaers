@@ -2,9 +2,13 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dataimport.AgentSpecificTermsImporter;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /*
 * @author Ion C. Olaru
@@ -13,6 +17,7 @@ import java.util.Map;
 public class ASAELImporter extends Importer {
 
     private AgentSpecificTermsImporter importer;
+    private static final Log logger = LogFactory.getLog(ASAELImporter.class);
     
     @Override
     public void processEntities(File file, ImportCommand command) {
@@ -25,6 +30,7 @@ public class ASAELImporter extends Importer {
             Map<String, Object> map =  importer.importFile();
             request.setAttribute("results", map);
         } catch (Exception e) {
+        	logger.error(e);
         }
     }
 

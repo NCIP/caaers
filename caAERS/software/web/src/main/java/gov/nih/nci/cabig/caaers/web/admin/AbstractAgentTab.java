@@ -98,6 +98,7 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
             if (l != null)
                 for (StudyAgent s : l) {
                     getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s.getStudy(), t, true);
+                    s.syncTreatmentAssignmentAgentSpecificTerm(t, true);
                 }
         }
 
@@ -108,6 +109,7 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
             for (StudyAgent s : l) {
                 // System.out.println(s.getAgent());
                 agentDao.merge(s.getAgent());
+                studyAgentDao.merge(s);
             }
 
             command.setAgent(agentDao.merge(command.getAgent()));
@@ -122,6 +124,10 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
             // sync the agent terms with the study
             for (StudyAgent s : l) {
                 getAgentSpecificAdverseEventListService().synchronizeStudyWithAgent(s.getStudy(), command.getAgent());
+//                s.syncTreatmentAssignmentAgentSpecificTerm();
+                for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
+                	s.syncTreatmentAssignmentAgentSpecificTerm(t, false);
+                }
                 studyDao.save(s.getStudy());
             }
         }

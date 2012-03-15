@@ -196,6 +196,7 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
 	}
 	
 	public void removeTreatmentAssignmentAgent(TreatmentAssignmentAgent treatmentAssignmentAgent){
+		//TODO: Recalculate the expectedness if more than one treatment agents
 		getTreatmentAssignmentAgents().remove(treatmentAssignmentAgent);
 	}
 

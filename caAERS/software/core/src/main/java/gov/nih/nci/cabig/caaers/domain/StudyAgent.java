@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.List;
 
@@ -348,5 +349,23 @@ public class StudyAgent extends StudyIntervention {
 		if(isCTEPLead() && !getStudy().hasLeadCTEPInds()) throw new IllegalStateException("Agent is CTEP lead but study has no CTEP INDs. Its an invalid state.");
 		return !(getStudy().hasLeadCTEPInds() ^ isCTEPLead());
 	}
+	
+	@Transient
+    public void syncTreatmentAssignmentAgentSpecificTerm(){
+    	for(AgentSpecificTerm agentSpecificTerm : getAgent().getAgentSpecificTerms()){
+			syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, false);
+    	}
+    }
+	
+	@Transient
+    public void syncTreatmentAssignmentAgentSpecificTerm(AgentSpecificTerm agentSpecificTerm, boolean deleted){
+    	for(TreatmentAssignmentAgent taa : getTreatmentAssignmentAgents()){
+    		if(deleted){
+    			taa.getTreatmentAssignment().removeExpectedAE(taa, agentSpecificTerm.getTerm());
+    		}else{
+    			taa.getTreatmentAssignment().addExpectedAEs(taa, agentSpecificTerm);
+    		}
+    	}
+    }
 
 }

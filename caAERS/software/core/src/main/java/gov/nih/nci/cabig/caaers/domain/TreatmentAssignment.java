@@ -366,45 +366,56 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
     
     public void addExpectedAEs(TreatmentAssignmentAgent treatmentAssignmentAgent){
     	if (treatmentAssignmentAgent.getStudyAgent().getAgent() == null) return;
+    	//Import Expected AEs
+    	for (AgentSpecificTerm agentSpecificTerm: treatmentAssignmentAgent.getStudyAgent().getAgent().getAgentSpecificTerms()){
+    		addExpectedAEs(treatmentAssignmentAgent, agentSpecificTerm);
+    	}
+    }
+    
+    public void addExpectedAEs(TreatmentAssignmentAgent treatmentAssignmentAgent, AgentSpecificTerm agentSpecificTerm){
     	// shouldHonor = true if study has a CTEP Ind and given studyAgent is CTEP Ind
     	// shouldHonor = true if study has no CTEP Ind and given studyAgent is not CTEP Ind
     	// shouldHonor = false if study has a CTEP Ind and given studyAgent is not CTEP Ind
     	// All other combinations are invalid
     	boolean shouldHonor = treatmentAssignmentAgent.getStudyAgent().shouldHonor();
-    	//Import Expected AEs
-    	for (AgentSpecificTerm agentSpecificTerm: treatmentAssignmentAgent.getStudyAgent().getAgent().getAgentSpecificTerms()){
-    		AbstractStudyInterventionExpectedAE ta_ae = getExistingTerm(agentSpecificTerm.getTerm());
-    		if( ta_ae != null){
-    			//Duplicate AE.
-    			//Add the new source of AE and recalculate expectedness.
-    			ta_ae.getTreatmentAssignmentAgents().add(treatmentAssignmentAgent);
-    			ta_ae.recalculateExpectedness(agentSpecificTerm, shouldHonor && agentSpecificTerm.isExpected());
-    		}else{
-    			AbstractStudyInterventionExpectedAE asiea = null;
-    			if (agentSpecificTerm instanceof AgentSpecificCtcTerm) {
-    				asiea = new StudyInterventionExpectedCtcTerm(treatmentAssignmentAgent, agentSpecificTerm, shouldHonor && agentSpecificTerm.isExpected());
-				}else {
-					asiea = new StudyInterventionExpectedMeddraLowLevelTerm(treatmentAssignmentAgent, agentSpecificTerm, shouldHonor && agentSpecificTerm.isExpected());
-				}
-    			this.getAbstractStudyInterventionExpectedAEs().add(asiea);
-    		}
-    	}
+		AbstractStudyInterventionExpectedAE ta_ae = getExistingTerm(agentSpecificTerm.getTerm());
+		if( ta_ae != null){
+			//Duplicate AE.
+			//Check if the ae is already added for this treatment assignment
+			if(ta_ae.getTreatmentAssignmentAgents().contains(treatmentAssignmentAgent)){
+				//TODO: For now just return. Maybe we update the expectedness values and copy them from agentspecificterm to abstractstudyinterventionAE
+				return;
+			}
+			//Add the new source of AE and recalculate expectedness.
+			ta_ae.getTreatmentAssignmentAgents().add(treatmentAssignmentAgent);
+			ta_ae.recalculateExpectedness(agentSpecificTerm, shouldHonor && agentSpecificTerm.isExpected());
+		}else{
+			AbstractStudyInterventionExpectedAE asiea = null;
+			if (agentSpecificTerm instanceof AgentSpecificCtcTerm) {
+				asiea = new StudyInterventionExpectedCtcTerm(treatmentAssignmentAgent, agentSpecificTerm, shouldHonor && agentSpecificTerm.isExpected());
+			}else {
+				asiea = new StudyInterventionExpectedMeddraLowLevelTerm(treatmentAssignmentAgent, agentSpecificTerm, shouldHonor && agentSpecificTerm.isExpected());
+			}
+			this.getAbstractStudyInterventionExpectedAEs().add(asiea);
+		}
     }
     
     public void removeExpectedAEs(TreatmentAssignmentAgent treatmentAssignmentAgent){
     	if (treatmentAssignmentAgent.getStudyAgent().getAgent() == null) return;
     	for (AgentSpecificTerm agentSpecificTerm: treatmentAssignmentAgent.getStudyAgent().getAgent().getAgentSpecificTerms()){
-    		AbstractStudyInterventionExpectedAE ta_ae = getExistingTerm(agentSpecificTerm.getTerm());
-    		if( ta_ae != null){
-    			//Duplicate AE.
-    			//Add the new souce of AE and recalculate expectedness.
-    			if(ta_ae.getTreatmentAssignmentAgents().size() == 1){
-    				getAbstractStudyInterventionExpectedAEs().remove(ta_ae);
-    			}else{
-    				ta_ae.removeTreatmentAssignmentAgent(treatmentAssignmentAgent);
-    			}
-    		}
+    		removeExpectedAE(treatmentAssignmentAgent, agentSpecificTerm.getTerm());
     	}
+    }
+    
+    public void removeExpectedAE(TreatmentAssignmentAgent treatmentAssignmentAgent, DomainObject term){
+		AbstractStudyInterventionExpectedAE ta_ae = getExistingTerm(term);
+		if( ta_ae != null){
+			if(ta_ae.getTreatmentAssignmentAgents().size() == 1){
+				//remove the AbstractStudyInterventionExpectedAE completely
+				getAbstractStudyInterventionExpectedAEs().remove(ta_ae);
+			}
+			ta_ae.removeTreatmentAssignmentAgent(treatmentAssignmentAgent);
+		}
     }
     
     private AbstractStudyInterventionExpectedAE getExistingTerm(DomainObject term){
