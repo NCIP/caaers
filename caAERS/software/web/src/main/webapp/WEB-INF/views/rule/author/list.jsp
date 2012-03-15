@@ -219,10 +219,23 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </chrome:division>
     </csmauthz:accesscontrol>
 </chrome:box>
-<div id="rule-debug" style="display:none;">
-    <p>Stage Area : (${command.allFromSageArea})</p>
-    <p>Deploy Area : (${command.allFromDeployArea})</p>
-    <p>Runtime Area : (${command.allFromRuntimeEngine})</p>
+<div id="rule-debug" >
+    Below section will be removed later, after we test the Rules module throughly.
+    <p>Stage Area :
+        <c:forEach var="s" items="${command.allFromSageArea}">
+            <li>${s}</li>
+        </c:forEach>
+    </p>
+    <p>Deploy Area :
+        <c:forEach var="s" items="${command.allFromDeployArea}">
+            <li>${s}</li>
+        </c:forEach>
+    </p>
+    <p>Runtime Area :
+        <c:forEach var="s" items="${command.allFromRuntimeEngine}">
+            <li>${s}</li>
+        </c:forEach>
+    </p>
 
 </div>
 </body>
