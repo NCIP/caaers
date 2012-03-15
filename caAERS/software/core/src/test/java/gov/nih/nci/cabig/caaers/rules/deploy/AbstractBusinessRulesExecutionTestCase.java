@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
+import com.semanticbits.rules.utils.RuleUtil;
+import com.semanticbits.rules.utils.XMLUtil;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -36,6 +38,8 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -47,11 +51,11 @@ import java.util.List;
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 import com.semanticbits.rules.impl.RuleDeploymentServiceImpl;
 import com.semanticbits.rules.objectgraph.FactResolver;
+import org.dom4j.rule.RuleSet;
 
 public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCase {
 
     protected RuleDeploymentServiceImpl deploymetService;
-
     protected BusinessRulesExecutionServiceImpl executionService;
 
     public abstract String getBindUri();
@@ -67,17 +71,12 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         super.setUp();
         deploymetService = (RuleDeploymentServiceImpl)getDeployedApplicationContext().getBean("ruleDeploymentService");
         executionService = (BusinessRulesExecutionServiceImpl)getDeployedApplicationContext().getBean("businessRulesExecutionService");
-        try {
-            unregisterRule();
-        } catch (Exception e) {
-        }
         registerRule();
 
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        unregisterRule();
     }
 
     public void assertNoErrors(ValidationErrors errors, String... msg) {
@@ -349,17 +348,9 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
 
     public void registerRule() throws Exception {
         String ruleXml = getFileContext(getRuleFile());
-        try {
-        	deploymetService.deregisterRuleSet(getBindUri());
-        } catch (Exception e) {
-        	System.out.println("registering for first time");
-        }
-//        deploymetService.registerRuleXml(getBindUri(), ruleXml);
+
+        deploymetService.registerRulePackage(getBindUri() , XMLUtil.unmarshalToPackage(ruleXml));
         assertTrue("Rule deployed", true);
     }
 
-    public void unregisterRule() throws Exception {
-        deploymetService.deregisterRuleSet(getBindUri());
-        assertTrue("Rule undeployed", true);
-    }
 }
