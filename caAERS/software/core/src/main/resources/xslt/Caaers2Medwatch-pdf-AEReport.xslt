@@ -880,6 +880,7 @@
                                                                 <fo:block><xsl:value-of select="formulation"/></fo:block>
                                                                 <fo:block><xsl:value-of select="administrationDelayAmount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="administrationDelayUnits"/></fo:block>
                                                                 <fo:block><xsl:value-of select="AgentAdjustment"/></fo:block>
+                                                                <fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
                                                             </xsl:for-each>
 
 
