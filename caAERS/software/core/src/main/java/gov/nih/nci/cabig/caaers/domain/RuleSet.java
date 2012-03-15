@@ -130,7 +130,7 @@ public class RuleSet extends AbstractIdentifiableDomainObject implements Seriali
     }
 
     public void setRuleLevel(RuleLevel ruleLevel){
-        setRuleLevelName(ruleLevel.name());
+        if(ruleLevel != null) setRuleLevelName(ruleLevel.getName());
     }
 
     @Transient
