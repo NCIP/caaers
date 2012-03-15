@@ -873,6 +873,16 @@
                                                                     &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
                                                                     Continued... </xsl:text>
                                                             </xsl:if>
+
+
+                                                            <xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+                                                                <fo:block><xsl:value-of select="Dose/amount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="Dose/units"/></fo:block>
+                                                                <fo:block><xsl:value-of select="formulation"/></fo:block>
+                                                                <fo:block><xsl:value-of select="administrationDelayAmount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="administrationDelayUnits"/></fo:block>
+                                                                <fo:block><xsl:value-of select="AgentAdjustment"/></fo:block>
+                                                            </xsl:for-each>
+
+
                                                         </fo:block>
 
                                                     </fo:table-cell>
