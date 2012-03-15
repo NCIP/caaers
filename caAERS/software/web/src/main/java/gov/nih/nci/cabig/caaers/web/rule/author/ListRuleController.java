@@ -63,6 +63,7 @@ public class ListRuleController extends SimpleFormController {
             try {
 
                 List<String> rds = caaersRulesEngineService.importRules(ruleSetFile1.getAbsolutePath());
+                rds.remove(0);
                 if (rds.size() > 0) {
 
                     sb.append("Following report definitions are created with basic information.<br/>");

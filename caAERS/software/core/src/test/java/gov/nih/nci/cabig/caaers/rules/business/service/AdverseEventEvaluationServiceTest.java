@@ -43,7 +43,8 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
 
     private void importRulesFile(String fileName) throws Exception{
         File f = createTmpFileFromResource(fileName);
-        caaersRulesEngineService.importRules(f.getAbsolutePath());
+        List<String> rdList = caaersRulesEngineService.importRules(f.getAbsolutePath());
+        bindURL = rdList.get(0);
     }
 
     protected void setUp() throws Exception {

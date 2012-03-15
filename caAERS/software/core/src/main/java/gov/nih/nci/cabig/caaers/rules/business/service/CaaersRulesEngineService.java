@@ -206,6 +206,8 @@ public class CaaersRulesEngineService {
         saveOrUpdateRuleSet(domainRuleSet, ruleSet);
         deployRuleSet(domainRuleSet.getRuleBindURI());
 
+        reportDefinitionsCreated.add(0, domainRuleSet.getRuleBindURI());
+
         return reportDefinitionsCreated;
     }
 
