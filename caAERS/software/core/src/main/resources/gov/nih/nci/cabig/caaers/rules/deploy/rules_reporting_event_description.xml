@@ -2,8 +2,6 @@
 <package  name="gov.nih.nci.cabig.caaers.rules.reporting_description_section" xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
 
-	<global type="com.semanticbits.rules.impl.RuleContext" identifier="ruleContext"/>
-	<global type="com.semanticbits.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
 	<import name="com.semanticbits.rules.utils.DateUtil" />
 	<import name="com.semanticbits.rules.objectgraph.NullSafeFieldExtractor" />
