@@ -8,8 +8,8 @@
 
     var otherInterventionsColumnDefs = [
         {key:"name", label:"Name", sortable:true, resizeable:true, minWidth:100},
-        {key:"description", label:"Description", sortable:true, resizeable:true},
-        {key:"type", label:"Intervention type", sortable:true, resizeable:true}
+        {key:"description", label:"Description", sortable:true, resizeable:true, minWidth:600},
+        {key:"type", label:"Intervention type", sortable:true, resizeable:true, minWidth:200}
     ];
 
     var otherInterventionsFields = [
