@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import junit.framework.TestCase;
 /**
  * 
@@ -49,6 +54,33 @@ public class UniqueObjectInCollectionValidatorTest extends TestCase {
 		set.add(a3);
 		assertEquals(4, set.size());
 	}
+    
+    public void testValidateRetireableObjects(){
+        
+        Study s = Fixtures.createStudy("hello");
+        s.setId(1);
+        
+        TreatmentAssignment tac1 = Fixtures.createTreatmentAssignment("t1");
+        tac1.setStudy(s);
+
+        TreatmentAssignment tac2 = Fixtures.createTreatmentAssignment("t2");
+        tac2.setStudy(s);
+        
+        assertTrue(validator.validate(Arrays.asList(tac1, tac2)));
+        
+
+        TreatmentAssignment tac3 = Fixtures.createTreatmentAssignment("t1");
+        tac3.setStudy(s);
+
+
+        assertFalse(validator.validate(Arrays.asList(tac1, tac2, tac3)));
+
+        tac1.retire();
+
+        assertTrue(validator.validate(Arrays.asList(tac1, tac2, tac3)));
+
+
+    }
 	class AnObject extends Object{
 		int i ;
 		Integer j;

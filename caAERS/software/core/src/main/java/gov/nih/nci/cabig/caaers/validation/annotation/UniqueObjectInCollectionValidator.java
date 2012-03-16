@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import gov.nih.nci.cabig.caaers.domain.Retireable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -29,6 +30,9 @@ public class UniqueObjectInCollectionValidator implements Validator<UniqueObject
         	Collection c = (Collection) value;
         	ArrayList<Object> list = new ArrayList<Object>(c.size());
         	for(Object o : c){
+
+                if( (o instanceof Retireable) && ((Retireable) o).isRetired()) continue;
+
         		if(list.contains(o)) return false;
         		list.add(o);
         	}

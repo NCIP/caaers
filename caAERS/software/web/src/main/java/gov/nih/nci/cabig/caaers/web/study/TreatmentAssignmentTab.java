@@ -81,7 +81,7 @@ public class TreatmentAssignmentTab extends StudyTab {
     protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
-        List<TreatmentAssignment> treatmentAssignments = command.getStudy().getTreatmentAssignments();
+        List<TreatmentAssignment> treatmentAssignments = command.getStudy().getActiveTreatmentAssignments();
 
         for (int j = 0; j < treatmentAssignments.size(); j++) {
             TreatmentAssignment treatmentAssignment = treatmentAssignments.get(j);
