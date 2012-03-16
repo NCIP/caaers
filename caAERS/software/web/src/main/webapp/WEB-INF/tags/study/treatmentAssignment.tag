@@ -17,7 +17,7 @@
 <c:set var="editable" value="${ta.study.loadStatus == 0 || empty ta.id}" />
 
 <chrome:division title="&nbsp;${title}" id="OneTA-${index}" collapsable="${collapsable}" enableDelete="true" deleteParams="'delete', ${index}">
-    <jsp:attribute name="additionalInfo"><div id="BTN${index}UPDATE" style="display:${!editable ? '' : 'none'};"><tags:button icon="edit" size="small" value="Update" color="blue" onclick="enableEdit('${index}');" type="button" /></div><div id="BTN${index}CANCEL" style="display: ${editable && !empty ta.id ? '' : 'none'}"><tags:button icon="x" size="small" value="Cancel" color="blue" onclick="disableEdit('${index}');" type="button"/></div></jsp:attribute>
+    <jsp:attribute name="additionalInfo"><div id="BTN${index}UPDATE" style="display:${!editable ? '' : 'none'};"><tags:button icon="edit" size="small" value="" color="blue" onclick="enableEdit('${index}');" type="button" /></div><div id="BTN${index}CANCEL" style="display: ${editable && !empty ta.id ? '' : 'none'}"><tags:button icon="x" size="small" value="Cancel" color="blue" onclick="disableEdit('${index}');" type="button"/></div></jsp:attribute>
     <jsp:body>
 <%-- BODY --%>
 
