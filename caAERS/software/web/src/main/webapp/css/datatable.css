@@ -41,10 +41,11 @@ version: 2.7.0
 .yui-dt-hd {
     zoom: 1
 }
+
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
     position: relative;
     background: #3882c1 url(../images/table/yui-datatable_header.jpg) repeat-x top;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     margin: 0px;
     color: white;
@@ -58,11 +59,7 @@ th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
 
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner a:hover {
     color:white
-
 }
-
-
-
 
 .yui-dt-resizer {
     position: absolute;
