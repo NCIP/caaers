@@ -1515,7 +1515,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      * @return the treatment assignments
      */
     @Transient
-    @UniqueObjectInCollection(message = "Duplicates found in TreatmentAssignments list")
+    @UniqueObjectInCollection(message = "Duplicate Treatment Assignments found. A Study cannot have two Treatment Assignments with same Code")
     public List<TreatmentAssignment> getTreatmentAssignments() {
         return lazyListHelper.getLazyList(TreatmentAssignment.class);
     }
