@@ -20,7 +20,8 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
     CaaersRulesEngineService service;
     
     public void setUp() throws Exception {
-         service = (CaaersRulesEngineService) getDeployedApplicationContext().getBean("caaersRulesEngineService") ;
+        super.setUp();
+        service = (CaaersRulesEngineService) getDeployedApplicationContext().getBean("caaersRulesEngineService") ;
 
     }
 
@@ -37,8 +38,8 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
         assertTrue(f.exists());
         
         assertTrue(findRuleSets().isEmpty());
-        interruptSession();
-        List<String> reportDefNames = service.importRules(f.getAbsolutePath());
+
+        service.importRules(f.getAbsolutePath());
         f.delete();
         List<RuleSet> ruleSets = findRuleSets();
         assertFalse(ruleSets.isEmpty());
@@ -50,10 +51,23 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
         String xml2 = service.exportRules(rs.getRuleBindURI());
         
         assertNotNull(xml2);
+
+
+
+        f = File.createTempFile("r_"+ System.currentTimeMillis(), "sae.xml");
+        fw = new FileWriter(f);
+        IOUtils.write(xml, fw);
+        IOUtils.closeQuietly(fw);
+        assertTrue(f.exists());
+
+
+        List<String> outList = service.importRules(f.getAbsolutePath());
+        f.delete();
+        assertEquals(rs.getRuleBindURI(), outList.get(0));
+
+        String xml3 = service.exportRules(rs.getRuleBindURI());
+        assertNotNull(xml3);
         
-        System.out.println(xml);
-        System.out.println(xml2);
-        assertEquals(xml, xml2);
         
 
     }
@@ -62,7 +76,7 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
         RuleSetQuery ruleSetQuery = new RuleSetQuery();
         ruleSetQuery.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
         ruleSetQuery.filterByRuleLevel(RuleLevel.Sponsor);
-        ruleSetQuery.filterByOrganizationId(-1001);
+        ruleSetQuery.filterByOrganizationId(6);
         ruleSetQuery.filterByStatus(RuleSet.STATUS_ENABLED);
         return (List<RuleSet>)service.getRuleSetDao().search(ruleSetQuery);
     }
