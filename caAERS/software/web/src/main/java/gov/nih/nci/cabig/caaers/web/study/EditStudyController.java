@@ -50,6 +50,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
         study.initializeEpocsIfNecessary();
 
         StudyCommand command = new StudyCommand(studyDao, investigationalNewDrugDao);
+        command.setMustFireEvent(false);
 
         command.setStudy(study);
         command.setAllPersonnelRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));

@@ -71,6 +71,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         request.getSession().removeAttribute(CreateStudyAjaxFacade.CREATE_STUDY_FORM_NAME);
         
         StudyCommand command = new StudyCommand(studyDao, investigationalNewDrugDao);
+        command.setMustFireEvent(true);
         Study study = new LocalStudy(); 
         study.setDataEntryStatus(false);
         command.setStudy(study);

@@ -77,7 +77,9 @@ public class IdentifiersTab extends StudyTab {
         }
 
         // Fire the event for re-indexing
-        if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
+        if (command.isMustFireEvent()) {
+            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
+        }
 
     }
 
