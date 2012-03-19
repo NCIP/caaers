@@ -75,6 +75,10 @@ public class IdentifiersTab extends StudyTab {
             study.getIdentifiersLazy().remove(Integer.parseInt(selected));
             // study.getIdentifiers().remove(Integer.parseInt(selected));
         }
+
+        // Fire the event for re-indexing
+        if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
+
     }
 
     @Override

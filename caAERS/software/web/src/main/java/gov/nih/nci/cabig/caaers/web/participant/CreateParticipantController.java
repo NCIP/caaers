@@ -97,13 +97,10 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
-
         Participant participant = participantCommand.getParticipant();
         participantDao.save(participant);
-        if(eventFactory != null) eventFactory.publishEntityModifiedEvent(participant);
-        
+        if (eventFactory != null) eventFactory.publishEntityModifiedEvent(participant);
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=create");
-
         return null;
     }
 

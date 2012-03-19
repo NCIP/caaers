@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.*;
@@ -22,6 +23,7 @@ import org.springframework.validation.Errors;
  */
 public abstract class StudyTab extends TabWithFields<StudyCommand> {
 
+    private EventFactory eventFactory;
 
     private ConfigProperty configurationProperty;
     protected static final Log log = LogFactory.getLog(StudyTab.class);
@@ -79,4 +81,11 @@ public abstract class StudyTab extends TabWithFields<StudyCommand> {
         }
     }
 
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
 }

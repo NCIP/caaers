@@ -32,18 +32,16 @@ public abstract class AbstractEventListener   implements ApplicationListener {
      * This data is basically domain object IDs to use in IN clause of Query .
      */
     public final void  onApplicationEvent(ApplicationEvent event) {
-      //  log.debug("Event recieved : " + event.getClass().getName()) ;
-        if(isSupported(event)){
-          long start = System.currentTimeMillis();
-          log.info("Indexing started for " + SecurityUtils.getUserLoginName(getAuthentication(event)));
-          preProcess(event);
-          log.info("pre processing finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
-          filteredDataLoader.updateIndexByUserName(getAuthentication(event));
-          log.info("data loading finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
-          postProcess(event);
-          log.info("Indexing finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
+        if (isSupported(event)) {
+            long start = System.currentTimeMillis();
+            log.info("Indexing started for " + SecurityUtils.getUserLoginName(getAuthentication(event)));
+            preProcess(event);
+            log.info("pre processing finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
+            filteredDataLoader.updateIndexByUserName(getAuthentication(event));
+            log.info("data loading finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
+            postProcess(event);
+            log.info("Indexing finished for " + SecurityUtils.getUserLoginName(getAuthentication(event)) + " took " + (System.currentTimeMillis() - start) + " milliseconds");
         }
-
     }
 
     public abstract boolean isSupported(ApplicationEvent event);
