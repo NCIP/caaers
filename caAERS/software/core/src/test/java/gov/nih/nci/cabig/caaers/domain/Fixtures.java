@@ -14,6 +14,8 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -864,5 +866,14 @@ public class Fixtures {
       }
       aet.setId(-32);
       return aet;
+  }
+
+  public static RuleSet createRuleSet(){
+      RuleSet rs = new RuleSet();
+      rs.setRuleType(RuleType.REPORT_SCHEDULING_RULES);
+      rs.setStatus(RuleSet.STATUS_ENABLED);
+      rs.setOrganization(createOrganization("CTEP", "CTEP"));
+      rs.setRuleLevel(RuleLevel.Sponsor);
+      return rs;
   }
 }
