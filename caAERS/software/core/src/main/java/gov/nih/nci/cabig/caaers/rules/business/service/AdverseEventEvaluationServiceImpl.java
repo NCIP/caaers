@@ -596,9 +596,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
            if(StringUtils.isNotEmpty(bindURL) && StringUtils.isNotEmpty(ruleNames)){
                 String result = null;
                 //add the rule name agenda & fact resolver.
-                inputList.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
+                String[] ruleNamesArray = StringUtils.split(ruleNames, ',');
                 inputList.add(new FactResolver());
-                List<Object> outputObjects = businessRulesExecutionService.fireRules(bindURL, inputList);
+                List<Object> outputObjects = businessRulesExecutionService.fireRules(bindURL, inputList, RuleUtil.createRuleNameEqualsAgendaFilter(ruleNamesArray));
                 if(outputObjects != null){
                    //populate the correct message.
                    for(Object o : outputObjects) {
