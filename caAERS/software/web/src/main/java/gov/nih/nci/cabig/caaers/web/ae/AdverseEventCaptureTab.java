@@ -249,14 +249,18 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             }
             i++;
         }
-//
-//        // START -> AE VALIDATION //
-//        AdverseEvent adverseEvent = checkAEsUniqueness(command);
-//        if (adverseEvent != null) {
-//            String name = adverseEvent.getDisplayName();
-//            errors.reject("DUPLICATE_EXPECTED_AE", new Object[]{name}, "ERR.");
-//        }
-//        // STOP -> AE VALIDATION //
+
+        if(command.getStudy().getAeTermUnique()){
+
+            // START -> AE VALIDATION //
+            AdverseEvent adverseEvent = checkAEsUniqueness(command);
+            if (adverseEvent != null) {
+                String name = adverseEvent.getDisplayName();
+                errors.reject("DUPLICATE_EXPECTED_AE", new Object[]{name}, "ERR.");
+            }
+            // STOP -> AE VALIDATION //
+
+        }
 
         boolean foundGrade5 = false;
         
