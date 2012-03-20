@@ -45,7 +45,7 @@
                                 $(propertyName).value = selectedChoice.id;
                                 ValidationManager.setValidState($(propertyName + '-input'));
 
-                                setTitleMDS_${index}();
+                                // setTitleMDS_${index}();
                                 if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
                                     $('otherMetastaticDS_${index}').show();
                                     value += " - " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value + "";
@@ -80,7 +80,6 @@
     </jsp:body>
     
 </chrome:division>
-
 <script>
     function setTitleMDS_${index}() {
         var titleID = $('titleOf_aeReport.diseaseHistory.metastaticDiseaseSites[${index}]');
