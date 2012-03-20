@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.user;
 
 import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyException;
@@ -29,8 +30,9 @@ public class ChangePasswordController extends SimpleFormController {
     }
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        request.setAttribute("passwordPolicy", passwordPolicyService.getPasswordPolicy());
-        return new ChangePasswordCommand();
+        ChangePasswordCommand cpc = new ChangePasswordCommand();
+        if (cpc.getPasswordPolicy() == null) cpc.setPasswordPolicy(passwordPolicyService.getPasswordPolicy());
+        return cpc;
     }
     
     @Override
@@ -75,6 +77,7 @@ public class ChangePasswordController extends SimpleFormController {
 
     public class ChangePasswordCommand {
         private String userName, passwordNew, passwordConfirm, token;
+        private PasswordPolicy passwordPolicy;
 
         public String getUserName() {
             return userName;
@@ -111,6 +114,14 @@ public class ChangePasswordController extends SimpleFormController {
         public String confirmedPassword() throws CaaersSystemException {
             if (passwordNew.equals(passwordConfirm)) return passwordNew;
             throw new CaaersSystemException("The two passwords entered are not the same,");
+        }
+
+        public PasswordPolicy getPasswordPolicy() {
+            return passwordPolicy;
+        }
+
+        public void setPasswordPolicy(PasswordPolicy passwordPolicy) {
+            this.passwordPolicy = passwordPolicy;
         }
     }
 }
