@@ -91,7 +91,7 @@
     </style>
 </head>
 <body>
-<a href="/caaers/public/login"><img src="../images/blue/login-logo.png" id="logo"></a>
+<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo"></a>
 <c:if test="${updated}">
     <c:url value="/public/login" var="login"/>
     <h2>Password changed successfully.</h2><br/>You can now <a href="${login}">login</a>.
