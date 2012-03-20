@@ -32,8 +32,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     	return user;
     }
 
-    public void setPassword(String userName, String password, String token)
-            throws CaaersSystemException {
+    public void setPassword(String userName, String password, String token) throws CaaersSystemException {
     	User user = userRepository.getUserByLoginName(userName);
     	
     	if(user == null){
@@ -44,20 +43,14 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     }
 
     private boolean validateToken(User user, String token) throws CaaersSystemException {
-        if (user.getTokenTime().after(
-                new Timestamp(new Date().getTime()
-                        - passwordPolicyService.getPasswordPolicy()
-                        .getTokenTimeout())) 
+        if (user.getTokenTime().after(new Timestamp(new Date().getTime() - passwordPolicyService.getPasswordPolicy().getTokenTimeout()))
                 &&  StringUtils.equals(user.getToken(), token)) return true;
         throw new CaaersSystemException("Invalid token.");
     }
 
-    private boolean validateAndSetPassword(User user, String password)
-            throws CaaersSystemException {
-        passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(user.getLoginName(),
-                password));
-        userRepository.userChangePassword(user, password, passwordPolicyService
-                .getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
+    private boolean validateAndSetPassword(User user, String password) throws CaaersSystemException {
+        passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(user.getLoginName(), password));
+        userRepository.userChangePassword(user, password, passwordPolicyService .getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
         return true;
     }
 

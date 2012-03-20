@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 public class ChangePasswordController extends SimpleFormController {
 
     private PasswordManagerService passwordManagerService;
-
     private PasswordPolicyService passwordPolicyService;
 
     public ChangePasswordController() {
@@ -30,6 +29,7 @@ public class ChangePasswordController extends SimpleFormController {
     }
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
+        request.setAttribute("passwordPolicy", passwordPolicyService.getPasswordPolicy());
         return new ChangePasswordCommand();
     }
     

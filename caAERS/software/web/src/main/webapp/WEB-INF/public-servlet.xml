@@ -61,6 +61,5 @@
       <property name="viewName"><value>user/emailSent</value></property>
     </bean>
 
-    <bean name="/user/changePassword" id="changePasswordController" autowire="byType"
-	  class="gov.nih.nci.cabig.caaers.web.user.ChangePasswordController"/>
+    <bean name="/user/changePassword" id="changePasswordController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.user.ChangePasswordController" />
 </beans>
