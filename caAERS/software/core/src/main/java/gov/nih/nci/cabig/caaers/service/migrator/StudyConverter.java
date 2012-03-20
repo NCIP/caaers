@@ -35,6 +35,7 @@ public class StudyConverter {
             studyDto.setShortTitle(study.getShortTitle());
             studyDto.setPhaseCode(StudyPhaseType.fromValue(study.getPhaseCode()));
             studyDto.setStudyPurpose(study.getStudyPurpose());
+            studyDto.setAeTermUnique(study.getAeTermUnique());
 
             if(study.getOtherMeddra() != null && !study.getOtherMeddra().equals("")){
                 MeddraVersion otherMeddra = new MeddraVersion();

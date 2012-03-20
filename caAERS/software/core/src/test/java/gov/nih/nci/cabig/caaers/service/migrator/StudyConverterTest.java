@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import com.semanticbits.rules.utils.RuleUtil;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
@@ -40,6 +40,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		//create the base studyDto
 		studyDto = new gov.nih.nci.cabig.caaers.webservice.Study();
 		studyDto.setShortTitle("hello");
+        studyDto.setAeTermUnique(false);
 		studyDto.setPhaseCode(StudyPhaseType.PHASE_0_TRIAL);
 		studyDto.setStatus(StatusType.ACTIVE_TRIAL_IS_OPEN_TO_ACCRUAL);
 		
@@ -103,6 +104,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		 Study study = new LocalStudy();
 		 converter.convertStudyDtoToStudyDomain(studyDto, study);
 		 assertEquals("hello", study.getShortTitle());
+         assertFalse(studyDto.isAeTermUnique());
 		 assertNotNull(study.getStudyOrganizations());
 		 assertNotNull(study.getStudySites());
 		 assertEquals(1, study.getStudySites().size());
@@ -181,6 +183,7 @@ public class StudyConverterTest extends AbstractTestCase {
         study.setStatus("Administratively Complete");
         study.setMultiInstitutionIndicator(true);
         study.setAdeersReporting(true);
+        study.setAeTermUnique(true);
       
         study.setDesign(Design.PARTIAL);
 
@@ -505,7 +508,7 @@ public class StudyConverterTest extends AbstractTestCase {
             // String tempDir = java.io. "/home/dell/Desktop/";
             String tempDir = System.getProperty("java.io.tmpdir") + "/";
             String fileName = "study_" + study.getPrimaryIdentifierValue();
-            fileName = RuleUtil.getStringWithoutSpaces(fileName);
+            fileName = CaaersRuleUtil.getStringWithoutSpaces(fileName);
 
             StringWriter sw = new StringWriter();
             JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");

@@ -191,29 +191,10 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         if (isSummaryEnabled()) {
             List<ListValues> summary = new ArrayList<ListValues>();
             if (study.getShortTitle() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.shortTitle", "Short title."), study.getShortTitle()));
+                summary.add(new ListValues(getMessage("LBL_Study", "Study."), study.getDisplayName()));
                 showSummary = true;
             }
 
-            if (study.getPrimaryIdentifier() != null && study.getPrimaryIdentifier().getValue() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.primaryIdentifier", "Primary identifier."), study.getPrimaryIdentifier().toString()));
-                showSummary = true;
-            }
-
-            if (study.getPhaseCode() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.phaseCode", "Phase."), study.getPhaseCode().toString()));
-                showSummary = true;
-            }
-
-            if (study.getPrimarySponsorCode() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.primaryFundingSponsorOrganization", "Funding sponsor."), study.getPrimaryFundingSponsorOrganization().getName()));
-                showSummary = true;
-            }
-
-            if (study.getStudyCoordinatingCenter().getOrganization() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.studyCoordinatingCenter.organization", "Coordinating center."), study.getStudyCoordinatingCenter().getOrganization().getName()));
-                showSummary = true;
-            }
 
             if (showSummary) refData.put("studySummary", summary);
         }

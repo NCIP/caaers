@@ -124,6 +124,14 @@ public class DetailsTab extends StudyTab {
             scFields.add(InputFieldFactory.createSelectField("study.otherMeddra", "Other MedDRA Version", false, collectOptions(meddraVersions,"id", "name")));
         }
 
+        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("", "Please select");
+        options.put(Boolean.FALSE, "No");
+        options.put(Boolean.TRUE, "Yes");
+        scFields.add(InputFieldFactory.createSelectField("study.aeTermUnique", "Enforce AE term uniqueness", true,
+                options));
+
+
         // Create fieldGroup for DiseaseTerminology
         InputFieldGroup studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
         List<InputField> sdFields = studyDiseaseCodeFieldGroup.getFields();

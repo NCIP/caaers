@@ -94,5 +94,38 @@ public class TreatmentAssignmentTest extends TestCase {
         assertFalse(assignment.getSelectedOtherInteterventionIds().contains(200));
         assertFalse(assignment.getSelectedStudyDeviceInterventionIds().contains(200));
     }
+    
+    public void testEquals(){
+        TreatmentAssignment ta1 = Fixtures.createTreatmentAssignment("abcd");
+        TreatmentAssignment ta2 = Fixtures.createTreatmentAssignment("abcd");
+        assertTrue(ta1.equals(ta2));
+        assertEquals(ta1.hashCode(), ta2.hashCode());
+        ta2.setDescription("changed");
+        assertTrue(ta1.equals(ta2));
+        assertEquals(ta1.hashCode(), ta2.hashCode());
+        ta2.setComments("changed");
+        assertTrue(ta1.equals(ta2));
+        assertEquals(ta1.hashCode(), ta2.hashCode());
+
+        TreatmentAssignment ta3 = Fixtures.createTreatmentAssignment("abcd");
+        assertTrue(ta3.equals(ta1));
+        ta3.setCode("changed");
+        assertFalse(ta1.equals(ta3));
+        
+        TreatmentAssignment ta4 = Fixtures.createTreatmentAssignment("abcd");
+        Study s1 = Fixtures.createStudy("s1");
+        s1.setId(1);
+
+        ta1.setStudy(s1);
+        ta4.setStudy(s1);
+        assertTrue(ta1.equals(ta4));
+        assertEquals(ta1.hashCode(), ta4.hashCode());
+
+        TreatmentAssignment ta5 = Fixtures.createTreatmentAssignment("abcd");
+        ta1.setStudy(s1);
+        assertFalse(ta1.equals(ta5));
+        assertTrue(ta1.hashCode()!= ta5.hashCode());
+        
+    }
 
 }

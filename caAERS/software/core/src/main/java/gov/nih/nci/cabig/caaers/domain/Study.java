@@ -208,6 +208,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
   protected String studyPurpose;
 
+    protected Boolean aeTermUnique;
 
     /**
      * Instantiates a new study.
@@ -227,6 +228,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());
+        setAeTermUnique(true);
     }
 
     // / LOGIC
@@ -2427,6 +2429,14 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.otherTreatmentAssignment = otherTreatmentAssignment;
     }
 
+    public Boolean getAeTermUnique() {
+        return aeTermUnique;
+    }
+
+    public void setAeTermUnique(Boolean aeTermUnique) {
+        this.aeTermUnique = aeTermUnique;
+    }
+
     public String getStudyPurpose() {
         return studyPurpose;
     }
@@ -2463,5 +2473,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     			return true;
     	}
     	return false;
+    }
+
+    @Transient
+    public String getDisplayName(){
+      if(StringUtils.isNotEmpty(getPrimaryIdentifierValue()))  return "(" + getPrimaryIdentifierValue() + ") " + getShortTitle();
+      return getShortTitle();
     }
 }

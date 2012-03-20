@@ -312,9 +312,7 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         final int prime = 31;
         int result = 1;
         result = prime * result + (code == null ? 0 : code.hashCode());
-        result = prime * result + (comments == null ? 0 : comments.hashCode());
-        result = prime * result + (description == null ? 0 : description.hashCode());
-        result = prime * result + (study.getId() == null ? 0 : study.getId().hashCode());
+        result = prime * result + (getStudy() == null ? 0 : getStudy().getId().hashCode());
         return result;
     }
 
@@ -332,36 +330,15 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         if(!(obj instanceof TreatmentAssignment)) return false;
 
         final TreatmentAssignment other = (TreatmentAssignment) obj;
-        if (code == null) {
-            if (other.code != null) {
-                return false;
-            }
-        } else if (!code.equals(other.code)) {
-            return false;
-        }
-        if (comments == null) {
-            if (other.comments != null) {
-                return false;
-            }
-        } else if (!comments.equals(other.comments)) {
-            return false;
-        }
-        if (description == null) {
-            if (other.description != null) {
-                return false;
-            }
-        } else if (!description.equals(other.description)) {
-            return false;
-        }
+        if(!StringUtils.equals(getCode(), other.getCode())) return false;
+        
+        Study s1 = this.getStudy();
+        Study s2 = other.getStudy();
+        
+        if((s1 == null && s2 != null) || (s1 != null && s2 == null) ) return  false;
+        if(s1 == null && s2 == null) return true;
+        return  s1.getId().equals(s2.getId());
 
-        if (study.getId() == null) {
-            if (other.study.getId() != null) {
-                return false;
-            }
-        } else if (!study.getId().equals(other.study.getId())) {
-            return false;
-        }
-        return true;
     }
     
     public void addExpectedAEs(TreatmentAssignmentAgent treatmentAssignmentAgent){

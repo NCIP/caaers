@@ -66,6 +66,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.setAdeersReporting(Boolean.TRUE);
+            newStudy.setAeTermUnique(Boolean.TRUE);
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
             savedId = newStudy.getId();
@@ -79,6 +80,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             assertNotNull("AeTerminology is null", reloaded.getAeTerminology());
             assertNotNull("Ctc Version is null", reloaded.getAeTerminology().getCtcVersion());
             assertEquals("Term should be Ctc", Term.CTC, reloaded.getAeTerminology().getTerm());
+            assertTrue(reloaded.getAeTermUnique());
         }
     }
 
@@ -120,6 +122,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             sc.setStudy(newStudy);
             sc.setTerm(condition);
             newStudy.addStudyCondition(sc);
+            newStudy.setAeTermUnique(false);
 
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
@@ -139,6 +142,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             assertNotNull("Saved Study not found", reloaded);
             assertNotNull("AeTerminology is null", reloaded.getAeTerminology());
             assertNull("Ctc Version should be null", reloaded.getAeTerminology().getCtcVersion());
+            assertFalse(reloaded.getAeTermUnique());
         }
     }
     public void testSaveWithExistingCondition() throws Exception {

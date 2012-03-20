@@ -39,6 +39,7 @@
                     <xs:element type="statusType" name="status"/>
                     <xs:element type="xs:boolean" name="multiInstitutionIndicator"/>
                     <xs:element type="xs:boolean" name="adeersReporting"/>
+                    <xs:element name="aeTermUnique" type="xs:boolean" minOccurs="0"/>
                     <xs:element ref="aeTerminology"/>
                     <xs:element ref="diseaseTerminology"/>
                     <xs:element type="designCodeType" name="design" minOccurs="0"/>
@@ -485,6 +486,8 @@
             <xs:enumeration value="Phase IV Trial"/>
             <xs:enumeration value="Phase 0 Trial"/>
             <xs:enumeration value="Pilot"/>
+            <xs:enumeration value="N/A"/>
+            <xs:enumeration value="Otber"/>
         </xs:restriction>
     </xs:simpleType> 
 

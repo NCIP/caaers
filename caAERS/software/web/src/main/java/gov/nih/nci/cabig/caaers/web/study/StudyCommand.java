@@ -509,20 +509,8 @@ public class StudyCommand {
    
     public void reloadStudy(){
     	Integer oldStudyId = study.getId();
-//    	Study loaded = studyDao.getStudyDesignById(oldStudyId.intValue());
         Study loaded = studyDao.getById(oldStudyId);
     	setStudy(loaded);
-    	
-/*    	//reload the TreatmentAssignmentInterventionHelpers
-    	List<TreatmentAssignmentInterventionHelper> all = new ArrayList<TreatmentAssignmentInterventionHelper>();
-    	all.addAll(treatmentAssignmentAgentsHelpers);
-    	all.addAll(treatmentAssignmentDevicesHelpers);
-    	all.addAll(treatmentAssignmentOthersHelpers);
-    	for(TreatmentAssignmentInterventionHelper taih : all){
-    		taih.setTreatmentAssignment(getTreatmentAssignmentFromStudy(study, taih.getTreatmentAssignment()));
-    		taih.setStudyIntervention(getStudyInterventionFromStudy(study, taih.getStudyIntervention()));
-    	}
-*/
     }
     
     private TreatmentAssignment getTreatmentAssignmentFromStudy(Study study, TreatmentAssignment treatmentAssignment){

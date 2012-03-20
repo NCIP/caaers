@@ -110,12 +110,6 @@
                 	<div class="label">Phase code</div>
                 	<div class="value">${command.study.phaseCode} </div>
             	</div>
-<%--
-            	<div class="row">
-                	<div class="label">Study Design</div>
-                	<div class="value">${command.study.design!=null?command.study.design.displayName:'N/A'}</div>
-            	</div>
---%>
             	<div class="row">
                 	<div class="label">Terminology</div>
                 	<div class="value">${command.study.aeTerminology.term} </div>
@@ -129,13 +123,11 @@
 	            	<div class="label">Other MedDRA</div>
 	            	<div class="value"><c:out value="${command.study.otherMeddra.name}" escapeXml="true" /> </div>
 	            </div>
-            	</c:if>
-<%--
-            	<div class="row">
-                	<div class="label">AdEERS reporting</div>
-                	<div class="value">${command.study.adeersReporting == null ? '' : command.study.adeersReporting ? 'Yes' : 'No'} </div>
-            	</div>
---%>
+                </c:if>
+                <div class="row">
+                    <div class="label"><caaers:message code="LBL_study.aeTermUnique"  /></div>
+                    <div class="value">${command.study.aeTermUnique ? 'Yes' : 'No'}</div>
+                </div>
             	<div class="row">
                 	<div class="label"><caaers:message code="LBL_study.verbatimFirst" /></div>
                 	<div class="value">${command.study.verbatimFirst == null ? '' : command.study.verbatimFirst ? 'Yes' : 'No'}</div>

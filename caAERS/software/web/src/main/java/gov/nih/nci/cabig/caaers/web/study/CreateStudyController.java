@@ -74,6 +74,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         command.setMustFireEvent(true);
         Study study = new LocalStudy(); 
         study.setDataEntryStatus(false);
+        study.setAeTermUnique(null);
         command.setStudy(study);
 
         StudyFundingSponsor sponsor = new StudyFundingSponsor();

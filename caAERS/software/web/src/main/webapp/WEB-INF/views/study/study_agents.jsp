@@ -155,7 +155,7 @@ function toggleAgentOrOther(index) {
     <p id="instructions"></p>
         <div align="left">
             <tags:indicator id="_SA_indicator" />
-            <tags:button color="blue" type="button" value="Add" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
+            <tags:button color="blue" type="button" value="Add Agent" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
         </div>
 
 		<div id="_SA">
@@ -175,7 +175,7 @@ function toggleAgentOrOther(index) {
         <jsp:attribute name="additionalTitle" />
         <jsp:body>
             <div style="padding-left:20px;">
-               <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add" icon="Add" type="button" onclick="fireAction('addStudyDevice');" size="small"/>
+               <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add Device" icon="Add" type="button" onclick="fireAction('addStudyDevice');" size="small"/>
                 <tags:indicator id="device_AjaxIndicator" />
             <div id="_devices">
             <c:set var="size" value="${fn:length(command.study.studyDevices)}" />
@@ -194,7 +194,7 @@ function toggleAgentOrOther(index) {
         <jsp:attribute name="additionalTitle" />
         <jsp:body>
             <div style="padding-left:20px;">
-               <tags:button cssClass="foo" id="btn-add-otherIntervention" color="blue" value="Add" icon="Add" type="button" onclick="fireAction('addOtherIntervention');" size="small"/>
+               <tags:button cssClass="foo" id="btn-add-otherIntervention" color="blue" value="Add Other Intervention" icon="Add" type="button" onclick="fireAction('addOtherIntervention');" size="small"/>
                 <tags:indicator id="otherIntervention_AjaxIndicator" />
             <div id="_otherInterventions">
             <c:set var="size" value="${fn:length(command.study.otherInterventions)}" />

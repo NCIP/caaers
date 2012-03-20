@@ -215,21 +215,22 @@
       <c:set var="_length" value="${fn:length(fieldGroups.scFieldGroup.fields)}" />
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
           <chrome:division title="Adverse event coding terminology">
-              <c:forEach items="${fieldGroups.scFieldGroup.fields}" var="field" varStatus="status" begin="0" end="0">
-                  <tags:renderRow field="${field}"/>
-              </c:forEach>
 
-              <c:forEach var="i" begin="1" end="${_length - 1}">
+              <tags:renderRow field="${fieldGroups.scFieldGroup.fields[0]}" />
+
+              <c:forEach var="i" begin="1" end="${_length - 2}">
                   <ui:row path="${fieldGroups.scFieldGroup.fields[i].propertyName}">
                       <jsp:attribute name="label"><ui:label required="${i < 3}" path="${fieldGroups.scFieldGroup.fields[i].propertyName}" text="${fieldGroups.scFieldGroup.fields[i].displayName}"/></jsp:attribute>
                       <jsp:attribute name="value"><ui:select path="${fieldGroups.scFieldGroup.fields[i].propertyName}" required="false" options="${fieldGroups.scFieldGroup.fields[i].attributes.options}"/></jsp:attribute>
                   </ui:row>
               </c:forEach>
+              <tags:renderRow field="${fieldGroups.scFieldGroup.fields[_length - 1]}" />
+
           </chrome:division>
       </c:if>
 
 
-      <c:set var="_length" value="${fn:length(fieldGroups.scFieldGroup.fields)}" />
+      <c:set var="_length" value="${fn:length(fieldGroups.sdcFieldGroup.fields)}" />
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
           <chrome:division title="Disease coding terminology">
               <c:forEach begin="0" end="0" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">

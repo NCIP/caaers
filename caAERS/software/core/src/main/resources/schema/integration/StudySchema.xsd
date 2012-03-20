@@ -44,6 +44,7 @@
                     <xs:element name="adeersReporting" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
                     <xs:element name="studyPurpose" type="xs:string" minOccurs="0"/>
+                    <xs:element name="aeTermUnique" type="xs:boolean" minOccurs="0"/>
                     <xs:element ref="aeTerminology"/>
 
                     <xs:element ref="diseaseTerminology"/>
@@ -651,6 +652,8 @@
             <xs:enumeration value="Phase IV Trial"/>
             <xs:enumeration value="Phase 0 Trial"/>
             <xs:enumeration value="Pilot"/>
+            <xs:enumeration value="N/A"/>
+            <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType> 
 
