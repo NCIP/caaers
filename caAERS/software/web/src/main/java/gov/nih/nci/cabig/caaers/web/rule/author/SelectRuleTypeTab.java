@@ -86,8 +86,12 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
     @Override
     public void postProcess(HttpServletRequest request, RuleInputCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
+        if(errors.hasErrors()) return;
 
+        CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
+        if(createRuleCommand.getCaaersRuleSet().getStudy() != null){
+           createRuleCommand.setTerminology(createRuleCommand.getCaaersRuleSet().getStudy().getAeTerminology().getTerm().getDisplayName());
+        }
 
     }
 
