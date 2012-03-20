@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
@@ -312,7 +313,7 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         final int prime = 31;
         int result = 1;
         result = prime * result + (code == null ? 0 : code.hashCode());
-        result = prime * result + (getStudy() == null ? 0 : getStudy().getId().hashCode());
+        result = prime * result + (getStudy() == null ? 0 : (getStudy().getId() == null ? 0 : getStudy().getId().hashCode()) );
         return result;
     }
 
@@ -332,12 +333,9 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         final TreatmentAssignment other = (TreatmentAssignment) obj;
         if(!StringUtils.equals(getCode(), other.getCode())) return false;
         
-        Study s1 = this.getStudy();
-        Study s2 = other.getStudy();
-        
-        if((s1 == null && s2 != null) || (s1 != null && s2 == null) ) return  false;
-        if(s1 == null && s2 == null) return true;
-        return  s1.getId().equals(s2.getId());
+        Integer s1 = this.getStudy() == null ? null : this.getStudy().getId();
+        Integer s2 = other.getStudy() == null ? null : other.getStudy().getId();
+        return ObjectUtils.equals(s1, s2);
 
     }
     
