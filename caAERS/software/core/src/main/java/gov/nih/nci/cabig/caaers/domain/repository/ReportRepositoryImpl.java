@@ -200,7 +200,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport) {
     	
     	//reassociate all the study orgs
-    	studyDao.reassociateStudyOrganizations(aeReport.getStudy().getStudyOrganizations());
+//    	studyDao.reassociateStudyOrganizations(aeReport.getStudy().getStudyOrganizations());
     	
 //    	reportDefinitionDao.lock(reportDefinition);
     	
