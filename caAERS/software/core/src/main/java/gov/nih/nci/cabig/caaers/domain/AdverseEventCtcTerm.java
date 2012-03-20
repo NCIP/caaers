@@ -25,7 +25,6 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
      *
      * @return AdverseEventCtcTerm The CTC term
      */
-    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "term_id")
     @Cascade(value = {CascadeType.LOCK})
     @Override

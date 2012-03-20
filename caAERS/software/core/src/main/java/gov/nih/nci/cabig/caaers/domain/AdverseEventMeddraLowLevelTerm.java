@@ -55,7 +55,6 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm#getTerm()
      */
-    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "term_id")
     @Cascade(value = {CascadeType.LOCK})
     @Override
