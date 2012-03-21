@@ -230,8 +230,8 @@ ${command.organization}
         <tr id="organization-section">
             <th class="tableHeader" width="20%"><tags:requiredIndicator/>Identifier</th>
             <th class="tableHeader" width="20%"><tags:requiredIndicator/>Identifier type</th>
-            <th class="tableHeader" width="40%"><tags:requiredIndicator/>Organization</th>
-            <th class="tableHeader"></th>
+            <th class="tableHeader" width="50%"><tags:requiredIndicator/>Organization</th>
+            <th class="tableHeader" width="50px"></th>
         </tr>
 
         <tbody id="addOrganizationIdentifierDiv">
