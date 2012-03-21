@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipant;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
@@ -21,8 +20,15 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
+
 
  
 /**
@@ -545,6 +551,16 @@ public class Participant extends Person {
         Identifier id = getPrimaryIdentifier();
         if(id != null) return id.getValue();
         return null;
+    }
+    
+    @Transient
+    public Boolean getHasReportingPeriods() {
+    	for(StudyParticipantAssignment assignement : getAssignments()){
+    		 if(!CollectionUtils.isEmpty(assignement.getReportingPeriods())){
+    			 return true;
+    		 }
+    	}
+        return false;
     }
 
     /**

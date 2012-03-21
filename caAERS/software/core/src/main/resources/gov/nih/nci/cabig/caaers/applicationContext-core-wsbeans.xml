@@ -41,7 +41,6 @@
         <property name="studyDao" ref="studyDao" />
         <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />
         <property name="organizationRepository" ref="organizationRepository" />
-        <property name="studyRepository" ref="studyRepository" />
         <property name="eventFactory" ref="eventFactory" />
     </bean>
 

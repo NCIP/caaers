@@ -40,6 +40,17 @@ public class ParticipantManagementWebService implements ParticipantService {
             targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants){
         return impl.updateParticipant(xmlParticipants);
     }
+    
+    /**
+     * This operation will delete a Participant which is a jaxb Participant provided there are no reporting periods.
+     * @param xmlParticipants
+     */
+
+    @WebMethod
+    public CaaersServiceResponse deleteParticipant(@WebParam(name="Participants",
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants){
+        return impl.deleteParticipant(xmlParticipants);
+    }
 
     public ParticipantServiceImpl getImpl() {
         return impl;

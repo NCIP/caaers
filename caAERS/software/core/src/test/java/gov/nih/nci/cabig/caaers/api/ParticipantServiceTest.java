@@ -70,8 +70,6 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipantNewSST.xml");
 
-            SecurityTestUtils.switchToSuperuser();
-
             assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
             assertEquals(1, matches.size());
@@ -108,8 +106,6 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
 
-            SecurityTestUtils.switchToSuperuser();
-
             assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
           //  System.out.println("size is " + matches.size());
@@ -145,7 +141,6 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             participants = (Participants) unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.updateParticipant(participants);
-            SecurityTestUtils.switchToSuperuser();
 
             assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
@@ -173,6 +168,35 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             }
         }
     }
+    
+    
+    public void testDeleteParticipant() {
+
+        try {
+
+            createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
+
+            xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForUpdateAttr.xml")[0].getFile();
+            participants = (Participants) unmarshaller.unmarshal(xmlFile);
+
+            caaersServiceResponse = participantService.deleteParticipant(participants);
+
+            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
+            assertEquals(0, matches.size());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Error running test: " + e.getMessage());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            fail("Error running test: " + e.getMessage());
+        } finally {
+            if (updatedParticipant != null) {
+                participantDao.delete(updatedParticipant);
+            }
+        }
+    }
 
     public void testUpdateParticipantForIdentifierAdd() {
         try {
@@ -182,8 +206,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             participants = (Participants) unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.updateParticipant(participants);
-            SecurityTestUtils.switchToSuperuser();
-
+            
             assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
             assertEquals(1, matches.size());
@@ -224,7 +247,6 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             participants = (Participants) unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.updateParticipant(participants);
-            SecurityTestUtils.switchToSuperuser();
 
             assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});

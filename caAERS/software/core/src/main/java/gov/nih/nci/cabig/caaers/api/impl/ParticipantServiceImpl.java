@@ -10,7 +10,6 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -19,29 +18,29 @@ import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
-import gov.nih.nci.cabig.caaers.webservice.participant.*;
+import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
+import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
+import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
+import gov.nih.nci.cabig.caaers.webservice.participant.Response;
 import gov.nih.nci.security.util.StringUtilities;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ParticipantServiceImpl extends AbstractImportService implements ParticipantService,ApplicationContextAware,MessageSourceAware {
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+
+public class ParticipantServiceImpl extends AbstractImportService implements ParticipantService, MessageSourceAware {
 	
 	private static Log logger = LogFactory.getLog(ParticipantServiceImpl.class);
-	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
-    private StudyRepository studyRepository;
     private ParticipantImportServiceImpl participantImportServiceImpl;
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
@@ -139,21 +138,13 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 		if (identifier != null ) {
 			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
 			if(authorizedStudies.size() == 0) {
-				String message = messageSource.getMessage("WS_AEMS_027", new String[]{identifier.getValue()},"",Locale.getDefault());
-				participantServiceResponse.setResponsecode("WS_AEMS_027");
-				participantServiceResponse.setDescription(message);
-				caaersServiceResponse.setResponse(participantServiceResponse);
-				return caaersServiceResponse;
+				return createNoStudyAuthorizationResponse(caaersServiceResponse, participantServiceResponse, identifier);
 			}			
 		}
 		
 		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
 		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
-			String message = messageSource.getMessage("WS_AEMS_029", new String[]{errorMsg},"",Locale.getDefault());
-			participantServiceResponse.setResponsecode("WS_AEMS_029");
-			participantServiceResponse.setDescription(message);
-			caaersServiceResponse.setResponse(participantServiceResponse);
-			return caaersServiceResponse;
+			return createNoOrganizationAuthorizationResponse(caaersServiceResponse, participantServiceResponse, errorMsg);
 		}		
 		
         try{
@@ -218,21 +209,13 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 		if (identifier != null ) {
 			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
 			if(authorizedStudies.size() == 0) {
-				String message = messageSource.getMessage("WS_AEMS_027", new String[]{identifier.getValue()},"",Locale.getDefault());
-				participantServiceResponse.setResponsecode("WS_AEMS_027");
-				participantServiceResponse.setDescription(message);
-				caaersServiceResponse.setResponse(participantServiceResponse);
-				return caaersServiceResponse;
+				return createNoStudyAuthorizationResponse(caaersServiceResponse, participantServiceResponse, identifier);
 			}			
 		}
 
 		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
 		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
-			String message = messageSource.getMessage("WS_AEMS_029", new String[]{errorMsg},"",Locale.getDefault());
-			participantServiceResponse.setResponsecode("WS_AEMS_029");
-			participantServiceResponse.setDescription(message);
-			caaersServiceResponse.setResponse(participantServiceResponse);
-			return caaersServiceResponse;
+			return createNoOrganizationAuthorizationResponse(caaersServiceResponse, participantServiceResponse, errorMsg);
 		}
 		
 		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
@@ -269,7 +252,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
         			participantServiceResponse.setResponsecode("1");
         			sb.append("  Does not exist in caAERS");
         			participantServiceResponse.setDescription(sb.toString());
-        			participantImportOutcome.addErrorMessage(sb.toString() +  " Does not exist in caAERS", DomainObjectImportOutcome.Severity.ERROR);
+        			participantImportOutcome.addErrorMessage(sb.toString(), DomainObjectImportOutcome.Severity.ERROR);
         		}
         	}else{
         		participantServiceResponse.setResponsecode("1");
@@ -287,6 +270,104 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
         	}
         }
 
+		caaersServiceResponse.setResponse(participantServiceResponse);
+		return caaersServiceResponse;
+	}
+	
+	public CaaersServiceResponse deleteParticipant(Participants xmlParticipants) {
+		
+		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
+		
+		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+		Response participantServiceResponse = new Response();
+
+		Identifier identifier = getStudyIdentifierFromInXML(xmlParticipant);
+		if (identifier != null ) {
+			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
+			if(authorizedStudies.size() == 0) {
+				return createNoStudyAuthorizationResponse(caaersServiceResponse, participantServiceResponse, identifier);
+			}			
+		}
+
+		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
+		
+		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
+			return createNoOrganizationAuthorizationResponse(caaersServiceResponse, participantServiceResponse, errorMsg);
+		}
+		
+		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
+		Participant participant = new Participant();
+       
+        try{
+        	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
+        }catch(CaaersSystemException caEX){
+        	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
+        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
+        	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
+        	participantServiceResponse.setResponsecode("1");
+        	participantServiceResponse.setDescription("ParticipantDto to ParticipantDomain Conversion Failed ");
+        }
+        
+        if(participantImportOutcome == null){
+        	participantImportOutcome = participantImportServiceImpl.importParticipant(participant);
+        	
+        	StringBuilder sb = new StringBuilder("Participant ");
+    		sb.append(participantImportOutcome.getImportedDomainObject().getFirstName()).append(" ");
+    		sb.append(participantImportOutcome.getImportedDomainObject().getLastName());
+    		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
+        	if(errors.size() == 0){
+        		Participant dbParticipant = fetchParticipant(participantImportOutcome.getImportedDomainObject());
+        		if(dbParticipant != null ){
+        			if(dbParticipant.getHasReportingPeriods()){
+        				participantServiceResponse.setResponsecode("1");
+                		sb.append(" has reporting periods. Hence cannot be deleted in caAERS");
+                		participantServiceResponse.setDescription(sb.toString());
+        				logger.info(sb.toString());
+        			} else {
+	        			participantDao.delete(dbParticipant);
+	            		participantServiceResponse.setResponsecode("0");
+	            		sb.append(" Deleted in caAERS");
+	            		participantServiceResponse.setDescription(sb.toString());
+	    				logger.info(sb.toString());
+        			}
+        		}else{
+        			participantServiceResponse.setResponsecode("1");
+        			sb.append("  Does not exist in caAERS");
+        			participantServiceResponse.setDescription(sb.toString());
+        			participantImportOutcome.addErrorMessage(sb.toString() +  " Does not exist in caAERS", DomainObjectImportOutcome.Severity.ERROR);
+        		}
+        	}else{
+        		participantServiceResponse.setResponsecode("1");
+        		sb.append("  could not be deleted in caAERS");
+        		participantServiceResponse.setDescription(sb.toString());
+				logger.info(sb.toString());
+				List<String> messages = new ArrayList<String>(); 
+				for(Message message : participantImportOutcome.getMessages()){
+					messages.add(message.getMessage());
+				}
+				for(String errMsg : errors){
+					messages.add(errMsg);
+	        	}
+				participantServiceResponse.setMessage(messages);
+        	}
+        }
+
+		caaersServiceResponse.setResponse(participantServiceResponse);
+		return caaersServiceResponse;
+	}
+	
+	private CaaersServiceResponse createNoStudyAuthorizationResponse(CaaersServiceResponse caaersServiceResponse, Response participantServiceResponse, Identifier identifier){
+		String message = messageSource.getMessage("WS_AEMS_027", new String[]{identifier.getValue()},"",Locale.getDefault());
+		participantServiceResponse.setResponsecode("WS_AEMS_027");
+		participantServiceResponse.setDescription(message);
+		caaersServiceResponse.setResponse(participantServiceResponse);
+		return caaersServiceResponse;
+	}
+	
+	private CaaersServiceResponse createNoOrganizationAuthorizationResponse(CaaersServiceResponse caaersServiceResponse, Response participantServiceResponse, String errorMsg){
+		String message = messageSource.getMessage("WS_AEMS_029", new String[]{errorMsg},"",Locale.getDefault());
+		participantServiceResponse.setResponsecode("WS_AEMS_029");
+		participantServiceResponse.setDescription(message);
 		caaersServiceResponse.setResponse(participantServiceResponse);
 		return caaersServiceResponse;
 	}
@@ -336,12 +417,6 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 		this.participantConverter = participantConverter;
 	}
 
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-	}
-
-
 	public ParticipantSynchronizer getParticipantSynchronizer() {
 		return participantSynchronizer;
 	}
@@ -360,9 +435,6 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 	}
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
-	}
-	public void setStudyRepository(StudyRepository studyRepository) {
-		this.studyRepository = studyRepository;
 	}
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
