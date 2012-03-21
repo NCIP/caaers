@@ -1,5 +1,10 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
+<style>
+    #yui-dt1-th-doseLevelOrder { width:120px; }
+    #yui-dt1-th-code { width:120px; }
+    #yui-dt1-th-comments { width:220px; }
+</style>
 
 <chrome:division title="Treatment Assignments">
 
@@ -8,10 +13,10 @@
 <script language="JavaScript">
 
     var treatmentAssignmentsColumnDefs = [
-        {key:"code", label:"Code", sortable:true, resizeable:true, minWidth:"100", maxWidth:"100"},
-        {key:"doseLevelOrder", label:"Dose level order", sortable:true, resizeable:true, minWidth:"150", maxWidth:"150"},
-        {key:"description", label:"Description", sortable:true, resizeable:true, minWidth:"600", maxWidth:"600"},
-        {key:"comments", label:"Comments", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"}
+        {key:"code", label:"Code", sortable:true, resizeable:true},
+        {key:"doseLevelOrder", label:"Dose level order", sortable:true, resizeable:true},
+        {key:"description", label:"Description", sortable:true, resizeable:true},
+        {key:"comments", label:"Comments", sortable:true, resizeable:true}
     ];
 
     var treatmentAssignmentsFields = [

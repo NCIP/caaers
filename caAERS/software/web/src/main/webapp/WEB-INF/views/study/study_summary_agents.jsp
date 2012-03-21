@@ -1,6 +1,10 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
-
+<style>
+    #yui-dt0-th-nsc {width: 140px;}
+    #yui-dt0-th-inv_drug {width: 180px;}
+    #yui-dt0-th-lead_ind {width: 130px;}
+</style>
 <chrome:division title="Agents">
 
     <div id="agentsTableDiv"></div>
@@ -13,12 +17,12 @@
     };
 
     var agentsColumnDefs = [
-        {key:"name", label:"Agent name", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"nsc", label:"Agent NSC number", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"ind_ind", label:"IND indicator", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"ind_num", label:"IND #", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"inv_drug", label:"Investigational new drug?", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"lead_ind", label:"Part of lead IND?", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"}
+        {key:"name", label:"Agent name", sortable:true, resizeable:true},
+        {key:"nsc", label:"Agent NSC number", sortable:true, resizeable:true},
+        {key:"ind_ind", label:"IND indicator", sortable:true, resizeable:true},
+        {key:"ind_num", label:"IND #", sortable:true, resizeable:true},
+        {key:"inv_drug", label:"Investigational new drug?", sortable:true, resizeable:true},
+        {key:"lead_ind", label:"Part of lead IND?", sortable:true, resizeable:true}
     ];
 
     var agentsFields = [
