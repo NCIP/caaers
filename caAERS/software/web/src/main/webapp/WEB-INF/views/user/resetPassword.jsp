@@ -112,7 +112,7 @@
   </style>
 </head>
 <body>
-<a href="/caaers/public/login"><img src="../../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
+<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo" alt="Cancer Adverse Event Reporting System"></a>
   <h2>Please enter your username: </h2>
   You will be sent an email to reset your password.
   <c:if test="${noSuchUser}">
