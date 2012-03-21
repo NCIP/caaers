@@ -3,6 +3,13 @@
 <html>
 <head>
 
+<style>
+    input.autocomplete {
+        width : 350px;
+    }
+</style>
+
+
 <tags:dwrJavascriptLink objects="createParticipant"/>
     <script language="JavaScript">
 
