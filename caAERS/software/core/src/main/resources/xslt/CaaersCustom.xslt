@@ -7,7 +7,7 @@
   <xsl:attribute-set name="label"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="color">black</xsl:attribute></xsl:attribute-set>
   <xsl:attribute-set name="value"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="font-weight">bold</xsl:attribute></xsl:attribute-set>
   <xsl:attribute-set name="normal"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute></xsl:attribute-set>
-  <xsl:attribute-set name="tr-height-1"><xsl:attribute name="height">4mm</xsl:attribute><xsl:attribute name="color">green</xsl:attribute></xsl:attribute-set>
+  <xsl:attribute-set name="tr-height-1"><xsl:attribute name="height">4mm</xsl:attribute><xsl:attribute name="color">black</xsl:attribute></xsl:attribute-set>
 
 
   <xsl:template match="/">
@@ -500,7 +500,168 @@
               </xsl:if>
               <!-- COURSE TABLE   END -->
 
+<!--ADVERSE EVENTS-->
 
+              <fo:block  xsl:use-attribute-sets="sub-head" >
+        					<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
+        		  				Adverse Events (CTCAE)
+        		  			</xsl:if>
+        		  			<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">
+        		  				Adverse Events (MedDRA)
+        		  			</xsl:if>
+        		  		</fo:block>
+                        <fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text> </fo:block>
+
+        		  		<fo:table>
+        					<fo:table-column column-width="20%"/>
+        					<fo:table-column column-width="20%"/>
+        					<fo:table-column column-width="5%"/>
+        					<fo:table-column column-width="15%"/>
+        					<fo:table-column column-width="10%"/>
+        					<fo:table-column column-width="10%"/>
+        					<fo:table-column column-width="10%"/>
+        					<fo:table-column column-width="10%"/>
+
+        		  			<fo:table-body>
+
+        		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  		<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
+        						  			CTCAE CATEGORY
+        						  		</xsl:if>
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Adverse Event
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			 Grade
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Hospitalization/
+        						  		</fo:block>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Prolongation of
+        						  		</fo:block>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Hospitalization
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Start Date
+        						  		</fo:block>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			of AE
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			End Date
+        						  		</fo:block>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			of AE
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Is
+        						  		</fo:block>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Primary
+        						  		</fo:block>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			AE?
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="label" >
+        						  			Comments
+        						  		</fo:block>
+              						</fo:table-cell>
+        		  			    </fo:table-row>
+
+         					<xsl:for-each select="AdverseEventReport/AdverseEvent">
+        		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/>
+
+        						  		</fo:block>
+              						</fo:table-cell>
+
+                                      <fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+
+        						  			<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+        						  			<xsl:if test="LowLevelTerm/fullName != ''">
+        						  				: <xsl:value-of select="LowLevelTerm/fullName"/>
+        						  			</xsl:if>
+        									<xsl:choose>
+        						         		<xsl:when test="LowLevelTerm/fullName"></xsl:when>
+        						                <xsl:otherwise>
+        						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if>
+        						                </xsl:otherwise>
+        								 	</xsl:choose>
+
+                                            <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+
+        						  		</fo:block>
+              						</fo:table-cell>
+
+              						<fo:table-cell>
+              							<xsl:variable name="gradeVar0" select="grade"/>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:value-of select="substring($gradeVar0,1,1)"/>
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+              							<xsl:variable name="hospitalizationVar" select="hospitalization"/>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:value-of select="substring($hospitalizationVar,4,10)"/>
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:call-template name="standard_date">
+        						        		<xsl:with-param name="date" select="startDate"/>
+           									</xsl:call-template>
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:call-template name="standard_date">
+        						        		<xsl:with-param name="date" select="endDate"/>
+           									</xsl:call-template>
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:choose>
+        							  			<xsl:when test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">Yes</xsl:when>
+        							  			<xsl:otherwise>No</xsl:otherwise>
+        						  			</xsl:choose>
+        						  		</fo:block>
+              						</fo:table-cell>
+              						<fo:table-cell>
+        						  		<fo:block xsl:use-attribute-sets="normal" >
+        						  			<xsl:value-of select="detailsForOther"/>
+        						  		</fo:block>
+              						</fo:table-cell>
+        		  			    </fo:table-row>
+        					  </xsl:for-each>
+        		  			</fo:table-body>
+        		  		</fo:table>
+
+
+            <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
+<!-- ADVERSE EVENTS END -->
 
               <!-- EVENT DESCRIPTION TABLE   START -->
 
