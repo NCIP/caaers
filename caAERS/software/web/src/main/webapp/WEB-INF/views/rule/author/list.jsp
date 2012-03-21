@@ -5,6 +5,21 @@
     <title>Manage rules</title>
     <tags:dwrJavascriptLink objects="authorRule"/>
     <style type="text/css">
+
+        th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
+            position: relative;
+            background: #3882c1 url(<c:url value="/images/table/yui-datatable_header.jpg" />) repeat-x top;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 0px;
+            color: white;
+            text-shadow: 0 -1px #2166a1;
+            height: auto;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            text-decoration: none
+        }
+
         p.description {
             margin: 0.25em 0 0 1em;
         }
