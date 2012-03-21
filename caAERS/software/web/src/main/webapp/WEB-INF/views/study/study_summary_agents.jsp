@@ -47,7 +47,7 @@
                     "ind_num":"${indAssociationsString}",
                     "inv_drug":"${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}",
                     "lead_ind":"${studyAgent.partOfLeadIND ? 'Yes' : 'No' }"
-                }
+                },
             </c:if>
         </c:forEach>
     ];
