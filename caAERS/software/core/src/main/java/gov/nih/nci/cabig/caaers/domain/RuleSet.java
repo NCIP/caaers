@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "rule_sets")//rule_sets
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_rule_set_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_rule_sets_id") })
 public class RuleSet extends AbstractIdentifiableDomainObject implements Serializable  {
 
     public static final String STATUS_ENABLED= "Enabled";
