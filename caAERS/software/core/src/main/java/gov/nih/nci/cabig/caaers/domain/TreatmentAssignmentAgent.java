@@ -18,7 +18,7 @@ import org.hibernate.annotations.Fetch;
 public class TreatmentAssignmentAgent extends TreatmentAssignmentStudyIntervention {
 
     private StudyAgent studyAgent;
-    protected List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs = new ArrayList<AbstractStudyInterventionExpectedAE>();
+//    protected List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs = new ArrayList<AbstractStudyInterventionExpectedAE>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_agent_id", nullable = false)
@@ -36,15 +36,15 @@ public class TreatmentAssignmentAgent extends TreatmentAssignmentStudyInterventi
         return this.getStudyAgent();
     }
     
-    @ManyToMany(mappedBy = "treatmentAssignmentAgents", fetch = FetchType.LAZY)
-    @OrderBy
-    @Cascade(value = {CascadeType.ALL})
-    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-    public List<AbstractStudyInterventionExpectedAE> getAbstractStudyInterventionExpectedAEs() {
-        return abstractStudyInterventionExpectedAEs;
-    }
-
-    public void setAbstractStudyInterventionExpectedAEs(List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs) {
-        this.abstractStudyInterventionExpectedAEs = abstractStudyInterventionExpectedAEs;
-    }
+//    @ManyToMany(mappedBy = "treatmentAssignmentAgents", fetch = FetchType.LAZY)
+//    @OrderBy
+//    @Cascade(value = {CascadeType.ALL})
+//    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+//    public List<AbstractStudyInterventionExpectedAE> getAbstractStudyInterventionExpectedAEs() {
+//        return abstractStudyInterventionExpectedAEs;
+//    }
+//
+//    public void setAbstractStudyInterventionExpectedAEs(List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs) {
+//        this.abstractStudyInterventionExpectedAEs = abstractStudyInterventionExpectedAEs;
+//    }
 }

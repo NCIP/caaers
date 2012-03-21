@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Embedded;
@@ -69,6 +70,7 @@ public class StudyAgent extends StudyIntervention {
         participation = new Participation();
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(StudyAgentINDAssociation.class, new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,StudyAgentINDAssociation.class));
+        treatmentAssignmentAgents = new ArrayList<TreatmentAssignmentAgent>();
     }
     
     /**
@@ -351,10 +353,20 @@ public class StudyAgent extends StudyIntervention {
 	}
 	
 	@Transient
-    public void syncTreatmentAssignmentAgentSpecificTerm(){
-    	for(AgentSpecificTerm agentSpecificTerm : getAgent().getAgentSpecificTerms()){
-			syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, false);
-    	}
+	public void removeTreatmentAssignmentAgents(){
+		for(TreatmentAssignmentAgent treatmentAssignmentAgent: treatmentAssignmentAgents){
+			treatmentAssignmentAgent.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().remove(treatmentAssignmentAgent);
+		}
+		treatmentAssignmentAgents.clear();
+	}
+	
+	@Transient
+    public void syncTreatmentAssignmentAgentSpecificTerm(boolean deleted){
+		if(getAgent() != null){
+	    	for(AgentSpecificTerm agentSpecificTerm : getAgent().getAgentSpecificTerms()){
+				syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, deleted);
+	    	}
+		}
     }
 	
 	@Transient

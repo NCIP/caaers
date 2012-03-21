@@ -48,6 +48,23 @@ public class AgentsTab extends StudyTab {
             tt.put(stt, EnumHelper.titleCasedName(stt));
         }
         rd.put("studyTherapyTypes", tt);
+        //Initialize expectedAECtcTerms. If this is not done, there is a lazy error while deleting study agents
+        command.getStudy().getExpectedAECtcTerms().size();
+        command.getStudy().getExpectedAEMeddraLowLevelTerms().size();
+        for(StudyAgent sa : command.getStudy().getStudyAgents()){
+        	if(sa.getAgent()!=null){
+        		sa.getAgent().getAgentSpecificTerms().size();
+        		for (TreatmentAssignmentAgent taa : sa.getTreatmentAssignmentAgents()){
+//        			taa.getAbstractStudyInterventionExpectedAEs().size();
+        			taa.getTreatmentAssignment().getAbstractStudyInterventionExpectedAEs().size();
+        			taa.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().size();
+        			for(AbstractStudyInterventionExpectedAE as : taa.getTreatmentAssignment().getAbstractStudyInterventionExpectedAEs()){
+        				as.getTreatmentAssignmentAgents().size();
+        			}
+        		}
+        	}
+        }
+        
         return rd; 
     }
 
@@ -218,7 +235,13 @@ public class AgentsTab extends StudyTab {
         if(index >= size || index < 0){
         	log.debug("Unable to delete study agents, INVALID INDEX :"  + index);
         }else{
+        	//delete/retire study agent from study
         	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
+        	//delete agent specific ae from tac
+        	sa.syncTreatmentAssignmentAgentSpecificTerm(true);
+        	//remove tac associations from study
+        	sa.removeTreatmentAssignmentAgents();
+        	//delete agent specific ae from study
             command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), sa, true);
         }
         

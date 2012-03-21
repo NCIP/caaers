@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import junit.framework.TestCase;
 
 /**
@@ -7,9 +8,26 @@ import junit.framework.TestCase;
  */
 public class TreatmentAssignmentTest extends TestCase {
     TreatmentAssignment assignment;
+    
     StudyAgent sa1 = null;
     StudyAgent sa2 = null;
     StudyAgent sa3 = null;
+    StudyAgent sa4 = null;
+    StudyAgent sa5 = null;
+    StudyAgent sa6 = null;
+    
+    TreatmentAssignmentAgent treatmentAssignmentAgent1;
+    TreatmentAssignmentAgent treatmentAssignmentAgent2;
+    TreatmentAssignmentAgent treatmentAssignmentAgent3;
+    
+    AgentSpecificTerm agentSpecificTerm1;
+    AgentSpecificTerm agentSpecificTerm2;
+    AgentSpecificTerm agentSpecificTerm3;
+    AgentSpecificTerm agentSpecificTerm4;
+    
+    CtcTerm ctcTerm1;
+    CtcTerm ctcTerm2;
+    CtcTerm ctcTerm3;
 
     Study study = null;
     
@@ -17,15 +35,46 @@ public class TreatmentAssignmentTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         assignment = Fixtures.createTreatmentAssignment();
+        
         sa1 = Fixtures.createStudyAgent("sa1");
         sa2 = Fixtures.createStudyAgent("sa2");
         sa3 = Fixtures.createStudyAgent("sa3");
-        
+        sa4 = Fixtures.createStudyAgent("sa4");
+        sa4.setIndType(INDType.CTEP_IND);
+		sa4.setPartOfLeadIND(true);
+		sa5 = Fixtures.createStudyAgent("sa4");
+        sa5.setIndType(INDType.CTEP_IND);
+		sa5.setPartOfLeadIND(true);
+		sa6 = Fixtures.createStudyAgent("sa4");
+        sa6.setIndType(INDType.CTEP_IND);
+		sa6.setPartOfLeadIND(true);
+		
+		ctcTerm1 = Fixtures.createCtcTerm("ctepTerm1", "ctepCode1");
+		ctcTerm1.setId(1);
+		ctcTerm2 = Fixtures.createCtcTerm("ctepTerm2", "ctepCode2");
+		ctcTerm2.setId(2);
+		ctcTerm3 = Fixtures.createCtcTerm("ctepTerm3", "ctepCode3");
+		ctcTerm3.setId(3);
+		
+		agentSpecificTerm1 = Fixtures.createAgentSpecificCtcTerm(sa4.getAgent(), ctcTerm1);
+		agentSpecificTerm2 = Fixtures.createAgentSpecificCtcTerm(sa5.getAgent(), ctcTerm1);
+		agentSpecificTerm3 = Fixtures.createAgentSpecificCtcTerm(sa6.getAgent(), ctcTerm2);
+		agentSpecificTerm4 = Fixtures.createAgentSpecificCtcTerm(sa6.getAgent(), ctcTerm3);
+		
         study = Fixtures.createStudy("test");
 
         sa1.setStudy(study);
         sa2.setStudy(study);
         sa3.setStudy(study);
+        sa4.setStudy(study);
+        sa5.setStudy(study);
+        sa6.setStudy(study);
+        
+        study.getStudyAgentsInternal().addAll(Arrays.asList(new StudyAgent[]{sa1,sa2,sa3,sa4,sa5,sa6}));
+        
+        treatmentAssignmentAgent1 = Fixtures.createTreatementAssignmentStudyIntervention(assignment, sa4);
+        treatmentAssignmentAgent2 = Fixtures.createTreatementAssignmentStudyIntervention(assignment, sa5);
+        treatmentAssignmentAgent3 = Fixtures.createTreatementAssignmentStudyIntervention(assignment, sa6);
     }
 
     public void testRemoveInterventionFromTreatmentAssignment() throws Exception {
@@ -126,6 +175,107 @@ public class TreatmentAssignmentTest extends TestCase {
         assertFalse(ta1.equals(ta5));
         assertTrue(ta1.hashCode()!= ta5.hashCode());
         
+    }
+    
+    public void testAddExpectedAE1() throws Exception{
+    	assertEquals(0, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assignment.addExpectedAEs(treatmentAssignmentAgent1, agentSpecificTerm1);
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	
+		assignment.addExpectedAEs(treatmentAssignmentAgent2, agentSpecificTerm2);
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	
+    	assignment.addExpectedAEs(treatmentAssignmentAgent3, agentSpecificTerm3);
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+		
+    	assignment.addExpectedAEs(treatmentAssignmentAgent1, agentSpecificTerm1);
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    }
+    
+    public void testAddExpectedAE2() throws Exception{
+    	assertEquals(0, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assignment.addExpectedAEs(treatmentAssignmentAgent1);
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	
+		assignment.addExpectedAEs(treatmentAssignmentAgent2);
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	
+    	assignment.addExpectedAEs(treatmentAssignmentAgent3);
+    	assertEquals(3, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTerm());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm2, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTerm());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTerm());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().get(0));
+    	
+    	assignment.addExpectedAEs(treatmentAssignmentAgent3);
+    	assertEquals(3, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().size());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().get(0));
+    }
+    
+    public void testRemoveExpectedAE1() throws Exception{
+    	assignment.addExpectedAEs(treatmentAssignmentAgent1);
+    	assignment.addExpectedAEs(treatmentAssignmentAgent2);
+    	assignment.addExpectedAEs(treatmentAssignmentAgent3);
+    	
+    	assignment.removeExpectedAE(treatmentAssignmentAgent3, ctcTerm1);
+    	assertEquals(3, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTerm());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm2, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTerm());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTerm());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().get(0));
+    	
+    	assignment.removeExpectedAE(treatmentAssignmentAgent3, ctcTerm2);
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTerm());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTerm());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    	
+    	assignment.removeExpectedAE(treatmentAssignmentAgent2, ctcTerm1);
+    	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTerm());
+    	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
+    	assertEquals(ctcTerm3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTerm());
+    	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    	
     }
 
 }

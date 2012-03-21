@@ -867,7 +867,16 @@ public class Fixtures {
       aet.setId(-32);
       return aet;
   }
-
+  
+  public static AgentSpecificTerm createAgentSpecificCtcTerm(Agent a, CtcTerm term){
+	  AgentSpecificCtcTerm agentSpecificCtcTerm = new AgentSpecificCtcTerm();
+	  agentSpecificCtcTerm.setCtcTerm(term);
+	  agentSpecificCtcTerm.setAgent(a);
+	  a.getAgentSpecificTerms().add(agentSpecificCtcTerm);
+	  return agentSpecificCtcTerm;
+	  
+  }
+  
   public static RuleSet createRuleSet(){
       RuleSet rs = new RuleSet();
       rs.setRuleType(RuleType.REPORT_SCHEDULING_RULES);
