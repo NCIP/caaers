@@ -11,12 +11,14 @@ Event.observe(window, 'load', function(){
 	}
 });
 
+/*
 Event.observe(window, 'mousemove', function(){
 	if(AE.SESSION_TIME_OUT_ENABLED){
 		resetLogoutTimer();
 	}
 	
 });
+*/
 
 //----------------------------------------------------------------------------------------------------------------
 // reset the timer
