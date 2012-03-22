@@ -1,6 +1,12 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 
+<style>
+    #yui-dt4-th-role {width: 250px;}
+    #yui-dt4-th-org{width: 450px;}
+    #yui-dt4-th-name{width: 200px;}
+</style>
+
 <chrome:division title="Personnel" jsAction="goToPage('PersonnelTab')">
 
     <div id="personnelTableDiv"></div>
@@ -8,9 +14,9 @@
 <script language="JavaScript">
 
     var personnelColumnDefs = [
-        {key:"name", label:"Name", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"org", label:"Organization", sortable:true, resizeable:true, minWidth:"500", maxWidth:"500"},
-        {key:"role", label:"Role", sortable:true, resizeable:true, minWidth:"250", maxWidth:"250"}
+        {key:"name", label:"Name", sortable:true, resizeable:true},
+        {key:"org", label:"Organization", sortable:true, resizeable:true},
+        {key:"role", label:"Role", sortable:true, resizeable:true}
     ];
 
     var personnelFields = [

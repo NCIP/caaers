@@ -1,9 +1,11 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 <style>
-    #yui-dt0-th-nsc {width: 140px;}
+    #yui-dt0-th-nsc {width: 145px;}
     #yui-dt0-th-inv_drug {width: 180px;}
+    #yui-dt0-th-ind_ind {width: 155px;}
     #yui-dt0-th-lead_ind {width: 130px;}
+    #yui-dt0-th-inv_drug {width: 185px;}
 </style>
 <chrome:division title="Agents" jsAction="goToPage('AgentsTab')">
 

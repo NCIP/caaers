@@ -1,9 +1,10 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 <style>
-    #yui-dt1-th-doseLevelOrder { width:120px; }
+    #yui-dt1-th-doseLevelOrder { width:125px; }
     #yui-dt1-th-code { width:120px; }
     #yui-dt1-th-comments { width:220px; }
+    #yui-dt1-th-description { width:420px; }
 </style>
 
 <chrome:division title="Treatment Assignments" jsAction="goToPage('TreatmentAssignmentTab')">

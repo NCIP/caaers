@@ -1,5 +1,10 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
+<style>
+    #yui-dt3-th-role {width: 250px;}
+    #yui-dt3-th-org{width: 450px;}
+    #yui-dt3-th-name{width: 200px;}
+</style>
 
 <chrome:division title="Investigators" jsAction="goToPage('InvestigatorsTab')">
 
@@ -8,9 +13,9 @@
 <script language="JavaScript">
 
     var investigatorsColumnDefs = [
-        {key:"name", label:"Name", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"org", label:"Organization", sortable:true, resizeable:true, minWidth:"600", maxWidth:"600"},
-        {key:"role", label:"Role", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"}
+        {key:"name", label:"Name", sortable:true, resizeable:true},
+        {key:"org", label:"Organization", sortable:true, resizeable:true},
+        {key:"role", label:"Role", sortable:true, resizeable:true}
     ];
 
     var investigatorsFields = [
