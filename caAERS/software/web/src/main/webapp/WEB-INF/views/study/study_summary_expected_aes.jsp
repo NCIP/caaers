@@ -2,7 +2,7 @@
 
 
 
-<chrome:division title="Expected AEs">
+<chrome:division title="Expected AEs" jsAction="goToPage('ExpectedAEsTab')">
 
     <div id="expectedAeTableDiv"></div>
 

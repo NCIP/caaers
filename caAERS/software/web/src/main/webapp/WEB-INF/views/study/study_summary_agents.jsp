@@ -5,7 +5,7 @@
     #yui-dt0-th-inv_drug {width: 180px;}
     #yui-dt0-th-lead_ind {width: 130px;}
 </style>
-<chrome:division title="Agents">
+<chrome:division title="Agents" jsAction="goToPage('AgentsTab')">
 
     <div id="agentsTableDiv"></div>
 

@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 
-<chrome:division title="Personnel">
+<chrome:division title="Personnel" jsAction="goToPage('PersonnelTab')">
 
     <div id="personnelTableDiv"></div>
 

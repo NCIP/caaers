@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
-<chrome:division title="Other interventions">
+<chrome:division title="Other interventions" jsAction="goToPage('AgentsTab')">
 
     <div id="otherInterventionsTableDiv"></div>
 

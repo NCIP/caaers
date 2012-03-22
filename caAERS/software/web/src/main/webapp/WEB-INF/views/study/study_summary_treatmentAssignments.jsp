@@ -6,7 +6,7 @@
     #yui-dt1-th-comments { width:220px; }
 </style>
 
-<chrome:division title="Treatment Assignments">
+<chrome:division title="Treatment Assignments" jsAction="goToPage('TreatmentAssignmentTab')">
 
     <div id="treatmentAssignmentsTableDiv"></div>
 

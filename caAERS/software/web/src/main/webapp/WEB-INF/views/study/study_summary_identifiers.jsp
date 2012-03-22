@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 
-<chrome:division title="Identifiers">
+<chrome:division title="Identifiers" jsAction="goToPage('IdentifiersTab')">
 
     <div id="identifiersTableDiv"></div>
 

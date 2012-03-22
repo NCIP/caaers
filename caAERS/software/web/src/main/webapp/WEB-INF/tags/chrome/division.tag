@@ -13,17 +13,23 @@
 <%@attribute name="deleteParams" %>
 <%@attribute name="collapsable" required="false" %>
 <%@attribute name="collapsed" required="false" %>
+<%@attribute name="jsAction" required="false" %>
+
 <caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
 <div class="division ${cssClass} <c:if test='${collapsable}'>COLLAPSABLE-DIVISION</c:if>" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
     <div class="header">
     <c:if test="${not empty title or not empty titleFragment}">
+
+        <c:set var="_title">
+            <c:if test="${!empty jsAction}"><span onclick="javascript:${jsAction}" style="cursor: pointer;"></c:if>${title}<c:if test="${!empty jsAction}"></span></c:if>
+        </c:set>
 
         <c:if test="${enableDelete || collapsable}">
 			<h3>
                 <table cellspacing="1" cellpadding="1" border="0" width="100%">
                     <tr>
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" href="javascript:SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
-                        <td width="100%"><span id="titleOf_${id}">${title}</span><jsp:invoke fragment="titleFragment" /></td>
+                        <td width="100%"><span id="titleOf_${id}">${_title}</span><jsp:invoke fragment="titleFragment" /></td>
                         <td align="right" width="200px" nowrap>${additionalInfo}</td>
                          <c:if test="${enableDelete and not empty deleteParams}">
                              <td align="left"><a style='cursor:pointer;' onclick="fireAction(<c:out value="${deleteParams}, '${id}', '${cssClass}'" />);">
@@ -36,7 +42,7 @@
            </c:if>
 
         <c:if test="${!enableDelete && !collapsable}">
-	   		<h3>${title}</h3><jsp:invoke fragment="titleFragment" />
+	   		<h3>${_title}</h3><jsp:invoke fragment="titleFragment" />
 	   	</c:if>
 
     </c:if>

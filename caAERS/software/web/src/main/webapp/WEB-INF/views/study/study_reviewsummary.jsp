@@ -64,6 +64,21 @@
 </head>
 <body>
 
+<script language="javascript">
+
+    var tabsHash = new Hash();
+    <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
+    <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
+        tabsHash.set('${atab.class.simpleName}','${atab.number}');
+    </csmauthz:accesscontrol>
+    </c:forEach>
+
+    function goToPage(s) {
+        $('_target').name = '_target' + tabsHash.get(s);
+        $('command').submit();
+    }
+</script>
+
 <tags:instructions code="study.study_overview.top" />
 <c:if test="${command.study.id > 0}">
     <div class="instructions row">
@@ -149,7 +164,7 @@
     <%@ include file="study_summary_other_interventions.jsp" %>
     <%@ include file="study_summary_identifiers.jsp" %>
 
-	<chrome:division title="Evaluation Period Types & Solicited Adverse Events">
+	<chrome:division title="Evaluation Period Types & Solicited Adverse Events" jsAction="goToPage('SolicitedAdverseEventTab')">
   		<study:solicitedAETable displayOnly="true" />
     </chrome:division>
 
