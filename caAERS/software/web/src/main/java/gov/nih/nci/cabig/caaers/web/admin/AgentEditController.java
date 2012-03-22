@@ -30,6 +30,7 @@ public class AgentEditController extends AgentController {
         agentSpecificTerms =    service.getListByAgent(agent.getId());
         Collections.sort(agentSpecificTerms,new AgentSpecificTermSorter());
         c.getAgentSpecificTerms().addAll(agentSpecificTerms);
+        c.takeExpectednessSnapshot();
 
         // need to determine the category of the first element in the previous list
         if (c.getAgentSpecificTerms().size() > 0) {

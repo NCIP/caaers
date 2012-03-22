@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +164,16 @@ public class Agent extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void setAgentSpecificTerms(List<AgentSpecificTerm> agentSpecificTerms) {
 		this.agentSpecificTerms = agentSpecificTerms;
+	}
+	
+	@Transient
+	public AgentSpecificTerm getAgentSpecificTerm(DomainObject term){
+		for(AgentSpecificTerm agentSpecificTerm: agentSpecificTerms){
+			if(agentSpecificTerm.getTerm().getId().equals(term.getId())){
+				return agentSpecificTerm;
+			}
+		}
+		return null;
 	}
 
 }

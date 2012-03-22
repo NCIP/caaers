@@ -44,8 +44,7 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     /** The expected. */
     private boolean expected = true;
 
-    public AbstractStudyInterventionExpectedAE(TreatmentAssignmentAgent treatmentAssignmentAgent, AgentSpecificTerm agentSpecificTerm, boolean expected){
-    	this.expected = expected;
+    public AbstractStudyInterventionExpectedAE(TreatmentAssignmentAgent treatmentAssignmentAgent, AgentSpecificTerm agentSpecificTerm){
     	this.treatmentAssignmentAgents.add(treatmentAssignmentAgent);
     	this.term = (T)agentSpecificTerm.getTerm();
     	this.expected = agentSpecificTerm.isExpected();
@@ -195,10 +194,40 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
 		this.expected = this.expected || expected;
 	}
 	
+	public void resetAndRecalculateExpectedness(){
+		//resetExpectedness
+		this.expected = false;
+    	this.expectednessFrequency = null;
+    	this.grade1Frequency = null;
+    	this.grade2Frequency = null;
+    	this.grade3Frequency = null;
+    	this.grade4Frequency = null;
+    	this.grade5Frequency = null;
+    	
+		for(TreatmentAssignmentAgent treatmentAssignmentAgent: treatmentAssignmentAgents){
+			AgentSpecificTerm agentSpecificTerm= treatmentAssignmentAgent.getStudyAgent().getAgent().getAgentSpecificTerm(getTerm());
+			recalculateExpectedness(agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor() && agentSpecificTerm.isExpected());
+		}
+	}
+	
 	public void removeTreatmentAssignmentAgent(TreatmentAssignmentAgent treatmentAssignmentAgent){
-		//TODO: Recalculate the expectedness if more than one treatment agents
 		getTreatmentAssignmentAgents().remove(treatmentAssignmentAgent);
-//		treatmentAssignmentAgent.getAbstractStudyInterventionExpectedAEs().remove(this);
+		resetAndRecalculateExpectedness();
+	}
+	
+	public void addTreatmentAssignmentAgent(TreatmentAssignmentAgent treatmentAssignmentAgent, AgentSpecificTerm agentSpecificTerm){
+		//Check if the ae is already added for this treatment assignment
+		if(treatmentAssignmentAgents.contains(treatmentAssignmentAgent)){
+			//TODO: For now just return. Maybe we update the expectedness values and copy them from agentspecificterm to abstractstudyinterventionAE
+			return;
+		}
+		//Add the new source of AE and recalculate expectedness.
+		// shouldHonor = true if study has a CTEP Ind and given studyAgent is CTEP Ind
+    	// shouldHonor = true if study has no CTEP Ind and given studyAgent is not CTEP Ind
+    	// shouldHonor = false if study has a CTEP Ind and given studyAgent is not CTEP Ind
+    	// All other combinations are invalid
+		treatmentAssignmentAgents.add(treatmentAssignmentAgent);
+		recalculateExpectedness(agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor() && agentSpecificTerm.isExpected());
 	}
 
 }

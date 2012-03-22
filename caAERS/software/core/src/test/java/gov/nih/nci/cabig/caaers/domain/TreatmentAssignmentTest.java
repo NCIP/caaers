@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.text.DecimalFormat;
+
 import edu.emory.mathcs.backport.java.util.Arrays;
 import junit.framework.TestCase;
 
@@ -60,6 +62,9 @@ public class TreatmentAssignmentTest extends TestCase {
 		agentSpecificTerm2 = Fixtures.createAgentSpecificCtcTerm(sa5.getAgent(), ctcTerm1);
 		agentSpecificTerm3 = Fixtures.createAgentSpecificCtcTerm(sa6.getAgent(), ctcTerm2);
 		agentSpecificTerm4 = Fixtures.createAgentSpecificCtcTerm(sa6.getAgent(), ctcTerm3);
+		
+		setupExpectedness(agentSpecificTerm1, 20.00, 10.00, 4.34, 6.23, 44.00, 60.00, false);
+		setupExpectedness(agentSpecificTerm2, 2.3432, 65.00, 5.432, 78.2316, 1.00, 90.33, false);
 		
         study = Fixtures.createStudy("test");
 
@@ -179,22 +184,24 @@ public class TreatmentAssignmentTest extends TestCase {
     
     public void testAddExpectedAE1() throws Exception{
     	assertEquals(0, assignment.getAbstractStudyInterventionExpectedAEs().size());
-    	assignment.addExpectedAEs(treatmentAssignmentAgent1, agentSpecificTerm1);
+    	assignment.addExpectedAE(treatmentAssignmentAgent1, agentSpecificTerm1);
     	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().size());
     	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
     	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
+    	assertExpectednessSingleTAAE(assignment.getAbstractStudyInterventionExpectedAEs().get(0));
     	
-		assignment.addExpectedAEs(treatmentAssignmentAgent2, agentSpecificTerm2);
+		assignment.addExpectedAE(treatmentAssignmentAgent2, agentSpecificTerm2);
     	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().size());
     	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
     	assertEquals(treatmentAssignmentAgent2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(1));
+    	assertExpectednessMultipleTAAE(assignment.getAbstractStudyInterventionExpectedAEs().get(0));
     	
-    	assignment.addExpectedAEs(treatmentAssignmentAgent3, agentSpecificTerm3);
+    	assignment.addExpectedAE(treatmentAssignmentAgent3, agentSpecificTerm3);
     	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
     	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
     	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
 		
-    	assignment.addExpectedAEs(treatmentAssignmentAgent1, agentSpecificTerm1);
+    	assignment.addExpectedAE(treatmentAssignmentAgent1, agentSpecificTerm1);
     	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
     	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().size());
     	assertEquals(treatmentAssignmentAgent1, assignment.getAbstractStudyInterventionExpectedAEs().get(0).getTreatmentAssignmentAgents().get(0));
@@ -256,6 +263,7 @@ public class TreatmentAssignmentTest extends TestCase {
     	assertEquals(ctcTerm3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTerm());
     	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
     	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(2).getTreatmentAssignmentAgents().get(0));
+    	assertExpectednessMultipleTAAE(assignment.getAbstractStudyInterventionExpectedAEs().get(0));
     	
     	assignment.removeExpectedAE(treatmentAssignmentAgent3, ctcTerm2);
     	assertEquals(2, assignment.getAbstractStudyInterventionExpectedAEs().size());
@@ -275,7 +283,44 @@ public class TreatmentAssignmentTest extends TestCase {
     	assertEquals(1, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().size());
     	assertEquals(ctcTerm3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTerm());
     	assertEquals(treatmentAssignmentAgent3, assignment.getAbstractStudyInterventionExpectedAEs().get(1).getTreatmentAssignmentAgents().get(0));
+    	assertExpectednessSingleTAAE(assignment.getAbstractStudyInterventionExpectedAEs().get(0));
     	
     }
+    
+    private void setupExpectedness(AgentSpecificTerm agentSpecificTerm, Double _1, Double _2, Double _3, Double _4, Double _5, Double _overall, boolean _expected){
+		agentSpecificTerm.setExpected(_expected);
+		agentSpecificTerm.setExpectednessFrequency(_overall);
+		agentSpecificTerm.setGrade1Frequency(_1);
+		agentSpecificTerm.setGrade2Frequency(_2);
+		agentSpecificTerm.setGrade3Frequency(_3);
+		agentSpecificTerm.setGrade4Frequency(_4);
+		agentSpecificTerm.setGrade5Frequency(_5);
+	}
+	
+	private String format(Double d){
+		if (d == null) return null;
+        DecimalFormat f = new DecimalFormat("##.00");  // this will help always keeps in two decimal places
+        return f.format(d); 
+	}
+	
+	private void assertExpectednessSingleTAAE(AbstractStudyInterventionExpectedAE abstractStudyInterventionExpectedAE){
+		assertEquals(60.00, abstractStudyInterventionExpectedAE.getExpectednessFrequency());
+		assertEquals(20.00, abstractStudyInterventionExpectedAE.getGrade1Frequency());
+		assertEquals(10.00, abstractStudyInterventionExpectedAE.getGrade2Frequency());
+		assertEquals(4.34, abstractStudyInterventionExpectedAE.getGrade3Frequency());
+		assertEquals(6.23, abstractStudyInterventionExpectedAE.getGrade4Frequency());
+		assertEquals(44.00, abstractStudyInterventionExpectedAE.getGrade5Frequency());
+		assertFalse(abstractStudyInterventionExpectedAE.isExpected());
+	}
+	
+	private void assertExpectednessMultipleTAAE(AbstractStudyInterventionExpectedAE abstractStudyInterventionExpectedAE){
+		assertEquals("96.13", format(abstractStudyInterventionExpectedAE.getExpectednessFrequency()));
+		assertEquals("21.87", format(abstractStudyInterventionExpectedAE.getGrade1Frequency()));
+		assertEquals("68.50", format(abstractStudyInterventionExpectedAE.getGrade2Frequency()));
+		assertEquals("9.54", format(abstractStudyInterventionExpectedAE.getGrade3Frequency()));
+		assertEquals("79.59", format(abstractStudyInterventionExpectedAE.getGrade4Frequency()));
+		assertEquals("44.56", format(abstractStudyInterventionExpectedAE.getGrade5Frequency()));
+		assertFalse(abstractStudyInterventionExpectedAE.isExpected());
+	}
 
 }

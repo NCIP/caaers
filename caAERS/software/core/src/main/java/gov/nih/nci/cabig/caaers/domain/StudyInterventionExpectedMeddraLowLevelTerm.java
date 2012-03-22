@@ -16,8 +16,8 @@ public class StudyInterventionExpectedMeddraLowLevelTerm extends AbstractStudyIn
 
     public StudyInterventionExpectedMeddraLowLevelTerm(
     		TreatmentAssignmentAgent treatmentAssignmentAgent,
-			AgentSpecificTerm agentSpecificTerm, boolean expected) {
-		super(treatmentAssignmentAgent, agentSpecificTerm, expected);
+			AgentSpecificTerm agentSpecificTerm) {
+		super(treatmentAssignmentAgent, agentSpecificTerm);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -94,11 +94,11 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
         for (AgentSpecificTerm t : deleted) {
             command.getAgentSpecificTerms().remove(t);
 
-            // delete the term from studies
+            // delete the term from studies and TACs
             if (l != null)
                 for (StudyAgent s : l) {
                     getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s.getStudy(), t, true);
-                    s.syncTreatmentAssignmentAgentSpecificTerm(t, true);
+                    s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_DELETED);
                 }
         }
 
@@ -124,7 +124,11 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
             for (StudyAgent s : l) {
                 getAgentSpecificAdverseEventListService().synchronizeStudyWithAgent(s.getStudy(), command.getAgent());
                 for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
-                	s.syncTreatmentAssignmentAgentSpecificTerm(t, false);
+                	if(command.isUpdated(t)){
+                		s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_UPDATED);
+                	}else{
+                		s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_ADDED);
+                	}
                 }
                 studyDao.merge(s.getStudy());
             }

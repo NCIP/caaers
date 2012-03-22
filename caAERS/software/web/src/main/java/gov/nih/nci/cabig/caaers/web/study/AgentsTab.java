@@ -238,7 +238,7 @@ public class AgentsTab extends StudyTab {
         	//delete/retire study agent from study
         	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
         	//delete agent specific ae from tac
-        	sa.syncTreatmentAssignmentAgentSpecificTerm(true);
+        	sa.syncTreatmentAssignmentAgentSpecificTerm(StudyAgent.EXPTECTED_AE_DELETED);
         	//remove tac associations from study
         	sa.removeTreatmentAssignmentAgents();
         	//delete agent specific ae from study

@@ -22,8 +22,8 @@ public class StudyInterventionExpectedCtcTerm extends AbstractStudyInterventionE
 
     public StudyInterventionExpectedCtcTerm(
     		TreatmentAssignmentAgent treatmentAssignmentAgent,
-			AgentSpecificTerm agentSpecificTerm, boolean expected) {
-		super(treatmentAssignmentAgent, agentSpecificTerm, expected);
+			AgentSpecificTerm agentSpecificTerm) {
+		super(treatmentAssignmentAgent, agentSpecificTerm);
 		// TODO Auto-generated constructor stub
 	}
     

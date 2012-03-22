@@ -58,6 +58,10 @@ public class StudyAgent extends StudyIntervention {
     
     /** The treatment assignment agents */
     private List<TreatmentAssignmentAgent> treatmentAssignmentAgents;
+    
+    public static final String EXPTECTED_AE_ADDED = "addded";
+    public static final String EXPTECTED_AE_UPDATED = "updated";
+    public static final String EXPTECTED_AE_DELETED = "deleted";
 
     /*
      * Constructor -- Initializes participation at create time
@@ -361,21 +365,23 @@ public class StudyAgent extends StudyIntervention {
 	}
 	
 	@Transient
-    public void syncTreatmentAssignmentAgentSpecificTerm(boolean deleted){
+    public void syncTreatmentAssignmentAgentSpecificTerm(String action){
 		if(getAgent() != null){
 	    	for(AgentSpecificTerm agentSpecificTerm : getAgent().getAgentSpecificTerms()){
-				syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, deleted);
+				syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, action);
 	    	}
 		}
     }
 	
 	@Transient
-    public void syncTreatmentAssignmentAgentSpecificTerm(AgentSpecificTerm agentSpecificTerm, boolean deleted){
+    public void syncTreatmentAssignmentAgentSpecificTerm(AgentSpecificTerm agentSpecificTerm, String action){
     	for(TreatmentAssignmentAgent taa : getTreatmentAssignmentAgents()){
-    		if(deleted){
+    		if(action.equals(EXPTECTED_AE_DELETED)){
     			taa.getTreatmentAssignment().removeExpectedAE(taa, agentSpecificTerm.getTerm());
-    		}else{
-    			taa.getTreatmentAssignment().addExpectedAEs(taa, agentSpecificTerm);
+    		}else if(action.equals(EXPTECTED_AE_ADDED)){
+    			taa.getTreatmentAssignment().addExpectedAE(taa, agentSpecificTerm);
+    		}else if(action.equals(EXPTECTED_AE_UPDATED)){
+    			taa.getTreatmentAssignment().updateExpectedAE(taa, agentSpecificTerm);
     		}
     	}
     }
