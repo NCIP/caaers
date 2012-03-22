@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -33,6 +34,7 @@ public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
     private PersonRepository personRepository;
     private UserRepository userRepository;
+    private EventFactory eventFactory;
 
 
     public ReporterTab() {
@@ -183,7 +185,8 @@ public class ReporterTab extends AeTab {
 
 	    	//save the data collection. 
 	    	command.save();
-	    	
+            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getAeReport());
+
 	    	//process the reports
 	    	reviewResult.updateBaseDateOnCreateList(command.getNewlySelectedReportDefinitions());
 	    	reportRepository.processReports(command.getAeReport(), reviewResult.getReportsToAmmendList(), reviewResult.getReportsToUnAmendList(), 
@@ -246,5 +249,13 @@ public class ReporterTab extends AeTab {
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
     }
 }
