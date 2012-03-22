@@ -3,11 +3,14 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.index.ParticipantIndexDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
+import gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex;
 import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 
@@ -32,7 +35,8 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     private gov.nih.nci.cabig.caaers.webservice.participant.Participants participants = null;
     private File xmlFile = null;
     private ParticipantDao participantDao;
-    private StudyDao studyDao;
+    private ParticipantIndexDao participantIndexDao;
+	private StudyDao studyDao;
     Participant updatedParticipant = null;
 
     @Override
@@ -44,6 +48,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
         participantService = (ParticipantService) getDeployedApplicationContext().getBean("participantServiceImpl");
         participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
+        participantIndexDao = (ParticipantIndexDao) getDeployedApplicationContext().getBean("participantIndexDao");
 
     }
 
@@ -178,12 +183,36 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
             xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForUpdateAttr.xml")[0].getFile();
             participants = (Participants) unmarshaller.unmarshal(xmlFile);
+            
+            // load the saved db participant
+            
+            Participant dbParticipant = participantDao.getBySubnames(new String[]{"Richard"}).get(0);
+            assertNotNull("Participant with name Richard is not created",dbParticipant);
+            
+
+            String userName = "SYSTEM";
+            ParticipantIndex participantIndex = new ParticipantIndex();
+            participantIndex.setLoginId(userName);
+            participantIndex.setParticipant(dbParticipant);
+            participantIndex.setRoleCode(1);
+            
+            IndexEntry e1 = new IndexEntry(UserGroupType.system_administrator);
+            e1.addEntityId(dbParticipant.getId());
+            
+            participantIndexDao.updateIndex(userName, UserGroupType.system_administrator.getCode(),e1 , null);
+            List<IndexEntry> entries = participantIndexDao.queryAllIndexEntries("SYSTEM");
+            assertEquals(1, entries.size());
 
             caaersServiceResponse = participantService.deleteParticipant(participants);
-
+            
+            // verify that participant is successfully deleted
             assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
             assertEquals(0, matches.size());
+            
+            // verify that index entries are successfully deleted along with participant
+            entries = participantIndexDao.queryAllIndexEntries("SYSTEM");
+            assertEquals(0, entries.size());
 
         } catch (IOException e) {
             e.printStackTrace();

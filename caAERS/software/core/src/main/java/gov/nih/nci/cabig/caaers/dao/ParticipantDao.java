@@ -1,25 +1,16 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.hibernate.Query;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -193,6 +184,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
      */
     @Transactional(readOnly = false)
     public void delete(Participant p) {
+    	// delete the corresponding participant index entries whenever a participant is deleted
+    	String queryString = "delete from ParticipantIndex pI where pI.participant.id = ?";
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+    	query.setParameter(0, p.getId());
+    	int rowCount = query.executeUpdate();
+    	log.debug("Number of participant index rows affected when deleting participant : " + p.getFullName() + " are :" + rowCount);
         getHibernateTemplate().delete(p);
     }
 
