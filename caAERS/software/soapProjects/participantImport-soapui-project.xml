@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:p="http://webservice.caaers.cabig.nci.nih.gov/participant" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+     <wsse:Security>
+        <wsse:UsernameToken>
+          <wsse:Username>mayo-super-user</wsse:Username> 
+          <wsse:Password>Hello-12</wsse:Password> 
+        </wsse:UsernameToken>
+      </wsse:Security> 
+   </soapenv:Header>
+   <soapenv:Body>
+		<p:deleteParticipant>
+			<p:Participants>
+				<p:participant>
+					<firstName>Richard Updated</firstName>
+					<lastName>Herd</lastName>
+					<maidenName>maidenName</maidenName>
+					<middleName>Leing</middleName>
+					<birthDate>2001-01-01</birthDate>
+					<gender>Male</gender>
+					<race>Asian</race>
+					<ethnicity>Hispanic or Latino</ethnicity>
+					<identifiers>
+						<p:organizationAssignedIdentifier>
+							<type>MRN</type>
+							<value>poi</value>
+							<primaryIndicator>true</primaryIndicator>
+							<p:organization>
+								<name>Mayo Clinic Hospital</name>
+								<nciInstituteCode/>
+							</p:organization>
+						</p:organizationAssignedIdentifier>
+						<p:systemAssignedIdentifier>
+							<type>MRN</type>
+							<value>ikm</value>
+							<primaryIndicator>false</primaryIndicator>
+							<systemName>Yarois</systemName>
+						</p:systemAssignedIdentifier>
+					</identifiers>
+					<assignments>
+						<p:assignment>
+							<studySubjectIdentifier>001</studySubjectIdentifier>
+							<p:studySite>
+								<p:study>
+									<identifiers>
+										<identifier>
+											<type>Protocol Authority Identifier</type>
+											<value>6482</value>
+										</identifier>
+									</identifiers>
+								</p:study>
+								<p:organization>
+									<name>QU</name>
+									<nciInstituteCode>DCP</nciInstituteCode>
+								</p:organization>
+							</p:studySite>
+						</p:assignment>
+					</assignments>
+				</p:participant>
+			</p:Participants>
+		</p:deleteParticipant>
+	</soapenv:Body>
+</soapenv:Envelope>

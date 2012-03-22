@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="ae" resourceRoot="" soapui-version="3.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceHttpBinding" type="wsdl" bindingName="{http://webservice.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceHttpBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/sakkala/Desktop/AdverseEventManagementService.xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/sakkala/Desktop/AdverseEventManagementService.xml"><con:part><con:url>file:/Users/sakkala/Desktop/AdverseEventManagementService.xml</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="ImportAdverseEvents">
+        <xs:annotation>
+          <xs:documentation>The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="adverseEvents">
+              <xs:annotation>
+                <xs:documentation>List of Adverse Events.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element ref="criteria">
+              <xs:annotation>
+                <xs:documentation>Adverse Event Creation Criteria .
+				            	Required Criteria : Participant Identifier , Stuy Identifier , course/cycle information.
+				            	Conditions enforced in servive implementation.
+				            	1. Participant and Study should be existing in caAERS.
+				            	2. Adverse Event Management Service creates course if course is not present in caAERS System.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="criteria" type="Criteria"/>
+      <xs:complexType name="Criteria">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="participantIdentifier" type="CustomStringType"/>
+          <xs:element minOccurs="1" name="studyIdentifier" type="CustomStringType"/>
+          <xs:element minOccurs="1" name="course" type="CourseType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CourseType">
+        <xs:sequence>
+          <xs:annotation>
+            <xs:documentation>Course Criteria Conditions enforced in service Implementation.
+				            	1. Start date of this course/cycle cannot be earlier than the Start date of first course/cycle.
+				            	2. Course End date cannot be earlier than Start date.
+				            	3. For Non-Baseline treatment type Start date cannot be equal to End date.
+				            	4. Course/cycle cannot overlap with an existing course/cycle.
+								5. Baseline treatment type cannot start after an existing Non-Baseline treatment type.
+								6. Non-Baseline treatment type cannot start before an existing Baseline treatment type.</xs:documentation>
+          </xs:annotation>
+          <xs:element minOccurs="1" name="startDateOfFirstCourse" type="xs:date"/>
+          <xs:element minOccurs="1" name="startDateOfThisCourse" type="xs:date"/>
+          <xs:element name="endDateOfThisCourse" type="xs:date"/>
+          <xs:element minOccurs="1" name="treatmentType" type="CustomStringType"/>
+          <xs:element name="cycleNumber" type="xs:integer"/>
+          <xs:choice>
+            <xs:element minOccurs="1" name="treatmentAssignment" type="TreatmentAssignmentType"/>
+            <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="CustomStringType"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TreatmentAssignmentType">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="code" type="CustomStringType"/>
+          <xs:element name="doseLevelOrder" type="xs:string"/>
+          <xs:element name="description" type="xs:string"/>
+          <xs:element name="comments" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="adverseEvents">
+        <xs:annotation>
+          <xs:documentation>The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="adverseEvent"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="DomainObject">
+        <xs:attribute name="id" type="xs:integer"/>
+      </xs:complexType>
+      <xs:complexType name="MutableDomainObject">
+        <xs:complexContent>
+          <xs:extension base="DomainObject">
+            <xs:attribute name="version" type="xs:integer"/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="adverseEvent" type="AdverseEventType"/>
+      <xs:complexType name="AdverseEventType">
+        <xs:complexContent>
+          <xs:extension base="MutableDomainObject">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="verbatim" type="xs:string"/>
+              <xs:element minOccurs="1" name="grade" type="GradeType"/>
+              <xs:element minOccurs="0" name="hospitalization" type="HospitalizationType"/>
+              <xs:element minOccurs="0" name="expected" type="xs:boolean"/>
+              <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
+              <xs:element minOccurs="0" name="comments" type="xs:string"/>
+              <xs:element minOccurs="0" name="startDate" type="xs:date"/>
+              <xs:element minOccurs="0" name="endDate" type="xs:date"/>
+              <xs:choice>
+                <xs:element minOccurs="1" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
+                <xs:element minOccurs="1" name="adverseEventCtcTerm" type="AdverseEventCtcTermType"/>
+              </xs:choice>
+              <!--<xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
+                    <xs:element name="serious" type="OutComeEnumType" minOccurs="0"/>  
+                    <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>-->
+              <xs:element minOccurs="0" name="eventApproximateTime" type="xs:time"/>
+              <xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
+              <!--<xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
+                    <xs:element name="reported" type="xs:boolean" minOccurs="0"/>-->
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="AdverseEventCtcTermType">
+        <xs:sequence>
+          <xs:element name="ctep-term" type="CustomStringType"/>
+          <!--<xs:element name="ctep-code" type="xs:string"/>
+                  <xs:element name="ctc-version" type="CtcVersionEnum"/>-->
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="EpochType">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="descriptionText" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AdverseEventMeddraLowLevelTermType">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="meddraCode" type="xs:string"/>
+          <xs:element minOccurs="1" name="meddraTerm" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="outcome" type="OutcomeType"/>
+      <xs:complexType name="OutcomeType">
+        <xs:sequence>
+          <xs:element name="outComeEnumType" type="OutComeEnumType"/>
+          <xs:element name="other" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <!--FIXED Types-->
+      <xs:simpleType name="CtcVersionEnum">
+        <xs:restriction base="xs:int">
+          <xs:enumeration value="2"/>
+          <xs:enumeration value="3"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="OutComeEnumType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DEATH"/>
+          <xs:enumeration value="HOSPITALIZATION"/>
+          <xs:enumeration value="LIFE_THREATENING"/>
+          <xs:enumeration value="DISABILITY"/>
+          <xs:enumeration value="CONGENITAL_ANOMALY"/>
+          <xs:enumeration value="REQUIRED_INTERVENTION"/>
+          <xs:enumeration value="OTHER_SERIOUS"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="GradeType">
+        <xs:restriction base="xs:int">
+          <xs:enumeration value="-1"/>
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+          <xs:enumeration value="2"/>
+          <xs:enumeration value="3"/>
+          <xs:enumeration value="4"/>
+          <xs:enumeration value="5"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="HospitalizationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NONE"/>
+          <xs:enumeration value="YES"/>
+          <xs:enumeration value="NO"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="AttributionType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="UNRELATED"/>
+          <xs:enumeration value="UNLIKELY"/>
+          <xs:enumeration value="POSSIBLE"/>
+          <xs:enumeration value="PROBABLE"/>
+          <xs:enumeration value="DEFINITE"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="EpochNameEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Baseline"/>
+          <xs:enumeration value="Pre-Treatment"/>
+          <xs:enumeration value="Treatment"/>
+          <xs:enumeration value="Post-treatment"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="ResponseCodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="Response" type="Response"/>
+      <xs:complexType name="Response">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="description" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="responsecode" type="ResponseCodeType"/>
+      </xs:complexType>
+      <xs:element name="CaaersServiceResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Response"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:simpleType name="CustomStringType">
+        <xs:restriction base="xs:normalizedString">
+          <xs:minLength value="1"/>
+          <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xsd:element name="deleteAdverseEvent">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" ref="tns:ImportAdverseEvents"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteAdverseEventResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" ref="tns:CaaersServiceResponse"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateAdverseEvent">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" ref="tns:ImportAdverseEvents"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateAdverseEventResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" ref="tns:CaaersServiceResponse"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createAdverseEvent">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" ref="tns:ImportAdverseEvents"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createAdverseEventResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" ref="tns:CaaersServiceResponse"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="updateAdverseEventResponse">
+    <wsdl:part name="parameters" element="tns:updateAdverseEventResponse"/>
+  </wsdl:message>
+  <wsdl:message name="deleteAdverseEventResponse">
+    <wsdl:part name="parameters" element="tns:deleteAdverseEventResponse"/>
+  </wsdl:message>
+  <wsdl:message name="deleteAdverseEventRequest">
+    <wsdl:part name="parameters" element="tns:deleteAdverseEvent"/>
+  </wsdl:message>
+  <wsdl:message name="createAdverseEventResponse">
+    <wsdl:part name="parameters" element="tns:createAdverseEventResponse"/>
+  </wsdl:message>
+  <wsdl:message name="updateAdverseEventRequest">
+    <wsdl:part name="parameters" element="tns:updateAdverseEvent"/>
+  </wsdl:message>
+  <wsdl:message name="createAdverseEventRequest">
+    <wsdl:part name="parameters" element="tns:createAdverseEvent"/>
+  </wsdl:message>
+  <wsdl:portType name="AdverseEventManagementServiceIntf">
+    <wsdl:operation name="deleteAdverseEvent">
+      <wsdl:input name="deleteAdverseEventRequest" message="tns:deleteAdverseEventRequest"/>
+      <wsdl:output name="deleteAdverseEventResponse" message="tns:deleteAdverseEventResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="updateAdverseEvent">
+      <wsdl:input name="updateAdverseEventRequest" message="tns:updateAdverseEventRequest"/>
+      <wsdl:output name="updateAdverseEventResponse" message="tns:updateAdverseEventResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="createAdverseEvent">
+      <wsdl:input name="createAdverseEventRequest" message="tns:createAdverseEventRequest"/>
+      <wsdl:output name="createAdverseEventResponse" message="tns:createAdverseEventResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AdverseEventManagementServiceHttpBinding" type="tns:AdverseEventManagementServiceIntf">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="deleteAdverseEvent">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="deleteAdverseEventRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteAdverseEventResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAdverseEvent">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="updateAdverseEventRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateAdverseEventResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createAdverseEvent">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="createAdverseEventRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createAdverseEventResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AdverseEventManagementService">
+    <wsdl:port name="AdverseEventManagementServiceHttpPort" binding="tns:AdverseEventManagementServiceHttpBinding">
+      <wsdlsoap:address location="https://localhost:8443/caaers/services/AdverseEventManagementService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createAdverseEvent" bindingOperationName="createAdverseEvent" type="Request-Response" outputName="createAdverseEventResponse" inputName="createAdverseEventRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="create-1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <adv:createAdverseEvent>
+         <adv:ImportAdverseEvents>
+            <adv:adverseEvents>
+		<adv:adverseEvent>
+			<grade>3</grade>
+			<hospitalization>YES</hospitalization>
+			<expected>true</expected>
+			<startDate>2005-09-29</startDate>
+			<endDate>2005-08-29</endDate>		
+			<adverseEventCtcTerm>
+				<ctep-term>Burn</ctep-term>
+			</adverseEventCtcTerm>	
+               </adv:adverseEvent>
+            </adv:adverseEvents>
+            <adv:criteria>
+		<participantIdentifier>id-1</participantIdentifier>
+		<studyIdentifier>N027D</studyIdentifier>
+		<course>
+			<startDateOfFirstCourse>2009-03-29</startDateOfFirstCourse>
+			<startDateOfThisCourse>2009-04-23</startDateOfThisCourse>
+			<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
+			<treatmentType>Treatment</treatmentType>
+			<cycleNumber>1</cycleNumber>
+			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
+		</course>
+            </adv:criteria>
+         </adv:ImportAdverseEvents>
+      </adv:createAdverseEvent>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceIntf/createAdverseEventRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="deleteAdverseEvent" bindingOperationName="deleteAdverseEvent" type="Request-Response" outputName="deleteAdverseEventResponse" inputName="deleteAdverseEventRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <adv:deleteAdverseEvent>
+         <adv:ImportAdverseEvents>
+            <adv:adverseEvents>
+               <!--1 or more repetitions:-->
+               <adv:adverseEvent id="?" version="?">
+                  <!--Optional:-->
+                  <verbatim>?</verbatim>
+                  <grade>?</grade>
+                  <!--Optional:-->
+                  <hospitalization>?</hospitalization>
+                  <!--Optional:-->
+                  <expected>?</expected>
+                  <!--Optional:-->
+                  <attributionSummary>?</attributionSummary>
+                  <!--Optional:-->
+                  <comments>?</comments>
+                  <!--Optional:-->
+                  <startDate>?</startDate>
+                  <!--Optional:-->
+                  <endDate>?</endDate>
+                  <!--You have a CHOICE of the next 2 items at this level-->
+                  <adverseEventMeddraLowLevelTerm>
+                     <meddraCode>?</meddraCode>
+                     <meddraTerm>?</meddraTerm>
+                  </adverseEventMeddraLowLevelTerm>
+                  <adverseEventCtcTerm>
+                     <ctep-term>?</ctep-term>
+                  </adverseEventCtcTerm>
+                  <!--Optional:-->
+                  <eventApproximateTime>?</eventApproximateTime>
+                  <!--Optional:-->
+                  <eventLocation>?</eventLocation>
+               </adv:adverseEvent>
+            </adv:adverseEvents>
+            <adv:criteria>
+               <participantIdentifier>?</participantIdentifier>
+               <studyIdentifier>?</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>?</startDateOfFirstCourse>
+                  <startDateOfThisCourse>?</startDateOfThisCourse>
+                  <endDateOfThisCourse>?</endDateOfThisCourse>
+                  <treatmentType>?</treatmentType>
+                  <cycleNumber>?</cycleNumber>
+                  <!--You have a CHOICE of the next 2 items at this level-->
+                  <treatmentAssignment>
+                     <code>?</code>
+                     <doseLevelOrder>?</doseLevelOrder>
+                     <description>?</description>
+                     <comments>?</comments>
+                  </treatmentAssignment>
+                  <otherTreatmentAssignmentDescription>?</otherTreatmentAssignmentDescription>
+               </course>
+            </adv:criteria>
+         </adv:ImportAdverseEvents>
+      </adv:deleteAdverseEvent>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceIntf/deleteAdverseEventRequest"/></con:call></con:operation><con:operation isOneWay="false" action="" name="updateAdverseEvent" bindingOperationName="updateAdverseEvent" type="Request-Response" outputName="updateAdverseEventResponse" inputName="updateAdverseEventRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="update-1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <adv:updateAdverseEvent>
+         <adv:ImportAdverseEvents>
+            <adv:adverseEvents>
+		<adv:adverseEvent>
+			<grade>3</grade>
+			<hospitalization>YES</hospitalization>
+			<expected>true</expected>
+			<startDate>2005-09-29</startDate>
+			<endDate>2005-08-29</endDate>		
+			<adverseEventCtcTerm>
+				<ctep-term>Burn</ctep-term>
+			</adverseEventCtcTerm>	
+               </adv:adverseEvent>
+            </adv:adverseEvents>
+            <adv:criteria>
+		<participantIdentifier>id-1</participantIdentifier>
+		<studyIdentifier>N027D</studyIdentifier>
+		<course>
+			<startDateOfFirstCourse>2009-03-29</startDateOfFirstCourse>
+			<startDateOfThisCourse>2009-04-23</startDateOfThisCourse>
+			<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
+			<treatmentType>Treatment</treatmentType>
+			<cycleNumber>1</cycleNumber>
+			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
+		</course>
+            </adv:criteria>
+         </adv:ImportAdverseEvents>
+      </adv:updateAdverseEvent>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceIntf/updateAdverseEventRequest"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

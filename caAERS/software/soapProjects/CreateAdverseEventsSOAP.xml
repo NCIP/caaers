@@ -1,0 +1,41 @@
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<adv:createAdverseEvent>
+			<adv:AdverseEventsInputMessage>
+				<adv:adverseEvents>
+					<adv:adverseEvent>
+						<grade>4</grade>
+						<hospitalization>YES</hospitalization>
+						<expected>true</expected>
+						<startDate>2005-07-29</startDate>
+						<endDate>2005-08-29</endDate>
+						<adverseEventCtcTerm>
+							<ctep-term>Burn</ctep-term>
+						</adverseEventCtcTerm>
+					</adv:adverseEvent>
+					<adv:adverseEvent>
+						<grade>3</grade>
+						<hospitalization>YES</hospitalization>
+						<expected>true</expected>
+						<startDate>2006-07-29</startDate>
+						<endDate>2006-08-29</endDate>
+						<adverseEventCtcTerm>
+							<ctep-term>Dry skin</ctep-term>
+						</adverseEventCtcTerm>
+					</adv:adverseEvent>
+				</adv:adverseEvents>
+				<adv:criteria>
+					<participantIdentifier>DM-11</participantIdentifier>
+					<studyIdentifier>6482</studyIdentifier>
+					<course>
+						<startDateOfThisCourse>2008-10-01</startDateOfThisCourse>
+						<treatmentType>Treatment</treatmentType>
+						<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
+					</course>
+				</adv:criteria>
+			</adv:AdverseEventsInputMessage>
+		</adv:createAdverseEvent>
+	</soapenv:Body>
+</soapenv:Envelope>
