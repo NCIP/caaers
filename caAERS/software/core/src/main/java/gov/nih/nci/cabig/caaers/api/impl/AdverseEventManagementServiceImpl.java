@@ -339,7 +339,9 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				Responses.Response aeResponse = new Responses.Response();
 				ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 				
-				aeReport.addAdverseEvent(adverseEvent);
+//				aeReport.addAdverseEvent(adverseEvent);
+				aeReport.addAdverseEventUnidirectional(adverseEvent);
+
 				ValidationErrors errors = fireRules(aeReport,"gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
 				if (errors.getErrorCount() > 0) {
 					for (ValidationError error:errors.getErrors()) {
@@ -362,15 +364,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						} else {
 							term = adverseEvent.getDetailsForOther();
 						}
-						String message = messageSource.getMessage("WS_AEMS_006", new String[]{term,operation+"d"},"",Locale.getDefault());
 
-                         aeResponse.setErrorCode("WS_AEMS_006");
-                         aeResponse.setDescription(message);
-                         aeResponse.setCorrelationId(pairs.getKey()+"");
-                         aeResponse.setDataBaseId(adverseEvent.getId()+"");
-                         adverseEventResponsesList.add(aeResponse);
-						 //messages.add(message);
-					}	
+                        String message = messageSource.getMessage("WS_AEMS_006", new String[]{term, operation + "d"}, "", Locale.getDefault());
+                        aeResponse.setDescription(message);
+                        aeResponse.setCorrelationId(pairs.getKey().toString());
+                        aeResponse.setDataBaseId(adverseEvent.getId().toString());
+                        adverseEventResponsesList.add(aeResponse);
+
+                        //messages.add(message);
+                    }
 				}				
 			}
 

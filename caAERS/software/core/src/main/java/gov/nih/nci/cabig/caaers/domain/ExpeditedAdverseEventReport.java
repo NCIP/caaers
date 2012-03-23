@@ -289,7 +289,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         getAdverseEventsInternal().add(adverseEvent);
         if (adverseEvent != null) adverseEvent.setReport(this);
     }
-    
+
+    /**
+     * To cover cases when we do not need the AdverseEvent to have a referrence to ExpeditedAdverseEventReport
+     * @param adverseEvent
+     */
+    public void addAdverseEventUnidirectional(AdverseEvent adverseEvent) {
+        getAdverseEventsInternal().add(adverseEvent);
+    }
+
 	/**
 	 * This method will remove the {@link AdverseEvent} from the list and will
 	 * reset the {@link AdverseEvent#getReport()} association to null. However,
@@ -1764,5 +1772,5 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if(otherCause != null) return getOtherCauses().remove(otherCause);
         return false;
     }
-    
+
 }
