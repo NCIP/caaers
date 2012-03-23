@@ -119,11 +119,11 @@
 				<jsp:attribute name="singleFields">
 					<table width="100%" class="tablecontent">
 						<tr id="system-table-head" class="system-table-head">
-							<th width="20%" class="tableHeader"><tags:requiredIndicator /> Name</th>
-							<th width="15%" class="tableHeader">Username</th>
-							<th width="15%" class="tableHeader">Password</th>
-							<th width="45%" class="tableHeader"><tags:requiredIndicator /> URL</th>
-							<th width="5%" class="tableHeader">&nbsp;</th>
+							<th class="tableHeader"><tags:requiredIndicator /> Name</th>
+							<th class="tableHeader">Username</th>
+							<th class="tableHeader">Password</th>
+							<th width="30%" class="tableHeader"><tags:requiredIndicator /> URL</th>
+							<th class="tableHeader">&nbsp;</th>
 						</tr>
 						<c:set var="sIndex">0</c:set>
 						<c:forEach items="${command.reportDefinition.deliveryDefinitions}" var="rdd" varStatus="status">

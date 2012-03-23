@@ -18,21 +18,25 @@
 	 <%-- System recipient --%>
 	 <c:if test="${rdd.entityType eq 1}">
 	 	<c:if test="${status.index ne 4}">
-	 	  <td><tags:renderInputs field="${field}" /></td>
+            <c:set var="_width">
+                <c:if test="${status.index == 3}">25</c:if>
+                <c:if test="${status.index < 3}">15</c:if>
+            </c:set>
+	 	    <td><tags:renderInputs field="${field}" size="${_width}"/></td>
 	 	</c:if>
 	 </c:if>
 	 
 	 <%-- Email recipient --%>
         <c:if test="${rdd.entityType eq 2}">
          <c:if test="${status.index eq 3}">
-                  <td><tags:renderInputs field="${field}" /></td>
+                  <td><tags:renderInputs field="${field}" size="20"/></td>
                 </c:if>
         </c:if>
 
         <%-- Role recipient --%>
         <c:if test="${rdd.entityType eq 3}">
           <c:if test="${status.index eq 4}">
-                  <td><tags:renderInputs field="${field}" /></td>
+                  <td><tags:renderInputs field="${field}" size="20"/></td>
                 </c:if>
         </c:if>
 
