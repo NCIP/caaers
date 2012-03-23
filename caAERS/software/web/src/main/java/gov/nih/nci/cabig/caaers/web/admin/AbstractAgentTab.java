@@ -133,6 +133,8 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
                 studyDao.merge(s.getStudy());
             }
         }
+        
+        request.setAttribute("flashMessage", "Information saved successfully");
     }
 
     @Override
