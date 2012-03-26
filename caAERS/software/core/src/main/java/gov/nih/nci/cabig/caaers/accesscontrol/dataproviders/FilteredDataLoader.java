@@ -29,7 +29,7 @@ public class FilteredDataLoader {
 	protected final Log log = LogFactory.getLog(getClass());
 
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 	public void updateIndexByUserName(Authentication authentication){
 		String userName = SecurityUtils.getUserLoginName(authentication);
         long begin = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class FilteredDataLoader {
      * @param availableMap
      */
     //should run in a transaction. 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 	public void updateAnIndex(String userName, Set<UserGroupType> allRoles , Map<UserGroupType, IndexEntry> existingMap, Map<UserGroupType, IndexEntry> availableMap, AbstractIndexDao indexDao){
        for(UserGroupType ug: allRoles){
            long t1= System.currentTimeMillis();
