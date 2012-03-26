@@ -35,7 +35,7 @@ public class StudyModificationEventListener extends AbstractEventListener {
         //re-provision in CSM the study protection elements. 
         studyRepository.provisionStudyTeam(study);
 
-        Set<String> loginNames = findLoginNamesFromStudy(study);
+        Set<String> loginNames = new HashSet<String>(); //findLoginNamesFromStudy(study);
         loginNames.add(SecurityUtils.getUserLoginName(getAuthentication(event)) );
         
         //clear the users caches.

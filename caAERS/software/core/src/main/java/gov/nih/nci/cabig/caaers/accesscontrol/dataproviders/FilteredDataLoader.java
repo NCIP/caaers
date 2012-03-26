@@ -11,6 +11,8 @@ import java.util.*;
 import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
@@ -26,6 +28,8 @@ public class FilteredDataLoader {
 	private LinkedHashMap idFetcherIndexDaoMap;
 	protected final Log log = LogFactory.getLog(getClass());
 
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
 	public void updateIndexByUserName(Authentication authentication){
 		String userName = SecurityUtils.getUserLoginName(authentication);
         long begin = System.currentTimeMillis();
@@ -79,7 +83,7 @@ public class FilteredDataLoader {
      * @param availableMap
      */
     //should run in a transaction. 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
 	public void updateAnIndex(String userName, Set<UserGroupType> allRoles , Map<UserGroupType, IndexEntry> existingMap, Map<UserGroupType, IndexEntry> availableMap, AbstractIndexDao indexDao){
        for(UserGroupType ug: allRoles){
            long t1= System.currentTimeMillis();
