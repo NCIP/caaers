@@ -1274,7 +1274,7 @@ div#createNew h3, div.section h3 {
 						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
 						onchange="handleDomainObjectonChange(this, ${ruleCount})">
                         <form:option value="">Please select domain object</form:option>
-                        <form:options items="${ruleUi.condition[0].domainObject}"
+                        <form:options items="${command.ruleUi.condition[0].domainObject}"
 							itemLabel="displayUri" itemValue="className" />
                       </form:select>
                       <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"/>
@@ -1287,13 +1287,13 @@ div#createNew h3, div.section h3 {
 						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
 						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
                         <form:option value="">Please select field</form:option>
-                        <c:forEach items="${ruleUi.condition[0].domainObject}"
+                        <c:forEach items="${command.ruleUi.condition[0].domainObject}"
 							varStatus="selectedField">
                           <c:set var="selectedIndex" value="${selectedField.index}" />
                           <c:if
 								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
-												        		      			ruleUi.condition[0].domainObject[selectedIndex].className}">
-                            <c:forEach var="f" items="${command.ruleUi.condition[0].domainObject[selectedIndex].field}">
+												        		      			command.ruleUi.condition[0].domainObject[selectedIndex].className}">
+                            <c:forEach var="f" items="${command.command.ruleUi.condition[0].domainObject[selectedIndex].field}">
                               <c:if test="${f.filter == '' || f.filter == command.terminology}">
                                 <form:option value="${f.name}">${f.displayUri}</form:option>
                               </c:if>
@@ -1313,22 +1313,22 @@ div#createNew h3, div.section h3 {
 						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
 						onchange="handleOperatorOnchange(this, ${ruleCount})">
                         <form:option value="">Please select operator</form:option>
-                        <c:forEach items="${ruleUi.condition[0].domainObject}"
+                        <c:forEach items="${command.ruleUi.condition[0].domainObject}"
 							varStatus="selectedDomainObject">
                           <c:set var="domainObjectIndex"
 								value="${selectedDomainObject.index}" />
                           <c:if
 								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
-												        		      			ruleUi.condition[0].domainObject[domainObjectIndex].className}">
+												        		      			command.ruleUi.condition[0].domainObject[domainObjectIndex].className}">
                             <c:forEach
-									items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}"
+									items="${command.ruleUi.condition[0].domainObject[domainObjectIndex].field}"
 									varStatus="selectedField">
                               <c:set var="fieldIndex" value="${selectedField.index}" />
                               <c:if
 										test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
-												        		      					ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
+												        		      					command.ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
                                 <form:options
-											items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].operator}"
+											items="${command.ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].operator}"
 											itemLabel="displayUri" itemValue="name" />
                               </c:if>
                             </c:forEach>
@@ -1615,30 +1615,30 @@ div#createNew h3, div.section h3 {
                               <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" />
                             </c:when>
                             <c:otherwise>
-                              <c:forEach items="${ruleUi.condition[0].domainObject}"
+                              <c:forEach items="${command.ruleUi.condition[0].domainObject}"
 										varStatus="selectedDomainObject">
                                 <c:set var="domainObjectIndex"
 											value="${selectedDomainObject.index}" />
                                 <c:if
 											test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
-												        		      						ruleUi.condition[0].domainObject[domainObjectIndex].className}">
+												        		      						command.ruleUi.condition[0].domainObject[domainObjectIndex].className}">
                                   <c:forEach
-												items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}"
+												items="${command.ruleUi.condition[0].domainObject[domainObjectIndex].field}"
 												varStatus="selectedField">
                                     <c:set var="fieldIndex" value="${selectedField.index}" />
                                     <c:if
 													test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
-												        		      							ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
+												        		      							command.ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
                                       <c:choose>
                                         <c:when
-															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
+															test='${command.ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
                                           <form:select 
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="multiple" size="3"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
                                             <form:options
-																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
+																	items="${command.ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
                                           </form:select>
                                           <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
@@ -1652,7 +1652,7 @@ div#createNew h3, div.section h3 {
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, false)">
                                             <form:option value="">Please select value</form:option>
                                             <form:options
-																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
+																	items="${command.ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
                                           </form:select>
                                           <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
@@ -1684,28 +1684,39 @@ div#createNew h3, div.section h3 {
                     <label for="action" class="label" style="font-weight:bold;">Actions</label>
                   </div>
                   <div id="action-template" class="lineitem">
-                    <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
                       <c:choose>
-                        <c:when test='${command.caaersRuleSet.ruleType.name == "Mandatory Sections Rules"}'>
-                          <c:forEach var="reportSectionName" items="${command.reportSectionNames}">
-                            <form:option value="${reportSectionName}">${reportSectionName.displayName}</form:option>
-                          </c:forEach>
-                        </c:when>
-                        <c:when test='${command.caaersRuleSet.ruleType.name == "SAE Reporting Rules"}'>
-                          <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
-                            <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
-                          </c:forEach>
-                          <form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
+                          <c:when test='${command.caaersRuleSet.ruleType.name == "Mandatory Sections Rules"}'>
+                            <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
+                                <c:forEach var="reportSectionName" items="${command.reportSectionNames}">
+                                    <form:option value="${reportSectionName}">${reportSectionName.displayName}</form:option>
+                                </c:forEach>
+                            </form:select>
+                          </c:when>
+                          <c:when test='${command.caaersRuleSet.ruleType.name == "SAE Reporting Rules"}'>
+                              <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
+                              <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
+                               <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
+                              </c:forEach>
+                              <form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
+                              </form:select>
                         </c:when>
                         <c:when test="${command.caaersRuleSet.ruleType.name eq 'Field Rules'}">
-                          <c:forEach var="mandatoryness" items="${command.mandatoryOptions}">
-                            <form:option value="${mandatoryness.name}">${mandatoryness.displayName}</form:option>
-                          </c:forEach>
+                            <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action"  size="1">
+                                <c:forEach var="mandatoryness" items="${command.mandatoryOptions}">
+                                <form:option value="${mandatoryness.name}">${mandatoryness.displayName}</form:option>
+                              </c:forEach>
+                            </form:select>
                         </c:when>
+                        <c:when test="${command.caaersRuleSet.ruleType.name eq 'Safety Signalling Rules'}">
+                            <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
+                                <c:forEach var="nfOption" items="${command.notificationOptions}">
+                                    <form:option value="${nfOption.name}">${nfOption.displayName}</form:option>
+                                </c:forEach>
+                            </form:select>
+                         </c:when>
 
                       </c:choose>
 
-                    </form:select>
                     <tags:errors path="ruleSet.rule[${ruleCount}].action"/>
                   </div>
                  

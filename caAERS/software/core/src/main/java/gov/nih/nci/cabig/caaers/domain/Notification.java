@@ -1,20 +1,24 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.GenericValidator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
  
 /**
- * This class represents the Notification domain object associated with the Adverse event report.
+ * This class represents the Notification domain object associated with Safety signalling.
  * 
  * @author Sujith Vellat Thayyilthodi
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "notifications")
@@ -25,7 +29,8 @@ public class Notification extends AbstractMutableDomainObject implements Seriali
 	private static final long serialVersionUID = 6073805433214950491L;
 
 	/** The email. */
-	private String email;
+	private String roles;
+	private String emails;
 
     /** The content. */
     private String content;
@@ -34,78 +39,106 @@ public class Notification extends AbstractMutableDomainObject implements Seriali
     private String subject;
 
     /** The name. */
+    @Column(unique = true, nullable = false)
     private String name;
 
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName() {
-        return name;
+    private Study study;
+    
+
+
+    public Notification() {
     }
 
-    /**
-     * Sets the name.
-     *
-     * @param name the new name
-     */
-    public void setName(String name) {
-        this.name = name;
+    @Transient
+    public List<String> getRecipientRoles() {
+        if(StringUtils.isEmpty(roles)) return new ArrayList<String>();
+       return Arrays.asList(StringUtils.split(roles, ','));
     }
 
-    /**
-     * Gets the email.
-     *
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
+    public void setRecipientRoles(List<String> recipientRoles) {
+        roles = StringUtils.join(recipientRoles.toArray(), ',');
     }
 
-    /**
-     * Sets the email.
-     *
-     * @param to the new email
-     */
-    public void setEmail(String to) {
-        this.email = to;
+    @Transient
+    public List<String> getRecipientEmails() {
+        if(StringUtils.isEmpty(emails)) return new ArrayList<String>();
+        return Arrays.asList(StringUtils.split(emails, ','));
     }
 
-    /**
-     * Gets the content.
-     *
-     * @return the content
-     */
+    public void setRecipientEmails(List<String> recipientEmails) {
+        emails = StringUtils.join(recipientEmails.toArray(), ',');
+    }
+
     public String getContent() {
         return content;
     }
 
-    /**
-     * Sets the content.
-     *
-     * @param content the new content
-     */
     public void setContent(String content) {
         this.content = content;
     }
 
-    /**
-     * Gets the subject.
-     *
-     * @return the subject
-     */
+    @Column(nullable = false)
     public String getSubject() {
         return subject;
     }
 
-    /**
-     * Sets the subject.
-     *
-     * @param subject the new subject
-     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    @Column(nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "study_id")
+    public Study getStudy() {
+        return study;
+    }
+
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getEmails() {
+        return emails;
+    }
+
+    public void setEmails(String emails) {
+        this.emails = emails;
+    }
+
+    
+    public ValidationErrors validate(){
+        ValidationErrors validationErrors = new ValidationErrors();
+        if(StringUtils.isEmpty(emails) && StringUtils.isEmpty(roles)){
+            validationErrors.addValidationError("NF_001", "Invalid recipient information");
+        }
+        for(String email : getRecipientEmails()) {
+            if(!GenericValidator.isEmail(email)){
+                validationErrors.addValidationError("NF_001", "Invalid recipient information");
+                break;
+            }
+        }
+
+        if(StringUtils.isEmpty(name)) validationErrors.addValidationError("NF_005", "Name cannot be empty");
+        if(StringUtils.isEmpty(subject)) validationErrors.addValidationError("NF_002", "Subject cannot be empty");
+        if(study == null) validationErrors.addValidationError("NF_003", "Study cannot be empty");
+        if(StringUtils.isEmpty(content)) validationErrors.addValidationError("NF_004", "Content cannot be empty");
+
+        return validationErrors;
+    }
 }

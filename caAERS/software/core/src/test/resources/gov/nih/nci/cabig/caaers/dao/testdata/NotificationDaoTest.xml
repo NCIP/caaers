@@ -1,18 +1,42 @@
 <dataset>
+
+    <ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="National Cancer Institute"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+
+    <STUDIES
+            id="-1"
+            multi_institution_indicator="0"
+            short_title="Shorter"
+            long_title="Lengthy Title" description="Different description"
+            grid_id="f2321"
+            load_status="1"
+            />
+
+    <ind_holders />
+    <site_investigators />
+    <disease_terminologies />
     <notifications
         id="-1"
         content="This is supposed to be a meaningless content."
-        email="AB@no-email.com"
-        subject="no-subject"
-        name="no-name"
+        roles="ae_reporter,ae_study_data_reviewer"
+        emails="AB@no-email.com,jank@kk.com"
+        subject="no-subject1"
+        name="no-name1"
+        study_id="-1"
         version="0"
         />
     <notifications
         id="-2"
         content="This is supposed to be an even meaningless content."
-        email="CD@no-email.com"
-        subject="no-subject"
-        name="no-name"
+        emails="CD@no-email.com"
+        subject="no-subject2"
+        name="no-name2"
+        study_id="-1"
         version="0"
         />
 </dataset>

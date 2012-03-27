@@ -4,7 +4,8 @@ public enum RuleType {
 
     REPORT_SCHEDULING_RULES("SAE Reporting Rules", "The rules regarding identifying the reporting periods"),
     MANDATORY_SECTIONS_RULES("Mandatory Sections Rules", "The rules regarding identifying the mandatory sections"),
-    FIELD_LEVEL_RULES("Field Rules" , "The rules regarding requiredness of UI fields");
+    FIELD_LEVEL_RULES("Field Rules" , "The rules regarding requiredness of UI fields"),
+    SAFETY_SIGNALLING_RULES("Safety Signalling Rules" , "The rules regarding safety signalling");
 
     private String name;
     private String desc;

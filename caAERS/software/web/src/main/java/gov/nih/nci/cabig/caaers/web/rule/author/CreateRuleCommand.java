@@ -187,38 +187,8 @@ public class CreateRuleCommand implements RuleInputCommand {
         return ruleUi;
     }
 
-    public void setRuleUi() {
-
-        // System.out.println("termonilogy is " + terminology);
-        InputStream inputStream = Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream("rules-ui.xml");
-
-        Unmarshaller unmarshaller;
-        try {
-            unmarshaller = JAXBContext.newInstance("com.semanticbits.rules.ui")
-                            .createUnmarshaller();
-            ruleUi = (RuleUi) unmarshaller.unmarshal(inputStream);
-        } catch (Exception e) {
-            logger.error("Error in reading rules-ui xml file ", e);
-            throw new CaaersSystemException(e);
-        }
-
-//
-//        for (DomainObject domainObject : ruleUi.getCondition().get(0).getDomainObject()) {
-//            List<Field> fields = new ArrayList<Field>();
-//            List<Field> fields2 = new ArrayList<Field>();
-//            for (Field field : domainObject.getField()) {
-//                if (field.getFilter().equals("") || field.getFilter().equals(terminology)) {
-//                    fields.add(field);
-//                } else {
-//                    fields2.add(field);
-//                }
-//            }
-//            fields.addAll(fields2);
-//
-//            domainObject.setField(fields);
-//        }
-
+    public void setRuleUi(RuleUi ruleUi) {
+        this.ruleUi = ruleUi;
     }
     
     public void retrieveReportDefinitions(){
@@ -265,6 +235,9 @@ public class CreateRuleCommand implements RuleInputCommand {
         return Mandatory.values();
     }
 
+    public NotificationStatus[] getNotificationOtpions(){
+        return NotificationStatus.statuesForRules();
+    }
 
     /**
      * Will populate the ruleset from repository if it exists

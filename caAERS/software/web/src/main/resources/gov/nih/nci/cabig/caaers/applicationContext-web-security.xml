@@ -182,6 +182,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/notification/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
         <entry key="/pages/rule/notification/export" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
         <entry key="/pages/rule/notification/createConfigProperty" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+
+
+        <entry key="/pages/rule/safetyNotificationList" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/createSafetyNotifiction" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/editSafetyNotifiction" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+        <entry key="/pages/rule/importSafetyNotifiction" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+        <entry key="/pages/rule/exportSafetyNotifiction" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+
         
         <!-- Advance Search -->
         <entry key="/pages/search/exportSearchResults" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
@@ -272,6 +280,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportMandatoryFieldDefinitionTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReviewTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+
+          <!-- =============== Safety Notification ======= -->
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.SafetyNotificationTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.rule.SafetyNotificaitonReviewTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 
           <!--========= TODO ADMIN ========-->
           <entry key="gov.nih.nci.cabig.caaers.web.admin.ImportTab" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>

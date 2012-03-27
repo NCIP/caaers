@@ -98,9 +98,12 @@
             <property name="tasks">
                 <list>
                     <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Rules" p:linkName="listRuleController"/>
-                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>
+                    <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>-->
                     <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
-                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
+                    <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>-->
+                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Safety Notifications" p:linkName="listSafetyNotificationController"/>
+                    <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Safety Notifications" p:linkName="createSafetyNotificationController"/>-->
+
                 </list>
             </property>
       </bean>
@@ -198,6 +201,8 @@
       <list>
         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
 		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
+		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Safety Notifications" p:linkName="listSafetyNotificationController"/>
+		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Safety Notifications" p:linkName="createSafetyNotificationController"/>
       </list>
     </property>
   </bean>
@@ -550,8 +555,18 @@
     <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
     <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />
 
+    <bean name="/rule/safetyNotificationList" id="listSafetyNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.ListSafetyNotificationController" />
+    <bean name="/rule/createSafetyNotifiction" id="createSafetyNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.CreateSafetyNotificationController">
+        <property name="roles" ref="roles" />
+        <property name="notificationDao" ref="notificationDao" />
+    </bean>
+    <bean name="/rule/editSafetyNotifiction" id="editSafetyNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.EditSafetyNotificationController">
+        <property name="roles" ref="roles" />
+        <property name="notificationDao" ref="notificationDao" />
+    </bean>
+    <bean name="/rule/exportSafetyNotifiction" id="exportSafetyNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.ExportSafetyNoficationController" />
+    <bean name="/rule/importSafetyNotifiction" id="importSafetyNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.ImportSafetyNoficationController" />
 
-    
     <bean name="/admin/reload" id="messageReload" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MessageReloadController">
         <property name="messageSource" ref="messageSource" />
         <property name="caaersFieldsTree" ref="caaersFieldsTree" />

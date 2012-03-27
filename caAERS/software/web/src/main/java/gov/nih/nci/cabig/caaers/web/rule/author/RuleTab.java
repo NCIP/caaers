@@ -101,7 +101,6 @@ public class RuleTab extends DefaultTab {
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
 
 
-        createRuleCommand.setRuleUi();
         createRuleCommand.retrieveReportDefinitions();
 
         if(!createRuleCommand.isCreateMode() ) return referenceData;
@@ -110,11 +109,11 @@ public class RuleTab extends DefaultTab {
             //copy the rules from parent if one is available
             createRuleCommand.retrieveParentRuleSet();
         }
-        
+
         //add an empty rule if the rule-set do not have any
         createRuleCommand.addDefaultRule();
 
         return referenceData;
     }
-    
+
 }

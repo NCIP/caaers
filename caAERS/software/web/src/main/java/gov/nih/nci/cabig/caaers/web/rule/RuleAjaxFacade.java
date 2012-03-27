@@ -66,16 +66,32 @@ public class RuleAjaxFacade {
     	List<Study> studies = searchStudies(studyQuery);
         studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
             public String serialize(Study object) {
-                if(object.getPrimaryIdentifierValue() != null) {
-                    return object.getPrimaryIdentifierValue() + " " + object.getShortTitle();
-                }
-                return object.getShortTitle();
+                return object.getDisplayName();
             }
         });
         return studies;
     }
 
-  
+    /**
+     * Will filter the studies based on Sponsor and partial study short title match.
+     * @param text Study Short titile
+     * @return
+     */
+    public List<Study> matchAllStudies(String text) {
+
+        StudyQuery studyQuery = new StudyQuery();
+        studyQuery.filterStudiesWithMatchingText(text);
+        studyQuery.filterByDataEntryStatus(true);
+        studyQuery.filterByNonAdministrativelyComplete();
+        List<Study> studies = searchStudies(studyQuery);
+        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
+            public String serialize(Study object) {
+                return object.getDisplayName();
+            }
+        });
+        return studies;
+    }
+
 
     /**
      * Will find the studies based on study sites.
@@ -96,10 +112,7 @@ public class RuleAjaxFacade {
         List<Study> studies = searchStudies(studyQuery);
         studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
             public String serialize(Study object) {
-                if(object.getPrimaryIdentifierValue() != null) {
-                    return object.getPrimaryIdentifierValue() + " " + object.getShortTitle();
-                }
-                return object.getShortTitle();
+                return object.getDisplayName();
             }
         });
         return studies;
@@ -125,7 +138,8 @@ public class RuleAjaxFacade {
 //    public List<CtcTerm> fetchTerms() throws Exception {
 //        List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames("%"), null, null);
 //        // cut down objects for serialization
-//        for (CtcTerm term : terms) {
+//        for (CtcTerm term : terms) {RuleSet
+
 //            term.getCategory().setTerms(null);
 //            term.getCategory().getCtc().setCategories(null);
 //        }

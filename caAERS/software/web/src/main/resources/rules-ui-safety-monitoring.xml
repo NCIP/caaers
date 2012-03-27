@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rule-ui xmlns="http://semanticbits.com/rules/ui">
+    <condition>
+        <domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field name="grade" display-uri="Grade" >
+                <field-value>
+                    <method-call>
+                        <bean-name>aeDetails</bean-name>
+                        <method-name>fetchGrades</method-name>
+                        <return-value>
+                            <return-type>gov.nih.nci.cabig.caaers.domain.Grade</return-type>
+                            <property-name>code</property-name>
+                        </return-value>
+                    </method-call>
+                    <input-type>select</input-type>
+                </field-value>
+                <valid-value value="0" display-uri="0: Normal" readable-text="Grade 0"/>
+                <valid-value value="1" display-uri="1: Mild" readable-text="Grade 1"/>
+                <valid-value value="2" display-uri="2: Moderate" readable-text="Grade 2"/>
+                <valid-value value="3" display-uri="3: Severe" readable-text="Grade 3"/>
+                <valid-value value="4" display-uri="4: Life-threatening or disabling" readable-text="Grade 4"/>
+                <valid-value value="5" display-uri="5: Death" readable-text="Grade 5"/>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <operator name="&gt;=" display-uri="Greater Than Or Equal To" readable-text="is greater than or equal to "/>
+                <operator name="&lt;=" display-uri="Less Than Or Equal To" readable-text="is less than or equal to "/>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Severity " postfix="."/>
+            </field>
+
+            <field name="term" display-uri="Term" filter="CTCAE">
+                <field-value>
+                    <method-call>
+                        <bean-name>aeDetails</bean-name>
+                        <method-name>fetchTerms</method-name>
+                    </method-call>
+                    <input-type>multiselect</input-type>
+                </field-value>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Term " postfix="."/>
+            </field>
+            <field name="category" display-uri="Category" filter="CTCAE">
+                <field-value>
+                    <method-call>
+                        <bean-name>aeDetails</bean-name>
+                        <method-name>fetchCategory</method-name>
+                    </method-call>
+                    <input-type>select</input-type>
+                </field-value>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <!--  <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>		-->
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Category " postfix="."/>
+            </field>
+            <field name="meddraCode" display-uri="MedDRA code" filter="MedDRA">
+                <field-value>
+                    <input-type>textarea</input-type>
+                </field-value>
+                <operator name="==" display-uri="Equal To" readable-text="equal to  "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="not equal to "/>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm','fullName','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" MedDRA code(s) " postfix="."/>
+
+            </field>
+
+        </domain-object>
+        <domain-object identifier="study" class-name="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field name="phaseCode" display-uri="Phase">
+                <field-value>
+                    <input-type>multiselect</input-type>
+                </field-value>
+                <valid-value value="Phase I Trial" display-uri="Phase I Trial" readable-text="Phase I Trial"/>
+                <valid-value value="Phase I/II Trial" display-uri="Phase I/II Trial" readable-text="Phase I/II Trial"/>
+                <valid-value value="Phase II Trial" display-uri="Phase II Trial" readable-text="Phase II Trial"/>
+                <valid-value value="Phase II/III Trial" display-uri="Phase II/III Trial" readable-text="Phase II/III Trial"/>
+                <valid-value value="Phase III Trial" display-uri="Phase III Trial" readable-text="Phase III Trial"/>
+                <valid-value value="Phase IV Trial" display-uri="Phase IV Trial" readable-text="Phase IV Trial"/>
+                <valid-value value="Phase 0 Trial" display-uri="Phase 0 Trial" readable-text="Phase 0 Trial"/>
+                <valid-value value="Pilot" display-uri="Pilot" readable-text="Pilot"/>
+                <valid-value value="N/A" display-uri="N/A" readable-text="N/A"/>
+                <valid-value value="Other" display-uri="Other" readable-text="Other"/>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(study,null,'phaseCode','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Phase " postfix="."/>
+            </field>
+        </domain-object>
+        <domain-object identifier="treatmentInformation" class-name="gov.nih.nci.cabig.caaers.domain.TreatmentInformation" display-uri="Course">
+            <field name="treatmentAssignmentCode" display-uri="Treatment Assignment Code">
+                <field-value>
+                    <input-type>multiselect</input-type>
+                </field-value>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(treatmentInformation,'gov.nih.nci.cabig.caaers.domain.TreatmentAssignment','code','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Treatment Assignment Code " postfix="."/>
+            </field>
+        </domain-object>
+
+    </condition>
+
+</rule-ui>

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers;
 
 import gov.nih.nci.cabig.caaers.domain.Retireable;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -24,4 +25,5 @@ public class CollectionUtil<T extends Retireable> {
         }
         return new ArrayList(z);
     }
+
 }

@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.NotificationQuery;
 import gov.nih.nci.cabig.caaers.domain.Notification;
 
 import java.util.List;
 
 /**
  * @author Ion C. Olaru
+ * @author Biju Joseph
  */
 
 public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
@@ -29,7 +31,13 @@ public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
     public void testSave() throws Exception {
         Notification notification = new Notification();
         notification.setContent("C");
+        notification.setSubject("C");
         notification.setGridId("");
+        notification.setName("n");
+        notification.setStudy(getDao().getAll().get(0).getStudy());
+
+        interruptSession();
+
         getDao().save(notification);
         assertEquals(true, notification.getId() > 0);
     }
@@ -37,6 +45,25 @@ public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
     public void testGetAll() throws Exception {
         List<Notification> all = getDao().getAll();
         assertEquals(2, all.size());
+    }
+    
+    public void testSearch(){
+        NotificationQuery query = new NotificationQuery();
+        List<Notification> nfList = (List<Notification>) getDao().search(query);
+        assertEquals(2, nfList.size());
+
+        query.filterByStudyId(-1);
+        nfList = (List<Notification>) getDao().search(query);
+        assertEquals(2, nfList.size());
+
+        query.filterByStudyId(-999999);
+        nfList = (List<Notification>) getDao().search(query);
+        assertEquals(0, nfList.size());
+
+        query = new NotificationQuery();
+        query.filterByName("no-name1");
+        nfList = (List<Notification>) getDao().search(query);
+        assertEquals(1, nfList.size());
     }
 
 }

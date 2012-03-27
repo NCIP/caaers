@@ -803,6 +803,7 @@ public class CaaersRulesEngineService {
         if(StringUtils.contains(packageName, "sae_reporting_rules")) return RuleType.REPORT_SCHEDULING_RULES;
         if(StringUtils.contains(packageName, "field_rules")) return RuleType.FIELD_LEVEL_RULES;
         if(StringUtils.contains(packageName, "mandatory_sections_rules")) return RuleType.MANDATORY_SECTIONS_RULES;
+        if(StringUtils.contains(packageName, "safety_signalling_rules")) return RuleType.SAFETY_SIGNALLING_RULES;
 
         return null;
     }

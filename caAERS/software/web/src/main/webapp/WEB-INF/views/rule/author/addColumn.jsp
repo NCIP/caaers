@@ -9,14 +9,14 @@
 
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">>
 	        <option value="">Please select domain object</option>
-		<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="optionStatus">
-			<option value="${ruleUi.condition[0].domainObject[optionStatus.index].className}">
-				${ruleUi.condition[0].domainObject[optionStatus.index].displayUri}
+		<c:forEach items="${command.ruleUi.condition[0].domainObject}" varStatus="optionStatus">
+			<option value="${command.ruleUi.condition[0].domainObject[optionStatus.index].className}">
+				${command.ruleUi.condition[0].domainObject[optionStatus.index].displayUri}
 			</option>
 		</c:forEach>
 	</select>
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" value="${ruleUi.condition[0].domainObject[0].identifier}"/>
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" value="${ruleUi.condition[0].domainObject[0].displayUri}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" value="${command.ruleUi.condition[0].domainObject[0].identifier}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" value="${command.ruleUi.condition[0].domainObject[0].displayUri}"/>
 
 
 	
@@ -24,19 +24,19 @@
 			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
 		<option value="">Please select field</option>	
 		<%--
-		<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
-			<option value="${ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
-				${ruleUi.condition[0].domainObject[0].field[optionStatus.index].displayUri}
+		<c:forEach items="${command.ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
+			<option value="${command.ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
+				${command.ruleUi.condition[0].domainObject[0].field[optionStatus.index].displayUri}
 			</option>
 		</c:forEach>
 		--%>
 	</select>
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" value="${ruleUi.condition[0].domainObject[0].field[0].expression}"/>
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" value="${ruleUi.condition[0].domainObject[0].field[0].grammer.prefix}"/>
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" value="${ruleUi.condition[0].domainObject[0].field[0].grammer.postfix}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" value="${command.ruleUi.condition[0].domainObject[0].field[0].expression}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" value="${command.ruleUi.condition[0].domainObject[0].field[0].grammer.prefix}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" value="${command.ruleUi.condition[0].domainObject[0].field[0].grammer.postfix}"/>
 	
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" value="${ruleUi.condition[0].domainObject[0].field[0].displayUri}"/>
-	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri"  name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" value="${ruleUi.condition[0].domainObject[0].field[0].operator[0].readableText}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" value="${command.ruleUi.condition[0].domainObject[0].field[0].displayUri}"/>
+	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri"  name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" value="${command.ruleUi.condition[0].domainObject[0].field[0].operator[0].readableText}"/>
 	
 
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator" 
@@ -44,9 +44,9 @@
 				onchange="handleOperatorOnchange(this, ${ruleCount})">
 		<option value="">Please select operator</option>
 		<%--
-		<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].operator}" varStatus="optionStatus">
-			<option value="${ruleUi.condition[0].domainObject[0].field[0].operator[optionStatus.index].name}">
-				${ruleUi.condition[0].domainObject[0].field[0].operator[optionStatus.index].displayUri}
+		<c:forEach items="${command.ruleUi.condition[0].domainObject[0].field[0].operator}" varStatus="optionStatus">
+			<option value="${command.ruleUi.condition[0].domainObject[0].field[0].operator[optionStatus.index].name}">
+				${command.ruleUi.condition[0].domainObject[0].field[0].operator[optionStatus.index].displayUri}
 			</option>
 		</c:forEach>
 		--%>
@@ -62,9 +62,9 @@
 			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" >
 		<option value="">Please select value</option>		
 		<%--
-		<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
-			<option value="${ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].value}">
-				${ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].displayUri}
+		<c:forEach items="${command.ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
+			<option value="${command.ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].value}">
+				${command.ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].displayUri}
 			</option>
 		</c:forEach>
 		--%>

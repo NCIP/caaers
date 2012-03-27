@@ -32,6 +32,30 @@
 
             //remove the query string from form url
             removeQueryStringFromForm('command');
+
+            hideRow('ruleLevelDiv');
+            hideRow('sponsorName-details');
+            hideRow('categoryIdentifier-details');
+            var _rtName = $F('caaersRuleSet.ruleTypeName');
+
+            if(_rtName == 'SAE Reporting Rules' || _rtName == 'Mandatory Sections Rules' ){
+                showRow('ruleLevelDiv');
+            }
+
+            if(_rtName == 'Safety Signalling Rules') {
+                showRow('categoryIdentifier-details')
+            }
+
+            var _rlName = $F('caaersRuleSet.ruleLevelName');
+            if(_rlName){
+                showRow('sponsorName-details');
+                if(_rlName == 'InstitutionDefinedStudy'  || _rlName == 'SponsorDefinedStudy' )  {
+                    showRow('categoryIdentifier-details')
+                }
+
+            }
+
+
         });
 
     </script>
@@ -52,8 +76,15 @@
                                          hideRow('ruleLevelDiv');
                                          hideRow('sponsorName-details');
                                          hideRow('categoryIdentifier-details');
-                                         if(optionText != 'Field Rules' ){
+
+                                         if(optionText == 'SAE Reporting Rules' || optionText == 'Mandatory Sections Rules' ){
                                              showRow('ruleLevelDiv');
+                                         }
+
+                                         //select the institution defined study
+                                         if(optionText == 'Safety Signalling Rules') {
+                                            $('caaersRuleSet.ruleLevelName').selectedIndex = 0;
+                                            showRow('categoryIdentifier-details')
                                          }
                                     });
                                 </jsp:attribute>
@@ -131,19 +162,25 @@
                                     	initialDisplayValue="${empty command.caaersRuleSet.study ? 'Begin typing here' : command.caaersRuleSet.study.shortTitle}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text){
+                                           if($F('caaersRuleSet.ruleTypeName')  == 'Safety Signalling Rules'){
+                                                authorRule.matchAllStudies(text, function(values) {
+                                                        autocompleter.setChoices(values)
+                                                    })
+                                           } else {
+                                               var sponsorId = $F('caaersRuleSet.sponsor');
 
-                                           var sponsorId = $F('caaersRuleSet.sponsor');
 
+                                               if('InstitutionDefinedStudy' == $F('caaersRuleSet.ruleLevelName')) {
+                                                    authorRule.matchStudiesByInstitution(text, sponsorId, function(values) {
+                                                        autocompleter.setChoices(values)
+                                                    })
+                                                } else  {
+                                                    authorRule.matchStudies(text,sponsorId, function(values) {
+                                                        autocompleter.setChoices(values)
+                                                    })
+                                                }
+                                           }
 
-										   if('InstitutionDefinedStudy' == $F('caaersRuleSet.ruleLevelName')) {
-												authorRule.matchStudiesByInstitution(text, sponsorId, function(values) {
-													autocompleter.setChoices(values)
-												})
-											} else  {
-												authorRule.matchStudies(text,sponsorId, function(values) {
-													autocompleter.setChoices(values)
-												})
-											}
         								}
                                     </jsp:attribute>
                                     <jsp:attribute name="selectorJS">

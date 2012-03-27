@@ -130,7 +130,10 @@ public class RuleSet extends AbstractIdentifiableDomainObject implements Seriali
     }
 
     public void setRuleLevel(RuleLevel ruleLevel){
-        if(ruleLevel != null) setRuleLevelName(ruleLevel.getName());
+        if(ruleLevel != null)
+            setRuleLevelName(ruleLevel.getName());
+        else
+            setRuleLevelName(null);
     }
 
     @Transient
@@ -168,6 +171,8 @@ public class RuleSet extends AbstractIdentifiableDomainObject implements Seriali
             if((level.isSponsorBased() || level.isInstitutionBased()) && getOrganization() == null ) validationErrors.addValidationError("RUL_011", "Missing sponsor or institution");
             if((level.isStudyBased()) && getStudy() == null ) validationErrors.addValidationError("RUL_012", "Missing study");
         }
+        if(getRuleType() == RuleType.SAFETY_SIGNALLING_RULES && getStudy() == null) validationErrors.addValidationError("RUL_012", "Missing study");
+        
         return validationErrors;
     }
     

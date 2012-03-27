@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import com.semanticbits.rules.ui.RuleUi;
+import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.RuleSetDao;
+import gov.nih.nci.cabig.caaers.dao.query.NotificationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
+import gov.nih.nci.cabig.caaers.domain.Notification;
 import gov.nih.nci.cabig.caaers.domain.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -30,6 +34,7 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
     private static final Log logger = LogFactory.getLog(SelectRuleTypeTab.class);
     
     private RuleSetDao ruleSetDao;
+    private NotificationDao notificationDao;
 
     public SelectRuleTypeTab() {
         super("Rule Type", "Rule Type", "rule/author/selectRuleType");
@@ -80,6 +85,7 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
                 logger.error("Duplicate ruleset identified " + String.valueOf(ruleSets));
               errors.reject("RUL_026", "For the same input configuration, another rule set exist. Please edit that instead.");
             }
+
         }
     }
 
@@ -91,6 +97,12 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
         CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
         if(createRuleCommand.getCaaersRuleSet().getStudy() != null){
            createRuleCommand.setTerminology(createRuleCommand.getCaaersRuleSet().getStudy().getAeTerminology().getTerm().getDisplayName());
+        }
+
+        if(StringUtils.equals(createRuleCommand.getCaaersRuleSet().getRuleTypeName(), RuleType.SAFETY_SIGNALLING_RULES.getName())){
+            createRuleCommand.setRuleUi((RuleUi)request.getSession(true).getServletContext().getAttribute("ruleUi-safety"));
+        }else{
+            createRuleCommand.setRuleUi((RuleUi)request.getSession(true).getServletContext().getAttribute("ruleUi-general"));
         }
 
     }
@@ -108,5 +120,13 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
 
     public void setRuleSetDao(RuleSetDao ruleSetDao) {
         this.ruleSetDao = ruleSetDao;
+    }
+
+    public NotificationDao getNotificationDao() {
+        return notificationDao;
+    }
+
+    public void setNotificationDao(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
     }
 }
