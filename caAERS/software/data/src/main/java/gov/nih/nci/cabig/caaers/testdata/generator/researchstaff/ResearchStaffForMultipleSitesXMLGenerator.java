@@ -18,7 +18,7 @@ import java.util.List;
 public class ResearchStaffForMultipleSitesXMLGenerator extends XMLGenerator {
 
 	public static String templateXML = "researchstaff_template.xml";
-	public static int researchStaffPerSite = 1;
+	public static int researchStaffPerSite = 10;
 
 	private ObjectFactory objectFactory;
 
@@ -84,7 +84,7 @@ public class ResearchStaffForMultipleSitesXMLGenerator extends XMLGenerator {
 	 */
 	private ResearchStaffType changeValues(ResearchStaffType rsType,String nciCode,int index) throws Exception{
 
-        String key = nciCode + ".RS";
+        String key = nciCode + ".RS_" + index + "_All_Sites";
         rsType.setLoginId(key);
         rsType.setFirstName(key + ".FN");
         rsType.setLastName(key + ".LN");
