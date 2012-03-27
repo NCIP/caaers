@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.generator.ae.AdverseEventXMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.generator.investigator.InvestigatorXMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.generator.participant.ParticipantXMLGenerator;
+import gov.nih.nci.cabig.caaers.testdata.generator.researchstaff.ResearchStaffForMultipleSitesXMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.generator.researchstaff.ResearchStaffXMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.generator.study.StudyXMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
@@ -56,6 +57,19 @@ public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
      try{
            TestDataFileUtils.deleteDirectory(TestDataFileUtils.getResearchStaffTestDataFolder());
            new GeneratorExecuter(new ResearchStaffXMLGenerator(), "Research staff").execute();
+           new DataLoadExecuter(new ResearchStaffLoader(getDeployedApplicationContext()), "Research staff").execute();
+       }catch(Exception e){
+         e.printStackTrace();
+       }
+    }
+
+    /**
+     * Generate and load research staff
+     */
+    public void testLoadResearchStaffForMultipleSites(){
+     try{
+           TestDataFileUtils.deleteDirectory(TestDataFileUtils.getResearchStaffTestDataFolder());
+           new GeneratorExecuter(new ResearchStaffForMultipleSitesXMLGenerator("researchstaff_template_for_multipleSites.xml"), "Research staff").execute();
            new DataLoadExecuter(new ResearchStaffLoader(getDeployedApplicationContext()), "Research staff").execute();
        }catch(Exception e){
          e.printStackTrace();
