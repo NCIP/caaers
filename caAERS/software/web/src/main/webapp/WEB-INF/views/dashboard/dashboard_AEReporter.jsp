@@ -40,7 +40,7 @@
 </script>
 
 <chrome:boxIPhone style="width:700px;">
-    <jsp:attribute name="title"><caaers:message code="dashboard.safetyReports" /></jsp:attribute>
+    <jsp:attribute name="title"><caaers:message code="dashboard.safetyReports" /> (${fn:length(reportActivity)})</jsp:attribute>
 <jsp:body>
 <c:if test="${fn:length(reportActivity) > 0}">
 <table width="100%">
