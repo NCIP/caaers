@@ -203,7 +203,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                 rsado.setRecordType("RESEARCHSTAFF_RECORD");
                 rsado.setFirstName(srs.getResearchStaff().getFirstName());
                 rsado.setLastName(srs.getResearchStaff().getLastName());
-                rsado.setMiddleName(srs.getResearchStaff().getMiddleName());
+                rsado.setMiddleName(srs.getResearchStaff().getMiddleName() != null ? srs.getResearchStaff().getMiddleName() : "");
                 rsado.setEmailAddress(srs.getResearchStaff().getEmailAddress());
                 rsado.setUserName(srs.getResearchStaff().getCaaersUser() != null ? srs.getResearchStaff().getCaaersUser().getLoginName() : "");
 
