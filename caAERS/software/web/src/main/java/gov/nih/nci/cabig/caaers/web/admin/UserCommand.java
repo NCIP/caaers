@@ -5,15 +5,13 @@ import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
+import org.springframework.context.MessageSource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User interface related class. Created to capture / render User details.
@@ -62,9 +60,9 @@ public class UserCommand {
     }
 
     public UserCommand() {
-		personTypeOptionsMap.put("", "Please select");
-		personTypeOptionsMap.put("Investigator", "Investigator");
-		personTypeOptionsMap.put("ResearchStaff", "ResearchStaff");
+		personTypeOptionsMap.put("", Messages.get("LBL_please.select"));
+		personTypeOptionsMap.put("Investigator", Messages.get("LBL_investigator"));
+		personTypeOptionsMap.put("ResearchStaff", Messages.get("LBL_research.staff"));
 	}
 	
 	/**

@@ -640,8 +640,23 @@ function replaceDefaultText(e) {
 // COLLAPSABLE DIV ELEMENT
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function SwitchCollapsableState(contentElement, id) {
+    function OpenCollapsable(contentElement, id) {
+        panelDiv = document.getElementById(contentElement);
+        imageId= ('image-' + id);
+        imageSource = document.getElementById(imageId).src;
+        OpenUp(panelDiv, arguments[1] || {});
+        document.getElementById(imageId).src=imageSource.replace('right','down');
+    }
 
+    function CloseCollapsable(contentElement, id) {
+        panelDiv = document.getElementById(contentElement);
+        imageId = ('image-' + id);
+        imageSource = document.getElementById(imageId).src;
+        CloseDown(panelDiv, arguments[1] || {});
+        document.getElementById(imageId).src=imageSource.replace('down','right');
+    }
+
+    function SwitchCollapsableState(contentElement, id) {
         panelDiv = $(contentElement);
         imageId= 'image-' + id;
         imageSource = $(imageId).src;

@@ -161,9 +161,9 @@
 			            	<div class="label"><caaers:message code="LBL_personType"/>&nbsp; </div>
 			            	<div class="value">
 				            	<select name="propPt" id="propPt">
-				            		<option value="Please Select">Please Select
-									<option value="ResearchStaff">ResearchStaff
-									<option value="Investigator">Investigator
+				            		<option value="Please Select"><caaers:message code="LBL_please.select" />
+									<option value="ResearchStaff"><caaers:message code="LBL_research.staff" />
+									<option value="Investigator"><caaers:message code="LBL_investigator" />
 								</select>
 							</div>
 						</div>			            

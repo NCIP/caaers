@@ -127,6 +127,16 @@
 				}
 			}
 
+
+            function checkBoxRoleClicked(sectionId, index) {
+                if (document.getElementById('roleMembershipHelper[' + index + '].checked').checked) {
+                    OpenCollapsable('contentOf-' + sectionId, sectionId);
+                } else {
+                    CloseCollapsable('contentOf-' + sectionId, sectionId);
+                }
+                updateRoleSummary(index);
+            }
+
 			function updateRoleSummary(index){
 
 				if($('roleMembershipHelper['+index+'].checked').checked){
@@ -307,6 +317,7 @@
 										<jsp:attribute name="value"><ui:text path="lastName" required="true" title="Last name"/></jsp:attribute>
 									</ui:row>	                        		
 								 </div>
+
 								 <div class="rightpanel">
 								 	<ui:row path="emailAddress">
 								 		<jsp:attribute name="label"><ui:label path="emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
@@ -343,13 +354,21 @@
                                             </div>
                                         </div>
                                     </c:if>
+
                                     <c:if test="${ empty command.person}">
-                                        <ui:checkbox path="createAsPerson" disabled="${!command.PO}" onclick="showHidePersonDiv()"/>&nbsp;&nbsp;Create as Person<br><br>
+                                        <div class="row">
+                                            <div class="label"><caaers:message code="LBL_createAsPerson" /></div>
+                                            <div class="value"><ui:checkbox path="createAsPerson" disabled="${!command.PO}" onclick="showHidePersonDiv()"/></div>
+                                        </div>
                                     </c:if>
+
                                     <c:if test="${ empty command.user}">
-                                        <ui:checkbox path="createAsUser"  disabled="${!command.UA}" onclick="showHideUserDiv()"/>&nbsp;&nbsp;Create as User
+                                        <div class="row">
+                                            <div class="label"><caaers:message code="LBL_createAsUser" /></div>
+                                            <div class="value"><ui:checkbox path="createAsUser"  disabled="${!command.UA}" onclick="showHideUserDiv()"/></div>
+                                        </div>
                                     </c:if>
-									
+
 								 </div>
 							</div>
     				</chrome:box>
@@ -401,7 +420,10 @@
     					</ui:row>
     						<div id="roles-div">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">
-								<chrome:division id="section-${index.index}" title="${roleMembership.suiteRole.displayName}" collapsed="true" collapsable="true">
+								<chrome:division id="section-${index.index}" collapsed="true" collapsable="true">
+                                    <jsp:attribute name="title">
+                                        <ui:checkbox path="roleMembershipHelper[${index.index}].checked" disabled="${not command.UA}" onclick="checkBoxRoleClicked('section-${index.index}', ${index.index});"/>&nbsp;<span title="${roleMembership.suiteRole.description}">${roleMembership.suiteRole.displayName}</span>
+                                    </jsp:attribute>
 									<jsp:attribute name="additionalInfo">
 										<c:set var="noOfSites" value="${fn:length(roleMembership.sites)}" />
 										<c:set var="noOfStudies" value="${fn:length(roleMembership.studies)}" />
@@ -434,11 +456,6 @@
 										</span>
 									</jsp:attribute>
                                     <jsp:body>
-									${roleMembership.suiteRole.description}
-
-                                        <br>
-                                        <ui:checkbox path="roleMembershipHelper[${index.index}].checked"  disabled="${not command.UA}" onclick="updateRoleSummary('${index.index}');"/>&nbsp;&nbsp;Grant this user the ${roleMembership.suiteRole.displayName} role.
-                                        <br><br>
 
 									<div id="membershipDiv-${index.index}" style="display:${roleMembership.checked ? '' : 'none'}">
 									<c:if test="${roleMembership.scoped}">
