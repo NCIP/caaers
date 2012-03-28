@@ -221,6 +221,10 @@ public class CreateRuleCommand implements RuleInputCommand {
     public boolean isFieldLevelRule(){
         return caaersRuleSet.getRuleType() == RuleType.FIELD_LEVEL_RULES;
     }
+    
+    public boolean isSafetySignallingRule(){
+        return caaersRuleSet.getRuleType() == RuleType.SAFETY_SIGNALLING_RULES;
+    }
 
 
     public ExpeditedReportSection[] getReportSectionNames() {
@@ -235,7 +239,7 @@ public class CreateRuleCommand implements RuleInputCommand {
         return Mandatory.values();
     }
 
-    public NotificationStatus[] getNotificationOtpions(){
+    public NotificationStatus[] getNotificationOptions(){
         return NotificationStatus.statuesForRules();
     }
 

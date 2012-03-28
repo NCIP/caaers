@@ -105,7 +105,7 @@ public class RuleTab extends DefaultTab {
 
         if(!createRuleCommand.isCreateMode() ) return referenceData;
 
-        if(!createRuleCommand.isFieldLevelRule()){
+        if( !(createRuleCommand.isSafetySignallingRule() ||  createRuleCommand.isFieldLevelRule()) ){
             //copy the rules from parent if one is available
             createRuleCommand.retrieveParentRuleSet();
         }
