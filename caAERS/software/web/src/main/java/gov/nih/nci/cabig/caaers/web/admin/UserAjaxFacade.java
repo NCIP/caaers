@@ -209,7 +209,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
                 StringBuffer sb = new StringBuffer("");
                 for (SiteResearchStaff site : srs.getResearchStaff().getSiteResearchStaffs()) {
-                    sb.append(site.getOrganization().getName() + "<br>");
+                    sb.append(site.getOrganization().getName() + " (" + site.getOrganization().getNciInstituteCode() + ")<br>");
                 }
                 rsado.setOrganization(sb.toString());
 
