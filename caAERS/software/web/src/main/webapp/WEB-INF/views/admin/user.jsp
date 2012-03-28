@@ -8,6 +8,12 @@
 <csmauthz:accesscontrol var="userCreate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE"/>
 <csmauthz:accesscontrol var="userUpdate" objectPrivilege="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE"/>
 
+<style>
+    .autocomplete {
+        width : 510px;
+    }
+</style>
+
 <html>
     <head>
     	<title>User</title>

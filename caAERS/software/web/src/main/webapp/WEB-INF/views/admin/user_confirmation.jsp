@@ -83,7 +83,9 @@
 			</c:if>
 			
 			<c:if test="${command.createAsUser}">
-				<chrome:box title="RoleMemberships">
+				<chrome:box>
+                    <jsp:attribute name="title"><caaers:message code="LBL_associatedRoles" /></jsp:attribute>
+                    <jsp:body>
 					<table class="tablecontent" width="100%" >
 						 <tr>
 	                		<th scope="col">Role</th>
@@ -128,6 +130,7 @@
 	            			</c:if>
 	            		</c:forEach>
 					</table>
+                    </jsp:body>
 				</chrome:box>			
 			</c:if>
 
