@@ -2,17 +2,25 @@
 <html>
 	<head>
 
-		<style>
-			.yui-dt table { width: 100%; }
-			
-		</style>
+        <style>
+            .yui-dt table {
+                width: 100%;
+            }
 
-		<style type="text/css">
-		    div.row div.label { width: 9em; }
-		    div.row div.value { margin-left: 10em; }
-		</style>
+            .autocomplete {
+                width: 510px;
+            }
 
-		<title><caaers:message code="user.search.pageTitle"/></title>
+            div.row div.label {
+                width: 9em;
+            }
+
+            div.row div.value {
+                margin-left: 10em;
+            }
+        </style>
+
+        <title><caaers:message code="user.search.pageTitle"/></title>
 		<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 			<tags:dwrJavascriptLink objects="user"/>
 		<script language="JavaScript">
@@ -63,11 +71,19 @@
 		        elCell.title = _recordType;
 			};						
 		
+			var nameFormatter = function(elCell, oRecord, oColumn, oData) {
+		        var _fn = oRecord.getData("firstName");
+		        var _mn = oRecord.getData("middleName");
+		        var _ln = oRecord.getData("lastName");
+                var _recordType = oRecord.getData("recordType");
+
+		        elCell.innerHTML = _fn + "&nbsp;" + _mn + "&nbsp;" + _ln;
+		        elCell.title = _recordType;
+			};
+
 			var myColumnDefs = [
-				{key:"externalId",      label:"",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},			        			
-                {key:"firstName",       label:"First name",    	  sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"middleName",      label:"Middle name",      sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"lastName",        label:"Last name",     	  sortable:true,      resizeable:true, formatter: linkFormatter},
+				{key:"externalId",      label:"&nbsp;",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
+                {key:"firstName",       label:"Name",    	      sortable:true,      resizeable:true, formatter: nameFormatter},
                 {key:"number",          label:"Person identifier",sortable:true,      resizeable:true, formatter: linkFormatter},
                 {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true, formatter: linkFormatter},
                 {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true, formatter: linkFormatter}
