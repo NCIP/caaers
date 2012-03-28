@@ -400,9 +400,7 @@ public class RuleAjaxFacade {
      */
     public DomainObject getRulesDomainObject(int domainObjectIndex, String filter) {
 
-        ServletContext servletContext = WebContextFactory.get().getServletContext();
-
-        RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi");
+        RuleUi ruleUi = getAuthorRuleCommand().getRuleUi();
 
         if (ruleUi != null && ruleUi.getCondition() != null && ruleUi.getCondition().size() > 0
                         && ruleUi.getCondition().get(0).getDomainObject() != null

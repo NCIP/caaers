@@ -12,6 +12,7 @@
 <%@attribute name="mandatory" type="java.lang.Boolean" description=""%>
 <%@attribute name="displayNamePath" description="This path is used to display the text, when the field is readOnly, if not specified 'path' is used as default " %>
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
+<%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
 
 <%@attribute name="cols" description="Specifies the display size of the text area field" %>
 <%@attribute name="rows" description="Specifies the display rows of the text area field" %>
