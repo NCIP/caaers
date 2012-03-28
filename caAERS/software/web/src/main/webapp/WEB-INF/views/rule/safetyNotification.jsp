@@ -15,20 +15,56 @@
            $(insLoc).insert({before: $(insTemplate).innerHTML});
 
         }
+
+        //This is the function that will insert the substitutions
+        var FREE_MARKER_PREFIX = '$' + '{';
+        var FREE_MARKER_SUFFIX = '}';
+
+
+        var lastElement; //will store the last element on focus
+        function insertReplacement(selSub){
+            i = selSub.selectedIndex;
+            if(i < 0) return;
+            if(!lastElement){
+                selSub.selectedIndex = 0;
+                return;
+            }
+
+            var txtToInsert = FREE_MARKER_PREFIX + selSub.options[i].value  + FREE_MARKER_SUFFIX;
+
+            var msg = lastElement.value;
+
+            if(lastElement.type == 'text'){
+                //text (subject)
+                msg = msg + txtToInsert;
+                lastElement.value = msg;
+            }else if(lastElement.type == 'textarea'){
+                //textarea (message)
+                st = lastElement.selectionStart;
+                end = lastElement.selectionEnd;
+                len = lastElement.textLength;
+                msg = msg.substring(0,st) + txtToInsert + msg.substring(end, len);
+                lastElement.value = msg;
+                lastElement.selectionStart = st + txtToInsert.length;
+                lastElement.selectionEnd = lastElement.selectionStart;
+            }
+            selSub.selectedIndex = 0;
+            lastElement.focus();
+        }
     </script>
 </head>
 <body>
 
 <div id="s-email" style="display: none;">
     <div>
-        <input type="text" maxlength="2000" value="" class="validate-NOTEMPTY$$EMAIL required" name="recipientEmails" >
+        <input type="text" maxlength="2000" value="" class="validate-NOTEMPTY$$EMAIL required" name="recipientEmails" title="Email address" >
         <input type="image" align="absmiddle" onclick="javascript:{this.parentNode.parentNode.removeChild(this.parentNode)}" style="border: 0px none ;" src="<c:url value="/images/rule/remove_condition.gif" />">
     </div>
 
 </div>
 <div id="s-role" style="display: none;">
     <div>
-        <select size="1" class="validate-NOTEMPTY required" name="recipientRoles" >
+        <select size="1" class="validate-NOTEMPTY required" name="recipientRoles" title="Role option">
             <c:forEach var="i" items="${command.roles}">
                 <option value="${i.key}">${i.value}</option>
             </c:forEach>
@@ -78,7 +114,7 @@
                             <td width="49%" >
                                 <c:forEach var="e" items="${command.notification.recipientEmails}">
                                     <div>
-                                        <input type="text" maxlength="2000" value="${e}" class="validate-NOTEMPTY$$EMAIL valueOK" name="recipientEmails" >
+                                        <input type="text" maxlength="2000" value="${e}" class="validate-NOTEMPTY$$EMAIL valueOK" name="recipientEmails" title="Email address" >
                                         <input type="image" align="absmiddle" onclick="javascript:{this.parentNode.parentNode.removeChild(this.parentNode)}" style="border: 0px none ;" src="<c:url value="/images/rule/remove_condition.gif" />">
                                     </div>
 
@@ -90,7 +126,7 @@
                                 <c:forEach var="r" items="${command.notification.recipientRoles}">
 
                                     <div>
-                                        <select size="1" class="valueOK validate-NOTEMPTY " name="recipientRoles" >
+                                        <select size="1" class="valueOK validate-NOTEMPTY " name="recipientRoles" title="Role option" >
                                             <c:forEach var="i" items="${command.roles}">
                                                 <option ${r eq i.key ? 'selected="selected"' : ''} value="${i.key}">${i.value}</option>
                                             </c:forEach>
@@ -110,7 +146,13 @@
             <ui:row path="notification.subject">
                 <jsp:attribute name="label"><ui:label path="notification.subject" required="true" text="Subject." /></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:text path="notification.subject" required="true" size="100" />
+                    <ui:text path="notification.subject" required="true" size="100">
+                        <jsp:attribute name="embededJS">
+                            $('notification.subject').observe('focus', function(evt) {
+                                lastElement = Event.element(evt);
+                            });
+                        </jsp:attribute>
+                    </ui:text>
                 </jsp:attribute>
             </ui:row>
 
@@ -120,7 +162,7 @@
                 <jsp:attribute name="value">
 
                     <ui:label path="substitution" text="Insert substitutions." />
-                    <select id="sub-sel">
+                    <select id="sub-sel" onchange="insertReplacement(this);">
                         <option value="">${subopt1}</option>
                         <option value="one">One</option>
                         <option value="two">Two</option>
@@ -132,7 +174,13 @@
             <ui:row path="notification.content">
                 <jsp:attribute name="label"><ui:label path="notification.content" required="true" text="Mail content." /></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:textarea path="notification.content" required="true" rows="20" cols="100"/>
+                    <ui:textarea path="notification.content" required="true" rows="20" cols="100">
+                        <jsp:attribute name="embededJS">
+                            $('notification.content').observe('focus', function(evt) {
+                                lastElement = Event.element(evt);
+                            });
+                        </jsp:attribute>
+                    </ui:textarea>
                 </jsp:attribute>
             </ui:row>
 

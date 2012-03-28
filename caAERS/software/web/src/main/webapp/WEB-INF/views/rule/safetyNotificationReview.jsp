@@ -24,8 +24,10 @@
             <ui:row path="notification.emails">
                 <jsp:attribute name="label"><ui:label path="notification.emails" required="true" text="Recipients."/></jsp:attribute>
                 <jsp:attribute name="value">
+                    <div>&nbsp;</div>
                     <table border="0" cellspacing="2" cellpadding="0" width="90%">
-                        <tr align="middle">
+
+                        <tr class="yui-dt-first yui-dt-last">
                             <td width="49%"><ui:label path="notification.recipientEmails" text="Roles" /> </td>
                             <td rowspan="2" width="2%" class="divider">&nbsp;</td>
                             <td><ui:label path="notification.recipientRoles" text="Roles" /> </td>
@@ -67,7 +69,9 @@
             <ui:row path="notification.content">
                 <jsp:attribute name="label"><ui:label path="notification.content" required="true" text="Mail content." /></jsp:attribute>
                 <jsp:attribute name="value">
+                    <pre>
                     <c:out value="${command.notification.content}" escapeXml="true" />
+                    </pre>
                 </jsp:attribute>
             </ui:row>
 

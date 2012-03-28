@@ -1710,7 +1710,7 @@ div#createNew h3, div.section h3 {
                         <c:when test="${command.caaersRuleSet.ruleType.name eq 'Safety Signalling Rules'}">
                             <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" id="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
                                 <c:forEach var="nfOption" items="${command.notificationOptions}">
-                                    <form:option value="${nfOption.name}">${nfOption.displayName}</form:option>
+                                    <form:option value="${nfOption}">${nfOption.displayName}</form:option>
                                 </c:forEach>
                             </form:select>
                          </c:when>
