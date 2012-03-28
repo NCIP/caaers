@@ -347,6 +347,7 @@ public class RuleAjaxFacade {
      */
 
     public String getValidValues(int domainObjectIndex, int fieldIndex) {
+        CreateRuleCommand command = getAuthorRuleCommand();
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         request.setAttribute("domainObjectIndex", domainObjectIndex);
         request.setAttribute("fieldIndex", fieldIndex);

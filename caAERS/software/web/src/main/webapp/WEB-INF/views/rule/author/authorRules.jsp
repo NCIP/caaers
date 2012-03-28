@@ -860,8 +860,21 @@ div#createNew h3, div.section h3 {
 				$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 				
 				
-			}
-			else if (selectedField.value == 'reportDefinitionName' || selectedField.value == 'treatmentAssignmentCode') {
+			}else if (selectedField.value == 'significanceLevel'){
+
+                var newId = validValueField.id;
+                var spanId = newId + '.span';
+                var hiddenId = selectId + '.literalRestriction[0].readableValue'
+
+                var inputArea = '<input id="' + newId + '" name="' + newId +'" ></input>';
+                inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+
+                var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
+
+                $(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
+
+
+            } else if (selectedField.value == 'reportDefinitionName' || selectedField.value == 'treatmentAssignmentCode') {
 					
 					var criteria1 = "" ;
 					
@@ -1293,7 +1306,7 @@ div#createNew h3, div.section h3 {
                           <c:if
 								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
 												        		      			command.ruleUi.condition[0].domainObject[selectedIndex].className}">
-                            <c:forEach var="f" items="${command.command.ruleUi.condition[0].domainObject[selectedIndex].field}">
+                            <c:forEach var="f" items="${command.ruleUi.condition[0].domainObject[selectedIndex].field}">
                               <c:if test="${f.filter == '' || f.filter == command.terminology}">
                                 <form:option value="${f.name}">${f.displayUri}</form:option>
                               </c:if>
@@ -1503,12 +1516,11 @@ div#createNew h3, div.section h3 {
 															
 							</script>
                         </c:when>
+
                         <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "meddraCode"}'>
                           <script type="text/javascript">
 
-
-	
 										var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 										var hiddenId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
 										var spanId = newId + '.span';
@@ -1526,15 +1538,35 @@ div#createNew h3, div.section h3 {
 										var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
 										$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
-										
-										
-										
-										
-											
 
-															
 							</script>
                         </c:when>
+
+                        <c:when
+                                test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "significanceLevel"}'>
+                            <script type="text/javascript">
+
+                                var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value';
+                                var hiddenId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].readableValue';
+                                var spanId = newId + '.span';
+
+                                var fieldValue = '';
+                                <c:forEach items="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}"
+                                                        var="val">
+                                fieldValue = fieldValue + ',' + '${val}';
+                                </c:forEach>
+
+
+                                var inputArea = '<textarea id="' + newId + '" name="' + newId +'" value="'+ fieldValue.replace(/\,/,'') + '" />';
+                                inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+
+                                var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
+
+                                $(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
+
+                            </script>
+                        </c:when>
+
                         <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "reportDefinitionName" || command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "treatmentAssignmentCode"}'>
                           <script type="text/javascript">
