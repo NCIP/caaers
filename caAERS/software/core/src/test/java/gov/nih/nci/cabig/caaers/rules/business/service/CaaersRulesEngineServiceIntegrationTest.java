@@ -72,6 +72,15 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
 
     }
     
+    public void testConstructSubject(){
+       String subject =  service.constructSubject(RuleType.REPORT_SCHEDULING_RULES, RuleLevel.Sponsor,"0","1");
+       assertEquals("SAE Reporting Rules||Sponsor||0||0||1", subject);
+       subject =  service.constructSubject(RuleType.SAFETY_SIGNALLING_RULES,null,null,"1");
+       assertEquals("Safety Signalling Rules|| || ||1", subject);
+        subject =  service.constructSubject(RuleType.SAFETY_SIGNALLING_RULES,null,null,null);
+        assertEquals("Safety Signalling Rules|| || || ", subject);
+    }
+    
     public List<RuleSet> findRuleSets(){
         RuleSetQuery ruleSetQuery = new RuleSetQuery();
         ruleSetQuery.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
