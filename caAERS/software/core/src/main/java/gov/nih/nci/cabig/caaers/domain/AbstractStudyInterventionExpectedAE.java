@@ -149,7 +149,7 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
         joinColumns=@JoinColumn(name="ta_expected_id"),
         inverseJoinColumns=@JoinColumn(name="ta_agent_id")
     )
-    @Cascade(value = {CascadeType.LOCK})
+    @Cascade(value = {CascadeType.ALL})
 	public List<TreatmentAssignmentAgent> getTreatmentAssignmentAgents() {
 		return treatmentAssignmentAgents;
 	}
@@ -206,7 +206,9 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     	
 		for(TreatmentAssignmentAgent treatmentAssignmentAgent: treatmentAssignmentAgents){
 			AgentSpecificTerm agentSpecificTerm= treatmentAssignmentAgent.getStudyAgent().getAgent().getAgentSpecificTerm(getTerm());
-			recalculateExpectedness(agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor() && agentSpecificTerm.isExpected());
+			if(agentSpecificTerm != null){
+				recalculateExpectedness(agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor() && agentSpecificTerm.isExpected());
+			}
 		}
 	}
 	

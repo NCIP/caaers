@@ -59,10 +59,6 @@ public class StudyAgent extends StudyIntervention {
     /** The treatment assignment agents */
     private List<TreatmentAssignmentAgent> treatmentAssignmentAgents;
     
-    public static final String EXPTECTED_AE_ADDED = "addded";
-    public static final String EXPTECTED_AE_UPDATED = "updated";
-    public static final String EXPTECTED_AE_DELETED = "deleted";
-
     /*
      * Constructor -- Initializes participation at create time
      */
@@ -311,9 +307,9 @@ public class StudyAgent extends StudyIntervention {
         if (!(obj instanceof StudyAgent)) return false;
         final StudyAgent other = (StudyAgent) obj;
         if(this.isRetired() || other.isRetired()) return false;
-        if (agent == null) {
-            if (other.agent != null) return false;
-        } else if (!agent.equals(other.agent)) return false;
+        if (getAgent() == null) {
+            if (other.getAgent() != null) return false;
+        } else if (!getAgent().equals(other.getAgent())) return false;
         if (otherAgent == null) {
             if (other.otherAgent != null) return false;
         } else if (!otherAgent.equals(other.otherAgent)) return false;
@@ -364,23 +360,23 @@ public class StudyAgent extends StudyIntervention {
 		treatmentAssignmentAgents.clear();
 	}
 	
-	@Transient
-    public void syncTreatmentAssignmentAgentSpecificTerm(String action){
-		if(getAgent() != null){
-	    	for(AgentSpecificTerm agentSpecificTerm : getAgent().getAgentSpecificTerms()){
-				syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, action);
-	    	}
-		}
-    }
+//	@Transient
+//    public void syncTreatmentAssignmentAgentSpecificTerm(String action){
+//		if(getAgent() != null){
+//	    	for(AgentSpecificTerm agentSpecificTerm : getAgent().getAgentSpecificTerms()){
+//				syncTreatmentAssignmentAgentSpecificTerm(agentSpecificTerm, action);
+//	    	}
+//		}
+//    }
 	
 	@Transient
     public void syncTreatmentAssignmentAgentSpecificTerm(AgentSpecificTerm agentSpecificTerm, String action){
     	for(TreatmentAssignmentAgent taa : getTreatmentAssignmentAgents()){
-    		if(action.equals(EXPTECTED_AE_DELETED)){
+    		if(action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED)){
     			taa.getTreatmentAssignment().removeExpectedAE(taa, agentSpecificTerm.getTerm());
-    		}else if(action.equals(EXPTECTED_AE_ADDED)){
+    		}else if(action.equals(AgentSpecificTerm.EXPTECTED_AE_ADDED)){
     			taa.getTreatmentAssignment().addExpectedAE(taa, agentSpecificTerm);
-    		}else if(action.equals(EXPTECTED_AE_UPDATED)){
+    		}else if(action.equals(AgentSpecificTerm.EXPTECTED_AE_UPDATED)){
     			taa.getTreatmentAssignment().updateExpectedAE(taa, agentSpecificTerm);
     		}
     	}

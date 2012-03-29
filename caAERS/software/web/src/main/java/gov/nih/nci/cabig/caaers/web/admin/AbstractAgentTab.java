@@ -79,6 +79,7 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
                 t.setDeleted(true);
             }
         }
+        int initialSize = command.getAgentSpecificTerms().size();
 
         List<AgentSpecificTerm> deleted = new ArrayList<AgentSpecificTerm>();
         for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
@@ -97,8 +98,9 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
             // delete the term from studies and TACs
             if (l != null)
                 for (StudyAgent s : l) {
-                    getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s.getStudy(), t, true);
-                    s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_DELETED);
+//                    getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s.getStudy(), t, true);
+//                    s.syncTreatmentAssignmentAgentSpecificTerm(t, AgentSpecificTerm.EXPTECTED_AE_DELETED);
+                    getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s, t, AgentSpecificTerm.EXPTECTED_AE_DELETED);
                 }
         }
 
@@ -122,19 +124,24 @@ public abstract class AbstractAgentTab extends TabWithFields<AgentCommand> {
 
             // sync the agent terms with the study
             for (StudyAgent s : l) {
-                getAgentSpecificAdverseEventListService().synchronizeStudyWithAgent(s.getStudy(), command.getAgent());
                 for (AgentSpecificTerm t : command.getAgentSpecificTerms()) {
                 	if(command.isUpdated(t)){
-                		s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_UPDATED);
+                		getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s, t, AgentSpecificTerm.EXPTECTED_AE_UPDATED);
+                		//s.syncTreatmentAssignmentAgentSpecificTerm(t, AgentSpecificTerm.EXPTECTED_AE_UPDATED);
                 	}else{
-                		s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_ADDED);
+                		getAgentSpecificAdverseEventListService().synchronizeStudyWithAgentTerm(s, t, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+                		//s.syncTreatmentAssignmentAgentSpecificTerm(t, AgentSpecificTerm.EXPTECTED_AE_ADDED);
                 	}
                 }
                 studyDao.merge(s.getStudy());
             }
         }
+        if (request.getParameter("_action") != null && request.getParameter("_action").equals("CHANGE_TERMINOLOGY") ) {
+        	if(initialSize > 0) request.setAttribute("flashMessage", "Information saved successfully");
+        }else{
+        	request.setAttribute("flashMessage", "Information saved successfully");
+        }
         
-        request.setAttribute("flashMessage", "Information saved successfully");
     }
 
     @Override

@@ -601,20 +601,6 @@ public class StudyCommand {
         return null;
     }
 
-    /*
-    * @author: Ion C. Olaru
-    * Synchronize Agent Specific Terms with Study's Expecetd AEs
-    * Study gets all the Expected AEs' associated with study's agent
-    * If an agent is CTEP lead ind, then study gets only its terms, otherwise gets all terms of all its lagents.
-    *
-    * */
-    public void synchronizeStudyWithAgentAEList(AgentSpecificAdverseEventListService service, Study s, StudyAgent sa, boolean deleted) {
-        if (deleted) {
-            service.synchronizeStudyWithAgent(s, sa.getAgent(), deleted);
-            return;
-        }
-    }
-
     public void synchronizeStudyWithAgentAEList(AgentSpecificAdverseEventListService service, Study s, boolean deleted) {
 
         if (s.hasLeadCTEPInds()) {
@@ -623,21 +609,21 @@ public class StudyCommand {
             for (StudyAgent sa : s.getStudyAgents()) {
                 if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
                 if (!sa.isCTEPLead())
-                    service.synchronizeStudyWithAgent(s, sa.getAgent(), true);
+                    service.synchronizeStudyWithAgent(sa, AgentSpecificTerm.EXPTECTED_AE_DELETED);
             }
 
             // synchronzie the remaining agents
             for (StudyAgent sa : s.getStudyAgents()) {
                 if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
                 if (sa.isCTEPLead())
-                    service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
+                	service.synchronizeStudyWithAgent(sa, AgentSpecificTerm.EXPTECTED_AE_ADDED);
             }
 
         } else {
             // synchronzie all agents
             for (StudyAgent sa : s.getStudyAgents()) {
                 if (sa == null || sa.getAgent() == null || sa.isRetired()) continue;
-                    service.synchronizeStudyWithAgent(s, sa.getAgent(), false);
+                service.synchronizeStudyWithAgent(sa, AgentSpecificTerm.EXPTECTED_AE_ADDED);
             }
         }
     }

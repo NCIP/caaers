@@ -389,7 +389,7 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
 		}
     }
     
-    private AbstractStudyInterventionExpectedAE getExistingTerm(DomainObject term){
+    public AbstractStudyInterventionExpectedAE getExistingTerm(DomainObject term){
     	for(AbstractStudyInterventionExpectedAE asiea : getAbstractStudyInterventionExpectedAEs()){
     		if (asiea.getTerm().getId().equals(term.getId())){
     			return asiea;

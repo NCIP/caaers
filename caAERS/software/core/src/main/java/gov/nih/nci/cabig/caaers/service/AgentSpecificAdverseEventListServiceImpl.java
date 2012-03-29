@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.List;
 
@@ -33,38 +34,30 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
      * Synchronize Expected AE terms list from the study with the expected AE Terms list associated with the agent
      * Get all the terms associated with the agent and add these to the list of
      * the Expected AE Terms of the Study when Study has this agent
-     * @param s - Study
-     * @param a - Agent
-     * @param deleted - if true, synchronization is being done for a just deleted agent, otherwise for addition
+     * @param sa - StudySgent
+     * @param action - if AgentSpecificTerm.EXPTECTED_AE_DELETED, synchronization is being done for a just deleted agent, 
+     * 		if AgentSpecificTerm.EXPTECTED_AE_UPDATED, synchronization is being done to update expected profiled, otherwise for addition
      */
-    public void synchronizeStudyWithAgent(Study s, Agent a, boolean deleted) {
+    public void synchronizeStudyWithAgent(StudyAgent sa, String action) {
+    	Study s = sa.getStudy();
+    	Agent a = sa.getAgent();
         if (a == null || s == null) return;
-        List<AgentSpecificTerm> l = getListByAgent(a.getId());
+        List<AgentSpecificTerm> l = a.getAgentSpecificTerms();
         for (AgentSpecificTerm at : l) {
-            synchronizeStudyWithAgentTerm(s, at, deleted);
+            synchronizeStudyWithAgentTerm(sa, at, action);
         }
     }
 
-    /**
-     * Synchronize Expected AE terms list from the study with the expected AE Terms list associated with the agent
-     * Get all the terms associated with the agent and add these to the list of
-     * the Expected AE Terms of the Study when Study has this agent
-     * @param s - Study
-     * @param a - Agent
-     */
-    public void synchronizeStudyWithAgent(Study s, Agent a) {
-        synchronizeStudyWithAgent(s, a, false);
-    }
-
-    /**
-     * Synchronize this ASAE term with the Study Expected AE list
-     * @param s - Study
-     * @param at - Agent Specific AE Term
-     * 
-     * */
-    public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at) {
-        synchronizeStudyWithAgentTerm(s, at, false);
-    }
+//    /**
+//     * Synchronize this ASAE term with the Study Expected AE list
+//     * @param s - Study
+//     * @param at - Agent Specific AE Term
+//     * 
+//     * */
+//    public void synchronizeStudyWithAgentTerm(StudyAgent sa, AgentSpecificTerm at) {
+//        synchronizeStudyWithAgentTerm(sa, at, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+//    }
+    
     
     /**
      * Synchronize this ASAE term with the Study Expected AE list
@@ -75,21 +68,23 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
      * @partam deleted - if true, synchronization is being done for a just deleted ASAE term, otherwise for addition 
      *
      */
-    public void synchronizeStudyWithAgentTerm(Study s, AgentSpecificTerm at, boolean deleted) {
+    public void synchronizeStudyWithAgentTerm(StudyAgent sa, AgentSpecificTerm at, String action) {
+    	sa.syncTreatmentAssignmentAgentSpecificTerm(at, action);
+    	Study s = sa.getStudy();
         if (at instanceof AgentSpecificCtcTerm) {
             CtcTerm t = ((AgentSpecificCtcTerm)at).getTerm();
             List<ExpectedAECtcTerm> l = s.getExpectedAECtcTerms();
             // System.out.println("size: " + l.size());
             for (ExpectedAECtcTerm aeT : l) {
                 if (aeT.getCtcTerm().getTerm().equals(t.getTerm())) {
-                    if (deleted) {
+                    if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED) && !isTermInMultipleStudyAgents(sa, t)) {
                         l.remove(aeT);
                     }
                     return;
                 }
             }
 
-            if (deleted) return;
+            if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED)) return;
 
             ExpectedAECtcTerm aeT = new ExpectedAECtcTerm();
             aeT.setStudy(s);
@@ -104,18 +99,32 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
             List<ExpectedAEMeddraLowLevelTerm> l = s.getExpectedAEMeddraLowLevelTerms();
             for (ExpectedAEMeddraLowLevelTerm aeT : l) {
                 if (aeT.getTerm().getFullName().equals(t.getFullName())) {
-                    if (deleted) l.remove(aeT);
+                    if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED)) l.remove(aeT);
                     return;
                 }
             }
 
-            if (deleted) return;
+            if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED)) return;
 
             ExpectedAEMeddraLowLevelTerm aeT = new ExpectedAEMeddraLowLevelTerm();
             aeT.setStudy(s);
             aeT.setLowLevelTerm(t);
             l.add(aeT);
         }
+    }
+    
+    private boolean isTermInMultipleStudyAgents(StudyAgent givenStudyAgent, DomainObject term){
+    	int count = 0;
+    	for(StudyAgent sa : givenStudyAgent.getStudy().getStudyAgents()){
+    		if(sa.getAgent() == null || sa.getRetiredIndicator() || sa.equals(givenStudyAgent)) continue;
+    		for(AgentSpecificTerm ast : sa.getAgent().getAgentSpecificTerms()){
+    			if(ast.getTerm().getId().equals(term.getId())){
+    				count++;
+    			}
+    			if(count == 1) return true;
+    		}
+    	}
+    	return false;
     }
 
     public AgentSpecificTermDao getAgentSpecificTermDao() {

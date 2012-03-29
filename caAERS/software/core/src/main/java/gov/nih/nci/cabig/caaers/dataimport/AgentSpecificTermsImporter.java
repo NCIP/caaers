@@ -260,9 +260,9 @@ public class AgentSpecificTermsImporter {
             List<StudyAgent> l = getStudyAgentDao().getByAgentID(t.getAgent().getId());
             // System.out.println("Agent is associated to " + l.size() + "studies");
             for (StudyAgent s : l) {
-                asaelService.synchronizeStudyWithAgentTerm(s.getStudy(), t);
+                asaelService.synchronizeStudyWithAgentTerm(s, t, AgentSpecificTerm.EXPTECTED_AE_ADDED);
                 //System.out.println("Study has " + s.getStudy().getExpectedAECtcTerms().size() + "Expected AEs");
-                s.syncTreatmentAssignmentAgentSpecificTerm(t, StudyAgent.EXPTECTED_AE_ADDED);
+                //s.syncTreatmentAssignmentAgentSpecificTerm(t, AgentSpecificTerm.EXPTECTED_AE_ADDED);
                 studyDao.merge(s.getStudy());
                 studyAgentDao.evict(s);
             }

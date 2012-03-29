@@ -28,23 +28,42 @@
 
 	<study_agents id="-1" study_id="-2" agent_id="-990"/>
 	<study_agents id="-2" study_id="-2" agent_id="-991"/>
+	
+	<treatment_assignment id="-1" code="TAC1" study_id="-2" />
+	<treatment_assignment id="-2" code="TAC2" study_id="-2" />
+	<treatment_assignment id="-3" code="TAC1" study_id="-3" />
+	<treatment_assignment id="-4" code="TAC3" study_id="-3" />
+	
+	<ta_study_interventions id="-1" treatment_assignment_id="-1" version="0"/>
+	<ta_study_interventions id="-2" treatment_assignment_id="-1" version="0"/>
+	<ta_study_interventions id="-3" treatment_assignment_id="-2" version="0"/>
+	<ta_study_interventions id="-4" treatment_assignment_id="-2" version="0"/>
+    
+    <ta_agents id="-1" version="0" study_agent_id="-1"/>
+    <ta_agents id="-2" version="0" study_agent_id="-2"/>
+    <ta_agents id="-3" version="0" study_agent_id="-1"/>
+    <ta_agents id="-4" version="0" study_agent_id="-2"/>
 
     <ind_holders/>
     <study_agent_inds/>
     <disease_terminologies />
 
-    <CTC_TERMS id="4010" category_id="402" term="Nosea40" ctep_term="Nosea40" ctep_code="100438810" other_required="0" />
-    <CTC_TERMS id="4011" category_id="402" term="Nosea41" ctep_term="Nosea40" ctep_code="100438821" other_required="0" />
-    <CTC_TERMS id="4012" category_id="402" term="Nosea42" ctep_term="Nosea40" ctep_code="100438832" other_required="0" />
-    <CTC_TERMS id="4013" category_id="402" term="Nosea43" ctep_term="Nosea40" ctep_code="100438843" other_required="0" />
+    <CTC_TERMS id="4010" category_id="402" term="Nausea" ctep_term="Nausea" ctep_code="100438810" other_required="0" />
+    <CTC_TERMS id="4011" category_id="402" term="Vomiting" ctep_term="Vomiting" ctep_code="100438821" other_required="0" />
+    <CTC_TERMS id="4012" category_id="402" term="Abdominal Pain" ctep_term="Abdominal_Pain" ctep_code="100438832" other_required="0" />
+    <CTC_TERMS id="4013" category_id="402" term="Headache" ctep_term="Headache" ctep_code="100438843" other_required="0" />
 
-    <agent_terms id="-1" agent_id="-990" term_id="4010" term_type="ctep" expected="1"/>
+    <agent_terms id="-1" agent_id="-990" term_id="4010" term_type="ctep" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
     <agent_terms id="-2" agent_id="-990" term_id="4011" term_type="ctep"  expected="1"/>
-    <agent_terms id="-3" agent_id="-990" term_id="4012" term_type="ctep"  expected="1"/>
-    <agent_terms id="-4" agent_id="-990" term_id="4013" term_type="ctep"  expected="1"/>
-    <agent_terms id="-5" agent_id="-990" term_id="3012" term_type="ctep"  expected="1"/>
+    <agent_terms id="-3" agent_id="-991" term_id="4010" term_type="ctep"  expected="1" 
+    	grade1frequency="2.3432" grade2frequency="65.00" grade3frequency="5.432" grade4frequency="78.2316" grade5frequency="1.00" expectedness_frequency="90.33"/>
+    <agent_terms id="-4" agent_id="-991" term_id="4012" term_type="ctep"  expected="1"/>
+    <agent_terms id="-5" agent_id="-991" term_id="4013" term_type="ctep"  expected="1"/>
 
     <ctc_grades />
     <identifiers />
+    <study_interventions_exp_aes />
+    <ta_expected_ae_intervention />
 
 </dataset>

@@ -51,17 +51,16 @@ public class AgentsTab extends StudyTab {
         //Initialize expectedAECtcTerms. If this is not done, there is a lazy error while deleting study agents
         command.getStudy().getExpectedAECtcTerms().size();
         command.getStudy().getExpectedAEMeddraLowLevelTerms().size();
+        for(TreatmentAssignment ta: command.getStudy().getTreatmentAssignments()){
+        	ta.getTreatmentAssignmentStudyInterventions().size();
+        	for(AbstractStudyInterventionExpectedAE as : ta.getAbstractStudyInterventionExpectedAEs()){
+				as.getTreatmentAssignmentAgents().size();
+			}
+        }
         for(StudyAgent sa : command.getStudy().getStudyAgents()){
         	if(sa.getAgent()!=null){
         		sa.getAgent().getAgentSpecificTerms().size();
-        		for (TreatmentAssignmentAgent taa : sa.getTreatmentAssignmentAgents()){
-//        			taa.getAbstractStudyInterventionExpectedAEs().size();
-        			taa.getTreatmentAssignment().getAbstractStudyInterventionExpectedAEs().size();
-        			taa.getTreatmentAssignment().getTreatmentAssignmentStudyInterventions().size();
-        			for(AbstractStudyInterventionExpectedAE as : taa.getTreatmentAssignment().getAbstractStudyInterventionExpectedAEs()){
-        				as.getTreatmentAssignmentAgents().size();
-        			}
-        		}
+        		sa.getTreatmentAssignmentAgents().size();
         	}
         }
         
@@ -238,11 +237,12 @@ public class AgentsTab extends StudyTab {
         	//delete/retire study agent from study
         	StudyAgent sa = command.deleteStudyAgentAtIndex(index);
         	//delete agent specific ae from tac
-        	sa.syncTreatmentAssignmentAgentSpecificTerm(StudyAgent.EXPTECTED_AE_DELETED);
+        	//sa.syncTreatmentAssignmentAgentSpecificTerm(AgentSpecificTerm.EXPTECTED_AE_DELETED);
         	//remove tac associations from study
-        	sa.removeTreatmentAssignmentAgents();
         	//delete agent specific ae from study
-            command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), sa, true);
+        	agentSpecificAdverseEventListService.synchronizeStudyWithAgent(sa, AgentSpecificTerm.EXPTECTED_AE_DELETED);
+            //command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), sa, true);
+        	sa.removeTreatmentAssignmentAgents();
         }
         
         size = study.getStudyAgents().size(); //new size

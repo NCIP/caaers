@@ -58,6 +58,10 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     
     /** The expected. */
     private boolean expected = true;
+    
+    public static final String EXPTECTED_AE_ADDED = "addded";
+    public static final String EXPTECTED_AE_UPDATED = "updated";
+    public static final String EXPTECTED_AE_DELETED = "deleted";
 
     /**
      * Gets the agent.
