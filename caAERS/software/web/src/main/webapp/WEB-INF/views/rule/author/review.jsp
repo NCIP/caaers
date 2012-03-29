@@ -74,16 +74,17 @@
                 </div>
             </div>
 
-            <c:if test="${not empty command.caaersRuleSet.study}">
-                <div class="row " >
-                        <div class="label">Study</div>
-                        <div class="value" >
-                                    (${command.caaersRuleSet.study.primaryIdentifierValue}) ${command.caaersRuleSet.study.shortTitle}
-                    </div>
-                </div>
             </c:if>
 
-            </c:if>
+
+              <c:if test="${not empty command.caaersRuleSet.study}">
+                  <div class="row " >
+                      <div class="label">Study</div>
+                      <div class="value" >
+                          (${command.caaersRuleSet.study.primaryIdentifierValue}) ${command.caaersRuleSet.study.shortTitle}
+                      </div>
+                  </div>
+              </c:if>
 
  	    </div>
 

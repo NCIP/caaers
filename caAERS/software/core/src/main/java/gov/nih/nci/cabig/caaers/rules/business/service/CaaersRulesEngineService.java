@@ -508,7 +508,7 @@ public class CaaersRulesEngineService {
                 .append(ruleLevel == null ? " " : ruleLevel.getName()).append("||")
                 .append(nciCode == null ? " " : nciCode).append("||")
                 .append(nciCode == null ? " " : nciCode).append("||")
-                .append(studyPrimaryId == null ? " " : nciCode);
+                .append(studyPrimaryId == null ? " " : studyPrimaryId);
         return sb.toString();
     }
 
