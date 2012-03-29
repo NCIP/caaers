@@ -7,6 +7,9 @@ import java.util.Locale;
 /**
  * @author Ion C. Olaru
  *         Date: 3/28/12 -11:37 AM
+ *
+ *         Bean that holds a refereence to MessageSource
+ *         which can be easily accessed statically from anywhere in the code
  */
 public class Messages {
 
@@ -15,6 +18,10 @@ public class Messages {
 
     public static String get(String code) {
         return _messageSource.getMessage(code, new Object[]{}, Locale.getDefault());
+    }
+
+    public static String get(String code, Object[] objects) {
+        return _messageSource.getMessage(code, objects, Locale.getDefault());
     }
 
     public MessageSource getMessageSource() {
