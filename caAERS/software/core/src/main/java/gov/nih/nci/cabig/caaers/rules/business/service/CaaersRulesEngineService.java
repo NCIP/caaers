@@ -506,9 +506,9 @@ public class CaaersRulesEngineService {
     public String constructSubject(RuleType ruleType, RuleLevel ruleLevel, String nciCode, String studyPrimaryId){
         StringBuilder sb = new StringBuilder(ruleType.getName()).append("||")
                 .append(ruleLevel == null ? " " : ruleLevel.getName()).append("||")
-                .append(nciCode == null ? " " : nciCode).append("||")
-                .append(nciCode == null ? " " : nciCode).append("||")
-                .append(studyPrimaryId == null ? " " : studyPrimaryId);
+                .append(StringUtils.isEmpty(nciCode) ? " " : nciCode).append("||")
+                .append(StringUtils.isEmpty(nciCode) ? " " : nciCode).append("||")
+                .append(StringUtils.isEmpty(studyPrimaryId)? " " : studyPrimaryId);
         return sb.toString();
     }
 
