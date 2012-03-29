@@ -203,11 +203,15 @@ public class CreateRuleCommand implements RuleInputCommand {
         if(caaersRuleSet.getRuleType() !=  null) summary.put("Rule set name", caaersRuleSet.getRuleType().getName());
 
         RuleLevel level = caaersRuleSet.getRuleLevel();
+        if(caaersRuleSet.getRuleType() == RuleType.SAFETY_SIGNALLING_RULES){
+            if(caaersRuleSet.getStudy() !=  null) summary.put("Study", caaersRuleSet.getStudy().getDisplayName());
+
+        }
         if(level !=  null) {
             summary.put("Rule level", level.getDescription());
             if(level.isSponsorBased() && caaersRuleSet.getSponsor() !=  null) summary.put("Sponsor", caaersRuleSet.getOrganization().getFullName());
             if(level.isInstitutionBased() && caaersRuleSet.getSponsor() !=  null) summary.put("Institution", caaersRuleSet.getOrganization().getFullName());
-            if(level.isStudyBased() && caaersRuleSet.getStudy() !=  null) summary.put("Study", "(" + caaersRuleSet.getStudy().getPrimaryIdentifierValue() + ") " + caaersRuleSet.getStudy().getShortTitle());
+            if(level.isStudyBased() && caaersRuleSet.getStudy() !=  null) summary.put("Study", caaersRuleSet.getStudy().getDisplayName());
         }
 
         return summary;

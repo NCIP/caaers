@@ -105,9 +105,15 @@
                  <option value="${mandatoryness.name}">${mandatoryness.displayName}</option>
               </c:forEach>
             </c:when>
+            <c:when test="${command.caaersRuleSet.ruleType.name eq 'Safety Signalling Rules'}">
+                <c:forEach var="nfOption" items="${command.notificationOptions}">
+                    <option value="${nfOption}">${nfOption.displayName}</option>
+                </c:forEach>
+            </c:when>
 
           </c:choose>
         </select>
+
       </div>
     </div>
   </div>

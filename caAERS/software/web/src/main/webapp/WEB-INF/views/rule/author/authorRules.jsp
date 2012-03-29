@@ -1557,7 +1557,7 @@ div#createNew h3, div.section h3 {
                                 </c:forEach>
 
 
-                                var inputArea = '<textarea id="' + newId + '" name="' + newId +'" value="'+ fieldValue.replace(/\,/,'') + '" />';
+                                var inputArea = '<input id="' + newId + '" name="' + newId +'" value="'+ fieldValue.replace(/\,/,'') + '" />';
                                 inputArea += '<img alt="activity indicator" src="../images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 
                                 var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
