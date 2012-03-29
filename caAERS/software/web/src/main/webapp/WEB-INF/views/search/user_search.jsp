@@ -25,6 +25,15 @@
 			<tags:dwrJavascriptLink objects="user"/>
 		<script language="JavaScript">
 
+            jQuery(document).ready(function() {
+                doSearch();
+            });
+
+            function doSearch() {
+                buildTable('assembler');
+                $('bigSearch').show();
+            }
+
 			function buildTable(form) {
 				showCoppaSearchDisclaimer();
 
@@ -181,7 +190,7 @@
 						
 						<div class="row">
 							<div class="value" style="float:left;">
-						   		<tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler'); $('bigSearch').show();"/>
+						   		<tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="doSearch();"/>
 						   		<tags:indicator id="indicator"/>
 						   		<span id="coppa-search-disclaimer" class="coppa-search-disclaimer" style="display:none;"><caaers:message code="coppa.search.message" /></span>
 							</div>
