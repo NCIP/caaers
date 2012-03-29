@@ -26,6 +26,14 @@ public class SiteResearchStaffQuery extends AbstractQuery {
         setParameter(FIRST_NAME, searchString);
     }
 
+    public void filterByName(final String name) {
+        String searchString = "%" + name.toLowerCase() + "%";
+        andWhere("(lower(rs.firstName) LIKE :FIRST_NAME OR lower(rs.lastName) LIKE :LAST_NAME OR lower(rs.middleName) LIKE :MIDDLE_NAME)");
+        setParameter("FIRST_NAME", searchString);
+        setParameter("LAST_NAME", searchString);
+        setParameter("MIDDLE_NAME", searchString);
+    }
+
     public void filterByLastName(final String lastName) {
         String searchString = "%" + lastName.toLowerCase() + "%";
         andWhere("lower(rs.lastName) LIKE :" + LAST_NAME);

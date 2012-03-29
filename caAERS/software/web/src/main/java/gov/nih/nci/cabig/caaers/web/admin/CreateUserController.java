@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.caaers.tools.Messages;
 import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,34 +26,41 @@ public class CreateUserController extends UserController<UserCommand>{
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request,HttpServletResponse response, Object userCommand, BindException errors) throws Exception {
 		
-            ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
-            UserCommand command = (UserCommand)userCommand;
+        ModelAndView modelAndView = new ModelAndView("admin/user_confirmation");
+        UserCommand command = (UserCommand)userCommand;
 
-            String mailSendIssue = "";
-            if(command.getCreateAsUser()){
-                try {
-                    createOrUpdateUser(request,command.getUser());
-                }catch (MailException e) {
-                    mailSendIssue = ". But could not send email to the User";
-                    logger.error("Could not send email to user.", e);
-                }
-                processRoleMemberships(command.getUser().getCsmUser(),command.getRoleMemberships());
+        String mailSendIssue = "";
+        if (command.getCreateAsUser()) {
+            try {
+                createOrUpdateUser(request, command.getUser());
+            } catch (MailException e) {
+                mailSendIssue = ". But could not send email to the User";
+                logger.error("Could not send email to user.", e);
             }
-            if(command.getCreateAsPerson()){
-                personRepository.save(command.getPerson());
-                getEventFactory().publishEntityModifiedEvent(command.getPerson());
+            processRoleMemberships(command.getUser().getCsmUser(), command.getRoleMemberships());
+        }
+
+        if (command.getCreateAsPerson()) {
+            personRepository.save(command.getPerson());
+            getEventFactory().publishEntityModifiedEvent(command.getPerson());
+        }
+
+        String statusMessage = "";
+            String personType = Messages.get("LBL_research.staff");
+            if (command.getPersonType().equals("Investigator")) personType = Messages.get("LBL_investigator");
+
+            if (command.getCreateAsPerson() && command.getCreateAsUser()) {
+                statusMessage = String.format("Created %s with login capability%s", personType, mailSendIssue) ;
             }
 
-            String statusMessage = "";
-            if(command.getCreateAsPerson() && command.getCreateAsUser()){
-                statusMessage = "Created " +command.getPersonType()+ " with login capability"+mailSendIssue ;
+            if (command.getCreateAsPerson() && !command.getCreateAsUser()) {
+                statusMessage = String.format("Created %s without login capability", personType);
             }
-            if(command.getCreateAsPerson() && !command.getCreateAsUser()){
-                statusMessage = "Created " +command.getPersonType()+ " without login capability";
+
+            if (!command.getCreateAsPerson() && command.getCreateAsUser()) {
+                statusMessage = String.format("Created a User with login capability%s", mailSendIssue);
             }
-            if(!command.getCreateAsPerson() && command.getCreateAsUser()){
-                statusMessage = "Created a User with login capability"+mailSendIssue;
-            }
+
             modelAndView.getModel().put("flashMessage", statusMessage);
                 StringBuffer reqUrl =  new StringBuffer(request.getScheme()+ "://" + request.getServerName()  + ":" +  request.getServerPort() +  request.getContextPath() + "/pages/admin/editUser?");
                            String id = "";

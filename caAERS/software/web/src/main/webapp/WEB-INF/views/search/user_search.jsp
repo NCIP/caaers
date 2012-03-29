@@ -29,8 +29,8 @@
 				showCoppaSearchDisclaimer();
 
 				var map = new Object();
-				map['firstName']=$('propFn').value;
-				map['lastName']=$('propLn').value;
+				map['name']=$('propName').value;
+//				map['lastName']=$('propLn').value;
 				map['userName']=$('propUn').value;
 				map['personIdentifier']=$('propPi').value;	
 				map['personType']=$('propPt').value;
@@ -127,13 +127,8 @@
     				<caaers:message code="user.search.criteriaSection" var="criteriaSectionTitle"/>
     				<chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
 						<div class="row">
-			                <div class="label"><caaers:message code="LBL_firstName"/>&nbsp; </div>
-			                <div class="value"><input id="propFn" name="firstName" type="text"/></div>
-			            </div>
-			
-			            <div class="row">
-			                <div class="label"><caaers:message code="LBL_lastName"/>&nbsp; </div>
-			                <div class="value"><input id="propLn" name="lastName" type="text"/></div>
+			                <div class="label"><caaers:message code="LBL_Name"/>&nbsp; </div>
+			                <div class="value"><input id="propName" name="name" type="text"/></div>
 			            </div>
 
 						<div class="row">

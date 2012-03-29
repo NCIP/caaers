@@ -70,7 +70,9 @@ public interface UserRepository {
 	 * @return the list
 	 */
 	public List searchCsmUser(String firstName,String lastName,String userName);
-	
+
+    public List searchCsmUser(String name);
+
 	/**
 	 * Login id in use.
 	 *

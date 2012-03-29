@@ -28,6 +28,14 @@ public class InvestigatorQuery extends AbstractQuery {
     	setParameter("iid", id);
     }
 
+    public void filterByName(final String name) {
+        String searchString = "%" + name.toLowerCase() + "%";
+        andWhere("(lower(i.firstName) LIKE :FIRST_NAME OR lower(i.lastName) LIKE :LAST_NAME OR lower(i.middleName) LIKE :MIDDLE_NAME)");
+        setParameter("FIRST_NAME", searchString);
+        setParameter("LAST_NAME", searchString);
+        setParameter("MIDDLE_NAME", searchString);
+    }
+
     public void filterByFirstName(final String firstName) {
         String searchString = "%" + firstName.toLowerCase() + "%";
         andWhere("lower(i.firstName) LIKE :" + FIRST_NAME);

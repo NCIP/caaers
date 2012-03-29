@@ -26,30 +26,18 @@ public class InvestigatorQueryTest extends TestCase {
     	assertEquals("SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE  i.id != :iid  order by i.id", query.getQueryString());
     }
 
-    public void testFilterByName() throws Exception {
+    public void testFilterByFirstName() throws Exception {
         InvestigatorQuery investigatorQuery = new InvestigatorQuery();
         investigatorQuery.filterByFirstName("a");
-        assertEquals(
-                        "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE lower(i.firstName) LIKE :firstName  order by i.id",
-                        investigatorQuery.getQueryString());
+        assertEquals("SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE lower(i.firstName) LIKE :firstName  order by i.id", investigatorQuery.getQueryString());
         assertEquals("wrong number of parameters", investigatorQuery.getParameterMap().size(), 1);
-        assertTrue("missing paramenter name", investigatorQuery.getParameterMap().containsKey(
-                        "firstName"));
-        assertEquals("wrong parameter value", investigatorQuery.getParameterMap().get("firstName"),
-                        "%a%");
-
+        assertTrue("missing paramenter name", investigatorQuery.getParameterMap().containsKey("firstName"));
+        assertEquals("wrong parameter value", investigatorQuery.getParameterMap().get("firstName"), "%a%");
         investigatorQuery.filterByLastName("b");
-        assertEquals(
-                        "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE lower(i.firstName) LIKE :firstName AND "
-                                        + "lower(i.lastName) LIKE :lastName  order by i.id",
-                        investigatorQuery.getQueryString());
-
+        assertEquals("SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE lower(i.firstName) LIKE :firstName AND " + "lower(i.lastName) LIKE :lastName  order by i.id", investigatorQuery.getQueryString());
         assertEquals("wrong number of parameters", investigatorQuery.getParameterMap().size(), 2);
-        assertTrue("missing paramenter name", investigatorQuery.getParameterMap().containsKey(
-                        "lastName"));
-        assertEquals("wrong parameter value", investigatorQuery.getParameterMap().get("lastName"),
-                        "%b%");
-
+        assertTrue("missing paramenter name", investigatorQuery.getParameterMap().containsKey("lastName"));
+        assertEquals("wrong parameter value", investigatorQuery.getParameterMap().get("lastName"), "%b%");
     }
     
     public void testFilterByEmailAddress() throws Exception{
@@ -76,6 +64,17 @@ public class InvestigatorQueryTest extends TestCase {
         assertEquals("wrong parameter value", investigatorQuery.getParameterMap().get(
                         "nciIdentifier"), "%a%");
 
+    }
+
+    public void testFilterByName() throws Exception {
+        InvestigatorQuery q = new InvestigatorQuery();
+        q.filterByName("Andrew");
+        assertEquals("wrong number of parameters", q.getParameterMap().size(), 3);
+        assertTrue("missing paramenter name", q.getParameterMap().containsKey("FIRST_NAME"));
+        assertTrue("missing paramenter name", q.getParameterMap().containsKey("MIDDLE_NAME"));
+        assertTrue("missing paramenter name", q.getParameterMap().containsKey("LAST_NAME"));
+        assertEquals("wrong parameter value", "%andrew%", q.getParameterMap().get("FIRST_NAME"));
+        assertEquals("Incorrect query created", "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE (lower(i.firstName) LIKE :FIRST_NAME OR lower(i.lastName) LIKE :LAST_NAME OR lower(i.middleName) LIKE :MIDDLE_NAME)  order by i.id", q.getQueryString());
     }
 
 }

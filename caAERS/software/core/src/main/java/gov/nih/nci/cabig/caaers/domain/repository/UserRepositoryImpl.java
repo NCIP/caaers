@@ -65,17 +65,27 @@ public class UserRepositoryImpl implements UserRepository {
      * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#searchCsmUser(java.lang.String, java.lang.String, java.lang.String)
      */
     @SuppressWarnings("unchecked")
-	public List searchCsmUser(String firstName, String lastName, String userName) {
-    	if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
-    	
-    	gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
-    	if(StringUtils.isNotEmpty(firstName)) example.setFirstName("%"+firstName+"%");
-    	if(StringUtils.isNotEmpty(lastName)) example.setLastName("%"+lastName+"%");
-    	if(StringUtils.isNotEmpty(userName)) example.setLoginName("%"+userName+"%");
-    	UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
-    	return userProvisioningManager.getObjects(userSearchCriteria);	
-	}
-	
+    public List searchCsmUser(String firstName, String lastName, String userName) {
+        if (StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(userName)) firstName = "%";
+        gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
+        if (StringUtils.isNotEmpty(firstName)) example.setFirstName("%" + firstName + "%");
+        if (StringUtils.isNotEmpty(lastName)) example.setLastName("%" + lastName + "%");
+        if (StringUtils.isNotEmpty(userName)) example.setLoginName("%" + userName + "%");
+        UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
+        return userProvisioningManager.getObjects(userSearchCriteria);
+    }
+
+    public List searchCsmUser(String name) {
+        if (StringUtils.isEmpty(name)) name = "%";
+        gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
+
+        example.setFirstName("%" + name + "%");
+        example.setLastName("%" + name + "%");
+
+        UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
+        return userProvisioningManager.getObjects(userSearchCriteria);
+    }
+
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#save(gov.nih.nci.cabig.caaers.domain.User)
      */

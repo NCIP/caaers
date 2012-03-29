@@ -67,65 +67,56 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
     	List<UserAjaxableDomainObject> searchResults = new ArrayList<UserAjaxableDomainObject>();
     	
+/*
     	String firstName = (String)searchCriteriaMap.get("firstName");
     	String lastName = (String)searchCriteriaMap.get("lastName");
+*/
+    	String name = (String)searchCriteriaMap.get("name");
     	String userName = (String)searchCriteriaMap.get("userName");
     	String personType = (String)searchCriteriaMap.get("personType");
     	String personIdentifier = (String)searchCriteriaMap.get("personIdentifier");
     	String organization = (String)searchCriteriaMap.get("organization");
     	
     	//Only Organization provided
-    	if(StringUtils.isEmpty(firstName)
-    			&& StringUtils.isEmpty(lastName) 
-    			&& StringUtils.isEmpty(personIdentifier) 
-    			&& "Please Select".equals(personType)
-    			&& StringUtils.isEmpty(userName)
-    			&& !StringUtils.isEmpty(organization)){
-    		
+    	if (StringUtils.isEmpty(name) && StringUtils.isEmpty(personIdentifier) && "Please Select".equals(personType) && StringUtils.isEmpty(userName) && !StringUtils.isEmpty(organization)) {
     		searchResults = getResearchStaffTable(searchCriteriaMap);
     		searchResults.addAll(getInvestigatorTable(searchCriteriaMap));
     		return searchResults;
     	}
     	
     	//Only Person Identifier provided
-    	if(StringUtils.isEmpty(firstName)
-    			&& StringUtils.isEmpty(lastName) 
-    			&& "Please Select".equals(personType)
-    			&& StringUtils.isEmpty(userName)
-    			&& StringUtils.isEmpty(organization)
-    			&& !StringUtils.isEmpty(personIdentifier)){
-    		
+    	if (StringUtils.isEmpty(name) && "Please Select".equals(personType) && StringUtils.isEmpty(userName) && StringUtils.isEmpty(organization) && !StringUtils.isEmpty(personIdentifier)) {
     		searchResults = getResearchStaffTable(searchCriteriaMap);
     		searchResults.addAll(getInvestigatorTable(searchCriteriaMap));
     		return searchResults;
     	}
-    	
-    	if("ResearchStaff".equals(personType)){
-    		 return getResearchStaffTable(searchCriteriaMap);
-    	}else if("Investigator".equals(personType)){
-    		return getInvestigatorTable(searchCriteriaMap);
-    	}else{
-    		HashMap resultsMap = new HashMap<String,UserAjaxableDomainObject>();
+
+        if ("ResearchStaff".equals(personType)) {
+            return getResearchStaffTable(searchCriteriaMap);
+        } else if ("Investigator".equals(personType)) {
+            return getInvestigatorTable(searchCriteriaMap);
+        } else {
+            HashMap resultsMap = new HashMap<String,UserAjaxableDomainObject>();
 
     		searchResults = getResearchStaffTable(searchCriteriaMap);
     		searchResults.addAll(getInvestigatorTable(searchCriteriaMap));
-    		
-			if(StringUtils.isNotEmpty(firstName) || StringUtils.isEmpty(lastName) || StringUtils.isEmpty(userName)){
-	    		for(UserAjaxableDomainObject uado : searchResults){
-	    			if(StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())){
-	    				resultsMap.put(uado.getUserName(), uado);
-	    			}
-	    		}
-	    		List<UserAjaxableDomainObject> csmResults = getUserTable(searchCriteriaMap);
-	    		for(UserAjaxableDomainObject uado : csmResults){
-	    			if(resultsMap.containsKey(uado.getUserName())){
-	    				//Do not add it to searchResults
-	    			}else{
-	    				searchResults.add(uado);
-	    			}
-	    		}
-			}
-			return searchResults;
+
+            if (StringUtils.isNotEmpty(name) || StringUtils.isEmpty(userName)) {
+                for (UserAjaxableDomainObject uado : searchResults) {
+                    if (StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())) {
+                        resultsMap.put(uado.getUserName(), uado);
+                    }
+                }
+                List<UserAjaxableDomainObject> csmResults = getUserTable(searchCriteriaMap);
+                for (UserAjaxableDomainObject uado : csmResults) {
+                    if (resultsMap.containsKey(uado.getUserName())) {
+                        //Do not add it to searchResults
+                    } else {
+                        searchResults.add(uado);
+                    }
+                }
+            }
+            return searchResults;
     	}
     }
 	
@@ -137,11 +128,19 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getUserTable(HashMap searchCriteriaMap) {
     	List<UserAjaxableDomainObject> ajaxableUserList = new ArrayList<UserAjaxableDomainObject>();
-        if(!StringUtils.equals("person", (String)searchCriteriaMap.get("linkType"))){
-            List<gov.nih.nci.security.authorization.domainobjects.User> csmUserList = userRepository.searchCsmUser((String)searchCriteriaMap.get("firstName"),
-    															(String)searchCriteriaMap.get("lastName"),
-    															(String)searchCriteriaMap.get("userName"));
+        if(!StringUtils.equals("person", (String)searchCriteriaMap.get("linkType"))) {
 
+            String name = (String)searchCriteriaMap.get("name");
+            String fName = (String)searchCriteriaMap.get("firstName");
+            String lName = (String)searchCriteriaMap.get("lastName");
+            String uName = (String)searchCriteriaMap.get("userName");
+
+            List<gov.nih.nci.security.authorization.domainobjects.User> csmUserList;
+            if (StringUtils.isEmpty(name)) {
+                csmUserList = userRepository.searchCsmUser(fName, lName, uName);
+            } else {
+                csmUserList = userRepository.searchCsmUser(name);
+            }
 
             if(StringUtils.equals("user", (String)searchCriteriaMap.get("linkType"))){
                 if(CollectionUtils.isNotEmpty(csmUserList)){
@@ -177,6 +176,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                 ajaxableUser.setId(csmUser.getUserId().intValue());
                 ajaxableUser.setFirstName(csmUser.getFirstName());
                 ajaxableUser.setLastName(csmUser.getLastName());
+                ajaxableUser.setMiddleName("");
                 ajaxableUser.setNumber("");
                 ajaxableUser.setExternalId("");
                 ajaxableUser.setUserName(csmUser.getLoginName());
@@ -230,12 +230,20 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
         SiteResearchStaffQuery query = new SiteResearchStaffQuery();
         query.setFiltered(true);
-        
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("firstName"))){
-        	query.filterByFirstName((String)searchCriteriaMap.get("firstName"));
-        }
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("lastName"))){
-        	query.filterByLastName((String)searchCriteriaMap.get("lastName"));
+
+        String name = searchCriteriaMap.get("name").toString();
+
+        if (StringUtils.isNotEmpty(name)) {
+            if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("name"))){
+            	query.filterByName((String)searchCriteriaMap.get("name"));
+            }
+        } else {
+            if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("firstName"))){
+            	query.filterByFirstName((String)searchCriteriaMap.get("firstName"));
+            }
+            if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("lastName"))){
+            	query.filterByLastName((String)searchCriteriaMap.get("lastName"));
+            }
         }
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("organization"))){
         	query.filterByOrganization((String)searchCriteriaMap.get("organization"));
@@ -276,6 +284,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                 invAdo.setFirstName(i.getFirstName());
                 invAdo.setLastName(i.getLastName());
                 invAdo.setMiddleName(i.getMiddleName());
+                invAdo.setMiddleName(i.getMiddleName() != null ? i.getMiddleName() : "");
                 invAdo.setEmailAddress(i.getEmailAddress());
                 invAdo.setUserName(i.getCaaersUser() != null ? i.getCaaersUser().getLoginName() : "");
 
@@ -299,36 +308,45 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     private List<Investigator> constructExecuteInvestigatorQuery(HashMap searchCriteriaMap) {
 
         List<Investigator> investigators = new ArrayList<Investigator>();
-        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
-        investigatorQuery.setFiltered(true);
-        
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("firstName"))){
-        	investigatorQuery.filterByFirstName((String)searchCriteriaMap.get("firstName"));
+        InvestigatorQuery q = new InvestigatorQuery();
+        q.setFiltered(true);
+
+        String name = (String)searchCriteriaMap.get("name");
+
+        if (StringUtils.isNotEmpty(name)) {
+            if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("name"))) {
+                q.filterByName((String) searchCriteriaMap.get("name"));
+            }
+        } else {
+            if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("firstName"))) {
+                q.filterByFirstName((String) searchCriteriaMap.get("firstName"));
+            }
+            if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("lastName"))) {
+                q.filterByLastName((String) searchCriteriaMap.get("lastName"));
+            }
         }
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("lastName"))){
-        	investigatorQuery.filterByLastName((String)searchCriteriaMap.get("lastName"));
+
+        if(StringUtils.isNotEmpty((String) searchCriteriaMap.get("personIdentifier"))){
+            q.filterByNciIdentifier((String) searchCriteriaMap.get("personIdentifier"));
         }
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("personIdentifier"))){
-        	investigatorQuery.filterByNciIdentifier((String)searchCriteriaMap.get("personIdentifier"));
+
+        if(StringUtils.isNotEmpty((String) searchCriteriaMap.get("organization"))){
+            q.filterByOrganization((String) searchCriteriaMap.get("organization"));
         }
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("organization"))){
-        	investigatorQuery.filterByOrganization((String)searchCriteriaMap.get("organization"));
+
+        if (StringUtils.isNotEmpty((String)searchCriteriaMap.get("userName"))) {
+            q.filterByUserName((String) searchCriteriaMap.get("userName"));
         }
-        if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("userName"))){
-        	investigatorQuery.filterByUserName((String)searchCriteriaMap.get("userName"));
-        }
+
         if(searchCriteriaMap.get("linkType") != null) {
-            investigatorQuery.excludeUsers();
+            q.excludeUsers();
         }
-        
 
         try {
-            investigators = investigatorRepository.searchInvestigator(investigatorQuery,searchCriteriaMap);
-        }
-        catch (Exception e) {
+            investigators = investigatorRepository.searchInvestigator(q,searchCriteriaMap);
+        } catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);
-        }
-        finally {
+        } finally {
             return investigators;
         }
     }    

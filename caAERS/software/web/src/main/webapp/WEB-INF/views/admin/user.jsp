@@ -329,7 +329,8 @@
 								 		<jsp:attribute name="label"><ui:label path="emailAddress" text="" labelProperty="emailAddress" required="true"/></jsp:attribute>
 								 		<jsp:attribute name="value"><ui:text path="emailAddress" required="true" title="Primary email" size="30"/></jsp:attribute>
 								 	</ui:row>
-                                    <c:if test="${not empty command.person}">
+
+                                    <c:if test="${not empty command.person and not empty command.person.id}">
                                         <div class="row">
                                             <form:hidden path="createAsPerson" />
                                             <div class="value">
@@ -344,7 +345,8 @@
                                             </div>
                                         </div>
                                     </c:if>
-                                    <c:if test="${not empty command.user}">
+
+                                    <c:if test="${not empty command.user and not empty command.user.id}">
                                         <form:hidden path="createAsUser" />
                                         <div class="row">
                                             <div class="value">
