@@ -405,7 +405,7 @@ public class CaaersRulesEngineService {
                 nciCode = subjectParts[3].trim();
             }
 
-            studyPrimaryId = StringUtils.trimToNull(subjectParts[4]);
+            studyPrimaryId = subjectParts.length > 4 ? StringUtils.trimToNull(subjectParts[4]) : null;
 
             if(StringUtils.isNotBlank(nciCode)) org = organizationDao.getByNCIcode(nciCode);
             if(StringUtils.isNotBlank(studyPrimaryId)){
