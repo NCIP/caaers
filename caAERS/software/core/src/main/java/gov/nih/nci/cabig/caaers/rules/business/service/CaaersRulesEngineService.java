@@ -404,9 +404,8 @@ public class CaaersRulesEngineService {
             if(level.equals(INSTITUTION_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTIONAL_LEVEL)){
                 nciCode = subjectParts[3].trim();
             }
-            if(level.equals(SPONSOR_DEFINED_STUDY_LEVEL) || level.equals(INSTITUTION_DEFINED_STUDY_LEVEL)){
-                studyPrimaryId = subjectParts[4].trim();
-            }
+
+            studyPrimaryId = StringUtils.trimToNull(subjectParts[4]);
 
             if(StringUtils.isNotBlank(nciCode)) org = organizationDao.getByNCIcode(nciCode);
             if(StringUtils.isNotBlank(studyPrimaryId)){
