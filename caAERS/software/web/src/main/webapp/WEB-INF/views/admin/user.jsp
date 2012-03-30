@@ -426,7 +426,7 @@
 
                             </jsp:attribute>
     					</ui:row>
-    						<div id="roles-div">
+    						<div id="roles-div" style="padding-left:90px;">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">
 								<chrome:division id="section-${index.index}" collapsed="true" collapsable="true">
                                     <jsp:attribute name="title">
@@ -468,7 +468,10 @@
 									<div id="membershipDiv-${index.index}" style="display:${roleMembership.checked ? '' : 'none'}">
 									<c:if test="${roleMembership.scoped}">
 
-										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA || not command.UAAllSite}" />&nbsp;&nbsp;All Site access.<br><br>
+                                            <div class="row">
+                                                <div class="label"><caaers:message code="LBL_allSitesAccess" /></div>
+                                                <div class="value"><ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA || not command.UAAllSite}" /></div>
+                                            </div>
 											<div class="row" id="roleMembershipHelper[${index.index}]-siteSelector" style="display:${roleMembership.allSiteAccess ? 'none' : ''}">
 												<c:if test="${command.UA}">
                                                 <div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
@@ -530,7 +533,12 @@
 							            	</div>
 										
 										<c:if test="${roleMembership.studyScoped}">
-											<ui:checkbox path="roleMembershipHelper[${index.index}].allStudyAccess" onclick="showHideDiv(${index.index},'studySelector')" disabled="${not command.UA}"/>&nbsp;&nbsp;All Study access.<br><br>
+
+                                            <div class="row">
+                                                <div class="label"><caaers:message code="LBL_allStudiesAccess" /></div>
+                                                <div class="value"><ui:checkbox path="roleMembershipHelper[${index.index}].allStudyAccess" onclick="showHideDiv(${index.index},'studySelector')" disabled="${not command.UA}"/></div>
+                                            </div>
+
 												<div class="row" id="roleMembershipHelper[${index.index}]-studySelector" style="display:${roleMembership.allStudyAccess ? 'none' : ''}">
 													<c:if test="${command.UA}">
                                                     <div class="label"><caaers:message code="LBL_Study"/>&nbsp; </div>
