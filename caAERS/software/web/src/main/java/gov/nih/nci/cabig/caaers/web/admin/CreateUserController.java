@@ -46,8 +46,10 @@ public class CreateUserController extends UserController<UserCommand>{
         }
 
         String statusMessage = "";
-            String personType = Messages.get("LBL_research.staff");
+        String personType = "";
+
             if (command.getPersonType().equals("Investigator")) personType = Messages.get("LBL_investigator");
+            else personType = Messages.get("LBL_research.staff");
 
             if (command.getCreateAsPerson() && command.getCreateAsUser()) {
                 statusMessage = String.format("Created %s with login capability%s", personType, mailSendIssue) ;
