@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import com.semanticbits.rules.utils.RuleUtil;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
 import gov.nih.nci.cabig.caaers.domain.RuleSet;
@@ -76,9 +77,9 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersDbTestCase {
        String subject =  service.constructSubject(RuleType.REPORT_SCHEDULING_RULES, RuleLevel.Sponsor,"0","1");
        assertEquals("SAE Reporting Rules||Sponsor||0||0||1", subject);
        subject =  service.constructSubject(RuleType.SAFETY_SIGNALLING_RULES,null,null,"1");
-       assertEquals("Safety Signalling Rules|| || ||1", subject);
+       assertEquals("Safety Signalling Rules|| || || ||1", subject);
         subject =  service.constructSubject(RuleType.SAFETY_SIGNALLING_RULES,null,null,null);
-        assertEquals("Safety Signalling Rules|| || || ", subject);
+        assertEquals("Safety Signalling Rules|| || || || ", subject);
     }
     
     public List<RuleSet> findRuleSets(){
