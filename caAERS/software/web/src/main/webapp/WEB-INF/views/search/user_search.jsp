@@ -18,6 +18,11 @@
             div.row div.value {
                 margin-left: 10em;
             }
+
+            .fg-button.submitter {
+                font-family: Verdana;
+                font-size: 9pt;
+            }
         </style>
 
         <title><caaers:message code="user.search.pageTitle"/></title>
@@ -90,12 +95,37 @@
 		        elCell.title = _recordType;
 			};
 
+            function showMenuOptions(strId) {
+                var html = "<div><ul><li><a class='submitter-blue' href='#'>Element One(#{strId})</a></li><li><a class='submitter-blue' href='#'>Element Two</a></li></ul></div>";
+                var html = html.interpolate({strId:strId});
+                jQuery('#personnelActions' + strId).menu({
+                        content: html,
+                        maxHeight: 180,
+                        positionOpts: {
+                            directionV: 'down',
+                            posX: 'left',
+                            posY: 'bottom',
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        showSpeed: 300
+                    });
+            }
+
+            var actionsRow = "<a onmouseover='showMenuOptions(#{id})' id='personnelActions#{id}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
+
+			var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
+                var _id = oRecord.getData("id");
+		        elCell.innerHTML = actionsRow.interpolate({id:_id});
+			};
+
 			var myColumnDefs = [
 				{key:"externalId",      label:"&nbsp;",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
                 {key:"firstName",       label:"Name",    	      sortable:true,      resizeable:true, formatter: nameFormatter},
                 {key:"number",          label:"Person identifier",sortable:true,      resizeable:true, formatter: linkFormatter},
                 {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true, formatter: linkFormatter},
-                {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true, formatter: linkFormatter}
+                {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true, formatter: linkFormatter},
+                {key:"actions",        label:"Actions",    	  sortable:true,      resizeable:true, formatter: actionsFormatter}
             ];
 
             var myFields = [
