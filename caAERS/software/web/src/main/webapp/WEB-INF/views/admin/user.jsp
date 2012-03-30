@@ -60,7 +60,7 @@
 				var _tableId = el+"-sitesTable";
 				var _sitesFldName = el + '.sites';
 				var _trId = el + '-site-' +_nciCode;
-				var _deleteBtn = "<a href=\"javascript:removeSite('" + el + "-site-" +_nciCode + "','" +index+ "');\"><img src='/caaers/images/buttons/button_icons/small/trash.gif' border='0' alt='delete'></a>"
+				var _deleteBtn = "<a href=\"javascript:removeSite('" + el + "-site-" +_nciCode + "','" +index+ "');\"><img src='/caaers/images/buttons/button_icons/small/x_icon_small.png' border='1' alt='delete'></a>"
 				
 				$(_tableId).down('tr').insert({
 					after: tableRow.interpolate({selectedChoiceForDisplay:_selectedSiteForDisplay, identifier : _nciCode ,fldName : _sitesFldName, deleteBtn : _deleteBtn, trId : _trId })
@@ -78,7 +78,7 @@
 				var _tableId = el+"-studiesTable";
 				var _studiesFldName = el + '.studies';
 				var _trId = el + '-study-' +_studyId;
-				var _deleteBtn = "<a href=\"javascript:removeStudy('" + el + "-study-" +_studyId + "','" +index+ "');\"><img src='/caaers/images/buttons/button_icons/small/trash.gif' border='0' alt='delete'></a>"
+				var _deleteBtn = "<a href=\"javascript:removeStudy('" + el + "-study-" +_studyId + "','" +index+ "');\"><img src='/caaers/images/buttons/button_icons/small/x_icon_small.png' border='0' alt='delete'></a>"
 
 				$(_tableId).down('tr').insert({
 					after: tableRow.interpolate({selectedChoiceForDisplay : _selectedStudyForDisplay, identifier:_studyId, fldName : _studiesFldName, deleteBtn : _deleteBtn, trId : _trId })
@@ -506,6 +506,7 @@
 												</div>
                                                 </c:if>
 
+                                                <div class="label"><caaers:message code="LBL_selectedSites" /></div>
                                                 <div class="value">
 													<script>sitesCount[${index.index}] = ${fn:length(roleMembership.sites)};</script>
 													<table id="roleMembershipHelper[${index.index}]-sitesTable">
@@ -577,6 +578,8 @@
 														<tags:button disabled="true" cssClass="foo" id="addStudy_btn[${index.index}]" color="blue" value="Add" icon="Add" type="button" onclick="addStudy('roleMembershipHelper[${index.index}]','${index.index}')" size="small"/>
 													</div>
                                                     </c:if>
+
+                                                    <div class="label"><caaers:message code="LBL_selectedStudies" /></div>
 													<div class="value">
 														<script>studiesCount[${index.index}] = ${fn:length(roleMembership.studies)};</script>
 														<table id="roleMembershipHelper[${index.index}]-studiesTable">
