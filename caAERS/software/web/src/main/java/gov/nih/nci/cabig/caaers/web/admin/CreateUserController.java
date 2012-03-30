@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
+import java.util.Locale;
+
 /**
  * 
  * @author Monish
@@ -34,7 +36,7 @@ public class CreateUserController extends UserController<UserCommand>{
             try {
                 createOrUpdateUser(request, command.getUser());
             } catch (MailException e) {
-                mailSendIssue = ". But could not send email to the User";
+                mailSendIssue = Messages.get("LBL_userEmailFailure");
                 logger.error("Could not send email to user.", e);
             }
             processRoleMemberships(command.getUser().getCsmUser(), command.getRoleMemberships());
@@ -52,39 +54,41 @@ public class CreateUserController extends UserController<UserCommand>{
             if (command.getPersonType().equals("Investigator")) personType = Messages.get("LBL_investigator");
             else personType = Messages.get("LBL_research.staff");
         }
-            if (command.getCreateAsPerson() && command.getCreateAsUser()) {
-                statusMessage = String.format("Created %s with login capability%s", personType, mailSendIssue) ;
-            }
 
-            if (command.getCreateAsPerson() && !command.getCreateAsUser()) {
-                statusMessage = String.format("Created %s without login capability", personType);
-            }
+        if (command.getCreateAsPerson() && command.getCreateAsUser()) {
+            statusMessage = Messages.get("LBL_createWithLogin", new Object[] {personType, mailSendIssue});
+        }
 
-            if (!command.getCreateAsPerson() && command.getCreateAsUser()) {
-                statusMessage = String.format("Created a User with login capability%s", mailSendIssue);
-            }
+        if (command.getCreateAsPerson() && !command.getCreateAsUser()) {
+            statusMessage = Messages.get("LBL_createWithoutLogin", new Object[] {personType});
+        }
 
-            modelAndView.getModel().put("flashMessage", statusMessage);
-                StringBuffer reqUrl =  new StringBuffer(request.getScheme()+ "://" + request.getServerName()  + ":" +  request.getServerPort() +  request.getContextPath() + "/pages/admin/editUser?");
-                           String id = "";
-                           String userName= "";
-                           String recordType = "";
-                           User user = command.getUser();
-                           Person person = command.getPerson();
+        if (!command.getCreateAsPerson() && command.getCreateAsUser()) {
+            statusMessage = Messages.get("LBL_createWithLogin", new Object[] {"a User", mailSendIssue});
+        }
 
-                           id = Integer.toString((person != null) ? person.getId() : user.getId());
-                           recordType = "CSM_RECORD";
-                            if(person != null){
-                                recordType = (person instanceof ResearchStaff  ? "RESEARCHSTAFF_RECORD" :"INVESTIGATOR_RECORD");
-                            }
-                            userName = (user != null  ? user.getLoginName() : null);
+        modelAndView.getModel().put("flashMessage", statusMessage);
 
-                        reqUrl.append( "id=" +id.toString()).append("&").append(userName != null ? "userName=" + userName : "").append(user != null ? "&" : "").append("recordType=" +recordType);
+        StringBuffer reqUrl = new StringBuffer(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/pages/admin/editUser?");
 
+        String id = "";
+        String userName = "";
+        String recordType = "";
+        User user = command.getUser();
+        Person person = command.getPerson();
+
+        id = Integer.toString((person != null) ? person.getId() : user.getId());
+        recordType = "CSM_RECORD";
+        if (person != null) {
+            recordType = (person instanceof ResearchStaff ? "RESEARCHSTAFF_RECORD" : "INVESTIGATOR_RECORD");
+        }
+
+        userName = (user != null ? user.getLoginName() : null);
+        reqUrl.append("id=" + id.toString()).append("&").append(userName != null ? "userName=" + userName : "").append(user != null ? "&" : "").append("recordType=" + recordType);
 
         command.setRequestURL(reqUrl.toString());
-            modelAndView.addAllObjects(errors.getModel());
-            return modelAndView;
+        modelAndView.addAllObjects(errors.getModel());
+        return modelAndView;
 	}
 	
 	

@@ -32,10 +32,18 @@
         <tags:dwrJavascriptLink objects="user,createStudy"/>
 
         <script type="text/javascript">
-
+            var siteAdded = false;
             Event.observe(window, "load", function() {
 		        //remove the query string from form url
 		        removeQueryStringFromForm('command');
+
+                jQuery("#personType").change(function() {
+                    var value = jQuery(this).val();
+                    if (!siteAdded && value != "") {
+                        addSitePerson();
+                        siteAdded = true;
+                    }
+                });
              });
 
 			ajaxCRUD = new AJAX_CRUD_HELPER();
