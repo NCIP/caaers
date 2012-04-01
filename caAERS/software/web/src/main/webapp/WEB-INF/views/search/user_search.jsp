@@ -95,8 +95,13 @@
 		        elCell.title = _recordType;
 			};
 
+            function doEdit(id) {
+                var url = '<c:url value="/pages/admin/editUser?id="></c:url>' + id;
+                window.location = url;
+            }
+
             function showMenuOptions(strId) {
-                var html = "<div><ul><li><a class='submitter-blue' href='./editUser?id=#{strId}'>Edit</a></li></ul></div>";
+                var html = "<div><ul><li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId})'>Edit</a></li></ul></div>";
                 var html = html.interpolate({strId:strId});
                 jQuery('#personnelActions' + strId).menu({
                         content: html,
