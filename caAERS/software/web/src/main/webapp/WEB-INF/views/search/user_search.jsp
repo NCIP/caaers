@@ -96,7 +96,7 @@
 			};
 
             function showMenuOptions(strId) {
-                var html = "<div><ul><li><a class='submitter-blue' href='#'>Element One(#{strId})</a></li><li><a class='submitter-blue' href='#'>Element Two</a></li></ul></div>";
+                var html = "<div><ul><li><a class='submitter-blue' href='./editUser?id=#{strId}'>Edit</a></li></ul></div>";
                 var html = html.interpolate({strId:strId});
                 jQuery('#personnelActions' + strId).menu({
                         content: html,
