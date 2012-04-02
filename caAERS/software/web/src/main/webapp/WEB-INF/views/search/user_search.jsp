@@ -104,7 +104,7 @@
             }
 
             function showMenuOptions(strId, rt, un) {
-                var html = "<div><ul><li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li></ul></div>";
+                var html = "<div><ul style='font-family:tahoma;'><li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li></ul></div>";
                 var html = html.interpolate({strId:strId, rt:rt, un:un});
                 jQuery('#personnelActions' + strId).menu({
                         content: html,
@@ -131,10 +131,10 @@
 
 			var myColumnDefs = [
 				{key:"externalId",      label:"&nbsp;",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
-                {key:"firstName",       label:"Name",    	      sortable:true,      resizeable:true, formatter: nameFormatter},
-                {key:"number",          label:"Person identifier",sortable:true,      resizeable:true, formatter: linkFormatter},
-                {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true, formatter: linkFormatter},
-                {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true, formatter: linkFormatter},
+                {key:"firstName",       label:"Name",    	      sortable:true,      resizeable:true},
+                {key:"number",          label:"Person identifier",sortable:true,      resizeable:true},
+                {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true},
+                {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true},
                 {key:"actions",        label:"Actions",    	  sortable:true,      resizeable:true, formatter: actionsFormatter}
             ];
 
