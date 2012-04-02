@@ -139,7 +139,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     
     public void save(){
-        aeReport.autoGenerateOtherCauses();
     	reportDao.save(aeReport);
     }
     

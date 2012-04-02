@@ -9,6 +9,7 @@ import com.semanticbits.rules.utils.RuleUtil;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -18,6 +19,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.drools.spi.AgendaFilter;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
@@ -298,7 +300,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	        String bindURI = "gov.nih.nci.cabig.caaers.rules.reporting_" + CaaersRuleUtil.getStringWithoutSpaces(section.name());
 	
 	        try {
-	            List<Object> output = fireRules(input, bindURI);
+	            List<Object> output = businessRulesExecutionService.fireRules(bindURI, input);
 	            if (output != null) {
 	                for (Iterator it = output.iterator(); it.hasNext();) {
 	                    Object o = it.next();
@@ -487,20 +489,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
 
         // fire the rules and AdverseEventEvaluationResult from the output.
-        List<Object> outputObjects = fireRules(generateInput(aer, reportDefinition, ae, study, organization), bindURI);
+        RuleEvaluationResult ruleEvaluationResult = fireRules(generateInput(aer, reportDefinition, ae, study, organization), bindURI);
+        eventEvaluationResult.setRuleEvaluationResult(ruleEvaluationResult);
 
-        if (outputObjects == null) return eventEvaluationResult; //no rules found
-
-        //populate the correct message.
-        for(Object o : outputObjects) {
-            if (o instanceof RuleEvaluationResult){
-                eventEvaluationResult.setRuleEvaluationResult(((RuleEvaluationResult)o));
-            	break;
-            }
-
-        }
-
-        // return AdverseEventEvaluationResult.
         return eventEvaluationResult;
 
     }
@@ -513,12 +504,14 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @return
      * @throws Exception
      */
-    private List<Object> fireRules(List<Object> inputObjects, String bindURI) {
+    private RuleEvaluationResult fireRules(List<Object> inputObjects, String bindURI , AgendaFilter... agendaFilter) {
 
         List<Object> outputObjects = null;
         try {
-            outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
-        }catch (RuleException e){
+
+            outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects, agendaFilter);
+
+        } catch (RuleException e){
         	log.debug("No rule registered under :" + bindURI, e);
             throw e;
         } catch (Exception ex) {
@@ -527,58 +520,16 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             throw new CaaersSystemException(ex.getMessage(), ex);
         }
 
-        return outputObjects;
-    }
-
-    /**
-     * Evaluate the field level rules, and identify the mandatory fields associated with the report.
-     * @param aeReport  - The ExpeditedAdverseEventReport in context
-     * @param report    - The Report in context
-     * @param mandatoryFieldDefinition  - The mandatory sections to consider.
-     * @return
-     */
-    public String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition) {
-        StringBuffer sb = new StringBuffer();
-        String bindUrl = mandatoryFieldDefinition.getRuleBindURL();
-        String ruleNames = mandatoryFieldDefinition.getRuleName();
-        
-        try{
-            if(StringUtils.isNotEmpty(bindUrl) && StringUtils.isNotEmpty(ruleNames)) {
-
-                for(AdverseEvent ae : aeReport.getAdverseEvents()){
-                    String result = null;
-                    List<Object> inputObjects = generateInput(aeReport, report.getReportDefinition(), ae,aeReport.getStudy(), null);
-                    //add the rule name agenda.
-                    inputObjects.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
-                    List<Object> outputObjects = businessRulesExecutionService.fireRules(bindUrl, inputObjects);
-                    if(outputObjects != null){
-                       //populate the correct message.
-                       for(Object o : outputObjects) {
-                          if (o instanceof RuleEvaluationResult){
-                              result = ((RuleEvaluationResult)o).getMessage();
-                              break;
-                         }
-                      }
-                    }
-                    
-                    if(result != null && result.length() > 0){
-                        if(sb.length() > 0) sb.append("||");
-                        sb.append(result);
-                    }
-
-                }
-
-
+        for(Object o : outputObjects) {
+            if (o instanceof RuleEvaluationResult){
+               return (RuleEvaluationResult) o;
             }
-        }catch (Exception e){
-              log.warn("Error while evaluating field rules", e);
-              log.warn("Due to error evaluating fields rules setting the return value as  : OPTIONAL");
         }
 
-        if(sb.length() > 0) return sb.toString();
-
-        return "OPTIONAL";
+        return null;
     }
+
+
 
     /**
      * Will evaluate the field level rule.
@@ -598,16 +549,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
                 //add the rule name agenda & fact resolver.
                 String[] ruleNamesArray = StringUtils.split(ruleNames, ',');
                 inputList.add(new FactResolver());
-                List<Object> outputObjects = businessRulesExecutionService.fireRules(bindURL, inputList, RuleUtil.createRuleNameEqualsAgendaFilter(ruleNamesArray));
-                if(outputObjects != null){
-                   //populate the correct message.
-                   for(Object o : outputObjects) {
-                      if (o instanceof RuleEvaluationResult){
-                          result = ((RuleEvaluationResult)o).getMessage();
-                          break;
-                     }
-                   }
-                }
+                result = fireRules( inputList, bindURL , RuleUtil.createRuleNameEqualsAgendaFilter(ruleNamesArray)).getMessage();
 
                 if(result != null && result.length() > 0){
                     if(sb.length() > 0) sb.append("||");
@@ -634,6 +576,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             if(orgId != null) query.filterByOrganizationId(orgId);
             if(studyId != null && level.isStudyBased()) query.filterByStudyId(studyId);
         }
+        if(ruleType == RuleType.SAFETY_SIGNALLING_RULES) {
+            query.filterByStudyId(studyId);
+        }
 
         
         List<gov.nih.nci.cabig.caaers.domain.RuleSet> ruleSets = caaersRulesEngineService.searchRuleSets(query);
@@ -642,6 +587,27 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         
     }
 
+    public SafetyRuleEvaluationResultDTO evaluateSafetySignallingRules(ObservedAdverseEventProfile observedAEProfile) {
+        SafetyRuleEvaluationResultDTO result = new SafetyRuleEvaluationResultDTO();
+        result.setNotificationStatus(NotificationStatus.IGNORE);
+
+        String bindURI = fetchBindURI(RuleType.SAFETY_SIGNALLING_RULES, null, null, observedAEProfile.getTreatmentAssignment().getStudy().getId());
+        if(bindURI != null){
+            ArrayList<Object> inputObjects = new ArrayList<Object>();
+            inputObjects.add(observedAEProfile);
+            RuleEvaluationResult ruleEvaluationResult = fireRules( inputObjects, bindURI);
+            
+            result.setRulesMatched(ruleEvaluationResult.getRulesMatched());
+            if(ruleEvaluationResult.getResponses().contains(NotificationStatus.DO_NOT_NOTIFY)){
+                result.setNotificationStatus(NotificationStatus.DO_NOT_NOTIFY);
+            }else if(ruleEvaluationResult.getResponses().contains(NotificationStatus.NOTIFY)){
+                result.setNotificationStatus(NotificationStatus.NOTIFY);
+            }
+            
+        }
+
+        return result;
+    }
 
     // /Object Methods
     public BusinessRulesExecutionService getBusinessRulesExecutionService() {

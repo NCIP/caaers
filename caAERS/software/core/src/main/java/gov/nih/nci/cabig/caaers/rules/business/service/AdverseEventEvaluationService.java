@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -69,14 +71,6 @@ public interface AdverseEventEvaluationService {
      */
     ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);
 
-    /**
-     * Evaluate the field level rules, and identify the mandatory fields associated with the report. 
-     * @param aeReport  - The ExpeditedAdverseEventReport in context
-     * @param report    - The Report in context
-     * @param mandatoryFieldDefinition  - The mandatory sections to consider.
-     * @return
-     */
-    String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition);
 
     /**
      * Will evaluate the field level rule. 
@@ -86,5 +80,12 @@ public interface AdverseEventEvaluationService {
      * @return
      */
     String evaluateFieldLevelRules(String bindURL, String ruleName, List<Object> inputObjects);
+
+    /**
+     * Will evaluate the safety monitoring rules for the study
+     * @param observedAEProfile
+     * @return
+     */
+    SafetyRuleEvaluationResultDTO evaluateSafetySignallingRules(ObservedAdverseEventProfile observedAEProfile);
 
 }

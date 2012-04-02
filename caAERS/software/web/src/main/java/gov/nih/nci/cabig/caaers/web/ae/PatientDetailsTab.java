@@ -602,6 +602,8 @@ public class PatientDetailsTab extends AeTab {
     	if(!errors.hasErrors()){
     		AbstractExpeditedAdverseEventInputCommand cmd =(AbstractExpeditedAdverseEventInputCommand)command;
     		cmd.synchronizeAndSaveAssignment();
+
+            cmd.getAeReport().autoGenerateOtherCauses();
     	}
     }
     

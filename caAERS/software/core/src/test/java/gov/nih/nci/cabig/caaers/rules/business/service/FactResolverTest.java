@@ -314,6 +314,29 @@ public class FactResolverTest extends TestCase {
 		fact = resolver.assertFact(cglibStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Wrong Name","==");
 		assertFalse(fact);
 	}
+
+
+    public void testAssertFact_OnObservedAEProfile() throws  Exception {
+
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment();
+        Study s = Fixtures.createStudy("x");
+        s.setId(2);
+        s.addTreatmentAssignment(ta);
+
+        ObservedAdverseEventProfile observedAE1 = new ObservedAdverseEventProfile();
+        observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
+        observedAE1.setGrade(Grade.LIFE_THREATENING);
+        observedAE1.setObservedSignificance(0.9);
+        observedAE1.setTreatmentAssignment(ta);
+
+//        boolean fact = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.Grade","code","3",">=");
+//        assertTrue(fact);
+
+        boolean fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.8","<=");
+        System.out.println(fact2);
+        assertTrue(fact2);
+
+    }
 	
 	private Study createCGLIBProxyStudy(Class<? extends Study> klass, String shortTitle) {
         Enhancer enhancer = new Enhancer();

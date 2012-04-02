@@ -1,0 +1,81 @@
+package gov.nih.nci.cabig.caaers.rules.business.service;
+
+import com.semanticbits.rules.utils.RuleUtil;
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import junit.framework.TestCase;
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.util.List;
+
+/**
+ * @author Biju Joseph
+ * @date 3/30/12
+ */
+public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
+
+    CaaersRulesEngineService caaersRulesEngineService;
+    EvaluationServiceImpl evaluationService;
+
+    public void setUp() throws Exception {
+        super.setUp();
+        caaersRulesEngineService = (CaaersRulesEngineService) getDeployedApplicationContext().getBean("caaersRulesEngineService") ;
+        evaluationService = (EvaluationServiceImpl) getDeployedApplicationContext().getBean("evaluationService") ;
+
+    }
+
+    public void testEvaluateSafetySignallingRules() throws Exception {
+        InputStream in = RuleUtil.getResouceAsStream("safety_signalling_rules_study_7211.xml");
+        String xml = RuleUtil.getFileContext(in);
+        System.out.println(xml);
+        File f = File.createTempFile("r_"+ System.currentTimeMillis(), "sae.xml");
+        System.out.println(f.getAbsolutePath());
+        FileWriter fw = new FileWriter(f);
+        IOUtils.write(xml, fw);
+        IOUtils.closeQuietly(fw);
+        assertTrue(f.exists());
+
+        assertTrue(findRuleSets().isEmpty());
+
+        caaersRulesEngineService.importRules(f.getAbsolutePath());
+        f.delete();
+        List<RuleSet> ruleSets = findRuleSets();
+        assertFalse(ruleSets.isEmpty());
+
+        RuleSet rs = ruleSets.get(0);
+
+        assertTrue(rs.isEnabled());
+
+
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment();
+        Study s = Fixtures.createStudy("x");
+        s.setId(2);
+        s.addTreatmentAssignment(ta);
+
+        ObservedAdverseEventProfile observedAE1 = new ObservedAdverseEventProfile();
+        observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
+        observedAE1.setGrade(Grade.LIFE_THREATENING);
+        observedAE1.setObservedSignificance(0.9);
+        observedAE1.setTreatmentAssignment(ta);
+
+
+        SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
+        System.out.println(result);
+
+    }
+
+    public List<RuleSet> findRuleSets(){
+        RuleSetQuery ruleSetQuery = new RuleSetQuery();
+        ruleSetQuery.filterByRuleType(RuleType.SAFETY_SIGNALLING_RULES);
+        ruleSetQuery.filterByStatus(RuleSet.STATUS_ENABLED);
+        ruleSetQuery.filterByStudyId(2);
+        return (List<RuleSet>)caaersRulesEngineService.getRuleSetDao().search(ruleSetQuery);
+    }
+}

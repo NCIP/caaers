@@ -561,7 +561,7 @@
             <objectType>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile</objectType>
         </node>
         <node>
-            <name>treatmentAssignment</name>
+            <name>significance</name>
             <collection>false</collection>
             <objectType>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel</objectType>
         </node>

@@ -331,6 +331,7 @@ default-lazy-init="true">
 		<property name="configPropertyDao"  ref="configPropertyDao"/>
         <property name="organizationDao"  ref="organizationDao" />
         <property name="reportDefinitionDao" ref="reportDefinitionDao" />
+        <property name="studyDao" ref="studyDao" />
         <property name="ruleSetDao" ref="ruleSetDao" />
         <property name="ruleEngineService" ref="ruleEngineService" />
 	</bean>

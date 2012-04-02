@@ -13,6 +13,7 @@ public class ObservedAdverseEventProfile {
     private TreatmentAssignment treatmentAssignment;
     private CtcTerm ctcTerm;
     private LowLevelTerm lowLevelTerm;
+    private double observedSignificance = 0;
 
 
     public Grade getGrade() {
@@ -47,6 +48,14 @@ public class ObservedAdverseEventProfile {
         this.lowLevelTerm = lowLevelTerm;
     }
 
+    public double getObservedSignificance() {
+        return observedSignificance;
+    }
+
+    public void setObservedSignificance(double observedSignificance) {
+        this.observedSignificance = observedSignificance;
+    }
+
     @Transient
     public CtcCategory getCtcCategory(){
         if(getCtcTerm() != null) return getCtcTerm().getCategory();
@@ -55,7 +64,7 @@ public class ObservedAdverseEventProfile {
 
     @Transient
     public ObservedAdverseEventSignificanceLevel getSignificance(){
-        return new ObservedAdverseEventSignificanceLevel(0);
+        return new ObservedAdverseEventSignificanceLevel(observedSignificance);
     }
 
 

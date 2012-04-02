@@ -1,0 +1,43 @@
+<dataset>
+
+    <ORGANIZATIONS
+            id="6"
+            version="1"
+            name="Cancer Therapy Evaluation Program"
+            description_text="CTEP"
+            nci_institute_code="CTEP"
+            />
+    <ORGANIZATIONS
+            id="7"
+            version="1"
+            name="Cancer and Leukemia Group B"
+            description_text="Cancer and Leukemia Group B"
+            nci_institute_code="CALGB"
+            />
+
+    <STUDIES
+            id="2"
+            multi_institution_indicator="0"
+            short_title="Hello study"
+            long_title="Long Title"
+            description="Description"
+            grid_id="2222121212"
+            load_status="1"
+            data_entry_status="1"
+
+            />
+
+    <IDENTIFIERS
+            id="-166"
+            stu_id="2"
+            value="7211"
+            type="Protocol Authority Identifier"
+            discriminator_column="1"/>
+
+
+    <disease_terminologies />
+    <ind_holders />
+    <site_investigators />
+    <rule_sets />
+
+</dataset>

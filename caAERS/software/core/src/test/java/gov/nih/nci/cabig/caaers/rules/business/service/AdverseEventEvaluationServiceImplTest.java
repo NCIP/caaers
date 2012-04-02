@@ -147,34 +147,4 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		verifyMocks();
 	}
 
-    //optional when mandatory field has no rules information.
-    public void testEvaluateFieldLevelRules(){
-        EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
-        replayMocks();
-        ReportMandatoryFieldDefinition def1 = Fixtures.createMandatoryField("a", RequirednessIndicator.OPTIONAL);
-        assertEquals("OPTIONAL", impl.evaluateFieldLevelRules(aeReport, reports.get(0), def1));
-        verifyMocks();
-    }
-
-    //checks that agenda filter is created and passed in the input
-    public void testEvaluateFieldLevelRulesAgnedaFilterAvailable(){
-       impl.setBusinessRulesExecutionService(new BusinessRulesExecutionService(){
-           public List<Object> fireRules(String bindingURI, List<Object> objects, AgendaFilter... filters) {
-               boolean hasAgendaFilter = false;
-               for(Object o : objects) hasAgendaFilter |= (o instanceof AgendaFilter);
-               if(!hasAgendaFilter) throw new RuntimeException("Agenda filter not present in input");
-               return null;
-           }
-       });
-       EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
-       EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
-        EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
-       replayMocks();
-       ReportMandatoryFieldDefinition def1 = Fixtures.createMandatoryField("a", RequirednessIndicator.OPTIONAL);
-       def1.setRuleBindURL("abc");
-       def1.setRuleName("a");
-       impl.evaluateFieldLevelRules(aeReport, reports.get(0), def1);
-       verifyMocks();
-    }
-
 }

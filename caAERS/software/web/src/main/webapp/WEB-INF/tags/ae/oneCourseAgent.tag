@@ -10,19 +10,20 @@
 <%@attribute name="agent" type="gov.nih.nci.cabig.caaers.domain.CourseAgent" %>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
 
-<c:set var="v" value="aeReport.treatmentInformation.courseAgents[${index}]" />
+<c:set var="transientCA" value="${(empty agent.id) or (empty agent.studyAgent)}" />
+
 <ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}"
 		enableDelete="true" title="${agent.displayName}"
-		deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v] && collapsed}">
+		deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[agent] && collapsed}">
     <tags:errors path="aeReport.treatmentInformation.courseAgents[${index}]"/>
 
-    <c:if test="${agent.displayName ne '[no agent]'}">
+    <c:if test="${not transientCA}">
         <div class="row">
             <div class="label">Study Agent</div>
             <div class="value">${agent.displayName}</div>
         </div>
     </c:if>
-    <c:if test="${agent.displayName eq '[no agent]'}">
+    <c:if test="${transientCA}">
         <tags:renderRow field="${fieldGroup.fields[0]}"/>
     </c:if>
 
@@ -49,21 +50,35 @@
 <script>
     function setTitleCourse_${index}() {
         var titleID = "titleOf_courseAgent-" + ${index};
+        var selectedAgentValue = "${agent.displayName}";
+        var fieldAgentDoseAmountValue = "${agent.dose.amount}";
+        var fieldAgentDoseUnitValue ="${agent.dose.units}";
+
 
         var fieldAgentName = $("aeReport.treatmentInformation.courseAgents[${index}].studyAgent");
-        var selectedAgentOption = fieldAgentName.options[fieldAgentName.selectedIndex];
-        var selectedAgentValue = selectedAgentOption.text;
+        if(fieldAgentName){
+            var selectedAgentOption = fieldAgentName.options[fieldAgentName.selectedIndex];
+            selectedAgentValue = selectedAgentOption.text;
+        }
+
 
         var fieldAgentDoseAmount = $("aeReport.treatmentInformation.courseAgents[${index}].dose.amount");
-        var fieldAgentDoseAmountValue = fieldAgentDoseAmount.value;
+        if(fieldAgentDoseAmount){
+            fieldAgentDoseAmountValue = fieldAgentDoseAmount.value;
+        }
+
 
         var fieldAgentDoseUnit = $("aeReport.treatmentInformation.courseAgents[${index}].dose.units");
-        var fieldAgentDoseUnitValue = fieldAgentDoseUnit.options[fieldAgentDoseUnit.selectedIndex].value;
+        if(fieldAgentDoseUnit){
+            fieldAgentDoseUnitValue = fieldAgentDoseUnit.options[fieldAgentDoseUnit.selectedIndex].value;
+        }
+
 
         $(titleID).innerHTML = "" + selectedAgentValue + " (" + fieldAgentDoseAmountValue + " " + fieldAgentDoseUnitValue + ")";
     }
-
-    setTitleCourse_${index}.defer();
+    <c:if test="${transientCA}">
+        setTitleCourse_${index}.defer();
+    </c:if>
     Event.observe($("aeReport.treatmentInformation.courseAgents[${index}].studyAgent"), "change", function() {
          setTitleCourse_${index}();
     });
