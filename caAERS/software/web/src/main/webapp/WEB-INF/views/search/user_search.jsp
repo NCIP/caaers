@@ -95,14 +95,17 @@
 		        elCell.title = _recordType;
 			};
 
-            function doEdit(id) {
-                var url = '<c:url value="/pages/admin/editUser?id="></c:url>' + id;
+            function doEdit(id, rt, un) {
+                var url = '<c:url value="/pages/admin/editUser?"></c:url>';
+                url += "id=" + id;
+                url += "&recordType=" + rt;
+                if (un != "") url += "&userName=" + un;
                 window.location = url;
             }
 
-            function showMenuOptions(strId) {
-                var html = "<div><ul><li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId})'>Edit</a></li></ul></div>";
-                var html = html.interpolate({strId:strId});
+            function showMenuOptions(strId, rt, un) {
+                var html = "<div><ul><li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li></ul></div>";
+                var html = html.interpolate({strId:strId, rt:rt, un:un});
                 jQuery('#personnelActions' + strId).menu({
                         content: html,
                         maxHeight: 180,
@@ -117,11 +120,13 @@
                     });
             }
 
-            var actionsRow = "<a onmouseover='showMenuOptions(#{id})' id='personnelActions#{id}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
+            var actionsRow = "<a onmouseover='showMenuOptions(#{id}, \"#{rt}\", \"#{un}\")' id='personnelActions#{id}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
 
 			var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
                 var _id = oRecord.getData("id");
-		        elCell.innerHTML = actionsRow.interpolate({id:_id});
+                var _rt = oRecord.getData("recordType");
+                var _un = oRecord.getData("userName");
+		        elCell.innerHTML = actionsRow.interpolate({id:_id, rt:_rt, un:_un});
 			};
 
 			var myColumnDefs = [
