@@ -234,7 +234,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedCtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RuleSet</value>
-
+				<value>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -434,6 +434,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedCtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RuleSet</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile</value>
             </list>
         </property>
         <!--
@@ -548,6 +549,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="otherInterventionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OtherInterventionDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
     <bean id="agentSpecificTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao"/>
+    <bean id="observedAdverseEventProfileDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ObservedAdverseEventProfileDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
     <bean id="searchDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SearchDao"/>
