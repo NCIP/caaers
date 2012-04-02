@@ -329,12 +329,25 @@ public class FactResolverTest extends TestCase {
         observedAE1.setObservedSignificance(0.9);
         observedAE1.setTreatmentAssignment(ta);
 
-//        boolean fact = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.Grade","code","3",">=");
-//        assertTrue(fact);
+        boolean fact = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.Grade","code","3",">=");
+        assertTrue(fact);
 
-        boolean fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.8","<=");
-        System.out.println(fact2);
+        boolean fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.8",">");
         assertTrue(fact2);
+
+        fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.9","==");
+        assertTrue(fact2);
+
+        fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.91","!=");
+        assertTrue(fact2);
+
+
+        fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.91","<");
+        assertTrue(fact2);
+
+        fact2 = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventSignificanceLevel","significance","0.91","<=");
+        assertTrue(fact2);
+
 
     }
 	
