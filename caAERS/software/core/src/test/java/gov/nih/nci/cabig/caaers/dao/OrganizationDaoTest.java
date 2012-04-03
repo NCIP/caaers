@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.ActiveInactiveStatus;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
@@ -110,4 +111,41 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     	List<Organization> orgs = getDao().getApplicableOrganizationsFromStudySites(query);
     	assertEquals(1, orgs.size());
     }
+    
+    public void testOrganizationStatus(){
+    	Organization organization = getDao().getDefaultOrganization();
+    	assertEquals(ActiveInactiveStatus.AC, organization.getStatus());
+    }
+    
+    public void testDeActivateOrganizationStatus(){
+    	Organization organization = getDao().getById(-1004);
+    	assertEquals(ActiveInactiveStatus.AC, organization.getStatus());
+    	
+    	organization.setStatus(ActiveInactiveStatus.IN);
+    	getDao().save(organization);
+    	
+    	interruptSession();
+    	
+    	Organization reloadedOrg = getDao().getById(-1004);
+    	assertEquals(ActiveInactiveStatus.IN, reloadedOrg.getStatus());
+    }
+    
+    public void testSaveMergedOrganization(){
+    	
+    	Organization org1 = getDao().getById(-1004);
+    	assertNull(org1.getMergedOrganization());
+    	
+    	Organization org2 = getDao().getById(-1005);
+    	org1.setMergedOrganization(org2);
+    	getDao().save(org1);
+    	
+    	interruptSession();
+    	
+    	Organization reloadedOrg1 = getDao().getById(-1004);
+    	assertNotNull(reloadedOrg1.getMergedOrganization());
+    	assertEquals(org2, reloadedOrg1.getMergedOrganization());
+    	assertEquals(new Integer(-1005), reloadedOrg1.getMergedOrganization().getId());
+    }
+    
+    
 }

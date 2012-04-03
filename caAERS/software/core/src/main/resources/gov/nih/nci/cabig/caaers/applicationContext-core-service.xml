@@ -13,6 +13,11 @@ default-lazy-init="true">
 		<property name="participantRepository" ref="participantRepository"/>
 		<property name="participantMigrator" ref="participantMigrator"/>
 	</bean>
+	<bean id="organizationService" class="gov.nih.nci.cabig.caaers.api.impl.OrganizationServiceImpl">
+		<property name="organizationDao" ref="organizationDao"/>
+		<property name="organizationRepository" ref="organizationRepository"/>
+		<property name="organizationMigrator" ref="organizationMigrator"/>
+	</bean>
 	<bean id="studyImportService" class="gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl">
 		<property name="studyMigrator" ref="studyMigrator"/>
 		<property name="studyDao" ref="studyDao"/>
@@ -209,6 +214,8 @@ default-lazy-init="true">
 		</property>
 	</bean>
 	
+	<bean id="organizationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationMigrator"/>
+	
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter">
 		<property name="ctcTermDao" ref="ctcTermDao"/>
 		<property name="lowLevelTermDao" ref="lowLevelTermDao"/>
@@ -248,6 +255,8 @@ default-lazy-init="true">
 	</bean>
 	
 	<bean id="participantConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter"/>	
+	
+	<bean id="organizationConverter" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter"/>
 	
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
 	

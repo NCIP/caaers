@@ -151,6 +151,7 @@
             <arg line="-npa
 	    			   -Xcollection-setter-injector"/>
             <schema dir="${main.src.resources}/schema/integration">
+            	<include name="caAERSCommonTypes.xsd"/>
                 <include name="StudySchema.xsd"/>
             	<include name="ParticipantSchema.xsd"/>
             	<include name="ReportDefinition.xsd"/>
@@ -159,6 +160,7 @@
             	<include name="ResearchStaff.xsd"/>
             	<include name="ManageAdverseEventsSchema.xsd"/>
             	<include name="Facts.xsd"/>
+            	<include name="Organization.xsd"/>
             	
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>

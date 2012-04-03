@@ -11,14 +11,12 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
 import gov.nih.nci.cabig.caaers.webservice.participant.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Identifiers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 

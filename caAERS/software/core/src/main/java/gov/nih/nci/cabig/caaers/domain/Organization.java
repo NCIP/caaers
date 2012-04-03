@@ -10,9 +10,13 @@ import java.util.List;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -32,7 +36,7 @@ import org.hibernate.annotations.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_organizations_id") })
-public abstract class Organization extends AbstractMutableDomainObject {
+public abstract class Organization extends AbstractMutableDomainObject implements Comparable<Organization>{
     
     /** The Constant DEFAULT_SITE_NAME. */
     public static final String DEFAULT_SITE_NAME = "default";
@@ -75,10 +79,45 @@ public abstract class Organization extends AbstractMutableDomainObject {
     
     /** The external id. */
     protected String externalId;
+    
+    /** The status code. */
+    protected ActiveInactiveStatus status = ActiveInactiveStatus.AC;
+    
+    /** The merged organization. */
+    protected Organization mergedOrganization;
 	
     // //// LOGIC
 
-    /*
+    @ManyToOne
+    @JoinColumn(name="merged_org_id", nullable=true)
+    public Organization getMergedOrganization() {
+		return mergedOrganization;
+	}
+
+	public void setMergedOrganization(Organization mergedOrganization) {
+		this.mergedOrganization = mergedOrganization;
+	}
+
+	/**
+     * Gets the status code.
+     * 
+     * @return the status code
+     */
+    @Enumerated(EnumType.STRING)
+    public ActiveInactiveStatus getStatus() {
+		return status;
+	}
+
+    /**
+	 * Sets the status code.
+	 * 
+	 * @param statusCode the new status code
+	 */
+	public void setStatus(ActiveInactiveStatus status) {
+		this.status = status;
+	}
+
+	/*
      * @See study_details.jsp , study_identifiers.jsp
      */
     /**
@@ -459,6 +498,42 @@ public abstract class Organization extends AbstractMutableDomainObject {
     @Override
     public String toString() {
         return name;
+    }
+    
+    public int compareTo(Organization o) {
+    	if( this.getName().compareTo(o.getName()) != 0){
+    		return this.getName().compareTo(o.getName());
+    	}
+    	
+    	if( this.getDescriptionText().compareTo(o.getDescriptionText()) != 0){
+    		return this.getDescriptionText().compareTo(o.getDescriptionText());
+    	}
+    	
+    	if( this.getStatus().compareTo(o.getStatus()) != 0){
+    		return this.getStatus().compareTo(o.getStatus());
+    	}
+    	
+    	if( this.getCity().compareTo(o.getCity()) != 0){
+    		return this.getCity().compareTo(o.getCity());
+    	}
+    	
+    	if( this.getState().compareTo(o.getState()) != 0){
+    		return this.getState().compareTo(o.getState());
+    	}
+    	
+    	if( this.getCountry().compareTo(o.getCountry()) != 0){
+    		return this.getCountry().compareTo(o.getCountry());
+    	}
+    	
+    	if( this.getMergedOrganization() == null && o.getMergedOrganization() != null ){
+    		return -1;
+    	}
+    	
+    	if( this.getMergedOrganization() !=null && o.getMergedOrganization() != null ){
+    		return (this.getMergedOrganization().compareTo(o.getMergedOrganization()));
+    	}
+    	    	
+    	return 0;
     }
 
 }

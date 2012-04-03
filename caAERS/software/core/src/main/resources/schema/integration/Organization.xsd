@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/organization"
+    xmlns="http://webservice.caaers.cabig.nci.nih.gov/organization"
+    xmlns:common="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    elementFormDefault="unqualified">
+    
+    <xs:import schemaLocation="caAERSCommonTypes.xsd" namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" />
+
+    <xs:element name="Organizations">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element maxOccurs="unbounded" ref="common:organization"/>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+
+</xs:schema>
