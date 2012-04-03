@@ -117,14 +117,19 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="descriptionText" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="descriptionText" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="name" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="nciInstituteCode" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="city" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="state" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="country" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="mergedOrganization" type="OrganizationType" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-
+    
     <xs:element name="organizationRef" type="OrganizationRefType"/>
     <xs:complexType name="OrganizationRefType">
         <xs:sequence>
@@ -316,6 +321,12 @@
         </xs:restriction>
     </xs:simpleType>
     
+    <xs:simpleType name="ActiveInactiveStatusType">
+	    <xs:restriction base="xs:string">
+	      <xs:enumeration value="AC" />
+	      <xs:enumeration value="IN" />
+	    </xs:restriction>
+  	</xs:simpleType>
 	
 	<xs:complexType name="WsError">
 		<xs:sequence>
@@ -331,20 +342,53 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
+	<xs:element name="entityErrorMessages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="entityErrorMessage" maxOccurs="unbounded"> </xs:element>
+			</xs:sequence>
+		
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="entityErrorMessage" type="EntityErrorMessageType"></xs:element>
+    <xs:complexType name="EntityErrorMessageType">
+        <xs:sequence>
+        	<xs:element name="klassName" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="businessIdentifier" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="message" type="CustomStringType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+	
 	<xs:element name="ServiceResponse" type="ServiceResponse" />
     <xs:complexType name="ServiceResponse">
     	<xs:sequence>
     		<xs:element name="status" type="Status"></xs:element>
     		<xs:element name="wsError" type="WsError" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    		<xs:element ref="entityErrorMessages" minOccurs="0"></xs:element>
     	</xs:sequence>
     </xs:complexType>
     
-        <xs:element name="CaaersServiceResponse">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="ServiceResponse" />
-            </xs:sequence>
-        </xs:complexType>
+    <xs:element name="CaaersServiceResponse">
+	    <xs:complexType>
+	        <xs:sequence>
+	            <xs:element ref="ServiceResponse" />
+	        </xs:sequence>
+	    </xs:complexType>
     </xs:element>
+    
+    <!-- Common faults. -->
+	<xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"/>
+	
+	<xs:complexType name="BaseFault">
+		<xs:sequence>
+			<xs:element name="message" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SecurityExceptionFault">
+		<xs:complexContent>
+			<xs:extension base="BaseFault"/>
+		</xs:complexContent>
+	</xs:complexType>
 
 </xs:schema>
