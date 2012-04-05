@@ -598,9 +598,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             RuleEvaluationResult ruleEvaluationResult = fireRules( inputObjects, bindURI);
             
             result.setRulesMatched(ruleEvaluationResult.getRulesMatched());
-            if(ruleEvaluationResult.getResponses().contains(NotificationStatus.DO_NOT_NOTIFY)){
+            if(ruleEvaluationResult.getResponses().contains(NotificationStatus.DO_NOT_NOTIFY.name())){
                 result.setNotificationStatus(NotificationStatus.DO_NOT_NOTIFY);
-            }else if(ruleEvaluationResult.getResponses().contains(NotificationStatus.NOTIFY)){
+            }else if(ruleEvaluationResult.getResponses().contains(NotificationStatus.NOTIFY.name())){
                 result.setNotificationStatus(NotificationStatus.NOTIFY);
             }
             
