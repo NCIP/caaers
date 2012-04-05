@@ -1,4 +1,4 @@
-class AddRetiredIndicatorToOrganizations extends edu.northwestern.bioinformatics.bering.Migration {
+class AddRetiredIndicatorToDevices extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
         addColumn("devices","retired_indicator", "boolean", defaultValue: 0)
     }
