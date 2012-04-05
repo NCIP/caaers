@@ -33,7 +33,7 @@
     function enableEdit(_index) {
         var _message = "<caaers:message code="study.treatment_assignments.study.editMessage" />";
 
-        if ( ${command.study.dataEntryStatus} && !confirm(_message)) return;
+        if ( ${command.study.dataEntryStatus ? true : false} && !confirm(_message)) return;
         var _base = "study.treatmentAssignments[" + _index + "]";
 //        if ($(_base + '.code')) $(_base + '.code').enable();
         if ($(_base + '.doseLevelOrder')) $(_base + '.doseLevelOrder').enable();
