@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "devices")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_devices_id")})
-public class Device extends AbstractMutableDomainObject implements Serializable {
+public class Device extends AbstractMutableRetireableDomainObject implements Serializable {
     
     /** The brand name. */
     String brandName;
