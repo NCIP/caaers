@@ -120,8 +120,10 @@ public class ASAELServiceImplTest extends DaoTestCase {
         return a;
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.REFRESH;
     }
+*/
 }
