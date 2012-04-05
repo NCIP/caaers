@@ -7,7 +7,13 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
  * @author Ion C. Olaru
  *         Date: 4/3/12 -11:49 AM
  */
-public class AgentConverter {
+public class AgentConverter extends DomainObjectConverter{
+
+	public void convertAgentDtoToDomainAgent(AgentType agentDto, Agent agent){
+		agent.setName(agentDto.getName());
+		agent.setDescription(agentDto.getDescriptionText());
+		agent.setRetiredIndicator(agentDto.getStatus().name().equals("AC") ? false:true);
+	}
 
     public static Agent convert(AgentType at) {
         Agent a = new Agent();

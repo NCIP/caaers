@@ -114,20 +114,20 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     
     public void testOrganizationStatus(){
     	Organization organization = getDao().getDefaultOrganization();
-    	assertEquals(ActiveInactiveStatus.AC, organization.getStatus());
+    	assertEquals(false, organization.getRetiredIndicator().booleanValue());
     }
     
     public void testDeActivateOrganizationStatus(){
     	Organization organization = getDao().getById(-1004);
-    	assertEquals(ActiveInactiveStatus.AC, organization.getStatus());
+    	assertEquals(false, organization.getRetiredIndicator().booleanValue());
     	
-    	organization.setStatus(ActiveInactiveStatus.IN);
+    	organization.setRetiredIndicator(true);
     	getDao().save(organization);
     	
     	interruptSession();
     	
     	Organization reloadedOrg = getDao().getById(-1004);
-    	assertEquals(ActiveInactiveStatus.IN, reloadedOrg.getStatus());
+    	assertEquals(true, reloadedOrg.getRetiredIndicator().booleanValue());
     }
     
     public void testSaveMergedOrganization(){

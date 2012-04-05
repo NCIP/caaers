@@ -15,7 +15,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="OrganizationServiceIntf",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov")
+@WebService(name="OrganizationServiceIntf",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/organization")
 public interface OrganizationManagementWebService {
 	
 	/**

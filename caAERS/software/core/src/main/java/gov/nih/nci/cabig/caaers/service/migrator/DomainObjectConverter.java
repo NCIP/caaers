@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessages;
 
 import java.util.List;
 
-public class DomainObjectCoverter {
+public class DomainObjectConverter {
 	
 	public void convertEntityErrorMessages(List<EntityErrorMessage> entityErrorMessages, 
 			EntityErrorMessages entityErrorMessagesDto){

@@ -30,7 +30,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_agents_id") })
-public class Agent extends AbstractIdentifiableDomainObject implements Serializable {
+public class Agent extends AbstractMutableRetireableDomainObject implements Serializable {
 
     /** The name. */
     private String name;

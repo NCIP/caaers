@@ -6,6 +6,7 @@
         grid_id="RTOGGridSite"
         nci_institute_code="RTOG"
         type="LOCAL"
+        retired_indicator="0"
     />
 
     <ORGANIZATIONS
@@ -13,7 +14,7 @@
         name="New Site"
         grid_id="gridSite"
         type="LOCAL"
-        status="AC"
+       retired_indicator="0"
     />
     
     <ORGANIZATIONS
@@ -21,7 +22,7 @@
         name="Another Site"
         grid_id="anotherGridSite"
         type="LOCAL"
-         status="AC"
+        retired_indicator="0"
     />
     
     <ORGANIZATIONS
@@ -29,14 +30,14 @@
         name="default"
         grid_id="defaultGridSite"
         type="LOCAL"
-        status="AC"
+        retired_indicator="0"
     />
     
     <ORGANIZATIONS
         id="-1005"
         nci_institute_code="REMOTE_RTOG"
         type="REMOTE"
-        status="AC"
+        retired_indicator="0"
     />
     
     <STUDIES

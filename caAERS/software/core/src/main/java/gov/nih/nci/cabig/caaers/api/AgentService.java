@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional(readOnly=false)
-public interface OrganizationService {
+public interface AgentService {
 	
-	public List<EntityErrorMessage> createOrUpdateOrganizations(List<Organization> organizations);
+	public List<EntityErrorMessage> createOrUpdateAgents(List<Agent> agents);
 
 }

@@ -69,12 +69,21 @@
             <xs:extension base="DomainObjectType">
                 <xs:choice>
                     <xs:element name="name" type="CustomStringType"/>
-                    <xs:element name="descriptionText" type="CustomStringType"/>
+                    <xs:element name="descriptionText" type="CustomStringType" minOccurs="0"/>
                     <xs:element name="nscNumber" type="CustomStringType"/>
+                    <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
                 </xs:choice>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:element name="Agents">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element maxOccurs="unbounded" ref="agent"/>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
 
     <xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"/>
     <xs:complexType name="InvestigationalNewDrugType">

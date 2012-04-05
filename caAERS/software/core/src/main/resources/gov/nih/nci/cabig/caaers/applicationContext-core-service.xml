@@ -13,10 +13,15 @@ default-lazy-init="true">
 		<property name="participantRepository" ref="participantRepository"/>
 		<property name="participantMigrator" ref="participantMigrator"/>
 	</bean>
-	<bean id="organizationService" class="gov.nih.nci.cabig.caaers.api.impl.OrganizationServiceImpl">
+	<bean id="organizationManagementService" class="gov.nih.nci.cabig.caaers.api.impl.OrganizationManagementServiceImpl">
 		<property name="organizationDao" ref="organizationDao"/>
 		<property name="organizationRepository" ref="organizationRepository"/>
 		<property name="organizationMigrator" ref="organizationMigrator"/>
+	</bean>
+	<bean id="agentService" class="gov.nih.nci.cabig.caaers.api.impl.AgentServiceImpl">
+		<property name="agentDao" ref="agentDao"/>
+		<property name="agentRepository" ref="agentRepository"/>
+		<property name="agentMigrator" ref="agentMigrator"/>
 	</bean>
 	<bean id="studyImportService" class="gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl">
 		<property name="studyMigrator" ref="studyMigrator"/>
@@ -215,6 +220,7 @@ default-lazy-init="true">
 	</bean>
 	
 	<bean id="organizationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationMigrator"/>
+	<bean id="agentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator"/>
 	
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter">
 		<property name="ctcTermDao" ref="ctcTermDao"/>
@@ -257,6 +263,8 @@ default-lazy-init="true">
 	<bean id="participantConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter"/>	
 	
 	<bean id="organizationConverter" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter"/>
+	
+	<bean id="agentConverter" class="gov.nih.nci.cabig.caaers.service.migrator.AgentConverter"/>
 	
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
 	
@@ -391,7 +399,6 @@ default-lazy-init="true">
     <bean id="agentSpecificTermsImporter" class="gov.nih.nci.cabig.caaers.dataimport.AgentSpecificTermsImporter" autowire="byType" />
 
     <bean id="adverseEventReportingPeriodService" class="gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService" />
-
+    
     <bean id="asaelServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ASAELServiceImpl" autowire="byType" />
-
 </beans>

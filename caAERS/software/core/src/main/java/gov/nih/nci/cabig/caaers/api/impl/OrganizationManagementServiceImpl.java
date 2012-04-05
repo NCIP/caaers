@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.api.OrganizationService;
+import gov.nih.nci.cabig.caaers.api.OrganizationManagementService;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
@@ -15,9 +15,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 
-public class OrganizationServiceImpl implements OrganizationService{
+public class OrganizationManagementServiceImpl implements OrganizationManagementService{
 	
-	private static Log logger = LogFactory.getLog(OrganizationServiceImpl.class);
+	private static Log logger = LogFactory.getLog(OrganizationManagementServiceImpl.class);
 	private MessageSource messageSource;
     private OrganizationDao organizationDao;
     private OrganizationMigrator organizationMigrator;
@@ -66,7 +66,7 @@ public class OrganizationServiceImpl implements OrganizationService{
 			logger.error(e.getMessage());
 		}
 		
-		return null;
+		return errorMessage;
 	}
 
 	public List<EntityErrorMessage> createOrUpdateOrganizations(

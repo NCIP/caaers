@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.domain.ActiveInactiveStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class OrganizationConverter extends DomainObjectCoverter{
+public class OrganizationConverter extends DomainObjectConverter{
 	
 	private static Log logger = LogFactory.getLog(OrganizationConverter.class);
 	
@@ -22,7 +21,7 @@ public class OrganizationConverter extends DomainObjectCoverter{
 		
 		organization.setName(organizationDto.getName());
 		organization.setDescriptionText(organizationDto.getDescriptionText());
-		organization.setStatus(ActiveInactiveStatus.getByCode(organizationDto.getStatus().name()));
+		organization.setRetiredIndicator(organizationDto.getStatus().name().equals("AC") ? false:true);
 		
 		// Get merged organization by NCI code
 		if(organizationDto.getMergedOrganization() != null){
@@ -36,7 +35,7 @@ public class OrganizationConverter extends DomainObjectCoverter{
 		
 		organization.setCity(organizationDto.getCity());
 		organization.setCountry(organizationDto.getCountry());
-	//	organization.setState(organizationDto.getState();
+		organization.setState(organizationDto.getState());
 		
 	}
 

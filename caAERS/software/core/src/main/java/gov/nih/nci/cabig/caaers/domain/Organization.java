@@ -36,7 +36,7 @@ import org.hibernate.annotations.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_organizations_id") })
-public abstract class Organization extends AbstractMutableDomainObject implements Comparable<Organization>{
+public abstract class Organization extends AbstractMutableRetireableDomainObject implements Comparable<Organization>{
     
     /** The Constant DEFAULT_SITE_NAME. */
     public static final String DEFAULT_SITE_NAME = "default";
@@ -80,8 +80,8 @@ public abstract class Organization extends AbstractMutableDomainObject implement
     /** The external id. */
     protected String externalId;
     
-    /** The status code. */
-    protected ActiveInactiveStatus status = ActiveInactiveStatus.AC;
+   /* *//** The status code. *//*
+    protected ActiveInactiveStatus status = ActiveInactiveStatus.AC;*/
     
     /** The merged organization. */
     protected Organization mergedOrganization;
@@ -102,21 +102,21 @@ public abstract class Organization extends AbstractMutableDomainObject implement
      * Gets the status code.
      * 
      * @return the status code
-     */
+     *//*
     @Enumerated(EnumType.STRING)
     public ActiveInactiveStatus getStatus() {
 		return status;
 	}
 
-    /**
+    *//**
 	 * Sets the status code.
 	 * 
 	 * @param statusCode the new status code
-	 */
+	 *//*
 	public void setStatus(ActiveInactiveStatus status) {
 		this.status = status;
 	}
-
+*/
 	/*
      * @See study_details.jsp , study_identifiers.jsp
      */
@@ -509,8 +509,8 @@ public abstract class Organization extends AbstractMutableDomainObject implement
     		return this.getDescriptionText().compareTo(o.getDescriptionText());
     	}
     	
-    	if( this.getStatus().compareTo(o.getStatus()) != 0){
-    		return this.getStatus().compareTo(o.getStatus());
+    	if( this.getRetiredIndicator().compareTo(o.getRetiredIndicator()) != 0){
+    		return this.getRetiredIndicator().compareTo(o.getRetiredIndicator());
     	}
     	
     	if( this.getCity().compareTo(o.getCity()) != 0){
