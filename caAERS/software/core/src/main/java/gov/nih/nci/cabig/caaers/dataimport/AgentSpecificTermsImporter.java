@@ -78,8 +78,6 @@ public class AgentSpecificTermsImporter {
         Map<String, String> asaelCache = new HashMap<String, String>();
         int asael;
 
-        // System.out.println("Starting...");
-
         // wipe out the table
         agentSpecificTermDao.deleteAll();
         studyDao.deleteAllExpectedTerms();

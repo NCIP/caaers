@@ -161,7 +161,7 @@
             	<include name="ManageAdverseEventsSchema.xsd"/>
             	<include name="Facts.xsd"/>
             	<include name="Organization.xsd"/>
-            	
+                <include name="ASAEL.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 

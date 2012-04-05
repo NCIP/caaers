@@ -391,4 +391,7 @@ default-lazy-init="true">
     <bean id="agentSpecificTermsImporter" class="gov.nih.nci.cabig.caaers.dataimport.AgentSpecificTermsImporter" autowire="byType" />
 
     <bean id="adverseEventReportingPeriodService" class="gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService" />
+
+    <bean id="asaelServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ASAELServiceImpl" autowire="byType" />
+
 </beans>

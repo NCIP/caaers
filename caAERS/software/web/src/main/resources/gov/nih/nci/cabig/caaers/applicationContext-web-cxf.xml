@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:javaws="http://cxf.apache.org/jaxws"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context
@@ -12,22 +12,44 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <import resource="classpath:META-INF/cxf/cxf.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
     <context:annotation-config/>
 
-    <bean id="wsAuditInfoInterceptor" class="gov.nih.nci.cabig.caaers.ws.AuditInfoPopulatorWSInterceptor"  />
+    <bean id="wsAuditInfoInterceptor" class="gov.nih.nci.cabig.caaers.ws.AuditInfoPopulatorWSInterceptor"/>
     <bean id="authenticationWSHandler" class="gov.nih.nci.cabig.caaers.ws.AuthenticationWSHandler">
-        <property name="authenticationManager" ref="authenticationManager" />
-        <property name="userRepository" ref="userRepository" />
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="userRepository" ref="userRepository"/>
     </bean>
 
-    <bean id="adverseEventManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.AdverseEventManagementWebService">
-        <property name="impl" ref="adverseEventManagementServiceImpl" />
+    <jaxws:endpoint id="asaelWebService" implementor="#asaelWebServiceBean" address="/ASAELService">
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+                <constructor-arg>
+                    <map>
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
+                        <entry key="passwordCallbackRef">
+                            <ref bean="authenticationWSHandler"/>
+                        </entry>
+                    </map>
+                </constructor-arg>
+            </bean>
+            <ref bean="wsAuditInfoInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <bean id="asaelWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.ASAELWebService">
+        <property name="asaelServiceImpl" ref="asaelServiceImpl" />
     </bean>
-    
+
+    <bean id="adverseEventManagementWebServiceBean"
+          class="gov.nih.nci.cabig.caaers.ws.impl.AdverseEventManagementWebService">
+        <property name="impl" ref="adverseEventManagementServiceImpl"/>
+    </bean>
+
     <jaxws:endpoint
             id="adverseEventManagementWebService"
             implementor="#adverseEventManagementWebServiceBean"
@@ -36,21 +58,22 @@
             <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
                 <constructor-arg>
                     <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
                         <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
+                            <ref bean="authenticationWSHandler"/>
                         </entry>
                     </map>
                 </constructor-arg>
             </bean>
-            <ref bean="wsAuditInfoInterceptor" />
+            <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 
     <bean id="studyManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.StudyManagementWebService">
-        <property name="impl" ref="studyProcessorImpl" />
+        <property name="impl" ref="studyProcessorImpl"/>
     </bean>
+
     <jaxws:endpoint
             id="studyWebService"
             implementor="#studyManagementWebServiceBean"
@@ -59,20 +82,21 @@
             <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
                 <constructor-arg>
                     <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
                         <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
+                            <ref bean="authenticationWSHandler"/>
                         </entry>
                     </map>
                 </constructor-arg>
             </bean>
-            <ref bean="wsAuditInfoInterceptor" />
+            <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 
-    <bean id="participantManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.ParticipantManagementWebService">
-        <property name="impl" ref="participantServiceImpl" />
+    <bean id="participantManagementWebServiceBean"
+          class="gov.nih.nci.cabig.caaers.ws.impl.ParticipantManagementWebService">
+        <property name="impl" ref="participantServiceImpl"/>
     </bean>
     <jaxws:endpoint
             id="participantWebService"
@@ -82,20 +106,21 @@
             <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
                 <constructor-arg>
                     <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
                         <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
+                            <ref bean="authenticationWSHandler"/>
                         </entry>
                     </map>
                 </constructor-arg>
             </bean>
-            <ref bean="wsAuditInfoInterceptor" />
+            <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 
-    <bean id="investigatorManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.InvestigatorManagementWebService">
-        <property name="impl" ref="investigatorMigratorService"  />
+    <bean id="investigatorManagementWebServiceBean"
+          class="gov.nih.nci.cabig.caaers.ws.impl.InvestigatorManagementWebService">
+        <property name="impl" ref="investigatorMigratorService"/>
     </bean>
     <jaxws:endpoint
             id="investigatorWebService"
@@ -105,20 +130,21 @@
             <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
                 <constructor-arg>
                     <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
                         <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
+                            <ref bean="authenticationWSHandler"/>
                         </entry>
                     </map>
                 </constructor-arg>
             </bean>
-            <ref bean="wsAuditInfoInterceptor" />
+            <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 
-    <bean id="researchStaffManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.ResearchStaffManagementWebService">
-        <property name="impl" ref="researchStaffMigratorService"     />
+    <bean id="researchStaffManagementWebServiceBean"
+          class="gov.nih.nci.cabig.caaers.ws.impl.ResearchStaffManagementWebService">
+        <property name="impl" ref="researchStaffMigratorService"/>
     </bean>
     <jaxws:endpoint
             id="researchStaffWebService"
@@ -128,15 +154,15 @@
             <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
                 <constructor-arg>
                     <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
                         <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
+                            <ref bean="authenticationWSHandler"/>
                         </entry>
                     </map>
                 </constructor-arg>
             </bean>
-            <ref bean="wsAuditInfoInterceptor" />
+            <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
     </jaxws:endpoint>
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/asael"
+    xmlns="http://webservice.caaers.cabig.nci.nih.gov/asael"
+    xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    elementFormDefault="unqualified">
+
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
+
+    <xs:element name="asael" type="ASAELType" />
+    <xs:complexType name="ASAELType">
+        <xs:sequence>
+            <xs:element ref="asaelAgent" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="asaelAgent" type="ASAELAgentType" />
+    <xs:complexType name="ASAELAgentType">
+        <xs:sequence>
+            <xs:element ref="cct:agent" minOccurs="1" maxOccurs="1" />
+            <xs:element ref="expectedAECtcTerm" minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="status" type="cct:ActiveInactiveStatusType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="expectedAECtcTerm" type="ExpectedAECtcTermType"/>
+    <xs:complexType name="ExpectedAECtcTermType">
+        <xs:sequence>
+            <xs:element name="ctepTerm" type="cct:CustomStringType" minOccurs="0"/>
+            <xs:element name="ctepCode" type="cct:CustomStringType" minOccurs="0"/>
+            <xs:element name="category" type="cct:CustomStringType" minOccurs="0"/>
+            <xs:element name="ctcVersion" type="cct:CustomStringType" minOccurs="0"/>
+            <xs:element name="status" type="cct:ActiveInactiveStatusType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
