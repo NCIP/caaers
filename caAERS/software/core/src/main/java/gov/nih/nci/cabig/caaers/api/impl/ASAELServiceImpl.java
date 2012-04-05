@@ -93,6 +93,7 @@ public class ASAELServiceImpl implements ASAELService, ApplicationContextAware {
                 if (tt.getStatus().equals(ActiveInactiveStatusType.IN)) {
                     it.remove();
                     removeAgentSpecificTerm(agentTerms, tt);
+                    errors.add(populateError(CtcTerm.class.getCanonicalName(), tt.getCtepTerm(), ""));
                 } else if (isOnAgent(agentTerms, tt)) {
                     log.debug(String.format("TERM %s is already on the agent", tt.getCtepTerm()));
                     it.remove();
