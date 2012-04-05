@@ -78,7 +78,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
 
         SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
         assertEquals("Rule-1", result.getRulesMatched().get(0));
-        assertEquals(NotificationStatus.NOTIFY.name(), result.getNotificationStatus());
+        assertEquals(NotificationStatus.NOTIFY, result.getNotificationStatus());
         }
 
         //Rule 1 - Grade &gt;= and significance &gt;= 0.8 NOTIFY
@@ -92,7 +92,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
 
             SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
             assertEquals("Rule-1", result.getRulesMatched().get(0));
-            assertEquals(NotificationStatus.NOTIFY.name(), result.getNotificationStatus());
+            assertEquals(NotificationStatus.NOTIFY, result.getNotificationStatus());
         }
 
         //Rule 2 - Grade &lt;= 1 DO_NOT_NOTIFY
@@ -106,7 +106,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
 
             SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
             assertEquals("Rule-2", result.getRulesMatched().get(0));
-            assertEquals(NotificationStatus.DO_NOT_NOTIFY.name(), result.getNotificationStatus());
+            assertEquals(NotificationStatus.DO_NOT_NOTIFY, result.getNotificationStatus());
         }
 
         //Rule 3 - Grade == 3 and significance &lt;= 0.3 DO_NOT_NOTIFY
@@ -120,41 +120,10 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
 
             SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
             assertEquals("Rule-3", result.getRulesMatched().get(0));
-            assertEquals(NotificationStatus.DO_NOT_NOTIFY.name(), result.getNotificationStatus());
-        }
-
-        //Rule 3 - Grade == 3 and significance &lt;= 0.3 DO_NOT_NOTIFY
-        //Rule 2 - Grade &lt;= 1 DO_NOT_NOTIFY
-        {
-            ObservedAdverseEventProfile observedAE1 = new ObservedAdverseEventProfile();
-            observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
-            observedAE1.setGrade(Grade.NORMAL);
-            observedAE1.setObservedSignificance(0.3);
-            observedAE1.setTreatmentAssignment(ta);
-
-
-            SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
-            assertTrue( result.getRulesMatched().contains("Rule-2"));
-            assertTrue( result.getRulesMatched().contains("Rule-3"));
-            assertEquals(NotificationStatus.DO_NOT_NOTIFY.name(), result.getNotificationStatus());
+            assertEquals(NotificationStatus.DO_NOT_NOTIFY, result.getNotificationStatus());
         }
 
 
-        //Rule 3 - Grade == 3 and significance &lt;= 0.3 DO_NOT_NOTIFY
-        //Rule 1 - Grade &gt;= and significance &gt;= 0.8 NOTIFY
-        {
-            ObservedAdverseEventProfile observedAE1 = new ObservedAdverseEventProfile();
-            observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
-            observedAE1.setGrade(Grade.DEATH);
-            observedAE1.setObservedSignificance(0.3);
-            observedAE1.setTreatmentAssignment(ta);
-
-
-            SafetyRuleEvaluationResultDTO result = evaluationService.evaluateSafetySignallingRules(observedAE1);
-            assertTrue( result.getRulesMatched().contains("Rule-1"));
-            assertTrue( result.getRulesMatched().contains("Rule-3"));
-            assertEquals(NotificationStatus.DO_NOT_NOTIFY.name(), result.getNotificationStatus());
-        }
     }
 
     public List<RuleSet> findRuleSets(){
