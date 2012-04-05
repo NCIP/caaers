@@ -115,7 +115,7 @@
         <chrome:division collapsable="false" collapsed="false" title="Other Treatment Assignment">
             <div class="row">
                 <div class="label"><input type="checkbox" name="otherTAC" id="otherTAC"></div>
-                <div class="value"><textarea cols="50" rows="3" name="study.otherTreatmentAssignment.visible" id="study.otherTreatmentAssignment.visible">${command.study.otherTreatmentAssignment}</textarea></div>
+                <div class="value"><textarea cols="50" rows="3" name="visible" id="study.otherTreatmentAssignment.visible">${command.study.otherTreatmentAssignment}</textarea></div>
             </div>
             <input type="hidden" name="study.otherTreatmentAssignment" id="study.otherTreatmentAssignment" value="${command.study.otherTreatmentAssignment}">
         </chrome:division>
