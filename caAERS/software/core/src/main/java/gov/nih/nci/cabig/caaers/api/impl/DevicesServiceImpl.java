@@ -63,9 +63,9 @@ public class DevicesServiceImpl implements DevicesService, ApplicationContextAwa
 
             try {
                 deviceDao.save(d);
-                populateError(Device.class.getName(), d.getCommonName(), "");
+                errors.add(populateError(Device.class.getName(), d.getCommonName(), ""));
             } catch (Exception e) {
-                populateError(Device.class.getName(), d.getCommonName(), e.getStackTrace().toString());
+                errors.add(populateError(Device.class.getName(), d.getCommonName(), e.getStackTrace().toString()));
             }
         }
 
