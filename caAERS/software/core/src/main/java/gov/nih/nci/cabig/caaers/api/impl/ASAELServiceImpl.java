@@ -133,7 +133,7 @@ public class ASAELServiceImpl implements ASAELService, ApplicationContextAware {
         Iterator<AgentSpecificTerm> it = ts.iterator();
         while (it.hasNext()) {
             AgentSpecificCtcTerm at = (AgentSpecificCtcTerm)it.next();
-            if (isSameTerm(at.getTerm().getTerm(), "", tt.getCtepTerm(), "")) {
+            if (isSameTerm(at.getTerm().getTerm(), String.valueOf(at.getTerm().getCategory().getCtc().getId()), tt.getCtepTerm(), tt.getCtcVersion())) {
                 return true;
             }
         }
@@ -144,7 +144,7 @@ public class ASAELServiceImpl implements ASAELService, ApplicationContextAware {
         Iterator<AgentSpecificTerm> it = ts.iterator();
         while (it.hasNext()) {
             AgentSpecificCtcTerm at = (AgentSpecificCtcTerm)it.next();
-            if (isSameTerm(at.getTerm().getTerm(), "", tt.getCtepTerm(), "")) {
+            if (isSameTerm(at.getTerm().getTerm(), String.valueOf(at.getTerm().getCategory().getCtc().getId()), tt.getCtepTerm(), tt.getCtcVersion())) {
                 it.remove();
                 agentSpecificTermDao.delete(at);
                 syncStudies(at, AgentSpecificTerm.EXPTECTED_AE_DELETED);
