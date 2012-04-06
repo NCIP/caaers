@@ -70,7 +70,8 @@ public class ASAELServiceImplTest extends DaoTestCase {
 
         List<EntityErrorMessageType> l = asaelServiceImpl.execute(asaelType);
 
-        assertEquals(0, l.size());
+        assertEquals(1, l.size());
+        assertEquals("", l.get(0).getMessage().get(0));
         assertEquals(1, s.getExpectedAECtcTerms().size());
     }
 
