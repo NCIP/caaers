@@ -2,8 +2,11 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov"
     xmlns="http://webservice.caaers.cabig.nci.nih.gov"
+    xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     elementFormDefault="unqualified">
-    
+
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
+
     <xs:element name="studies">
         <xs:annotation>
             <xs:documentation> The top level (typically root) element. Allows the definition of
@@ -603,7 +606,7 @@
                     <xs:element name="commonName" type="xs:string" minOccurs="0"/>
                     <xs:element name="brandName" type="xs:string" minOccurs="0"/>
                     <xs:element name="type" type="xs:string" minOccurs="0"/>
-                    <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="status" type="cct:ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
