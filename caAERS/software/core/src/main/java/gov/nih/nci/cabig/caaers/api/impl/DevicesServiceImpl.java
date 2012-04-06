@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.DevicesService;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
+import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.webservice.DeviceType;
@@ -49,17 +50,34 @@ public class DevicesServiceImpl implements DevicesService, ApplicationContextAwa
         List<EntityErrorMessageType> errors = new ArrayList<EntityErrorMessageType>();
         if (devices == null || devices.getDevice() == null || devices.getDevice().size() == 0) return errors;
 
-/*
-        for (DeviceType device : devices.getDevice()) {
-            Device d = new Device();
-            d.setCommonName(device.getCommonName());
-            d.setBrandName(device.getBrandName());
-            d.setType(device.getType());
-            d.setRetiredIndicator(device.getState().equals());
+        for (DeviceType xmlDevice : devices.getDevice()) {
+            Device d;
+            d = loadPersistentDeviceByCommonName(xmlDevice.getCommonName());
+            if (d == null) {
+                d = new Device();
+                d.setCommonName(xmlDevice.getCommonName());
+            }
+            d.setBrandName(xmlDevice.getBrandName());
+            d.setType(xmlDevice.getType());
+            d.setRetiredIndicator(xmlDevice.getStatus().equals(ActiveInactiveStatusType.IN));
+
+            try {
+                deviceDao.save(d);
+                populateError(Device.class.getName(), d.getCommonName(), "");
+            } catch (Exception e) {
+                populateError(Device.class.getName(), d.getCommonName(), e.getStackTrace().toString());
+            }
         }
-*/
 
         return errors;
+    }
+
+    private Device loadPersistentDeviceByCommonName(String commonName) {
+        DeviceQuery q = new DeviceQuery();
+        q.filterByCommonName(commonName);
+        List rs = deviceDao.search(q);
+        if (rs.size() > 0) return (Device)rs.get(0);
+        return null;
     }
 
     public ApplicationContext getApplicationContext() {
