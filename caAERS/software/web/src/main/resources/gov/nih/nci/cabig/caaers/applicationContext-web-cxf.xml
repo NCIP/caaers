@@ -23,24 +23,37 @@
         <property name="authenticationManager" ref="authenticationManager" />
         <property name="userRepository" ref="userRepository" />
     </bean>
-    
+
+    <bean id="WSS4JInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="UsernameToken"/>
+                <entry key="passwordType" value="PasswordText"/>
+                <entry key="passwordCallbackRef">
+                    <ref bean="authenticationWSHandler"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <jaxws:endpoint id="devicesWebService" implementor="#devicesWebServiceBean" address="/DevicesService">
+        <jaxws:inInterceptors>
+            <ref bean="WSS4JInInterceptor" />
+            <ref bean="wsAuditInfoInterceptor" />
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <bean id="devicesWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.DevicesWebService">
+        <property name="devicesServiceImpl" ref="devicesServiceImpl" />
+    </bean>
+
      <jaxws:endpoint id="asaelWebService" implementor="#asaelWebServiceBean" address="/ASAELService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken"/>
-                        <entry key="passwordType" value="PasswordText"/>
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler"/>
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
     </jaxws:endpoint>
-    
+
      <bean id="asaelWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.ASAELWebService">
         <property name="asaelServiceImpl" ref="asaelServiceImpl" />
     </bean>

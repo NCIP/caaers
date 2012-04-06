@@ -397,8 +397,8 @@ default-lazy-init="true">
 
     <bean id="agentSpecificAdverseEventListService" class="gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListServiceImpl" autowire="byType" />
     <bean id="agentSpecificTermsImporter" class="gov.nih.nci.cabig.caaers.dataimport.AgentSpecificTermsImporter" autowire="byType" />
-
     <bean id="adverseEventReportingPeriodService" class="gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService" />
-    
     <bean id="asaelServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ASAELServiceImpl" autowire="byType" />
+    <bean id="devicesServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.DevicesServiceImpl" autowire="byType" />
+
 </beans>

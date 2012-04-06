@@ -603,6 +603,7 @@
                     <xs:element name="commonName" type="xs:string" minOccurs="0"/>
                     <xs:element name="brandName" type="xs:string" minOccurs="0"/>
                     <xs:element name="type" type="xs:string" minOccurs="0"/>
+                    <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
