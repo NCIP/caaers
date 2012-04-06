@@ -1,0 +1,6 @@
+<dataset>
+
+    <devices id="-1" common_name="Common name 01" brand_name="Brand name 01" device_type="Type 01" retired_indicator="false" />
+    <devices id="-2" common_name="Common name 02" brand_name="Brand name 02" device_type="Type 02" retired_indicator="false" />
+
+</dataset>
