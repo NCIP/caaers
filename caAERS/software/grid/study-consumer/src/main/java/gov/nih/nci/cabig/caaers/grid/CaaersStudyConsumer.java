@@ -342,6 +342,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                     InvalidStudyException {
     	logger.info("Populating study details..");
         study.setShortTitle(studyDto.getShortTitleText());
+        study.setDataEntryStatus(false);
         
         //Commented below lines due to deprecated study fields.
         //study.setLongTitle(studyDto.getLongTitleText());
