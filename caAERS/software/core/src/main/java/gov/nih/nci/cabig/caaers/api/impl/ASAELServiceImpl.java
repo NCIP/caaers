@@ -111,10 +111,14 @@ public class ASAELServiceImpl implements ASAELService, ApplicationContextAware {
                 asaelTerm.setCtcTerm(t);
                 asaelTerm.setExpected(Boolean.TRUE);
 
-                agentSpecificTermDao.save(asaelTerm);
-                log.debug(String.format("NEW TERM ADDED: %s, %d", asaelTerm.getFullName(), asaelTerm.getId()));
-                errors.add(populateError(CtcTerm.class.getCanonicalName(), asaelTerm.getFullName(), ""));
-                syncStudies(asaelTerm, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+                try {
+                    agentSpecificTermDao.save(asaelTerm);
+                    errors.add(populateError(CtcTerm.class.getCanonicalName(), asaelTerm.getFullName(), ""));
+                    log.debug(String.format("NEW TERM ADDED: %s, %d", asaelTerm.getFullName(), asaelTerm.getId()));
+                    syncStudies(asaelTerm, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+                } catch (Exception e) {
+                    errors.add(populateError(CtcTerm.class.getCanonicalName(), asaelTerm.getFullName(), e.getStackTrace().toString()));
+                }
             }
         }
 
