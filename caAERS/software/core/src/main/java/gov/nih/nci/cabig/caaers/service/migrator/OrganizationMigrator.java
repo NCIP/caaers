@@ -11,9 +11,7 @@ public class OrganizationMigrator implements Migrator<Organization>{
 		dest.setName(src.getName());
 		dest.setDescriptionText(src.getDescriptionText());
 		dest.setRetiredIndicator(src.getRetiredIndicator());
-		dest.setMergedOrganization(src.getMergedOrganization());
 		dest.setNciInstituteCode(src.getNciInstituteCode());
-		
 		dest.setCity(src.getCity());
 		dest.setCountry(src.getCountry());
 		dest.setState(src.getState());

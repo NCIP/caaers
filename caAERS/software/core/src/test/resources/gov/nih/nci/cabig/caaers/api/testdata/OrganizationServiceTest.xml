@@ -1,0 +1,26 @@
+<dataset>
+
+	<ORGANIZATIONS
+    	id="-1002"
+    	version="1"
+    	name="Duke University Comprehensive Cancer Center"
+    	description_text="DUKE"
+    	nci_institute_code="DEFAULT"/>
+
+    <ORGANIZATIONS
+    	id="-1003"
+    	version="1"
+    	name="Northwestern University"
+    	description_text="NUCC"
+    	nci_institute_code="WAKE" />
+    	
+    <ORGANIZATIONS
+    	id="-1004"
+    	version="1"
+    	name="Mayo Clinic Hospital"
+    	description_text="MAYO"
+    	nci_institute_code="MAYO"/>
+    	
+    <Organization_index/>
+	
+</dataset>

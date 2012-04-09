@@ -530,7 +530,7 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
     	}
     	
     	if( this.getMergedOrganization() !=null && o.getMergedOrganization() != null ){
-    		return (this.getMergedOrganization().compareTo(o.getMergedOrganization()));
+    		return (this.getMergedOrganization().getNciInstituteCode().compareTo(o.getMergedOrganization().getNciInstituteCode()));
     	}
     	    	
     	return 0;

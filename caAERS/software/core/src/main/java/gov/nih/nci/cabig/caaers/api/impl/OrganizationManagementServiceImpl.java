@@ -45,12 +45,17 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 		errorMessage.setBusinessId(organization.getNciInstituteCode());
 		try {
 			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
+			Organization mergedDbOrganization = null;
+			if(organization.getMergedOrganization() != null){
+				mergedDbOrganization = organizationDao.getByNCIcode(organization.getMergedOrganization().getNciInstituteCode());
+			}
 			// check if db organization with same NCI code exists
 			if(dbOrganization !=null) {
 				logger.info("found db Organization with NCI identifier: " + organization.getNciInstituteCode());
 				// compare with db organization to see if any property changed
 				if(organization.compareTo(dbOrganization) != 0){
 					logger.info("updating db Organization with NCI identifier:" + organization.getNciInstituteCode() + " with remote Organization");
+					dbOrganization.setMergedOrganization(mergedDbOrganization);
 					organizationMigrator.migrate(organization, dbOrganization, null);
 					organizationRepository.createOrUpdate(dbOrganization);
 				} 
@@ -58,6 +63,7 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 					// db Organization doesn't exist. Create a new organization.
 					logger.info("didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + ". Creating new Organization");
 					Organization newOrganization = new LocalOrganization();
+					newOrganization.setMergedOrganization(mergedDbOrganization);
 					organizationMigrator.migrate(organization, newOrganization, null);
 					organizationRepository.createOrUpdate(newOrganization);
 			}
