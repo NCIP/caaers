@@ -44,17 +44,21 @@ public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
 
     public void testGetAll() throws Exception {
         List<Notification> all = getDao().getAll();
-        assertEquals(2, all.size());
+        assertEquals(3, all.size());
     }
     
     public void testSearch(){
         NotificationQuery query = new NotificationQuery();
         List<Notification> nfList = (List<Notification>) getDao().search(query);
-        assertEquals(2, nfList.size());
+        assertEquals(3, nfList.size());
 
         query.filterByStudyId(-1);
         nfList = (List<Notification>) getDao().search(query);
         assertEquals(2, nfList.size());
+        
+        query.filterByStudyId(-2);
+        nfList = (List<Notification>) getDao().search(query);
+        assertEquals(1, nfList.size());
 
         query.filterByStudyId(-999999);
         nfList = (List<Notification>) getDao().search(query);
@@ -65,5 +69,5 @@ public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
         nfList = (List<Notification>) getDao().search(query);
         assertEquals(1, nfList.size());
     }
-
+    
 }

@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Ion C. Olaru
@@ -230,6 +231,13 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     	// All other combinations are invalid
 		treatmentAssignmentAgents.add(treatmentAssignmentAgent);
 		recalculateExpectedness(agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor() && agentSpecificTerm.isExpected());
+	}
+	
+	public Double getFrequency(Grade grade){
+		if(grade!=null){
+			return (Double)new BeanWrapperImpl(this).getPropertyValue("grade"+grade.getCode()+"Frequency");
+		}
+		return expectednessFrequency;
 	}
 
 }

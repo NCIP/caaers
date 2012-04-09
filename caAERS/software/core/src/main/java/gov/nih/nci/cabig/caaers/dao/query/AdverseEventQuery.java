@@ -3,7 +3,10 @@ package gov.nih.nci.cabig.caaers.dao.query;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
+
+import org.apache.commons.lang.StringUtils;
 
 public class AdverseEventQuery extends AbstractQuery {
 	
@@ -21,10 +24,16 @@ public class AdverseEventQuery extends AbstractQuery {
 	
 	public static final String TAC = "tac";
 	
+	public static final String TAC_EXPECTED_AE_PROFILE = "exp";
+	
 	public static final String LL_TERM_ALIAS = "llt";
 	
 	public AdverseEventQuery() {
 		super("select distinct "+AE_ALIAS+" from AdverseEvent "+ AE_ALIAS);
+	}
+	
+	public AdverseEventQuery(String...selections) {
+		super("select distinct "+AE_ALIAS+", "+StringUtils.join(selections, ", ")+" from AdverseEvent "+ AE_ALIAS);
 	}
 	
 	public void joinAdverseEventTerm(){
@@ -82,6 +91,11 @@ public class AdverseEventQuery extends AbstractQuery {
 	public void joinTreatmentAssignment() {
 		joinReportingPeriod();
 		join (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);
+	}
+	
+	public void joinTreatmentAssignmentExpectedAEProfile() {
+		joinTreatmentAssignment();
+		join (TAC +".abstractStudyInterventionExpectedAEs "+TAC_EXPECTED_AE_PROFILE);
 	}
 
 	public void outerjoinTreatmentAssignment() {
@@ -167,6 +181,15 @@ public class AdverseEventQuery extends AbstractQuery {
     public void filterByCourseNumber(Integer num , String operator) throws Exception {
     	andWhere(AE_REPORTING_PERIOD_ALIAS+".cycleNumber "+operator+" :num");
         setParameter("num", num);
+    }
+    
+    public void filterByStudy(Study study){
+    	andWhere(STUDY_ALIAS+"=:study");
+    	setParameter("study", study);
+    }
+    
+    public void filterByMatchingTermsOnExpectedAEProfileAndReportedAE(){
+    	andWhere(TAC_EXPECTED_AE_PROFILE+".term="+AE_TERM_ALIAS+".term");
     }
     
 }

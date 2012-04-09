@@ -72,6 +72,7 @@ public class RuleSetDaoTest extends CaaersDbTestCase {
         Organization org = orgDao.getById(-1001);
 
         Study s = studyDao.getById(-1);
+        
         {
             RuleSet rs1 = new RuleSet();
             rs1.setRuleBindURI("x1");
@@ -105,6 +106,60 @@ public class RuleSetDaoTest extends CaaersDbTestCase {
 
 
     }
+    
+    public void testGetRuleSetForSafetySignalling(){
+        Organization org = orgDao.getById(-1001);
 
+        Study s = studyDao.getById(-1);
+        {
+            RuleSet rs0 = new RuleSet();
+            rs0.setRuleBindURI("x0");
+            rs0.setSponsor(org);
+            rs0.setRuleLevel(RuleLevel.Institution);
+            rs0.setRuleType(RuleType.FIELD_LEVEL_RULES);
+            rs0.setStatus(RuleSet.STATUS_ENABLED);
+            rs0.setStudy(s);
+            dao.save(rs0);
+        }
+        interruptSession();
+        {
+            RuleSet rs1 = new RuleSet();
+            rs1.setRuleBindURI("x1");
+            rs1.setSponsor(org);
+            rs1.setRuleLevel(RuleLevel.Institution);
+            rs1.setRuleType(RuleType.SAFETY_SIGNALLING_RULES);
+            rs1.setStatus(RuleSet.STATUS_ENABLED);
+            rs1.setStudy(s);
+            dao.save(rs1);
+        }
+        interruptSession();
+        {
+            RuleSet rs2 = new RuleSet();
+            rs2.setRuleBindURI("x2");
+            rs2.setSponsor(org);
+            rs2.setRuleLevel(RuleLevel.Institution);
+            rs2.setRuleType(RuleType.SAFETY_SIGNALLING_RULES);
+            rs2.setStatus(RuleSet.STATUS_DISABLED);
+            rs2.setStudy(s);
+            dao.save(rs2);
+        }
+        interruptSession();
+        {
+            RuleSet rs3 = new RuleSet();
+            rs3.setRuleBindURI("x3");
+            rs3.setSponsor(org);
+            rs3.setRuleLevel(RuleLevel.Institution);
+            rs3.setRuleType(RuleType.SAFETY_SIGNALLING_RULES);
+            rs3.setStatus(RuleSet.STATUS_ENABLED);
+            dao.save(rs3);
+        }
+        interruptSession();
+        {
+        	List<RuleSet> ruleSets= dao.getRuleSetForSafetySignalling();
+            System.out.println(ruleSets);
+            assertEquals(1, ruleSets.size());
+            assertEquals("x1", ruleSets.get(0).getRuleBindURI());
+        }
+    }
 
 }

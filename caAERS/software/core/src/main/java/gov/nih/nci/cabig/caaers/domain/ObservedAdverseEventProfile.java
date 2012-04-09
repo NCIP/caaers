@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -9,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.distribution.NormalDistributionImpl;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -18,12 +21,27 @@ import org.hibernate.annotations.Type;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_observed_ae_profiles") })
 public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
     
-    private Grade grade;
+    public ObservedAdverseEventProfile() {
+		super();
+	}
+
+	public ObservedAdverseEventProfile(TreatmentAssignment treatmentAssignment, DomainObject term, Grade grade) {
+		super();
+		this.grade = grade;
+		this.treatmentAssignment = treatmentAssignment;
+		if (term instanceof CtcTerm) {
+			this.ctcTerm = (CtcTerm) term;
+		}else if(term instanceof LowLevelTerm) {
+			this.lowLevelTerm = (LowLevelTerm) term;
+		}
+	}
+
+	private Grade grade;
     private TreatmentAssignment treatmentAssignment;
     private CtcTerm ctcTerm;
     private LowLevelTerm lowLevelTerm;
     private Double expectedFrequency;
-    private Integer totalNoOfAE;
+    private Integer totalNoOfRegistrations;
     private Double observedFrequency;
     private Integer observedNoOfAE;
     private Double standardDeviation;
@@ -89,12 +107,12 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 		this.expectedFrequency = expectedFrequency;
 	}
 
-	public Integer getTotalNoOfAE() {
-		return totalNoOfAE;
+	public Integer getTotalNoOfRegistrations() {
+		return totalNoOfRegistrations;
 	}
 
-	public void setTotalNoOfAE(Integer totalNoOfAE) {
-		this.totalNoOfAE = totalNoOfAE;
+	public void setTotalNoOfRegistrations(Integer totalNoOfAE) {
+		this.totalNoOfRegistrations = totalNoOfAE;
 	}
 
 	public Double getObservedFrequency() {
@@ -145,5 +163,25 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 	public void setNotificationStatus(NotificationStatus notificationStatus) {
 		this.notificationStatus = notificationStatus;
 	}
-
+	
+	@Transient
+	public DomainObject getTerm(){
+		if(ctcTerm != null) return ctcTerm;
+		else if(lowLevelTerm != null) return lowLevelTerm;
+		return null;
+	}
+	
+	public void calculateStatistics(){
+		// Calculate observed frequency, observed signification, pValue, standard deviation
+		observedFrequency = ((double)observedNoOfAE/(double)totalNoOfRegistrations)*100;
+		double x = observedFrequency/100;
+		double M = expectedFrequency/100;
+		standardDeviation = Math.sqrt(M*(1-M)/totalNoOfRegistrations);
+		observedSignificance = (x-M)/standardDeviation;
+		try {
+			pValue = new NormalDistributionImpl(0, 1).cumulativeProbability(observedSignificance);
+		} catch (MathException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

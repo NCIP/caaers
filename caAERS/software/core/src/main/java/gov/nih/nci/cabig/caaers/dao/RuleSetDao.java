@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
 import gov.nih.nci.cabig.caaers.domain.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +31,13 @@ public class RuleSetDao extends CaaersDao<RuleSet> {
     public void deleteRuleSet(String bindURI){
         RuleSet ruleSet = getByBindURI(bindURI);
         if(ruleSet != null) getHibernateTemplate().delete(ruleSet);
+    }
+    
+    public List<RuleSet> getRuleSetForSafetySignalling(){
+    	RuleSetQuery ruleSetQuery = new RuleSetQuery();
+		ruleSetQuery.joinStudy();
+		ruleSetQuery.filterByStatus(RuleSet.STATUS_ENABLED);
+		ruleSetQuery.filterByRuleType(RuleType.SAFETY_SIGNALLING_RULES);
+		return (List<RuleSet>)search(ruleSetQuery);
     }
 }

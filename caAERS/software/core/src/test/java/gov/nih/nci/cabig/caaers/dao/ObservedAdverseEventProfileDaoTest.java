@@ -1,9 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.NotificationStatus;
 import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 
 /**
  * @author Sameer Sawant
@@ -32,7 +35,7 @@ public class ObservedAdverseEventProfileDaoTest extends DaoTestCase<ObservedAdve
         assertEquals(new Double(.10), loaded.getObservedSignificance());
         assertEquals(new Double(0.23), loaded.getpValue());
         assertEquals(new Double(2.3), loaded.getStandardDeviation());
-        assertEquals(60, loaded.getTotalNoOfAE().intValue());
+        assertEquals(60, loaded.getTotalNoOfRegistrations().intValue());
         assertEquals(-3, loaded.getTreatmentAssignment().getId().intValue());
         assertEquals(3012, loaded.getCtcTerm().getId().intValue());
     }
@@ -48,7 +51,7 @@ public class ObservedAdverseEventProfileDaoTest extends DaoTestCase<ObservedAdve
 		unloaded.setObservedNoOfAE(40);
 		unloaded.setpValue(0.23);
 		unloaded.setStandardDeviation(2.3);
-		unloaded.setTotalNoOfAE(60);
+		unloaded.setTotalNoOfRegistrations(60);
 		unloaded.setTreatmentAssignment(treatmentAssignmentDao.getById(-4));
 		getDao().save(unloaded);
 		interruptSession();
@@ -62,8 +65,17 @@ public class ObservedAdverseEventProfileDaoTest extends DaoTestCase<ObservedAdve
         assertEquals(new Double(.10), loaded.getObservedSignificance());
         assertEquals(new Double(0.23), loaded.getpValue());
         assertEquals(new Double(2.3), loaded.getStandardDeviation());
-        assertEquals(60, loaded.getTotalNoOfAE().intValue());
+        assertEquals(60, loaded.getTotalNoOfRegistrations().intValue());
         assertEquals(-4, loaded.getTreatmentAssignment().getId().intValue());
         assertEquals(3010, loaded.getCtcTerm().getId().intValue());
+	}
+	
+	public void testGetByTACs() throws Exception{
+		List<ObservedAdverseEventProfile> observedProfiles = getDao().getByTACs(new TreatmentAssignment[]{treatmentAssignmentDao.getById(-3)});
+		assertEquals(1, observedProfiles.size());
+		assertEquals(-1, observedProfiles.get(0).getId().intValue());
+		
+		observedProfiles = getDao().getByTACs(new TreatmentAssignment[]{treatmentAssignmentDao.getById(-3), treatmentAssignmentDao.getById(-4)});
+		assertEquals(2, observedProfiles.size());
 	}
 }

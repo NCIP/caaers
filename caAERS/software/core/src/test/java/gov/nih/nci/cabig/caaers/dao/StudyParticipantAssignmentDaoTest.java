@@ -164,4 +164,8 @@ public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<Stu
         getDao().reassociate(assignment);
         assertEquals(10, assignment.getVersion().intValue());
     }
+    
+    public void testGetCountByTAC() throws Exception {
+    	assertEquals(1, getDao().getCountByTAC(-1003).intValue());
+    }
 }

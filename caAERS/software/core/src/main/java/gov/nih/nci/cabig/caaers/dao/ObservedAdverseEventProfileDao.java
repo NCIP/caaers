@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.Arrays;
@@ -48,5 +49,9 @@ public class ObservedAdverseEventProfileDao extends GridIdentifiableDao<Observed
     @Transactional(readOnly = false)
     public void save(ObservedAdverseEventProfile o) {
         getHibernateTemplate().saveOrUpdate(o);
+    }
+    
+    public List<ObservedAdverseEventProfile> getByTACs(TreatmentAssignment[] treatmentAssignments){
+    	return getHibernateTemplate().findByNamedParam("from ObservedAdverseEventProfile oap where oap.treatmentAssignment in :params", "params", treatmentAssignments);
     }
 }

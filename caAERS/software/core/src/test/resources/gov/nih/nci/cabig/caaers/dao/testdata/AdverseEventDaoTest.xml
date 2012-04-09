@@ -37,6 +37,24 @@
             ctep_code="10043882"
             other_required="0"
             />
+            
+    <ctc_terms
+            category_id="302"
+            id="3013"
+            term="Nausea"
+            ctep_term="Nausea"
+            ctep_code="10043434"
+            other_required="0"
+            />
+            
+    <ctc_terms
+            category_id="302"
+            id="3014"
+            term="Vomiting"
+            ctep_term="Vomiting"
+            ctep_code="10043434"
+            other_required="0"
+            />
 
     <MEDDRA_LLT
             id="-11"
@@ -223,6 +241,11 @@
             order_no="1"
             study_id="-2"
             />
+    <TREATMENT_ASSIGNMENT
+            id="1002"
+            code="adverseEventReportingPeriodCode"
+            study_id="-2"
+            />
     <STUDY_ORGANIZATIONS
             id="-1000"
             version="1"
@@ -242,7 +265,7 @@
             start_date="2008-05-26"
             end_date="2008-05-27"
             description="test object 1002"
-            treatment_assignment_id="1001"
+            treatment_assignment_id="1002"
             assignment_id="-6"
             epoch_id="-1010"
             />
@@ -288,6 +311,23 @@
             event_time_minute="3"
             event_time_zone="1"
             />
+            
+    <ADVERSE_EVENTS
+            id="-6"
+            report_id="-17"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="1002"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            />
 
     <AE_TERMS
             id="-8"
@@ -302,6 +342,40 @@
             term_id="3007"
             term_type="ctep"
             />
+            
+    <AE_TERMS
+            id="-92"
+            adverse_event_id="-6"
+            term_id="3013"
+            term_type="ctep"
+            />
+            
+    <agents id="-1" name="Agent-01" description="Agent-01" nsc="760"/>
+
+    <study_agents id="-1" study_id="-2" agent_id="-1"/>
+	
+	<ta_study_interventions id="-1" treatment_assignment_id="1002" version="0"/>
+	<ta_agents id="-1" version="0" study_agent_id="-1"/>
+	
+	<agent_terms id="-1" agent_id="-1" term_id="3007" term_type="ctep" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+    <agent_terms id="-2" agent_id="-1" term_id="3012" term_type="ctep"  expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+    <agent_terms id="-3" agent_id="-1" term_id="3013" term_type="ctep"  expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+    <agent_terms id="-4" agent_id="-1" term_id="3014" term_type="ctep"  expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+    
+    <study_interventions_exp_aes id="-1" term_type="ctep" treatment_assignment_id="1002" term_id="3007" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+    <study_interventions_exp_aes id="-2" term_type="ctep" treatment_assignment_id="1002" term_id="3012" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+    <study_interventions_exp_aes id="-3" term_type="ctep" treatment_assignment_id="1002" term_id="3014" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="44.00" expectedness_frequency="60.00"/>
+
+	<ta_expected_ae_intervention ta_expected_id="-1" ta_agent_id="-1" />
+	<ta_expected_ae_intervention ta_expected_id="-2" ta_agent_id="-1" />
+	<ta_expected_ae_intervention ta_expected_id="-3" ta_agent_id="-1" />
 
     <TREATMENTS
             id="-17"

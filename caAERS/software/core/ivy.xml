@@ -172,6 +172,9 @@
             <!-- Apache commons -->
             <dependency org="edu.northwestern.bioinformatics" name="core-commons" rev="77"   /> <!-- Northwestern -->
             <dependency org="commons-validator" name="commons-validator" rev="1.1.4"  />
+            <dependency org="org.apache.commons" name="commons-math" rev="2.2">
+            	<exclude module="junit" />
+            </dependency>
 
             <!-- Quartz -->
             <dependency org="opensymphony" name="quartz-all" rev="1.6.0" />

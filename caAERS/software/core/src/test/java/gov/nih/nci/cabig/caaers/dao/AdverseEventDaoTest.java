@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
-import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertEqualArrays;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventQuery;
+import gov.nih.nci.cabig.caaers.dao.query.SafetySignalingQuery;
+import gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -18,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
@@ -27,11 +29,8 @@ import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -337,7 +336,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
         List aeList = getDao().findAll(null);
         assertNotNull(aeList);
         assertTrue(aeList.size() > 0);
-        assertSame(3, aeList.size());
+        assertSame(4, aeList.size());
     }
     
     public void testUpdateRequiresReporting() throws Exception {
@@ -432,7 +431,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	Study s = studyDao.getById(-2);
     	
     	List<AdverseEvent> aes = getDao().getByStudy(s);
-    	assertEquals(3, aes.size());
+    	assertEquals(4, aes.size());
     	
     }
     
@@ -440,13 +439,13 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	Study s = studyDao.getById(-2);
         AdverseEvent ae = getDao().getById(-2);
         List<AdverseEvent> aes = getDao().getByStudy(s, ae);
-    	assertEquals(2, aes.size());
+    	assertEquals(3, aes.size());
     }
     
     public void testGetByParticipant(){
     	Participant p = participantDao.getById(-4);
     	List<AdverseEvent> aes = getDao().getByParticipant(p);
-    	assertEquals(2, aes.size());
+    	assertEquals(3, aes.size());
     }
     
     public void testGetByParticipantHavingNoAssingment(){
@@ -459,11 +458,11 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	Participant p = participantDao.getById(-4);
     	AdverseEvent ae = getDao().getById(-2);
     	List<AdverseEvent> aes = getDao().getByParticipant(p, ae);
-    	assertEquals(2, aes.size());
+    	assertEquals(3, aes.size());
     }
     public void testGetByStudyParticipant() throws Exception {
     	List<AdverseEvent> loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4));
-    	assertTrue(loaded.size()==3);
+    	assertTrue(loaded.size()==4);
     	
     }
 
@@ -475,7 +474,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 		tv.setType(1);
     	adverseEvent.setEventApproximateTime(tv);
     	List<AdverseEvent> loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4),adverseEvent);
-    	assertEquals(3, loaded.size());
+    	assertEquals(4, loaded.size());
     	adverseEvent = new AdverseEvent();
     	adverseEvent.setHospitalization(Hospitalization.NO);
     	adverseEvent.setSolicited(true);
@@ -484,6 +483,40 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	assertEquals(0, loaded.size());
 
 
+    }
+    
+//    public void testexecuteHQL() throws Exception {
+//    	String hql = "select exp, ae, tac.id from AdverseEvent ae " +
+//    			"join ae.reportingPeriod.assignment.studySite.study study " +
+//    			"join ae.reportingPeriod.treatmentAssignment tac " +
+//    			"join tac.abstractStudyInterventionExpectedAEs exp " +
+//    			"join ae.adverseEventTerm aeTerm " +
+//    			//"where ae.reportingPeriod.assignment.studySite.study=:study";
+//    			"where exp.term=aeTerm.term and study=:study";
+//    	List returnData = getDao().executeHQL(hql, "study", studyDao.getById(-2));
+//    	assertEquals(2, returnData.size());
+//    }
+    
+    public void testGetAllAEsForSafetySignaling() throws Exception {
+    	List returnData = getDao().getAllAEsForSafetySignaling(studyDao.getById(-2));
+    	assertEquals(2, returnData.size());
+    	
+    	TreatmentAssignment tac = (TreatmentAssignment)((Object[])returnData.get(0))[2];
+    	AdverseEvent loadedAE = (AdverseEvent)((Object[])returnData.get(0))[0];
+    	AbstractStudyInterventionExpectedAE loadedASAEL = (AbstractStudyInterventionExpectedAE)((Object[])returnData.get(0))[1];
+    	assertEquals(new Integer(1002), tac.getId());
+    	assertEquals(new Integer(-5), loadedAE.getId());
+    	assertEquals(new Integer(3007), loadedAE.getAdverseEventTerm().getTerm().getId());
+    	assertEquals(new Integer(3007), loadedASAEL.getTerm().getId());
+    	
+    	tac = (TreatmentAssignment)((Object[])returnData.get(1))[2];
+    	loadedAE = (AdverseEvent)((Object[])returnData.get(1))[0];
+    	loadedASAEL = (AbstractStudyInterventionExpectedAE)((Object[])returnData.get(1))[1];
+    	assertEquals(new Integer(1002), tac.getId());
+    	assertEquals(new Integer(-2), loadedAE.getId());
+    	assertEquals(new Integer(3012), loadedAE.getAdverseEventTerm().getTerm().getId());
+    	assertEquals(new Integer(3012), loadedASAEL.getTerm().getId());
+    	
     }
 
     public AdverseEventDao getDao(){

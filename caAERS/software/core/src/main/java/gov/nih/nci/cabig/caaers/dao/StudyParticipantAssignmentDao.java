@@ -98,5 +98,10 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
         });
 
     }
+    
+    public Integer getCountByTAC(Integer id){
+    	String query = "Select count(distinct rp.assignment) from AdverseEventReportingPeriod rp where rp.treatmentAssignment.id=:id";
+    	return ((Long)getHibernateTemplate().findByNamedParam(query, "id", id).get(0)).intValue();
+    }
 
 }

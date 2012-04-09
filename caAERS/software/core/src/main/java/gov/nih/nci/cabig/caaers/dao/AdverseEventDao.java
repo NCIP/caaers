@@ -1,25 +1,17 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
+import gov.nih.nci.cabig.caaers.dao.query.SafetySignalingQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -206,6 +198,14 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
 	}
 
- 
+	public List getAllAEsForSafetySignaling(Study study){
+		SafetySignalingQuery safetyQuery = new SafetySignalingQuery(SafetySignalingQuery.TAC_EXPECTED_AE_PROFILE, SafetySignalingQuery.TAC);
+    	safetyQuery.joinStudy();
+    	safetyQuery.joinTreatmentAssignmentExpectedAEProfile();
+    	safetyQuery.joinAdverseEventTerm();
+    	safetyQuery.filterByStudy(study);
+    	safetyQuery.filterByMatchingTermsOnExpectedAEProfileAndReportedAE();
+    	return search(safetyQuery);
+	}
    
 }

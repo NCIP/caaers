@@ -16,6 +16,15 @@
             grid_id="f2321"
             load_status="1"
             />
+            
+    <STUDIES
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Shorter2"
+            long_title="Lengthy Title2" description="Different description2"
+            grid_id="f23212"
+            load_status="1"
+            />
 
     <ind_holders />
     <site_investigators />
@@ -37,6 +46,16 @@
         subject="no-subject2"
         name="no-name2"
         study_id="-1"
+        version="0"
+        />
+        
+    <notifications
+        id="-3"
+        content="This is supposed to be an even meaningless content."
+        emails="EF@no-email.com"
+        subject="no-subject3"
+        name="no-name3"
+        study_id="-2"
         version="0"
         />
 </dataset>

@@ -878,11 +878,27 @@ public class Fixtures {
   }
   
   public static RuleSet createRuleSet(){
+	  return createRuleSet(RuleType.REPORT_SCHEDULING_RULES);
+  }
+  
+  public static RuleSet createRuleSet(RuleType ruleType){
       RuleSet rs = new RuleSet();
-      rs.setRuleType(RuleType.REPORT_SCHEDULING_RULES);
+      rs.setRuleType(ruleType);
       rs.setStatus(RuleSet.STATUS_ENABLED);
       rs.setOrganization(createOrganization("CTEP", "CTEP"));
       rs.setRuleLevel(RuleLevel.Sponsor);
       return rs;
+  }
+  
+  public static AbstractStudyInterventionExpectedAE createAbstractStudyInterventionExpectedAE(){
+	  AbstractStudyInterventionExpectedAE exp = new StudyInterventionExpectedCtcTerm();
+	  exp.setExpected(true);
+	  exp.setExpectednessFrequency(1.0);
+	  exp.setGrade1Frequency(2.0);
+	  exp.setGrade2Frequency(3.0);
+	  exp.setGrade3Frequency(4.0);
+	  exp.setGrade4Frequency(5.0);
+	  exp.setGrade5Frequency(6.0);
+	  return exp;
   }
 }

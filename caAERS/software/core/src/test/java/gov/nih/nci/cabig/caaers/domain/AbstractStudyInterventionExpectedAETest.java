@@ -102,6 +102,16 @@ public class AbstractStudyInterventionExpectedAETest extends TestCase{
 		
 	}
 	
+	public void testGetFrequency(){
+		setupExpectedness(20.00, 10.00, 4.34, 6.23, 44.00, 60.00, false);
+		assertEquals("20.00", format(abstractStudyInterventionExpectedAE.getFrequency(Grade.getByCode(1))));
+		assertEquals("10.00", format(abstractStudyInterventionExpectedAE.getFrequency(Grade.getByCode(2))));
+		assertEquals("4.34", format(abstractStudyInterventionExpectedAE.getFrequency(Grade.getByCode(3))));
+		assertEquals("6.23", format(abstractStudyInterventionExpectedAE.getFrequency(Grade.getByCode(4))));
+		assertEquals("44.00", format(abstractStudyInterventionExpectedAE.getFrequency(Grade.getByCode(5))));
+		assertEquals("60.00", format(abstractStudyInterventionExpectedAE.getFrequency(null)));
+	}
+	
 	private void setupExpectedness(Double _1, Double _2, Double _3, Double _4, Double _5, Double _overall, boolean _expected){
 		abstractStudyInterventionExpectedAE.setExpected(_expected);
 		abstractStudyInterventionExpectedAE.setExpectednessFrequency(_overall);
