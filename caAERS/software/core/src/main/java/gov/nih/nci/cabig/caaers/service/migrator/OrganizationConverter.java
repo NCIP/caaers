@@ -20,6 +20,7 @@ public class OrganizationConverter extends DomainObjectConverter{
 	public void convertOrganizationDtoToDomainOrganization(OrganizationType organizationDto, Organization organization){
 		
 		organization.setName(organizationDto.getName());
+		organization.setNciInstituteCode(organizationDto.getNciInstituteCode());
 		organization.setDescriptionText(organizationDto.getDescriptionText());
 		organization.setRetiredIndicator(organizationDto.getStatus().name().equals("AC") ? false:true);
 		

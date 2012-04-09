@@ -60,14 +60,14 @@ public class AgentServiceImpl implements AgentService{
 					logger.info("updating db Agent with NSC Number:" + agent.getNscNumber() + " with remote Agent");
 					agentMigrator.migrate(agent, dbAgent, null);
 					agentRepository.saveAgent(dbAgent);
-				} else {
-					// db agent doesn't exist. Create a new agent.
-					logger.info("didn't find db Agent with NSC Number:" + agent.getNscNumber() + ". Creating new Agent");
-					Agent newAgent = new Agent();
-					agentMigrator.migrate(agent, newAgent, null);
-					agentRepository.saveAgent(newAgent);
-				}
-			} 
+					} 
+			} else {
+				// db agent doesn't exist. Create a new agent.
+				logger.info("didn't find db Agent with NSC Number:" + agent.getNscNumber() + ". Creating new Agent");
+				Agent newAgent = new Agent();
+				agentMigrator.migrate(agent, newAgent, null);
+				agentRepository.saveAgent(newAgent);
+			}
 		} catch (Exception e) {
 			errorMessage.addMessage(e.getMessage());
 			logger.error(e.getMessage());

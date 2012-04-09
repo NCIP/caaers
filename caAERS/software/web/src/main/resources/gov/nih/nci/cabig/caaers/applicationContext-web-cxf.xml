@@ -175,7 +175,7 @@
     </jaxws:endpoint>
     
     <bean id="organizationManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.OrganizationManagementWebServiceImpl">
-        <property name="organizationManagementServiceImpl" ref="organizationManagementService" />
+        <property name="organizationManagementService" ref="organizationManagementService" />
         <property name="organizationConverter" ref="organizationConverter" />
     </bean>
     <jaxws:endpoint
@@ -199,7 +199,7 @@
     </jaxws:endpoint>
     
     <bean id="agentManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.AgentManagementWebServiceImpl">
-        <property name="agentServiceImpl" ref="agentService" />
+        <property name="agentService" ref="agentService" />
         <property name="agentConverter" ref="agentConverter" />
     </bean>
     <jaxws:endpoint

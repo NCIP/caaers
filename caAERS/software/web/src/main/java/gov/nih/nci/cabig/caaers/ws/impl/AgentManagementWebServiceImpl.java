@@ -16,14 +16,19 @@ import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.AgentManagementWebService", serviceName="AgentManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common")
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 	
 	private static Log logger = LogFactory.getLog(AgentManagementWebServiceImpl.class);
 	private AgentConverter agentConverter;
-	private AgentService agentServiceImpl;
+	private AgentService agentService;
 
 	public CaaersServiceResponse createOrUpdateAgent(Agents xmlAgents)
 			throws SecurityExceptionFaultMessage {
@@ -40,7 +45,7 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 				agentConverter.convertAgentDtoToDomainAgent(agentDto, agent);
 				domainAgents.add(agent);
 			}
-			List<EntityErrorMessage> entityErrorMessages = agentServiceImpl.createOrUpdateAgents(domainAgents);
+			List<EntityErrorMessage> entityErrorMessages = agentService.createOrUpdateAgents(domainAgents);
 			agentConverter.convertEntityErrorMessages(entityErrorMessages, entityErrorMessageTypes);
 		} catch (Throwable e) {
 			logger.debug(e.getMessage());
@@ -57,8 +62,8 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 		this.agentConverter = agentConverter;
 	}
 
-	public void setAgentServiceImpl(AgentService agentServiceImpl) {
-		this.agentServiceImpl = agentServiceImpl;
+	public void setAgentService(AgentService agentService) {
+		this.agentService = agentService;
 	}
 
 }

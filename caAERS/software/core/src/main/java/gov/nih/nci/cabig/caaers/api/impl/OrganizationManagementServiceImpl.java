@@ -53,14 +53,14 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 					logger.info("updating db Organization with NCI identifier:" + organization.getNciInstituteCode() + " with remote Organization");
 					organizationMigrator.migrate(organization, dbOrganization, null);
 					organizationRepository.createOrUpdate(dbOrganization);
-				} else {
+				} 
+			} else {
 					// db Organization doesn't exist. Create a new organization.
 					logger.info("didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + ". Creating new Organization");
 					Organization newOrganization = new LocalOrganization();
 					organizationMigrator.migrate(organization, newOrganization, null);
 					organizationRepository.createOrUpdate(newOrganization);
-				}
-			} 
+			}
 		} catch (Exception e) {
 			errorMessage.addMessage(e.getMessage());
 			logger.error(e.getMessage());

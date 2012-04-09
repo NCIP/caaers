@@ -11,6 +11,7 @@ public class AgentConverter extends DomainObjectConverter{
 
 	public void convertAgentDtoToDomainAgent(AgentType agentDto, Agent agent){
 		agent.setName(agentDto.getName());
+		agent.setNscNumber(agentDto.getNscNumber());
 		agent.setDescription(agentDto.getDescriptionText());
 		agent.setRetiredIndicator(agentDto.getStatus().name().equals("AC") ? false:true);
 	}

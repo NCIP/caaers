@@ -11,5 +11,6 @@ public class AgentMigrator implements Migrator<Agent>{
 		dest.setName(src.getName());
 		dest.setDescription(src.getDescription());
 		dest.setRetiredIndicator(src.getRetiredIndicator());
+		dest.setNscNumber(src.getNscNumber());
 	}
 }

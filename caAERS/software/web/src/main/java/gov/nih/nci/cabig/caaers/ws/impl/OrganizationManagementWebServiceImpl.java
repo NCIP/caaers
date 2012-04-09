@@ -17,6 +17,9 @@ import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,9 +28,11 @@ import org.apache.commons.logging.LogFactory;
  * @author Ramakrishna
  */
 
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.OrganizationManagementWebService", serviceName="OrganizationManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/organization")
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class OrganizationManagementWebServiceImpl implements OrganizationManagementWebService {
     
-	private OrganizationManagementService organizationManagementServiceImpl;
+	private OrganizationManagementService organizationManagementService;
 	private OrganizationConverter organizationConverter;
     private static Log logger = LogFactory.getLog(OrganizationManagementWebServiceImpl.class);
     
@@ -47,7 +52,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
 				domainOrganizations.add(organization);
 			}
-			List<EntityErrorMessage> entityErrorMessages = organizationManagementServiceImpl.createOrUpdateOrganizations(domainOrganizations);
+			List<EntityErrorMessage> entityErrorMessages = organizationManagementService.createOrUpdateOrganizations(domainOrganizations);
 			organizationConverter.convertEntityErrorMessages(entityErrorMessages, entityErrorMessageTypes);
 		} catch (Throwable e) {
 			logger.debug(e.getMessage());
@@ -61,10 +66,12 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 	}
 	
 
-	public void setOrganizationManagementServiceImpl(
-			OrganizationManagementService organizationManagementServiceImpl) {
-		this.organizationManagementServiceImpl = organizationManagementServiceImpl;
+	public void setOrganizationManagementService(
+			OrganizationManagementService organizationManagementService) {
+		this.organizationManagementService = organizationManagementService;
 	}
+
+
 
 	public void setOrganizationConverter(OrganizationConverter organizationConverter) {
 		this.organizationConverter = organizationConverter;
