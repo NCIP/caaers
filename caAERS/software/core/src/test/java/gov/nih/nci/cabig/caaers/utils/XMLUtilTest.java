@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Study;
 
 import java.util.ArrayList;
 import java.util.List;
