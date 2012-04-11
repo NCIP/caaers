@@ -208,7 +208,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 					aesToSave.put(index, adverseEvent);
 					
 				} catch (CaaersSystemException e) {
-                    Helper.populateErrorOutcome(caaersServiceResponse, null , null,(index++) + "",  e.getMessage());
+                    Helper.populateErrorOutcome(caaersServiceResponse, null , null, (index++) + "", Arrays.asList(new String[] {e.getMessage()}));
 				}
 			}
 			Iterator it =  aesToSave.entrySet().iterator();
@@ -228,8 +228,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
                     Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Unable to process the request");
 					for (ValidationError error:errors.getErrors()) {
 						//messages.add(error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")");
-                         Helper.populateErrorOutcome(caaersServiceResponse, null, null, pairs.getKey()+"" ,
-                                 error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")");
+                         Helper.populateErrorOutcome(caaersServiceResponse, null, null, pairs.getKey() + "", Arrays.asList(new String[] {error.getMessage() + " ("+adverseEvent.getAdverseEventTerm().getFullName()+")"}));
 					}
 				} else {
 					//SAVE AE
@@ -245,8 +244,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
                         String message = messageSource.getMessage("WS_AEMS_006", new String[]{term, operation + "d"}, "", Locale.getDefault());
                         Helper.populateError(caaersServiceResponse, "WS_AEMS_006", message);
-                        Helper.populateErrorOutcome(caaersServiceResponse, null, adverseEvent.getId().toString(), pairs.getKey().toString(), message);
-
+                        Helper.populateErrorOutcome(caaersServiceResponse, null, adverseEvent.getId().toString(), pairs.getKey().toString(), Arrays.asList(new String[] {message}));
 
                         //messages.add(message);
                     }
