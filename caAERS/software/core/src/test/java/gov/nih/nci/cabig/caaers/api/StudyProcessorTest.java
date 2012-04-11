@@ -12,9 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
-import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -33,7 +33,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     private StudyProcessorImpl studyProcessor = null;
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
-    private gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
+    private gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
     private StudyDao studyDao = null;
 
     Identifier identifier = null;
@@ -67,7 +67,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfInstanceAtt() throws Exception {
         createStudy("studydata/CreateStudyTest.xml");
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfInstanceAtt.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfInstanceAtt.xml"));
         studyProcessor.updateStudy(studies);
         SecurityTestUtils.switchToSuperuser();
         updatedStudy = studyDao.getByShortTitle("Study_PCS_Updated");
@@ -87,7 +87,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAttr.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAttr.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -126,7 +126,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -168,7 +168,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -208,7 +208,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -242,7 +242,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -265,7 +265,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySiteAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySiteAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -289,7 +289,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -322,7 +322,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -364,7 +364,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -397,7 +397,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         createStudy("studydata/CreateStudyTest.xml");
 
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml"));
 
 
         studyProcessor.updateStudy(studies);
@@ -437,7 +437,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentAdd.xml"));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -464,7 +464,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     	 assertNotNull(study);
     	 
     	 CaaersServiceResponse response = createStudy("studydata/CreateStudyTest_3.xml");
-    	 assertEquals("1", response.getResponse().getResponsecode());
+    	 assertEquals("1", response.getServiceResponse().getResponsecode());
     }
 
     /**
@@ -478,10 +478,9 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     	 Study study = studyDao.getByShortTitle("Study PCS");
     	 assertNotNull(study);
 
-         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
-
+         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
          CaaersServiceResponse response = studyProcessor.updateStudy(studies);
-         assertEquals("0", response.getResponse().getResponsecode());
+         assertEquals("0", response.getServiceResponse().getResponsecode());
     }
     
     /**
@@ -497,21 +496,21 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     	 assertNotNull(study);
 
     	 CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest_4.xml");
-    	 assertEquals("0", response.getResponse().getResponsecode());
+    	 assertEquals("0", response.getServiceResponse().getResponsecode());
     	 
     	//make sure it got created
     	 study = studyDao.getByShortTitle("A Strange Study");
     	 assertNotNull(study);
     	 
-         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
+         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
 
          response = studyProcessor.updateStudy(studies);
-         assertEquals("1", response.getResponse().getResponsecode());
+         assertEquals("1", response.getServiceResponse().getResponsecode());
     }
 
     private CaaersServiceResponse createStudy(String studyXmlLocation) throws Exception {
 
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
         return studyProcessor.createStudy(studies);
     }
 
