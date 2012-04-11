@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
@@ -19,7 +21,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.springframework.context.MessageSource;
 
 /**
  * @author Sameer Sawant
@@ -39,7 +40,7 @@ public class SubjectImporter extends Importer{
         if (!valid) {
         	return;
         }
-		gov.nih.nci.cabig.caaers.webservice.participant.Participants participants;
+		Participants participants;
     	try {
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -48,9 +49,9 @@ public class SubjectImporter extends Importer{
 			if(!validRootElement(importObject, SUBJECT_IMPORT, command))
 				return;
 				
-			participants = (gov.nih.nci.cabig.caaers.webservice.participant.Participants) importObject;
+			participants = (Participants) importObject;
 			if(participants != null){
-				for(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto : participants.getParticipant()){
+				for(ParticipantType participantDto : participants.getParticipant()){
 					DomainObjectImportOutcome<Participant> participantImportOutcome  = participantServiceImpl.processParticipant(participantDto);
 					List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
 					if (participantImportOutcome.isSavable() && errors.size() == 0) {

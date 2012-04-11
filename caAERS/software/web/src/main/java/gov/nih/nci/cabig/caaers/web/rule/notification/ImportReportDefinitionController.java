@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
 import gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleCommand;
 
