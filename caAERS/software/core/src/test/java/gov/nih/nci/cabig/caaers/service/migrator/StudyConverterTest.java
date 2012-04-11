@@ -5,12 +5,13 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.webservice.*;
-import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyInvestigators;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyPersonnels;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyOrganizations;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudySiteType.StudyInvestigators;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudySiteType.StudyPersonnels;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -27,7 +28,7 @@ import java.util.List;
  *
  */
 public class StudyConverterTest extends AbstractTestCase {
-	gov.nih.nci.cabig.caaers.webservice.Study studyDto;
+	gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto;
 	
 	XMLGregorianCalendarImpl now = new XMLGregorianCalendarImpl();
 	OrganizationType orgType;
@@ -38,7 +39,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		super.setUp();
 		
 		//create the base studyDto
-		studyDto = new gov.nih.nci.cabig.caaers.webservice.Study();
+		studyDto = new gov.nih.nci.cabig.caaers.integration.schema.study.Study();
 		studyDto.setShortTitle("hello");
         studyDto.setAeTermUnique(false);
 		studyDto.setPhaseCode(StudyPhaseType.PHASE_0_TRIAL);
@@ -49,7 +50,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		orgType.setName("test");
 		orgType.setNciInstituteCode("abc");
 		
-		StudyOrganizations studyOrgs = new gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations();
+		StudyOrganizations studyOrgs = new gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyOrganizations();
 		List<StudySiteType> studySites = new ArrayList<StudySiteType>();
 		studyOrgs.setStudySite(studySites);
 		studyDto.setStudyOrganizations(studyOrgs);
@@ -68,12 +69,12 @@ public class StudyConverterTest extends AbstractTestCase {
 		studyDto.getStudyOrganizations().getStudySite().add(sitesType);
 		
 		//add study person
-		StudyPersonnels personnel =  new gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyPersonnels();
+		StudyPersonnels personnel =  new gov.nih.nci.cabig.caaers.integration.schema.study.StudySiteType.StudyPersonnels();
 		List<StudyPersonnelType> studyPersonnelList = new ArrayList<StudyPersonnelType>();
 		StudyPersonnelType person = new StudyPersonnelType();
 		person.setStartDate(now);
 		person.setRoleCode(PersonnelRoleCodeType.AE_REPORTER);
-		gov.nih.nci.cabig.caaers.webservice.ResearchStaffType staff = new gov.nih.nci.cabig.caaers.webservice.ResearchStaffType();
+		gov.nih.nci.cabig.caaers.integration.schema.study.ResearchStaffType staff = new gov.nih.nci.cabig.caaers.integration.schema.study.ResearchStaffType();
 		staff.setFirstName("abc");
 		staff.setLastName("hov");
 		person.setResearchStaff(staff);
@@ -82,14 +83,14 @@ public class StudyConverterTest extends AbstractTestCase {
 		sitesType.setStudyPersonnels(personnel);
 		
 		//add investigator
-		StudyInvestigators studyInvestigators =  new gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyInvestigators();
+		StudyInvestigators studyInvestigators =  new gov.nih.nci.cabig.caaers.integration.schema.study.StudySiteType.StudyInvestigators();
 		List<StudyInvestigatorType> studyInvestigatorList = new ArrayList<StudyInvestigatorType>();
 		StudyInvestigatorType inv = new StudyInvestigatorType();
 		inv.setRoleCode(RoleCodeType.PI);
 		inv.setStartDate(now);
 		
 		SiteInvestigatorType siteInv = new SiteInvestigatorType();
-		gov.nih.nci.cabig.caaers.webservice.InvestigatorType invType = new gov.nih.nci.cabig.caaers.webservice.InvestigatorType();
+		gov.nih.nci.cabig.caaers.integration.schema.study.InvestigatorType invType = new gov.nih.nci.cabig.caaers.integration.schema.study.InvestigatorType();
 		invType.setFirstName("avc");
 		invType.setNciIdentifier("hig");
 		invType.setLastName("efg");
@@ -169,7 +170,7 @@ public class StudyConverterTest extends AbstractTestCase {
         msd.getTerm().setMeddraCode("009911");
         study.addMeddraStudyDisease(msd);
 
-        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
+        gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = converter.convertStudyDomainToStudyDto(study);
 
         assertEquals("009911", studies.getStudy().get(0).getMeddraStudyDiseases().getMeddraStudyDisease().get(0).getMeddraCode());
     }
@@ -502,7 +503,7 @@ public class StudyConverterTest extends AbstractTestCase {
         sd.setModelNumber("MN-jsl23");
         study.getStudyDevices().add(sd);
 
-        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
+        gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = converter.convertStudyDomainToStudyDto(study);
 
         try {
             // String tempDir = java.io. "/home/dell/Desktop/";
