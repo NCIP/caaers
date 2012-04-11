@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
     private StudyProcessorImpl studyProcessor = null;
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
-    private gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
+    private gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
     private StudyDao studyDao = null;
 
     Identifier identifier = null;
@@ -155,40 +156,37 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
     }
     
     public void testCreateStudy_WithEpochs_OtherTerm() throws Exception {
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithEpochs_OtherTerm.xml"));
-        gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse res = studyProcessor.createStudy(studies);
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithEpochs_OtherTerm.xml"));
+        CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
-        assertNotNull(res.getResponse());
-        assertNotNull(res.getResponse().getMessage());
-        assertEquals(1, res.getResponse().getMessage().size());
-        assertEquals("SolicitedAdverseEvent with only otherMeddraCode is not allowed", res.getResponse().getMessage().get(0));
+        assertNotNull(res.getServiceResponse());
+        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertEquals(1, res.getServiceResponse().getWsError().size());
+        assertEquals("SolicitedAdverseEvent with only otherMeddraCode is not allowed", res.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
     
     public void testCreateStudy_WithNoBaseLineEpoch() throws Exception {
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithNoBaseLineEpoch.xml"));
-        gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse res = studyProcessor.createStudy(studies);
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithNoBaseLineEpoch.xml"));
+        CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
-        assertNotNull(res.getResponse());
-        assertNotNull(res.getResponse().getMessage());
-        assertEquals(1, res.getResponse().getMessage().size());
-        assertEquals("One EvaluationPeriod with name as \"Baseline\" is mandatory", res.getResponse().getMessage().get(0));
+        assertNotNull(res.getServiceResponse());
+        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertEquals(1, res.getServiceResponse().getWsError().size());
+        assertEquals("One EvaluationPeriod with name as \"Baseline\" is mandatory", res.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
     
     public void testCreateStudy_WithNoBaseLineEpoch_OnlyOtherTerm() throws Exception {
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithNoBaseLineEpoch_OnlyOtherTerm.xml"));
-        gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse res = studyProcessor.createStudy(studies);
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithNoBaseLineEpoch_OnlyOtherTerm.xml"));
+        CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
-        assertNotNull(res.getResponse());
-        assertNotNull(res.getResponse().getMessage());
-        assertEquals(2, res.getResponse().getMessage().size());
+        assertNotNull(res.getServiceResponse());
+        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertEquals(2, res.getServiceResponse().getWsError().size());
     }
-    
 
     private void createStudy(String studyXmlLocation) throws Exception {
-
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
         studyProcessor.createStudy(studies);
-
     }
 
     private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
@@ -225,12 +223,12 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
     }
     
     public void testCreateStudy_WithExpectedAE_WithOnlyOtherTerm() throws Exception {
-    	studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithExpectedAE_WithOnlyOtherTerm.xml"));
-        gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse res = studyProcessor.createStudy(studies);
+    	studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithExpectedAE_WithOnlyOtherTerm.xml"));
+        CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
-        assertNotNull(res.getResponse());
-        assertNotNull(res.getResponse().getMessage());
-        assertEquals("ExpectedAECtcTerm cannot contain only otherMeddraCode", res.getResponse().getMessage().get(0));
+        assertNotNull(res.getServiceResponse());
+        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertEquals("ExpectedAECtcTerm cannot contain only otherMeddraCode", res.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
     
     public void testCreateStudy_WithExpectedAE_LowLevelTerms() throws Exception {
