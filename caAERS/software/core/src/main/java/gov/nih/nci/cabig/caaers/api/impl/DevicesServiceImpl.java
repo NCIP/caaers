@@ -27,7 +27,7 @@ public class DevicesServiceImpl implements DevicesService, ApplicationContextAwa
     private ApplicationContext applicationContext;
     private DeviceDao deviceDao;
 
-    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/devices") DevicesType devices) {
+    public CaaersServiceResponse createOrUpdateDevices(DevicesType devices) {
         CaaersServiceResponse csr = new CaaersServiceResponse();
         csr.setServiceResponse(new ServiceResponse());
         csr.getServiceResponse().setEntityErrorMessages(new EntityErrorMessages());

@@ -41,7 +41,7 @@ public class ASAELServiceImpl implements ASAELService, ApplicationContextAware {
     // CACHES
     Map<String, CtcCategory> ctcCategories = new HashMap<String, CtcCategory>();
 
-    public CaaersServiceResponse createOrUpdateASAEL(@WebParam(name = "asael", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/asael") ASAELType asael) {
+    public CaaersServiceResponse createOrUpdateASAEL(ASAELType asael) {
         CaaersServiceResponse csr = new CaaersServiceResponse();
         csr.setServiceResponse(new ServiceResponse());
         csr.getServiceResponse().setEntityErrorMessages(new EntityErrorMessages());
