@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xs:schema xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="unqualified"
+           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
+           xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common">
 
-            
+
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
+
     <xs:element name="AdverseEventsInputMessage">
         <xs:annotation>
             <xs:documentation> The top level (typically root) element. Allows the definition of
@@ -37,8 +43,8 @@
 
  	<xs:complexType name="Criteria">
         <xs:sequence>
-        	<xs:element minOccurs="1" name="participantIdentifier" type="CustomStringType"/>
-        	<xs:element minOccurs="1" name="studyIdentifier" type="CustomStringType"/>
+        	<xs:element minOccurs="1" name="participantIdentifier" type="cct:CustomStringType"/>
+        	<xs:element minOccurs="1" name="studyIdentifier" type="cct:CustomStringType"/>
         	<xs:element minOccurs="1" name="course" type="CourseType"/>
         </xs:sequence>
     </xs:complexType>         	
@@ -83,22 +89,11 @@
         </xs:complexType>        
     </xs:element>
     
-    <xs:complexType name="DomainObject">
-        <xs:attribute name="id" type="xs:integer"/>
-    </xs:complexType>
-    
-    <xs:complexType name="MutableDomainObject">
-        <xs:complexContent>
-            <xs:extension base="DomainObject">
-                <xs:attribute name="version" type="xs:integer"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>  
     
     <xs:element name="adverseEvent" type="AdverseEventType"/>
     <xs:complexType name="AdverseEventType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                 	<xs:element minOccurs="0" name="verbatim" type="xs:string"/>
                     <xs:element minOccurs="1" name="grade" type="GradeType"/>
@@ -133,7 +128,7 @@
 
     <xs:complexType name="AdverseEventCtcTermType">
                 <xs:sequence>
-                  <xs:element name="ctep-term" type="CustomStringType"/>
+                  <xs:element name="ctep-term" type="cct:CustomStringType"/>
                   <!--
                   <xs:element name="ctep-code" type="xs:string"/>
                   <xs:element name="ctc-version" type="CtcVersionEnum"/>-->
@@ -223,50 +218,5 @@
             <xs:enumeration value="Post-treatment"/>
         </xs:restriction>
     </xs:simpleType>    
-
-	<xs:simpleType name="ResponseCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-        </xs:restriction>    
-    </xs:simpleType>
-	
-
-    
-    <xs:element name="CaaersServiceResponse">
-        <xs:complexType>
-        <xs:sequence>
-            <xs:element name="errorCode" type="xs:string"/>
-            <xs:element name="description" type="xs:string"/>
-            <xs:element name="responses" type="Responses"/>
-	    </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:simpleType name="CustomStringType">
-        <xs:restriction base="xs:normalizedString">
-           <xs:minLength value="1"/>
-           <xs:whiteSpace value="collapse"/> 
-        </xs:restriction>
-    </xs:simpleType>  
-
-    <xs:complexType name="Responses">
-        <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="response">
-            <xs:complexType>
-                <xs:sequence>
-                    <xs:element name="description" type="xs:string"/>
-                    <xs:element name="errorCode" type="xs:string"/>
-                    <xs:element name="dataBaseId" type="xs:string"/>
-                    <xs:element name="correlationId" type="xs:string"/>
-                    <xs:element name="correlationDescription" type="xs:string"/>
-                </xs:sequence>
-            </xs:complexType>
-            </xs:element>
-       </xs:sequence>
-    </xs:complexType>
-
-
-
-
 
 </xs:schema>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov"
-    xmlns="http://webservice.caaers.cabig.nci.nih.gov"
+           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+           xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/study"
     xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     elementFormDefault="unqualified">
 
@@ -19,28 +19,16 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="DomainObject">
-        <xs:attribute name="id" type="xs:integer"/>
-    </xs:complexType>
-
-    <xs:complexType name="MutableDomainObject">
-        <xs:complexContent>
-            <xs:extension base="DomainObject">
-                <xs:attribute name="version" type="xs:integer"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
     <xs:element name="study" type="study"/>
     <xs:complexType name="study">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
 
                 <xs:sequence>
-                    <xs:element name="shortTitle" type="CustomStringType" />
-                    <xs:element name="longTitle" type="CustomStringType" minOccurs="0"/>
-                    <xs:element name="precis" type="CustomStringType" minOccurs="0"/>
-                    <xs:element name="description" type="CustomStringType" minOccurs="0"/>
+                    <xs:element name="shortTitle" type="cct:CustomStringType" />
+                    <xs:element name="longTitle" type="cct:CustomStringType" minOccurs="0"/>
+                    <xs:element name="precis" type="cct:CustomStringType" minOccurs="0"/>
+                    <xs:element name="description" type="cct:CustomStringType" minOccurs="0"/>
                     <xs:element name="phaseCode" type="StudyPhaseType" />
                     <xs:element name="status" type="StatusType" minOccurs="0"/>
                     <xs:element name="multiInstitutionIndicator" type="xs:boolean" minOccurs="0"/>
@@ -167,7 +155,7 @@
     <xs:element name="studyFundingSponsor" type="StudyFundingSponsorType"/>
     <xs:complexType name="StudyFundingSponsorType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
 
                 <xs:sequence>
                     <xs:element ref="organization"/>
@@ -194,7 +182,7 @@
     <xs:element name="studySite" type="StudySiteType"/>
     <xs:complexType name="StudySiteType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element ref="organization"/>
                     <xs:element name="startDate"  type="xs:date" minOccurs="0" maxOccurs="1" />
@@ -222,7 +210,7 @@
     <xs:element name="studyCoordinatingCenter" type="StudyCoordinatingCenterType"/>
     <xs:complexType name="StudyCoordinatingCenterType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element ref="organization"/>
                     <xs:element name="studyInvestigators" minOccurs="0">
@@ -251,7 +239,7 @@
     <xs:element name="studyInvestigator" type="StudyInvestigatorType"/>
     <xs:complexType name="StudyInvestigatorType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="roleCode" type="RoleCodeType"/>
                     <xs:element name="startDate"  type="xs:date" minOccurs="0" maxOccurs="1" />
@@ -265,7 +253,7 @@
     <xs:element name="studyPersonnel" type="StudyPersonnelType"/>
     <xs:complexType name="StudyPersonnelType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="roleCode" type="PersonnelRoleCodeType" />
                     <xs:element name="startDate"  type="xs:date" minOccurs="0" maxOccurs="1" />
@@ -279,7 +267,7 @@
     <xs:element name="siteInvestigator" type="SiteInvestigatorType"/>
     <xs:complexType name="SiteInvestigatorType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element ref="investigator" />
                 </xs:sequence>
@@ -290,10 +278,10 @@
     <xs:element name="investigator" type="InvestigatorType"/>
     <xs:complexType name="InvestigatorType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="firstName" type="CustomStringType"/>
-                    <xs:element name="lastName" type="CustomStringType"/>
+                    <xs:element name="firstName" type="cct:CustomStringType"/>
+                    <xs:element name="lastName" type="cct:CustomStringType"/>
                     <xs:element name="nciIdentifier" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
@@ -303,37 +291,28 @@
     <xs:element name="researchStaff" type="ResearchStaffType"/>
     <xs:complexType name="ResearchStaffType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="firstName" type="CustomStringType"/>
-                    <xs:element name="lastName" type="CustomStringType"/>
+                    <xs:element name="firstName" type="cct:CustomStringType"/>
+                    <xs:element name="lastName" type="cct:CustomStringType"/>
                     <xs:element name="nciIdentifier" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="organization" type="OrganizationType"/>
-    <xs:complexType name="OrganizationType">
-        <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
-                <xs:sequence>
-                    <xs:element name="name" type="CustomStringType"/>
-                    <xs:element name="nciInstituteCode" type="xs:string"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:element name="organization" type="cct:OrganizationType"/>
+
     
     <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
     <xs:complexType name="TreatmentAssignmentType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="code" type="CustomStringType"/>
-                    <xs:element name="doseLevelOrder" type="CustomStringType" minOccurs="0"/>
-                    <xs:element name="description" type="CustomStringType"/>
-                    <xs:element name="comments" type="CustomStringType" minOccurs="0"/>
+                    <xs:element name="code" type="cct:CustomStringType"/>
+                    <xs:element name="doseLevelOrder" type="cct:CustomStringType" minOccurs="0"/>
+                    <xs:element name="description" type="cct:CustomStringType"/>
+                    <xs:element name="comments" type="cct:CustomStringType" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -343,11 +322,11 @@
     <xs:element name="studyAgent" type="StudyAgentType"/>
     <xs:complexType name="StudyAgentType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:choice>
                         <xs:element ref="agent"/>
-                        <xs:element name="otherAgent" type="CustomStringType"/>
+                        <xs:element name="otherAgent" type="cct:CustomStringType"/>
                     </xs:choice>
                     <xs:element type="IndType" name="indType" minOccurs="0"/>
                     <xs:element type="xs:boolean" name="partOfLeadIND" minOccurs="0" />
@@ -366,9 +345,9 @@
     <xs:element name="agent" type="AgentType"/>
     <xs:complexType name="AgentType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:choice>
-                    <xs:element name="name" type="CustomStringType"/>
+                    <xs:element name="name" type="cct:CustomStringType"/>
                     <xs:element name="nscNumber" type="xs:string"/>
                 </xs:choice>
             </xs:extension>
@@ -378,7 +357,7 @@
     <xs:element name="studyAgentINDAssociation" type="StudyAgentINDAssociationType"/>
     <xs:complexType name="StudyAgentINDAssociationType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">     
+            <xs:extension base="cct:MutableDomainObjectType">     
                <xs:sequence>
                     <xs:element ref="investigationalNewDrug"/>
                 </xs:sequence>
@@ -390,7 +369,7 @@
     <xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"/>
     <xs:complexType name="InvestigationalNewDrugType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="indNumber" type="xs:integer"/>
                 </xs:sequence>
@@ -402,9 +381,9 @@
     <xs:element name="meddraStudyDisease" type="MeddraStudyDiseaseType"/>
     <xs:complexType name="MeddraStudyDiseaseType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="meddraCode" type="CustomStringType" />
+                    <xs:element name="meddraCode" type="cct:CustomStringType" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -414,7 +393,7 @@
     <xs:element name="ctepStudyDisease" type="CtepStudyDiseaseType"/>
     <xs:complexType name="CtepStudyDiseaseType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element ref="diseaseTerm"/>
                     <xs:element name="leadDisease" type="xs:boolean"/>
@@ -428,10 +407,10 @@
     <xs:element name="diseaseTerm" type="DiseaseTermType"/>
     <xs:complexType name="DiseaseTermType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:choice>
-                    <xs:element name="term" type="CustomStringType"/>
-                    <xs:element name="meddraCode" type="CustomStringType"/>
+                    <xs:element name="term" type="cct:CustomStringType"/>
+                    <xs:element name="meddraCode" type="cct:CustomStringType"/>
                 </xs:choice>
             </xs:extension>
         </xs:complexContent>
@@ -448,24 +427,16 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
-    <xs:complexType name="SystemAssignedIdentifierType">
-        <xs:complexContent>
-            <xs:extension base="IdentifierType">
-                <xs:sequence>
-                    <xs:element name="systemName" type="CustomStringType"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:element name="systemAssignedIdentifier" type="cct:SystemAssignedIdentifierType"/>
+
 
     <xs:element name="identifier" type="IdentifierType"/>
     <xs:complexType name="IdentifierType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="type" type="StudyIdentifierType"/>
-                    <xs:element name="value" type="CustomStringType"/>
+                    <xs:element name="value" type="cct:CustomStringType"/>
                     <xs:element name="primaryIndicator" type="xs:boolean"/>
                 </xs:sequence>
             </xs:extension>
@@ -474,9 +445,9 @@
     
     <xs:complexType name="ReducedIdentifierType" >
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="value" type="CustomStringType"/>
+                    <xs:element name="value" type="cct:CustomStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -516,7 +487,7 @@
     <xs:element name="ctcVersion" type="CtcVersionType"/>
     <xs:complexType name="CtcVersionType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="name" type="StudyCtcVersionType"/>
                 </xs:sequence>
@@ -527,7 +498,7 @@
     <xs:element name="meddraVersion" type="MeddraVersionType"/>
     <xs:complexType name="MeddraVersionType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="name" type="StudyMeddraVersionType"/>
                 </xs:sequence>
@@ -542,7 +513,7 @@
     </xs:annotation>
     <xs:complexType name="EvaluationPeriodType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="name" type="xs:string"/>
                     <xs:element name="descriptionText" type="xs:string" minOccurs="0"/>
@@ -562,7 +533,7 @@
 	<xs:element name="solicitedAdverseEvent" type="SolicitedAdverseEventType"/>
     <xs:complexType name="SolicitedAdverseEventType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="name" type="xs:string" minOccurs="0"/>
                     <xs:element name="ctepCode" type="xs:string" minOccurs="0"/>
@@ -576,7 +547,7 @@
 	<xs:element name="expectedAECtcTerm" type="ExpectedAECtcTermType"/>
     <xs:complexType name="ExpectedAECtcTermType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="ctepCode" type="xs:string" minOccurs="0"/>
                     <xs:element name="otherMeddraCode" type="xs:string"  minOccurs="0"/>
@@ -588,7 +559,7 @@
 	<xs:element name="expectedAEMeddraTerm" type="ExpectedAEMeddraTermType"/>
     <xs:complexType name="ExpectedAEMeddraTermType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="meddraCode" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
@@ -598,19 +569,7 @@
 
     <!-- START - DEVICE RELATED CHANGES -->
 
-    <xs:element name="device" type="DeviceType" />
-    <xs:complexType name="DeviceType">
-        <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
-                <xs:sequence>
-                    <xs:element name="commonName" type="xs:string" minOccurs="0"/>
-                    <xs:element name="brandName" type="xs:string" minOccurs="0"/>
-                    <xs:element name="type" type="xs:string" minOccurs="0"/>
-                    <xs:element name="status" type="cct:ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:element name="device" type="cct:DeviceType" />
 
     <xs:element name="studyDevice" type="StudyDeviceType"/>
     <xs:complexType name="StudyDeviceType">
@@ -634,7 +593,7 @@
     <xs:element name="studyIntervention" type="StudyInterventionType"/>
     <xs:complexType name="StudyInterventionType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="studyTherapyType" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
@@ -875,35 +834,6 @@
         </xs:restriction>
     </xs:simpleType>
     
-    <xs:simpleType name="CustomStringType">
-        <xs:restriction base="xs:normalizedString">
-           <xs:minLength value="1"/>
-           <xs:whiteSpace value="collapse"/> 
-        </xs:restriction>
-    </xs:simpleType>
-	
-	<xs:simpleType name="ResponseCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-        </xs:restriction>    
-    </xs:simpleType>
-	
-	<xs:element name="Response" type="Response" />
-    <xs:complexType name="Response">
-    	<xs:sequence>
-    		<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
-    		<xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
-    	</xs:sequence>
-    	<xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
-    </xs:complexType>
-    
-    <xs:element name="CaaersServiceResponse">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="Response" />
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
+
 
 </xs:schema>

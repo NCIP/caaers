@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant"
-    xmlns="http://webservice.caaers.cabig.nci.nih.gov/participant"
-    elementFormDefault="unqualified">
+           xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+           xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+           elementFormDefault="unqualified">
+
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
 
     <xs:element name="participants">
         <xs:annotation>
@@ -19,7 +22,7 @@
     <xs:element name="participant" type="ParticipantType"/>
     <xs:complexType name="ParticipantType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="firstName" type="FirstAndLastNameType" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="lastName"  type="FirstAndLastNameType" minOccurs="1" maxOccurs="1"/>
@@ -29,8 +32,8 @@
                     <xs:choice>
                         <xs:element name="birthDate" type="xs:date" />
                         <xs:sequence>
-                        	<xs:element name="birthMonth" type="CustomMonthType" minOccurs="1" maxOccurs="1"/>
-                        	<xs:element name="birthYear" type="CustomDateType" minOccurs="1" maxOccurs="1"/>
+                        	<xs:element name="birthMonth" type="cct:CustomMonthType" minOccurs="1" maxOccurs="1"/>
+                        	<xs:element name="birthYear" type="cct:CustomDateType" minOccurs="1" maxOccurs="1"/>
                         </xs:sequence>	
                     </xs:choice>
                     <xs:element name="gender" type="GenderType"  minOccurs="1" maxOccurs="1" />
@@ -62,7 +65,7 @@
     <xs:element name="study" type="StudyType"/>
     <xs:complexType name="StudyType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
                         <xs:complexType>
@@ -79,7 +82,7 @@
     <xs:element name="assignment" type="AssignmentType"/>
     <xs:complexType name="AssignmentType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                 	<xs:element name="studySubjectIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
                     <xs:element ref="studySite"/>
@@ -91,7 +94,7 @@
     <xs:element name="studySite" type="StudySiteType"/>
     <xs:complexType name="StudySiteType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element ref="study" minOccurs="1" maxOccurs="1"/>
                     <xs:element ref="organization" minOccurs="1" maxOccurs="1"/>
@@ -100,17 +103,8 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="organization" type="OrganizationType"/>
-    <xs:complexType name="OrganizationType">
-        <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
-                <xs:sequence>
-                    <xs:element name="name" type="xs:string" minOccurs="1"/>
-                    <xs:element name="nciInstituteCode" type="xs:string" minOccurs="0" maxOccurs="1"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:element name="organization" type="cct:OrganizationType"/>
+
 
     <xs:element name="organizationAssignedIdentifier" type="OrganizationAssignedIdentifierType"/>
     <xs:complexType name="OrganizationAssignedIdentifierType">
@@ -123,23 +117,15 @@
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
-    <xs:complexType name="SystemAssignedIdentifierType">
-        <xs:complexContent>
-            <xs:extension base="IdentifierType">
-                <xs:sequence>
-                    <xs:element name="systemName" type="xs:string"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:element name="systemAssignedIdentifier" type="cct:SystemAssignedIdentifierType"/>
+
     
     <xs:complexType name="IdentifierType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="type" type="ParticipantIdentifierType"/>
-                    <xs:element name="value" type="CustomStringType"/>
+                    <xs:element name="value" type="cct:CustomStringType"/>
                     <xs:element name="primaryIndicator" type="xs:boolean" />
                 </xs:sequence>
             </xs:extension>
@@ -148,7 +134,7 @@
     
     <xs:complexType name="ReducedIdentifierType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element name="type" type="StudyIdentifierType"/>
                     <xs:element name="value" type="xs:string"/>
@@ -157,19 +143,6 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="DomainObject">
-        <xs:attribute name="id" type="xs:positiveInteger"/>
-    </xs:complexType>
-
-
-    <xs:complexType name="MutableDomainObject">
-        <xs:complexContent>
-            <xs:extension base="DomainObject">
-                <xs:attribute name="version" type="xs:positiveInteger"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
     <xs:simpleType name="StudyIdentifierType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Site Identifier"/>
@@ -212,28 +185,8 @@
             <xs:enumeration value="Unknown"/>
         </xs:restriction>
     </xs:simpleType>
-    
-    <xs:simpleType name="CustomDateType">
-        <xs:restriction base="xs:integer">
-            <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
-            <xs:whiteSpace value="collapse"/> 
-        </xs:restriction>
-    </xs:simpleType>
-    
-    <xs:simpleType name="CustomMonthType">
-        <xs:restriction base="xs:integer">
-            <xs:pattern value="((0[1-9])|(1[0-2]))"></xs:pattern>
-            <xs:whiteSpace value="collapse"/> 
-        </xs:restriction>
-    </xs:simpleType>
-    
-    <xs:simpleType name="CustomStringType">
-        <xs:restriction base="xs:normalizedString">
-            <xs:minLength value="1"/>
-            <xs:whiteSpace value="collapse"/> 
-        </xs:restriction>
-    </xs:simpleType>
-    
+
+
     <xs:simpleType name="FirstAndLastNameType">
         <xs:restriction base="xs:normalizedString">
         	<xs:minLength value="1"/>
@@ -261,29 +214,6 @@
             <xs:enumeration value="Unknown"/>
         </xs:restriction>
     </xs:simpleType>
-    
-    <xs:simpleType name="ResponseCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-        </xs:restriction>    
-    </xs:simpleType>
-	
-	<xs:element name="Response" type="Response" />
-    <xs:complexType name="Response">
-    	<xs:sequence>
-    		<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
-    		<xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
-    	</xs:sequence>
-    	<xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
-    </xs:complexType>
-    
-    <xs:element name="CaaersServiceResponse">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="Response" />
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
+
 
 </xs:schema>

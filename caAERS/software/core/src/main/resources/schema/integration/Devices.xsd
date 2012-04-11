@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/devices"
-    xmlns="http://webservice.caaers.cabig.nci.nih.gov/devices"
-    xmlns:study="http://webservice.caaers.cabig.nci.nih.gov"
+    targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/devices"
+    xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/devices"
     xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     elementFormDefault="unqualified">
 
-    <xs:import namespace="http://webservice.caaers.cabig.nci.nih.gov" schemaLocation="StudySchema.xsd"/>
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
 
     <xs:element name="devices" type="DevicesType" />
     <xs:complexType name="DevicesType">
         <xs:sequence>
-            <xs:element ref="study:device" maxOccurs="unbounded"/>
+            <xs:element name="device" type="cct:DeviceType" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 

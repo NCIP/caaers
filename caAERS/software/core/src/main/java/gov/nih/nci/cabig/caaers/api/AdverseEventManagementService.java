@@ -3,9 +3,7 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
+
 
 
 /**
@@ -15,7 +13,7 @@ import javax.jws.WebService;
  * @author sakkala
  *
  */
-@WebService(name="AdverseEventManagementServiceIntf",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent")
+
 public interface AdverseEventManagementService {
 	public static final String CREATE = "create";
 	public static final String UPDATE = "update";
@@ -35,26 +33,20 @@ public interface AdverseEventManagementService {
 	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	@WebMethod
-	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Update Adverse Events for a Study Participant Assignment on a given Course/Cycle.
 	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	@WebMethod
-	public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name="AdverseEventsInputMessage",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse createOrUpdateAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Delete Adverse Events for a Study Participant Assignment on a given Course/Cycle.
 	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	@WebMethod
-	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="AdverseEventsInputMessage",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse deleteAdverseEvent( AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://reportdefinition.caaers.cabig.nci.nih.gov"
-    xmlns="http://reportdefinition.caaers.cabig.nci.nih.gov"
+	targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/reportdefinition"
+    xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/reportdefinition"
     elementFormDefault="unqualified">
     
     <xs:element name="ReportDefinitions">

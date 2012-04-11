@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.ws;
 
-import gov.nih.nci.cabig.caaers.integration.schema.common.Agents;
+import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 
 import javax.jws.WebMethod;
