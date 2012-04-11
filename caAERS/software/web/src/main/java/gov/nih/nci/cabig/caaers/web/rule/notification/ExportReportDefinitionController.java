@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
 
 import java.io.BufferedWriter;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
