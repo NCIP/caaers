@@ -1,12 +1,25 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
-import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.SystemAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.domain.Arm;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.SystemAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.EvaluationPeriodType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.SolicitedAdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +30,6 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -39,7 +51,7 @@ public class BlankFormGenerator {
 
     private JAXBContext jaxbContext = null;
     private Marshaller marshaller = null;
-    private gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
+    private Studies studies = null;
 
     public BlankFormGenerator() {
     }
@@ -87,14 +99,14 @@ public class BlankFormGenerator {
         StringWriter sw = new StringWriter();
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
         studies = new Studies();
-        List<gov.nih.nci.cabig.caaers.webservice.Study> list = new ArrayList();
-        gov.nih.nci.cabig.caaers.webservice.Study wsStudy = new gov.nih.nci.cabig.caaers.webservice.Study();
+        List<gov.nih.nci.cabig.caaers.integration.schema.study.Study> list = new ArrayList();
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study wsStudy = new gov.nih.nci.cabig.caaers.integration.schema.study.Study();
 
         wsStudy.setShortTitle(study.getShortTitle());
         wsStudy.setLongTitle(study.getLongTitle());
         wsStudy.setId(BigInteger.valueOf(study.getId()));
 
-        gov.nih.nci.cabig.caaers.webservice.Study.Identifiers studyIdentifiers = new gov.nih.nci.cabig.caaers.webservice.Study.Identifiers();
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study.Identifiers studyIdentifiers = new gov.nih.nci.cabig.caaers.integration.schema.study.Study.Identifiers();
         SystemAssignedIdentifierType i = new SystemAssignedIdentifierType();
         i.setPrimaryIndicator(true);
         i.setValue(study.getPrimaryIdentifier().getValue());
@@ -121,7 +133,7 @@ public class BlankFormGenerator {
         wsSAE.setSolicitedAdverseEvent(wsSAET);
         ept.setSolicitedAdverseEvents(wsSAE);
 
-        gov.nih.nci.cabig.caaers.webservice.Study.EvaluationPeriods eps = new gov.nih.nci.cabig.caaers.webservice.Study.EvaluationPeriods();
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study.EvaluationPeriods eps = new gov.nih.nci.cabig.caaers.integration.schema.study.Study.EvaluationPeriods();
         List<EvaluationPeriodType> eptl = new ArrayList<EvaluationPeriodType>();
         eptl.add(ept);
         eps.setEvaluationPeriod(eptl);
