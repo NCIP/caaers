@@ -7,9 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.KnownIdentifierTypes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 
 import javax.xml.datatype.DatatypeFactory;
@@ -764,7 +762,7 @@ public class StudyConverter {
                     SystemAssignedIdentifierType o = new SystemAssignedIdentifierType();
                     o.setPrimaryIndicator(sid.getPrimaryIndicator());
                     o.setSystemName(sid.getSystemName());
-                    o.setValue(KnownIdentifierTypes.fromValue(sid.getValue()));
+                    o.setValue(sid.getValue());
                     identifiers.getSystemAssignedIdentifier().add(o);
                 }
             }
