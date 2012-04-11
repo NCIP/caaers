@@ -14,7 +14,7 @@ import javax.jws.soap.SOAPBinding;
  * This is a webservice wrapper, that internally calls the @see AdverseEventManagementServiceImpl
  */
 
-@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.api.AdverseEventManagementService", serviceName = "AdverseEventManagementService", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adversevent")
+@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService", serviceName = "AdverseEventManagementService", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adversevent")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class AdverseEventManagementWebService implements AdverseEventManagementService {
 
