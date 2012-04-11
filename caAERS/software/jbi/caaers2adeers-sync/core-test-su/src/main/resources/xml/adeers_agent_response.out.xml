@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<soapenv:Envelope xmlns:ws="http://ws.caaers.cabig.nci.nih.gov/" xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com1="http://webservice.caaers.cabig.nci.nih.gov">
+<soapenv:Header>
+<wsse:Security>
+<wsse:UsernameToken>
+<wsse:Username>SYSTEM</wsse:Username>
+<wsse:Password>Hello-12</wsse:Password>
+</wsse:UsernameToken>
+</wsse:Security>
+</soapenv:Header>
+<soapenv:Body>
+		<com:Agents>
+			<com1:agent>
+<name>2-Fluoroadenosine</name>
+<descriptionText>2-Fluoroadenosine</descriptionText>
+<nscNumber>30605</nscNumber>
+<status>Active</status>
+</com1:agent>
+					<com1:agent>
+<name>5-Fluoro-2'-deoxycytidine (FdCyd)</name>
+<descriptionText>5-Fluoro-2'-deoxycytidine (FdCyd)</descriptionText>
+<nscNumber>48006</nscNumber>
+<status>Inactive</status>
+</com1:agent>
+					<com1:agent>
+<name>5-Fluorouracil (5-FU)</name>
+<descriptionText>5-Fluorouracil (5-FU)</descriptionText>
+<nscNumber>19893</nscNumber>
+<status>Inactive</status>
+</com1:agent>
+					<com1:agent>
+<name>Beta-Fluoro-ddA (Lodenosine)</name>
+<descriptionText>Beta-Fluoro-ddA (Lodenosine)</descriptionText>
+<nscNumber>613792</nscNumber>
+<status>Active</status>
+</com1:agent>
+					<com1:agent>
+<name>Beta-random12410402</name>
+<descriptionText>Beta-random12410402</descriptionText>
+<nscNumber>12410402</nscNumber>
+<status>Active</status>
+</com1:agent>
+				</com:Agents>
+			</soapenv:Body>
+</soapenv:Envelope>

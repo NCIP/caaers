@@ -1,0 +1,481 @@
+<?xml version="1.0" ?>
+<wsdl:definitions name="AgentManagementWebService" 
+targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common" 
+xmlns:ns1="http://enterpriseservices.nci.nih.gov/Common" 
+xmlns:ns2="http://schemas.xmlsoap.org/soap/http" 
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/common" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common" version="1.0" 
+xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" 
+xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/common" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
+<xs:element name="createOrUpdateAgent" type="tns:createOrUpdateAgent"></xs:element>
+<xs:element name="createOrUpdateAgentResponse" type="tns:createOrUpdateAgentResponse"></xs:element>
+<xs:complexType name="createOrUpdateAgent">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="Agents">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="ns1:agent"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="createOrUpdateAgentResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="ns1:ServiceResponse"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" version="1.0" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
+<xs:complexType name="ResearchStaffType">
+<xs:complexContent>
+<xs:extension base="ns1:ResearchStaffType">
+<xs:sequence>
+<xs:element name="siteResearchStaffs">
+<xs:complexType>
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="siteResearchStaff" type="tns:SiteResearchStaffType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SiteResearchStaffType">
+<xs:complexContent>
+<xs:extension base="ns1:SiteResearchStaffType">
+<xs:sequence>
+<xs:element ref="ns1:organizationRef"></xs:element>
+<xs:element name="siteResearchStaffRoles">
+<xs:complexType>
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="siteResearchStaffRole" type="tns:SiteResearchStaffRoleType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="associateAllStudies" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SiteResearchStaffRoleType">
+<xs:sequence>
+<xs:element name="role" type="tns:Role"></xs:element>
+<xs:element name="startDate" type="xs:date"></xs:element>
+<xs:element minOccurs="0" name="endDate" type="xs:date"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="Role">
+<xs:restriction base="xs:string">
+<xs:enumeration value="system_administrator"></xs:enumeration>
+<xs:enumeration value="business_administrator"></xs:enumeration>
+<xs:enumeration value="person_and_organization_information_manager"></xs:enumeration>
+<xs:enumeration value="data_importer"></xs:enumeration>
+<xs:enumeration value="user_administrator"></xs:enumeration>
+<xs:enumeration value="study_qa_manager"></xs:enumeration>
+<xs:enumeration value="study_creator"></xs:enumeration>
+<xs:enumeration value="supplemental_study_information_manager"></xs:enumeration>
+<xs:enumeration value="study_team_administrator"></xs:enumeration>
+<xs:enumeration value="study_site_participation_administrator"></xs:enumeration>
+<xs:enumeration value="ae_rule_and_report_manager"></xs:enumeration>
+<xs:enumeration value="study_calendar_template_builder"></xs:enumeration>
+<xs:enumeration value="registration_qa_manager"></xs:enumeration>
+<xs:enumeration value="subject_manager"></xs:enumeration>
+<xs:enumeration value="study_subject_calendar_manager"></xs:enumeration>
+<xs:enumeration value="registrar"></xs:enumeration>
+<xs:enumeration value="ae_reporter"></xs:enumeration>
+<xs:enumeration value="ae_expedited_report_reviewer"></xs:enumeration>
+<xs:enumeration value="ae_study_data_reviewer"></xs:enumeration>
+<xs:enumeration value="lab_impact_calendar_notifier"></xs:enumeration>
+<xs:enumeration value="lab_data_user"></xs:enumeration>
+<xs:enumeration value="data_reader"></xs:enumeration>
+<xs:enumeration value="data_analyst"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+<xs:schema targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/investigator" version="1.0" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/investigator" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
+<xs:complexType name="SiteInvestigatorType">
+<xs:complexContent>
+<xs:extension base="ns1:SiteInvestigatorType">
+<xs:sequence>
+<xs:element ref="ns1:organizationRef"></xs:element>
+<xs:element name="startDate" type="xs:date"></xs:element>
+<xs:element minOccurs="0" name="endDate" type="xs:date"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="InvestigatorType">
+<xs:complexContent>
+<xs:extension base="ns1:InvestigatorType">
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="siteInvestigator" type="tns:SiteInvestigatorType"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:schema>
+<xs:schema targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" version="1.0" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="Agents">
+<xs:complexType>
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="agent" type="tns:AgentType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="CaaersServiceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element form="qualified" name="ServiceResponse" type="tns:ServiceResponse"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="SecurityExceptionFault" type="tns:SecurityExceptionFault"></xs:element>
+<xs:element name="ServiceResponse" type="tns:ServiceResponse"></xs:element>
+<xs:element name="agent" type="tns:AgentType"></xs:element>
+<xs:element name="agentRef" type="tns:AgentRefType"></xs:element>
+<xs:element name="diseaseTerm" type="tns:DiseaseTermType"></xs:element>
+<xs:element name="entityErrorMessage" type="tns:EntityErrorMessageType"></xs:element>
+<xs:element name="entityErrorMessages">
+<xs:complexType>
+<xs:sequence>
+<xs:element form="qualified" maxOccurs="unbounded" name="entityErrorMessage" type="tns:EntityErrorMessageType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="identifier" type="tns:IdentifierType"></xs:element>
+<xs:element name="indHolder" type="tns:IndHolderType"></xs:element>
+<xs:element name="investigationalNewDrug" type="tns:InvestigationalNewDrugType"></xs:element>
+<xs:element name="investigator" type="tns:InvestigatorType"></xs:element>
+<xs:element name="investigatorRef" type="tns:InvestigatorRefType"></xs:element>
+<xs:element name="organization" type="tns:OrganizationType"></xs:element>
+<xs:element name="organizationAssignedIdentifier" type="tns:OrganizationAssignedIdentifierType"></xs:element>
+<xs:element name="organizationRef" type="tns:OrganizationRefType"></xs:element>
+<xs:element name="person" type="tns:PersonType"></xs:element>
+<xs:element name="researchStaff" type="tns:ResearchStaffType"></xs:element>
+<xs:element name="researchStaffRef" type="tns:ResearchStaffRefType"></xs:element>
+<xs:element name="siteInvestigator" type="tns:SiteInvestigatorType"></xs:element>
+<xs:element name="siteResearchStaff" type="tns:SiteResearchStaffType"></xs:element>
+<xs:element name="systemAssignedIdentifier" type="tns:SystemAssignedIdentifierType"></xs:element>
+<xs:element name="treatmentAssignment" type="tns:TreatmentAssignmentType"></xs:element>
+<xs:complexType name="AgentType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="descriptionText" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="nscNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="status" type="tns:ActiveInactiveStatusType"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="DomainObjectType">
+<xs:sequence></xs:sequence>
+<xs:attribute name="id" type="xs:integer"></xs:attribute>
+</xs:complexType>
+<xs:complexType name="InvestigationalNewDrugType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element name="indHolder" type="tns:IndHolderType"></xs:element>
+<xs:element name="indNumber" type="xs:integer"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="IndHolderType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element form="qualified" minOccurs="0" name="investigatorRef" type="tns:InvestigatorRefType"></xs:element>
+<xs:element form="qualified" minOccurs="0" name="organizationRef" type="tns:OrganizationRefType"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="InvestigatorRefType">
+<xs:sequence>
+<xs:element name="nciIdentifier" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OrganizationRefType">
+<xs:sequence>
+<xs:element name="nciInstituteCode" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DiseaseTermType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="term" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="meddraCode" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="TreatmentAssignmentType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element name="code" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="doseLevelOrder" type="xs:string"></xs:element>
+<xs:element name="description" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="comments" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OrganizationType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="descriptionText" type="xs:string"></xs:element>
+<xs:element name="name" type="xs:string"></xs:element>
+<xs:element name="nciInstituteCode" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="status" type="tns:ActiveInactiveStatusType"></xs:element>
+<xs:element minOccurs="0" name="mergedOrganization" type="tns:OrganizationType"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="IdentifierType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element name="value" type="tns:KnownIdentifierTypes"></xs:element>
+<xs:element name="primaryIndicator" type="xs:boolean"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OrganizationAssignedIdentifierType">
+<xs:complexContent>
+<xs:extension base="tns:IdentifierType">
+<xs:sequence>
+<xs:element form="qualified" name="organizationRef" type="tns:OrganizationRefType"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SystemAssignedIdentifierType">
+<xs:complexContent>
+<xs:extension base="tns:IdentifierType">
+<xs:sequence>
+<xs:element name="systemName" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SiteInvestigatorType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element name="emailAddress" type="xs:string"></xs:element>
+<xs:element name="statusCode" type="tns:StatusCodeType"></xs:element>
+<xs:element minOccurs="0" name="phoneNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="PersonType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element name="firstName" type="xs:string"></xs:element>
+<xs:element name="lastName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="middleName" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="InvestigatorType">
+<xs:complexContent>
+<xs:extension base="tns:PersonType">
+<xs:sequence>
+<xs:element name="emailAddress" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
+<xs:element name="nciIdentifier" type="xs:string"></xs:element>
+<xs:element name="phoneNumber" type="xs:string"></xs:element>
+<xs:element name="allowedToLogin" type="xs:boolean"></xs:element>
+<xs:element name="loginId" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ResearchStaffType">
+<xs:complexContent>
+<xs:extension base="tns:PersonType">
+<xs:sequence>
+<xs:element name="emailAddress" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
+<xs:element name="nciIdentifier" type="xs:string"></xs:element>
+<xs:element name="phoneNumber" type="xs:string"></xs:element>
+<xs:element name="loginId" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SiteResearchStaffType">
+<xs:complexContent>
+<xs:extension base="tns:DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="emailAddress" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="phoneNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ServiceResponse">
+<xs:sequence>
+<xs:element name="status" type="tns:Status"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" nillable="true" type="tns:WsError"></xs:element>
+<xs:element minOccurs="0" ref="tns:entityErrorMessages"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="WsError">
+<xs:sequence>
+<xs:element name="exception" type="xs:string"></xs:element>
+<xs:element name="errorDesc" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="EntityErrorMessageType">
+<xs:sequence>
+<xs:element name="klassName" type="xs:string"></xs:element>
+<xs:element name="businessIdentifier" type="xs:string"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="BaseFault">
+<xs:sequence>
+<xs:element name="message" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SecurityExceptionFault">
+<xs:complexContent>
+<xs:extension base="tns:BaseFault">
+<xs:sequence></xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ResearchStaffRefType">
+<xs:sequence>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AgentRefType">
+<xs:sequence>
+<xs:element name="nscNumber" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="ActiveInactiveStatusType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="AC"></xs:enumeration>
+<xs:enumeration value="IN"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="KnownIdentifierTypes">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Site Identifier"></xs:enumeration>
+<xs:enumeration value="Site IRB Identifier"></xs:enumeration>
+<xs:enumeration value="ClinicalTrails.gov Identifier"></xs:enumeration>
+<xs:enumeration value="Grid Identifier"></xs:enumeration>
+<xs:enumeration value="C3D Identifier"></xs:enumeration>
+<xs:enumeration value="Protocol Authority Identifier"></xs:enumeration>
+<xs:enumeration value="Coordinating Center Identifier"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="StatusCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ACT"></xs:enumeration>
+<xs:enumeration value="INA"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="Status">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Processed"></xs:enumeration>
+<xs:enumeration value="Failed to Process"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://enterpriseservices.nci.nih.gov/Common" xmlns:ns0="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:tns="http://enterpriseservices.nci.nih.gov/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:element name="SecurityExceptionFault" nillable="true" type="ns0:SecurityExceptionFault"></xsd:element>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="createOrUpdateAgent">
+    <wsdl:part element="tns:createOrUpdateAgent" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SecurityExceptionFaultMessage">
+    <wsdl:part element="ns1:SecurityExceptionFault" name="SecurityExceptionFaultMessage">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createOrUpdateAgentResponse">
+    <wsdl:part element="tns:createOrUpdateAgentResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AgentServiceIntf">
+    <wsdl:operation name="createOrUpdateAgent">
+      <wsdl:input message="tns:createOrUpdateAgent" name="createOrUpdateAgent">
+    </wsdl:input>
+      <wsdl:output message="tns:createOrUpdateAgentResponse" name="createOrUpdateAgentResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:SecurityExceptionFaultMessage" name="SecurityExceptionFaultMessage">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AgentManagementWebServiceSoapBinding" type="tns:AgentServiceIntf">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <wsdl:operation name="createOrUpdateAgent">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="createOrUpdateAgent">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="createOrUpdateAgentResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+      <wsdl:fault name="SecurityExceptionFaultMessage">
+        <soap:fault name="SecurityExceptionFaultMessage" use="literal"></soap:fault>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AgentManagementWebService">
+    <wsdl:port binding="tns:AgentManagementWebServiceSoapBinding" name="AgentManagementWebServiceImplPort">
+      <soap:address location="https://localhost:8443/caaers/services/AgentService"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
