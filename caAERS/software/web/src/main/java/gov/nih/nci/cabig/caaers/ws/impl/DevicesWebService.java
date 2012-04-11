@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.ws.impl;
 import gov.nih.nci.cabig.caaers.ws.DevicesService;
 import gov.nih.nci.cabig.caaers.api.impl.DevicesServiceImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.devices.DevicesType;
+import gov.nih.nci.cabig.caaers.integration.schema.devices.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

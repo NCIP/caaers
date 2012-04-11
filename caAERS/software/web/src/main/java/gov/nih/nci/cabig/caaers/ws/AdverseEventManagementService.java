@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.ws;
 
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.*;
+import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

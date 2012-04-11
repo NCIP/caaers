@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.ws.impl;
 import gov.nih.nci.cabig.caaers.ws.ASAELService;
 import gov.nih.nci.cabig.caaers.api.impl.ASAELServiceImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.asael.ASAELType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
