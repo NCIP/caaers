@@ -44,8 +44,7 @@ public class StudyDiseaseMigrator implements Migrator<gov.nih.nci.cabig.caaers.d
                         diseaseTerm = diseaseTermDao.getByMeddra(ctepStudyDisease.getTerm().getMedraCode());
                     }
 
-                    outcome.ifNullObject(diseaseTerm, DomainObjectImportOutcome.Severity.ERROR, "The selected disease Term " +
-                            term + " is not Valid ");
+                    outcome.ifNullObject(diseaseTerm, DomainObjectImportOutcome.Severity.ERROR, "The selected disease Term " + term + " is not Valid ");
 
                     destinationCtepStudyDisease.setTerm(diseaseTerm);
                     destinationCtepStudyDisease.setLeadDisease(ctepStudyDisease.getLeadDisease() == null ? Boolean.FALSE : ctepStudyDisease.getLeadDisease());

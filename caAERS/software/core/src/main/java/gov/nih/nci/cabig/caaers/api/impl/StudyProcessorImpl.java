@@ -18,9 +18,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
-import gov.nih.nci.cabig.caaers.webservice.Response;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
+import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -42,7 +40,7 @@ import org.springframework.context.MessageSourceAware;
  * The implementation will manage (create/update) {@link Study}
  * @author Monish Dombla
  * @author Biju Joseph
- *
+ * @author Ion C. Olaru
  */
 
 public class StudyProcessorImpl extends AbstractImportService implements StudyProcessor,ApplicationContextAware,MessageSourceAware {
@@ -60,12 +58,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private DomainObjectValidator domainObjectValidator;
 	private MessageSource messageSource;
 	private EventFactory eventFactory;
-	
-	public StudyProcessorImpl(){
-		
-	}
-	
-	public StudyImportServiceImpl getStudyImportService() {
+
+    public StudyProcessorImpl() {
+    }
+
+    public StudyImportServiceImpl getStudyImportService() {
 		return studyImportService;
 	}
 
@@ -101,7 +98,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	 * Method exisits only to be called from ImportController 
 	 * @param studyDto
 	 */
-	public DomainObjectImportOutcome<Study> processStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto){
+	public DomainObjectImportOutcome<Study> importStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
 		logger.info("Entering processStudy() in StudyProcessorImpl");
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
@@ -132,43 +129,51 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				}
 			}
 		}
-		logger.info("Leaving createStudy() in StudyProcessorImpl");
 		return studyImportOutcome;
 	}
-	private List<Organization> searchForOrganization(gov.nih.nci.cabig.caaers.webservice.OrganizationType org) {
-		if (!StringUtilities.isBlank(org.getNciInstituteCode())) {
-			return getAuthorizedOrganizationsByNameOrNciId(null, org.getNciInstituteCode());
-		} else {
-			return getAuthorizedOrganizationsByNameOrNciId(org.getName(), null);
-		}
-	}
-	private String checkAuthorizedOrganizations (gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+
+    private List<Organization> searchForOrganization(gov.nih.nci.cabig.caaers.webservice.OrganizationType org) {
+        if (!StringUtilities.isBlank(org.getNciInstituteCode())) {
+            return getAuthorizedOrganizationsByNameOrNciId(null, org.getNciInstituteCode());
+        } else {
+            return getAuthorizedOrganizationsByNameOrNciId(org.getName(), null);
+        }
+    }
+
+    private String checkAuthorizedOrganizations(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
 		List<OrganizationType> orgs = new ArrayList<OrganizationType>();
 		orgs.add(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization());		
 		orgs.add(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization());		
 		StudyOrganizations so = studyDto.getStudyOrganizations();
-		for (StudySiteType sst: so.getStudySite()) {
+
+        for (StudySiteType sst: so.getStudySite()) {
 			orgs.add(sst.getOrganization());
 		}
+
 		for (OrganizationType org:orgs) {
-			if (searchForOrganization(org).size()<1) {
-				return messageSource.getMessage("WS_AEMS_028", new String[]{org.getNciInstituteCode() + " : " + org.getName()},"",Locale.getDefault());
-			}
-		}
+            List foundOrgs = searchForOrganization(org);
+            if (foundOrgs.size() < 1) {
+                return messageSource.getMessage("WS_AEMS_028", new String[]{org.getNciInstituteCode() + " : " + org.getName()}, "", Locale.getDefault());
+            }
+        }
 		return "ALL_ORGS_AUTH";
 	}
-	//if (!StringUtilities.isBlank(nciInstituteCode)) {
+
+    private CaaersServiceResponse processXMLStudy(Studies xmlStudies) {
+        gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
+        CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+        // ToDo Merge createStudy & updateStudy into this method
+        return caaersServiceResponse;
+    }
+
 	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
 		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
 
-		
 		Response studyServiceResponse = new Response();
 		
-		logger.info("Swith User Done ");
-		logger.info("Inside createStudy ");
-		logger.info("Study Short Title --- " + studyDto.getShortTitle());
-		logger.info("Study Long Title --- " + studyDto.getLongTitle());
+		logger.info("Study Short Title: " + studyDto.getShortTitle());
+		logger.info("Study Long Title:" + studyDto.getLongTitle());
 		
 		String errorMsg = checkAuthorizedOrganizations(studyDto);
 		if (!errorMsg.equals("ALL_ORGS_AUTH")) {
@@ -251,7 +256,6 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		
 		Response studyServiceResponse = new Response();
 		
-		logger.info("Inside updateStudy ");
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
 
@@ -278,7 +282,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			studyServiceResponse.setDescription("StudyDto to StudyDomain Conversion Failed ");
 		}
 		
-		if(studyImportOutcome == null){
+		if (studyImportOutcome == null) {
 			studyImportOutcome = studyImportService.importStudy(study);
 			List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
 			if(studyImportOutcome.isSavable() && errors.size() == 0){

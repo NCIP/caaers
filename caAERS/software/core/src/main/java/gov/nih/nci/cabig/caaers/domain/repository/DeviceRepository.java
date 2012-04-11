@@ -99,4 +99,15 @@ public class DeviceRepository {
         return (List<Device>)deviceDao.search(dq);
     }
 
+    /**
+     * Get the devices by CommonName
+     * @param commonName Search devices by this common name
+     * @return list of matching devices
+     */
+    public List<Device> getByCommonName(String commonName) {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName(commonName);
+        return (List<Device>)deviceDao.search(dq);
+    }
+
 }

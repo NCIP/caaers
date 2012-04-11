@@ -51,7 +51,7 @@ public class StudyImporter extends Importer{
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies) importObject;
 			if (studies != null) {
 				for (gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()) {
-					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.processStudy(studyDto);
+					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.importStudy(studyDto);
 					List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
                     if (studyImportOutcome.isSavable() && errors.size() == 0) {
 			            command.addImportableStudy(studyImportOutcome);

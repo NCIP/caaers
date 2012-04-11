@@ -14,8 +14,9 @@ import org.springframework.beans.factory.annotation.Required;
  * is enriched (using {@link StudyMigrator}). 
  * 
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
-public class StudyImportServiceImpl{
+public class StudyImportServiceImpl {
 
 
     private StudyMigrator studyMigrator;

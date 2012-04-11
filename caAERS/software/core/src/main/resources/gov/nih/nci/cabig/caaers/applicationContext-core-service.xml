@@ -189,9 +189,8 @@ default-lazy-init="true">
 		<property name="ctcTermDao" ref="ctcTermDao" />
 		<property name="lowLevelTermDao" ref="lowLevelTermDao" />
 	</bean>
-	<bean id="studyDeviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDeviceMigrator">
-		<property name="deviceRepository" ref="deviceRepository" />
-	</bean>
+
+	<bean id="studyDeviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDeviceMigrator" autowire="byType" />
 
 	<bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator">
 		<property name="children">
@@ -244,7 +243,8 @@ default-lazy-init="true">
 	<bean id="studyReportTypeSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyReportTypeSynchronizer"/>
 	<bean id="studyAgentsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyAgentsSynchronizer"/>
 	<bean id="studyEvaluationPeriodsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyEvaluationPeriodsSynchronizer"/>
-	
+	<bean id="studyDeviceSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyDeviceSynchronizer"/>
+
 	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
 		<property name="children">
 			<list>
@@ -256,6 +256,8 @@ default-lazy-init="true">
 				<ref bean="studyReportTypeSynchronizer"/>
 				<ref bean="studyAgentsSynchronizer"/>
 				<ref bean="studyEvaluationPeriodsSynchronizer"/>
+				<ref bean="studyEvaluationPeriodsSynchronizer"/>
+				<ref bean="studyDeviceSynchronizer"/>
 			</list>
 		</property>
 	</bean>
@@ -330,7 +332,7 @@ default-lazy-init="true">
 		<property name="organizationDao" ref="organizationDao"/>
 		<property name="configPropertyDao" ref="configPropertyDao" />
 		<property name="reportDefinitionDao" ref="reportDefinitionDao"></property>
-	</bean> 
+	</bean>
 	
 	<bean id="adeersReportGenerator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.api.AdeersReportGenerator"/>
 	<bean id="reportSubmissionService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ReportSubmissionService">

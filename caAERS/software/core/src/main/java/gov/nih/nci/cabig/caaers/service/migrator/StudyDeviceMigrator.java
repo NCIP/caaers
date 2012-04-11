@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
@@ -18,6 +19,7 @@ import java.util.List;
 public class StudyDeviceMigrator implements Migrator<Study> {
 
 	private DeviceRepository deviceRepository;
+	private DeviceDao deviceDao;
     private static Log log = LogFactory.getLog(StudyRepository.class);
 
 	public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
@@ -25,27 +27,37 @@ public class StudyDeviceMigrator implements Migrator<Study> {
         log.debug("Migrating " + l.size() + " StudyDevices");
 
         for (StudyDevice sd : l) {
-            StudyDevice newSD = new StudyDevice();
+            StudyDevice newStudyDevice = new StudyDevice();
             Device d  = null;
             if (sd.getDevice() != null) {
-                List<Device> ld = deviceRepository.getByNames(sd.getDevice().getCommonName(), sd.getDevice().getBrandName(), sd.getDevice().getType());
-                if (ld.size() > 0) d = ld.get(0);
+                List<Device> ld = deviceRepository.getByCommonName(sd.getDevice().getCommonName());
+                if (ld.size() > 0) {
+                    d = ld.get(0);
+                } else {
+                    // Create the device if needed
+                    d = new Device();
+                    d.setCommonName(sd.getDevice().getCommonName());
+                    d.setBrandName(sd.getDevice().getBrandName());
+                    d.setType(sd.getDevice().getType());
+                    deviceDao.save(d);
+                }
             }
-            newSD.setDevice(d);
-            newSD.setStudy(dest);
 
-            newSD.setCatalogNumber(sd.getCatalogNumber());
-            newSD.setManufacturerCity(sd.getManufacturerCity());
-            newSD.setManufacturerName(sd.getManufacturerName());
-            newSD.setManufacturerState(sd.getManufacturerState());
-            newSD.setModelNumber(sd.getModelNumber());
+            newStudyDevice.setDevice(d);
+            newStudyDevice.setStudy(dest);
+
+            newStudyDevice.setCatalogNumber(sd.getCatalogNumber());
+            newStudyDevice.setManufacturerCity(sd.getManufacturerCity());
+            newStudyDevice.setManufacturerName(sd.getManufacturerName());
+            newStudyDevice.setManufacturerState(sd.getManufacturerState());
+            newStudyDevice.setModelNumber(sd.getModelNumber());
 
             if (d == null) {
-                newSD.setOtherBrandName(sd.getOtherBrandName());
-                newSD.setOtherCommonName(sd.getOtherCommonName());
-                newSD.setOtherDeviceType(sd.getOtherDeviceType());
+                newStudyDevice.setOtherBrandName(sd.getOtherBrandName());
+                newStudyDevice.setOtherCommonName(sd.getOtherCommonName());
+                newStudyDevice.setOtherDeviceType(sd.getOtherDeviceType());
             }
-            dest.getStudyDevices().add(newSD);
+            dest.getStudyDevices().add(newStudyDevice);
         }
 	}
 
@@ -55,5 +67,13 @@ public class StudyDeviceMigrator implements Migrator<Study> {
 
     public void setDeviceRepository(DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
+    }
+
+    public DeviceDao getDeviceDao() {
+        return deviceDao;
+    }
+
+    public void setDeviceDao(DeviceDao deviceDao) {
+        this.deviceDao = deviceDao;
     }
 }
