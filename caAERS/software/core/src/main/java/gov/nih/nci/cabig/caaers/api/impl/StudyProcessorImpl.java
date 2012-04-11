@@ -204,13 +204,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					try {
 						studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
 						studyRepository.save(studyImportOutcome.getImportedDomainObject());
-						studyServiceResponse.setResponsecode("0");
-						studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
+                        Helper.populateError(caaersServiceResponse, "", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
 						logger.info("Study Created");
 						eventFactory.publishEntityModifiedEvent(new LocalStudy(), false);
 					} catch (Exception e) {
-						studyServiceResponse.setResponsecode("1");
-						studyServiceResponse.setDescription("Study Creation Failed " +  e.getMessage());
+                        Helper.populateError(caaersServiceResponse, "", "Study Creation Failed " +  e.getMessage());
 						e.printStackTrace();
 					}
 					
@@ -218,23 +216,20 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					for(String errMsg : errors){
 		        		studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
 		        	}
-					studyServiceResponse.setResponsecode("1");
-					studyServiceResponse.setDescription("Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
-					List<String> messages = new ArrayList<String>(); 
+                    Helper.populateError(caaersServiceResponse, "", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
+					List<String> messages = new ArrayList<String>();
 					for(Message message : studyImportOutcome.getMessages()){
 						messages.add(message.getMessage());
 					}
 					for(String errMsg : errors){
 						messages.add(errMsg);
 		        	}
-					studyServiceResponse.setMessage(messages);
 				}
 			}
 			
 		}
 
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
-		caaersServiceResponse.setResponse(studyServiceResponse);
 		return caaersServiceResponse;
 	}
 
@@ -242,16 +237,12 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 
-		Response studyServiceResponse = new Response();
-		
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
 
 		String errorMsg = checkAuthorizedOrganizations(studyDto);
 		if (!errorMsg.equals("ALL_ORGS_AUTH")) {
-			studyServiceResponse.setResponsecode("WS_AEMS_028");
-			studyServiceResponse.setDescription(errorMsg);	
-			caaersServiceResponse.setResponse(studyServiceResponse);
+            Helper.populateError(caaersServiceResponse, "WS_AEMS_028", errorMsg);
 			return caaersServiceResponse;
 		}
 		
@@ -266,8 +257,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			studyImportOutcome = new DomainObjectImportOutcome<Study>();
 			logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
 			studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-			studyServiceResponse.setResponsecode("1");
-			studyServiceResponse.setDescription("StudyDto to StudyDomain Conversion Failed ");
+            Helper.populateError(caaersServiceResponse, "", "StudyDto to StudyDomain Conversion Failed");
 		}
 		
 		if (studyImportOutcome == null) {
@@ -290,38 +280,32 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						studyServiceResponse.setResponsecode("0");
-						studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
+                        Helper.populateError(caaersServiceResponse, "", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
 						logger.info("Study Updated");
 						
 					}else{
-						studyServiceResponse.setResponsecode("1");
 						String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault());
-						studyServiceResponse.setDescription(errorDescription);
+                        Helper.populateError(caaersServiceResponse, "", errorDescription);
 						studyImportOutcome.addErrorMessage(errorDescription, DomainObjectImportOutcome.Severity.ERROR);
 					}
 					
 				}else{
-					studyServiceResponse.setResponsecode("1");
-					studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS");
+                    Helper.populateError(caaersServiceResponse, "", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS");
 					studyImportOutcome.addErrorMessage("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
 				}
-			}else{
-				studyServiceResponse.setResponsecode("1");
-				studyServiceResponse.setDescription("Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be updated in caAERS");
-				List<String> messages = new ArrayList<String>(); 
+			}else {
+                Helper.populateError(caaersServiceResponse, "", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be updated in caAERS");
+				List<String> messages = new ArrayList<String>();
 				for(Message message : studyImportOutcome.getMessages()){
 					messages.add(message.getMessage());
 				}
 				for(String errMsg : errors){
 					messages.add(errMsg);
 	        	}
-				studyServiceResponse.setMessage(messages);
 			}
 		}
 
 		logger.info("Leaving updateStudy() in StudyProcessor");
-		caaersServiceResponse.setResponse(studyServiceResponse);
 		return caaersServiceResponse;
 	}
 	
