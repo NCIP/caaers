@@ -28,7 +28,7 @@ public class XMLUtil {
     
     /**
      * This method will return {@link Studies}
-     * @param rootElement
+     * @param studies
      * @return
      */
     public static String getStudyXML(Object studies){

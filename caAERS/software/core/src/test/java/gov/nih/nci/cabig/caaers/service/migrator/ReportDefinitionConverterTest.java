@@ -25,7 +25,7 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 	ReportDefinitionConverter reportDefinitionConverter;
 	private JAXBContext jaxbContext = null;
 	private Unmarshaller unmarshaller = null;
-	private gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions reportDefinitions = null;
+	private gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions reportDefinitions = null;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -37,8 +37,8 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 	
 	public void testdtoToDomain() throws Exception {
 		
-		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/ctep_24_hour_sae_notification.xml"));
-		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
+		reportDefinitions = (gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/ctep_24_hour_sae_notification.xml"));
+        gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
 		
 		assertNotNull(reportDefinitionDomain);
@@ -69,8 +69,8 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
     *
     * */
 	public void testCustomDtoToDomain() throws Exception {
-		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/custom-report.xml"));
-		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
+		reportDefinitions = (gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/custom-report.xml"));
+        gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
 		assertEquals(ReportFormatType.CUSTOM_REPORT, reportDefinitionDomain.getReportFormatType());
         assertNotNull(reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.diagnosisDate"));
@@ -84,8 +84,8 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 	}
 
 	public void testdomainToDto() throws Exception {
-		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/ctep_24_hour_sae_notification.xml"));
-		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
+		reportDefinitions = (gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/ctep_24_hour_sae_notification.xml"));
+        gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
 		assertNotNull(reportDefinitionDomain);
 		assertEquals("TEST CTEP 24 Hour SAE Notification", reportDefinitionDomain.getName());
