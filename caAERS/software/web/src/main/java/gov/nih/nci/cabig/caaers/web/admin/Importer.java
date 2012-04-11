@@ -111,12 +111,12 @@ public abstract class Importer{
 	
 	public boolean validRootElement(Object importObject, String type, ImportCommand command) throws JAXBException{
 		if(type.equals(STUDY_IMPORT)){
-			if( !(importObject instanceof gov.nih.nci.cabig.caaers.webservice.Studies)){
+			if( !(importObject instanceof gov.nih.nci.cabig.caaers.integration.schema.study.Studies)){
 				command.setSchemaValidationResult(messageSource.getMessage("ADM_IMP_001", null, "Missing root element.", Locale.getDefault()));
 				return false;
 			}
 		}else if(type.equals(SUBJECT_IMPORT)){
-			if( !(importObject instanceof gov.nih.nci.cabig.caaers.webservice.participant.Participants)){
+			if( !(importObject instanceof gov.nih.nci.cabig.caaers.integration.schema.participant.Participants)){
 				command.setSchemaValidationResult(messageSource.getMessage("ADM_IMP_001", null, "Missing root element.", Locale.getDefault()));
 				return false;
 			}
