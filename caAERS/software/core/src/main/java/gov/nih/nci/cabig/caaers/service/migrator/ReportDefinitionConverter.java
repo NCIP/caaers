@@ -6,14 +6,26 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.report.*;
-import gov.nih.nci.cabig.caaers.reportdefinition.GroupType;
-import gov.nih.nci.cabig.caaers.reportdefinition.ObjectFactory;
-import gov.nih.nci.cabig.caaers.reportdefinition.OrganizationType;
-import gov.nih.nci.cabig.caaers.reportdefinition.ParentType;
-import gov.nih.nci.cabig.caaers.reportdefinition.RecipientType;
-import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType;
-import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportType;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.GroupType;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ObjectFactory;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ParentType;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.RecipientType;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitionType;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +146,7 @@ public class ReportDefinitionConverter {
 		//Populate Delivery Details.
 		ReportDeliveryDefinition reportDeliveryDefinition = null;
 		
-		for(gov.nih.nci.cabig.caaers.reportdefinition.ReportDeliveryDefinition deliveryDefinition : reportDefinitionDto.getDeliveryDefinition()){
+		for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDeliveryDefinition deliveryDefinition : reportDefinitionDto.getDeliveryDefinition()){
 			reportDeliveryDefinition = new ReportDeliveryDefinition();
 			if("TEXT".equals(deliveryDefinition.getFormat())){
 				reportDeliveryDefinition.setFormat(ReportFormat.TEXT);
@@ -159,7 +171,7 @@ public class ReportDefinitionConverter {
 		ReportMandatoryFieldDefinition reportMandatoryFieldDefinition = null;
 		List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
 		
-		for(gov.nih.nci.cabig.caaers.reportdefinition.ReportMandatoryFieldDefinition repoDefinition : reportDefinitionDto.getMandatoryField()){
+		for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportMandatoryFieldDefinition repoDefinition : reportDefinitionDto.getMandatoryField()){
 			reportMandatoryFieldDefinition = new ReportMandatoryFieldDefinition("", RequirednessIndicator.OPTIONAL);
 			reportMandatoryFieldDefinition.setFieldPath(repoDefinition.getFieldPath());
 			if("OPTIONAL".equals(repoDefinition.getMandatory())){
@@ -187,11 +199,11 @@ public class ReportDefinitionConverter {
 		List<Recipient> recipients = new ArrayList<Recipient>();
 		List<PlannedNotification> plannedNotifications = new ArrayList<PlannedNotification>();
 		
-		for(gov.nih.nci.cabig.caaers.reportdefinition.PlannedNotification plannedNotification : reportDefinitionDto.getPlannedNotificaiton()){
+		for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification plannedNotification : reportDefinitionDto.getPlannedNotificaiton()){
 			plannedEmailNotification = new PlannedEmailNotification();
 			plannedEmailNotification.setIndexOnTimeScale(plannedNotification.getIndexOnTimeScale());
 			
-			for(gov.nih.nci.cabig.caaers.reportdefinition.Recipient recipientDto : plannedNotification.getRecipients()){
+			for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient recipientDto : plannedNotification.getRecipients()){
 				if("ROLE".equals(recipientDto.getType())){
 					RoleBasedRecipient roleBasedrecipient = new RoleBasedRecipient();
 					roleBasedrecipient.setRoleName(recipientDto.getValue());
@@ -257,16 +269,16 @@ public class ReportDefinitionConverter {
 			reportDefinitionDto.setEnabled(reportDefinitionDomain.getEnabled());
 		
 		//set the report type
-		reportDefinitionDto.setReportType(gov.nih.nci.cabig.caaers.reportdefinition.ReportType.valueOf(reportDefinitionDomain.getReportType().name()));
+		reportDefinitionDto.setReportType(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportType.valueOf(reportDefinitionDomain.getReportType().name()));
 		
 		reportDefinitionDto.setExpectedDisplayDueDate(reportDefinitionDomain.getExpectedDisplayDueDate());
 		reportDefinitionDto.setReportFormat(reportDefinitionDomain.getReportFormatType().getName());
 		
 		//Populate Delivery Details.
-		gov.nih.nci.cabig.caaers.reportdefinition.ReportDeliveryDefinition rDDDto = null; 
+		gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDeliveryDefinition rDDDto = null; 
 		
-		List<gov.nih.nci.cabig.caaers.reportdefinition.ReportDeliveryDefinition> deliveryDefinitions = 
-				new ArrayList<gov.nih.nci.cabig.caaers.reportdefinition.ReportDeliveryDefinition>();
+		List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDeliveryDefinition> deliveryDefinitions = 
+				new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDeliveryDefinition>();
 		
 		for(ReportDeliveryDefinition reportDeliveryDefinition : reportDefinitionDomain.getDeliveryDefinitions()){
 			rDDDto = objectFactory.createReportDeliveryDefinition();
@@ -284,10 +296,10 @@ public class ReportDefinitionConverter {
 		reportDefinitionDto.setDeliveryDefinition(deliveryDefinitions);
 		
 		//Populate Mandatory Fields.
-		List<gov.nih.nci.cabig.caaers.reportdefinition.ReportMandatoryFieldDefinition> mandatoryFields = 
-			new ArrayList<gov.nih.nci.cabig.caaers.reportdefinition.ReportMandatoryFieldDefinition>();
+		List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportMandatoryFieldDefinition> mandatoryFields = 
+			new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportMandatoryFieldDefinition>();
 		
-		gov.nih.nci.cabig.caaers.reportdefinition.ReportMandatoryFieldDefinition rMFDDto = null;
+		gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportMandatoryFieldDefinition rMFDDto = null;
 		
 		for(ReportMandatoryFieldDefinition repoMandatoryFieldDefinition : reportDefinitionDomain.getMandatoryFields()){
 			rMFDDto = objectFactory.createReportMandatoryFieldDefinition();
@@ -302,16 +314,16 @@ public class ReportDefinitionConverter {
 		reportDefinitionDto.setMandatoryField(mandatoryFields);
 		
 		//Populate PlannedNotifications.
-		gov.nih.nci.cabig.caaers.reportdefinition.PlannedNotification plannedNotificationDto = null;
-		gov.nih.nci.cabig.caaers.reportdefinition.Recipient recipientDto = null;
-		gov.nih.nci.cabig.caaers.reportdefinition.NotificationBodyContent notificationBodyContentDto = null;
+		gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification plannedNotificationDto = null;
+		gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient recipientDto = null;
+		gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.NotificationBodyContent notificationBodyContentDto = null;
 		PlannedEmailNotification plannedEmailNotification = null;
 		
-		List<gov.nih.nci.cabig.caaers.reportdefinition.PlannedNotification> plannedNotifications = 
-				new ArrayList<gov.nih.nci.cabig.caaers.reportdefinition.PlannedNotification>();
+		List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification> plannedNotifications = 
+				new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification>();
 		
-		List<gov.nih.nci.cabig.caaers.reportdefinition.Recipient> recipients = 
-			new ArrayList<gov.nih.nci.cabig.caaers.reportdefinition.Recipient>();
+		List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient> recipients = 
+			new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient>();
 		
 		for(PlannedNotification plannedNotification : reportDefinitionDomain.getPlannedNotifications()){
 			if(plannedNotification instanceof PlannedEmailNotification){
@@ -345,7 +357,7 @@ public class ReportDefinitionConverter {
 		}
 		reportDefinitionDto.setPlannedNotificaiton(plannedNotifications);
 		
-		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions reportDefinitions = objectFactory.createReportDefinitions();
+		gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions reportDefinitions = objectFactory.createReportDefinitions();
 		reportDefinitions.getReportDefinition().add(reportDefinitionDto);
 		
 		return reportDefinitions;

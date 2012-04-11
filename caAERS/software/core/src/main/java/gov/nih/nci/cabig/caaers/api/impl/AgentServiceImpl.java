@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.api.AgentService;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator;
 

@@ -1,9 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Device;
-import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
-import gov.nih.nci.cabig.caaers.webservice.DeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
 
 /**
  * @author Ion C. Olaru

@@ -11,10 +11,11 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
-import gov.nih.nci.cabig.caaers.webservice.participant.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Identifiers;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Identifiers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ParticipantConverter {
 	 * @param participant
 	 */
 	
-	public void convertParticipantDtoToParticipantDomain(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto, Participant participant) throws CaaersSystemException{
+	public void convertParticipantDtoToParticipantDomain(ParticipantType participantDto, Participant participant) throws CaaersSystemException{
 		if(participant == null){
 			participant = new Participant();
 		}
@@ -78,7 +79,7 @@ public class ParticipantConverter {
 	}
 	
 	
-	private void populateIdentifiers(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto, Participant participant) throws Exception{
+	private void populateIdentifiers(ParticipantType participantDto, Participant participant) throws Exception{
 		
 		Identifiers identifiers = participantDto.getIdentifiers();
 		//BJ: fixed  	 CAAERS-2900
@@ -103,7 +104,7 @@ public class ParticipantConverter {
 		
 	}
 	
-	private void populateAssignments(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto, Participant participant) throws Exception{
+	private void populateAssignments(ParticipantType participantDto, Participant participant) throws Exception{
 		
 		Assignments assignments = participantDto.getAssignments();
 		StudyParticipantAssignment studyParticipantAssignment = null;
