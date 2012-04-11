@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.ws;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -23,7 +24,7 @@ public interface StudyProcessor {
 	 * @param xmlStudies
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(@WebParam(name="Studies", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies);
+	public CaaersServiceResponse createStudy(@WebParam(name="Studies", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies);
 
 	/**
 	 * This operation will accept a Study which is a jaxb Study and updates it.
@@ -33,6 +34,6 @@ public interface StudyProcessor {
 	 * @param xmlStudies
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(@WebParam(name="Studies", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies);
+	public CaaersServiceResponse updateStudy(@WebParam(name="Studies", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies);
 
 }

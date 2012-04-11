@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.ws.StudyProcessor;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
-import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
