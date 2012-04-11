@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.ws.ParticipantService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
-import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
+import gov.nih.nci.cabig.caaers.ws.ParticipantService;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
