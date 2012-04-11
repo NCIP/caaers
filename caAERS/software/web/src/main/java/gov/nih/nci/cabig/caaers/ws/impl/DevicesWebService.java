@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.webservice.DeviceType;
 import gov.nih.nci.cabig.caaers.webservice.asael.ASAELType;
 import gov.nih.nci.cabig.caaers.webservice.devices.DevicesType;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -17,13 +18,14 @@ import javax.jws.soap.SOAPBinding;
  * @author Ion C. Olaru
  *         Date: 4/2/12 -10:03 AM
  */
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.DevicesService", serviceName="DevicesService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/devices")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.DevicesService", serviceName="DevicesService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class DevicesWebService implements DevicesService {
 
     private DevicesServiceImpl s;
 
-    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/asael") DevicesType devices) {
+    @WebMethod
+    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov") DevicesType devices) {
         return s.createOrUpdateDevices(devices);
     }
 
