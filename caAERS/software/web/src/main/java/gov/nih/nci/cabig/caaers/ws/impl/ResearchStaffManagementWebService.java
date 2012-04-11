@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
+import gov.nih.nci.cabig.caaers.ws.ResearchStaffService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
@@ -11,21 +11,17 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 /**
- * Exposes webservice API to manage ResearchStaff. The implementation here delegetes requests to
+ * Exposes webservice API to manage ResearchStaff. The implementation here delegates requests to
  * DefaultResearchStaffMigratorService.
  */
-
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService",
-        serviceName="ResearchStaffMigratorService",
-        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ResearchStaffService", serviceName="ResearchStaffService", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
-public class ResearchStaffManagementWebService implements ResearchStaffMigratorService {
+public class ResearchStaffManagementWebService implements ResearchStaffService {
 
     private DefaultResearchStaffMigratorService impl;
 
     @WebMethod
-    public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff",
-            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff") Staff staff) {
+    public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov") Staff staff) {
         return impl.saveResearchStaff(staff);
     }
 

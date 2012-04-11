@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -10,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
@@ -30,7 +30,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
-    private StudyProcessor studyProcessor = null;
+    private StudyProcessorImpl studyProcessor = null;
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
@@ -48,7 +48,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
         unmarshaller = jaxbContext.createUnmarshaller();
-        studyProcessor = (StudyProcessor) getDeployedApplicationContext().getBean("studyProcessorImpl");
+        studyProcessor = (StudyProcessorImpl)getDeployedApplicationContext().getBean("studyProcessorImpl");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");

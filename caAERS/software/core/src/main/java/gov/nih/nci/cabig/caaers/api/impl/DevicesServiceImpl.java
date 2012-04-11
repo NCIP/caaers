@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.api.DevicesService;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.domain.Device;
@@ -12,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
  * @author Ion C. Olaru
  *         Date: 4/3/12 -10:03 AM
  */
-public class DevicesServiceImpl implements DevicesService, ApplicationContextAware {
+public class DevicesServiceImpl implements ApplicationContextAware {
 
     private static Log log = LogFactory.getLog(DevicesServiceImpl.class);
 

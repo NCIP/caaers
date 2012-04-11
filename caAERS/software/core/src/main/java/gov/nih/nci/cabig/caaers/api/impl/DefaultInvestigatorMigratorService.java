@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -17,12 +16,6 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +23,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class DefaultInvestigatorMigratorService extends DefaultMigratorService implements InvestigatorMigratorService {
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class DefaultInvestigatorMigratorService extends DefaultMigratorService  {
 	private static final Log logger = LogFactory.getLog(DefaultInvestigatorMigratorService.class);
 	
 	private InvestigatorDao investigatorDao;

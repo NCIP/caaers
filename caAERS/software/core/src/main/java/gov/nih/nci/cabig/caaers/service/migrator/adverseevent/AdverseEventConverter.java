@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.api.AdverseEventManagementService;
+import gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -73,7 +73,7 @@ public class AdverseEventConverter {
 			}
 	  
 
-			if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
+			if (operation.equals(AdverseEventManagementServiceImpl.CREATE) || operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
 				if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
 					populateCtcTerm(adverseEventDto,adverseEvent,terminology.getCtcVersion());
 				}

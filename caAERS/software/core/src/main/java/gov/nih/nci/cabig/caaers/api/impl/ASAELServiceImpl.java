@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.api.ASAELService;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
@@ -9,7 +8,6 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
-import gov.nih.nci.cabig.caaers.service.migrator.AgentConverter;
 import gov.nih.nci.cabig.caaers.webservice.asael.ASAELAgentType;
 import gov.nih.nci.cabig.caaers.webservice.asael.ASAELType;
 import gov.nih.nci.cabig.caaers.webservice.asael.ExpectedAECtcTermType;
@@ -19,14 +17,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.jws.WebParam;
 import java.util.*;
 
 /**
  * @author Ion C. Olaru
  *         Date: 4/3/12 -10:03 AM
  */
-public class ASAELServiceImpl implements ASAELService, ApplicationContextAware {
+public class ASAELServiceImpl implements ApplicationContextAware {
 
     private static Log log = LogFactory.getLog(ASAELServiceImpl.class);
 

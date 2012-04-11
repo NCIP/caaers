@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -21,10 +22,8 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +33,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase {
 
-	private InvestigatorMigratorService svc = null;
+	private DefaultInvestigatorMigratorService svc = null;
 	private JAXBContext jaxbContext = null;
 	private Unmarshaller unmarshaller = null;
 	private gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = null;
@@ -50,7 +49,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 		super.setUp();
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
 		unmarshaller = jaxbContext.createUnmarshaller();
-		svc = (InvestigatorMigratorService)getDeployedApplicationContext().getBean("investigatorMigratorService");
+		svc = (DefaultInvestigatorMigratorService)getDeployedApplicationContext().getBean("investigatorMigratorService");
 		investigatorRepository = (InvestigatorRepository)getDeployedApplicationContext().getBean("investigatorRepository");
 		investigatorDao = (InvestigatorDao)getDeployedApplicationContext().getBean("investigatorDao");
 
@@ -128,8 +127,6 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 
 	/**
      * Fetches the research staff from the DB
-     * 
-     * @param nciCode
      * @return
      */
 	Investigator fetchInvestigator(String email) {

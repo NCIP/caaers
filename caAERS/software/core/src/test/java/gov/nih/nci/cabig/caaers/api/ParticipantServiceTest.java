@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.index.ParticipantIndexDao;
@@ -29,7 +30,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
     private CaaersServiceResponse caaersServiceResponse;
-    private ParticipantService participantService = null;
+    private ParticipantServiceImpl participantService = null;
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private gov.nih.nci.cabig.caaers.webservice.participant.Participants participants = null;
@@ -45,7 +46,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
         jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
         unmarshaller = jaxbContext.createUnmarshaller();
-        participantService = (ParticipantService) getDeployedApplicationContext().getBean("participantServiceImpl");
+        participantService = (ParticipantServiceImpl)getDeployedApplicationContext().getBean("participantServiceImpl");
         participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
         participantIndexDao = (ParticipantIndexDao) getDeployedApplicationContext().getBean("participantIndexDao");

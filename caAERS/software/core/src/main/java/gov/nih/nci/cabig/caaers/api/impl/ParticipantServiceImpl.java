@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
-import gov.nih.nci.cabig.caaers.api.ParticipantService;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -18,24 +17,19 @@ import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
-import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
-import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.webservice.participant.*;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
-import gov.nih.nci.cabig.caaers.webservice.participant.Response;
 import gov.nih.nci.security.util.StringUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 
-public class ParticipantServiceImpl extends AbstractImportService implements ParticipantService, MessageSourceAware {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class ParticipantServiceImpl extends AbstractImportService implements MessageSourceAware {
 	
 	private static Log logger = LogFactory.getLog(ParticipantServiceImpl.class);
 	private MessageSource messageSource;
@@ -50,7 +44,6 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
     
 	/**
 	 * Method exisits only to be called from ImportController 
-	 * @param participantDto
 	 */
 	public DomainObjectImportOutcome<Participant> processParticipant(ParticipantType xmlParticipant){
 		logger.info("Entering processParticipant() in ParticipantServiceImpl");

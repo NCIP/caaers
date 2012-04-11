@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -32,7 +33,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase {
 
-	private ResearchStaffMigratorService svc = null;
+	private DefaultResearchStaffMigratorService svc = null;
 	private JAXBContext jaxbContext = null;
 	private Unmarshaller unmarshaller = null;
 	private gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff = null;
@@ -48,7 +49,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		super.setUp();
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
 		unmarshaller = jaxbContext.createUnmarshaller();
-		svc = (ResearchStaffMigratorService)getDeployedApplicationContext().getBean("researchStaffMigratorService");
+		svc = (DefaultResearchStaffMigratorService)getDeployedApplicationContext().getBean("researchStaffMigratorService");
 		researchStaffRepository = (ResearchStaffRepository)getDeployedApplicationContext().getBean("researchStaffRepository");
 	}
 
@@ -192,8 +193,6 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 
 	/**
      * Fetches the research staff from the DB
-     * 
-     * @param nciCode
      * @return
      */
     ResearchStaff fetchResearchStaff(String loginId) {//String nciIdentifier) {

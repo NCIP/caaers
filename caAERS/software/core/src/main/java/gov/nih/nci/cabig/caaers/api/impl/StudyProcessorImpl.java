@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
-import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -12,21 +11,15 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.security.util.StringUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,6 +29,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * The implementation will manage (create/update) {@link Study}
  * @author Monish Dombla
@@ -43,7 +40,7 @@ import org.springframework.context.MessageSourceAware;
  * @author Ion C. Olaru
  */
 
-public class StudyProcessorImpl extends AbstractImportService implements StudyProcessor,ApplicationContextAware,MessageSourceAware {
+public class StudyProcessorImpl extends AbstractImportService implements ApplicationContextAware,MessageSourceAware {
 	
 	
 private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);

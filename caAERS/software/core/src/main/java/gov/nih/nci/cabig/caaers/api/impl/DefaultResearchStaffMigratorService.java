@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.RoleMembership;
-import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
@@ -24,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultResearchStaffMigratorService extends DefaultMigratorService implements ResearchStaffMigratorService {
+public class DefaultResearchStaffMigratorService extends DefaultMigratorService {
 	
 	private static final Log logger = LogFactory.getLog(DefaultResearchStaffMigratorService.class);
     protected PersonRepository personRepository;

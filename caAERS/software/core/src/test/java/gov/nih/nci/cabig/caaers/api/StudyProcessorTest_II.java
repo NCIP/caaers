@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -23,7 +24,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
 
-    private StudyProcessor studyProcessor = null;
+    private StudyProcessorImpl studyProcessor = null;
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
@@ -40,7 +41,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
 
         jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
         unmarshaller = jaxbContext.createUnmarshaller();
-        studyProcessor = (StudyProcessor) getDeployedApplicationContext().getBean("studyProcessorImpl");
+        studyProcessor = (StudyProcessorImpl)getDeployedApplicationContext().getBean("studyProcessorImpl");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
 
         createdStudy = studyDao.getByShortTitle("Study PCS");
@@ -48,13 +49,10 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         	createdStudy = studyDao.getStudyDesignById(createdStudy.getId());
             studyDao.delete(createdStudy);
         }
-        
-        
-        
 
         jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
         unmarshaller = jaxbContext.createUnmarshaller();
-        studyProcessor = (StudyProcessor) getDeployedApplicationContext().getBean("studyProcessorImpl");
+        studyProcessor = (StudyProcessorImpl)getDeployedApplicationContext().getBean("studyProcessorImpl");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
 
     }

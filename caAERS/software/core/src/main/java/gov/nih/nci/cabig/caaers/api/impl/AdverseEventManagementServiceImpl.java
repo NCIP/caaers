@@ -1,30 +1,11 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
+import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
-import gov.nih.nci.cabig.caaers.api.AdverseEventManagementService;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.index.AdverseEventIndexDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.AeTerminology;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
@@ -32,24 +13,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConver
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventMeddraLowLevelTermType;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.Criteria;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.Responses;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-
-
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,10 +25,14 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
-import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
+import java.util.*;
 
-public class AdverseEventManagementServiceImpl extends AbstractImportService implements AdverseEventManagementService , ApplicationContextAware {
-	
+public class AdverseEventManagementServiceImpl extends AbstractImportService implements ApplicationContextAware {
+
+    public static final String CREATE = "create";
+   	public static final String UPDATE = "update";
+   	public static final String DELETE = "delete";
+
 	protected BusinessRulesExecutionServiceImpl executionService;
 	protected AdverseEventDao adverseEventDao;
 	protected ParticipantDao participantDao;
@@ -94,7 +62,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         List<Responses.Response> adverseEventResponsesList = new ArrayList<Responses.Response>();
         Responses adverseEventResponses = new Responses();
 
-		if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
+		if (operation.equals(AdverseEventManagementServiceImpl.CREATE) || operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
 			if (adverseEventsInputMessage.getAdverseEvents() == null) {
                 caaersServiceResponse.setErrorCode("WS_AEMS_025");
                 caaersServiceResponse.setDescription(messageSource.getMessage("WS_AEMS_025", new String[]{},"",Locale.getDefault()));
@@ -250,7 +218,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			}
 			
 			//
-			if (operation.equals(AdverseEventManagementService.DELETE)) {
+			if (operation.equals(AdverseEventManagementServiceImpl.DELETE)) {
                 String errorCode = "";
 
 				AdverseEvents adverseEvents = adverseEventsInputMessage.getAdverseEvents();

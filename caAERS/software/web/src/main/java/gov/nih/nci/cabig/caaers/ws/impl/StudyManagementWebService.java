@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.api.StudyProcessor;
+import gov.nih.nci.cabig.caaers.ws.StudyProcessor;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.Studies;

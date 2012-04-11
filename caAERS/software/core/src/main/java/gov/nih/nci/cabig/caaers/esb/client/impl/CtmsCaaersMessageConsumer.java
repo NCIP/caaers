@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
-import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
-import gov.nih.nci.cabig.caaers.api.ParticipantService;
-import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
-import gov.nih.nci.cabig.caaers.api.StudyProcessor;
+import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
+import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
+import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
+import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
 import gov.nih.nci.cabig.caaers.webservice.Studies;
@@ -69,10 +69,10 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	private ActiveMQQueue ctmsCaaersRecvQueue = null;
 	private ActiveMQQueue ctmsCaaersResponseQueue = null;
 	
-    private StudyProcessor studyProcessor;
-    private ParticipantService participantService;
-    private InvestigatorMigratorService investigatorMigratorService;
-    private ResearchStaffMigratorService researchStaffMigratorService;
+    private StudyProcessorImpl studyProcessor;
+    private ParticipantServiceImpl participantService;
+    private DefaultInvestigatorMigratorService investigatorMigratorService;
+    private DefaultResearchStaffMigratorService researchStaffMigratorService;
     
     private JAXBContext jaxbContext = null;
 	private Unmarshaller unmarshaller = null;
@@ -379,25 +379,23 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 		// Any other cleanup
 	}
 
-	public void setStudyProcessor(StudyProcessor studyProcessor) {
-		this.studyProcessor = studyProcessor;
-	}
+    public void setStudyProcessor(StudyProcessorImpl studyProcessor) {
+        this.studyProcessor = studyProcessor;
+    }
 
-	public void setParticipantService(ParticipantService participantService) {
-		this.participantService = participantService;
-	}
+    public void setParticipantService(ParticipantServiceImpl participantService) {
+        this.participantService = participantService;
+    }
 
-	public void setInvestigatorMigratorService(
-			InvestigatorMigratorService investigatorMigratorService) {
-		this.investigatorMigratorService = investigatorMigratorService;
-	}
+    public void setInvestigatorMigratorService(DefaultInvestigatorMigratorService investigatorMigratorService) {
+        this.investigatorMigratorService = investigatorMigratorService;
+    }
 
-	public void setResearchStaffMigratorService(
-			ResearchStaffMigratorService researchStaffMigratorService) {
-		this.researchStaffMigratorService = researchStaffMigratorService;
-	}
+    public void setResearchStaffMigratorService(DefaultResearchStaffMigratorService researchStaffMigratorService) {
+        this.researchStaffMigratorService = researchStaffMigratorService;
+    }
 
-	public void setConnectionFactory(ConnectionFactory connectionFactory) {
+    public void setConnectionFactory(ConnectionFactory connectionFactory) {
 		this.connectionFactory = connectionFactory;
 	}
 

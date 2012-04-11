@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 
-import gov.nih.nci.cabig.caaers.api.ParticipantService;
-import gov.nih.nci.cabig.caaers.api.StudyProcessor;
+import gov.nih.nci.cabig.caaers.ws.ParticipantService;
+import gov.nih.nci.cabig.caaers.ws.StudyProcessor;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
