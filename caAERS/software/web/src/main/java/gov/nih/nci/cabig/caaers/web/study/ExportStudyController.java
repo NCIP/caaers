@@ -65,7 +65,7 @@ public class ExportStudyController extends AbstractCommandController {
         }
         // END study export pre-population
         
-        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
+        gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = converter.convertStudyDomainToStudyDto(study);
 
         //Marshall the Data Transfer Object according to Study.xsd schema,
         //and download it to the client machine.
