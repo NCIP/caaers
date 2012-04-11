@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PersonnelRoleCodeType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.RoleCodeType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 
 import javax.xml.datatype.DatatypeFactory;
