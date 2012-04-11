@@ -117,56 +117,42 @@
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="systemAssignedIdentifier" type="cct:SystemAssignedIdentifierType"/>
+    <xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
+    <xs:complexType name="SystemAssignedIdentifierType">
+        <xs:complexContent>
+            <xs:extension base="IdentifierType">
+                <xs:sequence>
+                    <xs:element name="systemName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-    
     <xs:complexType name="IdentifierType">
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="type" type="ParticipantIdentifierType"/>
+                    <xs:element name="type" type="cct:ParticipantIdentifierType"/>
                     <xs:element name="value" type="cct:CustomStringType"/>
                     <xs:element name="primaryIndicator" type="xs:boolean" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
     
     <xs:complexType name="ReducedIdentifierType">
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="type" type="StudyIdentifierType"/>
+                    <xs:element name="type" type="cct:StudyIdentifierType"/>
                     <xs:element name="value" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:simpleType name="StudyIdentifierType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Site Identifier"/>
-            <xs:enumeration value="Site IRB Identifier"/>
-            <xs:enumeration value="ClinicalTrials.gov Identifier"/>
-            <xs:enumeration value="Grid Identifier"/>
-            <xs:enumeration value="C3D Identifier"/>
-            <xs:enumeration value="Protocol Authority Identifier"/>
-            <xs:enumeration value="Coordinating Center Identifier"/>
-        </xs:restriction>
-    </xs:simpleType>
-    
-    <xs:simpleType name="ParticipantIdentifierType">
-        <xs:annotation>
-            <xs:documentation>
-                Medical Record Number - MRN, Cooperative Group Identifier - CC 
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="MRN"/>
-            <xs:enumeration value="CC"/>
-            <xs:enumeration value="Other"/>
-        </xs:restriction>
-    </xs:simpleType>
+
 
     <xs:simpleType name="GenderType">
         <xs:restriction base="xs:string">

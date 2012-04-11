@@ -427,7 +427,16 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="systemAssignedIdentifier" type="cct:SystemAssignedIdentifierType"/>
+    <xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
+    <xs:complexType name="SystemAssignedIdentifierType">
+        <xs:complexContent>
+            <xs:extension base="IdentifierType">
+                <xs:sequence>
+                    <xs:element name="systemName" type="cct:CustomStringType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
 
     <xs:element name="identifier" type="IdentifierType"/>
