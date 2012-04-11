@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PersonnelRoleCodeType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.RoleCodeType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
