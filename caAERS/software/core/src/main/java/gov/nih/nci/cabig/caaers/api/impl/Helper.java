@@ -40,7 +40,7 @@ public class Helper {
         return response;
     }
     
-    public static CaaersServiceResponse populateErrorOutcome(CaaersServiceResponse response, String businessId, String caaersId, String corelationId, String... messages){
+    public static CaaersServiceResponse populateErrorOutcome(CaaersServiceResponse response, String businessId, String caaersId, String corelationId, List<String> messages){
 
         ServiceResponse serviceRespons = response.getServiceResponse();
         serviceRespons.setStatus(Status.FAILED_TO_PROCESS);

@@ -1,18 +1,21 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
-import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
+import gov.nih.nci.cabig.caaers.api.impl.Helper;
+import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -33,6 +36,7 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.security.SecurityManager;
+import org.springframework.context.MessageSource;
 import org.xml.sax.InputSource;
 
 /**
@@ -77,6 +81,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
     private JAXBContext jaxbContext = null;
 	private Unmarshaller unmarshaller = null;
 	private Marshaller marshaller = null;
+	private MessageSource messageSource;
     
 	/**
 	 * This Method is invoked by spring to initialize the connections to the queues. 
@@ -104,6 +109,10 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
     	}
 	}
 	
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
 	/**
 	 * This is the Callback method which gets invoked whenever there is a message on the InputQueue.
 	 * Once it receives a message this method delegates the processing to different methods.
@@ -138,12 +147,10 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 				if(messageValid){
 					responseXml = processMessage(message,messageType);
 				}else{
-					gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
-					gov.nih.nci.cabig.caaers.webservice.Response response = new gov.nih.nci.cabig.caaers.webservice.Response();
-					response.setResponsecode("1");
-					response.setDescription("Invalid Xml Content");
-					response.getMessage().add(sb.toString());
-					caaersResponse.setResponse(response);
+					CaaersServiceResponse caaersResponse = Helper.createResponse();
+					caaersResponse.getServiceResponse().setResponsecode("1");
+					Helper.populateError(caaersResponse, "WS_GEN_001", messageSource.getMessage("WS_GEN_001",new String[]{},"",Locale.getDefault()));
+					
 					jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 					marshaller = jaxbContext.createMarshaller();
 					responseXml = responseAsString(caaersResponse, marshaller);
@@ -227,7 +234,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processStudy(Message message,String messageType){
 		String responseXml = "";
-		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse studyServiceResponse = null;
+		CaaersServiceResponse studyServiceResponse = null;
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 			unmarshaller = jaxbContext.createUnmarshaller();
@@ -256,7 +263,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processParticipant(Message message,String messageType){
 		String responseXml = "";
-		gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse participantServiceResponse = null;
+		CaaersServiceResponse participantServiceResponse = null;
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
 			unmarshaller = jaxbContext.createUnmarshaller();
@@ -284,7 +291,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processInvestigator(Message message){
 		String responseXml = "";
-		gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse investigatorServiceResponse = null;
+		CaaersServiceResponse investigatorServiceResponse = null;
 		
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
@@ -311,7 +318,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processResearchStaff(Message message){
 		String responseXml = "";
-		gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse researchStaffServiceResponse = null;
+		CaaersServiceResponse researchStaffServiceResponse = null;
 		
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
