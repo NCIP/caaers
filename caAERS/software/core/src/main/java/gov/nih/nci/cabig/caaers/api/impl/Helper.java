@@ -19,7 +19,7 @@ public class Helper {
         ServiceResponse serviceResponse = new ServiceResponse();
         serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
-        
+        serviceResponse.setWsError(new ArrayList<WsError>());
         CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
         caaersServiceResponse.setServiceResponse(serviceResponse);
         return caaersServiceResponse;
@@ -30,13 +30,13 @@ public class Helper {
     }
     
     public static CaaersServiceResponse populateError(CaaersServiceResponse response, String errorCode, String description){
-        ServiceResponse serviceRespons = response.getServiceResponse();
-        serviceRespons.setStatus(Status.FAILED_TO_PROCESS);
-        serviceRespons.setResponsecode("1");
+        ServiceResponse serviceResponse = response.getServiceResponse();
+        serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
+        serviceResponse.setResponsecode("1");
         WsError error = new WsError();
         error.setErrorCode(errorCode);
         error.setErrorDesc(description);
-        serviceRespons.getWsError().add(error);
+        serviceResponse.getWsError().add(error);
         return response;
     }
     
