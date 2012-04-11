@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-import gov.nih.nci.cabig.caaers.webservice.Studies;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cagrid.caxchange.client.CaXchangeRequestProcessorClient;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.caxchange.ResponseMessage;
