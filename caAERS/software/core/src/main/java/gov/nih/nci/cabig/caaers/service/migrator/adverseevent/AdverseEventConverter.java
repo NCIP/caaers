@@ -17,10 +17,10 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventMeddraLowLevelTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventMeddraLowLevelTermType;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.OutcomeType;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +33,7 @@ public class AdverseEventConverter {
 	private LowLevelTermDao lowLevelTermDao = null;
 	private MessageSource messageSource;
 
-	public void convertAdverseEventDtoToAdverseEventDomain(gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType adverseEventDto, 
+	public void convertAdverseEventDtoToAdverseEventDomain(AdverseEventType adverseEventDto, 
 			AdverseEvent adverseEvent, AeTerminology terminology  , Date startDateOfFirstCourse, String operation) throws CaaersSystemException{
 		if(adverseEvent == null){
 			adverseEvent = new AdverseEvent();
