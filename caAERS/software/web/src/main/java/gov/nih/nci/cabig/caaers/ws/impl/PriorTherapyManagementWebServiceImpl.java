@@ -22,7 +22,7 @@ import javax.jws.soap.SOAPBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.PriorTherapyManagementWebService", serviceName="PriorTherapyManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.PriorTherapyManagementWebService", serviceName="PriorTherapyManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/priortherapy")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagementWebService{
 	

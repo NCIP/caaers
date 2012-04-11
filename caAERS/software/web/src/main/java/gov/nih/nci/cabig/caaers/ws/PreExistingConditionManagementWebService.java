@@ -13,7 +13,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="PreExistingConditionServiceIntf",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common")
+@WebService(name="PreExistingConditionServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/precondition")
 public interface PreExistingConditionManagementWebService {
 	
 	/**
@@ -21,10 +21,10 @@ public interface PreExistingConditionManagementWebService {
 	 * @TODO
 	 * This operation should allow for response.
 	 * Need to modify schema for Response
-	 * @param xmlAgents
+	 * @param xmlPreExistingConditions
 	 */
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse importPreExistingConditions(@WebParam(name="PreExistingConditions",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common") PreExistingConditions xmlPreExistingConditions) throws SecurityExceptionFaultMessage;
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/precondition") PreExistingConditions xmlPreExistingConditions) throws SecurityExceptionFaultMessage;
 
 }

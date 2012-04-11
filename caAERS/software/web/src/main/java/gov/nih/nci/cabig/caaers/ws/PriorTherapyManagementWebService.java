@@ -13,7 +13,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="PriorTherapyServiceIntf",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common")
+@WebService(name="PriorTherapyServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/priortherapy")
 public interface PriorTherapyManagementWebService {
 	
 	/**
@@ -21,10 +21,10 @@ public interface PriorTherapyManagementWebService {
 	 * @TODO
 	 * This operation should allow for response.
 	 * Need to modify schema for Response
-	 * @param xmlAgents
+	 * @param xmlPriorTherapies
 	 */
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse importPriorTherapies(@WebParam(name="PriorTherapies",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common") PriorTherapies xmlPriorTherapies) throws SecurityExceptionFaultMessage;
+            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/priortherapy") PriorTherapies xmlPriorTherapies) throws SecurityExceptionFaultMessage;
 
 }

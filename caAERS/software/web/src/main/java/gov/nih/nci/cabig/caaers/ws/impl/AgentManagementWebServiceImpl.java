@@ -22,7 +22,8 @@ import javax.jws.soap.SOAPBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.AgentManagementWebService", serviceName="AgentManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/common")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.AgentManagementWebService", serviceName="AgentManagementWebService",
+        targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/agent")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 	

@@ -16,7 +16,7 @@ import javax.jws.soap.SOAPBinding;
  * @author Biju Joseph
  * @author Ion C. Olaru
  */
-@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.api.StudyProcessor", serviceName = "StudyService", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov")
+@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.StudyProcessor", serviceName = "StudyService", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/study")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class StudyManagementWebService implements StudyProcessor {
 
@@ -30,7 +30,7 @@ public class StudyManagementWebService implements StudyProcessor {
      * @param xmlStudies
      */
     @WebMethod
-    public CaaersServiceResponse createStudy(@WebParam(name = "Studies", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies) {
+    public CaaersServiceResponse createStudy(@WebParam(name = "Studies", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/study") Studies xmlStudies) {
         return impl.createStudy(xmlStudies);
     }
 
@@ -42,7 +42,7 @@ public class StudyManagementWebService implements StudyProcessor {
      * @param xmlStudies
      */
     @WebMethod
-    public CaaersServiceResponse updateStudy(@WebParam(name = "Studies", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov") Studies xmlStudies) {
+    public CaaersServiceResponse updateStudy(@WebParam(name = "Studies", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/study") Studies xmlStudies) {
         return impl.updateStudy(xmlStudies);
     }
 

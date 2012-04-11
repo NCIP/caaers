@@ -14,14 +14,14 @@ import javax.jws.soap.SOAPBinding;
  * @author Ion C. Olaru
  *         Date: 4/2/12 -10:03 AM
  */
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.DevicesService", serviceName="DevicesService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/devices")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.DevicesService", serviceName="DevicesService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/device")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class DevicesWebService implements DevicesService {
 
     private DevicesServiceImpl s;
 
     @WebMethod
-    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/devices") DevicesType devices) {
+    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/device") DevicesType devices) {
         return s.createOrUpdateDevices(devices);
     }
 
