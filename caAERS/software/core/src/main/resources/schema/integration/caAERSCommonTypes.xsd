@@ -84,6 +84,44 @@
     		</xs:sequence>
     	</xs:complexType>
     </xs:element>
+         
+    <xs:element name="preExistingCondition" type="PreExistingConditionType"/>
+    <xs:complexType name="PreExistingConditionType">
+        <xs:complexContent>
+            <xs:extension base="DomainObjectType">
+                <xs:choice>
+                    <xs:element name="text" type="CustomStringType"/>
+                </xs:choice>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="PreExistingConditions">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element maxOccurs="unbounded" ref="preExistingCondition"/>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+    
+    <xs:element name="priorTherapy" type="PriorTherapyType"/>
+    <xs:complexType name="PriorTherapyType">
+        <xs:complexContent>
+            <xs:extension base="DomainObjectType">
+                <xs:choice>
+                    <xs:element name="text" type="CustomStringType"/>
+                </xs:choice>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="PriorTherapies">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element maxOccurs="unbounded" ref="priorTherapy"/>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
 
     <xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"/>
     <xs:complexType name="InvestigationalNewDrugType">

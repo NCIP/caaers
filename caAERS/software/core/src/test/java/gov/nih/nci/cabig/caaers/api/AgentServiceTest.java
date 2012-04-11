@@ -13,7 +13,6 @@ public class AgentServiceTest extends CaaersDbNoSecurityTestCase{
 	
 	    private AgentDao agentDao;
 		private AgentServiceImpl agentService;
-	    Agent updatedAgent = null;
 	
 	 @Override
 	    protected void setUp() throws Exception {
@@ -59,7 +58,7 @@ public class AgentServiceTest extends CaaersDbNoSecurityTestCase{
 			 assertFalse(existingAgents.get(0).getRetiredIndicator());
 			 
 			 // update existing agent
-			updatedAgent = new Agent();
+			Agent updatedAgent = new Agent();
 			updatedAgent.setName("updated Agent");
 			updatedAgent.setDescription("updated description");
 			updatedAgent.setNscNumber("nsc");

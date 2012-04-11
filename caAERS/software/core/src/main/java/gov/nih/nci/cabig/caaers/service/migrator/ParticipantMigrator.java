@@ -3,9 +3,6 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ParticipantMigrator extends CompositeMigrator<Participant> {
 	
 	

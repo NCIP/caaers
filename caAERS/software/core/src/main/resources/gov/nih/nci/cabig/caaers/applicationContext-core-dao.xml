@@ -235,6 +235,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInterventionExpectedMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RuleSet</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile</value>
+				<value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
             </list>
         </property>
         <property name="entityInterceptor">

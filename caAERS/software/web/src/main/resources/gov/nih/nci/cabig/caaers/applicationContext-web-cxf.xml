@@ -221,6 +221,52 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
+    
+    <bean id="preExistingConditionManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.PreExistingConditionManagementWebServiceImpl">
+        <property name="preExistingConditionLOVService" ref="preExistingConditionLOVService"/>
+    </bean>
+    <jaxws:endpoint
+            id="preExistingConditionWebService"
+            implementor="#preExistingConditionManagementWebServiceBean"
+            address="/PreExistingConditionLOVService">
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+                <constructor-arg>
+                    <map>
+                        <entry key="action" value="UsernameToken" />
+                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="passwordCallbackRef">
+                            <ref bean="authenticationWSHandler" />
+                        </entry>
+                    </map>
+                </constructor-arg>
+            </bean>
+            <ref bean="wsAuditInfoInterceptor" />
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+    
+     <bean id="priorTherapyManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.PriorTherapyManagementWebServiceImpl">
+        <property name="priorTherapyLOVService" ref="priorTherapyLOVService"/>
+    </bean>
+    <jaxws:endpoint
+            id="priorTherapyWebService"
+            implementor="#priorTherapyManagementWebServiceBean"
+            address="/PriorTherapyLOVService">
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+                <constructor-arg>
+                    <map>
+                        <entry key="action" value="UsernameToken" />
+                        <entry key="passwordType" value="PasswordText" />
+                        <entry key="passwordCallbackRef">
+                            <ref bean="authenticationWSHandler" />
+                        </entry>
+                    </map>
+                </constructor-arg>
+            </bean>
+            <ref bean="wsAuditInfoInterceptor" />
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
 
 
 </beans>

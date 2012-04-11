@@ -23,6 +23,15 @@ default-lazy-init="true">
 		<property name="agentRepository" ref="agentRepository"/>
 		<property name="agentMigrator" ref="agentMigrator"/>
 	</bean>
+	
+	<bean id="priorTherapyLOVService" class="gov.nih.nci.cabig.caaers.api.impl.PriorTherapyLOVServiceImpl">
+		<property name="priorTherapyDao" ref="priorTherapyDao"/>
+	</bean>
+	
+	<bean id="preExistingConditionLOVService" class="gov.nih.nci.cabig.caaers.api.impl.PreExistingConditionLOVServiceImpl">
+		<property name="preExistingConditionDao" ref="preExistingConditionDao"/>
+	</bean>
+	
 	<bean id="studyImportService" class="gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl">
 		<property name="studyMigrator" ref="studyMigrator"/>
 		<property name="studyDao" ref="studyDao"/>
@@ -265,6 +274,8 @@ default-lazy-init="true">
 	<bean id="organizationConverter" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter"/>
 	
 	<bean id="agentConverter" class="gov.nih.nci.cabig.caaers.service.migrator.AgentConverter"/>
+	
+	<bean id="domainObjecttConverter" class="gov.nih.nci.cabig.caaers.service.migrator.DomainObjectConverter"/>
 	
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
 	
