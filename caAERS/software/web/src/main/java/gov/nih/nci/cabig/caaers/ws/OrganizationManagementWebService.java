@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.ws;
 
 
 
-import gov.nih.nci.cabig.caaers.webservice.organization.Organizations;
+import gov.nih.nci.cabig.caaers.integration.schema.organization.Organizations;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 
 import javax.jws.WebMethod;

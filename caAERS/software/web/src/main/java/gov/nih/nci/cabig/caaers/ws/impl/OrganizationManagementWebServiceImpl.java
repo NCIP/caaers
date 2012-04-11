@@ -9,8 +9,8 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessages;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.organization.Organizations;
 import gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter;
-import gov.nih.nci.cabig.caaers.webservice.organization.Organizations;
 import gov.nih.nci.cabig.caaers.ws.OrganizationManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 
