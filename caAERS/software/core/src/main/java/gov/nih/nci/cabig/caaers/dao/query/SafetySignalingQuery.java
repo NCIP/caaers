@@ -49,6 +49,11 @@ public class SafetySignalingQuery extends AbstractQuery {
 		join (TAC +".study "+STUDY_ALIAS);
 	}
 	
+	public void joinStudyParticipantAssignment() {
+    	joinReportingPeriod();
+    	join (AE_REPORTING_PERIOD_ALIAS +".assignment "+STUDY_PARTICIPANT_ALIAS);
+    }
+	
 	public void joinTreatmentAssignment() {
 		joinReportingPeriod();
 		join (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);

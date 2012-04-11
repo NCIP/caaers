@@ -1,0 +1,572 @@
+<dataset>
+    <!-- TODO: expand to allow multiple XML files so that this doesn't have to be
+        copy/pasted -->
+    <ctc_versions
+            id="-1"
+            name="CTCAE v3.0"
+            />
+    
+    <ctc_categories
+            id="-1"
+            name="allergy/immunology"
+            version_id="-1"
+            />
+
+    <ctc_terms
+            id="-1"
+            category_id="-1"
+            term="Auditory/Ear - Other (Specify, __)"
+            ctep_term="Ear disorder"
+            ctep_code="10014004"
+            other_required="1"
+            />
+    <ctc_terms
+            category_id="-1"
+            id="-2"
+            term="Tinnitus"
+            ctep_term="Tinnitus"
+            ctep_code="10043882"
+            other_required="0"
+            />
+            
+    <ctc_terms
+            category_id="-1"
+            id="-3"
+            term="Nausea"
+            ctep_term="Nausea"
+            ctep_code="10043434"
+            other_required="0"
+            />
+            
+    <ctc_terms
+            category_id="-1"
+            id="-4"
+            term="Vomiting"
+            ctep_term="Vomiting"
+            ctep_code="10043434"
+            other_required="0"
+            />
+
+    <MEDDRA_LLT
+            id="-5"
+            meddra_code="2"
+            meddra_term="Hello World"
+            />
+
+     <ORGANIZATIONS
+            id="-1003"
+            version="1"
+            name="CALGB"
+            description_text="CALGB"
+            nci_institute_code="DEFAULT"
+            />
+
+    <PARTICIPANTS
+            id="-1"
+            instituitional_patient_number="eerr"
+            institution="ddd"
+            first_name="ddd"
+            last_name="dd"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2007"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+
+    <PARTICIPANTS
+            id="-2"
+            instituitional_patient_number="P00X"
+            institution="Hospital"
+            first_name="XXX"
+            last_name="YYY"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+
+    <PARTICIPANTS
+            id="-3"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+            
+    <PARTICIPANTS
+            id="-4"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+            
+    <PARTICIPANTS
+            id="-5"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1" />
+
+    <!-- Study : -1 -->
+    <STUDIES id="1"
+             multi_institution_indicator="0"
+             short_title="Short Title"
+             long_title="Long Title"
+             description="Description"
+             grid_id=""
+             load_status="1" />
+    <EPOCHS
+            id="-1"
+            name="test epoch 1"
+            order_no="1"
+            study_id="1"
+            />
+    <TREATMENT_ASSIGNMENT
+            id="-1"
+            code="adverseEventReportingPeriodCode"
+            study_id="1"
+            />
+    <STUDY_ORGANIZATIONS
+            id="-1"
+            version="1"
+           start_date="2006-10-10"
+            study_id="1"
+            site_id="-1003"
+            type="SST" />
+    <agents id="-1" name="Agent-01" description="Agent-01" nsc="760"/>
+    <agent_terms id="-1" agent_id="-1" term_id="-1" term_type="ctep" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="20.00" expectedness_frequency="60.00"/>
+    <study_agents id="-1" study_id="1" agent_id="-1"/>
+	<ta_study_interventions id="-1" treatment_assignment_id="-1" version="0"/>
+	<ta_agents id="-1" version="0" study_agent_id="-1"/>
+    <study_interventions_exp_aes id="-1" term_type="ctep" treatment_assignment_id="-1" term_id="-1" expected="0" 
+    	grade1frequency="20.00" grade2frequency="10.00" grade3frequency="4.34" grade4frequency="6.23" grade5frequency="20.00" expectedness_frequency="60.00"/>
+	<ta_expected_ae_intervention ta_expected_id="-1" ta_agent_id="-1" />
+	<!-- ParticipantAssignment :1 -->
+    <participant_assignments
+            id="-1"
+            participant_id="-1"
+            study_site_id="-1"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+    <AE_REPORTING_PERIODS
+            id="-1"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="-1"
+            assignment_id="-1"
+            epoch_id="-1"
+            />
+    <AE_REPORTS
+            id="-1"
+            reporting_period_id="-1"
+            created_at="2007-04-04 13:22:32.055"
+            />
+    <ADVERSE_EVENTS
+            id="-1"
+            report_id="-1"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="-1"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            solicited="1"
+            />
+    <AE_TERMS
+            id="-1"
+            adverse_event_id="-1"
+            term_id="-1"
+            term_type="ctep"
+            />
+	<AE_REPORTING_PERIODS
+            id="-11"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="-1"
+            assignment_id="-1"
+            epoch_id="-1"
+            />
+    <AE_REPORTS
+            id="-11"
+            reporting_period_id="-11"
+            created_at="2007-04-04 13:22:32.055"
+            />
+    <ADVERSE_EVENTS
+            id="-11"
+            report_id="-11"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="-11"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            solicited="1"
+            />
+    <AE_TERMS
+            id="-11"
+            adverse_event_id="-11"
+            term_id="-1"
+            term_type="ctep"
+            />
+	<!-- ParticipantAssignment :2 -->
+    <participant_assignments
+            id="-2"
+            participant_id="-2"
+            study_site_id="-1"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+    <AE_REPORTING_PERIODS
+            id="-2"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="-1"
+            assignment_id="-2"
+            epoch_id="-1"
+            />
+    <AE_REPORTS
+            id="-2"
+            reporting_period_id="-2"
+            created_at="2007-04-04 13:22:32.055"
+            />
+    <ADVERSE_EVENTS
+            id="-2"
+            report_id="-2"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            participant_at_risk="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="-2"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            solicited="1"
+            />
+    <AE_TERMS
+            id="-2"
+            adverse_event_id="-2"
+            term_id="-1"
+            term_type="ctep"
+            />
+	<!-- ParticipantAssignment :3 -->
+    <participant_assignments
+            id="-3"
+            participant_id="-3"
+            study_site_id="-1"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+    <AE_REPORTING_PERIODS
+            id="-3"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="-1"
+            assignment_id="-3"
+            epoch_id="-1"
+            />
+	<!-- ParticipantAssignment :4 -->
+    <participant_assignments
+            id="-4"
+            participant_id="-4"
+            study_site_id="-1"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+    <AE_REPORTING_PERIODS
+            id="-4"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="-1"
+            assignment_id="-4"
+            epoch_id="-1"
+            />
+	<!-- ParticipantAssignment :5 -->
+    <participant_assignments
+            id="-5"
+            participant_id="-5"
+            study_site_id="-1"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+    <AE_REPORTING_PERIODS
+            id="-5"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="-1"
+            assignment_id="-5"
+            epoch_id="-1"
+            />
+
+	<IDENTIFIERS
+            id="-200"
+            participant_id="-3"
+            value="13js77"
+            type="MRN"
+            system_name="system name"
+            organization_id="-1003"
+            stu_id="1"
+            discriminator_column="1"/>
+    <IDENTIFIERS
+            id="-1"
+            value="1"
+            type="MRN"
+            participant_id="-1"
+            system_name="system name"
+            discriminator_column="2"/>
+	<IDENTIFIERS
+            id="-2"
+            value="2"
+            type="MRN"
+            participant_id="-2"
+            system_name="system name"
+            discriminator_column="2"/>
+	<IDENTIFIERS
+            id="-3"
+            value="3"
+            type="MRN"
+            participant_id="-3"
+            system_name="system name"
+            discriminator_column="2"/>
+	<IDENTIFIERS
+            id="-4"
+            value="4"
+            type="MRN"
+            participant_id="-4"
+            system_name="system name"
+            discriminator_column="2"/>
+	<IDENTIFIERS
+            id="-5"
+            value="5"
+            type="MRN"
+            participant_id="-4"
+            system_name="system name"
+            discriminator_column="2"/>
+	<IDENTIFIERS
+            id="-6"
+            stu_id="1"
+            value="1A"
+            type="Protocol Authority Identifier"
+            discriminator_column="1"/>
+
+<!--     <TREATMENTS -->
+<!--             id="-1" -->
+<!--             report_id="-1" -->
+<!--             /> -->
+<!--     <REPORT_CALENDAR_TEMPLATES id="-30" name="11-day" -->
+<!--                                duration="8" time_scale_unit_code="4" amendable="0" enabled="1"/> -->
+<!--     <REPORT_SCHEDULES id="-41"  report_id="-17" rct_id="-30"/> -->
+<!--     <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/> -->
+    
+
+
+<!--     <COURSE_AGENTS -->
+<!--             id="-23" -->
+<!--             treatment_id="-17" -->
+<!--             /> -->
+<!--     <COURSE_AGENTS -->
+<!--             id="-27" -->
+<!--             treatment_id="-17" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-1" -->
+<!--             cause_type="CA" -->
+<!--             cause_id="-23" -->
+<!--             attribution_code="3" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="1" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-2" -->
+<!--             cause_type="CA" -->
+<!--             cause_id="-27" -->
+<!--             attribution_code="1" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+
+<!--     <CONCOMITANT_MEDICATIONS -->
+<!--             id="-77" -->
+<!--             report_id="-17" -->
+<!--             /> -->
+<!--     <CONCOMITANT_MEDICATIONS -->
+<!--             id="-78" -->
+<!--             report_id="-17" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-7" -->
+<!--             cause_type="CM" -->
+<!--             cause_id="-77" -->
+<!--             attribution_code="2" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-8" -->
+<!--             cause_type="CM" -->
+<!--             cause_id="-78" -->
+<!--             attribution_code="5" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="1" -->
+<!--             /> -->
+
+<!--     <OTHER_CAUSES -->
+<!--             id="-72" -->
+<!--             report_id="-17" -->
+<!--             /> -->
+<!--     <OTHER_CAUSES -->
+<!--             id="-71" -->
+<!--             report_id="-17" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-10" -->
+<!--             cause_type="OC" -->
+<!--             cause_id="-72" -->
+<!--             attribution_code="4" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-11" -->
+<!--             cause_type="OC" -->
+<!--             cause_id="-71" -->
+<!--             attribution_code="1" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="1" -->
+<!--             /> -->
+
+<!--     <DISEASE_HISTORIES -->
+<!--             id="-88" -->
+<!--             report_id="-17" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-17" -->
+<!--             cause_id="-88" -->
+<!--             cause_type="DH" -->
+<!--             attribution_code="5" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+
+<!--     <AE_SURGERY_INTERVENTIONS -->
+<!--             id="-34" -->
+<!--             report_id="-17" -->
+<!--             list_index="0" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-18" -->
+<!--             cause_id="-34" -->
+<!--             cause_type="SI" -->
+<!--             attribution_code="3" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+
+<!--     <AE_RADIATION_INTERVENTIONS -->
+<!--             id="-37" -->
+<!--             report_id="-17" -->
+<!--             list_index="0" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-19" -->
+<!--             cause_id="-37" -->
+<!--             cause_type="RI" -->
+<!--             attribution_code="4" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+
+<!--     <AE_MEDICAL_DEVICES -->
+<!--             id="-22" -->
+<!--             report_id="-17" -->
+<!--             list_index="0" -->
+<!--             /> -->
+<!--     <AE_ATTRIBUTIONS -->
+<!--             id="-20" -->
+<!--             cause_id="-22" -->
+<!--             cause_type="DV" -->
+<!--             attribution_code="1" -->
+<!--             adverse_event_id="-2" -->
+<!--             list_index="0" -->
+<!--             /> -->
+	<notifications
+        id="-1"
+        content="This is test"
+        emails="EF@no-email.com"
+        subject="no-subject1"
+        name="no-name1"
+        study_id="1"
+        version="0"
+        />
+
+    <!--  referenced tables -->
+    <ctc_grades/>
+    <ae_labs/>
+    <participant_histories/>
+
+    <ae_report_people/>
+    <contact_mechanisms/>
+    <study_amendments/>
+    <prior_therapy_agents/>
+    <ae_prior_therapies/>
+    <additional_information/>
+    <disease_terminologies/>
+    <ae_report_descriptions/>
+    <spa_disease_histories/>
+    <SPA_PRIOR_THERAPIES/>
+    <SPA_CONCOMITANT_MEDICATIONS/>
+    <SPA_PRE_EXISTING_CONDS/>
+	<ind_holders/>
+	<site_investigators />
+<!-- 	<observed_ae_profiles id="-1" version="0" expected_frequency="10.0" observed_frequency="15.0" total_no_ofae="60" observed_no_ofae="40" -->
+<!--     	standard_deviation="2.3" p_value="0.23" observed_significance=".10" notification_status="2" grade="0" treatment_assignment_id="-3" term_id="3012"/> -->
+	<observed_ae_profiles />
+	<rule_sets />
+</dataset>

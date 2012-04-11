@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
@@ -501,21 +502,25 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	List returnData = getDao().getAllAEsForSafetySignaling(studyDao.getById(-2));
     	assertEquals(2, returnData.size());
     	
-    	TreatmentAssignment tac = (TreatmentAssignment)((Object[])returnData.get(0))[2];
-    	AdverseEvent loadedAE = (AdverseEvent)((Object[])returnData.get(0))[0];
-    	AbstractStudyInterventionExpectedAE loadedASAEL = (AbstractStudyInterventionExpectedAE)((Object[])returnData.get(0))[1];
+    	TreatmentAssignment tac = (TreatmentAssignment)((Object[])returnData.get(1))[2];
+    	AdverseEvent loadedAE = (AdverseEvent)((Object[])returnData.get(1))[0];
+    	AbstractStudyInterventionExpectedAE loadedASAEL = (AbstractStudyInterventionExpectedAE)((Object[])returnData.get(1))[1];
+    	StudyParticipantAssignment spa = (StudyParticipantAssignment)((Object[])returnData.get(1))[3];
     	assertEquals(new Integer(1002), tac.getId());
     	assertEquals(new Integer(-5), loadedAE.getId());
     	assertEquals(new Integer(3007), loadedAE.getAdverseEventTerm().getTerm().getId());
     	assertEquals(new Integer(3007), loadedASAEL.getTerm().getId());
+    	assertEquals(new Integer(-6), spa.getId());
     	
-    	tac = (TreatmentAssignment)((Object[])returnData.get(1))[2];
-    	loadedAE = (AdverseEvent)((Object[])returnData.get(1))[0];
-    	loadedASAEL = (AbstractStudyInterventionExpectedAE)((Object[])returnData.get(1))[1];
+    	tac = (TreatmentAssignment)((Object[])returnData.get(0))[2];
+    	loadedAE = (AdverseEvent)((Object[])returnData.get(0))[0];
+    	loadedASAEL = (AbstractStudyInterventionExpectedAE)((Object[])returnData.get(0))[1];
+    	spa = (StudyParticipantAssignment)((Object[])returnData.get(0))[3];
     	assertEquals(new Integer(1002), tac.getId());
     	assertEquals(new Integer(-2), loadedAE.getId());
     	assertEquals(new Integer(3012), loadedAE.getAdverseEventTerm().getTerm().getId());
     	assertEquals(new Integer(3012), loadedASAEL.getTerm().getId());
+    	assertEquals(new Integer(-6), spa.getId());
     	
     }
 

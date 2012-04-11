@@ -3,7 +3,7 @@
 	<name>gov.nih.nci.cabig.caaers.rules.STU_9.safety_signalling_rules
 	</name>
 	<description>Safety Signalling Rules</description>
-	<subject>Safety Signalling Rules|| || || ||7211</subject>
+	<subject>Safety Signalling Rules|| || || ||1A</subject>
 	<import>gov.nih.nci.cabig.caaers.domain.*</import>
 	<rule id="r-dafa3384-5b1b-4e8b-8ce2-7d2ff2ba1533">
 		<condition>

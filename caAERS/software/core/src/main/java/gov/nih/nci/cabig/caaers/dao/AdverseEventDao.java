@@ -199,12 +199,14 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	}
 
 	public List getAllAEsForSafetySignaling(Study study){
-		SafetySignalingQuery safetyQuery = new SafetySignalingQuery(SafetySignalingQuery.TAC_EXPECTED_AE_PROFILE, SafetySignalingQuery.TAC);
+		SafetySignalingQuery safetyQuery = new SafetySignalingQuery(SafetySignalingQuery.TAC_EXPECTED_AE_PROFILE, SafetySignalingQuery.TAC, SafetySignalingQuery.STUDY_PARTICIPANT_ALIAS);
     	safetyQuery.joinStudy();
+    	safetyQuery.joinStudyParticipantAssignment();
     	safetyQuery.joinTreatmentAssignmentExpectedAEProfile();
     	safetyQuery.joinAdverseEventTerm();
     	safetyQuery.filterByStudy(study);
     	safetyQuery.filterByMatchingTermsOnExpectedAEProfileAndReportedAE();
+    	System.out.println(safetyQuery.getQueryString());
     	return search(safetyQuery);
 	}
    

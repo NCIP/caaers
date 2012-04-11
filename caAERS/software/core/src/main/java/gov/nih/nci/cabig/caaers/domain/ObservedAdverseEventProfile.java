@@ -172,6 +172,12 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 	}
 	
 	public void calculateStatistics(){
+		if(totalNoOfRegistrations == null || totalNoOfRegistrations == 0){
+			throw new IllegalStateException("totalNoOfRegistrations cannot be null or 0.");
+		}
+		if(observedNoOfAE == null){
+			observedNoOfAE = 0;
+		}
 		// Calculate observed frequency, observed signification, pValue, standard deviation
 		observedFrequency = ((double)observedNoOfAE/(double)totalNoOfRegistrations)*100;
 		double x = observedFrequency/100;
@@ -183,5 +189,12 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 		} catch (MathException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "ObservedProfile [term=" + getTerm() + ", grade=" + grade + ", expectedFrequency=" + expectedFrequency + ", totalNoOfRegistrations="
+				+ totalNoOfRegistrations + ", observedNoOfAE=" + observedNoOfAE + ", standardDeviation="
+				+ standardDeviation + ", pValue=" + pValue + ", observedSignificance=" + observedSignificance + ", notificationStatus=" + notificationStatus + "]";
 	}
 }

@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.NotificationStatus;
 import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
 import gov.nih.nci.cabig.caaers.domain.RuleSet;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
@@ -153,10 +154,12 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 		}
 		
 		private void setupAEs(List aeList){
+			Map<String, Object> spaDuplicateFiltered = new HashMap<String, Object>();
 			for(Object item: aeList){
 				AdverseEvent ae = (AdverseEvent)((Object[])item)[0];
 				AbstractStudyInterventionExpectedAE expectedProfile = (AbstractStudyInterventionExpectedAE)((Object[])item)[1];
 				TreatmentAssignment tac = (TreatmentAssignment)((Object[])item)[2];
+				StudyParticipantAssignment spa = (StudyParticipantAssignment)((Object[])item)[3];
 				if (treatmentAssignmentsMap.get("TAC_"+tac.getId()) == null){
 					treatmentAssignmentsMap.put("TAC_"+tac.getId(), tac);
 					treatmentAssignmentsTermsMap.put("TAC_"+tac.getId(), new HashSet<DomainObject>());
@@ -171,10 +174,16 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 				if(aeFrequencyMap.get(key(tac, expectedProfile.getTerm(), null)) == null){
 					aeFrequencyMap.put(key(tac, expectedProfile.getTerm(), null), 0);
 				}
-				Integer i = aeFrequencyMap.get(key(tac, expectedProfile.getTerm(), ae.getGrade())) + 1;
-				aeFrequencyMap.put(key(tac, expectedProfile.getTerm(), ae.getGrade()), i);
-				i = aeFrequencyMap.get(key(tac, expectedProfile.getTerm(), null)) + 1;
-				aeFrequencyMap.put(key(tac, expectedProfile.getTerm(), null), i);
+				if(spaDuplicateFiltered.get(key(spa, tac, expectedProfile.getTerm(), ae.getGrade())) == null){
+					Integer i = aeFrequencyMap.get(key(tac, expectedProfile.getTerm(), ae.getGrade())) + 1;
+					aeFrequencyMap.put(key(tac, expectedProfile.getTerm(), ae.getGrade()), i);
+					spaDuplicateFiltered.put(key(spa, tac, expectedProfile.getTerm(), ae.getGrade()), new Object());
+				}
+				if(spaDuplicateFiltered.get(key(spa, tac, expectedProfile.getTerm(), null)) == null){
+					Integer i = aeFrequencyMap.get(key(tac, expectedProfile.getTerm(), null)) + 1;
+					aeFrequencyMap.put(key(tac, expectedProfile.getTerm(), null), i);
+					spaDuplicateFiltered.put(key(spa, tac, expectedProfile.getTerm(), null), new Object());
+				}
 			}
 		}
 		
@@ -231,6 +240,10 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 				key+= "_"+grade.getCode();
 			}
 			return key;
+		}
+		
+		private String key(StudyParticipantAssignment spa, TreatmentAssignment tac, DomainObject term, Grade grade){
+			return "SPA_"+spa.getId()+"_"+key(tac, term, grade);
 		}
 	}
 
