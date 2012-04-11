@@ -4,12 +4,14 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudySiteType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
@@ -17,8 +19,6 @@ import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
-import gov.nih.nci.cabig.caaers.webservice.*;
-import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.security.util.StringUtilities;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -95,7 +95,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	 * Method exisits only to be called from ImportController 
 	 * @param studyDto
 	 */
-	public DomainObjectImportOutcome<Study> importStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+	public DomainObjectImportOutcome<Study> importStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto) {
 		logger.info("Entering processStudy() in StudyProcessorImpl");
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
@@ -129,7 +129,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return studyImportOutcome;
 	}
 
-    private List<Organization> searchForOrganization(gov.nih.nci.cabig.caaers.webservice.OrganizationType org) {
+    private List<Organization> searchForOrganization(OrganizationType org) {
         if (!StringUtilities.isBlank(org.getNciInstituteCode())) {
             return getAuthorizedOrganizationsByNameOrNciId(null, org.getNciInstituteCode());
         } else {
@@ -137,11 +137,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
         }
     }
 
-    private String checkAuthorizedOrganizations(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+    private String checkAuthorizedOrganizations(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto) {
 		List<OrganizationType> orgs = new ArrayList<OrganizationType>();
 		orgs.add(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization());		
 		orgs.add(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization());		
-		StudyOrganizations so = studyDto.getStudyOrganizations();
+		gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyOrganizations so = studyDto.getStudyOrganizations();
 
         for (StudySiteType sst: so.getStudySite()) {
 			orgs.add(sst.getOrganization());
@@ -156,55 +156,47 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return "ALL_ORGS_AUTH";
 	}
 
-    private CaaersServiceResponse processXMLStudy(Studies xmlStudies) {
-        gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
+    private CaaersServiceResponse processXMLStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
         CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
         // ToDo Merge createStudy & updateStudy into this method
         return caaersServiceResponse;
     }
 
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
-		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
-		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
+	public CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
 
-		Response studyServiceResponse = new Response();
-		
+        CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+
 		logger.info("Study Short Title: " + studyDto.getShortTitle());
 		logger.info("Study Long Title:" + studyDto.getLongTitle());
 		
 		String errorMsg = checkAuthorizedOrganizations(studyDto);
 		if (!errorMsg.equals("ALL_ORGS_AUTH")) {
-			studyServiceResponse.setResponsecode("WS_AEMS_028");
-			studyServiceResponse.setDescription(errorMsg);	
-			caaersServiceResponse.setResponse(studyServiceResponse);
-			return caaersServiceResponse;
+            return Helper.populateError(caaersServiceResponse, "WS_AEMS_028", errorMsg);
 		}
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new LocalStudy();
-		
-		//Convert JAXB StudyType to Domain Study
-		try{
-			logger.info("Converting StudyDto to Study");
-			studyConverter.convertStudyDtoToStudyDomain(studyDto, study);
-			logger.info("StudyDto converted to Study");
-		}catch(CaaersSystemException caEX){
-			studyImportOutcome = new DomainObjectImportOutcome<Study>();
-			logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
-			studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-			studyServiceResponse.setResponsecode("1");
-			studyServiceResponse.setDescription("StudyDto to StudyDomain Conversion Failed ");
-		}
-		
-		if(studyImportOutcome == null){
+
+        //Convert JAXB StudyType to Domain Study
+        try {
+            logger.info("Converting StudyDto to Study");
+            studyConverter.convertStudyDtoToStudyDomain(studyDto, study);
+            logger.info("StudyDto converted to Study");
+        } catch (CaaersSystemException caEX) {
+            studyImportOutcome = new DomainObjectImportOutcome<Study>();
+            logger.error("StudyDto to StudyDomain Conversion Failed ", caEX);
+            studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed ", DomainObjectImportOutcome.Severity.ERROR);
+            Helper.populateError(caaersServiceResponse, "", "StudyDto to StudyDomain Conversion Failed");
+        }
+
+        if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
 			//Check if Study Exists
 			Study dbStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
 			if(dbStudy != null){
 				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
-				studyServiceResponse.setResponsecode("1");
-				studyServiceResponse.setDescription(messageSource.getMessage("WS_STU_001", 
-						new Object[]{dbStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, 
-						"Another study is using the identifier provided", Locale.getDefault()));
+                Helper.populateError(caaersServiceResponse, "WS_STU_001", messageSource.getMessage("WS_STU_001", new Object[]{dbStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault()));
 			}else{
 				
 				List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
@@ -246,11 +238,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return caaersServiceResponse;
 	}
 
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
-		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
-		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
+	public CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
+		gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
+		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 
-		
 		Response studyServiceResponse = new Response();
 		
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());

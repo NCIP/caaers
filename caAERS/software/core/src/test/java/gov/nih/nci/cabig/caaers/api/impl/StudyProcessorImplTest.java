@@ -4,10 +4,10 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.webservice.DeviceType;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.StudyDeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType;
 import org.dbunit.operation.DatabaseOperation;
 
 import javax.xml.bind.JAXBContext;
@@ -61,7 +61,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         assertEquals(3, deviceDao.getAllDevices().size());
 
         // ADD A DB-EXISTING DEVICE TO THE STUDY XML
-        gov.nih.nci.cabig.caaers.webservice.Study xmlStudy = ss.getStudy().get(0);
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study xmlStudy = ss.getStudy().get(0);
 
         StudyDeviceType xmlDevice = new StudyDeviceType();
         xmlDevice.setDevice(new DeviceType());
@@ -69,20 +69,20 @@ public class StudyProcessorImplTest extends DaoTestCase {
         xmlStudy.getStudyDevices().getStudyDevice().add(xmlDevice);
 
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
-        assertEquals("0", csr.getResponse().getResponsecode());
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
 
         assertEquals(3, s.getStudyDevices().size());
         assertEquals(3, deviceDao.getAllDevices().size());
     }
 
     public Studies loadStudiesFromXML() {
-        gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
+        gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
         JAXBContext jaxbContext = null;
         try {
             jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             Object importObject = unmarshaller.unmarshal(xmlFile);
-            studies = (gov.nih.nci.cabig.caaers.webservice.Studies) importObject;
+            studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) importObject;
         } catch (JAXBException e) {
             e.printStackTrace();
         }

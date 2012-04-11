@@ -5,12 +5,12 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELAgentType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessageType;
-import gov.nih.nci.cabig.caaers.webservice.asael.ASAELAgentType;
-import gov.nih.nci.cabig.caaers.webservice.asael.ASAELType;
-import gov.nih.nci.cabig.caaers.webservice.asael.ExpectedAECtcTermType;
 import org.dbunit.operation.DatabaseOperation;
 
 import java.util.ArrayList;

@@ -5,10 +5,9 @@ import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessageType;
-import gov.nih.nci.cabig.caaers.webservice.DeviceType;
-import gov.nih.nci.cabig.caaers.webservice.devices.DevicesType;
-import org.dbunit.operation.DatabaseOperation;
+import gov.nih.nci.cabig.caaers.integration.schema.devices.DevicesType;
 
 import java.util.ArrayList;
 import java.util.List;
