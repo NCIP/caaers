@@ -67,17 +67,7 @@
             implementor="#adverseEventManagementWebServiceBean"
             address="/AdverseEventManagementService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -90,17 +80,7 @@
             implementor="#studyManagementWebServiceBean"
             address="/StudyService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -113,17 +93,7 @@
             implementor="#participantManagementWebServiceBean"
             address="/ParticipantService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -136,17 +106,7 @@
             implementor="#investigatorManagementWebServiceBean"
             address="/InvestigatorMigratorService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -159,17 +119,7 @@
             implementor="#researchStaffManagementWebServiceBean"
             address="/ResearchStaffMigratorService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -183,17 +133,7 @@
             implementor="#organizationManagementWebServiceBean"
             address="/OrganizationService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -207,17 +147,7 @@
             implementor="#agentManagementWebServiceBean"
             address="/AgentService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -230,17 +160,7 @@
             implementor="#preExistingConditionManagementWebServiceBean"
             address="/PreExistingConditionLOVService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
@@ -253,20 +173,9 @@
             implementor="#priorTherapyManagementWebServiceBean"
             address="/PriorTherapyLOVService">
         <jaxws:inInterceptors>
-            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-                <constructor-arg>
-                    <map>
-                        <entry key="action" value="UsernameToken" />
-                        <entry key="passwordType" value="PasswordText" />
-                        <entry key="passwordCallbackRef">
-                            <ref bean="authenticationWSHandler" />
-                        </entry>
-                    </map>
-                </constructor-arg>
-            </bean>
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
-
 
 </beans>
