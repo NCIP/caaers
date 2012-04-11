@@ -1,25 +1,12 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.domain.Arm;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.SystemAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.integration.schema.study.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.EvaluationPeriodType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.SolicitedAdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +17,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -51,7 +39,7 @@ public class BlankFormGenerator {
 
     private JAXBContext jaxbContext = null;
     private Marshaller marshaller = null;
-    private Studies studies = null;
+    private gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
 
     public BlankFormGenerator() {
     }
@@ -109,7 +97,7 @@ public class BlankFormGenerator {
         gov.nih.nci.cabig.caaers.integration.schema.study.Study.Identifiers studyIdentifiers = new gov.nih.nci.cabig.caaers.integration.schema.study.Study.Identifiers();
         SystemAssignedIdentifierType i = new SystemAssignedIdentifierType();
         i.setPrimaryIndicator(true);
-        i.setValue(study.getPrimaryIdentifier().getValue());
+        i.setValue(study.getPrimaryIdentifierValue());
         List<SystemAssignedIdentifierType> iSystemAssigned = new ArrayList<SystemAssignedIdentifierType>();
         iSystemAssigned.add(i);
         studyIdentifiers.setSystemAssignedIdentifier(iSystemAssigned);
