@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
@@ -39,7 +40,7 @@ public class StudyImporter extends Importer{
         	return;
         }
 
-		gov.nih.nci.cabig.caaers.webservice.Studies studies;
+		Studies studies;
 
         try {
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
@@ -48,9 +49,9 @@ public class StudyImporter extends Importer{
 			Object importObject = unmarshaller.unmarshal(xmlFile);
 			if (!validRootElement(importObject, STUDY_IMPORT, command)) return;
 			
-			studies = (gov.nih.nci.cabig.caaers.webservice.Studies) importObject;
+			studies = (Studies) importObject;
 			if (studies != null) {
-				for (gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()) {
+				for (gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto : studies.getStudy()) {
 					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.importStudy(studyDto);
 					List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
                     if (studyImportOutcome.isSavable() && errors.size() == 0) {
