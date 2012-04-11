@@ -12,8 +12,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex;
-import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +21,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -33,7 +32,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     private ParticipantServiceImpl participantService = null;
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
-    private gov.nih.nci.cabig.caaers.webservice.participant.Participants participants = null;
+    private gov.nih.nci.cabig.caaers.integration.schema.participant.Participants participants = null;
     private File xmlFile = null;
     private ParticipantDao participantDao;
     private ParticipantIndexDao participantIndexDao;
@@ -56,7 +55,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     private void createParticipant(String fileLoc) {
         try {
             xmlFile = getResources(fileLoc)[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
+            participants = (gov.nih.nci.cabig.caaers.integration.schema.participant.Participants)unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.createParticipant(participants);
 
@@ -76,7 +75,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipantNewSST.xml");
 
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
             assertEquals(1, matches.size());
             createdParticipant= matches.get(0);
@@ -112,7 +111,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
 
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
           //  System.out.println("size is " + matches.size());
             assertEquals(1, matches.size());
@@ -144,11 +143,11 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
 
             xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForUpdateAttr.xml")[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
+            participants = (gov.nih.nci.cabig.caaers.integration.schema.participant.Participants)unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.updateParticipant(participants);
 
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
             assertEquals(1, matches.size());
             updatedParticipant = matches.get(0);
@@ -183,7 +182,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
 
             xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForUpdateAttr.xml")[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
+            participants = (gov.nih.nci.cabig.caaers.integration.schema.participant.Participants)unmarshaller.unmarshal(xmlFile);
             
             // load the saved db participant
             
@@ -207,7 +206,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             caaersServiceResponse = participantService.deleteParticipant(participants);
             
             // verify that participant is successfully deleted
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
             assertEquals(0, matches.size());
             
@@ -233,11 +232,11 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
 
             xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForIdentifierAdd.xml")[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
+            participants = (gov.nih.nci.cabig.caaers.integration.schema.participant.Participants)unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.updateParticipant(participants);
             
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
             assertEquals(1, matches.size());
             updatedParticipant = matches.get(0);
@@ -274,11 +273,11 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
 
             xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForAssignmentsAdd.xml")[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
+            participants = (gov.nih.nci.cabig.caaers.integration.schema.participant.Participants)unmarshaller.unmarshal(xmlFile);
 
             caaersServiceResponse = participantService.updateParticipant(participants);
 
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
             assertEquals(1, matches.size());
             updatedParticipant = matches.get(0);
