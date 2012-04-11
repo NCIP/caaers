@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.accesscontrol.dataproviders;
 import gov.nih.nci.cabig.caaers.dao.index.AbstractIndexDao;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
-import gov.nih.nci.cabig.caaers.reportdefinition.GroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import java.util.*;
