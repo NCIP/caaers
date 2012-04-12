@@ -29,7 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
+	
+	private static final Log logger = LogFactory.getLog(SafetyMonitoringServiceImpl.class);
 	
 	private AdverseEventDao adverseEventDao;
 	
@@ -48,14 +53,17 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 	private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
 	public void generateSafetyAlerts() {
+		logger.debug("Checking adverse events for safety signaling");
 		List<Study> studies = getStudiesForSafetySignalling();
-		
+		logger.debug("Found "+studies.size()+" studies configured for safety signaling");
 		for(Study study: studies){
 			generateSafetyAlerts(study);
 		}
 	}
 	
 	private void generateSafetyAlerts(Study study){
+		logger.debug("--------------------------");
+		if (logger.isDebugEnabled()) logger.debug("For study- "+study.getShortTitle());
 		List<ObservedAdverseEventProfile> notifiables = new ArrayList<ObservedAdverseEventProfile>();
 		SafetySignallingAEHelper safetySignallingAEHelper = new SafetySignallingAEHelper(study);
 		for(TreatmentAssignment treatmentAssignment : safetySignallingAEHelper.getTACs()){
@@ -73,6 +81,7 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 			}
 		}
 		sendSafetySignalNitifcation(study, notifiables);
+		logger.debug("--------------------------");
 	}
 	
 	private boolean isNotifiable(ObservedAdverseEventProfile observedAdverseEventProfile){
@@ -109,7 +118,11 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 			map.put("observed", notifiables);
 			map.put("study", study);
 			String notificationString = freeMarkerService.applyRuntimeReplacementsForReport(rawTemplate, map);
+			if (logger.isDebugEnabled()) logger.debug("Sending safety signaling report for [study: "+study.getShortTitle()+", to: "+(String[])notifications.get(0).getRecipientEmails().toArray()+ ", content: "+ notificationString+ "]");
 			mailer.sendMail((String[])notifications.get(0).getRecipientEmails().toArray(), notifications.get(0).getSubject(), notificationString, new String[]{});
+			logger.debug("Email sent.");
+		}else{
+			if (logger.isDebugEnabled()) logger.debug("Not sending safety signaling report for [study: "+study.getShortTitle()+ "], Either there is nothing to notify or a notification template has not been configured for the study");
 		}
 	}
 	

@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
@@ -26,6 +25,7 @@ import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -164,7 +164,7 @@ public class SafetyMonitoringServiceImplUnitTest extends AbstractTestCase {
 		observedAdverseEventProfileDao.save(EasyMock.isA(ObservedAdverseEventProfile.class));
 		EasyMock.expectLastCall().times(12);
 		EasyMock.expect(evaluationService.evaluateSafetySignallingRules(EasyMock.isA(ObservedAdverseEventProfile.class))).andReturn(dto).times(12);
-		EasyMock.expect(notificationDao.search(EasyMock.isA(NotificationQuery.class))).andReturn(Arrays.asList(new Notification[]{notification}));
+		EasyMock.expect(notificationDao.search(EasyMock.isA(NotificationQuery.class))).andReturn((List)Arrays.asList(new Notification[]{notification}));
 		EasyMock.expect(studyParticipantAssignmentDao.getCountByTAC(EasyMock.isA(Integer.class))).andReturn(7).times(2);
 		mailer.sendMail(EasyMock.isA(String[].class), EasyMock.isA(String.class), EasyMock.isA(String.class), EasyMock.isA(String[].class));
 		replayMocks();

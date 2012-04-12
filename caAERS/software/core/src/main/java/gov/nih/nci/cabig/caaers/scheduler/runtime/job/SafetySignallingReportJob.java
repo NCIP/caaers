@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.service.SafetyMonitoringService;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +29,9 @@ public class SafetySignallingReportJob  implements Job, Serializable {
 
 	public void execute(JobExecutionContext jobContext) {
 		
-		if(logger.isDebugEnabled()) logger.debug("Running ReportStatusResetJob");
+		logger.debug("********************************");
+		if (logger.isDebugEnabled()) logger.debug("Running SafetySignallingReportJob at "+ new SimpleDateFormat("MM/dd/yyyy h:mm a").format(new Date()));
+		logger.debug("********************************");
 		try {
 
             DataAuditInfo auditInfo = AuditUtils.generateDataAuditInfo("SYSTEM", "127.0.0.1","quartz-job");
