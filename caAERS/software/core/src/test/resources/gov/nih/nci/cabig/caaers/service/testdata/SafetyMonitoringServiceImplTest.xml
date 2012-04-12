@@ -353,7 +353,8 @@
             system_name="system name"
             organization_id="-1003"
             stu_id="1"
-            discriminator_column="1"/>
+            discriminator_column="1"
+            primary_indicator="0"/>
     <IDENTIFIERS
             id="-1"
             value="1"
@@ -394,7 +395,8 @@
             stu_id="1"
             value="1A"
             type="Protocol Authority Identifier"
-            discriminator_column="1"/>
+            discriminator_column="1"
+            primary_indicator="1"/>
 
 <!--     <TREATMENTS -->
 <!--             id="-1" -->
@@ -538,7 +540,7 @@
 <!--             /> -->
 	<notifications
         id="-1"
-        content="This is test"
+        content="The system has detected that an adverse event is occurring at a greater frequency or severity than expected for Study: ${study.shortTitle}(${study.primaryIdentifier.value})"
         emails="EF@no-email.com"
         subject="no-subject1"
         name="no-name1"

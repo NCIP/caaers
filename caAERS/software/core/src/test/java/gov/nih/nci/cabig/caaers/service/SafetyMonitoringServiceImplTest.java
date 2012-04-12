@@ -68,7 +68,7 @@ public class SafetyMonitoringServiceImplTest extends CaaersDbTestCase {
 				assertEquals(1, to.length);
 				assertEquals("EF@no-email.com", to[0]);
 				assertEquals("no-subject1", subject);
-				assertEquals("This is test", content);
+				assertEquals("The system has detected that an adverse event is occurring at a greater frequency or severity than expected for Study: Short Title(1A)", content);
 				assertEquals(0, attachmentFilePaths.length);
 			}
 		};

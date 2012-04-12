@@ -107,6 +107,7 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 			String rawTemplate = notifications.get(0).getContent();
 			Map<Object, Object> map = new HashMap<Object, Object>();
 			map.put("observed", notifiables);
+			map.put("study", study);
 			String notificationString = freeMarkerService.applyRuntimeReplacementsForReport(rawTemplate, map);
 			mailer.sendMail((String[])notifications.get(0).getRecipientEmails().toArray(), notifications.get(0).getSubject(), notificationString, new String[]{});
 		}

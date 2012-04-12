@@ -26,12 +26,14 @@
 		</property>
 		<property name="jobDetails">
 			<list>
-			<ref bean="reportStatusResetJob" /> 
+			<ref bean="reportStatusResetJob" />
+			<ref bean="safetySignallingReportJob" /> 
 			</list>
 		</property>
     	 <property name="triggers">
         	<list> 
-        		<ref bean="reportStatusResetTrigger" /> 
+        		<ref bean="reportStatusResetTrigger" />
+        		<ref bean="safetySignallingReportTrigger" /> 
         	</list>
      	</property>
 	</bean>
@@ -52,8 +54,20 @@
 	    <property name="misfireInstruction" value="0" />
 	</bean>
 
-
-
-
+	<!--  This bean that implements the service  -->
+	<bean id="safetySignallingReportJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+  		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.SafetySignallingReportJob" />
+  		<property name="group" value="DEFAULT"/>
+  		<property name="name" value="safetySignallingReportJob"/>
+  	</bean>
+  	
+  	<bean id="safetySignallingReportTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.SafetySignallingReportTrigger">
+  		<property name="name" value="safetySignallingReportTrigger"/>
+		<property name="jobName" value="safetySignallingReportJob"/>
+		<property name="jobGroup" value="DEFAULT" />
+	    <property name="misfireInstruction" value="0" />
+		<!-- run every midnight -->
+		<property name="cronExpression" value="0 0 0 * * ?"/>
+	</bean>
 
 </beans>

@@ -14,6 +14,7 @@ public enum NotificationStatus  implements CodedEnum<Integer> {
     IGNORE(1, "NA"),
     NOTIFY(2, "Notify"),
     DO_NOT_NOTIFY(3, "Do not notify"),
+    IGNORE_ALREADY_NOTIFIED(4, "Ignore since already notified"),
     ;
 
     /** The code. */
