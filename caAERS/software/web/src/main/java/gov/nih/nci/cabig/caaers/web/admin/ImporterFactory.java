@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 
-import gov.nih.nci.cabig.caaers.ws.ParticipantService;
-import gov.nih.nci.cabig.caaers.ws.StudyProcessor;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
@@ -38,8 +36,8 @@ public class ImporterFactory{
 	private static final String ASAEL_IMPORT = "agentSpecificAEList";
 
 	private DomainObjectValidator domainObjectValidator;
-	private StudyProcessor studyProcessor;
-	private ParticipantService participantService;
+	private StudyProcessorImpl studyProcessor;
+	private ParticipantServiceImpl participantService;
 	private	DefaultInvestigatorMigratorService investigatorMigratorService;
 	private DefaultResearchStaffMigratorService researchStaffMigratorService;
 	private StudyRepository studyRepository;
@@ -116,19 +114,19 @@ public class ImporterFactory{
 		this.domainObjectValidator = domainObjectValidator;
 	}
 	
-	public StudyProcessor getStudyProcessor(){
+	public StudyProcessorImpl getStudyProcessor(){
 		return studyProcessor;
 	}
 	
-	public void setStudyProcessor(StudyProcessor studyProcessor){
+	public void setStudyProcessor(StudyProcessorImpl studyProcessor){
 		this.studyProcessor = studyProcessor;
 	}
 	
-	public ParticipantService getParticipantService(){
+	public ParticipantServiceImpl getParticipantService(){
 		return participantService;
 	}
 	
-	public void setParticipantService(ParticipantService participantService){
+	public void setParticipantService(ParticipantServiceImpl participantService){
 		this.participantService = participantService;
 	}
 	
