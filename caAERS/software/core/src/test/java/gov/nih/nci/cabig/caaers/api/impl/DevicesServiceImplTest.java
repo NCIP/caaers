@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessageType;
-import gov.nih.nci.cabig.caaers.integration.schema.devices.DevicesType;
+import gov.nih.nci.cabig.caaers.integration.schema.device.DevicesType;
 
 import java.util.ArrayList;
 import java.util.List;

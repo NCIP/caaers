@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
-import gov.nih.nci.cabig.caaers.integration.schema.devices.*;
+import gov.nih.nci.cabig.caaers.integration.schema.device.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;

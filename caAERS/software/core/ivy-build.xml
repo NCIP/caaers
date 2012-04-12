@@ -162,7 +162,7 @@
             	<include name="Facts.xsd"/>
             	<include name="Organization.xsd"/>
                 <include name="ASAEL.xsd"/>
-                <include name="Devices.xsd"/>
+                <include name="Device.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 

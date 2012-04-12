@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/devices"
-    xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/devices"
+    targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/device"
+    xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/device"
     xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     elementFormDefault="unqualified">
 
