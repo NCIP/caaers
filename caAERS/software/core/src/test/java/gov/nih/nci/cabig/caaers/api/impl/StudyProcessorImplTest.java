@@ -39,21 +39,17 @@ public class StudyProcessorImplTest extends DaoTestCase {
         ss = loadStudiesFromXML();
     }
 
-/*
     public void testLoadingProcedure() {
         assertNotNull(studyProcessor);
         assertNotNull(xmlFile);
         assertNotNull(ss);
         assertNotNull(ss.getStudy().get(0));
     }
-*/
 
-/*
     public void testUpdateStudyWithoutChanges() {
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
-        assertEquals("0", csr.getResponse().getResponsecode());
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
     }
-*/
 
     public void testUpdateStudyAddExistingDevice() {
         Study s = studyDao.getStudyDesignById(-2);
@@ -89,8 +85,10 @@ public class StudyProcessorImplTest extends DaoTestCase {
         return studies;
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.NONE;
     }
+*/
 }
