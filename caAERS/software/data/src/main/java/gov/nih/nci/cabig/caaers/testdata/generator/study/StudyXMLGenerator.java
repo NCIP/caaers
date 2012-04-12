@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.testdata.generator.study;
 
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.RoleCodeType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
-import gov.nih.nci.cabig.caaers.webservice.*;
 
 import javax.xml.bind.JAXBContext;
 
@@ -13,7 +15,7 @@ public class StudyXMLGenerator extends XMLGenerator {
 	private ObjectFactory objectFactory;
 
     public StudyXMLGenerator() throws Exception{
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
 		objectFactory = new ObjectFactory();

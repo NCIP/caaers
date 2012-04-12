@@ -43,7 +43,7 @@ public class StudyImporter extends Importer{
 		Studies studies;
 
         try {
-			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 				
 			Object importObject = unmarshaller.unmarshal(xmlFile);

@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.testdata.generator.participant;
 
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ObjectFactory;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
-import gov.nih.nci.cabig.caaers.webservice.participant.ObjectFactory;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 
 import javax.xml.bind.JAXBContext;
 
@@ -33,7 +33,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 	 * @throws Exception
 	 */
 	public ParticipantXMLGenerator() throws Exception{
-		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
+		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.participant");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
 		objectFactory = new ObjectFactory();
