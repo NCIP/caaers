@@ -75,7 +75,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
         JAXBContext jaxbContext = null;
         try {
-            jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+            jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             Object importObject = unmarshaller.unmarshal(xmlFile);
             studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) importObject;

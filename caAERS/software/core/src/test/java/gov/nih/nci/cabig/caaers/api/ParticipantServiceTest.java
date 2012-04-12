@@ -43,7 +43,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.participant");
         unmarshaller = jaxbContext.createUnmarshaller();
         participantService = (ParticipantServiceImpl)getDeployedApplicationContext().getBean("participantServiceImpl");
         participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");

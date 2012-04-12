@@ -42,7 +42,7 @@ public class SubjectImporter extends Importer{
         }
 		Participants participants;
     	try {
-			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
+			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.participant");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 				
 			Object importObject = unmarshaller.unmarshal(xmlFile);

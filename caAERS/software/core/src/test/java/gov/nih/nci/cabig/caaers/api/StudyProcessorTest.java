@@ -46,7 +46,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         super.setUp();
 
 
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
         unmarshaller = jaxbContext.createUnmarshaller();
         studyProcessor = (StudyProcessorImpl)getDeployedApplicationContext().getBean("studyProcessorImpl");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");

@@ -382,7 +382,7 @@ public class StudyConverter {
     }
 
 /*
-	private void populateStudyReportTypes(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+	private void populateStudyReportTypes(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception{
 		if (studyDto.isReportTypeAdeersPDF() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.ADEERSPDF);
 		if (studyDto.isReportTypeCaaersXML() != null && studyDto.isReportTypeCaaersXML()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CAAERSXML);
 		if (studyDto.isReportTypeCIOMSAEForm() != null && studyDto.isReportTypeCIOMSAEForm()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CIOMSSAEFORM);
@@ -416,7 +416,7 @@ public class StudyConverter {
 	}
 
 /*
-	private void populateStudyReportTypesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
+	private void populateStudyReportTypesDomain2Dto(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study){
         studyDto.setReportTypeMedwatchPDF(study.getMedwatchPDFType());
         studyDto.setReportTypeAdeersPDF(study.getAdeersPDFType());
         studyDto.setReportTypeCaaersXML(study.getCaaersXMLType());

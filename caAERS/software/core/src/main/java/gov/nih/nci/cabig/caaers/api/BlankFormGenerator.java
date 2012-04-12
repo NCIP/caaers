@@ -82,7 +82,7 @@ public class BlankFormGenerator {
     }
 
     public String serialize(Study study, Epoch epoch) throws Exception {
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
         marshaller = jaxbContext.createMarshaller();
         StringWriter sw = new StringWriter();
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");

@@ -32,7 +32,7 @@ public class XMLUtil {
      * @return
      */
     public static String getStudyXML(Object studies){
-    	return getXML(studies, "gov.nih.nci.cabig.caaers.webservice");
+    	return getXML(studies, "gov.nih.nci.cabig.caaers.integration.schema.study");
     }
     
     /**

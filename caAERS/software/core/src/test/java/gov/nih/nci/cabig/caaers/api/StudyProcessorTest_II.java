@@ -40,7 +40,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
         unmarshaller = jaxbContext.createUnmarshaller();
         studyProcessor = (StudyProcessorImpl)getDeployedApplicationContext().getBean("studyProcessorImpl");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
@@ -51,7 +51,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
             studyDao.delete(createdStudy);
         }
 
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
         unmarshaller = jaxbContext.createUnmarshaller();
         studyProcessor = (StudyProcessorImpl)getDeployedApplicationContext().getBean("studyProcessorImpl");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");

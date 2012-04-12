@@ -149,9 +149,9 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 				}else{
 					CaaersServiceResponse caaersResponse = Helper.createResponse();
 					caaersResponse.getServiceResponse().setResponsecode("1");
-					Helper.populateError(caaersResponse, "WS_GEN_001", messageSource.getMessage("WS_GEN_001",new String[]{},"",Locale.getDefault()));
+					Helper.populateError(caaersResponse, "WS_GEN_001", messageSource.getMessage("WS_GEN_001", new String[]{}, "", Locale.getDefault()));
 					
-					jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+					jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.common");
 					marshaller = jaxbContext.createMarshaller();
 					responseXml = responseAsString(caaersResponse, marshaller);
 				}
@@ -236,7 +236,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 		String responseXml = "";
 		CaaersServiceResponse studyServiceResponse = null;
 		try {
-			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
 			unmarshaller = jaxbContext.createUnmarshaller();
 			marshaller = jaxbContext.createMarshaller();
 			
@@ -265,7 +265,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 		String responseXml = "";
 		CaaersServiceResponse participantServiceResponse = null;
 		try {
-			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
+			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.participant");
 			unmarshaller = jaxbContext.createUnmarshaller();
 			marshaller = jaxbContext.createMarshaller();
 			

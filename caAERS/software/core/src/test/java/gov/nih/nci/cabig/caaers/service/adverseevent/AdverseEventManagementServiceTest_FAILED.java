@@ -38,7 +38,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
        // aeJaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.adverseevent");
         //aeUnmarshaller = aeJaxbContext.createUnmarshaller();
         
-        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.adverseevent");
+        jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.adverseevent");
         unmarshaller = jaxbContext.createUnmarshaller();
         
         adverseEventManagementService = (AdverseEventManagementServiceImpl)getApplicationContext().getBean("adverseEventManagementServiceImpl");

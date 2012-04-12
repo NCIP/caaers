@@ -75,7 +75,7 @@ public class ExportStudyController extends AbstractCommandController {
 			fileName = RuleUtil.getStringWithoutSpaces(fileName);
             
 			StringWriter sw = new StringWriter();
-			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
             
 	    	Marshaller marshaller = jaxbContext.createMarshaller();
 	    	marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true) ;
