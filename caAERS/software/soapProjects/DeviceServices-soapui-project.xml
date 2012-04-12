@@ -1278,22 +1278,70 @@
       <soap:address location="https://127.0.0.1:8443/caaers/services/DevicesService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://127.0.0.1:8443/caaers/services/DevicesService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrUpdateDevices" bindingOperationName="createOrUpdateDevices" type="Request-Response" outputName="createOrUpdateDevicesResponse" inputName="createOrUpdateDevices" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://127.0.0.1:8443/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://127.0.0.1:8443/caaers/services/DevicesService</con:endpoint><con:endpoint>http://John-VDELL:8088/mockDevicesServiceSoapBinding</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrUpdateDevices" bindingOperationName="createOrUpdateDevices" type="Request-Response" outputName="createOrUpdateDevicesResponse" inputName="createOrUpdateDevices" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://127.0.0.1:8443/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
 xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
 xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
 >
-   <soapenv:Header/>
+<soapenv:Header>
+		<wsse:Security>
+			<wsse:UsernameToken>
+				<wsse:Username>SYSTEM_ADMIN</wsse:Username>
+				<wsse:Password>Hello-12</wsse:Password>
+			</wsse:UsernameToken>
+		</wsse:Security>
+	</soapenv:Header>
+
+
    <soapenv:Body>
       <com:createOrUpdateDevices>
          <com:devices>
-            <device id="?" version="?">
-               <commonName>?</commonName>
-               <brandName>?</brandName>
-               <type>?</type>
-               <status>?</status>
+            <device>
+               <commonName>Common-01</commonName>
+               <brandName>B</brandName>
+               <type>T</type>
+               <status>AC</status>
+            </device>
+            <device>
+               <commonName>Common-02</commonName>
+               <brandName>B</brandName>
+               <type>T</type>
+               <status>AC</status>
             </device>
          </com:devices>
       </com:createOrUpdateDevices>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockDevicesServiceSoapBinding" host="John-VDELL" name="DevicesServiceSoapBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="createOrUpdateDevices" interface="DevicesServiceSoapBinding" operation="createOrUpdateDevices"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:createOrUpdateDevicesResponse>
+         <!--Optional:-->
+         <return>
+            <com:ServiceResponse responsecode="?">
+               <status>?</status>
+               <!--Zero or more repetitions:-->
+               <wsError>
+                  <exception>?</exception>
+                  <errorDesc>?</errorDesc>
+                  <errorCode>?</errorCode>
+               </wsError>
+               <!--Optional:-->
+               <com:entityErrorMessages>
+                  <!--1 or more repetitions:-->
+                  <com:entityErrorMessage>
+                     <klassName>?</klassName>
+                     <businessIdentifier>?</businessIdentifier>
+                     <!--Zero or more repetitions:-->
+                     <message>?</message>
+                     <dataBaseId>?</dataBaseId>
+                     <correlationId>?</correlationId>
+                     <correlationDescription>?</correlationDescription>
+                  </com:entityErrorMessage>
+               </com:entityErrorMessages>
+               <message>?</message>
+            </com:ServiceResponse>
+         </return>
+      </com:createOrUpdateDevicesResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevicesResponse"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/></con:soapui-project>
