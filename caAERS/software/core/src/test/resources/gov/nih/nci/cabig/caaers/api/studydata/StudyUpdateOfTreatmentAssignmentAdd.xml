@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:studies xmlns:p="http://webservice.caaers.cabig.nci.nih.gov" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<p:studies xmlns:p="http://schema.integration.caaers.cabig.nci.nih.gov/study">
     <p:study>
         <shortTitle>Study PCS</shortTitle>
         <longTitle>Pancreatic Cancer Study ph 5</longTitle>

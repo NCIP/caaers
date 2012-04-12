@@ -2,7 +2,7 @@
 <!--
 Will have same identifiers as that in CaaersStudyTest.xml
 -->
-<p:studies xmlns:p="http://webservice.caaers.cabig.nci.nih.gov" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<p:studies xmlns:p="http://schema.integration.caaers.cabig.nci.nih.gov/study">
     <p:study>
         <shortTitle>A Study JBC 3</shortTitle>
         <longTitle>Nose Cancer Study</longTitle>
