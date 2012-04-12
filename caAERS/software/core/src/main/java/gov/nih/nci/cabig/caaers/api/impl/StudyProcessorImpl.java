@@ -158,7 +158,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
     private CaaersServiceResponse processXMLStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
         gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
-        CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+        CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
         // ToDo Merge createStudy & updateStudy into this method
         return caaersServiceResponse;
     }
@@ -235,7 +235,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
 	public CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
 		gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
-		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
 
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
