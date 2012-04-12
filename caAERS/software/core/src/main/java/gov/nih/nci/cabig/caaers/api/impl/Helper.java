@@ -39,7 +39,15 @@ public class Helper {
         serviceResponse.getWsError().add(error);
         return response;
     }
-    
+
+    public static CaaersServiceResponse populateMessage(CaaersServiceResponse response, String message) {
+        ServiceResponse serviceResponse = response.getServiceResponse();
+        serviceResponse.setStatus(Status.PROCESSED);
+        serviceResponse.setResponsecode("0");
+        serviceResponse.setMessage(message);
+        return response;
+    }
+
     public static CaaersServiceResponse populateErrorOutcome(CaaersServiceResponse response, String businessId, String caaersId, String corelationId, List<String> messages){
 
         ServiceResponse serviceRespons = response.getServiceResponse();

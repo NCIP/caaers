@@ -280,7 +280,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-                        Helper.populateError(caaersServiceResponse, "", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
+                        Helper.populateMessage(caaersServiceResponse, "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
+                        caaersServiceResponse.getServiceResponse().getResponsecode();
 						logger.info("Study Updated");
 						
 					}else{

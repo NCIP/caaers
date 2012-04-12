@@ -48,7 +48,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
 
     public void testUpdateStudyWithoutChanges() {
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
-        assertEquals("1", csr.getServiceResponse().getResponsecode());
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
     }
 
     public void testUpdateStudyAddExistingDevice() {
@@ -65,7 +65,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         xmlStudy.getStudyDevices().getStudyDevice().add(xmlDevice);
 
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
-        assertEquals("1", csr.getServiceResponse().getResponsecode());
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
 
         assertEquals(3, s.getStudyDevices().size());
         assertEquals(3, deviceDao.getAllDevices().size());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ASAELServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/common}ASAELServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/ASAELService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/ASAELService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/ASAELService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ASAELService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ASAELServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/common}ASAELServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/ASAELService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/ASAELService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/ASAELService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ASAELService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study" version="1.0" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
@@ -14171,7 +14171,9 @@ xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
          </stud:Studies>
       </stud:createStudy>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/createStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="updateStudy" bindingOperationName="updateStudy" type="Request-Response" outputName="updateStudyResponse" inputName="updateStudy" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/createStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="updateStudy" bindingOperationName="updateStudy" type="Request-Response" outputName="updateStudyResponse" inputName="updateStudy" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
+xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
    <soapenv:Header/>
    <soapenv:Body>
       <stud:updateStudy>
@@ -14595,7 +14597,223 @@ xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
          </stud:Studies>
       </stud:updateStudy>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ResearchStaffServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff}ResearchStaffServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ResearchStaffService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/><con:wsrmConfig version="1.2"/></con:call><con:call name="valid_request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
+xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+	<soapenv:Header>
+		<wsse:Security>
+			<wsse:UsernameToken>
+				<wsse:Username>SYSTEM_ADMIN</wsse:Username>
+				<wsse:Password>Hello-12</wsse:Password>
+			</wsse:UsernameToken>
+		</wsse:Security>
+	</soapenv:Header>
+   <soapenv:Body>
+      <stud:updateStudy>
+         <!--Optional:-->
+         <stud:Studies>
+<!-- STUDY START -->
+    <stud:study>
+        <shortTitle>TestRules14</shortTitle>
+        <phaseCode>Phase I Trial</phaseCode>
+        <otherMeddra>MedDRA v10</otherMeddra>
+        <studyPurpose>Treatment</studyPurpose>
+        <aeTermUnique>true</aeTermUnique>
+        <stud:aeTerminology>
+            <stud:ctcVersion>
+                <name>4</name>
+            </stud:ctcVersion>
+        </stud:aeTerminology>
+        <stud:diseaseTerminology>
+            <diseaseCodeTerm>CTEP</diseaseCodeTerm>
+        </stud:diseaseTerminology>
+        <fundingSponsor>
+            <organizationAssignedIdentifier>
+                <value>12345A</value>
+            </organizationAssignedIdentifier>
+            <stud:studyFundingSponsor>
+                <stud:organization>
+                    <name>Cancer Therapy Evaluation Program</name>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
+                </stud:organization>
+                <studyInvestigators>
+                    <stud:studyInvestigator>
+                        <roleCode>PI</roleCode>
+                        <startDate>2009-05-06</startDate>
+                        <stud:siteInvestigator>
+                            <stud:investigator>
+                                <firstName>Silvio</firstName>
+                                <lastName>Berlusconi</lastName>
+                            </stud:investigator>
+                        </stud:siteInvestigator>
+                    </stud:studyInvestigator>
+                </studyInvestigators>
+                <studyPersonnels>
+                    <stud:studyPersonnel>
+                        <roleCode>ae_rule_and_report_manager</roleCode>
+                        <startDate>2008-01-01</startDate>
+                        <stud:researchStaff>
+                            <firstName>biju76</firstName>
+                            <lastName>Jank3</lastName>
+                        </stud:researchStaff>
+                    </stud:studyPersonnel>
+                </studyPersonnels>
+            </stud:studyFundingSponsor>
+        </fundingSponsor>
+        <coordinatingCenter>
+            <organizationAssignedIdentifier>
+                <value>12345A</value>
+            </organizationAssignedIdentifier>
+            <stud:studyCoordinatingCenter>
+                <stud:organization>
+                    <name>Cancer Therapy Evaluation Program</name>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
+                </stud:organization>
+            </stud:studyCoordinatingCenter>
+        </coordinatingCenter>
+        <studyOrganizations>
+            <stud:studySite>
+                <stud:organization>
+                    <name>Howard University Hospital</name>
+                    <nciInstituteCode>DC006</nciInstituteCode>
+                </stud:organization>
+            </stud:studySite>
+            <stud:studySite>
+                <stud:organization>
+                    <name>Johns Hopkins University</name>
+                    <nciInstituteCode>MD017</nciInstituteCode>
+                </stud:organization>
+            </stud:studySite>
+            <stud:studySite>
+                <stud:organization>
+                    <name>Mayo Clinic Jacksonville</name>
+                    <nciInstituteCode>FL080</nciInstituteCode>
+                </stud:organization>
+            </stud:studySite>
+            <stud:studySite>
+                <stud:organization>
+                    <name>Mayo Clinic Rochester</name>
+                    <nciInstituteCode>MN026</nciInstituteCode>
+                </stud:organization>
+            </stud:studySite>
+            <stud:studySite>
+                <stud:organization>
+                    <name>Mayo Clinic Scottsdale-Phoenix</name>
+                    <nciInstituteCode>AZ020</nciInstituteCode>
+                </stud:organization>
+            </stud:studySite>
+        </studyOrganizations>
+        <identifiers/>
+        <treatmentAssignments>
+            <stud:treatmentAssignment>
+                <code>TA1</code>
+                <doseLevelOrder>1</doseLevelOrder>
+                <description>(Cycle= 3 Weeks): Cisplatin 60 mg/m2 IV on day 1 Flavopiridol 100 mg/m2 CIV over 24 hours on day 1</description>
+            </stud:treatmentAssignment>
+        </treatmentAssignments>
+        <studyAgents>
+            <stud:studyAgent>
+                <stud:agent>
+                    <name>Alvocidib (flavopiridol)</name>
+                </stud:agent>
+                <indType>NA_COMMERCIAL</indType>
+            </stud:studyAgent>
+            <stud:studyAgent>
+                <stud:agent>
+                    <name>CISplatin</name>
+                </stud:agent>
+                <indType>CTEP_IND</indType>
+                <partOfLeadIND>true</partOfLeadIND>
+                <studyAgentINDAssociations>
+                    <stud:studyAgentINDAssociation>
+                        <stud:investigationalNewDrug>
+                            <indNumber>-111</indNumber>
+                        </stud:investigationalNewDrug>
+                    </stud:studyAgentINDAssociation>
+                </studyAgentINDAssociations>
+            </stud:studyAgent>
+        </studyAgents>
+        <ctepStudyDiseases>
+            <stud:ctepStudyDisease>
+                <stud:diseaseTerm>
+                    <term>Hematopoietic malignancy, NOS</term>
+                </stud:diseaseTerm>
+                <leadDisease>false</leadDisease>
+            </stud:ctepStudyDisease>
+            <stud:ctepStudyDisease>
+                <stud:diseaseTerm>
+                    <term>Ovarian epithelial cancer</term>
+                </stud:diseaseTerm>
+                <leadDisease>false</leadDisease>
+            </stud:ctepStudyDisease>
+        </ctepStudyDiseases>
+        <evaluationPeriods>
+            <stud:evaluationPeriod>
+                <name>Baseline</name>
+                <epochOrder>0</epochOrder>
+            </stud:evaluationPeriod>
+            <stud:evaluationPeriod>
+                <name>Treatment</name>
+                <epochOrder>1</epochOrder>
+                <solicitedAdverseEvents>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10000081</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10019211</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10049737</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                </solicitedAdverseEvents>
+            </stud:evaluationPeriod>
+            <stud:evaluationPeriod>
+                <name>Post-treatment</name>
+                <epochOrder>2</epochOrder>
+                <solicitedAdverseEvents>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10000081</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                </solicitedAdverseEvents>
+            </stud:evaluationPeriod>
+        </evaluationPeriods>
+        <studyDevices>
+            <stud:studyDevice>
+                <stud:device>
+                    <commonName>Device</commonName>
+                    <brandName>Brand</brandName>
+                    <type>DeviceType</type>
+                </stud:device>
+            </stud:studyDevice>
+        </studyDevices>
+        <expectedAECtcTerms>
+            <stud:expectedAECtcTerm>
+                <ctepCode>10033371</ctepCode>
+            </stud:expectedAECtcTerm>
+            <stud:expectedAECtcTerm>
+                <ctepCode>10012727</ctepCode>
+            </stud:expectedAECtcTerm>
+            <stud:expectedAECtcTerm>
+                <ctepCode>10013781</ctepCode>
+            </stud:expectedAECtcTerm>
+            <stud:expectedAECtcTerm>
+                <ctepCode>10016766</ctepCode>
+            </stud:expectedAECtcTerm>
+            <stud:expectedAECtcTerm>
+                <ctepCode>10019211</ctepCode>
+            </stud:expectedAECtcTerm>
+            <stud:expectedAECtcTerm>
+                <ctepCode>10028813</ctepCode>
+            </stud:expectedAECtcTerm>
+        </expectedAECtcTerms>
+    </stud:study>
+
+<!-- STUDY END -->
+         </stud:Studies>
+      </stud:updateStudy>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ResearchStaffServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff}ResearchStaffServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ResearchStaffService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study" version="1.0" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
