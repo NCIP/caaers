@@ -22,7 +22,8 @@
 
     <DISEASE_TERMINOLOGIES id="-11" term_code="1" study_id="-2" />
     <TERMINOLOGIES id="-11" term_code="1" ctc_id="3" study_id="-3" />
-    <IDENTIFIERS id="-16" stu_id="-2" value="12345" type="Coordinating Center Identifier" organization_id="-1003" discriminator_column="1"/>
+    <IDENTIFIERS id="-16" stu_id="-2" value="12345-ABC" type="Coordinating Center Identifier" organization_id="-1003" discriminator_column="1"/>
+    <IDENTIFIERS id="-17" stu_id="-2" value="12345-XYZ" type="Protocol Authority Identifier" organization_id="-1003" discriminator_column="1"/>
 
     <ctc_grades/>
 

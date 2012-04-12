@@ -14,7 +14,15 @@ import java.util.HashMap;
  */
 public class StudyDeviceSynchronizer implements Migrator<Study> {
 
-    public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
+    /**
+     * I know I know the parameters order is not the same as in the interface(1-src, 2-dest) which is very confusing, but I
+     * could not refactor it since all the implementing classes ate following the same pattern, destination first,
+     * source - second.
+     * @param dest
+     * @param src
+     * @param studyDomainObjectImportOutcome
+     */
+    public void migrate(Study dest, Study src, DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
         if (CollectionUtils.isEmpty(src.getStudyDevices())) return;
 
 		HashMap<String, StudyDevice> map = new HashMap<String, StudyDevice>();

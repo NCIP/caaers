@@ -248,19 +248,19 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new LocalStudy();
-		
-		//Convert JAXB StudyType to Domain Study
-		try{
-			studyConverter.convertStudyDtoToStudyDomain(studyDto, study);
-			logger.info("StudyDto converted to Study");
-		}catch(CaaersSystemException caEX){
-			studyImportOutcome = new DomainObjectImportOutcome<Study>();
-			logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
-			studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
+
+        //Convert JAXB StudyType to Domain Study
+        try {
+            studyConverter.convertStudyDtoToStudyDomain(studyDto, study);
+            logger.info("StudyDto converted to Study");
+        } catch (CaaersSystemException caEX) {
+            studyImportOutcome = new DomainObjectImportOutcome<Study>();
+            logger.error("StudyDto to StudyDomain Conversion Failed ", caEX);
+            studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed ", DomainObjectImportOutcome.Severity.ERROR);
             Helper.populateError(caaersServiceResponse, "", "StudyDto to StudyDomain Conversion Failed");
-		}
-		
-		if (studyImportOutcome == null) {
+        }
+
+        if (studyImportOutcome == null) {
 			studyImportOutcome = studyImportService.importStudy(study);
 			List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
 			if(studyImportOutcome.isSavable() && errors.size() == 0){

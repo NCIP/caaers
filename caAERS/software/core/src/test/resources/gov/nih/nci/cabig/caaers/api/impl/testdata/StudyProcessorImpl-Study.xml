@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:studies xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/study">
     <ns2:study>
-        <shortTitle>Study A100</shortTitle>
+        <shortTitle>Study A100 - TO BE MODIFIED</shortTitle>
         <phaseCode>Phase I Trial</phaseCode>
         <otherMeddra>MedDRA v9.0</otherMeddra>
         <studyPurpose>Treatment</studyPurpose>
@@ -16,7 +16,7 @@
         </ns2:diseaseTerminology>
         <fundingSponsor>
             <organizationAssignedIdentifier>
-                <value>12345</value>
+                <value>12345-XYZ</value>
             </organizationAssignedIdentifier>
             <ns2:studyFundingSponsor>
                 <ns2:organization>
@@ -49,7 +49,7 @@
         </fundingSponsor>
         <coordinatingCenter>
             <organizationAssignedIdentifier>
-                <value>12345</value>
+                <value>12345-ABC</value>
             </organizationAssignedIdentifier>
             <ns2:studyCoordinatingCenter>
                 <ns2:organization>
