@@ -33,6 +33,15 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
             } else {
                 // UPDATE
                 studyDevice.setDevice(sd.getDevice());
+                studyDevice.setCatalogNumber(sd.getCatalogNumber());
+                studyDevice.setManufacturerCity(sd.getManufacturerCity());
+                studyDevice.setManufacturerName(sd.getManufacturerName());
+                studyDevice.setManufacturerState(sd.getManufacturerState());
+                studyDevice.setModelNumber(sd.getModelNumber());
+                studyDevice.setOtherBrandName(sd.getOtherBrandName());
+                studyDevice.setOtherCommonName(sd.getOtherCommonName());
+                studyDevice.setOtherBrandName(sd.getOtherBrandName());
+                studyDevice.setOtherDeviceType(sd.getOtherDeviceType());
             }
         }
     }
