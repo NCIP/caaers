@@ -27,15 +27,15 @@ public class DevicesServiceImpl implements ApplicationContextAware {
     public CaaersServiceResponse createOrUpdateDevices(DevicesType devices) {
         CaaersServiceResponse csr = new CaaersServiceResponse();
         csr.setServiceResponse(new ServiceResponse());
-        csr.getServiceResponse().setEntityErrorMessages(new EntityErrorMessages());
+        csr.getServiceResponse().setEntityProcessingOutcomes(new EntityProcessingOutcomes());
         csr.getServiceResponse().setStatus(Status.PROCESSED);
-        List<EntityErrorMessageType> errors = execute(devices);
-        csr.getServiceResponse().getEntityErrorMessages().setEntityErrorMessage(errors);
+        List<EntityProcessingOutcomeType> errors = execute(devices);
+        csr.getServiceResponse().getEntityProcessingOutcomes().setEntityProcessingOutcome(errors);
         return csr;
     }
 
-    private EntityErrorMessageType populateError(String cn, String bi, String message) {
-        EntityErrorMessageType e = new EntityErrorMessageType();
+    private EntityProcessingOutcomeType populateError(String cn, String bi, String message) {
+        EntityProcessingOutcomeType e = new EntityProcessingOutcomeType();
         e.setBusinessIdentifier(bi);
         e.setKlassName(cn);
         e.setMessage(new ArrayList<String>(1));
@@ -43,8 +43,8 @@ public class DevicesServiceImpl implements ApplicationContextAware {
         return e;
     }
 
-    public List<EntityErrorMessageType> execute(DevicesType devices) {
-        List<EntityErrorMessageType> errors = new ArrayList<EntityErrorMessageType>();
+    public List<EntityProcessingOutcomeType> execute(DevicesType devices) {
+        List<EntityProcessingOutcomeType> errors = new ArrayList<EntityProcessingOutcomeType>();
         if (devices == null || devices.getDevice() == null || devices.getDevice().size() == 0) return errors;
 
         for (DeviceType xmlDevice : devices.getDevice()) {

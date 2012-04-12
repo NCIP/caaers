@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessageType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
 import gov.nih.nci.cabig.caaers.integration.schema.device.DevicesType;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class DevicesServiceImplTest extends DaoTestCase {
         devicesType.getDevice().get(0).setCommonName("NEW 1");
         devicesType.getDevice().get(1).setCommonName("NEW 2");
         devicesType.getDevice().get(2).setCommonName("NEW 3");
-        List<EntityErrorMessageType> errors = devicesServiceImpl.execute(devicesType);
+        List<EntityProcessingOutcomeType> errors = devicesServiceImpl.execute(devicesType);
         assertEquals(3, errors.size());
         assertEquals("", errors.get(0).getMessage().get(0));
         assertEquals("", errors.get(1).getMessage().get(0));
@@ -67,7 +67,7 @@ public class DevicesServiceImplTest extends DaoTestCase {
 
         // UPDATE
 
-        List<EntityErrorMessageType> errors = devicesServiceImpl.execute(devicesType);
+        List<EntityProcessingOutcomeType> errors = devicesServiceImpl.execute(devicesType);
         assertEquals(1, errors.size());
         assertEquals("", errors.get(0).getMessage().get(0));
 

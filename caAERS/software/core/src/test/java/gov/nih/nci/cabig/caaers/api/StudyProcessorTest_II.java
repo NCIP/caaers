@@ -160,7 +160,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
         assertNotNull(res.getServiceResponse());
-        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertNotNull(res.getServiceResponse().getEntityProcessingOutcomes());
         assertEquals(1, res.getServiceResponse().getWsError().size());
         assertEquals("SolicitedAdverseEvent with only otherMeddraCode is not allowed", res.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
@@ -170,7 +170,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
         assertNotNull(res.getServiceResponse());
-        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertNotNull(res.getServiceResponse().getEntityProcessingOutcomes());
         assertEquals(1, res.getServiceResponse().getWsError().size());
         assertEquals("One EvaluationPeriod with name as \"Baseline\" is mandatory", res.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
@@ -180,7 +180,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
         assertNotNull(res.getServiceResponse());
-        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertNotNull(res.getServiceResponse().getEntityProcessingOutcomes());
         assertEquals(2, res.getServiceResponse().getWsError().size());
     }
 
@@ -227,7 +227,7 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         CaaersServiceResponse res = studyProcessor.createStudy(studies);
         assertNotNull(res);
         assertNotNull(res.getServiceResponse());
-        assertNotNull(res.getServiceResponse().getEntityErrorMessages());
+        assertNotNull(res.getServiceResponse().getEntityProcessingOutcomes());
         assertEquals("ExpectedAECtcTerm cannot contain only otherMeddraCode", res.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
     

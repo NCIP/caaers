@@ -531,17 +531,17 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
-	<xs:element name="entityErrorMessages">
+	<xs:element name="entityProcessingOutcomes">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="entityErrorMessage" maxOccurs="unbounded"> </xs:element>
+				<xs:element ref="entityProcessingOutcome" maxOccurs="unbounded"> </xs:element>
 			</xs:sequence>
 		
 		</xs:complexType>
 	</xs:element>
 	
-	<xs:element name="entityErrorMessage" type="EntityErrorMessageType"></xs:element>
-    <xs:complexType name="EntityErrorMessageType">
+	<xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"></xs:element>
+    <xs:complexType name="EntityProcessingOutcomeType">
         <xs:sequence>
         	<xs:element name="klassName" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="businessIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -563,7 +563,7 @@
     	<xs:sequence>
     		<xs:element name="status" type="Status"></xs:element>
     		<xs:element name="wsError" type="WsError" minOccurs="0" maxOccurs="unbounded"></xs:element>
-    		<xs:element ref="entityErrorMessages" minOccurs="0"></xs:element>
+    		<xs:element ref="entityProcessingOutcomes" minOccurs="0"></xs:element>
             <xs:element name="message" type="xs:string"></xs:element>
 
     	</xs:sequence>

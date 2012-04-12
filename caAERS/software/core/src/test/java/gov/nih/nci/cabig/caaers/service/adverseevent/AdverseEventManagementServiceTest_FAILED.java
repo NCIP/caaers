@@ -68,7 +68,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		//AdverseEvents xmlAdverseEvents = (AdverseEvents)aeUnmarshaller.unmarshal(getFile(aeXmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 		assertEquals("Adverse Event(test) created Successfully.", resp.getServiceResponse().getWsError().get(0).getErrorDesc());
-		assertEquals("1", resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getCorrelationId());
+		assertEquals("1", resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getCorrelationId());
 	}
 
 	public void testCreate() throws Exception{
@@ -80,9 +80,9 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 
 		
-		assertEquals("1", resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getCorrelationId());
-		assertEquals("2", resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(1).getCorrelationId());
-		assertEquals("3", resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(2).getCorrelationId());
+		assertEquals("1", resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getCorrelationId());
+		assertEquals("2", resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(1).getCorrelationId());
+		assertEquals("3", resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(2).getCorrelationId());
 		assertEquals("gov.nih.nci.cabig.caaers.CaaersSystemException: gov.nih.nci.cabig.caaers.CaaersSystemException: Other(MedDRA) missing.",resp.getServiceResponse().getWsError().get(0).getErrorDesc());
 		assertEquals("gov.nih.nci.cabig.caaers.CaaersSystemException: gov.nih.nci.cabig.caaers.CaaersSystemException: Grade 30 is not allowed for this Term -18", resp.getServiceResponse().getWsError().get(1).getErrorDesc());
 		assertEquals("Adverse Event(Burn - ) created Successfully.", resp.getServiceResponse().getWsError().get(2).getErrorDesc());
@@ -95,7 +95,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 		assertEquals("gov.nih.nci.cabig.caaers.CaaersSystemException: gov.nih.nci.cabig.caaers.CaaersSystemException: adverseEvent start date 2005-07-29 cannot be before startDateOfFirstCourse Sun Mar 29 00:00:00 EDT 2009", resp.getServiceResponse().getWsError().get(0).getErrorDesc());
-		assertEquals("1", resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getCorrelationId());	}
+		assertEquals("1", resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getCorrelationId());	}
 
 	public void testEndDateMustBeGreaterThanOrEqualToStartDate() throws Exception{
 		//String criteriaXmlFile = "AdverseeventCriteria.xml";
@@ -115,7 +115,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 //		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
@@ -157,7 +157,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		/*
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
@@ -168,14 +168,14 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		xmlFile = "SucessAE4.xml";
 		adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		resp = adverseEventManagementService.createOrUpdateAdverseEvent(adverseEventsInputMessage);
-		id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		ae = adverseEventDao.getById(Integer.parseInt(id));
 		/*
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("4",ae.getGrade().getCode()+"");	*/
 		
-		id =  resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(1).getDataBaseId();
+		id =  resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(1).getDataBaseId();
 		ae = adverseEventDao.getById(Integer.parseInt(id));
 		/*
 		assertEquals("Auditory/Ear - Other (Specify, __)",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
@@ -190,7 +190,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
@@ -200,7 +200,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		xmlFile = "SucessAE2.xml";
 		adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String msg = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String msg = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		//System.out.println(msg);
 		assertEquals("This AE Term(Burn - ) already exists for given course.",msg);
 		
@@ -212,7 +212,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Auditory/Ear - Other (Specify, __)",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("mc1",ae.getLowLevelTerm().getMeddraCode());
@@ -227,7 +227,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("Auditory/Ear - Other (Specify, __)",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("mc1",ae.getLowLevelTerm().getMeddraCode());
@@ -247,7 +247,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		getJdbcTemplate().execute("update terminologies set meddra_version_id=9 , term_code=2 , ctc_id = null where id =-1");
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("mt1",((AdverseEventMeddraLowLevelTerm)ae.getAdverseEventTerm()).getLowLevelTerm().getMeddraTerm());
 		assertEquals("YES",ae.getHospitalization().name());
@@ -261,7 +261,7 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		getJdbcTemplate().execute("update terminologies set meddra_version_id=9 , term_code=2 , ctc_id = null where id =-1");
 		AdverseEventsInputMessage adverseEventsInputMessage = (AdverseEventsInputMessage)unmarshaller.unmarshal(getFile(xmlFile));
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		assertEquals("mt1",((AdverseEventMeddraLowLevelTerm)ae.getAdverseEventTerm()).getLowLevelTerm().getMeddraTerm());
 		assertEquals("YES",ae.getHospitalization().name());
@@ -285,14 +285,14 @@ public class AdverseEventManagementServiceTest_FAILED extends CaaersDbNoSecurity
 		
 		CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(adverseEventsInputMessage);
 
-		String id = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
 		/*
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("4",ae.getGrade().getCode()+"");
 */
-		String id2 = resp.getServiceResponse().getEntityErrorMessages().getEntityErrorMessage().get(0).getDataBaseId();
+		String id2 = resp.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().get(0).getDataBaseId();
 		AdverseEvent dryae = adverseEventDao.getById(Integer.parseInt(id2));
 		/*
 		assertEquals("Dry skin",((AdverseEventCtcTerm)dryae.getAdverseEventTerm()).getTerm().getTerm());

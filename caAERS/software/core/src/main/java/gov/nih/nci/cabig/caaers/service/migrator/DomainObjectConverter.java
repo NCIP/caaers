@@ -1,25 +1,25 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessageType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessages;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 
 import java.util.List;
 
 public class DomainObjectConverter {
 	
-	public void convertEntityErrorMessages(List<EntityErrorMessage> entityErrorMessages, 
-			EntityErrorMessages entityErrorMessagesDto){
+	public void convertEntityProcessingOutcomes(List<EntityErrorMessage> entityErrorMessages, 
+			EntityProcessingOutcomes entityProcessingOutcomesDto){
 		
 		for(EntityErrorMessage entityErrorMessage : entityErrorMessages){
-			EntityErrorMessageType entityErrorMessageType = new EntityErrorMessageType();
-			entityErrorMessageType.setBusinessIdentifier(entityErrorMessage.getBusinessId());
+			EntityProcessingOutcomeType entityProcessingOutcomeType = new EntityProcessingOutcomeType();
+			entityProcessingOutcomeType.setBusinessIdentifier(entityErrorMessage.getBusinessId());
 			for(String message : entityErrorMessage.getMessages()){
 				String messageDto = new String(message);
-				entityErrorMessageType.getMessage().add(messageDto);
+				entityProcessingOutcomeType.getMessage().add(messageDto);
 			}
 			
-			entityErrorMessagesDto.getEntityErrorMessage().add(entityErrorMessageType);
+			entityProcessingOutcomesDto.getEntityProcessingOutcome().add(entityProcessingOutcomeType);
 		}
 	}
 }

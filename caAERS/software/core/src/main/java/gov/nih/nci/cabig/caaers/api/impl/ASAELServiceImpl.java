@@ -39,16 +39,16 @@ public class ASAELServiceImpl implements ApplicationContextAware {
     public CaaersServiceResponse createOrUpdateASAEL(ASAELType asael) {
         CaaersServiceResponse csr = new CaaersServiceResponse();
         csr.setServiceResponse(new ServiceResponse());
-        csr.getServiceResponse().setEntityErrorMessages(new EntityErrorMessages());
+        csr.getServiceResponse().setEntityProcessingOutcomes(new EntityProcessingOutcomes());
         csr.getServiceResponse().setStatus(Status.PROCESSED);
-        List<EntityErrorMessageType> errors = execute(asael);
-        csr.getServiceResponse().getEntityErrorMessages().setEntityErrorMessage(errors);
+        List<EntityProcessingOutcomeType> errors = execute(asael);
+        csr.getServiceResponse().getEntityProcessingOutcomes().setEntityProcessingOutcome(errors);
         return csr;
     }
 
 
-    private EntityErrorMessageType populateError(String cn, String bi, String message) {
-        EntityErrorMessageType e = new EntityErrorMessageType();
+    private EntityProcessingOutcomeType populateError(String cn, String bi, String message) {
+        EntityProcessingOutcomeType e = new EntityProcessingOutcomeType();
         e.setBusinessIdentifier(bi);
         e.setKlassName(cn);
         e.setMessage(new ArrayList<String>(1));
@@ -56,9 +56,9 @@ public class ASAELServiceImpl implements ApplicationContextAware {
         return e;
     }
 
-    public List<EntityErrorMessageType> execute(ASAELType asael) {
+    public List<EntityProcessingOutcomeType> execute(ASAELType asael) {
 
-        List<EntityErrorMessageType> errors = new ArrayList<EntityErrorMessageType>();
+        List<EntityProcessingOutcomeType> errors = new ArrayList<EntityProcessingOutcomeType>();
 
         if (asael.getAsaelAgent() == null || asael.getAsaelAgent() == null || asael.getAsaelAgent().size() == 0) return errors;
 
@@ -165,7 +165,7 @@ public class ASAELServiceImpl implements ApplicationContextAware {
         return null;
     }
 
-    private List<CtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, List<EntityErrorMessageType> errors) {
+    private List<CtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, List<EntityProcessingOutcomeType> errors) {
         List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
 
         for (ExpectedAECtcTermType ctcTermType : xmlCtcTerms) {

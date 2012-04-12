@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELType;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessageType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
 import org.dbunit.operation.DatabaseOperation;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
     ASAELType asaelType;
 
     public void testNotFoundAgent() {
-        List<EntityErrorMessageType> l = asaelServiceImpl.execute(asaelType);
+        List<EntityProcessingOutcomeType> l = asaelServiceImpl.execute(asaelType);
         assertNotNull(l);
         assertEquals(2, l.size());
         assertEquals("gov.nih.nci.cabig.caaers.domain.Agent", l.get(0).getKlassName());
@@ -47,7 +47,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
 
-        List<EntityErrorMessageType> l = asaelServiceImpl.execute(asaelType);
+        List<EntityProcessingOutcomeType> l = asaelServiceImpl.execute(asaelType);
 
         assertEquals(1, l.size());
         assertEquals("", l.get(0).getMessage().get(0));
@@ -68,7 +68,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
 
-        List<EntityErrorMessageType> l = asaelServiceImpl.execute(asaelType);
+        List<EntityProcessingOutcomeType> l = asaelServiceImpl.execute(asaelType);
 
         assertEquals(1, l.size());
         assertEquals("", l.get(0).getMessage().get(0));

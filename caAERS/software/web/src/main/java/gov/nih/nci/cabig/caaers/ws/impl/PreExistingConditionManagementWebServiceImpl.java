@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.api.PreExistingConditionLOVService;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessages;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditions;
 import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault;
@@ -46,8 +46,8 @@ public class PreExistingConditionManagementWebServiceImpl implements PreExisting
 		caaersResponse.setServiceResponse(serviceResponse);
 		
 		List<PreExistingCondition> domainConditions = new ArrayList<PreExistingCondition>();
-		EntityErrorMessages entityErrorMessageTypes = new EntityErrorMessages();
-		serviceResponse.setEntityErrorMessages(entityErrorMessageTypes);
+		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
+		serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		try {
 			for(PreExistingConditionType conditionDto: xmlPreExistingConditions.getPreExistingCondition()){
 				PreExistingCondition domainCondition = new PreExistingCondition();
@@ -55,7 +55,7 @@ public class PreExistingConditionManagementWebServiceImpl implements PreExisting
 				domainConditions.add(domainCondition);
 			}
 			List<EntityErrorMessage> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(domainConditions);
-			domainObjectConverter.convertEntityErrorMessages(entityErrorMessages, entityErrorMessageTypes);
+			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
 		} catch (Throwable e) {
 			logger.debug(e.getMessage());
 			SecurityExceptionFault fault = new SecurityExceptionFault();

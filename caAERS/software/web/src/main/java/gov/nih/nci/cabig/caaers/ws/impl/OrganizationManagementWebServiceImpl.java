@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
 import gov.nih.nci.cabig.caaers.api.OrganizationManagementService;
+import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityErrorMessages;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.organization.Organizations;
 import gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter;
 import gov.nih.nci.cabig.caaers.ws.OrganizationManagementWebService;
@@ -39,13 +39,11 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 	public CaaersServiceResponse createOrUpdateOrganization(
 			Organizations xmlOrganizations) throws SecurityExceptionFaultMessage {
 		
-		CaaersServiceResponse caaersResponse = new CaaersServiceResponse();
-		ServiceResponse serviceResponse = new ServiceResponse();
-		caaersResponse.setServiceResponse(serviceResponse);
+		CaaersServiceResponse caaersResponse = Helper.createResponse();
 		
 		List<Organization> domainOrganizations = new ArrayList<Organization>();
-		EntityErrorMessages entityErrorMessageTypes = new EntityErrorMessages();
-		serviceResponse.setEntityErrorMessages(entityErrorMessageTypes);
+		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
+		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		try {
 			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
 				Organization organization = new LocalOrganization();
@@ -53,7 +51,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 				domainOrganizations.add(organization);
 			}
 			List<EntityErrorMessage> entityErrorMessages = organizationManagementService.createOrUpdateOrganizations(domainOrganizations);
-			organizationConverter.convertEntityErrorMessages(entityErrorMessages, entityErrorMessageTypes);
+			organizationConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
 		} catch (Throwable e) {
 			logger.debug(e.getMessage());
 			SecurityExceptionFault fault = new SecurityExceptionFault();

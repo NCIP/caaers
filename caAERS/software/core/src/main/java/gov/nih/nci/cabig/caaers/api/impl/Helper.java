@@ -46,15 +46,15 @@ public class Helper {
         serviceRespons.setStatus(Status.FAILED_TO_PROCESS);
         serviceRespons.setResponsecode("1");
 
-        EntityErrorMessages msgs = new EntityErrorMessages();
-        EntityErrorMessageType  msg = new EntityErrorMessageType();
+        EntityProcessingOutcomes msgs = new EntityProcessingOutcomes();
+        EntityProcessingOutcomeType  msg = new EntityProcessingOutcomeType();
         msg.setBusinessIdentifier(businessId);
         msg.setCorrelationId(corelationId);
         msg.setDataBaseId(caaersId);
         msg.setKlassName("NA");
         for(String m : messages) msg.getMessage().add(m);
-        msgs.getEntityErrorMessage().add(msg);
-        serviceRespons.setEntityErrorMessages(msgs);
+        msgs.getEntityProcessingOutcome().add(msg);
+        serviceRespons.setEntityProcessingOutcomes(msgs);
         return response;
     }
     
