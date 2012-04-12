@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Ramakrishna
  */
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.OrganizationManagementWebService", serviceName="OrganizationManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/organization")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.OrganizationManagementWebService", serviceName="OrganizationManagementWebService", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class OrganizationManagementWebServiceImpl implements OrganizationManagementWebService {
     

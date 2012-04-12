@@ -16,7 +16,7 @@ import javax.jws.WebService;
  * @author Ion C. Olaru
  *
  */
-@WebService(name="AdverseEventManagementServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adversevent")
+@WebService(name="AdverseEventManagementServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent")
 public interface AdverseEventManagementService {
 	/**
 	 * Create Adverse Events for a Study Participant Assignment on a given Course/Cycle.<br/>
@@ -34,7 +34,7 @@ public interface AdverseEventManagementService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adversevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Update Adverse Events for a Study Participant Assignment on a given Course/Cycle.
@@ -42,7 +42,7 @@ public interface AdverseEventManagementService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adversevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Delete Adverse Events for a Study Participant Assignment on a given Course/Cycle.
@@ -50,6 +50,6 @@ public interface AdverseEventManagementService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adversevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 }

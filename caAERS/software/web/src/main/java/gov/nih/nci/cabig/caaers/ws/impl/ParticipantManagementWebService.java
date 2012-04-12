@@ -16,7 +16,7 @@ import javax.jws.soap.SOAPBinding;
  * @author Biju Joseph
  * @author Ion C. Olaru
  */
-@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.ParticipantService", serviceName = "ParticipantService", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/participant")
+@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.ParticipantService", serviceName = "ParticipantService", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/participant")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class ParticipantManagementWebService implements ParticipantService {
     private ParticipantServiceImpl impl;
@@ -27,7 +27,7 @@ public class ParticipantManagementWebService implements ParticipantService {
      * @param xmlParticipants
      */
     @WebMethod
-    public CaaersServiceResponse createParticipant(@WebParam(name = "Participants", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
+    public CaaersServiceResponse createParticipant(@WebParam(name = "Participants", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
         return impl.createParticipant(xmlParticipants);
     }
 
@@ -38,7 +38,7 @@ public class ParticipantManagementWebService implements ParticipantService {
      */
 
     @WebMethod
-    public CaaersServiceResponse updateParticipant(@WebParam(name = "Participants", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
+    public CaaersServiceResponse updateParticipant(@WebParam(name = "Participants", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
         return impl.updateParticipant(xmlParticipants);
     }
 
@@ -49,7 +49,7 @@ public class ParticipantManagementWebService implements ParticipantService {
      */
 
     @WebMethod
-    public CaaersServiceResponse deleteParticipant(@WebParam(name = "Participants", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
+    public CaaersServiceResponse deleteParticipant(@WebParam(name = "Participants", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
         return impl.deleteParticipant(xmlParticipants);
     }
 

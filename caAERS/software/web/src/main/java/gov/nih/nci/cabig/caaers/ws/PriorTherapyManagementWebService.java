@@ -13,7 +13,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="PriorTherapyServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/priortherapy")
+@WebService(name="PriorTherapyServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 public interface PriorTherapyManagementWebService {
 	
 	/**
@@ -25,6 +25,6 @@ public interface PriorTherapyManagementWebService {
 	 */
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse importPriorTherapies(@WebParam(name="PriorTherapies",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/priortherapy") PriorTherapies xmlPriorTherapies) throws SecurityExceptionFaultMessage;
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") PriorTherapies xmlPriorTherapies) throws SecurityExceptionFaultMessage;
 
 }

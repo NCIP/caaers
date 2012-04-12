@@ -6,10 +6,10 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-@WebService(name="ResearchStaffServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/researchstaff")
+@WebService(name="ResearchStaffServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff")
 public interface ResearchStaffService {
 
 	@WebMethod
-	public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/researchstaff") gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff);
+	public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff") gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff);
 
 }

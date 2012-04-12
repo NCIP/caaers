@@ -13,7 +13,7 @@ import javax.jws.WebService;
  * @author Monish Dombla
  *
  */
-@WebService(name="StudyProcessorInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/study")
+@WebService(name="StudyProcessorInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study")
 public interface StudyProcessor {
 	
 	/**
@@ -24,7 +24,7 @@ public interface StudyProcessor {
 	 * @param xmlStudies
 	 */
 	@WebMethod
-	public CaaersServiceResponse createStudy(@WebParam(name="Studies", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/study") Studies xmlStudies);
+	public CaaersServiceResponse createStudy(@WebParam(name="Studies", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study") Studies xmlStudies);
 
 	/**
 	 * This operation will accept a Study which is a jaxb Study and updates it.
@@ -34,6 +34,6 @@ public interface StudyProcessor {
 	 * @param xmlStudies
 	 */
 	@WebMethod
-	public CaaersServiceResponse updateStudy(@WebParam(name="Studies", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/study") Studies xmlStudies);
+	public CaaersServiceResponse updateStudy(@WebParam(name="Studies", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study") Studies xmlStudies);
 
 }

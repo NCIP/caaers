@@ -13,7 +13,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="PreExistingConditionServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/precondition")
+@WebService(name="PreExistingConditionServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 public interface PreExistingConditionManagementWebService {
 	
 	/**
@@ -25,6 +25,6 @@ public interface PreExistingConditionManagementWebService {
 	 */
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse importPreExistingConditions(@WebParam(name="PreExistingConditions",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/precondition") PreExistingConditions xmlPreExistingConditions) throws SecurityExceptionFaultMessage;
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") PreExistingConditions xmlPreExistingConditions) throws SecurityExceptionFaultMessage;
 
 }

@@ -15,7 +15,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="OrganizationServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/organization")
+@WebService(name="OrganizationServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 public interface OrganizationManagementWebService {
 	
 	/**
@@ -27,6 +27,6 @@ public interface OrganizationManagementWebService {
 	 */
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse createOrUpdateOrganization(@WebParam(name="Organizations",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/organization") Organizations xmlOrganizations) throws SecurityExceptionFaultMessage;
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") Organizations xmlOrganizations) throws SecurityExceptionFaultMessage;
 
 }

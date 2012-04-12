@@ -14,7 +14,7 @@ import javax.jws.soap.SOAPBinding;
  * This is a webservice wrapper, that internally calls the @see AdverseEventManagementServiceImpl
  */
 
-@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService", serviceName = "AdverseEventManagementService", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adversevent")
+@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService", serviceName = "AdverseEventManagementService", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class AdverseEventManagementWebService implements AdverseEventManagementService {
 
@@ -37,7 +37,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse createAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adversevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public CaaersServiceResponse createAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
         return impl.createAdverseEvent(adverseEventsInputMessage);
     }
 
@@ -48,7 +48,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adversevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
         return impl.createOrUpdateAdverseEvent(adverseEventsInputMessage);
     }
 
@@ -59,7 +59,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse deleteAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adversevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public CaaersServiceResponse deleteAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
         return impl.deleteAdverseEvent(adverseEventsInputMessage);
     }
 

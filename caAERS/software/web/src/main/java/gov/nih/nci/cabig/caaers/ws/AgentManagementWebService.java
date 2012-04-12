@@ -13,7 +13,7 @@ import javax.jws.WebService;
  *
  */
 
-@WebService(name="AgentManagementServiceInterface",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/agent")
+@WebService(name="AgentManagementServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 public interface AgentManagementWebService {
 	
 	/**
@@ -25,6 +25,6 @@ public interface AgentManagementWebService {
 	 */
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse createOrUpdateAgent(@WebParam(name="Agents",
-            targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/agent") Agents xmlAgents) throws SecurityExceptionFaultMessage;
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") Agents xmlAgents) throws SecurityExceptionFaultMessage;
 
 }

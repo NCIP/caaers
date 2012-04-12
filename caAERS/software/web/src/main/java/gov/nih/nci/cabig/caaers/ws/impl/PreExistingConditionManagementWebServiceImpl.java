@@ -22,7 +22,7 @@ import javax.jws.soap.SOAPBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.PreExistingConditionManagementWebService", serviceName="PreExistingConditionManagementWebService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/precondition")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.PreExistingConditionManagementWebService", serviceName="PreExistingConditionManagementWebService", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class PreExistingConditionManagementWebServiceImpl implements PreExistingConditionManagementWebService{
 	

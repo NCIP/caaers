@@ -14,14 +14,15 @@ import javax.jws.soap.SOAPBinding;
  * @author Ion C. Olaru
  *         Date: 4/2/12 -10:03 AM
  */
-@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.ASAELService", serviceName="ASAELService", targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/asael")
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.ASAELService", serviceName="ASAELService", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class ASAELWebService implements ASAELService {
 
     private ASAELServiceImpl s;
 
     @WebMethod
-    public CaaersServiceResponse createOrUpdateASAEL(@WebParam(name = "asael", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov/asael") ASAELType asael) {
+    public CaaersServiceResponse createOrUpdateASAEL(@WebParam(name = "asael",
+            targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") ASAELType asael) {
         return s.createOrUpdateASAEL(asael);
     }
 
