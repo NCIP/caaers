@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault
 
 import javax.xml.ws.WebFault;
 
-@WebFault(name = "SecurityExceptionFault", targetNamespace = "http://webservice.caaers.cabig.nci.nih.gov")
+@WebFault(name = "SecurityExceptionFault", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common")
 public class SecurityExceptionFaultMessage
     extends Exception
 {

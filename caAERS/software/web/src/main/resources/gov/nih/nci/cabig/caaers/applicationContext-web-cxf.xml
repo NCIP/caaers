@@ -41,6 +41,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/Device.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
 
     <bean id="devicesWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.DevicesWebService">
@@ -52,6 +55,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
+         <jaxws:schemaLocations>
+             <jaxws:schemaLocation>/schema/integration/ASAEL.xsd</jaxws:schemaLocation>
+         </jaxws:schemaLocations>
     </jaxws:endpoint>
 
      <bean id="asaelWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.ASAELWebService">
@@ -70,6 +76,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/ManageAdverseEventsSchema.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
 
     <bean id="studyManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.StudyManagementWebService">
@@ -83,6 +92,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/StudySchema.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
 
     <bean id="participantManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.ParticipantManagementWebService">
@@ -96,6 +108,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/ParticipantSchema.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
 
     <bean id="investigatorManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.InvestigatorManagementWebService">
@@ -109,6 +124,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/Investigator.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
 
     <bean id="researchStaffManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.ResearchStaffManagementWebService">
@@ -122,6 +140,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/ResearchStaff.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
     
     <bean id="organizationManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.OrganizationManagementWebServiceImpl">
@@ -136,6 +157,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/Organization.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
     
     <bean id="agentManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.AgentManagementWebServiceImpl">
@@ -150,6 +174,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
     
     <bean id="preExistingConditionManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.PreExistingConditionManagementWebServiceImpl">
@@ -163,6 +190,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
     
      <bean id="priorTherapyManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.PriorTherapyManagementWebServiceImpl">
@@ -176,6 +206,9 @@
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
     </jaxws:endpoint>
 
 </beans>
