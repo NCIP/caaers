@@ -538,4 +538,5 @@
 	<ind_holders/>
 	<site_investigators />
     <study_site_wf_cfgs />
+    <arms />
 </dataset>
