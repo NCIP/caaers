@@ -349,6 +349,7 @@
     <study_personnel />
     <ae_report_people />
     <contact_mechanisms />
+    <study_agents />
     <study_agent_inds />
     <report_tracking />
     <wf_review_comments />
@@ -356,5 +357,11 @@
     <metastatic_disease_sites />
     <adverseevent_index />
     <site_investigators />
+    <treatment_assignment />
+    <ta_agents />
+    <ta_devices />
+    <ta_other_interventions />
+    <ta_study_interventions/>
+    <study_interventions_exp_aes />
     
 </dataset>
