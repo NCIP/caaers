@@ -25,4 +25,6 @@
    <ind_holders id="-774" dtype="INV" inv_id="-100" drug_id="-884" />
    <ind_holders id="-775" dtype="ORG" inv_id="-100" drug_id="-885" />
    <ind_holders id="-776" dtype="ORG" inv_id="-100" drug_id="-886" />
+   <identifiers />
+
 </dataset>

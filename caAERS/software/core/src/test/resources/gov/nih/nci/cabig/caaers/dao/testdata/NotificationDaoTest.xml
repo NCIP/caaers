@@ -58,4 +58,13 @@
         study_id="-2"
         version="0"
         />
+    <epochs />
+    <arms />
+    <study_agents />
+    <study_devices />
+    <study_diseases />
+    <study_investigators />
+    <study_personnel />
+    <study_organizations />
+    <study_therapy />
 </dataset>

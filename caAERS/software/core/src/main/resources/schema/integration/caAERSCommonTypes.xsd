@@ -204,7 +204,7 @@
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
-                    <xs:element name="statusCode" type="StatusCodeType"/>
+                    <xs:element name="statusCode" type="ActiveInactiveStatusType"/>
                     <xs:element name="phoneNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="faxNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -402,20 +402,6 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="StatusCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="ACT">
-                <xs:annotation>
-					  <xs:documentation>Active </xs:documentation>
- 				</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="INA">
-            	<xs:annotation>
-					  <xs:documentation>Inactive </xs:documentation>
- 				</xs:annotation>            
-            </xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
 
     <xs:simpleType name="DesignCodeType">
         <xs:restriction base="xs:string">
@@ -511,8 +497,16 @@
     
     <xs:simpleType name="ActiveInactiveStatusType">
 	    <xs:restriction base="xs:string">
-	      <xs:enumeration value="AC" />
-	      <xs:enumeration value="IN" />
+	      <xs:enumeration value="AC">
+              <xs:annotation>
+                  <xs:documentation>Active </xs:documentation>
+              </xs:annotation>
+	      </xs:enumeration>
+	      <xs:enumeration value="IN">
+              <xs:annotation>
+              <xs:documentation>InActive </xs:documentation>
+          </xs:annotation>
+          </xs:enumeration>
 	    </xs:restriction>
   	</xs:simpleType>
 	

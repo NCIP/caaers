@@ -17,5 +17,8 @@
         name="default"
         grid_id="defaultGridSite"
     />
+    <study_investigators />
+    <study_personnel />
+   <study_organizations />
 
 </dataset>

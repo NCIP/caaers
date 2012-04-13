@@ -537,4 +537,5 @@
     <SPA_PRE_EXISTING_CONDS/>
 	<ind_holders/>
 	<site_investigators />
+    <study_site_wf_cfgs />
 </dataset>

@@ -429,7 +429,7 @@
     <epochs/>
     <arms/>
     <solicited_events/>
-
+    <study_site_wf_cfgs />
     <spa_disease_histories/>
     <SPA_PRIOR_THERAPIES/>
     <SPA_CONCOMITANT_MEDICATIONS/>
@@ -442,4 +442,5 @@
     <study_devices id="-1" study_id="-2" retired_indicator="1" study_therapy_type="4"/>
     <study_devices id="-2" study_id="-2"  retired_indicator="0" study_therapy_type="4"/>
     <study_devices id="-3" study_id="-2"  retired_indicator="0" study_therapy_type="4"/>
+
 </dataset>
