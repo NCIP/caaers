@@ -71,6 +71,26 @@ public class StudyProcessorImplTest extends DaoTestCase {
         assertEquals(3, deviceDao.getAllDevices().size());
     }
 
+    public void testUpdateStudyAddNewDevice() {
+        Study s = studyDao.getStudyDesignById(-2);
+        assertEquals(2, s.getStudyDevices().size());
+        assertEquals(3, deviceDao.getAllDevices().size());
+
+        // ADD A NON DB-EXISTING DEVICE TO THE STUDY XML
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study xmlStudy = ss.getStudy().get(0);
+
+        StudyDeviceType xmlDevice = new StudyDeviceType();
+        xmlDevice.setDevice(new DeviceType());
+        xmlDevice.getDevice().setCommonName("Common name - This device was not in the database.");
+        xmlStudy.getStudyDevices().getStudyDevice().add(xmlDevice);
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        assertEquals(3, s.getStudyDevices().size());
+        assertEquals(4, deviceDao.getAllDevices().size());
+    }
+
     public Studies loadStudiesFromXML() {
         gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
         JAXBContext jaxbContext = null;
@@ -85,10 +105,8 @@ public class StudyProcessorImplTest extends DaoTestCase {
         return studies;
     }
 
-/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.NONE;
     }
-*/
 }
