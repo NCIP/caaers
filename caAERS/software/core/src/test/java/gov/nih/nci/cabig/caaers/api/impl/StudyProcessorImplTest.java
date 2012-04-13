@@ -91,6 +91,23 @@ public class StudyProcessorImplTest extends DaoTestCase {
         assertEquals(4, deviceDao.getAllDevices().size());
     }
 
+    public void testUpdateStudyAddTreatmentAssignment() {
+        Study s = studyDao.getStudyDesignById(-2);
+
+        // DB Study has 0 TACs
+        assertEquals(0, s.getTreatmentAssignments().size());
+
+        // XML Study has 1 TAC
+        assertEquals(1, ss.getStudy().get(0).getTreatmentAssignments().getTreatmentAssignment().size());
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        // DB Study should have 1 TAC
+        s = studyDao.getStudyDesignById(-2);
+        assertEquals(1, s.getTreatmentAssignments().size());
+    }
+
     public Studies loadStudiesFromXML() {
         gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
         JAXBContext jaxbContext = null;
