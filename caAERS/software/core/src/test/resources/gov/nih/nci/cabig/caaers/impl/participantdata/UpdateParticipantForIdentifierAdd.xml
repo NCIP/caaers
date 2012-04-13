@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:participants xmlns:p="http://webservice.caaers.cabig.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://webservice.caaers.cabig.nci.nih.gov/participant ParticipantSchema.xsd ">
+<p:participants xmlns:p="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://webservice.caaers.cabig.nci.nih.gov/participant ParticipantSchema.xsd ">
   <p:participant>
     <firstName>Richard Updated</firstName>
     <lastName>Herd Updated</lastName>
