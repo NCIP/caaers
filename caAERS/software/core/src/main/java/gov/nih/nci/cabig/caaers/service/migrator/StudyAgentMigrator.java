@@ -25,12 +25,22 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 	public void migrate(Study source, Study destination, DomainObjectImportOutcome<Study> outcome) {
 
         for (StudyAgent studyAgent : source.getStudyAgents()) {
-        	
+
 			StudyAgent target = new StudyAgent();
 			Agent agent = null;
 
 			if (studyAgent.getAgent().getName() != null) {
 				agent = agentDao.getByName(studyAgent.getAgent().getName());
+
+                if (agent == null) {
+                    // ADD THE NEW AGENT TO THE DB
+                    agent = new Agent();
+                    agent.setName(studyAgent.getAgent().getName());
+                    agent.setNscNumber(studyAgent.getAgent().getNscNumber());
+                    agent.setDescription(studyAgent.getAgent().getDescription());
+                    agent.setDisplayName(studyAgent.getAgent().getDisplayName());
+                    agentDao.save(agent);
+                }
 				target.setAgent(agent);
 			}
 
@@ -73,8 +83,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 					indAssociation.setInvestigationalNewDrug(ind);
 					target.addStudyAgentINDAssociation(indAssociation);
 				} else {
-					outcome.ifNullObject(null,DomainObjectImportOutcome.Severity.ERROR,
-							"The investigational new drug for a DCP IND is not Valid ");
+					outcome.ifNullObject(null,DomainObjectImportOutcome.Severity.ERROR, "The investigational new drug for a DCP IND is not Valid ");
 				}
 			}
 			
@@ -89,10 +98,10 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 					indAssociation.setInvestigationalNewDrug(ind);
 					target.addStudyAgentINDAssociation(indAssociation);
 				} else {
-					outcome.ifNullObject(null,DomainObjectImportOutcome.Severity.ERROR,
-							"The investigational new drug for a CTEP IND is not Valid ");
+					outcome.ifNullObject(null,DomainObjectImportOutcome.Severity.ERROR, "The investigational new drug for a CTEP IND is not Valid ");
 				}
 			}
+
 			if (target.getIndType() == INDType.OTHER) {
 
 				for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
@@ -105,8 +114,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 						indAssociation.setInvestigationalNewDrug(ind);
 						target.addStudyAgentINDAssociation(indAssociation);
 					} else {
-						outcome.ifNullObject(null,DomainObjectImportOutcome.Severity.ERROR,
-								"The selected investigational new drug " + indNumber + " is not Valid ");
+						outcome.ifNullObject(null,DomainObjectImportOutcome.Severity.ERROR, "The selected investigational new drug " + indNumber + " is not Valid ");
 					}
 				}
 			}

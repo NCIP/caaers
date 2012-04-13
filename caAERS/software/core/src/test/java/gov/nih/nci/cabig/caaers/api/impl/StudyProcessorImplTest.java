@@ -6,8 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
-import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
-import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import org.dbunit.operation.DatabaseOperation;
 
 import javax.xml.bind.JAXBContext;
@@ -106,6 +105,53 @@ public class StudyProcessorImplTest extends DaoTestCase {
         // DB Study should have 1 TAC
         s = studyDao.getStudyDesignById(-2);
         assertEquals(1, s.getTreatmentAssignments().size());
+    }
+
+    public void testUpdateStudyAddExistingAgent() {
+        Study s = studyDao.getStudyDesignById(-2);
+
+        // DB Study has 0 Agents
+        assertEquals(0, s.getStudyAgents().size());
+
+        // XML Study has 1 Agent
+        assertEquals(1, ss.getStudy().get(0).getStudyAgents().getStudyAgent().size());
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        // DB Study should have 1 Agent
+        assertEquals(1, s.getStudyAgents().size());
+
+    }
+
+    public void testUpdateStudyAddNewAgent() {
+        Study s = studyDao.getStudyDesignById(-2);
+
+        // DB Study has 0 Agents
+        assertEquals(0, s.getStudyAgents().size());
+
+        // XML Study has 1 Agent
+        assertEquals(1, ss.getStudy().get(0).getStudyAgents().getStudyAgent().size());
+
+        // Add one more Agent (NEW) to the XML
+        StudyAgentType sat = new StudyAgentType();
+        sat.setAgent(new AgentType());
+        sat.getAgent().setNscNumber("999000");
+        sat.getAgent().setName("NEW AGENT");
+        sat.setIndType(IndType.OTHER);
+        sat.setPartOfLeadIND(false);
+        ss.getStudy().get(0).getStudyAgents().getStudyAgent().add(sat);
+
+        // XML Study has 2 Agent now
+        assertEquals(2, ss.getStudy().get(0).getStudyAgents().getStudyAgent().size());
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        // DB Study should have 2 Agents now
+        s = studyDao.getStudyDesignById(-2);
+        assertEquals(2, s.getStudyAgents().size());
+
     }
 
     public Studies loadStudiesFromXML() {
