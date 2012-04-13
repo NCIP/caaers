@@ -49,7 +49,7 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 			List<EntityErrorMessage> entityErrorMessages = agentService.createOrUpdateAgents(domainAgents);
 			agentConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
 		} catch (Throwable e) {
-			logger.debug(e.getMessage());
+			logger.warn(e);
 			SecurityExceptionFault fault = new SecurityExceptionFault();
 			String message = "The user doesn't have access to do create/update agent operations";
 			fault.setMessage(message);
