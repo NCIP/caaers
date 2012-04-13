@@ -30,6 +30,7 @@ import org.apache.commons.validator.GenericValidator;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -92,7 +93,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-
+        HttpSession httpSession = httpRequest.getSession();
 		final SecurityContext contextBeforeExec = SecurityContextHolder
 				.getContext();
 		Authentication authBeforeExec = contextBeforeExec.getAuthentication();
@@ -118,13 +119,11 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		} finally {
 			request.removeAttribute(FILTER_APPLIED);
 			SecurityContextHolder.setContext(contextBeforeExec);
-			SecurityContextHolder.getContext()
-					.setAuthentication(authBeforeExec);
-			httpRequest
-					.getSession()
-					.setAttribute(
-							HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY,
-							SecurityContextHolder.getContext());
+			SecurityContextHolder.getContext().setAuthentication(authBeforeExec);
+			if(httpSession != null) {
+                httpSession.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY,
+                        SecurityContextHolder.getContext());
+            }
 			OriginalAuthenticationHolder.setAuthentication(null);
 			CurrentEntityHolder.setEntity(null);
 		}
