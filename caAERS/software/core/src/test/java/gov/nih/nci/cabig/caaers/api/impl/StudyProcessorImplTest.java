@@ -168,8 +168,10 @@ public class StudyProcessorImplTest extends DaoTestCase {
         return studies;
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.NONE;
     }
+*/
 }
