@@ -38,7 +38,10 @@
     <solicited_events/>
     <study_diseases />
 
+    <workflow_configuration id="1000" workflow_definition_name="reportingperiod_coordinating_center" name="Evaluation Period Coordinating Center Workflow" default_assignee="system_admin" enabled="1" />
+   	<workflow_configuration id="2000" workflow_definition_name="expedited_domestic" name="Expedited Reporting Domestic Workflow" default_assignee="system_admin" enabled="1" />
     <workflow_configuration id="-1"/>
+
     <study_site_wf_cfgs study_organization_id="-3" workflow_cfg_id="-1"/>
 
     <spa_disease_histories/>

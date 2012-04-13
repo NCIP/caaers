@@ -2,10 +2,13 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import org.dbunit.operation.DatabaseOperation;
 
@@ -14,6 +17,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ion C. Olaru
@@ -24,6 +28,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
     StudyProcessorImpl studyProcessor;
     StudyDao studyDao;
     DeviceDao deviceDao;
+    OrganizationDao organizationDao;
 
     private File xmlFile;
     private Studies ss;
@@ -34,6 +39,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         studyProcessor = (StudyProcessorImpl)applicationContext.getBean("studyProcessorImpl");
         studyDao = (StudyDao)applicationContext.getBean("studyDao");
         deviceDao = (DeviceDao)applicationContext.getBean("deviceDao");
+        organizationDao = (OrganizationDao)applicationContext.getBean("organizationDao");
         xmlFile = new File(StudyProcessorImplTest.class.getResource("/gov/nih/nci/cabig/caaers/api/impl/testdata/StudyProcessorImpl-Study.xml").getFile());
         ss = loadStudiesFromXML();
     }
@@ -70,7 +76,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         assertEquals(3, deviceDao.getAllDevices().size());
     }
 
-    public void testUpdateStudyAddNewDevice() {
+    public void testUpdateStudyCreateDevice() {
         Study s = studyDao.getStudyDesignById(-2);
         assertEquals(2, s.getStudyDevices().size());
         assertEquals(3, deviceDao.getAllDevices().size());
@@ -90,7 +96,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         assertEquals(4, deviceDao.getAllDevices().size());
     }
 
-    public void testUpdateStudyAddTreatmentAssignment() {
+    public void testUpdateStudyCreateTreatmentAssignment() {
         Study s = studyDao.getStudyDesignById(-2);
 
         // DB Study has 0 TACs
@@ -124,7 +130,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
 
     }
 
-    public void testUpdateStudyAddNewAgent() {
+    public void testUpdateStudyCreateAgent() {
         Study s = studyDao.getStudyDesignById(-2);
 
         // DB Study has 0 Agents
@@ -154,6 +160,64 @@ public class StudyProcessorImplTest extends DaoTestCase {
 
     }
 
+    public void testUpdateStudyAddExistingOrganization() {
+        Study s = studyDao.getStudyDesignById(-2);
+
+        // DB Study has 1 site
+        assertEquals(1, s.getStudySites().size());
+
+        // XML Study has 1 site
+        assertEquals(1, ss.getStudy().get(0).getStudyOrganizations().getStudySite().size());
+
+        // Add Coordinating Center as StudySite
+        StudySiteType sst = new StudySiteType();
+        sst.setOrganization(new OrganizationType());
+        sst.getOrganization().setName("CTEP");
+        sst.getOrganization().setNciInstituteCode("CTEP");
+        ss.getStudy().get(0).getStudyOrganizations().getStudySite().add(sst);
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        // DB Study should have 2 sites
+        s = studyDao.getStudyDesignById(-2);
+        assertEquals(2, s.getStudySites().size());
+    }
+
+    public void testUpdateStudyCreateOrganization() {
+        Study s = studyDao.getStudyDesignById(-2);
+        List l = organizationDao.getAll();
+
+        // DB has 4 organizations
+        assertEquals(4, l.size());
+
+        // DB Study has 1 site
+        assertEquals(1, s.getStudySites().size());
+
+        // XML Study has 1 site
+        assertEquals(1, ss.getStudy().get(0).getStudyOrganizations().getStudySite().size());
+
+        // Add a NEW StudySite
+        StudySiteType sst = new StudySiteType();
+        sst.setOrganization(new OrganizationType());
+        sst.getOrganization().setName("NEW ORGANIZATION");
+        sst.getOrganization().setNciInstituteCode("NEW-001");
+        sst.getOrganization().setStatus(ActiveInactiveStatusType.AC);
+        ss.getStudy().get(0).getStudyOrganizations().getStudySite().add(sst);
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        // DB should have 5 organizations
+        l = organizationDao.getAll();
+        assertEquals(5, l.size());
+
+        // DB Study should have 2 sites
+        s = studyDao.getStudyDesignById(-2);
+        assertEquals(2, s.getStudySites().size());
+    }
+
+
     public Studies loadStudiesFromXML() {
         gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = null;
         JAXBContext jaxbContext = null;
@@ -168,10 +232,8 @@ public class StudyProcessorImplTest extends DaoTestCase {
         return studies;
     }
 
-/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.NONE;
     }
-*/
 }

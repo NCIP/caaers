@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
@@ -55,6 +56,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private DomainObjectValidator domainObjectValidator;
 	private MessageSource messageSource;
 	private EventFactory eventFactory;
+    private OrganizationManagementServiceImpl oms;
+    private OrganizationConverter organizationConverter;
 
     public StudyProcessorImpl() {
     }
@@ -138,6 +141,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
     }
 
     private String checkAuthorizedOrganizations(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto) {
+
 		List<OrganizationType> orgs = new ArrayList<OrganizationType>();
 		orgs.add(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization());		
 		orgs.add(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization());		
@@ -150,7 +154,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		for (OrganizationType org:orgs) {
             List foundOrgs = searchForOrganization(org);
             if (foundOrgs.size() < 1) {
-                return messageSource.getMessage("WS_AEMS_028", new String[]{org.getNciInstituteCode() + " : " + org.getName()}, "", Locale.getDefault());
+                // Persist the organization
+                Organization domainOrganization = new LocalOrganization();
+                organizationConverter.convertOrganizationDtoToDomainOrganization(org, domainOrganization);
+                oms.createOrUpdateOrganization(domainOrganization);
+//                return messageSource.getMessage("WS_AEMS_028", new String[]{org.getNciInstituteCode() + " : " + org.getName()}, "", Locale.getDefault());
             }
         }
 		return "ALL_ORGS_AUTH";
@@ -373,4 +381,20 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	public void setEventFactory(EventFactory eventFactory) {
 		this.eventFactory = eventFactory;
 	}
+
+    public OrganizationManagementServiceImpl getOrganizationManagementServiceImpl() {
+        return oms;
+    }
+
+    public void setOrganizationManagementServiceImpl(OrganizationManagementServiceImpl oms) {
+        this.oms = oms;
+    }
+
+    public OrganizationConverter getOrganizationConverter() {
+        return organizationConverter;
+    }
+
+    public void setOrganizationConverter(OrganizationConverter organizationConverter) {
+        this.organizationConverter = organizationConverter;
+    }
 }
