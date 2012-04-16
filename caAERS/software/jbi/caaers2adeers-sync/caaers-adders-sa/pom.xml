@@ -57,10 +57,6 @@
   		<artifactId>caaers-wsbc-su</artifactId>
   		<version>1.0-SNAPSHOT</version>
   	</dependency>
-  	<dependency>
-  		<groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
-  		<artifactId>core-test-su</artifactId>
-  		<version>1.0-SNAPSHOT</version>
-  	</dependency>
+
   </dependencies>
 </project>
