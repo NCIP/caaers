@@ -8,7 +8,7 @@
         <soapenv:Envelope>
             <soapenv:Header/>
             <soapenv:Body>
-                <xsl:apply-templates select="payload/request/operation"/>
+                <xsl:apply-templates select="/payload/request/operation"/>
             </soapenv:Body>
         </soapenv:Envelope>
     </xsl:template>

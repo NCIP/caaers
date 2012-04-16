@@ -1,0 +1,34 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <com:createOrUpdateAgentResponse>
+            <!--Optional:-->
+                <com:ServiceResponse responsecode="0">
+                    <status>success</status>
+                    <com:entityProcessingOutcomes>
+                        <!--1 or more repetitions:-->
+                        <com:entityProcessingOutcome>
+                            <klassName>x</klassName>
+                            <businessIdentifier>1</businessIdentifier>
+                            <!--Zero or more repetitions:-->
+                            <message>hello</message>
+                            <dataBaseId>1</dataBaseId>
+                            <correlationId>1</correlationId>
+                            <correlationDescription>test</correlationDescription>
+                        </com:entityProcessingOutcome>
+                        <com:entityProcessingOutcome>
+                            <klassName>y</klassName>
+                            <businessIdentifier>2</businessIdentifier>
+                            <!--Zero or more repetitions:-->
+                            <message>thanks</message>
+                            <dataBaseId>2</dataBaseId>
+                            <correlationId>2</correlationId>
+                            <correlationDescription>test</correlationDescription>
+                        </com:entityProcessingOutcome>
+                    </com:entityProcessingOutcomes>
+
+                </com:ServiceResponse>
+        </com:createOrUpdateAgentResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

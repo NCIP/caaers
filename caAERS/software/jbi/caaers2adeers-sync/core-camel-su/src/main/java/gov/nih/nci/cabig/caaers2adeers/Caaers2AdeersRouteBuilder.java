@@ -19,7 +19,7 @@ import org.apache.camel.builder.RouteBuilder;
  */
 public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     
-    public static final String C2A_SYNC_HEADER = "C2A_SYNC_HEADER";
+
 	
 	
 	//the below items should come from properties file, via spring.
@@ -51,13 +51,15 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     public void configure() {
 
         //webservice request
-        //from("").setHeader(C2A_SYNC_HEADER, xpath("/payload/request/operation/@mode = 'sync'")).to("direct:adEERSRequestSink");
+        //from("")
+        // .setHeader(C2A_SYNC_HEADER, xpath("/payload/request/operation/@mode = 'sync'"))
+        // .to("direct:adEERSRequestSink");
 
     	//just for testing.. 
     	from("timer://tutorial?fixedRate=true&delay=30000&period=300000")
     		.setBody(constant(getMessage()))
     		.to("direct:adEERSRequestSink");
-    	
+
     	new ToAdeersRouteBuilder(this).configure();
     	new ToCaaersRouteBuilder(this).configure();
     	
@@ -79,7 +81,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         		"<system>adeers</system>" +
         		"<request>" +
             		"<entity>agent</entity>" +
-            		"<operation name=\"getAgentsLOV\">" +
+            		"<operation mode=\"sync\" name=\"getAgentsLOV\">" +
             		"<criteria>" +
             		"<criterion  name=\"createdDate\">2001-10-26T21:32:52</criterion>" +
             		"<criterion name=\"lastUpdatedDate\">2001-10-26T21:32:52</criterion>" +
@@ -98,7 +100,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
  *  <system>adeers</system>
  *   <request>
  *      <entity>agent</entity>
- *      <operation name="getAgentsLOV" mode="async">
+ *      <operation name="getAgentsLOV" mode="sync">
  * 	        <criteria>
  * 		        <criterion  name="createdDate">12-02-2002</criterion>
  * 		        <criterion name="lastUpdatedDate">12-02-2002</criterion>

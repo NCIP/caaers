@@ -7,7 +7,30 @@
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
     	<package>gov.nih.nci.cabig.caaers2adeers</package> 
-       
     </camelContext>
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>classpath:caxchange.properties</value>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:caxchange.properties</value>
+        </property>
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="ignoreResourceNotFound"><value>true</value></property>
+        <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
+    <bean id="headerProcessor" class="gov.nih.nci.cabig.caaers2adeers.HeaderPreProcessor">
+        <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
+        <property name="caaersWSPassword" value="s[CAAERS_WS_PASSWORD]" />
+        <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
+        <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
+    </bean>
+    <bean id="customXSLTResolver" class="org.apache.camel.builder.xml.XsltUriResolver" />
 
 </beans>

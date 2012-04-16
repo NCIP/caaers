@@ -1,0 +1,8 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <S:Fault>
+            <faultcode>S:Server</faultcode>
+            <faultstring>Missing or invalid WS-Security Header</faultstring>
+        </S:Fault>
+    </S:Body>
+</S:Envelope>

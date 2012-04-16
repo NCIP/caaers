@@ -22,6 +22,7 @@ public class ToAdeersRouteBuilder {
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")
+            .processRef("headerProcessor")
     		.to("log:to-adeers")
     		.choice()
     			.when().xpath(xpathPredicate("agent") ).to("direct:adeers-agent-lov")

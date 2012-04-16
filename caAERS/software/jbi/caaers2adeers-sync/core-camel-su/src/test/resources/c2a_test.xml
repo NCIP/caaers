@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sm="http://servicemix.apache.org/config/1.0"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+         http://servicemix.apache.org/config/1.0 http://servicemix.apache.org/schema/servicemix-core-3.2.xsd">
+
+    <sm:container generateRootDir="true">
+
+        <sm:deployments>
+            <sm:deployments>
+                <sm:installSharedLibrary groupId="gov.nih.nci.cabig.caaers2adeers" artifactId="caaers-adders-sa"/>
+                <sm:installComponent groupId="gov.nih.nci.cabig.caaers2adeers" artifactId="servicemix-camel"/>
+                <sm:deployServiceAssembly groupId="gov.nih.nci.cabig.caaers2adeers" artifactId="caaers-adders-sa"/>
+            </sm:deployments>
+
+        </sm:deployments>
+
+    </sm:container>
+
+</beans>

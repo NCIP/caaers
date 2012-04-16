@@ -25,7 +25,7 @@
     -->
 	<cxfbc:provider interfaceName="ctep:AELOVService"  service="ctep:CESAELOVService"  endpoint="CESAELOVPort"
 			wsdl="classpath:CESAELOVService.wsdl" 
-			locationURI="http://127.0.0.1:8088/mockCESAELOVPortBinding" useJBIWrapper="false" useSOAPEnvelope="true" schemaValidationEnabled="true">
+			locationURI="s[LOV_WS_BINDING_URL]" useJBIWrapper="false" useSOAPEnvelope="true" schemaValidationEnabled="true">
 		<!--<cxfbc:inInterceptors>-->
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
 		<!--</cxfbc:inInterceptors>-->
@@ -39,5 +39,14 @@
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
 		<!--</cxfbc:outFaultInterceptors>-->
 	</cxfbc:provider>
-
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:caxchange.properties</value>
+        </property>
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="ignoreResourceNotFound"><value>true</value></property>
+        <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
 </beans>

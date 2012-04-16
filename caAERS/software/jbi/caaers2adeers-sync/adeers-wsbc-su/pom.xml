@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.apache.servicemix</groupId>
       <artifactId>servicemix-cxf-bc</artifactId>
-      <version>2011.02</version>
+      <version>2010.01</version>
     </dependency>
   </dependencies>
 </project>

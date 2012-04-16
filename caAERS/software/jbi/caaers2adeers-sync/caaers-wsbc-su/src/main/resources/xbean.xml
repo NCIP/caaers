@@ -28,7 +28,7 @@
     <!-- BEGIN SNIPPET: cxfbc-provider -->
     <cxfbc:provider interfaceName="caaers:AgentManagementServiceInterface"  service="caaers:AgentManagementWebService"  endpoint="AgentManagementWebServiceImplPort"
 			wsdl="classpath:AgentService.wsdl" 
-			locationURI="https://localhost:8443/caaers/services/AgentService" useJBIWrapper="false">
+			locationURI="s[AGENT_WS_BINDING_URL]" useJBIWrapper="false">
 		<cxfbc:inInterceptors>
 		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 		</cxfbc:inInterceptors>
@@ -44,4 +44,14 @@
 	</cxfbc:provider>
     <!-- END SNIPPET: cxfbc-provider -->
 
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:caxchange.properties</value>
+        </property>
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="ignoreResourceNotFound"><value>true</value></property>
+        <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
 </beans>
