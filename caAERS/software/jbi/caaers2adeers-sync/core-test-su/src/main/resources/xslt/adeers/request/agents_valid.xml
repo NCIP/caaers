@@ -2,7 +2,7 @@
     <system>adeers</system>
     <request>
         <entity>agent</entity>
-        <operation name="getAgentsLOV">
+        <operation name="getAgentsLOV" mode="sync">
             <criteria>
                 <criterion name="createdDate">2001-10-26T21:32:52</criterion>
                 <criterion name="lastUpdatedDate">2001-10-26T21:32:52</criterion>

@@ -18,6 +18,8 @@ import org.apache.camel.builder.RouteBuilder;
  *   [caAERSResponseSink] => [db-persistense]
  */
 public class Caaers2AdeersRouteBuilder extends RouteBuilder {
+    
+    public static final String C2A_SYNC_HEADER = "C2A_SYNC_HEADER";
 	
 	
 	//the below items should come from properties file, via spring.
@@ -47,6 +49,9 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	}
 	
     public void configure() {
+
+        //webservice request
+        //from("").setHeader(C2A_SYNC_HEADER, xpath("/payload/request/operation/@mode = 'sync'")).to("direct:adEERSRequestSink");
 
     	//just for testing.. 
     	from("timer://tutorial?fixedRate=true&delay=30000&period=300000")
