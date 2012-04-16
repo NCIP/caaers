@@ -57,11 +57,7 @@ public class PreExistingConditionManagementWebServiceImpl implements PreExisting
 			List<EntityErrorMessage> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(domainConditions);
 			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
 		} catch (Throwable e) {
-			logger.debug(e.getMessage());
-			SecurityExceptionFault fault = new SecurityExceptionFault();
-			String message = "The user doesn't have access to create new Pre-Existing Conditions";
-			fault.setMessage(message);
-			throw new SecurityExceptionFaultMessage(e.getMessage(), fault);
+			logger.warn(e);
 		}
 		
 		return caaersResponse;

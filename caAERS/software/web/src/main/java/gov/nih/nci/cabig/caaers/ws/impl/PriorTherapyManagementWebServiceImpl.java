@@ -57,11 +57,7 @@ public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagem
 			List<EntityErrorMessage> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(domainTherapies);
 			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
 		} catch (Throwable e) {
-			logger.debug(e.getMessage());
-			SecurityExceptionFault fault = new SecurityExceptionFault();
-			String message = "The user doesn't have access to create new therapies";
-			fault.setMessage(message);
-			throw new SecurityExceptionFaultMessage(e.getMessage(), fault);
+			logger.warn(e);
 		}
 		
 		return caaersResponse;

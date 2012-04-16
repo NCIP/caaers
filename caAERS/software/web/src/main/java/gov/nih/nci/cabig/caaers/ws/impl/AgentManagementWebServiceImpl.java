@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Agents;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
-import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.service.migrator.AgentConverter;
 import gov.nih.nci.cabig.caaers.ws.AgentManagementWebService;
@@ -42,18 +41,13 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 		serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		try {
 			for(AgentType agentDto: xmlAgents.getAgent()){
-				Agent agent = new Agent();
-				agentConverter.convertAgentDtoToDomainAgent(agentDto, agent);
+				Agent agent = AgentConverter.convert(agentDto);
 				domainAgents.add(agent);
 			}
 			List<EntityErrorMessage> entityErrorMessages = agentService.createOrUpdateAgents(domainAgents);
 			agentConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
 		} catch (Throwable e) {
 			logger.warn(e);
-			SecurityExceptionFault fault = new SecurityExceptionFault();
-			String message = "The user doesn't have access to do create/update agent operations";
-			fault.setMessage(message);
-			throw new SecurityExceptionFaultMessage(e.getMessage(), fault);
 		}
 		
 		return caaersResponse;

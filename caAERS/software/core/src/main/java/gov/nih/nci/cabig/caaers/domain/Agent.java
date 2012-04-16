@@ -30,7 +30,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_agents_id") })
-public class Agent extends AbstractMutableRetireableDomainObject implements Serializable {
+public class Agent extends AbstractMutableRetireableDomainObject implements Serializable, Comparable<Agent>{
 
     /** The name. */
     private String name;
@@ -176,4 +176,23 @@ public class Agent extends AbstractMutableRetireableDomainObject implements Seri
 		return null;
 	}
 
+	public int compareTo(Agent o) {
+		
+		if(this.getName().compareTo(o.getName()) !=0){
+			return this.getName().compareTo(o.getName());
+		}
+		
+		if(this.getDescription().compareTo(o.getDescription()) !=0){
+			return this.getDescription().compareTo(o.getDescription());
+		}
+		
+		if(this.getNscNumber().compareTo(o.getNscNumber()) !=0){
+			return this.getNscNumber().compareTo(o.getNscNumber());
+		}
+		
+		if(this.getRetiredIndicator().compareTo(o.getRetiredIndicator()) != 0){
+			return this.getRetiredIndicator().compareTo(o.getRetiredIndicator());
+		}
+		return 0;
+	}
 }

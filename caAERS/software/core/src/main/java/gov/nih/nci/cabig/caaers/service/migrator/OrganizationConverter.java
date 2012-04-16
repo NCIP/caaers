@@ -11,7 +11,9 @@ public class OrganizationConverter extends DomainObjectConverter{
 		organization.setName(organizationDto.getName());
 		organization.setNciInstituteCode(organizationDto.getNciInstituteCode());
 		organization.setDescriptionText(organizationDto.getDescriptionText());
-		organization.setRetiredIndicator(organizationDto.getStatus().name().equals("AC") ? false:true);
+		if(organizationDto.getStatus() != null){
+			organization.setRetiredIndicator(organizationDto.getStatus().name().equals("AC") ? false:true);
+		}
 		
 		if(organizationDto.getMergedOrganization() != null){
 			Organization mergedOrganization = new LocalOrganization();

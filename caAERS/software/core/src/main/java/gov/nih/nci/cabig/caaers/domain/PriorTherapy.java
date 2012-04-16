@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "prior_therapies")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_prior_therapies_id") })
-public class PriorTherapy extends AbstractImmutableDomainObject {
+public class PriorTherapy extends AbstractMutableDomainObject {
 	
 	//id of surgery prior therapy
 	/** The SURGERY. */

@@ -49,13 +49,14 @@ public class AgentServiceImpl implements AgentService{
 	public EntityErrorMessage createOrUpdateAgent(Agent agent) {
 		EntityErrorMessage errorMessage = new EntityErrorMessage();
 		errorMessage.setBusinessId(agent.getNscNumber());
+		errorMessage.setKlassName(Agent.class.getName());
 		try {
 			Agent dbAgent = agentDao.getByNscNumber(agent.getNscNumber());
 			// check if db agent with same nsc number exists
 			if(dbAgent !=null) {
 				logger.info("found db Agent with NSC Number:" + agent.getNscNumber());
-				// compare with db agent to see if any property changed
-				if(!agent.equals(dbAgent)){
+				// compare with db agent to see if any property changed. Update only it necessary
+				if(agent.compareTo(dbAgent) != 0){
 					logger.info("updating db Agent with NSC Number:" + agent.getNscNumber() + " with remote Agent");
 					agentMigrator.migrate(agent, dbAgent, null);
 					agentRepository.saveAgent(dbAgent);

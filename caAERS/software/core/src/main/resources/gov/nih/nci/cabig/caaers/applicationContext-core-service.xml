@@ -277,7 +277,7 @@ default-lazy-init="true">
 	
 	<bean id="agentConverter" class="gov.nih.nci.cabig.caaers.service.migrator.AgentConverter"/>
 	
-	<bean id="domainObjecttConverter" class="gov.nih.nci.cabig.caaers.service.migrator.DomainObjectConverter"/>
+	<bean id="domainObjectConverter" class="gov.nih.nci.cabig.caaers.service.migrator.DomainObjectConverter"/>
 	
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
 	

@@ -34,6 +34,7 @@ public class PreExistingConditionLOVServiceImpl implements PreExistingConditionL
 		for(PreExistingCondition importedPreExistingCondition : importedPreExistingConditions){
 			EntityErrorMessage errorMessage = new EntityErrorMessage();
 			errorMessage.setBusinessId(importedPreExistingCondition.getText());
+			errorMessage.setKlassName(PreExistingCondition.class.getName());
 			errorMessages.add(errorMessage);
 			// do a case sensitive comparison of condition text
 			if(!preExistingConditionTextSet.contains(importedPreExistingCondition.getText())){

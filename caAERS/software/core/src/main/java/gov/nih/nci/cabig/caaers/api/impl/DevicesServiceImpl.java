@@ -77,10 +77,6 @@ public class DevicesServiceImpl implements ApplicationContextAware {
         return null;
     }
 
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }

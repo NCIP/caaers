@@ -33,6 +33,7 @@ public class PriorTherapyLOVServiceImpl implements PriorTherapyLOVService{
 		// this is case sensitive comparison so it is possible to have 2 therapies with texts of same character sequence but in different cases
 		for(PriorTherapy importedPriorTherapy : importedPriorTherapies){
 			EntityErrorMessage errorMessage = new EntityErrorMessage();
+			errorMessage.setKlassName(PriorTherapy.class.getName());
 			errorMessage.setBusinessId(importedPriorTherapy.getText());
 			errorMessages.add(errorMessage);
 			// do a case sensitive comparison of therapy text

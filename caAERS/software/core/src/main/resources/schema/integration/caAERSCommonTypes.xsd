@@ -42,12 +42,12 @@
     <xs:complexType name="AgentType">
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
-                <xs:choice>
+               <xs:sequence>
                     <xs:element name="name" type="CustomStringType"/>
                     <xs:element name="descriptionText" type="CustomStringType" minOccurs="0"/>
                     <xs:element name="nscNumber" type="CustomStringType"/>
                     <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
-                </xs:choice>
+                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -64,9 +64,9 @@
     <xs:complexType name="PreExistingConditionType">
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
-                <xs:choice>
+                <xs:sequence>
                     <xs:element name="text" type="CustomStringType"/>
-                </xs:choice>
+                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -83,9 +83,9 @@
     <xs:complexType name="PriorTherapyType">
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
-                <xs:choice>
+                <xs:sequence>
                     <xs:element name="text" type="CustomStringType"/>
-                </xs:choice>
+                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -528,7 +528,7 @@
 	<xs:element name="entityProcessingOutcomes">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="entityProcessingOutcome" maxOccurs="unbounded"> </xs:element>
+				<xs:element ref="entityProcessingOutcome" minOccurs="0" maxOccurs="unbounded"> </xs:element>
 			</xs:sequence>
 		
 		</xs:complexType>
@@ -537,12 +537,12 @@
 	<xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"></xs:element>
     <xs:complexType name="EntityProcessingOutcomeType">
         <xs:sequence>
-        	<xs:element name="klassName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        	<xs:element name="klassName" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="businessIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="dataBaseId" type="xs:string"/>
-            <xs:element name="correlationId" type="xs:string"/>
-            <xs:element name="correlationDescription" type="xs:string"/>
+            <xs:element name="dataBaseId" type="xs:string" minOccurs="0"/>
+            <xs:element name="correlationId" type="xs:string" minOccurs="0"/>
+            <xs:element name="correlationDescription" type="xs:string" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -555,10 +555,10 @@
 	<xs:element name="ServiceResponse" type="ServiceResponse" />
     <xs:complexType name="ServiceResponse">
     	<xs:sequence>
-    		<xs:element name="status" type="Status"></xs:element>
+    		<xs:element name="status" type="Status"  minOccurs="0"></xs:element>
     		<xs:element name="wsError" type="WsError" minOccurs="0" maxOccurs="unbounded"></xs:element>
     		<xs:element ref="entityProcessingOutcomes" minOccurs="0"></xs:element>
-            <xs:element name="message" type="xs:string"></xs:element>
+            <xs:element name="message" type="xs:string"  minOccurs="0"></xs:element>
 
     	</xs:sequence>
         <!-- migrated from study xsd -->

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "pre_existing_conditions")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_pre_existing_conditions_id") })
-public class PreExistingCondition extends AbstractImmutableDomainObject {
+public class PreExistingCondition extends AbstractMutableDomainObject {
     
     /** The text. */
     private String text;

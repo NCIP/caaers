@@ -43,6 +43,7 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 	public EntityErrorMessage createOrUpdateOrganization(Organization organization) {
 		EntityErrorMessage errorMessage = new EntityErrorMessage();
 		errorMessage.setBusinessId(organization.getNciInstituteCode());
+		errorMessage.setKlassName(Organization.class.getName());
 		try {
 			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
 			Organization mergedDbOrganization = null;
