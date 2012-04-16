@@ -26,18 +26,18 @@
 	<cxfbc:provider interfaceName="ctep:AELOVService"  service="ctep:CESAELOVService"  endpoint="CESAELOVPort"
 			wsdl="classpath:CESAELOVService.wsdl" 
 			locationURI="http://127.0.0.1:8088/mockCESAELOVPortBinding" useJBIWrapper="false" useSOAPEnvelope="true" schemaValidationEnabled="true">
-		<cxfbc:inInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-		</cxfbc:inInterceptors>
-		<cxfbc:outInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-		</cxfbc:outInterceptors>
-		<cxfbc:inFaultInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-		</cxfbc:inFaultInterceptors>
-		<cxfbc:outFaultInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-		</cxfbc:outFaultInterceptors>
+		<!--<cxfbc:inInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+		<!--</cxfbc:inInterceptors>-->
+		<!--<cxfbc:outInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+		<!--</cxfbc:outInterceptors>-->
+		<!--<cxfbc:inFaultInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+		<!--</cxfbc:inFaultInterceptors>-->
+		<!--<cxfbc:outFaultInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+		<!--</cxfbc:outFaultInterceptors>-->
 	</cxfbc:provider>
 
 </beans>

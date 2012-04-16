@@ -1,23 +1,16 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:output method="xml"/>
-    <xsl:template match="/">
-       <payload>
-        <system>caaers</system>
-       	<response>
-       		<entity>agents</entity>
-       		<operation type="getAgentsLOV">
-       			<xsl:apply-templates />
-       		</operation>
-       	</response>
-       </payload> 
-        
-       
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+                xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <xsl:include href="common.xsl" />
+    <xsl:template match="soapenv:Body">
+        <entity>agent</entity>
+        <operation name="createOrUpdateAgent">
+            <xsl:apply-templates  />
+        </operation>
     </xsl:template>
 
-	<xsl:template match="Agents">
-		<data>
-			<xsl:copy-of select="."/>
-		</data>
-	</xsl:template>
-   
+    <xsl:template match="com:createOrUpdateAgentResponse">
+        <xsl:apply-templates />
+    </xsl:template>
+
 </xsl:stylesheet>

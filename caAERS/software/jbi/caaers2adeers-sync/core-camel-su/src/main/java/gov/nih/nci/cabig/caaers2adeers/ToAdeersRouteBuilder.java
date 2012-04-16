@@ -14,21 +14,25 @@ public class ToAdeersRouteBuilder {
 		this.routeBuilder = routeBuilder;
 	}
 	
+    private String xpathPredicate(String entity){
+        return new StringBuilder("/payload/request/entity/text() = '")
+                .append(entity).append("'").toString();
+    }
 	public void configure(){
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")
     		.to("log:to-adeers")
     		.choice()
-    			.when().xpath("payload/request/entity/text() = 'agent'" ).to("direct:adeers-agent-lov")
-    			.when().xpath("payload/request/entity/text() = 'asael'").to("direct:adeers-asael-lov")
+    			.when().xpath(xpathPredicate("agent") ).to("direct:adeers-agent-lov")
+    			.when().xpath(xpathPredicate("asael")).to("direct:adeers-asael-lov")
     			.otherwise().to("log:unknown-adeers-request");
 		
 		//LOV - Agents
     	configureLovWSCallRoute("direct:adeers-agent-lov", "agents_lov.xsl",  "getAgentsLOV");
 
     	//LOV - ASAEL
-    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
+//    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
 		
     	
   

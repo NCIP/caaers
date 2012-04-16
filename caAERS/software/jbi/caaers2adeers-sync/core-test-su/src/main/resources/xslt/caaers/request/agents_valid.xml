@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <system>adeers</system>
+    <response>
+        <entity>agent</entity>
+        <operation name="getAgentsLOV">
+            <data>
+                <Agents xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                    <agent createdDate="2001-10-26T21:32:52" updatedDate="2012-04-13T13:16:07">
+                        <agentName>2-Fluoroadenosine</agentName>
+                        <agentStatus>Active</agentStatus>
+                        <agentType>Chemical</agentType>
+                        <nscNumber>30605</nscNumber>
+                    </agent>
+                    <agent createdDate="2001-10-26T21:32:52" updatedDate="2012-04-13T13:16:07">
+                        <agentName>5-Fluoro-2'-deoxycytidine (FdCyd)</agentName>
+                        <agentStatus>Inactive</agentStatus>
+                        <agentType>Chemical</agentType>
+                        <nscNumber>48006</nscNumber>
+                    </agent>
+                    <agent createdDate="2001-10-26T21:32:52" updatedDate="2012-04-13T13:16:07">
+                        <agentName>5-Fluorouracil (5-FU)</agentName>
+                        <agentStatus>Inactive</agentStatus>
+                        <agentType>Chemical</agentType>
+                        <nscNumber>19893</nscNumber>
+                    </agent>
+                    <agent createdDate="2001-10-26T21:32:52" updatedDate="2012-04-13T13:16:07">
+                        <agentName>Beta-Fluoro-ddA (Lodenosine)</agentName>
+                        <agentStatus>Active</agentStatus>
+                        <agentType>Chemical</agentType>
+                        <nscNumber>613792</nscNumber>
+                    </agent>
+                    <agent createdDate="2012-04-13T13:16:07" updatedDate="2012-04-13T13:16:07">
+                        <agentName>Beta-random12413582</agentName>
+                        <agentStatus>Active</agentStatus>
+                        <agentType>Chemical</agentType>
+                        <nscNumber>12413582</nscNumber>
+                    </agent>
+                </Agents>
+            </data>
+        </operation>
+    </response>
+</payload>

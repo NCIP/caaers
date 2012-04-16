@@ -36,9 +36,13 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	 */
 	public void configureWSCallRoute(String fromSink, String requestXSL, String serviceURI,  String responseXSL, String toSink){
 		from(fromSink)
+        .to("log:before_request_xsl" + fromSink)
 		.to("xslt:" + requestXSL)
-		.to(ExchangePattern.InOut, serviceURI)  
+         .to("log:after_request_xsl" + fromSink)
+		.to(ExchangePattern.InOut, serviceURI)
+        .to("log:before_response_xsl"+ toSink)
 		.to("xslt:" + responseXSL)
+         .to("log:after_response_xsl"+ toSink)
 		.to(toSink);
 	}
 	
@@ -53,10 +57,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	new ToCaaersRouteBuilder(this).configure();
     	
     	//need to process AdEERS results, may be the SyncComponent...  
-    	from("direct:adEERSRequestSink").to("direct:caAERSRequestSink");
+    	from("direct:adEERSResponseSink")
+                .to("log:synch-comp")
+                .to("direct:caAERSRequestSink");
     	
     	//need to process caAERS results
-		from("direct:caAERSResponseSink") .to("log:direct:caAERSResponseSink");
+		from("direct:caAERSResponseSink") .to("log:direct-caAERSResponseSink");
     	
 		//need to elaborate error handling. 
 		onException(Exception.class).to("log:email-me");
@@ -70,11 +76,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
             		"<entity>agent</entity>" +
             		"<operation name=\"getAgentsLOV\">" +
             		"<criteria>" +
-            		"<criterion  name=\"createdDate\">12-02-2002</criterion>" +
-            		"<criterion name=\"lastUpdatedDate\">12-02-2002</criterion>" +
+            		"<criterion  name=\"createdDate\">2001-10-26T21:32:52</criterion>" +
+            		"<criterion name=\"lastUpdatedDate\">2001-10-26T21:32:52</criterion>" +
             		"</criteria>" +
             		"</operation>" +
-            		"</request></payload>";
+            	"</request>" +
+                "</payload>";
         }
 }
 
@@ -83,31 +90,31 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
  * Request
  * ========
  * <payload>
- * <system>adeers</system>
- * <request>
- * <entity>agent</entity>
- * <operation method="getAgentsLOV">
- * 	<criteria>
- * 		<criterion  name="createdDate">12-02-2002</criterion>
- * 		<criterion name="lastUpdatedDate">12-02-2002</criterion>
- * 	</criteria>
- * </operation>
- * </request>
+ *  <system>adeers</system>
+ *   <request>
+ *      <entity>agent</entity>
+ *      <operation name="getAgentsLOV" mode="async">
+ * 	        <criteria>
+ * 		        <criterion  name="createdDate">12-02-2002</criterion>
+ * 		        <criterion name="lastUpdatedDate">12-02-2002</criterion>
+ * 	        </criteria>
+ *      </operation>
+ *    </request>
  * </payload>
  * 
  * Response
  * ========
  * <payload>
- * <system>adeers</system>
- * <response>
- *  <entity>agent</entity>
- *  <operation type="getAgentsLOV">
- *  <errors>
- *  	<error></error>
- *  <errors>
- *  <data>
- *  </data>
- *  </operation>
- * </response>
+ *  <system>adeers</system>
+ *  <response>
+ *      <entity>agent</entity>
+ *      <operation name="getAgentsLOV">
+ *          <errors>
+ *  	        <error></error>
+ *          <errors>
+ *          <data>
+ *          </data>
+ *      </operation>
+ *  </response>
  * </payload>
  */
