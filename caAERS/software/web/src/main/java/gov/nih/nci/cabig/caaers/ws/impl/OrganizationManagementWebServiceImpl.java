@@ -8,7 +8,6 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault;
 import gov.nih.nci.cabig.caaers.integration.schema.organization.Organizations;
 import gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter;
 import gov.nih.nci.cabig.caaers.ws.OrganizationManagementWebService;
@@ -40,10 +39,10 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 			Organizations xmlOrganizations) throws SecurityExceptionFaultMessage {
 		
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		
-		List<Organization> domainOrganizations = new ArrayList<Organization>();
 		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
 		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
+		
+		List<Organization> domainOrganizations = new ArrayList<Organization>();
 		try {
 			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
 				Organization organization = new LocalOrganization();

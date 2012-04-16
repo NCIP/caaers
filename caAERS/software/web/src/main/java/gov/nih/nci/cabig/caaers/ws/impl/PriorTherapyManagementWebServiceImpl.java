@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
 import gov.nih.nci.cabig.caaers.api.PriorTherapyLOVService;
+import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapies;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.SecurityExceptionFault;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.service.migrator.DomainObjectConverter;
 import gov.nih.nci.cabig.caaers.ws.PriorTherapyManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
@@ -41,13 +40,10 @@ public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagem
 
 	public CaaersServiceResponse importPriorTherapies(PriorTherapies xmlPriorTherapies)
 			throws SecurityExceptionFaultMessage {
-		CaaersServiceResponse caaersResponse = new CaaersServiceResponse();
-		ServiceResponse serviceResponse = new ServiceResponse();
-		caaersResponse.setServiceResponse(serviceResponse);
-		
-		List<PriorTherapy> domainTherapies = new ArrayList<PriorTherapy>();
+		CaaersServiceResponse caaersResponse = Helper.createResponse();
 		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
-		serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
+		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
+		List<PriorTherapy> domainTherapies = new ArrayList<PriorTherapy>();
 		try {
 			for(PriorTherapyType priorTherapyDto: xmlPriorTherapies.getPriorTherapy()){
 				PriorTherapy domainTherapy = new PriorTherapy();

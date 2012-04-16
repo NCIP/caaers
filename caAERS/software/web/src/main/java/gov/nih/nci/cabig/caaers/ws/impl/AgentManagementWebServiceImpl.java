@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
 import gov.nih.nci.cabig.caaers.api.AgentService;
+import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Agents;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.service.migrator.AgentConverter;
 import gov.nih.nci.cabig.caaers.ws.AgentManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
@@ -32,13 +32,11 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 
 	public CaaersServiceResponse createOrUpdateAgent(Agents xmlAgents)
 			throws SecurityExceptionFaultMessage {
-		CaaersServiceResponse caaersResponse = new CaaersServiceResponse();
-		ServiceResponse serviceResponse = new ServiceResponse();
-		caaersResponse.setServiceResponse(serviceResponse);
+		CaaersServiceResponse caaersResponse = Helper.createResponse();
+		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
+		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		
 		List<Agent> domainAgents = new ArrayList<Agent>();
-		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
-		serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		try {
 			for(AgentType agentDto: xmlAgents.getAgent()){
 				Agent agent = AgentConverter.convert(agentDto);
