@@ -23,9 +23,12 @@
             schemaValidationEnabled : specifies if the endpoint use schema validation for the incoming/outgoing message
             properties              : sets arbitrary properties that are added to the CXF content at endpoint level
     -->
-	<cxfbc:provider interfaceName="ctep:AELOVService"  service="ctep:CESAELOVService"  endpoint="CESAELOVPort"
+	<cxfbc:provider interfaceName="ctep:AELOVService"  service="ctep:CESAELOVService"
+            endpoint="CESAELOVPort"
 			wsdl="classpath:CESAELOVService.wsdl" 
-			locationURI="s[LOV_WS_BINDING_URL]" useJBIWrapper="false" useSOAPEnvelope="true" schemaValidationEnabled="true">
+			locationURI="s[LOV_WS_BINDING_URL]" useJBIWrapper="false"
+            useSOAPEnvelope="true"
+            schemaValidationEnabled="true">
 		<!--<cxfbc:inInterceptors>-->
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
 		<!--</cxfbc:inInterceptors>-->

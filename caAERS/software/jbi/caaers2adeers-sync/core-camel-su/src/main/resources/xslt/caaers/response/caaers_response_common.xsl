@@ -5,7 +5,7 @@
         <payload>
             <system>caaers</system>
             <response>
-                <xsl:apply-templates />
+                <xsl:apply-templates select="soapenv:Envelope/soapenv:Body" />
             </response>
         </payload>
     </xsl:template>

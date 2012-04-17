@@ -3,7 +3,7 @@
   xmlns:ser="http://services.ctep.nci.nih.gov/"
   xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
   version='1.0'>
-  <xsl:include href="common.xsl" />
+  <xsl:include href="adeers_req_common.xsl"  />
   <xsl:template match="operation[@name='getAgentsLOV']/criteria">
 	  <ser:getAgentsLOV>
 	         <AgentLOVCriteria>

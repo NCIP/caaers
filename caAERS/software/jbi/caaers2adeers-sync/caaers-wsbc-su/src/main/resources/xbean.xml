@@ -29,18 +29,18 @@
     <cxfbc:provider interfaceName="caaers:AgentManagementServiceInterface"  service="caaers:AgentManagementWebService"  endpoint="AgentManagementWebServiceImplPort"
 			wsdl="classpath:AgentService.wsdl" 
 			locationURI="s[AGENT_WS_BINDING_URL]" useJBIWrapper="false">
-		<cxfbc:inInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-		</cxfbc:inInterceptors>
-		<cxfbc:outInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-		</cxfbc:outInterceptors>
-		<cxfbc:inFaultInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-		</cxfbc:inFaultInterceptors>
-		<cxfbc:outFaultInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-		</cxfbc:outFaultInterceptors>
+		<!--<cxfbc:inInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+		<!--</cxfbc:inInterceptors>-->
+		<!--<cxfbc:outInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+		<!--</cxfbc:outInterceptors>-->
+		<!--<cxfbc:inFaultInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+		<!--</cxfbc:inFaultInterceptors>-->
+		<!--<cxfbc:outFaultInterceptors>-->
+		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+		<!--</cxfbc:outFaultInterceptors>-->
 	</cxfbc:provider>
     <!-- END SNIPPET: cxfbc-provider -->
 

@@ -3,7 +3,7 @@
   xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
   xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
   version='1.0'>
-  <xsl:include href="common.xsl" />
+  <xsl:include href="caaers_request_common.xsl" />
   <xsl:template match="data">
     <com:createOrUpdateAgent>
         <xsl:apply-templates select="Agents" />

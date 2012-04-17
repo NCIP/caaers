@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ser:getAgentsLOVResponse xmlns:ser="http://services.ctep.nci.nih.gov/">
+    <Agents xmlns="">
+        <agent createdDate="2001-10-26T21:32:52" updatedDate="2012-04-16T20:51:00">
+            <agentName>2-Fluoroadenosine</agentName>
+            <agentStatus>Active</agentStatus>
+            <agentType>Chemical</agentType>
+            <nscNumber>30605</nscNumber>
+        </agent>
+        <agent createdDate="2001-10-26T21:32:52" updatedDate="2012-04-16T20:51:00">
+            <agentName>5-Fluoro-2'-deoxycytidine (FdCyd)</agentName>
+            <agentStatus>Inactive</agentStatus>
+            <agentType>Chemical</agentType>
+            <nscNumber>48006</nscNumber>
+        </agent>
+
+            </Agents>
+        </ser:getAgentsLOVResponse>
+    </soap:Body>
+</soap:Envelope>

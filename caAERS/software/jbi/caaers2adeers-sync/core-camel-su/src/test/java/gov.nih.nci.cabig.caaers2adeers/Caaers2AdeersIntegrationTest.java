@@ -15,7 +15,7 @@ public class Caaers2AdeersIntegrationTest extends TestCase {
     protected ConfigurableApplicationContext applicationContext;
 
     public void testDeploy() throws Exception {
-        Thread.sleep(15000);
+        Thread.sleep(45000);
     }
 
     @Override

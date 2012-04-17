@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="threshold" value="DEBUG"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p - %-30c{1} - %m%n"/>
+        </layout>
+    </appender>
+
+
+    <!--<logger name="org.apache">-->
+        <!--<level value="WARN"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.cxf">-->
+        <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.springframework">-->
+        <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.jencks">-->
+        <!--<level value="WARN"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.activemq">-->
+        <!--<level value="WARN"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.activemq.transport.discovery">-->
+        <!--<level value="ERROR"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.servicemix">-->
+        <!--&lt;!&ndash; To enable debug logging, replace the INFO by DEBUG &ndash;&gt;-->
+        <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <logger name="org.apache.servicemix">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="gov.nih.nci.cabig">
+        <level value="DEBUG"/>
+    </logger>
+
+    <root>
+        <level value="WARN"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</log4j:configuration>

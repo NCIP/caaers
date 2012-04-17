@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
 import org.apache.camel.ExchangePattern;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 
 /**
@@ -19,9 +20,6 @@ import org.apache.camel.builder.RouteBuilder;
  */
 public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     
-
-	
-	
 	//the below items should come from properties file, via spring.
 	private String adeersUsername;
 	private String adeersPassword;
@@ -42,7 +40,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		.to("xslt:" + requestXSL)
          .to("log:after_request_xsl" + fromSink)
 		.to(ExchangePattern.InOut, serviceURI)
-        .to("log:before_response_xsl"+ toSink)
+        .to("log:before_response_xsl" + toSink)
 		.to("xslt:" + responseXSL)
          .to("log:after_response_xsl"+ toSink)
 		.to(toSink);
@@ -50,13 +48,15 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	
     public void configure() {
 
+        errorHandler(loggingErrorHandler("gov.nih.nci.cabig.caaers2adeers").level(LoggingLevel.ERROR));
+
         //webservice request
         //from("")
         // .setHeader(C2A_SYNC_HEADER, xpath("/payload/request/operation/@mode = 'sync'"))
         // .to("direct:adEERSRequestSink");
 
     	//just for testing.. 
-    	from("timer://tutorial?fixedRate=true&delay=30000&period=300000")
+    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
     		.setBody(constant(getMessage()))
     		.to("direct:adEERSRequestSink");
 
@@ -72,7 +72,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		from("direct:caAERSResponseSink") .to("log:direct-caAERSResponseSink");
     	
 		//need to elaborate error handling. 
-		onException(Exception.class).to("log:email-me");
+
     }
     
     private String getMessage() {

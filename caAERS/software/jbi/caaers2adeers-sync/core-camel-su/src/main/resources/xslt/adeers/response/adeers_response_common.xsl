@@ -2,7 +2,7 @@
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:ser="http://services.ctep.nci.nih.gov/">
     <xsl:output method="xml"/>
-    <xsl:template match="/">
+    <xsl:template match="soapenv:Envelope">
         <payload>
             <system>adeers</system>
             <response>
