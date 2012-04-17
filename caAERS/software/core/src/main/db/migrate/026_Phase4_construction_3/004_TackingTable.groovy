@@ -7,6 +7,8 @@ class CreateTrackingTable extends edu.northwestern.bioinformatics.bering.Migrati
             t.addColumn('description','string', nullable:true)
             t.addVersionColumn()
             t.addColumn('grid_id' , 'string' , nullable:true);
+            t.addColumn('entity','string', nullable:true)
+            t.addColumn('operation','string', nullable:true)
         }
 
         if (databaseMatches('postgres')) {
@@ -19,7 +21,6 @@ class CreateTrackingTable extends edu.northwestern.bioinformatics.bering.Migrati
 
         createTable('integration_log_details') { t ->
             t.addColumn('log_id', 'integer', nullable:false)
-            t.addColumn('corelation_id','integer', nullable:true)
             t.addColumn('business_id','string', nullable:true)
             t.addColumn('description','string', nullable:true)
             t.addVersionColumn()
