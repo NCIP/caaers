@@ -16,6 +16,7 @@ import org.springframework.context.MessageSource;
 public class HeaderPreProcessor implements Processor {
 
     public static final String SYNC_HEADER = "c2a_sync_mode";
+    public static final String CORRELATION_ID = "c2a_correlation_id";
     public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
     public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
     public static final String ADEERS_WS_USERNAME = "c2a_adeers_ws_username";
@@ -40,12 +41,15 @@ public class HeaderPreProcessor implements Processor {
         inMessage.setHeader(CAAERS_WS_USERNAME, caaersWSUser);
         inMessage.setHeader(CAAERS_WS_PASSWORD, caaersWSPassword);
         inMessage.setHeader(ADEERS_WS_USERNAME, adeersWSUser);
-        inMessage.setHeader(adeersWSPassword, adeersWSPassword);
+        inMessage.setHeader(ADEERS_WS_PASSWORD, adeersWSPassword);
         boolean isSync = XPathBuilder.xpath("/payload/request/operation/@mode = 'sync'").matches(exchange);
         log.debug("syncMode = " + isSync);
         inMessage.setHeader(SYNC_HEADER, isSync ? "sync" : "async");
-        
-        System.out.println("Headers : " + inMessage.getHeaders().toString());
+
+        //only add corelationId if it is not alreay present.
+        Object correlationId = inMessage.getHeader(CORRELATION_ID);
+        if(correlationId == null) inMessage.setHeader(CORRELATION_ID, System.currentTimeMillis());
+
     }
 
     public String getCaaersWSUser() {

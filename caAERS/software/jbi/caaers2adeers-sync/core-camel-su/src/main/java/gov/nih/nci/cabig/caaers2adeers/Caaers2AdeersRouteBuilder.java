@@ -20,12 +20,6 @@ import org.apache.camel.builder.RouteBuilder;
  */
 public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     
-	//the below items should come from properties file, via spring.
-	private String adeersUsername;
-	private String adeersPassword;
-	private String caaersUsername = "SYSTEM";
-	private String caaersPassword = "system_admin";
-	
 	/**
 	 * Will create a route that calls a webservice with before-call and after-call transformations
 	 * @param fromSink - the channel through which the input arrives. 
