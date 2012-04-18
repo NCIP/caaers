@@ -40,7 +40,7 @@ public class StudyOrganizationMigratorTest extends DaoTestCase {
         srcStudy.getStudyOrganizations().add(so);
     }
 
-    public void testChangeExistingOrganizationName() {
+    public void testUpdateOrganization() {
         Organization o = organizationDao.getByNCIcode("NCI");
         assertEquals(4, organizationDao.getAll().size());
         assertEquals("National Cancer Institute", o.getName());
