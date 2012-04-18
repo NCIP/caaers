@@ -65,4 +65,8 @@
     <disease_categories id="-1" />
     <disease_terms id="-1" term="Tinnitus1" category_id="-1" />
 
+    <task_configuration />
+    <wf_assignees />
+    <wf_transition_configs />
+    <wf_transition_owners />
 </dataset>
