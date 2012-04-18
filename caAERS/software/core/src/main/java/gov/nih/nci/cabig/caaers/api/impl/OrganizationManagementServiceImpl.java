@@ -14,6 +14,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 
 public class OrganizationManagementServiceImpl implements OrganizationManagementService{
 	
@@ -40,34 +41,75 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 		this.organizationDao = organizationDao;
 	}
 
+	@Transactional(readOnly=false)
 	public EntityErrorMessage createOrUpdateOrganization(Organization organization) {
 		EntityErrorMessage errorMessage = new EntityErrorMessage();
 		errorMessage.setBusinessId(organization.getNciInstituteCode());
 		errorMessage.setKlassName(Organization.class.getName());
 		try {
 			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
-			Organization mergedDbOrganization = null;
-			if(organization.getMergedOrganization() != null){
-				mergedDbOrganization = organizationDao.getByNCIcode(organization.getMergedOrganization().getNciInstituteCode());
-			}
 			// check if db organization with same NCI code exists
 			if(dbOrganization !=null) {
 				logger.info("found db Organization with NCI identifier: " + organization.getNciInstituteCode());
 				// compare with db organization to see if any property changed
 				if(organization.compareTo(dbOrganization) != 0){
 					logger.info("updating db Organization with NCI identifier:" + organization.getNciInstituteCode() + " with remote Organization");
-					dbOrganization.setMergedOrganization(mergedDbOrganization);
 					organizationMigrator.migrate(organization, dbOrganization, null);
 					organizationRepository.createOrUpdate(dbOrganization);
 				} 
 			} else {
-					// db Organization doesn't exist. Create a new organization.
-					logger.info("didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + ". Creating new Organization");
-					Organization newOrganization = new LocalOrganization();
-					newOrganization.setMergedOrganization(mergedDbOrganization);
-					organizationMigrator.migrate(organization, newOrganization, null);
-					organizationRepository.createOrUpdate(newOrganization);
+				// db Organization doesn't exist. Create a new organization.
+				logger.info("didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + ". Creating new Organization");
+				Organization newOrganization = new LocalOrganization();
+				organizationMigrator.migrate(organization, newOrganization, null);
+				organizationRepository.createOrUpdate(newOrganization);
 			}
+		} catch (Exception e) {
+			errorMessage.addMessage(e.getMessage());
+			logger.error(e.getMessage());
+		}
+		
+		return errorMessage;
+	}
+	
+	@Transactional(readOnly=false)
+	public EntityErrorMessage mergeOrganization(Organization organization){
+		EntityErrorMessage errorMessage = new EntityErrorMessage();
+		errorMessage.setBusinessId(organization.getNciInstituteCode());
+		errorMessage.setKlassName(Organization.class.getName());
+		try {
+			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
+			// check if db organization with same NCI code exists
+			if(dbOrganization !=null) {
+				logger.info("found db Organization with NCI identifier: " + organization.getNciInstituteCode());
+				if(organization.getMergedOrganization() != null){
+					Organization mergedDbOrganization = organizationDao.getByNCIcode(organization.getMergedOrganization().getNciInstituteCode());
+					if(mergedDbOrganization == null){
+						// create new organization and set it as merged organization
+						logger.info("didn't find merged organization with NCI identifier:" + organization.getMergedOrganization().getNciInstituteCode() + 
+								". Creating new merged Organization");
+						Organization newMergedOrganization = new LocalOrganization();
+						dbOrganization.setMergedOrganization(newMergedOrganization);
+						organizationMigrator.migrate(organization.getMergedOrganization(), newMergedOrganization, null);
+					} else {
+						dbOrganization.setMergedOrganization(mergedDbOrganization);
+					}
+				} else {
+					String message = "Merged Organization for organization with NCI Identifier :" + organization.getNciInstituteCode() + 
+							"is not passed, returning without merging";
+					errorMessage.addMessage(message);
+					logger.error(message);
+				}
+				// retire the db organization
+				dbOrganization.setRetiredIndicator(true);
+				organizationRepository.createOrUpdate(dbOrganization);
+			} else {
+					// db Organization doesn't exist, log error and return
+					String message = "didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + " returning without merging";
+					errorMessage.addMessage(message);
+					logger.error(message);
+			}
+			
 		} catch (Exception e) {
 			errorMessage.addMessage(e.getMessage());
 			logger.error(e.getMessage());
@@ -81,6 +123,15 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
 		for (Organization organization:organizations){
 			errorMessages.add(createOrUpdateOrganization(organization));
+		}
+		return errorMessages;
+	}
+
+	public List<EntityErrorMessage> mergeOrganizations(
+			List<Organization> organizations) {
+		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
+		for (Organization organization:organizations){
+			errorMessages.add(mergeOrganization(organization));
 		}
 		return errorMessages;
 	}

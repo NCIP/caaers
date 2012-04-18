@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.Date;
+
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Column;
@@ -32,9 +34,18 @@ public class PreExistingCondition extends AbstractMutableDomainObject {
 
     /** The meddra hlgt. */
     private String meddraHlgt; // MedDRA v9.0 High Level Group Term (HLGT)/CTEP Condition Category
+    
+    private Date lastSynchedDate;
 
+    public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
 
-    public PreExistingCondition(){
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
+	}
+
+	public PreExistingCondition(){
        this(null);
     }
 

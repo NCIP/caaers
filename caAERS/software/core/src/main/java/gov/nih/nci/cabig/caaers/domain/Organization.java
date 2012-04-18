@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrga
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -90,12 +91,22 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
     
     /** The type. */
     protected String type;
+    
+    protected Date lastSynchedDate;
 	
     // //// LOGIC
 
     @Column(name="org_type")
     public String getType() {
 		return type;
+	}
+
+	public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
+
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
 	}
 
 	public void setType(String type) {

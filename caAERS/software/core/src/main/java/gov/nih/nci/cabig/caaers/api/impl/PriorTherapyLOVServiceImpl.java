@@ -12,12 +12,14 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 public class PriorTherapyLOVServiceImpl implements PriorTherapyLOVService{
 	
 	private static Log logger = LogFactory.getLog(PriorTherapyLOVServiceImpl.class);
 	private PriorTherapyDao priorTherapyDao;
 
+	@Transactional(readOnly=false)
 	public List<EntityErrorMessage> importPriorTherapies(
 			List<PriorTherapy> importedPriorTherapies) {
 		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();

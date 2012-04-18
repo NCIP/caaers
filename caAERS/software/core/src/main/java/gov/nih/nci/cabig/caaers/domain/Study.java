@@ -7,11 +7,9 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
-import org.apache.commons.lang.ObjectUtils;
-import org.hibernate.annotations.Parameter;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,8 +30,15 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Where;
 
  
 /**
@@ -202,13 +207,15 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     /** The verbatim first. */
     protected Boolean verbatimFirst;
 
-  //Added for COPPA integration
+    //Added for COPPA integration
     /** The external id. */
-  protected String externalId;
+    protected String externalId;
 
-  protected String studyPurpose;
+    protected String studyPurpose;
 
     protected Boolean aeTermUnique;
+    
+    protected Date lastSynchedDate;
 
     /**
      * Instantiates a new study.
@@ -231,7 +238,15 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         setAeTermUnique(true);
     }
 
-    // / LOGIC
+    public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
+
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
+	}
+
+	// / LOGIC
     /**
      * Adds the study organization.
      *

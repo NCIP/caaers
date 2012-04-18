@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.Date;
+
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Column;
@@ -41,8 +43,18 @@ public class PriorTherapy extends AbstractMutableDomainObject {
 
     /** The meddra code. */
     private String meddraCode; // MedDRA v9.0 LLT/CTEP Provisional Code
+    
+    private Date lastSynchedDate;
 
-    /**
+    public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
+
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
+	}
+
+	/**
      * Gets the text.
      *
      * @return the text

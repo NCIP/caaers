@@ -1,16 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
  
 /**
@@ -31,8 +31,18 @@ public class Device extends AbstractMutableRetireableDomainObject implements Ser
     
     /** The type. */
     String type;
+    
+    Date lastSynchedDate;
 
-    /**
+    public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
+
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
+	}
+
+	/**
      * Gets the display name.
      *
      * @return the display name

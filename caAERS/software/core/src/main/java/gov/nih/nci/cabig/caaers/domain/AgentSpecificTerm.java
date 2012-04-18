@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.Date;
+
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.hibernate.annotations.GenericGenerator;
@@ -59,7 +61,17 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     /** The expected. */
     private boolean expected = true;
     
-    public static final String EXPTECTED_AE_ADDED = "addded";
+    private Date lastSynchedDate;
+    
+    public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
+
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
+	}
+
+	public static final String EXPTECTED_AE_ADDED = "addded";
     public static final String EXPTECTED_AE_UPDATED = "updated";
     public static final String EXPTECTED_AE_DELETED = "deleted";
 

@@ -41,8 +41,6 @@ public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagem
 	public CaaersServiceResponse importPriorTherapies(PriorTherapies xmlPriorTherapies)
 			throws SecurityExceptionFaultMessage {
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
-		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		List<PriorTherapy> domainTherapies = new ArrayList<PriorTherapy>();
 		try {
 			for(PriorTherapyType priorTherapyDto: xmlPriorTherapies.getPriorTherapy()){
@@ -51,7 +49,7 @@ public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagem
 				domainTherapies.add(domainTherapy);
 			}
 			List<EntityErrorMessage> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(domainTherapies);
-			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
+			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
 		} catch (Throwable e) {
 			logger.warn(e);
 		}

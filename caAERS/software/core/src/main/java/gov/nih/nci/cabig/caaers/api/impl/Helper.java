@@ -15,13 +15,16 @@ import java.util.List;
 public class Helper {
     
     public static CaaersServiceResponse createResponse(){
-
+    	
+    	EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
         ServiceResponse serviceResponse = new ServiceResponse();
+        serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
         serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
         serviceResponse.setWsError(new ArrayList<WsError>());
         CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
         caaersServiceResponse.setServiceResponse(serviceResponse);
+        
         return caaersServiceResponse;
     }
     

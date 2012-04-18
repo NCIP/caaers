@@ -73,7 +73,7 @@
 						{name:'Devices',status:'last updated 04/15/12 - 00:01',select:'<input type="checkbox" name="devicesChecked" value="devicesChecked" />'},
 						{name:'Pre-Existing Conditions',status:'update in progress <div id="progressBarId3"> </div>',select:'<input type="checkbox" name="conditionChecked" value="conditionChecked" checked="checked"/>'},
 						{name:'Therapies',status:'update in progress <div id="progressBarId4"> </div>',select:'<input type="checkbox" name="therapiesChecked" value="therapiesChecked" checked="checked"/>'},
-						{name:'AgentDoseUOM',status:'update in progress <div id="progressBarId5"> </div>',select:'<input type="checkbox" name="agentDoseUOMChecked" value="agentDoseUOMChecked" checked="checked"/>'},
+						{name:'Agent Dose Units of Measure',status:'update in progress <div id="progressBarId5"> </div>',select:'<input type="checkbox" name="agentDoseUOMChecked" value="agentDoseUOMChecked" checked="checked"/>'},
 						{name:'Lob',status:'last updated 04/15/12 - 00:02',select:'<input type="checkbox" name="lobChecked" value="lobChecked"/>'},
 						{name:'Agents',status:'update in progress <div id="progressBarId7"> </div>',select:'<input type="checkbox" name="agentsChecked" value="agentsChecked" checked="checked"/>'},
 						{name:'ASAEL',status:'update in progress <div id="progressBarId8" </div>',select:'<input type="checkbox" name="aSAELChecked" value="aSAELChecked" checked="checked"/>'},

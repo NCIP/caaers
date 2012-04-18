@@ -28,5 +28,18 @@ public interface OrganizationManagementWebService {
 	@WebMethod
 	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse createOrUpdateOrganization(@WebParam(name="Organizations",
             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") Organizations xmlOrganizations) throws SecurityExceptionFaultMessage;
+	
+	
+	/**
+	 * This operation will accept jaxb Organizations and a merged organization.
+	 * @TODO
+	 * This operation should allow for response.
+	 * Need to modify schema for Response
+	 * @param xmlOrganizations
+	 */
+	@WebMethod
+	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse mergeOrganization(@WebParam(name="Organizations",
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") Organizations xmlOrganizations) throws SecurityExceptionFaultMessage;
+
 
 }

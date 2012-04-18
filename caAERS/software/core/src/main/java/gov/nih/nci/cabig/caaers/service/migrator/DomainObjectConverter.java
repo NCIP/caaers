@@ -14,6 +14,7 @@ public class DomainObjectConverter {
 		for(EntityErrorMessage entityErrorMessage : entityErrorMessages){
 			EntityProcessingOutcomeType entityProcessingOutcomeType = new EntityProcessingOutcomeType();
 			entityProcessingOutcomeType.setBusinessIdentifier(entityErrorMessage.getBusinessId());
+			entityProcessingOutcomeType.setKlassName(entityErrorMessage.getKlassName());
 			for(String message : entityErrorMessage.getMessages()){
 				String messageDto = new String(message);
 				entityProcessingOutcomeType.getMessage().add(messageDto);

@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AgentServiceImpl implements AgentService{
 	
@@ -46,6 +47,7 @@ public class AgentServiceImpl implements AgentService{
 		return errorMessages;
 	}
 	
+	@Transactional(readOnly=false)
 	public EntityErrorMessage createOrUpdateAgent(Agent agent) {
 		EntityErrorMessage errorMessage = new EntityErrorMessage();
 		errorMessage.setBusinessId(agent.getNscNumber());

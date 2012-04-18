@@ -5,16 +5,15 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * Organization Creation and Updation.
  * @author Ramakrishna
  *
  */
-@Transactional(readOnly=false)
 public interface OrganizationManagementService {
 	
 	public List<EntityErrorMessage> createOrUpdateOrganizations(List<Organization> organizations);
+	
+	public List<EntityErrorMessage> mergeOrganizations(List<Organization> organizations);
 
 }

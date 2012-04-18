@@ -3,12 +3,18 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 @Entity
 @Table(name="integration_log_details")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_integration_log_details_id") })
 public class IntegrationLogDetails extends AbstractMutableDomainObject{
 	
 	// business Id of the entity
@@ -17,9 +23,28 @@ public class IntegrationLogDetails extends AbstractMutableDomainObject{
 	// reference to the integration log
 	private IntegrationLog integrationLog;
 	
-	// details 
-	private String descirption;
-		
+	// error details 
+	private String outcome;
+	
+	private SynchStatus synchStatus;
+	
+	@Enumerated(EnumType.ORDINAL)
+	public SynchStatus getSynchStatus() {
+		return synchStatus;
+	}
+
+	public void setSynchStatus(SynchStatus synchStatus) {
+		this.synchStatus = synchStatus;
+	}
+
+	public String getOutcome() {
+		return outcome;
+	}
+
+	public void setOutcome(String outcome) {
+		this.outcome = outcome;
+	}
+	
 	public String getBusinessId() {
 		return businessId;
 	}
@@ -38,15 +63,6 @@ public class IntegrationLogDetails extends AbstractMutableDomainObject{
 		this.integrationLog = integrationLog;
 	}
 
-	public String getDescirption() {
-		return descirption;
-	}
-
-	public void setDescirption(String descirption) {
-		this.descirption = descirption;
-	}
-
-	
 	public String getEntity() {
 		return entity;
 	}

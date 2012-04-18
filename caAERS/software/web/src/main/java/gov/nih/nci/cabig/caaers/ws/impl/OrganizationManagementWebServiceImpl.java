@@ -39,8 +39,6 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 			Organizations xmlOrganizations) throws SecurityExceptionFaultMessage {
 		
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
-		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		
 		List<Organization> domainOrganizations = new ArrayList<Organization>();
 		try {
@@ -50,7 +48,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 				domainOrganizations.add(organization);
 			}
 			List<EntityErrorMessage> entityErrorMessages = organizationManagementService.createOrUpdateOrganizations(domainOrganizations);
-			organizationConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
+			organizationConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
 		} catch (Throwable e) {
 			logger.warn(e);
 		}
@@ -59,16 +57,37 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 	}
 	
 
+	public CaaersServiceResponse mergeOrganization(
+			Organizations xmlOrganizations)
+			throws SecurityExceptionFaultMessage {
+		CaaersServiceResponse caaersResponse = Helper.createResponse();
+		
+		List<Organization> domainOrganizations = new ArrayList<Organization>();
+		try {
+			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
+				Organization organization = new LocalOrganization();
+				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
+				domainOrganizations.add(organization);
+			}
+			List<EntityErrorMessage> entityErrorMessages = organizationManagementService.mergeOrganizations(domainOrganizations);
+			organizationConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
+		} catch (Throwable e) {
+			logger.warn(e);
+		}
+		
+		return caaersResponse;
+	}
+
+	
+
 	public void setOrganizationManagementService(
 			OrganizationManagementService organizationManagementService) {
 		this.organizationManagementService = organizationManagementService;
 	}
 
 
-
 	public void setOrganizationConverter(OrganizationConverter organizationConverter) {
 		this.organizationConverter = organizationConverter;
 	}
-
 
 }

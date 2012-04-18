@@ -33,8 +33,6 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 	public CaaersServiceResponse createOrUpdateAgent(Agents xmlAgents)
 			throws SecurityExceptionFaultMessage {
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
-		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
 		
 		List<Agent> domainAgents = new ArrayList<Agent>();
 		try {
@@ -43,7 +41,7 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 				domainAgents.add(agent);
 			}
 			List<EntityErrorMessage> entityErrorMessages = agentService.createOrUpdateAgents(domainAgents);
-			agentConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
+			agentConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
 		} catch (Throwable e) {
 			logger.warn(e);
 		}

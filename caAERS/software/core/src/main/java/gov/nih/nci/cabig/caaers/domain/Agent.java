@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -46,8 +47,18 @@ public class Agent extends AbstractMutableRetireableDomainObject implements Seri
     
     /** The display name. */
     private List<AgentSpecificTerm> agentSpecificTerms = new ArrayList<AgentSpecificTerm>();
+    
+    private Date lastSynchedDate;
 
-    /**
+    public Date getLastSynchedDate() {
+		return lastSynchedDate;
+	}
+
+	public void setLastSynchedDate(Date lastSynchedDate) {
+		this.lastSynchedDate = lastSynchedDate;
+	}
+
+	/**
      * Gets the description.
      *
      * @return the description

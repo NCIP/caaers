@@ -5,9 +5,9 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
-public enum Stage implements CodedEnum<Integer> {
+public enum SynchStatus implements CodedEnum<Integer> {
 	
-	 REQUEST_RECEIVED(1, "Message Received"),
+	 REQUEST_RECEIVED(5, "Message Received"),
      ROUTED_TO_ADEERS_SINK(10, "Message Routed to AdEERS Sink Channel"),
      ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL(20, "Routed to AdEERS Webservice Invocation route"),
      ADEERS_WS_IN_TRANSFORMATION(30, "AdEERS Webservice request transformation"),
@@ -19,12 +19,12 @@ public enum Stage implements CodedEnum<Integer> {
      CAAERS_WS_OUT_TRANSFORMATION(70, "caAERS Webservice response transformation") ,
      REQUST_PROCESSING_ERROR(900, "Error while processing request"),
      REQUEST_COMPLETION(999, "Message processing complete");
-
+// need more fine grained stages in caAERS?. Rename Stage.
     private Integer code;
     
     private String stageName;
 
-    private Stage(int code, String stageName) {
+    private SynchStatus(int code, String stageName) {
         this.code = code;
         this.stageName=stageName;
         register(this);
@@ -46,7 +46,7 @@ public enum Stage implements CodedEnum<Integer> {
         return name();
     }
 
-    public static Stage getByCode(Integer code) {
-        return getByClassAndCode(Stage.class, code);
+    public static SynchStatus getByCode(Integer code) {
+        return getByClassAndCode(SynchStatus.class, code);
     }
 }

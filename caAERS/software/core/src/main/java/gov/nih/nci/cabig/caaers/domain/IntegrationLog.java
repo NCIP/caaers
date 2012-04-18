@@ -4,9 +4,17 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+@Entity
+@Table(name="integration_logs")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_integration_logs_id") })
 public class IntegrationLog extends AbstractMutableDomainObject{
 	
 	// time the event is logged
@@ -15,12 +23,26 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	// universal unique identifier to identify each request/update
 	private String correlationId;
 	
-	// progress of the request
-	private Stage stage;
+	// entity type
+	private String entity;
+	
+	// operation name
+	private String operation;
+	
+	// progress made by synch request
+	private SynchStatus synchStatus;
 	
 	// details 
-	private String descirption;
+	private String notes;
 	
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
 	public Date getLoggedOn() {
 		return loggedOn;
 	}
@@ -37,27 +59,10 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 		this.correlationId = correlationId;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
-	public Stage getStage() {
-		return stage;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	public String getDescirption() {
-		return descirption;
-	}
-
-	public void setDescirption(String descirption) {
-		this.descirption = descirption;
-	}
-
-	
 	public String getEntity() {
 		return entity;
 	}
+
 
 	public void setEntity(String entity) {
 		this.entity = entity;
@@ -70,11 +75,15 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-
-	// entity type
-	private String entity;
 	
-	// operation name
-	private String operation;
+	@Enumerated(EnumType.ORDINAL)
+	public SynchStatus getSynchStatus() {
+		return synchStatus;
+	}
+
+	public void setSynchStatus(SynchStatus synchStatus) {
+		this.synchStatus = synchStatus;
+	}
+
 
 }
