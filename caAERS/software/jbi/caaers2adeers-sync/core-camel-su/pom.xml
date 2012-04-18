@@ -5,7 +5,7 @@
   <parent>
     <artifactId>parent</artifactId>
     <groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
-      <version>${c2aVersion}</version>
+      <version>2.5-m4-SNAPSHOT</version>
   </parent>
   <groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
   <artifactId>core-camel-su</artifactId>
@@ -81,7 +81,7 @@
           <artifactId>servicemix-shared</artifactId>
           <classifier>installer</classifier>
           <type>zip</type>
-          <version>${camelVersion}</version>
+          <version>${smLibVersion}</version>
           <scope>test</scope>
       </dependency>
       <dependency>
@@ -95,7 +95,7 @@
           <artifactId>servicemix-cxf-bc</artifactId>
           <classifier>installer</classifier>
           <type>zip</type>
-          <version>${camelVersion}</version>
+          <version>${cxfBCVersion}</version>
           <scope>test</scope>
       </dependency>
   </dependencies>
