@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
+import gov.nih.nci.cabig.caaers2adeers.test.MockMessageGenerator;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -51,7 +52,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
     	//just for testing.. 
     	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
-    		.setBody(constant(getMessage()))
+    		.setBody(constant(MockMessageGenerator.getStudySearchRequest()))
     		.to("direct:adEERSRequestSink");
 
     	new ToAdeersRouteBuilder(this).configure();
@@ -68,22 +69,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		//need to elaborate error handling. 
 
     }
-    
-    private String getMessage() {
-    	
-        return "<payload>" +
-        		"<system>adeers</system>" +
-        		"<request>" +
-            		"<entity>agent</entity>" +
-            		"<operation mode=\"sync\" name=\"getAgentsLOV\">" +
-            		"<criteria>" +
-            		"<criterion  name=\"createdDate\">2001-10-26T21:32:52</criterion>" +
-            		"<criterion name=\"lastUpdatedDate\">2001-10-26T21:32:52</criterion>" +
-            		"</criteria>" +
-            		"</operation>" +
-            	"</request>" +
-                "</payload>";
-        }
+
 }
 
 /**
