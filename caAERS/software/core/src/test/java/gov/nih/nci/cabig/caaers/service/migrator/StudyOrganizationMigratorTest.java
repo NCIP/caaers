@@ -50,10 +50,12 @@ public class StudyOrganizationMigratorTest extends DaoTestCase {
         assertEquals(-1001, destStudy.getStudyOrganizations().get(0).getOrganization().getId().intValue());
     }
 
+/*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {
         return DatabaseOperation.NONE;
     }
+*/
 
 
 }
