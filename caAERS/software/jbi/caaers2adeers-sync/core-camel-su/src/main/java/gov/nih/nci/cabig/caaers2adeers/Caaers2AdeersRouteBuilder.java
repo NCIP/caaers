@@ -49,11 +49,21 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         //from("")
         // .setHeader(C2A_SYNC_HEADER, xpath("/payload/request/operation/@mode = 'sync'"))
         // .to("direct:adEERSRequestSink");
-
-    	//just for testing.. 
+        
+      //just for testing.. 
     	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
     		.setBody(constant(MockMessageGenerator.getStudySearchRequest()))
     		.to("direct:adEERSRequestSink");
+
+    	//just for testing.. 
+//    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
+//    		.setBody(constant(getMessage()))
+//    		.to("direct:adEERSRequestSink");
+        
+        //just for testing generic webservice
+//    	from("jbi:service:http://webservice.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
+//			.setBody(constant(getMessage()))
+//			.to("direct:adEERSRequestSink");
 
     	new ToAdeersRouteBuilder(this).configure();
     	new ToCaaersRouteBuilder(this).configure();
@@ -69,7 +79,22 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		//need to elaborate error handling. 
 
     }
-
+    
+    private String getMessage() {
+    	
+        return "<payload>" +
+        		"<system>adeers</system>" +
+        		"<request>" +
+            		"<entity>agent</entity>" +
+            		"<operation mode=\"sync\" name=\"getAgentsLOV\">" +
+            		"<criteria>" +
+            		"<criterion  name=\"createdDate\">2001-10-26T21:32:52</criterion>" +
+            		"<criterion name=\"lastUpdatedDate\">2001-10-26T21:32:52</criterion>" +
+            		"</criteria>" +
+            		"</operation>" +
+            	"</request>" +
+                "</payload>";
+        }
 }
 
 /**
