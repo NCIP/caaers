@@ -94,22 +94,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		//need to elaborate error handling. 
 
     }
-    
-    private String getMessage() {
-    	
-        return "<payload>" +
-        		"<system>adeers</system>" +
-        		"<request>" +
-            		"<entity>agent</entity>" +
-            		"<operation mode=\"sync\" name=\"getAgentsLOV\">" +
-            		"<criteria>" +
-            		"<criterion  name=\"createdDate\">2001-10-26T21:32:52</criterion>" +
-            		"<criterion name=\"lastUpdatedDate\">2001-10-26T21:32:52</criterion>" +
-            		"</criteria>" +
-            		"</operation>" +
-            	"</request>" +
-                "</payload>";
-        }
+
 }
 
 /**
