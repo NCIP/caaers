@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
@@ -215,6 +216,45 @@ public class StudyProcessorImplTest extends DaoTestCase {
         // DB Study should have 2 sites
         s = studyDao.getStudyDesignById(-2);
         assertEquals(2, s.getStudySites().size());
+    }
+
+    public void testUpdateStudyUpdateOrganization() {
+        Study s = studyDao.getStudyDesignById(-2);
+        List l = organizationDao.getAll();
+
+        // DB has 4 organizations
+        assertEquals(4, l.size());
+
+        Organization o = organizationDao.getById(-1001);
+        assertEquals("National Cancer Institute", o.getName());
+
+        // DB Study has 1 site
+        assertEquals(1, s.getStudySites().size());
+
+        // XML Study has 1 site
+        assertEquals(1, ss.getStudy().get(0).getStudyOrganizations().getStudySite().size());
+
+        // Add a NEW StudySite
+        StudySiteType sst = new StudySiteType();
+        sst.setOrganization(new OrganizationType());
+        sst.getOrganization().setName("NEW ORGANIZATION NAME");
+        sst.getOrganization().setNciInstituteCode("NCI");
+        sst.getOrganization().setStatus(ActiveInactiveStatusType.ACTIVE);
+        ss.getStudy().get(0).getStudyOrganizations().getStudySite().add(sst);
+
+        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+        assertEquals("0", csr.getServiceResponse().getResponsecode());
+
+        // DB should still have 4 organizations
+        l = organizationDao.getAll();
+        assertEquals(4, l.size());
+
+        // DB Study should have 2 sites
+        s = studyDao.getStudyDesignById(-2);
+        assertEquals(2, s.getStudySites().size());
+
+        o = organizationDao.getById(-1001);
+        assertEquals("NEW ORGANIZATION NAME", o.getName());
     }
 
 
