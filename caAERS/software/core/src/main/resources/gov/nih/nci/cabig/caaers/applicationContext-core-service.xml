@@ -171,6 +171,7 @@ default-lazy-init="true">
 		<property name="organizationDao" ref="organizationDao" />
 		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
 		<property name="organizationRepository" ref="organizationRepository" />
+		<property name="organizationMigrator" ref="organizationMigrator" />
 	</bean>
 	<bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyAgentMigrator">
 		<property name="agentDao" ref="agentDao" />

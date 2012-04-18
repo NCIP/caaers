@@ -1,0 +1,11 @@
+
+<dataset>
+
+    <ORGANIZATIONS id="-1001" version="1" name="National Cancer Institute" description_text="NCI" nci_institute_code="NCI" />
+    <ORGANIZATIONS id="-1002" version="1" name="CALGB" description_text="CALGB" nci_institute_code="DEFAULT" />
+    <ORGANIZATIONS id="-1003" version="1" name="CTEP" description_text="CTEP" nci_institute_code="CTEP" />
+    <ORGANIZATIONS id="-1004" version="1" name="MN026" description_text="MN026" nci_institute_code="MN026" />
+
+    <site_investigators />
+    <ind_holders />
+</dataset>

@@ -29,6 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +152,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			orgs.add(sst.getOrganization());
 		}
 
+        // ToDo Code that persists the new organization should be moved to StudyOrganizationMigrator class
 		for (OrganizationType org:orgs) {
             List foundOrgs = searchForOrganization(org);
             if (foundOrgs.size() < 1) {
@@ -241,6 +243,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return caaersServiceResponse;
 	}
 
+    @Transactional(readOnly = false)
 	public CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
 		gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
@@ -266,6 +269,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
             logger.error("StudyDto to StudyDomain Conversion Failed ", caEX);
             studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed ", DomainObjectImportOutcome.Severity.ERROR);
             Helper.populateError(caaersServiceResponse, "", "StudyDto to StudyDomain Conversion Failed");
+            return caaersServiceResponse;
         }
 
         if (studyImportOutcome == null) {
