@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
+    <system>caaers</system>
+    <response>
+        <operation name="searchStudy">
+            <data>
+                <stud:studies>
+                    <stud:study>
+                        <shortTitle>A Phase III prospective randomized study of adjuvant chemotherapy with
+                            vinorelbine and cisplatin in completely resected non-small cell lung cancer with companion
+                            tumour marker evaluation
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>JBR10</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Phase iii double-blind randomized trial of 13-cis retinoic acid (13-cra) to
+                            prevent second primary tumors (spts) in stage i non-small cell lung cancer
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0125</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Evaluation of utility of serum neuron-specific enolase in the management of
+                            patients with small cell lung cancer
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>NCCTG-90-20-53</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Randomized Phase III Trial of Adjuvant Chemotherapy in Patients with Early
+                            Stage Non-Small Cell Lung Cancer Associated with Banking of Frozen Tumor Specimens and
+                            Collection of Gene Expression Profile Data
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CALGB-30506</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                </stud:studies>
+            </data>
+        </operation>
+    </response>
+</payload>

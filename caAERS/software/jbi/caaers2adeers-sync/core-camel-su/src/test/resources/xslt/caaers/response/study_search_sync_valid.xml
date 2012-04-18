@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:ser="http://services.ctep.nci.nih.gov/"
+         xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="searchStudy">
+            <data>
+                <Documents xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+                           xmlns:ns2="http://services.ctep.nci.nih.gov/">
+                    <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:50">
+                        <nciDocumentNumber>JBR10</nciDocumentNumber>
+                        <localDocumentNumberList>
+                            <localDocumentNumber>JBR10</localDocumentNumber>
+                            <localDocumentNumber>JBR10</localDocumentNumber>
+                            <localDocumentNumber>JBR10</localDocumentNumber>
+                            <localDocumentNumber>JBR10</localDocumentNumber>
+                        </localDocumentNumberList>
+                        <documentTitle>A Phase III prospective randomized study of adjuvant chemotherapy with
+                            vinorelbine and cisplatin in completely resected non-small cell lung cancer with companion
+                            tumour marker evaluation
+                        </documentTitle>
+                        <currentStatus>Complete</currentStatus>
+                    </document>
+                    <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 00:00:00">
+                        <nciDocumentNumber>INT-0125</nciDocumentNumber>
+                        <localDocumentNumberList>
+                            <localDocumentNumber>ID 91-025</localDocumentNumber>
+                            <localDocumentNumber>CALGB-9293</localDocumentNumber>
+                            <localDocumentNumber>EST-91025</localDocumentNumber>
+                            <localDocumentNumber>NCCTG-91-24-52</localDocumentNumber>
+                            <localDocumentNumber>RTOG-91-01</localDocumentNumber>
+                            <localDocumentNumber>SWOG-9221</localDocumentNumber>
+                        </localDocumentNumberList>
+                        <documentTitle>Phase iii double-blind randomized trial of 13-cis retinoic acid (13-cra) to
+                            prevent second primary tumors (spts) in stage i non-small cell lung cancer
+                        </documentTitle>
+                        <currentStatus>Complete</currentStatus>
+                    </document>
+                    <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:56">
+                        <nciDocumentNumber>NCCTG-90-20-53</nciDocumentNumber>
+                        <localDocumentNumberList>
+                            <localDocumentNumber>NCCTG-90-20-53</localDocumentNumber>
+                            <localDocumentNumber>90-20-53</localDocumentNumber>
+                        </localDocumentNumberList>
+                        <documentTitle>Evaluation of utility of serum neuron-specific enolase in the management of
+                            patients with small cell lung cancer
+                        </documentTitle>
+                        <currentStatus>Complete</currentStatus>
+                    </document>
+                    <document updatedDate="04-10-2012 14:17:38" createdDate="07-22-2008 08:29:11">
+                        <nciDocumentNumber>CALGB-30506</nciDocumentNumber>
+                        <localDocumentNumberList>
+                            <localDocumentNumber>CALGB-30506</localDocumentNumber>
+                        </localDocumentNumberList>
+                        <documentTitle>A Randomized Phase III Trial of Adjuvant Chemotherapy in Patients with Early
+                            Stage Non-Small Cell Lung Cancer Associated with Banking of Frozen Tumor Specimens and
+                            Collection of Gene Expression Profile Data
+                        </documentTitle>
+                        <currentStatus>Active</currentStatus>
+                    </document>
+                </Documents>
+            </data>
+        </operation>
+    </response>
+</payload>
