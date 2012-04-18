@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 
 public class OrganizationConverter extends DomainObjectConverter{
@@ -12,7 +13,7 @@ public class OrganizationConverter extends DomainObjectConverter{
 		organization.setNciInstituteCode(organizationDto.getNciInstituteCode());
 		organization.setDescriptionText(organizationDto.getDescriptionText());
 		if(organizationDto.getStatus() != null){
-			organization.setRetiredIndicator(organizationDto.getStatus().name().equals("AC") ? false:true);
+			organization.setRetiredIndicator(organizationDto.getStatus().equals(ActiveInactiveStatusType.ACTIVE) ? false:true);
 		}
 		
 		if(organizationDto.getMergedOrganization() != null){
@@ -24,6 +25,7 @@ public class OrganizationConverter extends DomainObjectConverter{
 		organization.setCity(organizationDto.getCity());
 		organization.setCountry(organizationDto.getCountry());
 		organization.setState(organizationDto.getState());
+		organization.setType(organizationDto.getType());
 		
 	}
 

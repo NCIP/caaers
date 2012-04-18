@@ -61,7 +61,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().remove(0);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().remove(0);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtepTerm("Nausea");
-        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setStatus(ActiveInactiveStatusType.IN);
+        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setStatus(ActiveInactiveStatusType.INACTIVE);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCategory("Category - 01");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3");
 
@@ -109,7 +109,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         t.setCategory("C1");
         t.setCtcVersion("4");
         t.setCtepTerm("Nausea:" + System.currentTimeMillis());
-        t.setStatus(ActiveInactiveStatusType.AC);
+        t.setStatus(ActiveInactiveStatusType.ACTIVE);
         return t;
     }
 

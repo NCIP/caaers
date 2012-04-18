@@ -38,6 +38,8 @@ public class Tracker implements InitializingBean {
        
 
     }
+    
+    // should persist into integration_log_de
 
     public void record(String corelationId, Stage stage, String note, Map<String, String> details){
         // id, corelation_id, stage, description, on, details,

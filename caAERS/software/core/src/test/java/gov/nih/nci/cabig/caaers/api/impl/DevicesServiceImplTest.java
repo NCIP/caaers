@@ -100,7 +100,7 @@ public class DevicesServiceImplTest extends DaoTestCase {
         d.setCommonName("C");
         d.setBrandName("B");
         d.setType("T");
-        d.setStatus(ActiveInactiveStatusType.AC);
+        d.setStatus(ActiveInactiveStatusType.ACTIVE);
         return d;
     }
 }

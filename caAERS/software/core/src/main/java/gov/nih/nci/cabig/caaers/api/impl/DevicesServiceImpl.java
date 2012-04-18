@@ -56,7 +56,7 @@ public class DevicesServiceImpl implements ApplicationContextAware {
             }
             d.setBrandName(xmlDevice.getBrandName());
             d.setType(xmlDevice.getType());
-            d.setRetiredIndicator(xmlDevice.getStatus().equals(ActiveInactiveStatusType.IN));
+            d.setRetiredIndicator(xmlDevice.getStatus().equals(ActiveInactiveStatusType.INACTIVE));
 
             try {
                 deviceDao.save(d);

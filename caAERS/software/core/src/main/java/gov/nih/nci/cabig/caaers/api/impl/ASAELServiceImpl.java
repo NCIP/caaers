@@ -4,18 +4,36 @@ import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELAgentType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
-import gov.nih.nci.cabig.caaers.integration.schema.asael.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import java.util.*;
 
 /**
  * @author Ion C. Olaru
@@ -85,7 +103,7 @@ public class ASAELServiceImpl implements ApplicationContextAware {
             Iterator<ExpectedAECtcTermType> it = asaelAgent.getExpectedAECtcTerm().iterator();
             while (it.hasNext()) {
                 ExpectedAECtcTermType tt = it.next();
-                if (tt.getStatus().equals(ActiveInactiveStatusType.IN)) {
+                if (tt.getStatus().equals(ActiveInactiveStatusType.INACTIVE)) {
                     it.remove();
                     removeAgentSpecificTerm(agentTerms, tt);
                     errors.add(populateError(CtcTerm.class.getCanonicalName(), tt.getCtepTerm(), ""));

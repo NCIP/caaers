@@ -2,16 +2,14 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganization;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -22,7 +20,11 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
  
 /**
@@ -85,10 +87,22 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
     
     /** The merged organization. */
     protected Organization mergedOrganization;
+    
+    /** The type. */
+    protected String type;
 	
     // //// LOGIC
 
-    @ManyToOne
+    @Column(name="org_type")
+    public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@ManyToOne
     @JoinColumn(name="merged_org_id", nullable=true)
     public Organization getMergedOrganization() {
 		return mergedOrganization;

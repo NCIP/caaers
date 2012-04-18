@@ -15,5 +15,6 @@ public class OrganizationMigrator implements Migrator<Organization>{
 		dest.setCity(src.getCity());
 		dest.setCountry(src.getCountry());
 		dest.setState(src.getState());
+		dest.setType(src.getType());
 	}
 }

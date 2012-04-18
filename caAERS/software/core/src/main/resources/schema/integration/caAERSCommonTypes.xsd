@@ -147,6 +147,7 @@
                     <xs:element name="country" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="mergedOrganization" type="OrganizationType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="type" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -497,12 +498,12 @@
     
     <xs:simpleType name="ActiveInactiveStatusType">
 	    <xs:restriction base="xs:string">
-	      <xs:enumeration value="AC">
+	      <xs:enumeration value="Active">
               <xs:annotation>
                   <xs:documentation>Active </xs:documentation>
               </xs:annotation>
 	      </xs:enumeration>
-	      <xs:enumeration value="IN">
+	      <xs:enumeration value="Inactive">
               <xs:annotation>
               <xs:documentation>InActive </xs:documentation>
           </xs:annotation>

@@ -8,7 +8,6 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.domain.ActiveInactiveStatus;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
@@ -145,6 +144,19 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     	assertNotNull(reloadedOrg1.getMergedOrganization());
     	assertEquals(org2, reloadedOrg1.getMergedOrganization());
     	assertEquals(new Integer(-1005), reloadedOrg1.getMergedOrganization().getId());
+    }
+    
+    public void testOrganizationType(){
+    	Organization organization = getDao().getDefaultOrganization();
+    	assertNull(organization.getType());
+    	
+    	organization.setType("DCY");
+    	getDao().save(organization);
+    	
+    	interruptSession();
+    	
+    	Organization reloaded = getDao().getDefaultOrganization();
+    	assertEquals("DCY",reloaded.getType());
     }
     
     

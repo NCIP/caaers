@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 
 /**
@@ -15,7 +16,7 @@ public class AgentConverter extends DomainObjectConverter{
         a.setNscNumber(at.getNscNumber());
         a.setDescription(at.getDescriptionText());
         if(at.getStatus() != null){
-			a.setRetiredIndicator(at.getStatus().name().equals("AC") ? false:true);
+			a.setRetiredIndicator(at.getStatus().equals(ActiveInactiveStatusType.ACTIVE) ? false:true);
 		}
         return a;
     }
