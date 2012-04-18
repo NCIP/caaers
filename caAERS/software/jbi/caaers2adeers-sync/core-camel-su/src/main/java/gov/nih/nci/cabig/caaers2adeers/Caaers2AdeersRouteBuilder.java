@@ -40,6 +40,18 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
          .to("log:after_response_xsl"+ toSink)
 		.to(toSink);
 	}
+
+    /**
+     * Will create a sub route for transformation.
+     * @param fromSink - From channel
+     * @param xslFile  - The qualified name of XSL file to use, for the transformation
+     */
+    public void configureTransformationRoute(String fromSink, String xslFile){
+        from(fromSink)
+                .to("log:before_xslFile" + fromSink)
+                .to("xslt:" + xslFile)
+                .to("log:after_xslFile" + fromSink);
+    }
 	
     public void configure() {
 
@@ -66,12 +78,15 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 //			.to("direct:adEERSRequestSink");
 
     	new ToAdeersRouteBuilder(this).configure();
-    	new ToCaaersRouteBuilder(this).configure();
-    	
+    	new ToCaaersAsynchronousRouteBuilder(this).configure();
+    	new ToCaaersSynchronousRouteBuilder(this).configure();
+
     	//need to process AdEERS results, may be the SyncComponent...  
     	from("direct:adEERSResponseSink")
                 .to("log:synch-comp")
-                .to("direct:caAERSRequestSink");
+                .choice()
+                    .when(header("c2a_sync_mode").isEqualTo("sync")).to("direct:caAERSSynchronousRequestSink")
+                    .otherwise().to("direct:caAERSAsynchronousRequestSink");
     	
     	//need to process caAERS results
 		from("direct:caAERSResponseSink") .to("log:direct-caAERSResponseSink");

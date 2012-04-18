@@ -5,6 +5,7 @@ public class ToAdeersRouteBuilder {
 	
 	
 	private String adEERSLOVServiceJBIURL = "jbi:service:http://services.ctep.nci.nih.gov//CESAELOVService?operation={http://services.ctep.nci.nih.gov/}";
+	private String adEERSStudyServiceJBIURL = "jbi:service:http://services.ctep.nci.nih.gov//CESAEStudyService?operation={http://services.ctep.nci.nih.gov/}";
 	private String requestXSLBase = "xslt/adeers/request/";
 	private String responseXSLBase = "xslt/adeers/response/";
 	
@@ -14,9 +15,11 @@ public class ToAdeersRouteBuilder {
 		this.routeBuilder = routeBuilder;
 	}
 	
-    private String xpathPredicate(String entity){
-        return new StringBuilder("/payload/request/entity/text() = '")
-                .append(entity).append("'").toString();
+    private String xpathPredicate(String entity, String operation){
+        return new StringBuilder("/payload/request/entity/text() = '").append(entity).append("' ")
+                .append(" and ")
+                .append("/payload/request/operation/@name = '").append(operation).append("' ")
+                .toString();
     }
 	public void configure(){
 
@@ -25,8 +28,9 @@ public class ToAdeersRouteBuilder {
             .processRef("headerProcessor")
     		.to("log:to-adeers")
     		.choice()
-    			.when().xpath(xpathPredicate("agent") ).to("direct:adeers-agent-lov")
-    			.when().xpath(xpathPredicate("asael")).to("direct:adeers-asael-lov")
+    			.when().xpath(xpathPredicate("agent", "getAgentsLOV") ).to("direct:adeers-agent-lov")
+    			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
+    			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
     			.otherwise().to("log:unknown-adeers-request");
 		
 		//LOV - Agents
@@ -34,9 +38,10 @@ public class ToAdeersRouteBuilder {
 
     	//LOV - ASAEL
 //    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
-		
-    	
-  
+
+        //Search Study
+        configureStudyWSCallRoute("direct:adeers-study-search", "study_search.xsl", "searchStudy");
+
 	}
 	
 	private void configureLovWSCallRoute(String fromSink, String xslFileName, String serviceURI){
@@ -46,4 +51,12 @@ public class ToAdeersRouteBuilder {
 				responseXSLBase + xslFileName, 
 				"direct:adEERSResponseSink");
 	}
+
+    private void configureStudyWSCallRoute(String fromSink, String xslFileName, String serviceURI){
+        this.routeBuilder.configureWSCallRoute(fromSink,
+                requestXSLBase + xslFileName,
+                adEERSStudyServiceJBIURL + serviceURI,
+                responseXSLBase + xslFileName,
+                "direct:adEERSResponseSink");
+    }
 }

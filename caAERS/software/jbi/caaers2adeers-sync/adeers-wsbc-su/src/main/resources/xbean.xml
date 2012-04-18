@@ -40,6 +40,25 @@
 		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
 		</cxfbc:outFaultInterceptors>
 	</cxfbc:provider>
+
+    <cxfbc:provider interfaceName="ctep:AEStudyService"  service="ctep:CESAEStudyService"
+                    endpoint="CESAEStudyPort"
+                    wsdl="classpath:CESAEStudyService.wsdl"
+                    locationURI="s[ADEERS_STUDY_WS_BINDING_URL]" useJBIWrapper="false">
+        <cxfbc:inInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inInterceptors>
+        <cxfbc:outInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outInterceptors>
+        <cxfbc:inFaultInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
+        <cxfbc:outFaultInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
+    </cxfbc:provider>
+
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">

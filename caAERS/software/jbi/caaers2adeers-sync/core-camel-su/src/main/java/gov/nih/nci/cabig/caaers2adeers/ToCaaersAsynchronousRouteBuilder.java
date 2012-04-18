@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
 
-public class ToCaaersRouteBuilder {
+public class ToCaaersAsynchronousRouteBuilder {
 
 	private String caAERSAgentServiceJBIURL = "jbi:service:http://webservice.caaers.cabig.nci.nih.gov/common/AgentManagementWebService?operation={http://webservice.caaers.cabig.nci.nih.gov/common}";
 	
@@ -10,29 +10,31 @@ public class ToCaaersRouteBuilder {
 	
 	private Caaers2AdeersRouteBuilder routeBuilder;
 	
-	public ToCaaersRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder) {
+	public ToCaaersAsynchronousRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder) {
 		this.routeBuilder = routeBuilder;
 	}
     
-    private String xpathPredicate(String entity){
+    private String xpathPredicate(String entity, String operation){
         
         return new StringBuilder("/payload/response/operation/data ")
                 .append(" and ")
                 .append("not(/payload/response/operation/errors)")
+                .append(" and ")
+                .append("/payload/response/operation/@name = '").append(operation).append("' ")
                 .append("and ")
                 .append("/payload/response/entity = '").append(entity).append("'").toString();
     }
 	
 	public void configure(){
 		//content based router
-		routeBuilder.from("direct:caAERSRequestSink")
+		routeBuilder.from("direct:caAERSAsynchronousRequestSink")
 		.to("log:caaers-request")
 		.choice()
-			.when().xpath(xpathPredicate("agent")).to("direct:caaers-agent-sync")
+			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
 			.otherwise().to("log:unknown-caaers-request");
 		
 		//caAERS - createOrUpdateAgents
-		configureWSCallRoute("direct:caaers-agent-sync", "agents_sync.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );
+		configureWSCallRoute("direct:caaers-agent-async", "agents_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );
 	}
 	
 
