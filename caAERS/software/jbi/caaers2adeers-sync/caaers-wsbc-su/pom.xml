@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.apache.servicemix</groupId>
       <artifactId>servicemix-cxf-bc</artifactId>
-      <version>${camelVersion}</version>
+      <version>${cxfBCVersion}</version>
     </dependency>
   </dependencies>
 </project>

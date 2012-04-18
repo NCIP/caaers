@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ser="http://services.ctep.nci.nih.gov/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ser:getAgentsLOV>
+            <AgentLOVCriteria>
+                <createdDate>2001-10-26T21:32:52</createdDate>
+                <lastUpdatedDate>2001-10-26T21:32:52</lastUpdatedDate>
+            </AgentLOVCriteria>
+        </ser:getAgentsLOV>
+    </soapenv:Body>
+</soapenv:Envelope>

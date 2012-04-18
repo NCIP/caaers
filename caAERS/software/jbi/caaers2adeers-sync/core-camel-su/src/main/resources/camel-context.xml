@@ -34,6 +34,7 @@
 
     <bean id="tracker" class="gov.nih.nci.cabig.caaers2adeers.Tracker">
        <constructor-arg index="0" ref="dataSource" />
+       <property name="datasourceDriverName" value="s[datasource.driver]" />
     </bean>
 
     <bean id="headerProcessor" class="gov.nih.nci.cabig.caaers2adeers.HeaderPreProcessor">

@@ -1,0 +1,8 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+            <faultcode>S:Server</faultcode>
+            <faultstring>com.sun.xml.internal.messaging.saaj.soap.impl.TextImpl cannot be cast to org.w3c.dom.Element</faultstring>
+        </S:Fault>
+    </S:Body>
+</S:Envelope>

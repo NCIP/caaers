@@ -3,7 +3,6 @@
         xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
         version='1.0'>
 
-    <xsl:output method="xml" indent="yes" encoding="ISO-8859-1"/>
 
     <xsl:template match="/">
         <soapenv:Envelope>

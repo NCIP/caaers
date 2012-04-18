@@ -1,7 +1,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:ser="http://services.ctep.nci.nih.gov/">
-    <xsl:output method="xml"/>
     <xsl:template match="soapenv:Envelope">
         <payload>
             <system>adeers</system>

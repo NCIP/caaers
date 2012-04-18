@@ -1,0 +1,7 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:searchStudyResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
+            <Documents/>
+        </ns2:searchStudyResponse>
+    </S:Body>
+</S:Envelope>

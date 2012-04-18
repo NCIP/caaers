@@ -1,0 +1,1512 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:searchStudyResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
+            <Documents>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:50">
+                    <nciDocumentNumber>JBR10</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>JBR10</localDocumentNumber>
+                        <localDocumentNumber>JBR10</localDocumentNumber>
+                        <localDocumentNumber>JBR10</localDocumentNumber>
+                        <localDocumentNumber>JBR10</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III prospective randomized study of adjuvant chemotherapy with vinorelbine and cisplatin in completely resected non-small cell lung cancer with companion tumour marker evaluation</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 00:00:00">
+                    <nciDocumentNumber>INT-0125</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>ID 91-025</localDocumentNumber>
+                        <localDocumentNumber>CALGB-9293</localDocumentNumber>
+                        <localDocumentNumber>EST-91025</localDocumentNumber>
+                        <localDocumentNumber>NCCTG-91-24-52</localDocumentNumber>
+                        <localDocumentNumber>RTOG-91-01</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9221</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase iii double-blind randomized trial of 13-cis retinoic acid (13-cra) to prevent second primary tumors (spts) in stage i non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:56">
+                    <nciDocumentNumber>NCCTG-90-20-53</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-90-20-53</localDocumentNumber>
+                        <localDocumentNumber>90-20-53</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Evaluation of utility of serum neuron-specific enolase in the management of patients with small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:51:03">
+                    <nciDocumentNumber>T84-0325</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>2N-82-3</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Treatment of advanced squamous and adenosquamous lung cancer with 13-cis-retinoic acid</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:28">
+                    <nciDocumentNumber>T88-0079</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>88-C-122</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase I and pharmacokinetic study of 4-ipomeanol (nsc # 3494381) in lung cancer patients</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:51:37">
+                    <nciDocumentNumber>T85-0272</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>85-C-170</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized protocol comparing elective cranial irradiation treatment with no cranial irradiation for patients with small cell lung cancer achieving a complete remission</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="03-29-1999 18:06:19">
+                    <nciDocumentNumber>T97-0014</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>9023</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A phase ii trial of 9-aminocamptothecin (9-ac) as a 120-hour infusion in patients with advanced non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:24">
+                    <nciDocumentNumber>NCCTG-97-24-51</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-97-24-51</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III Randomized, Double-Blind Study of CAI and Placebo in Patients with Advanced Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:24">
+                    <nciDocumentNumber>E8597</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E8597</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase I Pilot Trial of Adenovirus p53 and Radiotherapy on Nonsmall Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="01-10-2000 12:00:04">
+                    <nciDocumentNumber>E5597</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>ECOG-E5597</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III Chemoprevention Trial of Selenium Supplementation in Persons with Resected Stage I Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="01-27-2000 12:53:41">
+                    <nciDocumentNumber>1053</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>00-C-0123</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study of Gene Induction Mediated by Four-hour Intravenous Depsipeptide (FR901228/NSC 630176) Infusion in Lung Cancer Patients</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="07-13-2000 11:50:54">
+                    <nciDocumentNumber>S0002</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0002</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Smoking Cessation Intervention (Including Bupropion-Zyban versus Placebo) for Completely Resected Stage I and II Non-Small Cell Lung Cancer Survivors who are Current Smokers</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="02-21-2001 15:05:49">
+                    <nciDocumentNumber>5150</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>Clinical Trials of FTI Radiosensitization/A Phase I Trial of the Farnesyltransferase Inhibitor, R115777 (NSC# 702818) and Radiotherapy in Patients with Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="08-08-2001 09:22:23">
+                    <nciDocumentNumber>5411</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>11432B</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I Study of OSI-774 (NSC# 718781) Based Multimodality Therapy for Inoperable Stage III Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-12-2001 10:48:57">
+                    <nciDocumentNumber>CALGB-30106</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-30106</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>ZD1839 (NSC #715055, IND #61187) with Induction Paclitaxel and Carboplatin Followed by Either Radiation or Concomitant Radiation with Weekly Paclitaxel and Carboplatin in Stage III Non-Small Cell Lung Cancer, A Phase II Study</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="03-08-2002 12:13:06">
+                    <nciDocumentNumber>NCIC-BR.19</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CIRB:  02-012</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Prospective Randomized, Double-Blind, Placebo-Controlled Trial of the Epidermal Growth Factor Receptor Antagonist, ZD1839 (IRESSA) in Completely Resected Primary Stage IB, II and IIIA Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="04-04-2002 13:50:23">
+                    <nciDocumentNumber>5856</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHI-40</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I Study of PS-341 in Combination with Gemcitabine and Carboplatin in Selected Stage IIIB or IV Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="08-20-2003 15:57:26">
+                    <nciDocumentNumber>S0339</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0339</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of Gemcitabine, Carboplatin and PS-341 (NSC-681239) in the First-Line Treatment of Advanced Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-16-2004 14:30:22">
+                    <nciDocumentNumber>S0435</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0435</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of BAY 43-9006 (NSC-724772) in Patients with Platinum-Treated Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="04-18-2005 12:57:36">
+                    <nciDocumentNumber>N0426</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>N0426</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Pemetrexed Disodium (ALIMTA®) Plus Bevacizumab in Patients with Stage IIIB Pleural Effusion or Stage IV Non-Small Cell Lung Cancer (Second-Line Treatment)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="06-02-2005 13:51:13">
+                    <nciDocumentNumber>7213</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>14576A</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Safety and Feasibility Study of Bevacizumab with Paclitaxel, Carboplatin and Chest Radiotherapy in Patients with Locally Advanced Non-Small Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="01-24-2006 16:22:54">
+                    <nciDocumentNumber>7437</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-74</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase 2 Study of the Halichondrin B Analog E7389 in Patients with Advanced Non-Small Cell Lung Cancer (NSCLC) Previously Treated with a Taxane</documentTitle>
+                    <currentStatus>Closed to Accrual</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="07-13-2006 08:35:53">
+                    <nciDocumentNumber>7863</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-82</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase II Study of Vorinostat or Placebo in Combination with Carboplatin and Paclitaxel for Patients with Advanced or Metastatic Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="04-05-2007 14:39:33">
+                    <nciDocumentNumber>CALGB-30607</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-30607</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized, Phase III, Double-Blind Placebo-Controlled Trial of Sunitinib (NSC# 736511, IND # 74019) as Maintenance Therapy in Non-Progressing Patients Following an Initial Four Cycles of Platinum-Based Combination Chemotherapy in Advanced, Stage IIIB/IV Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="12-16-2009 13:27:02">
+                    <nciDocumentNumber>8311</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>J1037</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase II Trial of Adjuvant Combined Epigenetic Therapy with 5-Azacitidine and Entinostat in Resected Stage I Non-small Cell Lung Cancer Versus Standard Care</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:47">
+                    <nciDocumentNumber>EST-2580</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-2580</localDocumentNumber>
+                        <localDocumentNumber>N81-1000</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Pala vs pcnu master protocol - evaluation new agents non-small lung cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:48">
+                    <nciDocumentNumber>E4592</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E4592</localDocumentNumber>
+                        <localDocumentNumber>CALGB-9466</localDocumentNumber>
+                        <localDocumentNumber>NCCTG-91-24-51</localDocumentNumber>
+                        <localDocumentNumber>RTOG-94-09</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9323</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Laboratory/clinical correlative studies in non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:50">
+                    <nciDocumentNumber>INT-0131</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>BR.8</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9216</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A randomized Phase III study of code plus thoracic irradiation versus alternating cav and ep for extensive stage small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:50">
+                    <nciDocumentNumber>EST-3589</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-3589</localDocumentNumber>
+                        <localDocumentNumber>RTOG-92-01</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase III study for small cell lung cancer:  prophylactic cranial irradiation versus observation in sclc patients achieving a complete response to induction therapy</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:52">
+                    <nciDocumentNumber>RTOG-89-01</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-89-01</localDocumentNumber>
+                        <localDocumentNumber>EST-2591</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III study comparing combination chemotherapy and radiation therapy with preoperative chemotherapy and surgical resection in patients with Non-Small Cell Lung Cancer (NSCLC) with spread to Mediastinal Lymph Nodes (N2)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:52">
+                    <nciDocumentNumber>CALGB-9130</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-9130</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III trial of vinblastine/cisplatin/radiation therapy with or without carboplatin (nsc# 241240) for inoperable stage iiia and stage iiib non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:53">
+                    <nciDocumentNumber>C9732</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>C9732</localDocumentNumber>
+                        <localDocumentNumber>C9732</localDocumentNumber>
+                        <localDocumentNumber>C9732</localDocumentNumber>
+                        <localDocumentNumber>C9732</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A randomized PHASE III study comparing ETOPOSIDE and CISPLATIN with ETOPOSIDE, CISPLATIN, and PACLITAXEL in patients with EXTENSIVE SMALL CELL LUNG CANCER</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:51:00">
+                    <nciDocumentNumber>C9734</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>C9734</localDocumentNumber>
+                        <localDocumentNumber>C9734</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Study of Surgical Resection and Chemotherapy (Paclitaxel and Carboplatin) with or without Adjuvant Radiotherapy for Resected Stage IIIA Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:10">
+                    <nciDocumentNumber>LCSG-862</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>LCSG-862</localDocumentNumber>
+                        <localDocumentNumber>EST-1584</localDocumentNumber>
+                        <localDocumentNumber>T86-0282</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Immunohistochemical analysis of lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:28">
+                    <nciDocumentNumber>INT-0096</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-3588</localDocumentNumber>
+                        <localDocumentNumber>RTOG-88-15</localDocumentNumber>
+                        <localDocumentNumber>SWOG-8991</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III study of cisplatin plus etoposide combined with standard fractionation thoracic radiotherapy vs cisplatin plus etoposide combined with multiple daily fractionated thoracic radiotherapy for limited stage small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:51:29">
+                    <nciDocumentNumber>T87-0266</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>DM-87-044</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III study of adjuvant cyclophosphamide/etoposide/cisplatin (cep) plus chest and brain irradiation versus no adjuvant treatment after complete resection of stage ii-iii limited non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:29">
+                    <nciDocumentNumber>T87-0267</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>DM-87-045</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III study of cyclophosphamide/etoposide/cisplatin (cep) plus chest and brain irradiation versus chest irradiation alone following partial resection of stage ii-iii limited non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:45">
+                    <nciDocumentNumber>T85-0142</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>85-C-209</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase I and pharmacokinetic study of Dihydrolenperone (NSC 343513) in Lung Cancer patients</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:37" createdDate="12-17-1998 16:51:46">
+                    <nciDocumentNumber>CALGB-8832</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-8832</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Etoposide (V[-16, NSC#141540), Carboplatin (CBDCA, NSC#241240), and Granulocyte-Macrophage-Colony-Stimulating Factor (GM-CSF) for extensive Small Cell Lung Cancer: Phase I -limited access</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:56">
+                    <nciDocumentNumber>LCSG-891</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>LCSG-891</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>The biochemical epidemiology of lung cancer: the debrisoquine metabolic phenotype</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:21">
+                    <nciDocumentNumber>T92-0246</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>VCC LUN-65</localDocumentNumber>
+                        <localDocumentNumber>SCC-9301</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Continuous Infusion Taxol In Combination With Thoracic Radiation Therapy In Untreated Locally Advanced Non-Small Cell Lung Cancer, A Phase I Study.</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:23">
+                    <nciDocumentNumber>T97-0057</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>97-128</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of  Flavopiridol for Previously  Untreated Stage  IV Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:24">
+                    <nciDocumentNumber>NCCTG-98-24-52</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-98-24-52</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase II Study of Docetaxel and Gemcitabine for Stage IIIB/IV Non-Small Cell lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:24">
+                    <nciDocumentNumber>RTOG-98-10</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-98-10</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>PHASE I trial of TIRAPAZAMINE, chemotherapy and thoracic radiation therapy for patients with locally advanced INOPERABLE NON-SMALL CELL LUNG CANCER</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:24">
+                    <nciDocumentNumber>T99-0046</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>ID99-303</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Multicenter, Open-Ended, Double-Blind, Placebo-Controlled, Phase III Study of AE-941 in Addition to Combined Modality Treatment (Chemotherapy/Radiotherapy) for Locally Advanced Unresectable Non-Small-Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="10-27-1999 15:13:01">
+                    <nciDocumentNumber>CALGB-119802</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-119802</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Fluoxetine in Stage IIIB/IV Non-Small Cell Lung Cancer (NSCLC):  A Phase II Pilot Study to Improve Quality of Life During Chemotherapy</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-01-1999 13:35:18">
+                    <nciDocumentNumber>57</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-26</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of CQS (NSC 339004) in Platinum-Refractory Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-28-1999 16:12:42">
+                    <nciDocumentNumber>892</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CCCWFU-98199</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A PHASE III, double-blind, randomized study of the effect of MEGESTROL ACETATE on weight and health related QUALITY OF LIFE in LUNG CANCER patients receiving THORACIC RADIATION THERAPY</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="07-03-2000 12:45:16">
+                    <nciDocumentNumber>2250</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>OSU 0045</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I/II Study of Carboplatin/Paclitaxel/Suramin Chemotherapy in Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="06-12-2002 15:59:53">
+                    <nciDocumentNumber>5641</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>MC0123</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of R115777, a Farnesyl Transferase Inhibitor, in Combination with Gemcitabine and Cisplatin in Advanced Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="08-05-2004 09:28:33">
+                    <nciDocumentNumber>CALGB-30306</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-30306</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Cisplatin, Irinotecan and Bevacizumab (NSC# 704865, IND# 7921) for Untreated Extensive Stage Small Cell Lung Cancer: A Phase II Study</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="02-01-2006 08:22:31">
+                    <nciDocumentNumber>7389</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>2006-042</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase 2 Study of AZD2171 (NSC 732208) in Combination with Pemetrexed in Relapsed Non-Small Cell Lung Cancer (NOS: 10029514)</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="07-14-2006 13:38:56">
+                    <nciDocumentNumber>CALGB-140503</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-140503</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Randomized Trial of Lobectomy Versus Sublobar Resection for Small (&lt;/= 2 cm) Peripheral Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="08-02-2007 11:06:08">
+                    <nciDocumentNumber>CALGB-30610</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB 30610/RTOG 0538</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III Comparison of Thoracic Radiotherapy Regimens in Patients with Limited Small Cell Lung Cancer Also Receiving Cisplatin and Etoposide</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:45">
+                    <nciDocumentNumber>CALGB-9335</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-9335</localDocumentNumber>
+                        <localDocumentNumber>C9335</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Video assisted wedge resection (var) and radiotherapy for high risk t1 non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:21">
+                    <nciDocumentNumber>T84-0286</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>84-C-47</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Treatment of non-small cell lung cancer utilizing in vitro drug sensitivity testing to improve remission status of patients receiving chemotherapy</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:22">
+                    <nciDocumentNumber>T90-0006</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>90-C-38</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Magnetic resonance (mr) imaging in the staging and evaluation of response to therapy in small cell lung cancer (sclc)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-17-1998 16:51:25">
+                    <nciDocumentNumber>T83-1407</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>HIC-2878</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>The use of mitomycin, vinblastine and cisplatinum in non-oat cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:26">
+                    <nciDocumentNumber>T89-0099</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>ONC-113</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II trial of triciribine phosphate(tcn-p,tricyclic nucleoside 5'phosphate [nsc-280594]) in the treatment of advanced non small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-17-1998 16:51:37">
+                    <nciDocumentNumber>C81-0130</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>UMCT-1680</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Cisplatin, vp-16 and methylglyoxal bis in combination vs icrf-187 alone in patients with advanced non-small cell lung cancer using a randomized cross-over design</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:44">
+                    <nciDocumentNumber>SEG-AE-83-343</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>SEG-AE-83-343</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III randomized study of Nabilone and Dexamethasone compared with Chloropromazine and Dexamethasone as antiemetic therapy for patients with limited Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:53">
+                    <nciDocumentNumber>T92-0075</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>DM92-046</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study of Taxol (NSC# 125973) in patients with Non-Small Cell Lung Cancer who have failed platinum-containing chemotherapy</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:20">
+                    <nciDocumentNumber>T86-0119</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>BGSM-62286</localDocumentNumber>
+                        <localDocumentNumber>POA-62286</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Split Course Versus Continuous Chest Radiotherapy For Limited Disease Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:24">
+                    <nciDocumentNumber>S9900</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S9900</localDocumentNumber>
+                        <localDocumentNumber>S9900</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase III Trial of Surgery Alone or Surgery Plus Preoperative Paclitaxel/Carboplatin in Clinical Stage IB (T2N0), II (T1-2N1, T3N0) and Selected IIIA (T3N1) Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="05-25-1999 10:03:15">
+                    <nciDocumentNumber>CALGB-39809</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-39809</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II randomized trial of Gemcitabine / Docetaxel and Gemcitabine / Irinotecan in stage IIIB / IV Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="07-07-1999 13:20:16">
+                    <nciDocumentNumber>E1599</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E1599</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase II Trial of Paclitaxel-Carboplatin or Gemcitabine-Cisplatin in ECOG Performance Status 2 Non-Small Cell Lung Cancer Patients</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="11-30-1999 13:33:30">
+                    <nciDocumentNumber>S9925</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S9925</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Lung Cancer Specimen Repository Protocol, Ancillary</documentTitle>
+                    <currentStatus>Closed to Accrual</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="01-13-2000 10:53:16">
+                    <nciDocumentNumber>S0003</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0003</localDocumentNumber>
+                        <localDocumentNumber>S0003</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase III Trial of Carboplatin and Paclitaxel Plus Tirapazamine Versus Carboplatin and Paclitaxel in Patients with Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="04-10-2000 17:50:53">
+                    <nciDocumentNumber>S0004</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0004</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I Study of Tirapazamine/Cisplatin/Etoposide and Concurrent Thoracic Radiotherapy for Limited Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="10-16-2000 13:00:38">
+                    <nciDocumentNumber>S0023</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0023</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Trial of Cisplatin/Etoposide/Radiotherapy with Consolidation Docetaxel Followed by Maintenance Therapy with ZD1839 (NSC-715055) or Placebo in Patients with Inoperable Locally Advanced Stage III Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="11-07-2000 13:21:24">
+                    <nciDocumentNumber>RTOG 0123</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0123</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II RandomizedTrial with Captopril (CAPOTEN) in Patients Who Have Received Radiation Therapy =/- Chemotherapy for Stage II-IIIA Non-Small Cell Lung Cancer or Limited-Stage Small-Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="02-05-2001 15:15:50">
+                    <nciDocumentNumber>5110</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>10992A</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I Study of Genasense, a Bcl-2 Antisense Oligonucleotide, Combined with Carboplatin and Etoposide in Patients with Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="09-25-2001 09:34:19">
+                    <nciDocumentNumber>5416</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>LUNG 2002-01</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of OSI 774 (IND Number 63383) in Combination with Celecoxib (Celebrex, Pharmacia) as Second-Line Therapy in Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="07-16-2002 15:35:35">
+                    <nciDocumentNumber>CALGB-140202</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-140202</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>The CALGB Lung Cancer Tissue Bank</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="02-14-2003 08:58:39">
+                    <nciDocumentNumber>S0220</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0220</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of Induction Chemoradiotherapy with Cisplatin/Etoposide Followed by Surgical Resection, Followed by Docetaxel, for Non-Small Cell Lung Cancer Involving the Superior Sulcus (Pancoast Tumors)</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-28-2005 14:25:37">
+                    <nciDocumentNumber>S0533</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0533</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Pilot Trial of Cisplatin/Etoposide/Radiotherapy Followed by Consolidation Docetaxel and the Addition of Bevacizumab (NSC-704865) in Three Cohorts of Patients with Inoperable Locally Advanced Stage III Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="04-05-2006 15:03:20">
+                    <nciDocumentNumber>7759</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>J0658</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I/II Study of Entinostat in Combination with 5-Azacytidine in Patients with Recurrent Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="04-15-2009 13:46:46">
+                    <nciDocumentNumber>RTOG-0915</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG 0915</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase II Study Comparing 2 Stereotactic Body Radiation Therapy (SBRT) Schedules for Medically Inoperable Patients with Stage I Peripheral Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:52">
+                    <nciDocumentNumber>RTOG-88-08</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-88-08</localDocumentNumber>
+                        <localDocumentNumber>EST-4588</localDocumentNumber>
+                        <localDocumentNumber>SWOG-8992</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III study of Radiation Therapy alone or in combination with Chemotherapy for patients with Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:51:04">
+                    <nciDocumentNumber>T83-1191</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>ICC-5</localDocumentNumber>
+                        <localDocumentNumber>IRB-2-83-6A</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II single agent chemotherapy cbdca for non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:11">
+                    <nciDocumentNumber>CALGB-9033</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-9033</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Oral versus intravenous etoposide in combination with intravenous cisplatin in extensive small cell lung cancer:  Phase III</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:23">
+                    <nciDocumentNumber>T84-0182</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>82-80</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Regional stage iii lung cancer: a randomized prospective trial comparing high dose radiation with pre-radiation chemotherapy followed by high dose radiation</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:28">
+                    <nciDocumentNumber>T88-0110</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>WFCC-62288</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II study of interleukin-2 in previously treated small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:30">
+                    <nciDocumentNumber>T86-0282</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>86-C-190</localDocumentNumber>
+                        <localDocumentNumber>EST-1584</localDocumentNumber>
+                        <localDocumentNumber>LCSG-862</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Collaborative study of Immunohistochemical markers in patients with Lung Cancer from ECOG and LCSG trials</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:35">
+                    <nciDocumentNumber>D82-047-0140</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CTEPIS-0033</localDocumentNumber>
+                        <localDocumentNumber>D81-047-0140</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III pilot for the treatment of non-small cell lung cancer with bleomycin, vp-16 and cis-platinum (bep)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-17-1998 16:51:50">
+                    <nciDocumentNumber>NCCTG-90-20-51</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-90-20-51</localDocumentNumber>
+                        <localDocumentNumber>90-20-51</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II study of 10-Edam in previously treated patients and untreated patients with extensive stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:52">
+                    <nciDocumentNumber>T91-0205</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>Topotecan in Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:54">
+                    <nciDocumentNumber>T93-0007</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>JHOC 93-23</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase I Study of the addition of escalating doses of Taxol (NSC 125973) to concurrent Thoracic Radiotherapy for patients with inoperable Stage III-A or Stage IIIB Non- Small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="03-29-1999 18:06:18">
+                    <nciDocumentNumber>CALGB-39808</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-39808</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>TOPOTECAN/PACLITAXEL INDUCTION followed by consolidation CHEMORADIOTHERAPY for limited STAGE SMALL CELL LUNG CANCER: A PHASE II STUDY</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="03-29-1999 18:06:19">
+                    <nciDocumentNumber>T94-0050</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PCI 94-09</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial Of Topotecan And Paclitaxel With G-CSF (Filgrastim) Support In Patients With Previously Untreated Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:22">
+                    <nciDocumentNumber>T94-0175</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>2O-94-1</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Feasibility Trial of 9-Aminocamptothecin (NSC 603071) Plus G-CSF in Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="11-12-1999 16:12:18">
+                    <nciDocumentNumber>571</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHI-31</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I Study of Tirapazamine (NSC 130181), Paclitaxel, and Carboplatin with Concurrent Radiation Followed by Paclitaxel/Carboplatin Consolidation for Stage III Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-13-1999 13:08:13">
+                    <nciDocumentNumber>CALGB-39901</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-39901</localDocumentNumber>
+                        <localDocumentNumber>CALGB-39901</localDocumentNumber>
+                        <localDocumentNumber>CALGB-39901</localDocumentNumber>
+                        <localDocumentNumber>CALGB-39901</localDocumentNumber>
+                        <localDocumentNumber>CALGB-39901</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of Weekly Dose-Dense Paclitaxel in Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="03-14-2002 13:14:35">
+                    <nciDocumentNumber>RTOG-0214</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0214</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Comparison of Prophylactic Cranial Irradiation Versus Observation in Patients with Locally Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="03-14-2003 15:40:46">
+                    <nciDocumentNumber>S0222</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0222</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Tirapazamine (NSC-130181)/Cisplatin/Etoposide and Concurrent Thoracic Radiotherapy for Limited Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-22-2005 12:33:03">
+                    <nciDocumentNumber>7690</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-78</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Prophylactic Radiation Therapy for the Prevention of Hemoptysis in Advanced Non Small Cell Lung Cancer in Combination with Bevacizumab, Paclitaxel, and Carboplatin in Patients at High Risk for Bevacizumab-Associated Hemoptysis</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="01-27-2006 08:15:20">
+                    <nciDocumentNumber>7555</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHL-053</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase 2 Study of AZD0530 in Patients with Advanced, Recurrent Non-Small Cell Lung Cancer Who Have Previously Received Platinum-Based Combination Chemotherapy</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="03-29-2007 10:47:31">
+                    <nciDocumentNumber>RTOG-0623</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0623</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of Combined Modality Therapy with Growth Factor Support for Patients with Limited Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="10-29-2007 10:54:06">
+                    <nciDocumentNumber>N0723</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>N0723</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Biomarker Validation Study of Second-Line Therapy in Patients with Advanced Non-Small Cell Lung Cancer (NSCLC) Randomized to Pemetrexed Versus Erlotinib</documentTitle>
+                    <currentStatus>Closed to Accrual</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:45">
+                    <nciDocumentNumber>E5593</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E5593</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Early detection of second primary lung cancers by sputum cytology immunostaining</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:46">
+                    <nciDocumentNumber>E3592</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E3592</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9311</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Cisplatin plus etoposide versus daily oral etoposide in elderly patients with extensive-stage small cell lung cancer: a Phase III trial of the eastern cooperative oncology group</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:37" createdDate="12-17-1998 16:51:12">
+                    <nciDocumentNumber>SWOG-9207</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>SWOG-9207</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II trial of edatrexate plus carboplatin in metastatic non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:12">
+                    <nciDocumentNumber>T94-0144</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II trial of aminocamptothecin (9-ac) in patients with non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:24">
+                    <nciDocumentNumber>T83-1472</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CO-8254</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A pilot study of whole body hyperthermia (wbh) and local radiotherapy (lr) for advanced non-small cell lung cancer (nsclc) confined to the thorax</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:25">
+                    <nciDocumentNumber>T83-1281</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>83-C-186</localDocumentNumber>
+                        <localDocumentNumber>NCI-NMOB-83-5</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II trial of cbdca in non-small cell and small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:37">
+                    <nciDocumentNumber>C82-1314</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>DT-81-06A</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Chemotherapy of advanced lung cancer with aclacinomycin-a administered as a 24-hour continuous intravenous infusion Phase II</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:53">
+                    <nciDocumentNumber>T92-0218</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>DM92-095</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study of combination chemotherapy with Edatrexate, Ifosfamide, and Cisplatin (EIP) plus Leucovorin and Mesna rescue for patients with Stage IIIB or IV Non-Small cell lung cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:53">
+                    <nciDocumentNumber>CALGB-9237</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-9237</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Etoposide (VP-16, NSC #14540) and Carboplatin (CBDCA, NSC #24120) with Granulocyte-Macrophage-Colony-Stimulating Factor (GM-CSF) and Interleukin-6 (Il-6) support for Advanced Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:54">
+                    <nciDocumentNumber>CALGB-9331</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-9331</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9433</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II feasibility study of high dose Cyclophosphamide, Cisplatin, Carmustine (CB[) therapy as consolidation for patients with Limited Small Cell Lung Cancer (SCLC) in or near complete response to chemoradiotherapy</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:55">
+                    <nciDocumentNumber>T96-0008</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II trial of CI-980 in advanced Non-small cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-17-1998 16:51:56">
+                    <nciDocumentNumber>T97-0097</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Evaluation of Bryostatin-1 (NSC#339555) in Patients with advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:56">
+                    <nciDocumentNumber>T97-0106</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>VCC THO 9817</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of 6-Hydroxymethylacylfulvene (MGI-114, NSC #683863) in Patients with Advanced Non-Small Cell Lung Cancer Previously Treated with Chemotherapy</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:23">
+                    <nciDocumentNumber>T96-0045</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>VCC THO 9814 \ 99-C-0142</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of Individualized Mutant p53 Peptide-Pulsed Cultured Autologous Dendritic Cells in the Adjuvant Treatment of Patients with Locally Advanced Non-Small Cell Lung Cancer After Standard Therapy</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="06-03-1999 13:30:00">
+                    <nciDocumentNumber>RTOG-99-09</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-99-09</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study of Postoperative Adjuvant Immunotherapy and Radiation in Patients with Completely Resected Stage II and Stage IIIA Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="09-16-1999 10:27:13">
+                    <nciDocumentNumber>91</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CWRU 1599</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase II Trial of Two Different Schedules of Administration of Rebeccamycin Analog in Patients with Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="04-24-2002 09:40:20">
+                    <nciDocumentNumber>N0124</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>N0124</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of STI571 in Patients with Relapsed Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:37" createdDate="09-13-2004 10:05:27">
+                    <nciDocumentNumber>RTOG-0412-SWOG-S0332</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0412</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III Randomized Trial of Preoperative Chemotherapy Versus Preoperative Concurrent Chemotherapy and Thoracic Radiotherapy Followed by Surgical Resection and Consolidation Chemotherapy in Favorable Prognosis Patients with Stage IIIA (N2) Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="04-21-2005 16:31:26">
+                    <nciDocumentNumber>S0424</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0424</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Molecular Epidemiology Case-Series Study of Non-Small Cell Lung Cancer in Smoking and Non-Smoking Women and Men</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="03-05-2007 14:43:28">
+                    <nciDocumentNumber>8027</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>MC0721</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of AT-101 in Recurrent Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:50:45">
+                    <nciDocumentNumber>NCCTG-90-24-51</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>90-24-51</localDocumentNumber>
+                        <localDocumentNumber>90-24-51</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III trial in Stage IIIA and IIIB Non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:50">
+                    <nciDocumentNumber>INT-0139</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-9309</localDocumentNumber>
+                        <localDocumentNumber>CALGB-9592</localDocumentNumber>
+                        <localDocumentNumber>R9309</localDocumentNumber>
+                        <localDocumentNumber>R9309</localDocumentNumber>
+                        <localDocumentNumber>NCIC CTG BR.13</localDocumentNumber>
+                        <localDocumentNumber>93-17</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9336</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III comparison between concurrent chemotherapy plus radiotherapy, and concurrent chemotherapy plus radiotherapy followed by surgical resection for stage iiia (n2) non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="12-17-1998 16:51:03">
+                    <nciDocumentNumber>SWOG-8866</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>SWOG-8866</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Evaluation of piroxantrone in advanced and metastatic (stage iv) non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:07">
+                    <nciDocumentNumber>EST-1584</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-1584</localDocumentNumber>
+                        <localDocumentNumber>LCSG-862</localDocumentNumber>
+                        <localDocumentNumber>T86-0282</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Immunohistochemical analysis of Lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:33">
+                    <nciDocumentNumber>SEG-LUN-78-326R</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>SEG-LUN-78-326R</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III randomized study in advanced Lung Cancer (Squamous, Large Cell and Adenocarcinoma)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:47">
+                    <nciDocumentNumber>CALGB-8531</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-8531</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>5-FU and Cisplatin vs. 5-FU, Cisplatin, and Vinblastine in Advanced Non-Small Cell Lung Cancer:  randomized Phase II</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:47">
+                    <nciDocumentNumber>LCSG-832</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>LCSG-832</localDocumentNumber>
+                        <localDocumentNumber>EST-5585</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A prospective randomized trial to determine the benefit of surgical resection of residual disease following response of small cell lung cancer to combination chemotherapy</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:52">
+                    <nciDocumentNumber>T91-0246</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>91-C-234</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Pilot and Phase II Study of low dose rate chest radiotherapy for treatment of Intrathoracic Relapse of small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:51:56">
+                    <nciDocumentNumber>T98-0016</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>98-70</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Dolastatin-10 (NSC #376128) in Patients with Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:22">
+                    <nciDocumentNumber>T94-0064</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RC-1785</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of SURAMIN In Non-Small Cell Lung Cancer: Induction of differentiation and Apoptosis</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="06-17-1999 09:33:42">
+                    <nciDocumentNumber>NCCTG-98-20-52</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-98-20-52</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of Oral Topotecan and Paclitaxel  with G-CSF (Filgrastim) Support in Patients with Previously Untreated Extensive-Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="06-17-1999 13:31:22">
+                    <nciDocumentNumber>T99-0072</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>MAYO 98-24-01</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of the Farnesyl Transferase Inhibitor R115777 in Patients with Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="11-29-2000 10:19:16">
+                    <nciDocumentNumber>2655</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>01H0114/0120</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase 2 Study of Neoadjuvant rhuMAb VEGF (Bevacizumab) in Combination with Paclitaxel and Carboplatin in Surgically Resectable Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="04-16-2003 14:15:32">
+                    <nciDocumentNumber>S0327</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0327</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Trial of PS-341 (NSC-681239) in Patients with Platinum-Treated Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="07-15-2003 12:02:19">
+                    <nciDocumentNumber>6256</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>LUN012</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Triapine and Gemcitabine as Second-Line Treatment of Advanced Non-Small-Cell Lung Cancer in Patients Who Had Prior Gemcitabine with Evaluation of the Effect of Triapine ® on Gemcitabine Pharmacokinetics and Cellular Uptake in Peripheral Mononuclear Cells</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="02-23-2004 12:26:25">
+                    <nciDocumentNumber>S0341</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0341</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of OSI-774 (NSC-718781) in Patients with Advanced Non-Small Cell Lung Cancer and a Performance Status of 2</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="02-23-2004 14:11:40">
+                    <nciDocumentNumber>E4503</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E4503</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study to Evaluate the Tumor Biochemical Effects of the EGFR Tyrosine Kinase Inhibitor OSI-774 (Erlotinib) Administered Prior to Surgical Resection in Patients with Early Stage Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:37" createdDate="06-21-2004 12:41:38">
+                    <nciDocumentNumber>6654</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>05-C-0049</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study of BAY 43-9006 (Sorafenib) with Evaluation of RAS Signal Pathway in Patients with Relapsed Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="10-25-2004 15:19:33">
+                    <nciDocumentNumber>6860</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CO 04510</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Suberoylanilide Hydroxamic Acid (SAHA) in Patients with Relapsed Non-small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="12-18-2006 14:48:38">
+                    <nciDocumentNumber>RTOG-0617</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0617</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase III Comparison of Standard-Dose (60 Gy) Versus High-Dose (74 Gy) Conformal Radiotherapy with Concurrent and Consolidation Carboplatin/Paclitaxel +/- Cetuximab (IND #103444) in Patients with Stage IIIA/IIIB Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="02-22-2010 09:41:31">
+                    <nciDocumentNumber>8703</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-102</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Randomized Study of Vorinostat or Placebo in Combination with Carboplatin and Paclitaxel for Patients with Advanced Non-small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-17-1998 16:51:02">
+                    <nciDocumentNumber>W83-0066</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>OSU-8210</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II evaluation of aclacinomycin in lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:10">
+                    <nciDocumentNumber>CALGB-8331</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-8331</localDocumentNumber>
+                        <localDocumentNumber>T84-0371</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II treatment of refractory small cell lung cancer with cis platinum &amp; vp-16</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:25">
+                    <nciDocumentNumber>NCOG-2N-80-1J</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCOG-2N-80-1J</localDocumentNumber>
+                        <localDocumentNumber>RTOG-79-17</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III study to compare Misonidazole combined with irradiation of radiation therapy alone in the treatment of locally advanced (Stage III) Non-Oat Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:33" createdDate="12-17-1998 16:51:26">
+                    <nciDocumentNumber>NCCTG-87-24-51</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-87-24-51</localDocumentNumber>
+                        <localDocumentNumber>87-24-51</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III study in the treatment of extensive Non-Small Cell Lung Cancer: A controlled evaluation of a new approach to combined Etoposide and Cis Platinum Therapy</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:33">
+                    <nciDocumentNumber>SEG-LUN-81-343R</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>SEG-LUN-81-343R</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III randomized study of simultaneously administered radiotherapy to the chest and combination chemotherapy (CAV) versus CAV alone in limited stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:34">
+                    <nciDocumentNumber>EST-P-Z586</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-P-Z586</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II study of recombinant Interleukin 2 with and without recombinant beta Interferon in patients with advanced non-small cell Lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:37" createdDate="12-17-1998 16:51:35">
+                    <nciDocumentNumber>D81-043-0347</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>DT-80-65</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Intensive combined modality treatment of small cell lung cancer with systemic chemotherapy, adjuvant surgery and radiation therapy (echo no. 3)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:48">
+                    <nciDocumentNumber>INT-0064</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-85-24</localDocumentNumber>
+                        <localDocumentNumber>SWOG-8609</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase II study of neutron vs. photon radiation therapy after induction chemotherapy for inoperable, regional, non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:55">
+                    <nciDocumentNumber>SWOG-8609</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>SWOG-8609</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Vm-26 (Teniposide) single drug treatment for extensive Small Cell Lung Cancer: Phase II</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:34" createdDate="03-18-1999 08:59:38">
+                    <nciDocumentNumber>CALGB-39802</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-39802</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Video-Assisted Lobectomy for Peripheral (&lt; 3 cm), NO, Non-Small Cell Lung Cancer:  A Phase II Feasibility Study</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:17">
+                    <nciDocumentNumber>T98-0091</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I/II Study of G3139, A Bcl-2 Antisense Oligonucleotide, Combined with Paclitacel for the Treatment of Recurrent Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:19">
+                    <nciDocumentNumber>NCCTG-98-24-53</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>NCCTG-98-24-53</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Irinotecan (CPT-11) and Doxetaxel (Taxotere) in Previously Treated Patients with Recurrent Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:23">
+                    <nciDocumentNumber>T97-0024</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CWRU 1597</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of 9-AMINOCAMPTOTHECIN (9-AC) COLLOIDAL Dispersion (CD) 120-Hour Continuous Intravenous Infusion In Advanced NON-SMALL CELL LUNG CANCER</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="08-05-1999 12:34:16">
+                    <nciDocumentNumber>S9909</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S9909</localDocumentNumber>
+                        <localDocumentNumber>S9909</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>POSITRON EMISSION TOMOGRAPHY (PET) IMAGING of LUNG CANCER  response to therapy in patients registered to S9900</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="09-02-1999 11:22:05">
+                    <nciDocumentNumber>T99-0112</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>9940</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of Fenretinide (NSC-374551; IND-40,294) in Patients with Relapsed Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="08-29-2000 12:59:11">
+                    <nciDocumentNumber>2310</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>2310</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Pilot Phase II Research Study of EF5 to Measure Tumor Hypoxia in Patients with Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-07-2001 10:50:43">
+                    <nciDocumentNumber>S0027</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0027</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of Sequential Vinorelbine and Docetaxel in Advanced Non-Small Cell Lung Cancer Patients Age Seventy and Older, or with Performance Status 2</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="11-01-2001 11:08:10">
+                    <nciDocumentNumber>5684</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHL-008</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I Study of STI571 (Gleevec) in Combination with Cisplatin/Irinotecan in Patients with Extensive Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-23-2002 14:11:30">
+                    <nciDocumentNumber>6104</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHL-017</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase 1/2 Study of GTI-2040 Combined with Docetaxel in Metastatic or Unresectable Locally Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-30-2002 10:14:06">
+                    <nciDocumentNumber>S0322</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0322</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Single Agent ZD-1839 (NSC-715055, IND-61187) in Patients with Advanced Head and Neck Carcinoma or Non-Small Cell Lung Cancer Aged 75 Years and Older (and in a Cohort of Patients 50 Years Old and Younger)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="11-12-2003 08:29:37">
+                    <nciDocumentNumber>1990</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CASE 1503</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Trial of XL119 (Rebeccamycin Analogue) in Relapsed "Sensitive" Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Administratively Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="11-22-2005 15:56:24">
+                    <nciDocumentNumber>E1505</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>E1505</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase III Randomized Trial of Adjuvant Chemotherapy with or without Bevacizumab for Patients with Completely Resected Stage IB (>/= 4 cm) - IIIA Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="02-08-2007 09:21:18">
+                    <nciDocumentNumber>8062</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CO 07901</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase 1 Study of R-(-)-Gossypol (AT-101) in Combination with Cisplatin and Etoposide in Patients with Advanced Solid Tumors and Extensive-Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="12-30-2008 13:24:46">
+                    <nciDocumentNumber>S0819</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0819</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized, Phase III Study Comparing Carboplatin/Paclitaxel or Carboplatin/Paclitaxel/Bevacizumab with or without Concurrent Cetuximab in Patients with Advanced Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="05-07-2009 14:38:39">
+                    <nciDocumentNumber>CALGB-30801</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB 30801</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase III Double Blind Trial Evaluating Selective COX-2 Inhibition in COX-2 Expressing Advanced Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="12-11-2009 11:50:42">
+                    <nciDocumentNumber>8444</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase II Study of AZD6244 (Mitogen-activated Protein Kinase Inhibitor) MEK-Inhibitor with Erlotinib in KRAS Wild Type Advanced Non-Small Cell Lung Cancer (NSCLC) and a Randomized Phase II Study of AZD6244 with Erlotinib in Mutant KRAS Advanced NSCLC.</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:53">
+                    <nciDocumentNumber>E3590</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-3590</localDocumentNumber>
+                        <localDocumentNumber>CALGB-9393</localDocumentNumber>
+                        <localDocumentNumber>NCCTG-91-24-51</localDocumentNumber>
+                        <localDocumentNumber>RTOG-9105</localDocumentNumber>
+                        <localDocumentNumber>SWOG-9252</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Prospective randomized trial of postoperative adjuvant therapy in patients with completely resected stage II and stage IIIA non-small cell Lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="12-17-1998 16:50:57">
+                    <nciDocumentNumber>CALGB-39801</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-39801</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Concurrent Carboplatin, Paclitaxel, and Radiation Therapy Versus Induction Carboplatin and Paclitaxel Followed by Concurrent Carboplatin, Paclitaxel and Radiation Therapy for Patients with Unresectable Stage III Non-Small Cell Lung Cancer: A Phase III Trial</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:37" createdDate="12-17-1998 16:51:31">
+                    <nciDocumentNumber>T83-1101</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CIC-83-75</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Trial of the combination of mitomycin-c,vindesine and cis-platinum (mvp) in the treatment of patients with stage iii non-small cell lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:34">
+                    <nciDocumentNumber>EST-P-Y586</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>EST-P-Y586</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II study of combined recombinant beta and gamma Interferon in metastatic non-small cell Lung cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:48">
+                    <nciDocumentNumber>RTOG-83-21</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-83-21</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase III study of combined modality treatment by Thymosin and radiation therapy for Unresectable Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:32" createdDate="12-17-1998 16:51:55">
+                    <nciDocumentNumber>T95-0084</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>8013</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II study of Doxorubicin and Taxol given prior to Cisplatin and Etoposide in the treatment of patients with extensive-stage small cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:35" createdDate="03-29-1999 18:06:19">
+                    <nciDocumentNumber>T99-0018</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II Study of Bryostatin-1 in Combination with Paclitaxel for Non-Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="10-12-2001 15:28:56">
+                    <nciDocumentNumber>RTOG-0212</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0212</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase II/III Randomized Trial of Two Doses (Phase III-Standard vs. High) and Two High Dose Schedules (Phase II-Once vs. Twice Daily) for Delivering Prophylactic Cranial Irradiation for Patients with Limited Disease Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="11-23-2001 08:52:10">
+                    <nciDocumentNumber>S0124</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>S0124</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase III Trial of Cisplatin and Irinotecan (NSC-616348) Versus Cisplatin and Etoposide in Patients with Extensive Stage Small Cell Lung Cancer (E-SCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="08-28-2002 12:53:25">
+                    <nciDocumentNumber>RTOG-0241</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>RTOG-0241</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase I Study of Irinotecan and Cisplatin in Combination with Twice Daily Thoracic Radiotherapy (45 Gy) or Once Daily Thoracic Radiotherapy (70 Gy) for Patients
+                        with Limited Stage Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Closed to Accrual &amp; Treatment</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="12-08-2004 08:41:08">
+                    <nciDocumentNumber>7097</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-64</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Phase II Study of AZD2171 in Patients with Recurrent Small Cell Lung Cancer</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:36" createdDate="05-27-2005 12:34:00">
+                    <nciDocumentNumber>7077</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>PHII-70</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>Randomized Phase II Trial of Sequential Versus Concurrent Docetaxel and PS-341 (NSC 681239, IND 58,443) in Previously Treated Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Complete</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="10-03-2007 09:01:52">
+                    <nciDocumentNumber>8148</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>COMIRB 08-0044</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Phase I/Randomized Phase II Study of the Anti-IGF-1R Monoclonal Antibody IMC-A12 in Combination with Erlotinib Compared with Erlotinib Alone in Patients with Advanced Non-Small Cell Lung Cancer (NSCLC)</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+                <document updatedDate="04-10-2012 14:17:38" createdDate="07-22-2008 08:29:11">
+                    <nciDocumentNumber>CALGB-30506</nciDocumentNumber>
+                    <localDocumentNumberList>
+                        <localDocumentNumber>CALGB-30506</localDocumentNumber>
+                    </localDocumentNumberList>
+                    <documentTitle>A Randomized Phase III Trial of Adjuvant Chemotherapy in Patients with Early Stage Non-Small Cell Lung Cancer Associated with Banking of Frozen Tumor Specimens and Collection of Gene Expression Profile Data</documentTitle>
+                    <currentStatus>Active</currentStatus>
+                </document>
+            </Documents>
+        </ns2:searchStudyResponse>
+    </S:Body>
+</S:Envelope>
