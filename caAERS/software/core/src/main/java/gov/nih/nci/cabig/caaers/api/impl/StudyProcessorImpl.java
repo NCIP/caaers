@@ -166,7 +166,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return "ALL_ORGS_AUTH";
 	}
 
-    private CaaersServiceResponse processXMLStudy(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
+    public CaaersServiceResponse createOrUpdate(gov.nih.nci.cabig.caaers.integration.schema.study.Studies xmlStudies) {
         gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = xmlStudies.getStudy().get(0);
         CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
         // ToDo Merge createStudy & updateStudy into this method
