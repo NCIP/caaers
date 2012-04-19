@@ -230,7 +230,8 @@ default-lazy-init="true">
 	
 	<bean id="organizationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationMigrator"/>
 	<bean id="agentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator"/>
-	
+	<bean id="deviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.DeviceMigrator"/>
+
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter">
 		<property name="ctcTermDao" ref="ctcTermDao"/>
 		<property name="lowLevelTermDao" ref="lowLevelTermDao"/>

@@ -58,6 +58,42 @@ public class StudyDeviceMigratorTest extends DaoTestCase {
         assertEquals(3, dbStudy.getStudyDevices().size());
     }
 
+    public void testUpdateDevice() {
+
+        Study dbStudy = studyDao.getStudyDesignById(-2);
+        assertEquals(3, deviceDao.getAllDevices().size());
+        assertEquals(2, dbStudy.getStudyDevices().size());
+        assertEquals("Type 01", deviceDao.getById(-1).getType());
+        assertEquals(-1, deviceDao.getById(-1).getId().intValue());
+
+        //
+        Study s = new LocalStudy();
+        s.setStudyDevices(new ArrayList<StudyDevice>(1));
+        StudyDevice sd = new StudyDevice();
+
+        //
+        Device d = new Device();
+        d.setCommonName("Common name 01");
+        d.setBrandName("B");
+        d.setType("T");
+
+        sd.setStudy(dbStudy);
+        sd.setDevice(d);
+        s.getStudyDevices().add(sd);
+
+        DomainObjectImportOutcome outcome = new DomainObjectImportOutcome<Study>();
+        sdm.migrate(s, dbStudy, outcome);
+
+        assertEquals(3, deviceDao.getAllDevices().size());
+        assertEquals(3, dbStudy.getStudyDevices().size());
+        Device loadedDevice = deviceDao.getById(-1);
+        assertEquals("T", loadedDevice.getType());
+        assertEquals("B", loadedDevice.getBrandName());
+        assertEquals("Common name 01, B, T", loadedDevice.getDisplayName());
+        assertEquals(-1, loadedDevice.getId().intValue());
+
+    }
+
 /*
     @Override
     protected DatabaseOperation getTearDownOperation() throws Exception {

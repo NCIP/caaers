@@ -20,6 +20,7 @@ public class StudyDeviceMigrator implements Migrator<Study> {
 
 	private DeviceRepository deviceRepository;
 	private DeviceDao deviceDao;
+	private DeviceMigrator deviceMigrator;
     private static Log log = LogFactory.getLog(StudyRepository.class);
 
 	public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
@@ -33,14 +34,15 @@ public class StudyDeviceMigrator implements Migrator<Study> {
                 List<Device> ld = deviceRepository.getByCommonName(sd.getDevice().getCommonName());
                 if (ld.size() > 0) {
                     d = ld.get(0);
+                    deviceMigrator.migrate(sd.getDevice(), d, null);
                 } else {
                     // Create the device if needed
                     d = new Device();
                     d.setCommonName(sd.getDevice().getCommonName());
                     d.setBrandName(sd.getDevice().getBrandName());
                     d.setType(sd.getDevice().getType());
-                    deviceDao.save(d);
                 }
+                deviceDao.save(d);
             }
 
             newStudyDevice.setDevice(d);
@@ -75,5 +77,13 @@ public class StudyDeviceMigrator implements Migrator<Study> {
 
     public void setDeviceDao(DeviceDao deviceDao) {
         this.deviceDao = deviceDao;
+    }
+
+    public DeviceMigrator getDeviceMigrator() {
+        return deviceMigrator;
+    }
+
+    public void setDeviceMigrator(DeviceMigrator deviceMigrator) {
+        this.deviceMigrator = deviceMigrator;
     }
 }
