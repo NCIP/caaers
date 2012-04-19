@@ -1,0 +1,40 @@
+
+<dataset>
+
+    <ctc_versions id="3" name="CTCAE v3.0" />
+    <meddra_versions id="4" name="CTCAE v3.0" />
+
+    <ctc_categories id="302" name="auditory/ear" version_id="3" />
+    <ctc_terms id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />
+    <ctc_terms id="3010" category_id="302" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043883" other_required="1" />
+    <meddra_llt id="-11" meddra_code="2" meddra_term="Hello World" />
+    <organizations id="-1001" version="1" name="National Cancer Institute" description_text="NCI" nci_institute_code="NCI" />
+    <organizations id="-1002" version="1" name="CALGB" description_text="CALGB" nci_institute_code="DEFAULT" />
+    <studies id="-2" multi_institution_indicator="0" short_title="Short Title" long_title="Long Title" description="Description" grid_id="" load_status="1" />
+    <disease_terminologies id="-11" term_code="1" study_id="-2" />
+    <terminologies id="-11" term_code="1" ctc_id="3" study_id="-3" />
+    <identifiers id="-16" stu_id="-2" value="1138-43" type="Coordinating Center Identifier" organization_id="-1001" discriminator_column="1"/>
+
+    <agents name="A-01" nsc="nsc-01" id="-1"/>
+    <agents name="A-02" nsc="nsc-02" id="-2"/>
+
+    <study_agents study_id="-2" agent_id="-1" study_therapy_type="1"/>
+    <study_agents study_id="-2" agent_id="-2" study_therapy_type="1" />
+
+    <ctc_grades/>
+	<study_agents />
+    <ind_holders/>
+    <study_agent_inds/>
+    <treatment_assignment/>
+    <epochs/>
+    <arms/>
+    <solicited_events/>
+    <spa_disease_histories/>
+    <spa_prior_therapies/>
+    <spa_concomitant_medications/>
+    <spa_pre_existing_conds/>
+    <devices />
+    <study_devices />
+    <site_investigators />
+
+</dataset>

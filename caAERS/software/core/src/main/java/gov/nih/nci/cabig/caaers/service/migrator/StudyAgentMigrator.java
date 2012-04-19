@@ -16,7 +16,8 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 	
 	private AgentDao agentDao;
 	private InvestigationalNewDrugDao investigationalNewDrugDao;
-	
+	private AgentMigrator agentMigrator;
+
 	/**
 	 * Will migrate StudyAgent from source to destination study.
 	 * @param source - {@link Study} which is the source
@@ -31,16 +32,6 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 
 			if (studyAgent.getAgent().getName() != null) {
 				agent = agentDao.getByName(studyAgent.getAgent().getName());
-
-                if (agent == null) {
-                    // ADD THE NEW AGENT TO THE DB
-                    agent = new Agent();
-                    agent.setName(studyAgent.getAgent().getName());
-                    agent.setNscNumber(studyAgent.getAgent().getNscNumber());
-                    agent.setDescription(studyAgent.getAgent().getDescription());
-                    agent.setDisplayName(studyAgent.getAgent().getDisplayName());
-                    agentDao.save(agent);
-                }
 				target.setAgent(agent);
 			}
 
@@ -52,6 +43,17 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 				agent = agentDao.getByNscNumber(studyAgent.getAgent().getNscNumber());
 				target.setAgent(agent);
 			}
+
+            if (agent == null) {
+                // ADD THE NEW AGENT TO THE DB
+                agent = new Agent();
+                agent.setName(studyAgent.getAgent().getName());
+                agent.setNscNumber(studyAgent.getAgent().getNscNumber());
+                agent.setDescription(studyAgent.getAgent().getDescription());
+            } else {
+                agentMigrator.migrate(studyAgent.getAgent(), agent, null);
+            }
+            agentDao.save(agent);
 
 			if (studyAgent.getOtherAgent() != null && agent == null) {
 				target.setOtherAgent(studyAgent.getOtherAgent());
@@ -131,5 +133,13 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 	
     public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
         this.investigationalNewDrugDao = investigationalNewDrugDao;
+    }
+
+    public AgentMigrator getAgentMigrator() {
+        return agentMigrator;
+    }
+
+    public void setAgentMigrator(AgentMigrator agentMigrator) {
+        this.agentMigrator = agentMigrator;
     }
 }

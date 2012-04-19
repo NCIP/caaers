@@ -122,13 +122,13 @@ public class Agent extends AbstractMutableRetireableDomainObject implements Seri
      * @return the display name
      */
     @Transient
-    public String getDisplayName(){
-    	if(StringUtils.isNotEmpty(nscNumber)){
-    		return nscNumber + "::" + name;
-    	}
-    	return name;
+    public String getDisplayName() {
+        if (StringUtils.isNotEmpty(nscNumber)) {
+            return nscNumber + "::" + name;
+        }
+        return name;
     }
-    
+
     /**
      * Sets the display name.
      *
