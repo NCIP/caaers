@@ -31,13 +31,13 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	 */
 	public void configureWSCallRoute(String fromSink, String requestXSL, String serviceURI,  String responseXSL, String toSink){
 		from(fromSink)
-        .to("log:before_request_xsl" + fromSink)
+        .to("log:caaers.beforeRequestXSL?showHeaders=true")
 		.to("xslt:" + requestXSL)
-         .to("log:after_request_xsl" + fromSink)
-		.to(ExchangePattern.InOut, serviceURI)
-        .to("log:before_response_xsl" + toSink)
+        .to("log:caaers.afterRequestXSL?showHeaders=true")
+        .to(ExchangePattern.InOut, serviceURI).processRef("headerGeneratorProcessor")
+        .to("log:caaers.beforeResponseXSL?showAll=true")
 		.to("xslt:" + responseXSL)
-         .to("log:after_response_xsl"+ toSink)
+        .to("log:caaers.afterResponseXSL?showHeaders=true")
 		.to(toSink);
 	}
 
@@ -48,14 +48,14 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
      */
     public void configureTransformationRoute(String fromSink, String xslFile){
         from(fromSink)
-                .to("log:before_xslFile" + fromSink)
+                .to("log:caaers.beforeSyncXSL?showHeaders=true")
                 .to("xslt:" + xslFile)
-                .to("log:after_xslFile" + fromSink);
+                .to("log:caaers.afterSyncXSL?showHeaders=true");
     }
 	
     public void configure() {
 
-        errorHandler(loggingErrorHandler("gov.nih.nci.cabig.caaers2adeers").level(LoggingLevel.ERROR));
+        onException(Throwable.class).to("direct:morgue");
 
         //webservice request
         //from("")
@@ -63,7 +63,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         // .to("direct:adEERSRequestSink");
         
       //just for testing.. 
-    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
+    	from("timer://tutorial?fixedRate=true&delay=2000&period=300000")
     		.setBody(constant(MockMessageGenerator.getStudySearchRequest()))
     		.to("direct:adEERSRequestSink");
 
@@ -83,15 +83,20 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
     	//need to process AdEERS results, may be the SyncComponent...  
     	from("direct:adEERSResponseSink")
-                .to("log:synch-comp")
+                .to("log:caaers.synch-comp?showHeaders=true")
                 .choice()
                     .when(header("c2a_sync_mode").isEqualTo("sync")).to("direct:caAERSSynchronousRequestSink")
                     .otherwise().to("direct:caAERSAsynchronousRequestSink");
     	
     	//need to process caAERS results
-		from("direct:caAERSResponseSink") .to("log:direct-caAERSResponseSink");
+		from("direct:caAERSResponseSink").to("log:caaers.direct-caAERSResponseSink");
     	
-		//need to elaborate error handling. 
+		//invalid requests
+        from("direct:morgue")
+                .to("log:fromMorgue?showAll=true")
+                .to("xslt:xslt/caaers/response/unknown.xsl")
+                .to("log:after-unknown")
+                .to("log:caaers.invalid?showAll=true&level=WARN");
 
     }
 

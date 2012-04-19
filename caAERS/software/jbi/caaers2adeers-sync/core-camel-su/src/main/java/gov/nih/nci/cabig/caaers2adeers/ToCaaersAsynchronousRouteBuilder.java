@@ -28,10 +28,10 @@ public class ToCaaersAsynchronousRouteBuilder {
 	public void configure(){
 		//content based router
 		routeBuilder.from("direct:caAERSAsynchronousRequestSink")
-		.to("log:caaers-request")
+		.to("log:caaers.caaers-request?showHeaders=true")
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
-			.otherwise().to("log:unknown-caaers-request");
+			.otherwise().to("direct:morgue");
 		
 		//caAERS - createOrUpdateAgents
 		configureWSCallRoute("direct:caaers-agent-async", "agents_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );

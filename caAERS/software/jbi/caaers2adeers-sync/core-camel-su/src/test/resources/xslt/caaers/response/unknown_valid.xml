@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="searchStudy">
+            <errors>
+                <error>S:Server : Missing or invalid WS-Security Header</error>
+            </errors>
+        </operation>
+    </response>
+</payload>

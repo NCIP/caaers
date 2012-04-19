@@ -32,10 +32,10 @@ public class ToCaaersSynchronousRouteBuilder {
     public void configure(){
         //content based router
         routeBuilder.from("direct:caAERSSynchronousRequestSink")
-                .to("log:caaers-sync-request")
+                .to("log:caaers.caaers-sync-request?showHeaders=true")
                 .choice()
                 .when().xpath(xpathPredicate("study", "searchStudy")).to("direct:caaers-study-search-sync")
-                .otherwise().to("log:unknown-sync-caaers-request");
+                .otherwise().to("direct:morgue");
 
         //caAERS - searchStudy
         this.routeBuilder.configureTransformationRoute("direct:caaers-study-search-sync", xslBase + "study_search_sync.xsl");

@@ -92,7 +92,7 @@ public class Tracker implements InitializingBean {
     }
     
     public static enum Stage{
-        REQUEST_RECEIVED(1, "Message Received"),
+        REQUEST_RECEIVED(5, "Message Received"),
         ROUTED_TO_ADEERS_SINK(10, "Message Routed to AdEERS Sink Channel"),
         ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL(20, "Routed to AdEERS Webservice Invocation route"),
         ADEERS_WS_IN_TRANSFORMATION(30, "AdEERS Webservice request transformation"),

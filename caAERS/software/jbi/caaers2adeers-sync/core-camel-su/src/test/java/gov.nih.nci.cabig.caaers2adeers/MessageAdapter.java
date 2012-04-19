@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
+import gov.nih.nci.cabig.caaers2adeers.test.MockMessageGenerator;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultMessage;
 import org.apache.commons.collections.map.LinkedMap;
@@ -26,4 +27,8 @@ public class MessageAdapter extends DefaultMessage{
        headers.put(name, value);
     }
 
+    @Override
+    public Object getBody() {
+        return MockMessageGenerator.getStudySearchRequest();
+    }
 }

@@ -25,13 +25,14 @@ public class ToAdeersRouteBuilder {
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")
-            .processRef("headerProcessor")
-    		.to("log:to-adeers")
+            .processRef("exchangePreProcessor")
+            .processRef("headerGeneratorProcessor")
+    		.to("log:caaers.to-adeers")
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV") ).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
-    			.otherwise().to("log:unknown-adeers-request");
+    			.otherwise().to("direct:morgue");
 		
 		//LOV - Agents
     	configureLovWSCallRoute("direct:adeers-agent-lov", "agents_lov.xsl",  "getAgentsLOV");

@@ -6,6 +6,7 @@ import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.spi.Synchronization;
 import org.apache.camel.spi.UnitOfWork;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 public class ExchangeAdapter implements Exchange {
     Message in = new MessageAdapter();
+    Map<String, Object> properties = new HashMap<String, Object>() ;
     public ExchangePattern getPattern() {
         return null;  
     }
@@ -26,15 +28,15 @@ public class ExchangeAdapter implements Exchange {
     }
 
     public Object getProperty(String s) {
-        return null;  
+        return properties.get(s);
     }
 
     public Object getProperty(String s, Object o) {
-        return null;  
+        return properties.get(o);
     }
 
     public <T> T getProperty(String s, Class<T> tClass) {
-        return null;  
+        return (T) getProperty(s);
     }
 
     public <T> T getProperty(String s, Object o, Class<T> tClass) {
@@ -42,7 +44,7 @@ public class ExchangeAdapter implements Exchange {
     }
 
     public void setProperty(String s, Object o) {
-        
+        properties.put(s, o);
     }
 
     public Object removeProperty(String s) {
@@ -50,7 +52,7 @@ public class ExchangeAdapter implements Exchange {
     }
 
     public Map<String, Object> getProperties() {
-        return null;  
+        return properties;
     }
 
     public boolean hasProperties() {
