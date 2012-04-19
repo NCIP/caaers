@@ -31,7 +31,7 @@
                 </organizationAssignedIdentifier>
                 <stud:studyFundingSponsor>
                     <stud:organization>
-                        <name>Correct Me</name>
+                        <name>Cancer Therapy Evaluation Program</name>
                         <nciInstituteCode>CTEP</nciInstituteCode>
                     </stud:organization>
                 </stud:studyFundingSponsor>

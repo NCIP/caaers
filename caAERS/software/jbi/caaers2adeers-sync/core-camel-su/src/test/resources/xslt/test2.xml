@@ -6,9 +6,9 @@
             <data>
                 <stud:studies>
                     <stud:study>
-                        <shortTitle>A Phase III prospective randomized study of adjuvant chemotherapy with
-                            vinorelbine and cisplatin in completely resected non-small cell lung cancer with companion
-                            tumour marker evaluation
+                        <shortTitle>A Phase III prospective randomized study of adjuvant chemotherapy with vinorelbine
+                            and cisplatin in completely resected non-small cell lung cancer with companion tumour marker
+                            evaluation
                         </shortTitle>
                         <fundingSponsor>
                             <organizationAssignedIdentifier>
@@ -23,12 +23,13 @@
                         </fundingSponsor>
                     </stud:study>
                     <stud:study>
-                        <shortTitle>Phase iii double-blind randomized trial of 13-cis retinoic acid (13-cra) to
-                            prevent second primary tumors (spts) in stage i non-small cell lung cancer
+                        <shortTitle>Phase III Comparison of Adjuvant Chemotherapy with High-Dose Cyclophosphamide Plus
+                            Doxorubicin (AC) Versus Sequential Doxorubicin Followed by Cyclophosphamide (A-&gt;C) in
+                            High-Risk Breast Cancer Patients with 0-3 Positive Nodes
                         </shortTitle>
                         <fundingSponsor>
                             <organizationAssignedIdentifier>
-                                <value>INT-0125</value>
+                                <value>INT-0137</value>
                             </organizationAssignedIdentifier>
                             <stud:studyFundingSponsor>
                                 <stud:organization>
@@ -39,12 +40,12 @@
                         </fundingSponsor>
                     </stud:study>
                     <stud:study>
-                        <shortTitle>Evaluation of utility of serum neuron-specific enolase in the management of
-                            patients with small cell lung cancer
+                        <shortTitle>Multi-institutional controlled trial of adjuvant chemotherapy in the treatment of
+                            Osteosarcoma
                         </shortTitle>
                         <fundingSponsor>
                             <organizationAssignedIdentifier>
-                                <value>NCCTG-90-20-53</value>
+                                <value>POG-8107</value>
                             </organizationAssignedIdentifier>
                             <stud:studyFundingSponsor>
                                 <stud:organization>
@@ -55,9 +56,529 @@
                         </fundingSponsor>
                     </stud:study>
                     <stud:study>
-                        <shortTitle>A Randomized Phase III Trial of Adjuvant Chemotherapy in Patients with Early
-                            Stage Non-Small Cell Lung Cancer Associated with Banking of Frozen Tumor Specimens and
-                            Collection of Gene Expression Profile Data
+                        <shortTitle>Adjuvant chemotherapy for cervical cancer patients with para-aortic lymph node
+                            disease
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>T83-0980</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Phase II Evaluation of Neoadjuvant Chemotherapy, Interval Debulking Followed by
+                            Intraperitoneal Chemotherapy in Women with Stage III and IV Epithelial Ovarian Cancer,
+                            Fallopian Tube Cancer or Primary Peritoneal Cancer
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>S0009</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A PHASE I/II STUDY OF NEOADJUVANT CHEMOTHERAPY, ANGIOGENESIS INHIBITOR SU5416 (NSC
+                            #696819; A TK INHIBITOR ANTI-ANGIOGENESIS COMPOUND), AND RADIATION THERAPY IN THE MANAGEMENT
+                            OF HIGH-RISK, HIGH-GRADE, SOFT TISSUE SARCOMAS OF THE EXTREMITIES AND BODY WALL
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>RTOG-S-0121</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Phase III Randomized Study of Concurrent Chemotherapy and Pelvic Radiation Therapy
+                            with or without Adjuvant Chemotherapy in High-Risk Patients with Early-Stage Cervical
+                            Carcinoma Following Radical Hysterectomy
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>RTOG-0724</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A randomized trial of pre-surgical chemotherapy vs. immediate surgery and adjuvant
+                            chemotherapy in the treatment of non-metastatic osteosarcoma
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>T87-0134</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Randomized Clinical Trial of Adjuvant Chemotherapy for Radically Resected
+                            Loco-regional Relapse of Breast Cancer
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>NSABP-B-37</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Phase I/II feasibility study of oral Etoposide given concurrently with
+                            radiotherapy followed with dose intensive adjuvant chemotherapy for children with newly
+                            diagnosed high stage Medulloblastoma
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>POG-9631</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A study of combined 5-Fluorouracil and Adriamycin as adjuvant chemotherapy after
+                            potentially curative Gastric resection
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>NCCTG-79-41-51</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Multi-institutional controlled trial of adjuvant chemotherapy in the treatment of
+                            osteosarcoma
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>T83-0975</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Secondary adjuvant chemotherapy for malignant melanoma</shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>D78-026-0202</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Correlative Studies of erbB -2/HER-2/NEU and P53 in CALGB Protocol 9344/INT Protocol
+                            0148: "Doxorubicin Dose Escalation, with or without Taxol®, as Part of the CA Adjuvant
+                            Chemotherapy Regimen for Node Positive Breast Cancer: A Phase III Intergroup Study
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CALGB-159905</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Intergroup Pilot Study of Concurrent Carboplatin, Vincristine and Radiotherapy
+                            Followed by Adjuvant Chemotherapy in Patients with Newly Diagnosed High-Risk Central Nervous
+                            System Embroyonal Tumors
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CCG-99701</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Adjuvant chemotherapy in Osteogenic Sarcoma: Compadri II study, Phase II
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>POG-7317</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Adjuvant chemotherapy for stage II Carcinoma of Breast</shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>POA-74180</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Randomized Trial of Adjuvant Chemotherapy with Standard Regimens,
+                            Cyclophosphamide, Methotrexate and Fluorouracil -(CMF) or Doxorubicin and Cyclophosphamide -
+                            (AC), Versus Capecitabine in Women 65 Years and Older with Node Positive or Node-Negative
+                            Breast Cancer
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CALGB-49907</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Trial of intraoperative radiotherapy and adjuvant chemotherapy for the treatment of
+                            soft tissue sarcomas of the retroperitoneum
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>T83-1103</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Evaluation of MOPP adjuvant chemotherapy in the treatment of localized
+                            Medulloblastoma and Ependymoma
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>POG-7909</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Phase III Study of Adjuvant Chemotherapy After Resection for Patients with T2N0
+                            Stage I Non-Small Cell Carcinoma of the Lung
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CALGB-9633</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Multidrug adjuvant chemotherapy in Non-Metastatic Osteosarcoma, comparison of
+                            Conpadri-I with Compadri-V
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>POG-7906</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Adjuvant chemotherapy for localized unilateral Retenoblastoma</shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>POG-7796</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A prospective Phase II trial of neoadjuvant chemotherapy plus concurrent
+                            chemotherapy and radiation for squamous cell carcinoma of the esophagus
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0122</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Quality of Life, Employment and Informal Care Cost Analysis in Women Receiving
+                            Adjuvant Chemotherapy for Breast Cancer with 0-3 Positive Axillary Lymph Nodes
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CALGB-70301</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Phase III Prospective Randomized Study of Craniospinal Radiotherapy Followed by
+                            One of Two Adjuvant Chemotherapy Regimens (CCNU, CDDP, VCR or CPM, CDDP,VCR) in Children
+                            with Newly-Diagnosed Average-Risk Medulloblastoma
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>A9961</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Treatment of children with low-stage medulloblastoma: standard-dose craniospinal
+                            irradiation vs. reduced-dose craniospinal irradiation plus adjuvant chemotherapy with
+                            cisplatin, cyclophosphamide, and vincristine
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0140</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Phase III Comparison of Adjuvant Chemotherapy with or without Endocrine Therapy in
+                            High-Risk, Node Negative Breast Cancer Patients, and a Natural History Follow-Up Study in
+                            Low-Risk, Node Negative Patients
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0102</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Group-Wide Pilot Study of Neoadjuvant Chemotherapy Followed by Craniospinal
+                            Hyperfractionated Radiotherapy in Patients with Newly Diagnosed High-Risk Primitive
+                            Neuroectodermal Tumors (PNET)
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>CCG-9931</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Treatment for stage i disease: registration and monitoring; treatment for stage ii
+                            disease - with lymph nodes resectable. a randomized comparison of no adjuvant chemotherapy
+                            vs adjuvant therapy - vab
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0023</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Phase III Randomized Trial of Adjuvant Chemotherapy with or without Bevacizumab
+                            for Patients with Completely Resected Stage IB (&gt;/= 4 cm) - IIIA Non-Small Cell Lung
+                            Cancer (NSCLC)
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>E1505</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Doxorubicin dose escalation, with or without Taxol, as part of the ca adjuvant
+                            chemotherapy regimen for node positive Breast cancer: a Phase III intergroup trial
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0148</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Multi-institutional controlled trial of adjuvant chemotherapy in the treatment of
+                            osteosarcoma
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>T83-0987</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Multiple drug adjuvant chemotherapy for patients with er negative stage ii carcinoma
+                            of breast
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>SWOG-8313</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>Treatment for stage i disease: registration and monitoring; treatment for stage ii
+                            disease - with lymph nodes resectable. a randomized comparison of no adjuvant chemotherapy
+                            vs adjuvant therapy - vbp
+                        </shortTitle>
+                        <fundingSponsor>
+                            <organizationAssignedIdentifier>
+                                <value>INT-0022</value>
+                            </organizationAssignedIdentifier>
+                            <stud:studyFundingSponsor>
+                                <stud:organization>
+                                    <name>Correct Me</name>
+                                    <nciInstituteCode>CTEP</nciInstituteCode>
+                                </stud:organization>
+                            </stud:studyFundingSponsor>
+                        </fundingSponsor>
+                    </stud:study>
+                    <stud:study>
+                        <shortTitle>A Randomized Phase III Trial of Adjuvant Chemotherapy in Patients with Early Stage
+                            Non-Small Cell Lung Cancer Associated with Banking of Frozen Tumor Specimens and Collection
+                            of Gene Expression Profile Data
                         </shortTitle>
                         <fundingSponsor>
                             <organizationAssignedIdentifier>
