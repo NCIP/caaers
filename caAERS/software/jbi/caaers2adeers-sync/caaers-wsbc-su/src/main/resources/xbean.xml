@@ -46,7 +46,7 @@
         <constructor-arg>
             <map>
                 <entry key="action" value="UsernameToken"/>
-                <entry key="user" value="s[ADEERS_WS_USERNAME]"/>
+                <entry key="user" value="s[CAAERS_WS_USERNAME]"/>
                 <entry key="passwordType" value="PasswordText"/>
                 <entry key="mustUnderstand" value="false"/>
                 <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
@@ -214,8 +214,7 @@
                       useJBIWrapper="false"
                       locationURI="https://localhost:8196/GenericProcessorService"
                       busCfg="caXchangeConf/security/cxf-caaers-config.xml"
-
-                      targetService="direct:generic-processor-sink">
+                      targetService="caaers:generic-processor-sink">
                       <!--  targetEndpoint="caaers:generic-processor-sink" -->
 		<cxfbc:inInterceptors>
 		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>

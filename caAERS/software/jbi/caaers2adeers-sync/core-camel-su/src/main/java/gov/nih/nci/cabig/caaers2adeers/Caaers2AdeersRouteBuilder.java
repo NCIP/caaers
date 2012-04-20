@@ -63,9 +63,9 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         // .to("direct:adEERSRequestSink");
         
       //just for testing.. 
-    	from("timer://tutorial?fixedRate=true&delay=2000&period=300000")
-    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
-    		.to("direct:adEERSRequestSink");
+//    	from("timer://tutorial?fixedRate=true&delay=2000&period=300000")
+//    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
+//    		.to("direct:adEERSRequestSink");
 
     	//just for testing.. 
 //    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
@@ -73,9 +73,13 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 //    		.to("direct:adEERSRequestSink");
         
         //just for testing generic webservice
-//    	from("jbi:service:http://webservice.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
-//			.setBody(constant(getMessage()))
-//			.to("direct:adEERSRequestSink");
+    	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
+//    		.setBody(constant(MockMessageGenerator.getAgentsRequest()))
+//    		.to("direct:adEERSRequestSink");
+//    	from("direct:generic-processor-sink")
+    		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
+    		.to("log:after-soap_filter")
+			.to("direct:adEERSRequestSink");
 
     	new ToAdeersRouteBuilder(this).configure();
     	new ToCaaersAsynchronousRouteBuilder(this).configure();

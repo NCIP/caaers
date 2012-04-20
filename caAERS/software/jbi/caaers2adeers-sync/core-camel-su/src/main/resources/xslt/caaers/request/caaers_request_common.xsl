@@ -6,14 +6,14 @@
 
     <xsl:template match="/">
         <soapenv:Envelope>
-            <soapenv:Header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <!-- <soapenv:Header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
                 <wsse:Security>
                     <wsse:UsernameToken>
                         <wsse:Username>SYSTEM_ADMIN</wsse:Username>
                         <wsse:Password>Hello-12</wsse:Password>
                     </wsse:UsernameToken>
                 </wsse:Security>
-            </soapenv:Header>
+            </soapenv:Header> -->
             <soapenv:Body>
                 <xsl:apply-templates select="payload/response/operation/data" />
             </soapenv:Body>
