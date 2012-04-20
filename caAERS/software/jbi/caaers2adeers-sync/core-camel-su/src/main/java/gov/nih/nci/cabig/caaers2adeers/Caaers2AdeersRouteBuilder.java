@@ -64,19 +64,19 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
       //just for testing.. 
 //    	from("timer://tutorial?fixedRate=true&delay=2000&period=300000")
+//        	.processRef("exchangePreProcessor")
 //    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
 //    		.to("direct:adEERSRequestSink");
 
     	//just for testing.. 
 //    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
+//        	.processRef("exchangePreProcessor")
 //    		.setBody(constant(getMessage()))
 //    		.to("direct:adEERSRequestSink");
         
         //just for testing generic webservice
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
-//    		.setBody(constant(MockMessageGenerator.getAgentsRequest()))
-//    		.to("direct:adEERSRequestSink");
-//    	from("direct:generic-processor-sink")
+    		.processRef("exchangePreProcessor")
     		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
     		.to("log:after-soap_filter")
 			.to("direct:adEERSRequestSink");

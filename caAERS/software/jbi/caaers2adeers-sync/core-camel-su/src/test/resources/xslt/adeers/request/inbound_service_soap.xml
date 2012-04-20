@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<gen:GenericRequest
+			xmlns:gen="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+			<payload>
+				<system>adeers</system>
+				<request>
+					<!--Optional: -->
+					<entity>agent</entity>
+					<operation mode="async" name="getAgentsLOV">
+						<criteria>
+							<!--1 or more repetitions: -->
+							<criterion name="createdDate">12-02-2002</criterion>
+						</criteria>
+					</operation>
+				</request>
+			</payload>
+		</gen:GenericRequest>
+	</soap:Body>
+</soap:Envelope>

@@ -25,7 +25,7 @@ public class ToAdeersRouteBuilder {
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")
-            .processRef("exchangePreProcessor")
+//            .processRef("exchangePreProcessor")
             .processRef("headerGeneratorProcessor")
     		.to("log:caaers.to-adeers")
     		.choice()

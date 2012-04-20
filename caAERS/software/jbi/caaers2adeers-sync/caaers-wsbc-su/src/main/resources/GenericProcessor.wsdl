@@ -11,6 +11,7 @@
           				<xsd:element name="system" type="xsd:string" minOccurs="1" maxOccurs="1"/>
           				<xsd:element name="request" type="tns:Request" minOccurs="1" maxOccurs="1"/>
           			</xsd:sequence>
+          			<xsd:attribute name="correlationId" type="xsd:string"/>
           		</xsd:complexType>
 			</xsd:element>	
           </xsd:sequence>
@@ -25,6 +26,7 @@
           				<xsd:element name="system" type="xsd:string" minOccurs="1" maxOccurs="1"/>
           				<xsd:element name="response" type="tns:Response" minOccurs="1" maxOccurs="1"/>
           			</xsd:sequence>
+          			<xsd:attribute name="correlationId" type="xsd:string"/>
           		</xsd:complexType>
 			</xsd:element>	
           </xsd:sequence>
