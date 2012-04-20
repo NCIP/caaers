@@ -26,7 +26,7 @@
         <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
     </bean>
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="s[datasource.driver]"/>
+        <property name="driverClassName" value="s[caaers.datasource.driver]"/>
         <property name="url" value="s[caaers.datasource.url]"/>
         <property name="username" value="s[caaers.datasource.username]"/>
         <property name="password" value="s[caaers.datasource.password]"/>
