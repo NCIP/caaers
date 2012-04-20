@@ -1,11 +1,14 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-    <xsl:template match="/">
+    <xsl:param name="c2a_operation" />
+    <xsl:param name="c2a_correlation_id" />
+    <xsl:template match="soapenv:Envelope">
         <payload>
+            <xsl:attribute name="correlationId"><xsl:value-of select="$c2a_correlation_id" /></xsl:attribute>
             <system>caaers</system>
             <response>
-                <xsl:apply-templates select="soapenv:Envelope/soapenv:Body" />
+                <xsl:apply-templates select="soapenv:Body" />
             </response>
         </payload>
     </xsl:template>
