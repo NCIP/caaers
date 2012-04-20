@@ -1,0 +1,224 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:getOrganizationsLOVResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
+            <Organizations>
+                <organization updatedDate="03-13-2007 17:08:03" createdDate="10-08-1999 23:02:57">
+                    <address>
+                        <street>317 South Manning Boulevard</street>
+                        <street2>Suite 100</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY121</ctepId>
+                    <organizationName>Albany Area Radiation Therapy Program</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="02-04-2000 11:45:49" createdDate="10-08-1999 23:02:57">
+                    <address>
+                        <street>1046 Sixth Avenue Southwest</street>
+                        <street2></street2>
+                        <city>Albany</city>
+                        <state>OR</state>
+                        <country>USA</country>
+                        <zip>97321</zip>
+                    </address>
+                    <ctepId>OR022</ctepId>
+                    <organizationName>Albany General Hospital</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="" createdDate="04-03-2009 11:56:53">
+                    <address>
+                        <street>319 South Manning Boulevard</street>
+                        <street2>Suite 310</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12204</zip>
+                    </address>
+                    <ctepId>NY431</ctepId>
+                    <organizationName>Albany Liver and Pancreas Surgery PC</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="" createdDate="08-26-2004 15:34:38">
+                    <address>
+                        <street>43 New Scotland Avenue</street>
+                        <street2>Mail Code 7</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY119</ctepId>
+                    <organizationName>Albany Medical Center</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="08-26-2004 15:37:38" createdDate="12-17-1998 10:06:11">
+                    <address>
+                        <street>43 NEW SCOTLAND AVENUE</street>
+                        <street2></street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY119</ctepId>
+                    <organizationName>Albany Medical College</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Inactive</status>
+                </organization>
+                <organization updatedDate="" createdDate="01-12-2010 08:45:47">
+                    <address>
+                        <street>26 Corporate Circle</street>
+                        <street2></street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12203</zip>
+                    </address>
+                    <ctepId>AMRI</ctepId>
+                    <organizationName>Albany Molecular Research Inc</organizationName>
+                    <organizationType>DCY</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="" createdDate="02-06-2003 16:10:27">
+                    <ctepId>NY117</ctepId>
+                    <organizationName>Albany Regional Cancer Center</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Inactive</status>
+                </organization>
+                <organization updatedDate="06-03-2008 11:38:35" createdDate="01-07-2005 15:24:25">
+                    <address>
+                        <street>401 Fourth Avenue</street>
+                        <street2>PO Box 1686</street2>
+                        <city>Albany</city>
+                        <state>GA</state>
+                        <country>USA</country>
+                        <zip>31701</zip>
+                    </address>
+                    <ctepId>GA151</ctepId>
+                    <organizationName>Albany Surgical PC</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="06-09-2008 13:12:22" createdDate="10-08-1999 23:02:57">
+                    <address>
+                        <street>600 Northern Boulevard</street>
+                        <street2></street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12204</zip>
+                    </address>
+                    <ctepId>NY116</ctepId>
+                    <organizationName>Memorial Hospital-Albany</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="" createdDate="03-16-2006 11:52:11">
+                    <address>
+                        <street>400 Patroon Creek Boulevard</street>
+                        <street2>Suite 1</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12206</zip>
+                    </address>
+                    <ctepId>NY117</ctepId>
+                    <organizationName>New York Oncology Hematology PC - Albany</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="03-26-2007 14:04:36" createdDate="03-16-2006 11:58:54">
+                    <address>
+                        <street>43 New Scotland Avenue</street>
+                        <street2>Mail Code #7</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY342</ctepId>
+                    <organizationName>New York Oncology Hematology PC - Albany Medical Center</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Inactive</status>
+                </organization>
+                <organization updatedDate="09-29-2009 13:16:20" createdDate="03-26-2007 14:04:34">
+                    <address>
+                        <street>43 New Scotland Avenue</street>
+                        <street2>Mail Code #7</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY342</ctepId>
+                    <organizationName>New York Oncology Hematology PC -Albany</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Inactive</status>
+                </organization>
+                <organization updatedDate="" createdDate="09-29-2009 13:16:12">
+                    <address>
+                        <street>43 New Scotland Avenue</street>
+                        <street2>Mail Code #7</street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY342</ctepId>
+                    <organizationName>New York Oncology Hematology PC -Albany Medical Center</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="08-05-2008 08:47:11" createdDate="10-08-1999 23:02:57">
+                    <address>
+                        <street>315 Manning Boulevard</street>
+                        <street2></street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY118</ctepId>
+                    <organizationName>Saint Peters Hospital-Albany</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="" createdDate="05-10-2007 09:32:03">
+                    <address>
+                        <street>425 West Third Avenue</street>
+                        <street2>Suite 400</street2>
+                        <city>Albany</city>
+                        <state>GA</state>
+                        <country>USA</country>
+                        <zip>31701</zip>
+                    </address>
+                    <ctepId>GA202</ctepId>
+                    <organizationName>Surgical Associates of Albany PC</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Active</status>
+                </organization>
+                <organization updatedDate="08-18-2005 08:10:16" createdDate="08-26-2004 15:40:38">
+                    <address>
+                        <street>113 Holland Avenue</street>
+                        <street2></street2>
+                        <city>Albany</city>
+                        <state>NY</state>
+                        <country>USA</country>
+                        <zip>12208</zip>
+                    </address>
+                    <ctepId>NY120</ctepId>
+                    <organizationName>Veterans Administration Hospital Albany</organizationName>
+                    <organizationType>ITN</organizationType>
+                    <status>Inactive</status>
+                </organization>
+            </Organizations>
+        </ns2:getOrganizationsLOVResponse>
+    </S:Body>
+</S:Envelope>

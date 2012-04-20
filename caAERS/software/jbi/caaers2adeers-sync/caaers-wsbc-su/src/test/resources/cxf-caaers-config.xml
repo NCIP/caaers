@@ -19,7 +19,7 @@
 	<!--<bean id="cxf" class="org.apache.cxf.bus.CXFBusImpl" />-->
 	
 	<http:destination
-		name="{https://localhost:8196/}GenericProcessorService.http-destination">
+		name="{http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/}GenericProcessorSOAP.http-destination">
 	</http:destination>
 
 	<httpj:engine-factory>

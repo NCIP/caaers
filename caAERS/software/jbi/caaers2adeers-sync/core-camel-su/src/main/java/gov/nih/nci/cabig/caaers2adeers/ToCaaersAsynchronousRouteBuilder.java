@@ -3,7 +3,13 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 public class ToCaaersAsynchronousRouteBuilder {
 
-	private String caAERSAgentServiceJBIURL = "jbi:service:http://webservice.caaers.cabig.nci.nih.gov/common/AgentManagementWebService?operation={http://webservice.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSAgentServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/AgentManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSASAELServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/ASAELService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSDeviceServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSOrganizationServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/OrganizationManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSAgentPreExistingConditionServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/PreExistingConditionManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSPriorTherapyServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/PriorTherapyManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSStudyServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/study}";
 	
 	private String requestXSLBase = "xslt/caaers/request/";
 	private String responseXSLBase = "xslt/caaers/response/";
@@ -31,10 +37,15 @@ public class ToCaaersAsynchronousRouteBuilder {
 		.to("log:caaers.caaers-request?showHeaders=true")
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
+			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:caaers-organization-async")
 			.otherwise().to("direct:morgue");
 		
 		//caAERS - createOrUpdateAgents
-		configureWSCallRoute("direct:caaers-agent-async", "agents_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );
+		configureWSCallRoute("direct:caaers-agent-async", "agent_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );
+
+        //caAERS - createOrUpdateOrganization
+        configureWSCallRoute("direct:caaers-organization-async", "organization_async.xsl", caAERSOrganizationServiceJBIURL + "createOrUpdateOrganization" );
+
 	}
 	
 

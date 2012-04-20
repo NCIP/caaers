@@ -29,16 +29,20 @@ public class ToAdeersRouteBuilder {
             .processRef("headerGeneratorProcessor")
     		.to("log:caaers.to-adeers")
     		.choice()
-    			.when().xpath(xpathPredicate("agent", "getAgentsLOV") ).to("direct:adeers-agent-lov")
+    			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
+    			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:adeers-organization-lov")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
     			.otherwise().to("direct:morgue");
 		
 		//LOV - Agents
-    	configureLovWSCallRoute("direct:adeers-agent-lov", "agents_lov.xsl",  "getAgentsLOV");
+    	configureLovWSCallRoute("direct:adeers-agent-lov", "agent_lov.xsl",  "getAgentsLOV");
 
     	//LOV - ASAEL
 //    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
+
+        //LOV - Agents
+        configureLovWSCallRoute("direct:adeers-organization-lov", "organization_lov.xsl",  "getAgentsLOV");
 
         //Search Study
         configureStudyWSCallRoute("direct:adeers-study-search", "study_search.xsl", "searchStudy");

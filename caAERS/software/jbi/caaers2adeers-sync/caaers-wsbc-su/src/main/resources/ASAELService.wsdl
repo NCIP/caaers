@@ -1,12 +1,14 @@
 <?xml version="1.0" ?>
-<wsdl:definitions name="AgentManagementWebService"
+<wsdl:definitions name="ASAELService"
                   targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
                   xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                   xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns0="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/asael"></xs:import>
 <xs:complexType name="DomainObjectType">
 <xs:attribute name="id" type="xs:integer"></xs:attribute>
 </xs:complexType>
@@ -540,60 +542,78 @@
 <xs:extension base="BaseFault"></xs:extension>
 </xs:complexContent>
 </xs:complexType>
-<xs:element name="createOrUpdateAgent" type="createOrUpdateAgent"></xs:element>
-<xs:complexType name="createOrUpdateAgent">
+<xs:element name="createOrUpdateASAEL" type="createOrUpdateASAEL"></xs:element>
+<xs:complexType name="createOrUpdateASAEL">
 <xs:sequence>
-<xs:element minOccurs="0" ref="Agents"></xs:element>
+<xs:element form="qualified" minOccurs="0" name="asael" type="ns0:ASAELType"></xs:element>
 </xs:sequence>
 </xs:complexType>
-<xs:element name="createOrUpdateAgentResponse" type="createOrUpdateAgentResponse"></xs:element>
-<xs:complexType name="createOrUpdateAgentResponse">
+<xs:element name="createOrUpdateASAELResponse" type="createOrUpdateASAELResponse"></xs:element>
+<xs:complexType name="createOrUpdateASAELResponse">
 <xs:sequence>
 <xs:element minOccurs="0" ref="CaaersServiceResponse"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
+<xs:element name="asael" type="ASAELType"></xs:element>
+<xs:complexType name="ASAELType">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="asaelAgent"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="asaelAgent" type="ASAELAgentType"></xs:element>
+<xs:complexType name="ASAELAgentType">
+<xs:sequence>
+<xs:element ref="cct:agent"></xs:element>
+<xs:element maxOccurs="unbounded" ref="expectedAECtcTerm"></xs:element>
+<xs:element name="status" type="cct:ActiveInactiveStatusType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="expectedAECtcTerm" type="ExpectedAECtcTermType"></xs:element>
+<xs:complexType name="ExpectedAECtcTermType">
+<xs:sequence>
+<xs:element minOccurs="0" name="ctepTerm" type="cct:CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="ctepCode" type="cct:CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="category" type="cct:CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="ctcVersion" type="cct:CustomStringType"></xs:element>
+<xs:element name="status" type="cct:ActiveInactiveStatusType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
   </wsdl:types>
-  <wsdl:message name="createOrUpdateAgent">
-    <wsdl:part element="tns:createOrUpdateAgent" name="parameters">
+  <wsdl:message name="createOrUpdateASAELResponse">
+    <wsdl:part element="tns:createOrUpdateASAELResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="createOrUpdateAgentResponse">
-    <wsdl:part element="tns:createOrUpdateAgentResponse" name="parameters">
+  <wsdl:message name="createOrUpdateASAEL">
+    <wsdl:part element="tns:createOrUpdateASAEL" name="parameters">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="SecurityExceptionFaultMessage">
-    <wsdl:part element="tns:SecurityExceptionFault" name="SecurityExceptionFaultMessage">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="AgentManagementServiceInterface">
-    <wsdl:operation name="createOrUpdateAgent">
-      <wsdl:input message="tns:createOrUpdateAgent" name="createOrUpdateAgent">
+  <wsdl:portType name="ASAELServiceInterface">
+    <wsdl:operation name="createOrUpdateASAEL">
+      <wsdl:input message="tns:createOrUpdateASAEL" name="createOrUpdateASAEL">
     </wsdl:input>
-      <wsdl:output message="tns:createOrUpdateAgentResponse" name="createOrUpdateAgentResponse">
+      <wsdl:output message="tns:createOrUpdateASAELResponse" name="createOrUpdateASAELResponse">
     </wsdl:output>
-      <wsdl:fault message="tns:SecurityExceptionFaultMessage" name="SecurityExceptionFaultMessage">
-    </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="AgentManagementWebServiceSoapBinding" type="tns:AgentManagementServiceInterface">
+  <wsdl:binding name="ASAELServiceSoapBinding" type="tns:ASAELServiceInterface">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
-    <wsdl:operation name="createOrUpdateAgent">
+    <wsdl:operation name="createOrUpdateASAEL">
       <soap:operation soapAction="" style="document"></soap:operation>
-      <wsdl:input name="createOrUpdateAgent">
+      <wsdl:input name="createOrUpdateASAEL">
         <soap:body use="literal"></soap:body>
       </wsdl:input>
-      <wsdl:output name="createOrUpdateAgentResponse">
+      <wsdl:output name="createOrUpdateASAELResponse">
         <soap:body use="literal"></soap:body>
       </wsdl:output>
-      <wsdl:fault name="SecurityExceptionFaultMessage">
-        <soap:fault name="SecurityExceptionFaultMessage" use="literal"></soap:fault>
-      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="AgentManagementWebService">
-    <wsdl:port binding="tns:AgentManagementWebServiceSoapBinding" name="AgentManagementWebServiceImplPort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services/AgentService"></soap:address>
+  <wsdl:service name="ASAELService">
+    <wsdl:port binding="tns:ASAELServiceSoapBinding" name="ASAELWebServicePort">
+      <soap:address location="https://dev.semanticbits.com/caaers/services/ASAELService"></soap:address>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

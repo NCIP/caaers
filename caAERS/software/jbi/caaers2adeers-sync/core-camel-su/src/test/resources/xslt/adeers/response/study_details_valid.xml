@@ -1,0 +1,111 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:getStudyDetailsResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
+            <StudyDetails>
+                <ctcVersion>4.0</ctcVersion>
+                <currentStatus>Complete</currentStatus>
+                <currentStatusDate>1997-05-19</currentStatusDate>
+                <monitoringMethod>Other</monitoringMethod>
+                <nciDocumentNum>INT-0018</nciDocumentNum>
+                <participantionType>Multi-Center</participantionType>
+                <phase>III</phase>
+                <primaryStudyType>Treatment</primaryStudyType>
+                <sponsorOrganization>CTEP</sponsorOrganization>
+                <studyAgents>
+                    <studyAgent lead="No" updatedDate="02-11-2003 17:58:22" createdDate="07-17-1999 16:08:30">
+                        <agent>
+                            <nscNumber>26271</nscNumber>
+                            <agentName>Cyclophosphamide</agentName>
+                            <agentStatus>Active</agentStatus>
+                            <inds/>
+                        </agent>
+                        <commercialInvestigational>Commercial</commercialInvestigational>
+                    </studyAgent>
+                    <studyAgent lead="No" updatedDate="02-11-2003 17:58:22" createdDate="07-17-1999 16:08:30">
+                        <agent>
+                            <nscNumber>45388</nscNumber>
+                            <agentName>Dacarbazine</agentName>
+                            <agentStatus>Active</agentStatus>
+                            <inds/>
+                        </agent>
+                        <commercialInvestigational>Commercial</commercialInvestigational>
+                    </studyAgent>
+                    <studyAgent lead="No" updatedDate="02-11-2003 17:58:22" createdDate="07-17-1999 16:08:30">
+                        <agent>
+                            <nscNumber>123127</nscNumber>
+                            <agentName>Doxorubicin hydrochloride</agentName>
+                            <agentStatus>Active</agentStatus>
+                            <inds/>
+                        </agent>
+                        <commercialInvestigational>Commercial</commercialInvestigational>
+                    </studyAgent>
+                </studyAgents>
+                <studyDevices/>
+                <studyDiseases>
+                    <studyDisease lead="Yes" updatedDate="12-29-2004 17:36:17" createdDate="07-17-1999 15:53:36">
+                        <reportingMedDRA>10027410</reportingMedDRA>
+                    </studyDisease>
+                </studyDiseases>
+                <studyOrganizations>
+                    <studyOrganization role="Document to Lead Organization" updatedDate="08-29-2004 15:28:42" createdDate="12-18-1998 18:10:23">
+                        <organization>
+                            <ctepId>MI020</ctepId>
+                            <organizationName>Wayne State University</organizationName>
+                            <organizationType>CCR</organizationType>
+                        </organization>
+                        <status>Active</status>
+                        <statusDate>01-01-1980 00:00:00</statusDate>
+                        <principalInvestigator/>
+                    </studyOrganization>
+                    <studyOrganization role="Document to Participant Organization" updatedDate="01-04-2001 17:16:17" createdDate="12-29-1998 15:33:31">
+                        <organization>
+                            <ctepId>ECOG</ctepId>
+                            <organizationName>Eastern Cooperative Oncology Group</organizationName>
+                            <organizationType>CGP</organizationType>
+                        </organization>
+                        <status>Active</status>
+                        <statusDate>01-01-1980 00:00:00</statusDate>
+                    </studyOrganization>
+                    <studyOrganization role="Document to Participant Organization" updatedDate="01-04-2001 17:16:21" createdDate="12-29-1998 15:33:36">
+                        <localDocumentNumber>SEG-INT-81-306</localDocumentNumber>
+                        <organization>
+                            <ctepId>SG</ctepId>
+                            <organizationName>Southeastern Cancer Study Group</organizationName>
+                            <organizationType>ITN</organizationType>
+                        </organization>
+                        <status>Active</status>
+                        <statusDate>01-01-1980 00:00:00</statusDate>
+                    </studyOrganization>
+                    <studyOrganization role="Document to Participant Organization" updatedDate="01-04-2001 17:16:21" createdDate="12-29-1998 15:33:36">
+                        <localDocumentNumber>SWOG-8093</localDocumentNumber>
+                        <organization>
+                            <ctepId>SWOG</ctepId>
+                            <organizationName>Southwest Oncology Group</organizationName>
+                            <organizationType>CGP</organizationType>
+                        </organization>
+                        <status>Active</status>
+                        <statusDate>01-01-1980 00:00:00</statusDate>
+                    </studyOrganization>
+                    <studyOrganization role="Document to Participant Organization" updatedDate="04-10-2007 14:51:30" createdDate="12-29-1998 15:33:31">
+                        <localDocumentNumber>GRP-81-001</localDocumentNumber>
+                        <organization>
+                            <ctepId>PMB</ctepId>
+                            <organizationName>Pharmaceutical Management Branch</organizationName>
+                            <organizationType>NCP</organizationType>
+                        </organization>
+                        <status>Active</status>
+                        <statusDate>01-01-1980 00:00:00</statusDate>
+                    </studyOrganization>
+                </studyOrganizations>
+                <studyTherapies>
+                    <therapy updatedDate="02-16-2005 17:17:19" createdDate="10-21-1999 11:48:59">
+                        <ctepName>Drug and/or Immunotherapy</ctepName>
+                        <medDRACode>90003006</medDRACode>
+                    </therapy>
+                </studyTherapies>
+                <studyTreatmentAssignments/>
+                <title>Phase III - treatment of advanced malignant mesothelioma: a comparison of cia(cyclophosphamide, dtic, adriamycin) vs ca(cyclophosphamide, adriamycin)</title>
+            </StudyDetails>
+        </ns2:getStudyDetailsResponse>
+    </S:Body>
+</S:Envelope>

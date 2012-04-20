@@ -21,6 +21,7 @@
         <xsl:apply-templates />
     </xsl:template>
     <xsl:template match="soapenv:Fault">
+        <status>error</status>
         <errors>
             <error>
                 <xsl:value-of select="faultcode"/> : <xsl:value-of select="faultstring"/>
@@ -34,12 +35,19 @@
         <xsl:apply-templates />
     </xsl:template>
     <xsl:template match="com:ServiceResponse">
+        <xsl:if test="not(status)">
+            <status>unknown</status>
+        </xsl:if>
         <xsl:if test="wsError">
+            <status>error</status>
             <errors>
                 <xsl:apply-templates select="wsError" />
             </errors>
         </xsl:if>
         <xsl:if test="com:entityProcessingOutcomes">
+            <xsl:if test="status">
+                <status><xsl:value-of select="status" /></status>
+            </xsl:if>
             <data>
                 <xsl:apply-templates select="com:entityProcessingOutcomes"/>
             </data>

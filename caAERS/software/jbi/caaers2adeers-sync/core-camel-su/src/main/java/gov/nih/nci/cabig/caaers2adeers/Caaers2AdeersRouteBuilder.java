@@ -64,7 +64,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
       //just for testing.. 
     	from("timer://tutorial?fixedRate=true&delay=2000&period=300000")
-    		.setBody(constant(MockMessageGenerator.getStudySearchRequest()))
+    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
     		.to("direct:adEERSRequestSink");
 
     	//just for testing.. 

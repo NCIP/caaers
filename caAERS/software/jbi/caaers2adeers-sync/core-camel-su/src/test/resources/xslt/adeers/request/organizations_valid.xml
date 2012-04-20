@@ -1,0 +1,15 @@
+<payload>
+    <system>adeers</system>
+    <request>
+        <entity>organization</entity>
+        <operation mode="sync" name="getOrganizationsLOV">
+            <criteria>
+                <criterion name="ctepId">1</criterion>
+                <criterion name="organizationName">NY</criterion>
+                <criterion name="status">Active</criterion>
+                <criterion name="createdDate">2001-10-26T21:32:52</criterion>
+                <criterion name="lastUpdatedDate">2001-10-26T21:32:52</criterion>
+            </criteria>
+        </operation>
+    </request>
+</payload>

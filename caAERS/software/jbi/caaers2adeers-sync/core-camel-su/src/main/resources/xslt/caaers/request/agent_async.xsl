@@ -21,12 +21,7 @@
             <name><xsl:value-of select="agentName"/></name>
             <descriptionText><xsl:value-of select="agentName"/></descriptionText>
             <nscNumber><xsl:value-of select="nscNumber"/></nscNumber>
-            <xsl:if test="agentStatus/text() = 'Active'">
-                <status>AC</status>
-            </xsl:if>
-            <xsl:if test="agentStatus/text() = 'Inactive'">
-                <status>IN</status>
-            </xsl:if>
+            <status><xsl:value-of select="agentStatus"/></status>
         </com:agent>
   </xsl:template>
 

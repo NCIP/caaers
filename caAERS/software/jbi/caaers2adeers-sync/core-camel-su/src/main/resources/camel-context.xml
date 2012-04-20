@@ -27,14 +27,14 @@
     </bean>
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="s[datasource.driver]"/>
-        <property name="url" value="s[datasource.url]"/>
-        <property name="username" value="s[datasource.username]"/>
-        <property name="password" value="s[datasource.password]"/>
+        <property name="url" value="s[caaers.datasource.url]"/>
+        <property name="username" value="s[caaers.datasource.username]"/>
+        <property name="password" value="s[caaers.datasource.password]"/>
     </bean>
 
     <bean id="tracker" class="gov.nih.nci.cabig.caaers2adeers.Tracker">
        <constructor-arg index="0" ref="dataSource" />
-       <property name="datasourceDriverName" value="s[datasource.driver]" />
+       <property name="datasourceDriverName" value="s[caaers.datasource.driver]" />
     </bean>
     <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.HeaderGeneratorProcessor"/>
     <bean id="exchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.ExchangePreProcessor">

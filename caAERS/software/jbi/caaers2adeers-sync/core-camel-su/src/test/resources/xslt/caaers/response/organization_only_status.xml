@@ -1,0 +1,12 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:createOrUpdateOrganizationResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+            <ns1:CaaersServiceResponse xmlns:ns7="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator" xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/organization">
+                <ns1:ServiceResponse responsecode="0">
+                    <status>Processed</status>
+                    <ns1:entityProcessingOutcomes/>
+                </ns1:ServiceResponse>
+            </ns1:CaaersServiceResponse>
+        </ns1:createOrUpdateOrganizationResponse>
+    </soap:Body>
+</soap:Envelope>

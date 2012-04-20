@@ -36,4 +36,22 @@ public class MockMessageGenerator {
                 "</request>" +
                 "</payload>";
     }
+
+
+    public static String getStudyDetails(String nciDocumentNumber) {
+
+        return "<payload>" +
+                "<system>adeers</system>" +
+                "<request>" +
+                "<entity>study</entity>" +
+                "<operation mode=\"sync\" name=\"getStudyDetails\">" +
+                "<criteria>" +
+                "<criterion  name=\"nciDocumentNumber\">" +  nciDocumentNumber + "</criterion>" +
+                "<criterion  name=\"createdDate\">04-10-2001 14:17:38</criterion>" +
+                "<criterion name=\"lastUpdatedDate\">04-10-2001 14:17:38</criterion>" +
+                "</criteria>" +
+                "</operation>" +
+                "</request>" +
+                "</payload>";
+    }
 }

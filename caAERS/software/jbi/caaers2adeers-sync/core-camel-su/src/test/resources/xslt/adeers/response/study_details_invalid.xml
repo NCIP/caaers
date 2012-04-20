@@ -1,0 +1,13 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+            <faultcode>S:Server</faultcode>
+            <faultstring>The Document number cannot be found. Verify that the document number is correct and the document has AE reporting status.</faultstring>
+            <detail>
+                <ns2:CESAEException xmlns:ns2="http://services.ctep.nci.nih.gov/">
+                    <message>The Document number cannot be found. Verify that the document number is correct and the document has AE reporting status.</message>
+                </ns2:CESAEException>
+            </detail>
+        </S:Fault>
+    </S:Body>
+</S:Envelope>
