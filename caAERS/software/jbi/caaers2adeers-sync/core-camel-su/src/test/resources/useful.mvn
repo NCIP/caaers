@@ -1,0 +1,12 @@
+mvn archetype:create -DarchetypeArtifactId=servicemix-camel-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=core-camel-su
+mvn archetype:create -DarchetypeArtifactId=servicemix-cxf-bc-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=adeers-wsbc-su
+mvn archetype:create -DarchetypeArtifactId=servicemix-cxf-bc-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=caaers-wsbc-su
+mvn archetype:create -DarchetypeArtifactId=servicemix-camel-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=core-test-su
+
+mvn archetype:create -DarchetypeArtifactId=servicemix-service-assembly  -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=caaers-adders-sa
+
+mvn archetype:create -DarchetypeArtifactId=servicemix-cxf-bc-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=tutorial-camel-agent-su
+
+mvn archetype:create -DarchetypeArtifactId=servicemix-saxon-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=tutorial-camel-xslt-su
+
+mvn archetype:create -DarchetypeArtifactId=servicemix-cxf-bc-service-unit -DarchetypeGroupId=org.apache.servicemix.tooling -DartifactId=caaers-bc-su
