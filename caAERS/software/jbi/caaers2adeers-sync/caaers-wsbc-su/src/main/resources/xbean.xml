@@ -213,8 +213,8 @@
                       endpoint="GenericProcessor"
                       useJBIWrapper="false"
                       locationURI="s[GENERIC_PROCESSOR_WS_BINDING_URL]"
-                      busCfg="caXchangeConf/security/cxf-caaers-config.xml"
                       targetService="caaers:generic-processor-sink">
+                      <!-- busCfg="caXchangeConf/security/cxf-caaers-config.xml"> -->
 		<cxfbc:inInterceptors>
 		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 		</cxfbc:inInterceptors>

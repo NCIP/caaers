@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.ws.facade;
+package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 
@@ -13,40 +13,40 @@ import java.util.List;
 public interface AdeersIntegrationFacade {
 
     /**
-     * Will synch caAERS organizations with AdEERS Organizations.
+     * Will sync caAERS organizations with AdEERS Organizations.
      * @return the correlation Id
      */
-    String synchOrganizations();
+    String syncOrganizations();
 
     /**
-     * Will synch caAERS Agents with AdEERS Agents.
+     * Will sync caAERS Agents with AdEERS Agents.
      * @return the correlation Id
      */
-    String synchAgents();
+    String syncAgents();
 
     /**
-     * Will synch caAERS Devices with AdEERS Devices.
+     * Will sync caAERS Devices with AdEERS Devices.
      * @return the correlation Id
      */
-    String synchDevices();
+    String syncDevices();
 
     /**
-     * Will synch caAERS PriorTherapyLOV with AdEERS PriorTherapyLOV.
+     * Will sync caAERS PriorTherapyLOV with AdEERS PriorTherapyLOV.
      * @return the correlation Id
      */
-    String synchPriorTherapyLOV();
+    String syncPriorTherapyLOV();
 
     /**
-     * Will synch caAERS PreExistingConditionLOV with AdEERS PreExistingConditionLOV.
+     * Will sync caAERS PreExistingConditionLOV with AdEERS PreExistingConditionLOV.
      * @return the correlation Id
      */
-    String synchPreExistingConditionLOV();
+    String syncPreExistingConditionLOV();
 	
     /**
-     * Will synch caAERS ASAEL with AdEERS ASAEL.
+     * Will sync caAERS ASAEL with AdEERS ASAEL.
      * @return the correlation Id
      */
-    String synchASAEL();
+    String syncASAEL();
     
     /**
      * Will get Study details from AdEERS.
@@ -56,10 +56,10 @@ public interface AdeersIntegrationFacade {
     String getStudy();
     
     /**
-     * Will synch caAERS studies with AdEERS studies.
+     * Will sync caAERS studies with AdEERS studies.
      * @return the correlation Id
      */
-    String synchStudies();
+    String syncStudies();
     
     /**
      * Will search AdEERS studies.

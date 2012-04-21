@@ -47,5 +47,25 @@
     </bean>
 
     <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
+    
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+    <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
+	    <constructor-arg ref="messageFactory"/>
+	    <property name="messageSender">
+	        <bean class="org.springframework.ws.transport.http.CommonsHttpMessageSender">
+	            <!-- <property name="credentials">
+	                <bean class="org.apache.commons.httpclient.UsernamePasswordCredentials">
+	                    <constructor-arg value="john"/>
+	                    <constructor-arg value="secret"/>
+	                </bean>
+	            </property> -->
+	        </bean>
+	    </property>
+	    <property name="defaultUri" value="http://localhost:8196/GenericProcessorService"/>
+	</bean>
+	
+	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade">
+		<property name="webServiceTemplate" ref="webServiceTemplate"/>
+	</bean>
 
 </beans>
