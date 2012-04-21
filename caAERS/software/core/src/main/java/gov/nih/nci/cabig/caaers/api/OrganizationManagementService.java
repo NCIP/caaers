@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 
 import java.util.List;
@@ -12,8 +11,8 @@ import java.util.List;
  */
 public interface OrganizationManagementService {
 	
-	public List<EntityErrorMessage> createOrUpdateOrganizations(List<Organization> organizations);
+	public List<ProcessingOutcome> createOrUpdateOrganizations(List<Organization> organizations);
 	
-	public List<EntityErrorMessage> mergeOrganizations(List<Organization> organizations);
+	public List<ProcessingOutcome> mergeOrganizations(List<Organization> organizations);
 
 }

@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.api.impl.AgentServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,10 +74,10 @@ public class AgentServiceTest extends CaaersDbNoSecurityTestCase{
 			 agents.add(agent1);
 			 
 				// call the service		 
-			 List<EntityErrorMessage> errorMssgs= agentService.createOrUpdateAgents(agents);
+			 List<ProcessingOutcome> errorMssgs= agentService.createOrUpdateAgents(agents);
 			 
 			 assertEquals(2,errorMssgs.size());
-			 for(EntityErrorMessage errMssg : errorMssgs){
+			 for(ProcessingOutcome errMssg : errorMssgs){
 				 assertNotNull(errMssg.getBusinessId());
 				 assertEquals(0,errMssg.getMessages().size());
 			 }

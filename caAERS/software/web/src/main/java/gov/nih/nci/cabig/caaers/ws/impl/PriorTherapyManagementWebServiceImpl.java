@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.api.PriorTherapyLOVService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
+import gov.nih.nci.cabig.caaers.api.PriorTherapyManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapies;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
-import gov.nih.nci.cabig.caaers.service.migrator.DomainObjectConverter;
 import gov.nih.nci.cabig.caaers.ws.PriorTherapyManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 
@@ -26,20 +25,13 @@ import org.apache.commons.logging.LogFactory;
 public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagementWebService{
 	
 	private static Log logger = LogFactory.getLog(PriorTherapyManagementWebServiceImpl.class);
-	private PriorTherapyLOVService priorTherapyLOVService;
-	private DomainObjectConverter domainObjectConverter;
+	private PriorTherapyManagementService priorTherapyLOVService;
 
-	public void setDomainObjectConverter(DomainObjectConverter domainObjectConverter) {
-		this.domainObjectConverter = domainObjectConverter;
-	}
-
-	public void setPriorTherapyLOVService(
-			PriorTherapyLOVService priorTherapyLOVService) {
+	public void setPriorTherapyLOVService(PriorTherapyManagementService priorTherapyLOVService) {
 		this.priorTherapyLOVService = priorTherapyLOVService;
 	}
 
-	public CaaersServiceResponse importPriorTherapies(PriorTherapies xmlPriorTherapies)
-			throws SecurityExceptionFaultMessage {
+	public CaaersServiceResponse importPriorTherapies(PriorTherapies xmlPriorTherapies) throws SecurityExceptionFaultMessage {
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
 		List<PriorTherapy> domainTherapies = new ArrayList<PriorTherapy>();
 		try {
@@ -48,10 +40,14 @@ public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagem
 				domainTherapy.setText(priorTherapyDto.getText());
 				domainTherapies.add(domainTherapy);
 			}
-			List<EntityErrorMessage> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(domainTherapies);
-			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
-		} catch (Throwable e) {
-			logger.warn(e);
+			List<ProcessingOutcome> processingOutcomes = priorTherapyLOVService.importPriorTherapies(domainTherapies);
+            for(ProcessingOutcome outcome : processingOutcomes){
+                Helper.populateProcessingOutcome(caaersResponse, outcome);
+            }
+        } catch (Throwable e) {
+            logger.error(e);
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+
 		}
 		
 		return caaersResponse;

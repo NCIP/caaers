@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.api.impl.OrganizationManagementServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 
@@ -75,10 +74,10 @@ public class OrganizationServiceTest extends CaaersDbNoSecurityTestCase{
 			 organizations.add(organization1);
 			 
 				// call the service		 
-			 List<EntityErrorMessage> errorMssgs= organizationManagementService.createOrUpdateOrganizations(organizations);
+			 List<ProcessingOutcome> errorMssgs= organizationManagementService.createOrUpdateOrganizations(organizations);
 			 
 			 assertEquals(2,errorMssgs.size());
-			 for(EntityErrorMessage errMssg : errorMssgs){
+			 for(ProcessingOutcome errMssg : errorMssgs){
 				 assertNotNull(errMssg.getBusinessId());
 				 assertEquals(0,errMssg.getMessages().size());
 			 }

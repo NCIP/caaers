@@ -376,13 +376,21 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     public void clearSession() {
 
         Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-        log.debug("Entity Count  before clear() : " + session.getStatistics().getEntityCount());
-        log.debug("Collection Count before clear() : "
-                        + session.getStatistics().getCollectionCount());
+
+        if(log.isDebugEnabled()){
+            log.debug("Entity Count  before clear() : " + session.getStatistics().getEntityCount());
+            log.debug("Collection Count before clear() : "
+                    + session.getStatistics().getCollectionCount());  
+        }
+        
         session.clear();
-        log.debug("Entity Count  after clear() : " + session.getStatistics().getEntityCount());
-        log.debug("Collection Count after clear() : "
-                        + session.getStatistics().getCollectionCount());
+        
+        if(log.isDebugEnabled()){
+            log.debug("Entity Count  after clear() : " + session.getStatistics().getEntityCount());
+            log.debug("Collection Count after clear() : "
+                    + session.getStatistics().getCollectionCount());
+        }
+
     }
 
 

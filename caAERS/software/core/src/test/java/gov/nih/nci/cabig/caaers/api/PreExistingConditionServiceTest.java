@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 
 import java.util.ArrayList;
@@ -11,13 +10,13 @@ import java.util.List;
 public class PreExistingConditionServiceTest extends CaaersDbNoSecurityTestCase{
 
 	private PreExistingConditionDao preExistingConditionDao;
-	private PreExistingConditionLOVService preExistingConditionLOVService;
+	private PreExistingConditionManagementService preExistingConditionLOVService;
 	
 	 @Override
 	    protected void setUp() throws Exception {
 	        super.setUp();
 	        preExistingConditionDao = (PreExistingConditionDao) getDeployedApplicationContext().getBean("preExistingConditionDao");
-	        preExistingConditionLOVService = (PreExistingConditionLOVService) getDeployedApplicationContext().getBean("preExistingConditionLOVService");
+	        preExistingConditionLOVService = (PreExistingConditionManagementService) getDeployedApplicationContext().getBean("preExistingConditionLOVService");
 	    }
 	
 	public void testImportExistingConditions(){
@@ -31,7 +30,7 @@ public class PreExistingConditionServiceTest extends CaaersDbNoSecurityTestCase{
 		
 		importedPreExistingConditions.add(preExistingCondition);
 		
-		List<EntityErrorMessage> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(importedPreExistingConditions);
+		List<ProcessingOutcome> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(importedPreExistingConditions);
 		assertEquals(1,entityErrorMessages.size());
 		assertEquals("condition", entityErrorMessages.get(0).getBusinessId());
 		
@@ -63,7 +62,7 @@ public class PreExistingConditionServiceTest extends CaaersDbNoSecurityTestCase{
 		preExistingCondition3.setText("Condition");
 		importedPreExistingConditions.add(preExistingCondition3);
 		
-		List<EntityErrorMessage> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(importedPreExistingConditions);
+		List<ProcessingOutcome> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(importedPreExistingConditions);
 		assertEquals(3,entityErrorMessages.size());
 		assertEquals("condition1", entityErrorMessages.get(0).getBusinessId());
 		

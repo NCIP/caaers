@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.utils.CaaersSerializerUtil;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;

@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 
-public class OrganizationConverter extends DomainObjectConverter{
+public class OrganizationConverter {
 
 	public void convertOrganizationDtoToDomainOrganization(OrganizationType organizationDto, Organization organization){
 		

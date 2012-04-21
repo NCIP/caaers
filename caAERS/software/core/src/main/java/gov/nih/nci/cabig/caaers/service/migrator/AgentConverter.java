@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
  * @author Ion C. Olaru
  *         Date: 4/3/12 -11:49 AM
  */
-public class AgentConverter extends DomainObjectConverter{
+public class AgentConverter{
 
     public static Agent convert(AgentType at) {
         Agent a = new Agent();

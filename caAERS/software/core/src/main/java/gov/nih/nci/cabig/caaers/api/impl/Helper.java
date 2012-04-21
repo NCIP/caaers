@@ -1,24 +1,21 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: BJW7
- * Date: 4/11/12
- * Time: 1:04 PM
- * To change this template use File | Settings | File Templates.
+ * @author Biju Joseph
  */
 public class Helper {
     
     public static CaaersServiceResponse createResponse(){
     	
-    	EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
+    	EntityProcessingOutcomes entityProcessingOutcomes = new EntityProcessingOutcomes();
         ServiceResponse serviceResponse = new ServiceResponse();
-        serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
+        serviceResponse.setEntityProcessingOutcomes(entityProcessingOutcomes);
         serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
         serviceResponse.setWsError(new ArrayList<WsError>());
@@ -27,11 +24,21 @@ public class Helper {
         
         return caaersServiceResponse;
     }
-    
-    public static CaaersServiceResponse createErrorResponse(String errorCode, String description){
-        return populateError(createResponse(), errorCode, description);
+
+
+    public static EntityProcessingOutcomeType createProcessingOutcomeType(String klass, String businessId, String caaersId, String correlationId, List<String> messages){
+        EntityProcessingOutcomeType  outcomeType = new EntityProcessingOutcomeType();
+        outcomeType.setBusinessIdentifier(businessId);
+        outcomeType.setCorrelationId(correlationId);
+        outcomeType.setDataBaseId(caaersId);
+        outcomeType.setKlassName(klass);
+        if(messages != null) {
+            for(String m : messages) outcomeType.getMessage().add(m);
+        }
+        return outcomeType;
     }
-    
+
+
     public static CaaersServiceResponse populateError(CaaersServiceResponse response, String errorCode, String description){
         ServiceResponse serviceResponse = response.getServiceResponse();
         serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
@@ -45,7 +52,6 @@ public class Helper {
 
     public static CaaersServiceResponse populateMessage(CaaersServiceResponse response, String message) {
         ServiceResponse serviceResponse = response.getServiceResponse();
-        serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
         serviceResponse.setMessage(message);
         return response;
@@ -57,17 +63,36 @@ public class Helper {
         serviceRespons.setStatus(Status.FAILED_TO_PROCESS);
         serviceRespons.setResponsecode("1");
 
-        EntityProcessingOutcomes msgs = new EntityProcessingOutcomes();
-        EntityProcessingOutcomeType  msg = new EntityProcessingOutcomeType();
-        msg.setBusinessIdentifier(businessId);
-        msg.setCorrelationId(corelationId);
-        msg.setDataBaseId(caaersId);
-        msg.setKlassName("NA");
-        for(String m : messages) msg.getMessage().add(m);
-        msgs.getEntityProcessingOutcome().add(msg);
-        serviceRespons.setEntityProcessingOutcomes(msgs);
+        EntityProcessingOutcomes entityProcessingOutcomes = serviceRespons.getEntityProcessingOutcomes();
+        if(entityProcessingOutcomes == null){
+            entityProcessingOutcomes = new EntityProcessingOutcomes();
+            serviceRespons.setEntityProcessingOutcomes(entityProcessingOutcomes);
+        }
+        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType("NA", businessId, caaersId, corelationId, messages);
+        entityProcessingOutcomes.getEntityProcessingOutcome().add(entityProcessingOutcomeType);
+
         return response;
     }
-    
 
+    
+    public static CaaersServiceResponse populateProcessingOutcome(CaaersServiceResponse response, ProcessingOutcome outcome){
+        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(outcome.getKlassName(), outcome.getBusinessId(), null, null, outcome.getMessages());
+        response.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().add(entityProcessingOutcomeType);
+        if(outcome.isFailed()) {
+            response.getServiceResponse().setStatus(Status.PARTIALLY_PROCESSED);
+        } else{
+            Status existingStatus = response.getServiceResponse().getStatus();
+            if(existingStatus == null) response.getServiceResponse().setStatus(Status.PROCESSED);
+        }
+        return response;
+    }
+
+    public static ProcessingOutcome createOutcome(Class<?> c, String businessId,  boolean failed , String... notes){
+        ProcessingOutcome outcome = new ProcessingOutcome();
+        outcome.setBusinessId(businessId);
+        outcome.setKlassName(c.getName());
+        outcome.setFailed(failed);
+        for(String n : notes) outcome.getMessages().add(n);
+        return outcome;
+    }
 }

@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.api.PreExistingConditionLOVService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
+import gov.nih.nci.cabig.caaers.api.PreExistingConditionManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditions;
-import gov.nih.nci.cabig.caaers.service.migrator.DomainObjectConverter;
 import gov.nih.nci.cabig.caaers.ws.PreExistingConditionManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 
@@ -26,24 +25,17 @@ import org.apache.commons.logging.LogFactory;
 public class PreExistingConditionManagementWebServiceImpl implements PreExistingConditionManagementWebService{
 	
 	private static Log logger = LogFactory.getLog(PreExistingConditionManagementWebServiceImpl.class);
-	private PreExistingConditionLOVService preExistingConditionLOVService;
-	private DomainObjectConverter domainObjectConverter;
-
-	public void setDomainObjectConverter(DomainObjectConverter domainObjectConverter) {
-		this.domainObjectConverter = domainObjectConverter;
-	}
+	private PreExistingConditionManagementService preExistingConditionLOVService;
 
 	public void setPreExistingConditionLOVService(
-			PreExistingConditionLOVService preExistingConditionLOVService) {
+			PreExistingConditionManagementService preExistingConditionLOVService) {
 		this.preExistingConditionLOVService = preExistingConditionLOVService;
 	}
 
 	public CaaersServiceResponse importPreExistingConditions(PreExistingConditions xmlPreExistingConditions)
 			throws SecurityExceptionFaultMessage {
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		EntityProcessingOutcomes entityProcessingOutcomeTypes = new EntityProcessingOutcomes();
-		caaersResponse.getServiceResponse().setEntityProcessingOutcomes(entityProcessingOutcomeTypes);
-		
+
 		List<PreExistingCondition> domainConditions = new ArrayList<PreExistingCondition>();
 		try {
 			for(PreExistingConditionType conditionDto: xmlPreExistingConditions.getPreExistingCondition()){
@@ -51,10 +43,13 @@ public class PreExistingConditionManagementWebServiceImpl implements PreExisting
 				domainCondition.setText(conditionDto.getText());
 				domainConditions.add(domainCondition);
 			}
-			List<EntityErrorMessage> entityErrorMessages = preExistingConditionLOVService.importPreExistingConditions(domainConditions);
-			domainObjectConverter.convertEntityProcessingOutcomes(entityErrorMessages, entityProcessingOutcomeTypes);
+			List<ProcessingOutcome> processingOutcomes = preExistingConditionLOVService.importPreExistingConditions(domainConditions);
+            for(ProcessingOutcome outcome : processingOutcomes){
+                Helper.populateProcessingOutcome(caaersResponse, outcome);
+            }
 		} catch (Throwable e) {
-			logger.warn(e);
+            logger.error(e);
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		
 		return caaersResponse;

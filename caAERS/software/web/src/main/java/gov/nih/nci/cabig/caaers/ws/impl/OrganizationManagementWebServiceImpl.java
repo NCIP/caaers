@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.OrganizationManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.organization.Organizations;
 import gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter;
@@ -35,9 +34,33 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 	private OrganizationConverter organizationConverter;
     private static Log logger = LogFactory.getLog(OrganizationManagementWebServiceImpl.class);
     
-	public CaaersServiceResponse createOrUpdateOrganization(
-			Organizations xmlOrganizations) throws SecurityExceptionFaultMessage {
+	public CaaersServiceResponse createOrUpdateOrganization(Organizations xmlOrganizations) throws SecurityExceptionFaultMessage {
 		
+		CaaersServiceResponse caaersResponse = Helper.createResponse();
+
+		List<Organization> domainOrganizations = new ArrayList<Organization>();
+		try {
+
+            for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
+				Organization organization = new LocalOrganization();
+				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
+				domainOrganizations.add(organization);
+			}
+
+			List<ProcessingOutcome> processingOutcomes = organizationManagementService.createOrUpdateOrganizations(domainOrganizations);
+            for(ProcessingOutcome outcome : processingOutcomes){
+                Helper.populateProcessingOutcome(caaersResponse, outcome);
+            }
+		} catch (Throwable e) {
+            logger.error(e);
+			Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+		}
+		
+		return caaersResponse;
+	}
+	
+
+	public CaaersServiceResponse mergeOrganization(Organizations xmlOrganizations) throws SecurityExceptionFaultMessage {
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
 		
 		List<Organization> domainOrganizations = new ArrayList<Organization>();
@@ -47,32 +70,13 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
 				domainOrganizations.add(organization);
 			}
-			List<EntityErrorMessage> entityErrorMessages = organizationManagementService.createOrUpdateOrganizations(domainOrganizations);
-			organizationConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
+			List<ProcessingOutcome> processingOutcomes = organizationManagementService.mergeOrganizations(domainOrganizations);
+            for(ProcessingOutcome outcome : processingOutcomes){
+                Helper.populateProcessingOutcome(caaersResponse, outcome);
+            }
 		} catch (Throwable e) {
-			logger.warn(e);
-		}
-		
-		return caaersResponse;
-	}
-	
-
-	public CaaersServiceResponse mergeOrganization(
-			Organizations xmlOrganizations)
-			throws SecurityExceptionFaultMessage {
-		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		
-		List<Organization> domainOrganizations = new ArrayList<Organization>();
-		try {
-			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
-				Organization organization = new LocalOrganization();
-				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
-				domainOrganizations.add(organization);
-			}
-			List<EntityErrorMessage> entityErrorMessages = organizationManagementService.mergeOrganizations(domainOrganizations);
-			organizationConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
-		} catch (Throwable e) {
-			logger.warn(e);
+            logger.error(e);
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		
 		return caaersResponse;
@@ -80,8 +84,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 
 	
 
-	public void setOrganizationManagementService(
-			OrganizationManagementService organizationManagementService) {
+	public void setOrganizationManagementService(OrganizationManagementService organizationManagementService) {
 		this.organizationManagementService = organizationManagementService;
 	}
 

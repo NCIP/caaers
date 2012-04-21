@@ -1,9 +1,10 @@
-package gov.nih.nci.cabig.caaers.domain;
+package gov.nih.nci.cabig.caaers.api;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityErrorMessage {
+public class ProcessingOutcome {
+    private boolean failed;
 	
 	// type of the entity
 	private String klassName;
@@ -18,8 +19,16 @@ public class EntityErrorMessage {
 
 	// the unique business identifier
 	private String businessId;
-	
-	// list of error messages
+
+    public boolean isFailed() {
+        return failed;
+    }
+
+    public void setFailed(boolean failed) {
+        this.failed = failed;
+    }
+
+    // list of error messages
 	private List<String> messages = new ArrayList<String>();
 	
 

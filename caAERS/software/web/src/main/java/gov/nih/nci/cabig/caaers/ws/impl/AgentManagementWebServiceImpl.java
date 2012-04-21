@@ -1,25 +1,22 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
 import gov.nih.nci.cabig.caaers.api.AgentService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Agents;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.service.migrator.AgentConverter;
 import gov.nih.nci.cabig.caaers.ws.AgentManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.AgentManagementWebService", serviceName="AgentManagementWebService",
         targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
@@ -30,8 +27,7 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 	private AgentConverter agentConverter;
 	private AgentService agentService;
 
-	public CaaersServiceResponse createOrUpdateAgent(Agents xmlAgents)
-			throws SecurityExceptionFaultMessage {
+	public CaaersServiceResponse createOrUpdateAgent(Agents xmlAgents) throws SecurityExceptionFaultMessage {
 		CaaersServiceResponse caaersResponse = Helper.createResponse();
 		
 		List<Agent> domainAgents = new ArrayList<Agent>();
@@ -40,10 +36,13 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
 				Agent agent = AgentConverter.convert(agentDto);
 				domainAgents.add(agent);
 			}
-			List<EntityErrorMessage> entityErrorMessages = agentService.createOrUpdateAgents(domainAgents);
-			agentConverter.convertEntityProcessingOutcomes(entityErrorMessages, caaersResponse.getServiceResponse().getEntityProcessingOutcomes());
+			List<ProcessingOutcome> processingOutcomes = agentService.createOrUpdateAgents(domainAgents);
+            for(ProcessingOutcome outcome : processingOutcomes){
+                Helper.populateProcessingOutcome(caaersResponse, outcome);
+            }
 		} catch (Throwable e) {
-			logger.warn(e);
+            logger.error(e);
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		
 		return caaersResponse;

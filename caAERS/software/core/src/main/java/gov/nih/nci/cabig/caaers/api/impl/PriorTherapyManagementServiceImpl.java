@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.api.PriorTherapyLOVService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
+import gov.nih.nci.cabig.caaers.api.PriorTherapyManagementService;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 
 import java.util.ArrayList;
@@ -14,15 +14,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-public class PriorTherapyLOVServiceImpl implements PriorTherapyLOVService{
+public class PriorTherapyManagementServiceImpl implements PriorTherapyManagementService {
 	
-	private static Log logger = LogFactory.getLog(PriorTherapyLOVServiceImpl.class);
+	private static Log logger = LogFactory.getLog(PriorTherapyManagementServiceImpl.class);
 	private PriorTherapyDao priorTherapyDao;
 
 	@Transactional(readOnly=false)
-	public List<EntityErrorMessage> importPriorTherapies(
+	public List<ProcessingOutcome> importPriorTherapies(
 			List<PriorTherapy> importedPriorTherapies) {
-		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
+		List<ProcessingOutcome> errorMessages = new ArrayList<ProcessingOutcome>();
 		// load all prior therapies from db and check if new ones need to be added
 		List<PriorTherapy> existingTherapies = new ArrayList<PriorTherapy>();
 		existingTherapies.addAll(priorTherapyDao.getAll());
@@ -34,7 +34,7 @@ public class PriorTherapyLOVServiceImpl implements PriorTherapyLOVService{
 		// create new prior therapy and save it if it doesn't exist in db.
 		// this is case sensitive comparison so it is possible to have 2 therapies with texts of same character sequence but in different cases
 		for(PriorTherapy importedPriorTherapy : importedPriorTherapies){
-			EntityErrorMessage errorMessage = new EntityErrorMessage();
+			ProcessingOutcome errorMessage = new ProcessingOutcome();
 			errorMessage.setKlassName(PriorTherapy.class.getName());
 			errorMessage.setBusinessId(importedPriorTherapy.getText());
 			errorMessages.add(errorMessage);

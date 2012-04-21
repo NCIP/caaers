@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 
 import java.util.ArrayList;
@@ -11,14 +10,14 @@ import java.util.List;
 public class PriorTherapyServiceTest extends CaaersDbNoSecurityTestCase{
 
 	private PriorTherapyDao priorTherapyDao;
-	private PriorTherapyLOVService priorTherapyLOVService;
+	private PriorTherapyManagementService priorTherapyLOVService;
 	
 	 @Override
 	    protected void setUp() throws Exception {
 	        super.setUp();
 
 	        priorTherapyDao = (PriorTherapyDao) getDeployedApplicationContext().getBean("priorTherapyDao");
-	        priorTherapyLOVService = (PriorTherapyLOVService) getDeployedApplicationContext().getBean("priorTherapyLOVService");
+	        priorTherapyLOVService = (PriorTherapyManagementService) getDeployedApplicationContext().getBean("priorTherapyLOVService");
 
 	    }
 	
@@ -33,7 +32,7 @@ public class PriorTherapyServiceTest extends CaaersDbNoSecurityTestCase{
 		
 		importedPriorTherapies.add(priorTherapy);
 		
-		List<EntityErrorMessage> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(importedPriorTherapies);
+		List<ProcessingOutcome> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(importedPriorTherapies);
 		assertEquals(1,entityErrorMessages.size());
 		assertEquals("therapy", entityErrorMessages.get(0).getBusinessId());
 		
@@ -65,7 +64,7 @@ public class PriorTherapyServiceTest extends CaaersDbNoSecurityTestCase{
 		priorTherapy3.setText("Therapy");
 		importedPriorTherapies.add(priorTherapy3);
 		
-		List<EntityErrorMessage> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(importedPriorTherapies);
+		List<ProcessingOutcome> entityErrorMessages = priorTherapyLOVService.importPriorTherapies(importedPriorTherapies);
 		assertEquals(3,entityErrorMessages.size());
 		assertEquals("therapy1", entityErrorMessages.get(0).getBusinessId());
 		

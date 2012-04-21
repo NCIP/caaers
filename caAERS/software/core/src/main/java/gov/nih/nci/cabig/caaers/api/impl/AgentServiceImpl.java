@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.AgentService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator;
 
@@ -39,8 +39,8 @@ public class AgentServiceImpl implements AgentService{
 		this.agentMigrator = agentMigrator;
 	}
 	
-	public List<EntityErrorMessage> createOrUpdateAgents(List<Agent> agents) {
-		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
+	public List<ProcessingOutcome> createOrUpdateAgents(List<Agent> agents) {
+		List<ProcessingOutcome> errorMessages = new ArrayList<ProcessingOutcome>();
 		for (Agent agent:agents){
 			errorMessages.add(createOrUpdateAgent(agent));
 		}
@@ -48,8 +48,8 @@ public class AgentServiceImpl implements AgentService{
 	}
 	
 	@Transactional(readOnly=false)
-	public EntityErrorMessage createOrUpdateAgent(Agent agent) {
-		EntityErrorMessage errorMessage = new EntityErrorMessage();
+	public ProcessingOutcome createOrUpdateAgent(Agent agent) {
+		ProcessingOutcome errorMessage = new ProcessingOutcome();
 		errorMessage.setBusinessId(agent.getNscNumber());
 		errorMessage.setKlassName(Agent.class.getName());
 		try {

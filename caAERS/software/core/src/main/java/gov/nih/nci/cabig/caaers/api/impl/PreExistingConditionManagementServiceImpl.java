@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.api.PreExistingConditionLOVService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
+import gov.nih.nci.cabig.caaers.api.PreExistingConditionManagementService;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 
 import java.util.ArrayList;
@@ -14,15 +14,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-public class PreExistingConditionLOVServiceImpl implements PreExistingConditionLOVService{
+public class PreExistingConditionManagementServiceImpl implements PreExistingConditionManagementService {
 	
-	private static Log logger = LogFactory.getLog(PreExistingConditionLOVServiceImpl.class);
+	private static Log logger = LogFactory.getLog(PreExistingConditionManagementServiceImpl.class);
 	private PreExistingConditionDao preExistingConditionDao;
 
 	@Transactional(readOnly=false)
-	public List<EntityErrorMessage> importPreExistingConditions(
+	public List<ProcessingOutcome> importPreExistingConditions(
 			List<PreExistingCondition> importedPreExistingConditions) {
-		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
+		List<ProcessingOutcome> errorMessages = new ArrayList<ProcessingOutcome>();
 		// load all pre-existing conditions from db and check if new ones need to be added
 		List<PreExistingCondition> existingConditions = new ArrayList<PreExistingCondition>();
 		existingConditions.addAll(preExistingConditionDao.getAll());
@@ -34,7 +34,7 @@ public class PreExistingConditionLOVServiceImpl implements PreExistingConditionL
 		// create new pre-existing condition and save it if it doesn't exist in db. this is case sensitive comparison so 
 		// it is possible to have 2 pre-existing conditions with texts of same character sequence but in different cases
 		for(PreExistingCondition importedPreExistingCondition : importedPreExistingConditions){
-			EntityErrorMessage errorMessage = new EntityErrorMessage();
+			ProcessingOutcome errorMessage = new ProcessingOutcome();
 			errorMessage.setBusinessId(importedPreExistingCondition.getText());
 			errorMessage.setKlassName(PreExistingCondition.class.getName());
 			errorMessages.add(errorMessage);

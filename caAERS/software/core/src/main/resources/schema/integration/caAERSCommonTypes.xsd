@@ -522,6 +522,7 @@
 	<xs:simpleType name="Status">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Processed"/>
+			<xs:enumeration value="Partially Processed"/>
 			<xs:enumeration value="Failed to Process"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -544,6 +545,7 @@
             <xs:element name="dataBaseId" type="xs:string" minOccurs="0"/>
             <xs:element name="correlationId" type="xs:string" minOccurs="0"/>
             <xs:element name="correlationDescription" type="xs:string" minOccurs="0"/>
+            <xs:element name="failed" type="xs:boolean" minOccurs="0" default="false"/>
         </xs:sequence>
     </xs:complexType>
 

@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.OrganizationManagementService;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.domain.EntityErrorMessage;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -42,10 +42,7 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 	}
 
 	@Transactional(readOnly=false)
-	public EntityErrorMessage createOrUpdateOrganization(Organization organization) {
-		EntityErrorMessage errorMessage = new EntityErrorMessage();
-		errorMessage.setBusinessId(organization.getNciInstituteCode());
-		errorMessage.setKlassName(Organization.class.getName());
+	public ProcessingOutcome createOrUpdateOrganization(Organization organization) {
 		try {
 			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
 			// check if db organization with same NCI code exists
@@ -64,75 +61,56 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 				organizationMigrator.migrate(organization, newOrganization, null);
 				organizationRepository.createOrUpdate(newOrganization);
 			}
+            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), false, "successful");
 		} catch (Exception e) {
-			errorMessage.addMessage(e.getMessage());
-			logger.error(e.getMessage());
+			logger.error(e);
+            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), true, e.getMessage());
 		}
 		
-		return errorMessage;
 	}
 	
 	@Transactional(readOnly=false)
-	public EntityErrorMessage mergeOrganization(Organization organization){
-		EntityErrorMessage errorMessage = new EntityErrorMessage();
-		errorMessage.setBusinessId(organization.getNciInstituteCode());
-		errorMessage.setKlassName(Organization.class.getName());
+	public ProcessingOutcome mergeOrganization(Organization organization){
+        Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
+        if(dbOrganization == null){
+            logger.warn("Could not find the Organization getting merged (NCI Code : " + organization.getNciInstituteCode() +")");
+            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), true, "Cannot find NCI code");
+        }
+        if(logger.isInfoEnabled()) logger.info("Processing merge for : " + organization.getNciInstituteCode());
+        ProcessingOutcome outcome = createOrUpdateOrganization(organization.getMergedOrganization()); //call to create the merged org if it is not available
+        if(outcome.isFailed()) return outcome;
+
+        
 		try {
-			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
-			// check if db organization with same NCI code exists
-			if(dbOrganization !=null) {
-				logger.info("found db Organization with NCI identifier: " + organization.getNciInstituteCode());
-				if(organization.getMergedOrganization() != null){
-					Organization mergedDbOrganization = organizationDao.getByNCIcode(organization.getMergedOrganization().getNciInstituteCode());
-					if(mergedDbOrganization == null){
-						// create new organization and set it as merged organization
-						logger.info("didn't find merged organization with NCI identifier:" + organization.getMergedOrganization().getNciInstituteCode() + 
-								". Creating new merged Organization");
-						Organization newMergedOrganization = new LocalOrganization();
-						dbOrganization.setMergedOrganization(newMergedOrganization);
-						organizationMigrator.migrate(organization.getMergedOrganization(), newMergedOrganization, null);
-					} else {
-						dbOrganization.setMergedOrganization(mergedDbOrganization);
-					}
-				} else {
-					String message = "Merged Organization for organization with NCI Identifier :" + organization.getNciInstituteCode() + 
-							"is not passed, returning without merging";
-					errorMessage.addMessage(message);
-					logger.error(message);
-				}
-				// retire the db organization
-				dbOrganization.setRetiredIndicator(true);
-				organizationRepository.createOrUpdate(dbOrganization);
-			} else {
-					// db Organization doesn't exist, log error and return
-					String message = "didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + " returning without merging";
-					errorMessage.addMessage(message);
-					logger.error(message);
-			}
-			
-		} catch (Exception e) {
-			errorMessage.addMessage(e.getMessage());
-			logger.error(e.getMessage());
+            dbOrganization.retire();
+            Organization mergedDbOrganization = organizationDao.getByNCIcode(organization.getMergedOrganization().getNciInstituteCode());
+            dbOrganization.setMergedOrganization(mergedDbOrganization);
+            organizationRepository.createOrUpdate(dbOrganization);
+            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), false, "successful");
+        } catch (Exception e) {
+            logger.error("Error while merging organizations :", e);
+            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), true, e.getMessage());
 		}
 		
-		return errorMessage;
 	}
 
-	public List<EntityErrorMessage> createOrUpdateOrganizations(
-			List<Organization> organizations) {
-		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
-		for (Organization organization:organizations){
-			errorMessages.add(createOrUpdateOrganization(organization));
+	public List<ProcessingOutcome> createOrUpdateOrganizations(List<Organization> organizations) {
+		List<ProcessingOutcome> outcomes = new ArrayList<ProcessingOutcome>();
+		for (Organization organization:organizations) {
+            outcomes.add(createOrUpdateOrganization(organization));
+            organizationDao.flush();
+            organizationDao.clearSession();
 		}
-		return errorMessages;
+		return outcomes;
 	}
 
-	public List<EntityErrorMessage> mergeOrganizations(
-			List<Organization> organizations) {
-		List<EntityErrorMessage> errorMessages = new ArrayList<EntityErrorMessage>();
-		for (Organization organization:organizations){
-			errorMessages.add(mergeOrganization(organization));
+	public List<ProcessingOutcome> mergeOrganizations(List<Organization> organizations) {
+		List<ProcessingOutcome> outcomes = new ArrayList<ProcessingOutcome>();
+		for (Organization organization:organizations) {
+            outcomes.add(mergeOrganization(organization));
+            organizationDao.flush();
+            organizationDao.clearSession();
 		}
-		return errorMessages;
+		return outcomes;
 	}
 }
