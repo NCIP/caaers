@@ -39,7 +39,7 @@ import org.hibernate.annotations.Parameter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_organizations_id") })
-public abstract class Organization extends AbstractMutableRetireableDomainObject implements Comparable<Organization>{
+public abstract class Organization extends AbstractMutableRetireableDomainObject{
     
     /** The Constant DEFAULT_SITE_NAME. */
     public static final String DEFAULT_SITE_NAME = "default";
@@ -524,41 +524,6 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
     public String toString() {
         return name;
     }
-    
-    public int compareTo(Organization o) {
-    	if( this.getName().compareTo(o.getName()) != 0){
-    		return this.getName().compareTo(o.getName());
-    	}
-    	
-    	if( this.getDescriptionText().compareTo(o.getDescriptionText()) != 0){
-    		return this.getDescriptionText().compareTo(o.getDescriptionText());
-    	}
-    	
-    	if( this.getRetiredIndicator().compareTo(o.getRetiredIndicator()) != 0){
-    		return this.getRetiredIndicator().compareTo(o.getRetiredIndicator());
-    	}
-    	
-    	if( this.getCity().compareTo(o.getCity()) != 0){
-    		return this.getCity().compareTo(o.getCity());
-    	}
-    	
-    	if( this.getState().compareTo(o.getState()) != 0){
-    		return this.getState().compareTo(o.getState());
-    	}
-    	
-    	if( this.getCountry().compareTo(o.getCountry()) != 0){
-    		return this.getCountry().compareTo(o.getCountry());
-    	}
-    	
-    	if( this.getMergedOrganization() == null && o.getMergedOrganization() != null ){
-    		return -1;
-    	}
-    	
-    	if( this.getMergedOrganization() !=null && o.getMergedOrganization() != null ){
-    		return (this.getMergedOrganization().getNciInstituteCode().compareTo(o.getMergedOrganization().getNciInstituteCode()));
-    	}
-    	    	
-    	return 0;
-    }
+
 
 }

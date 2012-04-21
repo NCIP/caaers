@@ -45,23 +45,18 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 	public ProcessingOutcome createOrUpdateOrganization(Organization organization) {
 		try {
 			Organization dbOrganization = organizationDao.getByNCIcode(organization.getNciInstituteCode());
-			// check if db organization with same NCI code exists
-			if(dbOrganization !=null) {
-				logger.info("found db Organization with NCI identifier: " + organization.getNciInstituteCode());
-				// compare with db organization to see if any property changed
-				if(organization.compareTo(dbOrganization) != 0){
-					logger.info("updating db Organization with NCI identifier:" + organization.getNciInstituteCode() + " with remote Organization");
-					organizationMigrator.migrate(organization, dbOrganization, null);
-					organizationRepository.createOrUpdate(dbOrganization);
-				} 
-			} else {
-				// db Organization doesn't exist. Create a new organization.
-				logger.info("didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + ". Creating new Organization");
-				Organization newOrganization = new LocalOrganization();
-				organizationMigrator.migrate(organization, newOrganization, null);
-				organizationRepository.createOrUpdate(newOrganization);
-			}
-            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), false, "successful");
+            if(dbOrganization == null){
+                logger.info("didn't find db Organization with NCI identifier:" + organization.getNciInstituteCode() + ". Creating new Organization");
+                dbOrganization = new LocalOrganization();
+            }
+            organizationMigrator.migrate(organization, dbOrganization, null);
+            organizationRepository.createOrUpdate(dbOrganization);
+            if(logger.isDebugEnabled()){
+                logger.debug("Organization with NCI Code : " +
+                        organization.getNciInstituteCode() + ", id : " + dbOrganization.getId() + " modified/created" );
+            }
+            return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), false, "Organization with NCI Code : " +
+                        organization.getNciInstituteCode() + ", id : " + dbOrganization.getId() + " modified/created" );
 		} catch (Exception e) {
 			logger.error(e);
             return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), true, e.getMessage());

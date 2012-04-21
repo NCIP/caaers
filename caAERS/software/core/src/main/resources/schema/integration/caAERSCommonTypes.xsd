@@ -541,7 +541,7 @@
         <xs:sequence>
         	<xs:element name="klassName" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="businessIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
             <xs:element name="dataBaseId" type="xs:string" minOccurs="0"/>
             <xs:element name="correlationId" type="xs:string" minOccurs="0"/>
             <xs:element name="correlationDescription" type="xs:string" minOccurs="0"/>
@@ -581,7 +581,7 @@
 	
 	<xs:complexType name="BaseFault">
 		<xs:sequence>
-			<xs:element name="message" type="xs:string" />
+			<xs:element name="message" type="xs:string" nillable="true" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SecurityExceptionFault">
