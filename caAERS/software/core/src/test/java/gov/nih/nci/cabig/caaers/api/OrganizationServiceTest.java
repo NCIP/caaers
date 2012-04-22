@@ -79,7 +79,7 @@ public class OrganizationServiceTest extends CaaersDbNoSecurityTestCase{
 			 assertEquals(2,errorMssgs.size());
 			 for(ProcessingOutcome errMssg : errorMssgs){
 				 assertNotNull(errMssg.getBusinessId());
-				 assertEquals(0,errMssg.getMessages().size());
+				 assertEquals(1,errMssg.getMessages().size());
 			 }
 			 
 			 interruptSession();
@@ -94,7 +94,7 @@ public class OrganizationServiceTest extends CaaersDbNoSecurityTestCase{
 			 
 		 }
 	 
-	 public void testUpdateMergeOrganization(){
+	 public void testUnSuccessfulMergeOrganization(){
 			List<Organization> dbOrgs = organizationDao.getAll();
 			 assertEquals(3,dbOrgs.size());
 			 
@@ -127,12 +127,75 @@ public class OrganizationServiceTest extends CaaersDbNoSecurityTestCase{
 			 organization2.setNciInstituteCode("NCI02");
 			 orgs.add(organization2);
 			 
-			 organizationManagementService.createOrUpdateOrganizations(orgs);
+			List<ProcessingOutcome> entityErrors = organizationManagementService.mergeOrganizations(orgs);
+			assertEquals(2,entityErrors.size());
 			 
 			 interruptSession();
-			 
+			 assertEquals(3,organizationDao.getAll().size());
 			 Organization mergedOrg = organizationDao.getByNCIcode("Merged_NCI_Code");
-			 assertNotNull(mergedOrg.getMergedOrganization());
-			 assertEquals("WAKE",mergedOrg.getMergedOrganization().getNciInstituteCode());
+			 assertNull(mergedOrg);
+		 }
+	 
+	 public void testSuccessfulMergeOrganization(){
+			List<Organization> dbOrgs = organizationDao.getAll();
+			 assertEquals(3,dbOrgs.size());
+			 
+			 Organization org1 = organizationDao.getByNCIcode("WAKE");
+			 assertEquals("Northwestern University",org1.getName());
+			 assertNull(org1.getMergedOrganization());
+			 
+			 // case 1: create copy of existing org with same NCI code
+			 Organization existingOrg1 = new LocalOrganization();
+			 existingOrg1.setNciInstituteCode("WAKE");
+			 existingOrg1.setName("Northwestern University");
+			 
+			 List<Organization> orgs = new ArrayList<Organization>();
+			 
+			 // crate new merged organization and try to persist existing local org with new merged org
+			 Organization newMergedOrg = new LocalOrganization();
+			 newMergedOrg.setName("New Merged Org name");
+			 newMergedOrg.setDescriptionText("New Merged Org name description");
+			 newMergedOrg.setNciInstituteCode("Merged_NCI_Code");
+			 newMergedOrg.setRetiredIndicator(false);
+			 
+			 existingOrg1.setMergedOrganization(newMergedOrg);
+			 
+			 orgs.add(existingOrg1);
+			 
+			 // Case 2. Merge Default org to an existing Org MAYO
+			 Organization org2 = organizationDao.getByNCIcode("DEFAULT");
+			 assertEquals("Duke University Comprehensive Cancer Center",org2.getName());
+			 assertNull(org2.getMergedOrganization());
+			 
+			 
+			 Organization existingOrg2 = new LocalOrganization();
+			 existingOrg2.setName("Default");
+			 existingOrg2.setNciInstituteCode("DEFAULT");
+			 
+			 // set existing org 3 as merged org
+			 
+			 Organization existingOrg3 = new LocalOrganization();
+			 existingOrg3.setName("Mayo Clinic");
+			 existingOrg3.setNciInstituteCode("MAYO");
+			 existingOrg2.setMergedOrganization(existingOrg3);
+			 
+			 
+			 orgs.add(existingOrg2);
+			 
+			List<ProcessingOutcome> entityErrors = organizationManagementService.mergeOrganizations(orgs);
+			 assertEquals(2,entityErrors.size());
+			 
+			 interruptSession();
+			 assertEquals(4,organizationDao.getAll().size());
+			 
+			 Organization reloadDefault= organizationDao.getByNCIcode("DEFAULT");
+			 assertNotNull(reloadDefault.getMergedOrganization());
+			 assertTrue(reloadDefault.getRetiredIndicator());
+			 assertEquals("MAYO",reloadDefault.getMergedOrganization().getNciInstituteCode());
+			 
+			 Organization reloadWake= organizationDao.getByNCIcode("WAKE");
+			 assertNotNull(reloadWake.getMergedOrganization());
+			 assertTrue(reloadWake.getRetiredIndicator());
+			 assertEquals("Merged_NCI_Code",reloadWake.getMergedOrganization().getNciInstituteCode());
 		 }
 }
