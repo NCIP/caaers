@@ -77,6 +77,7 @@
           <list>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Study" p:linkName="createStudyController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Studies" p:linkName="searchStudyController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="AdEERS Studies" p:linkName="searchAdEERSStudyController"/>
           </list>
         </property>
       </bean>
@@ -403,6 +404,10 @@
     <bean name="/study/create" id="createStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController" />
     <bean name="/study/view" id="viewStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController"  />
     <bean name="/study/search" id="searchStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
+        <property name="sessionForm" value="true"/>
+        <property name="studyRepository" ref="studyRepository"/>
+    </bean>
+    <bean name="/study/searchAdEERSStudies" id="searchAdEERSStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchAdEERSStudyController">
         <property name="sessionForm" value="true"/>
         <property name="studyRepository" ref="studyRepository"/>
     </bean>

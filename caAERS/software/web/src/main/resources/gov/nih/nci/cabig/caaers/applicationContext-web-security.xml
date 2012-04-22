@@ -51,6 +51,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/create" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
 		<entry key="/pages/study/view" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
 		<entry key="/pages/study/search" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+		<entry key="/pages/study/study/searchAdEERSStudies" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
+
 		<entry key="/dwr/call/plaincall/searchStudy.getStudiesTable.dwr" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" /> 
 		<entry key="/pages/study/edit" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
         <entry key="/pages/study/studyAgentIND" value="study_creator,study_qa_manager,supplemental_study_information_manager,study_team_administrator,study_site_participation_administrator,data_reader" />
@@ -116,6 +118,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<!--========== STUDY ===========-->
 		<entry key="/pages/study/create" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
+		<entry key="/pages/study/searchAdEERSStudies" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
 		<entry key="/pages/study/view" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
 		<entry key="/pages/study/search" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
 		<entry key="/pages/study/edit" value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
