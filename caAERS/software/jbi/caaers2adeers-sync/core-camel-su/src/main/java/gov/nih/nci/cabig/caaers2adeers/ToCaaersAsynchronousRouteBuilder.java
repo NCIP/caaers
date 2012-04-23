@@ -38,6 +38,7 @@ public class ToCaaersAsynchronousRouteBuilder {
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
 			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:caaers-organization-async")
+			.when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:caaers-studydetails-async")
 			.otherwise().to("direct:morgue");
 		
 		//caAERS - createOrUpdateAgents
@@ -45,6 +46,9 @@ public class ToCaaersAsynchronousRouteBuilder {
 
         //caAERS - createOrUpdateOrganization
         configureWSCallRoute("direct:caaers-organization-async", "organization_async.xsl", caAERSOrganizationServiceJBIURL + "createOrUpdateOrganization" );
+
+        //caAERS - getStudyDetails
+        configureWSCallRoute("direct:caaers-studydetails-async", "study_details_async.xsl", caAERSStudyServiceJBIURL + "createStudy" );
 
 	}
 	

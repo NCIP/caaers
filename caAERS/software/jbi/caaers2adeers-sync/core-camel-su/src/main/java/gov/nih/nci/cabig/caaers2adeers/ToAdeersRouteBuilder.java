@@ -32,6 +32,7 @@ public class ToAdeersRouteBuilder {
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
     			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:adeers-organization-lov")
+                .when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:adeers-study-details")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
     			.otherwise().to("direct:morgue");
 		
@@ -41,8 +42,11 @@ public class ToAdeersRouteBuilder {
     	//LOV - ASAEL
 //    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
 
-        //LOV - Agents
-        configureLovWSCallRoute("direct:adeers-organization-lov", "organization_lov.xsl",  "getAgentsLOV");
+        //LOV - Organization
+        configureLovWSCallRoute("direct:adeers-organization-lov", "organization_lov.xsl",  "getOrganizationsLOV");
+
+        //LOV - Study Details
+        configureLovWSCallRoute("direct:adeers-study-details", "study_details.xsl",  "getStudyDetails");
 
         //Search Study
         configureStudyWSCallRoute("direct:adeers-study-search", "study_search.xsl", "searchStudy");

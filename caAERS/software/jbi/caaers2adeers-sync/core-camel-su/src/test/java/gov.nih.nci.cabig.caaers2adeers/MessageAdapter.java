@@ -8,6 +8,9 @@ import org.apache.commons.collections.map.LinkedMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @author Biju Joseph
+ */
 public class MessageAdapter extends DefaultMessage{
 
     Map<String, Object> headers = new LinkedHashMap<String, Object>();

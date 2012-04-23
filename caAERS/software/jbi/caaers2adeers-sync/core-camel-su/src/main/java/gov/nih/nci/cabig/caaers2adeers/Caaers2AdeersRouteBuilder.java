@@ -63,10 +63,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         // .to("direct:adEERSRequestSink");
         
       //just for testing.. 
-//    	from("timer://tutorial?fixedRate=true&delay=2000&period=300000")
+    	from("timer://tutorial?fixedRate=true&delay=5000&period=300000")
+    		.setBody(constant(MockMessageGenerator.getAgentsRequest()))
 //        	.processRef("exchangePreProcessor")
 //    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
-//    		.to("direct:adEERSRequestSink");
+            .to("log:SENDING===MESSAGE===============")
+    		.to("direct:adEERSRequestSink");
 
     	//just for testing.. 
 //    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")

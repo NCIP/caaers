@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
 /**
- * Created by IntelliJ IDEA.
- * User: BJW7
- * Date: 4/18/12
- * Time: 12:42 PM
- * To change this template use File | Settings | File Templates.
+ * @author Biju Joseph
  */
 public class ToCaaersSynchronousRouteBuilder {
 

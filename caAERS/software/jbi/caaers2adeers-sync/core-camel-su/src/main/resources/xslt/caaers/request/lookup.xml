@@ -1,0 +1,30 @@
+<lookup>
+    <phases>
+        <phase><code>I</code><value>Phase I Trial</value></phase>
+        <phase><code>II</code><value>Phase II Trial</value></phase>
+        <phase><code>III</code><value>Phase III Trial</value></phase>
+    </phases>
+    <statuses>
+         <status><code>Active</code><value>Active - Trial is open to accrual</value></status>
+         <status><code>Complete</code><value>Administratively Complete</value></status>
+    </statuses>
+    <ctcversions>
+        <ctcversion><code>1.0</code><value>1</value></ctcversion>
+        <ctcversion><code>2.0</code><value>2</value></ctcversion>
+        <ctcversion><code>3.0</code><value>3</value></ctcversion>
+        <ctcversion><code>4.0</code><value>4</value></ctcversion>
+        <ctcversion><code>5.0</code><value>5</value></ctcversion>
+    </ctcversions>
+    <studypurposes>
+        <purpose><code>Treatment</code><value>Treatment</value></purpose>
+        <purpose><code>Prevention</code><value>Prevention</value></purpose>
+    </studypurposes>
+    <indtypes>
+        <indtype><code>Investigational</code><value>OTHER</value></indtype>
+        <indtype><code>Commercial</code><value>NA_COMMERCIAL</value></indtype>
+    </indtypes>
+    <yesnos>
+        <yesno><code>Yes</code><value>true</value></yesno>
+        <yesno><code>No</code><value>false</value></yesno>
+    </yesnos>
+</lookup>

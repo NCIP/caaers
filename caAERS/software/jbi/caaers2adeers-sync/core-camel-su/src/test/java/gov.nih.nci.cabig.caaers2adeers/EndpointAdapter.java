@@ -6,11 +6,7 @@ import org.apache.camel.Producer;
 import org.apache.camel.impl.DefaultEndpoint;
 
 /**
- * Created by IntelliJ IDEA.
- * User: BJW7
- * Date: 4/17/12
- * Time: 1:57 PM
- * To change this template use File | Settings | File Templates.
+ * @author Biju Joseph
  */
 public class EndpointAdapter extends DefaultEndpoint {
     public boolean isSingleton() {
