@@ -60,11 +60,18 @@ public interface AdeersIntegrationFacade {
      * @return the correlation Id
      */
     String syncStudies();
-    
+
     /**
-     * Will search AdEERS studies.
+     *
+     * @param identifier Funding Sponsor identifier value
+     * @return DB Identifier
+     */
+    String syncStudy(String identifier, String createOrUpdate);
+
+    /**
+     * Search AdEERS studies by ShortTitle or Identifier value
      * @return list of caAERS domain studies
      */
-    List<Study> searchStudies();
+    List<Study> searchStudies(String searchText);
    
 }

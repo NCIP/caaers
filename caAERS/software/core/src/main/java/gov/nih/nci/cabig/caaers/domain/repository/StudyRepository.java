@@ -634,6 +634,14 @@ public class StudyRepository {
         return this.find(q, firstrow, maxrows);
     }
 
+    public List<Study> getAllStudiesByShortTitleOrIdentifiers(String text) {
+        System.out.println(">>> Searching by: " + text);
+        StudyQuery q  = new StudyQuery();
+        q.filterByShortTitleOrIdentifiers(text);
+        List<Study> foundStudies = find(q);
+        return foundStudies;
+    }
+
 	/**
 	 * Sets the research staff dao.
 	 *

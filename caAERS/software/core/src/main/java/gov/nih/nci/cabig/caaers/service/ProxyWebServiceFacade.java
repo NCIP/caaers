@@ -1,14 +1,18 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.ws.client.core.WebServiceTemplate;
 
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -157,9 +161,60 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 		return null;
 	}
 
-	public List<Study> searchStudies() {
-		// TODO Auto-generated method stub
-		return null;
+    // ToDo This methos should be implemented to use ServiceMix
+
+    /**
+     *
+     * @param id
+     * @param createOrUpdate CREATE or UPDATE
+     * @return
+     */
+	public String syncStudy(String id, String createOrUpdate) {
+        System.out.println("Synchronizing: " + id + ", " + createOrUpdate);
+        return createOrUpdate + "-91";
+	}
+
+    private static Study createStudy(final String shortTitle) {
+        Study s = new LocalStudy();
+        s.setShortTitle(shortTitle);
+        s.setLongTitle(shortTitle);
+
+        OrganizationAssignedIdentifier i = new OrganizationAssignedIdentifier();
+        i.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+        i.setValue("ABC-01");
+        s.addIdentifier(i);
+
+        Organization o = new LocalOrganization();
+        o.setNciInstituteCode("CTEP");
+        StudyFundingSponsor so = new StudyFundingSponsor();
+        so.setOrganization(o);
+        so.setStudy(s);
+
+        i.setOrganization(o);
+        s.addStudyFundingSponsor(so);
+
+        return s;
+    }
+
+    // ToDo This methos should be implemented to get Studies from adERRS
+	public List<Study> searchStudies(String searchText) {
+
+        System.out.println(">>> WS Facade Searching by: " + searchText);
+
+        List<Study> studies = new ArrayList<Study>();
+
+        studies.add(createStudy("Short Title - 01"));
+        studies.add(createStudy("Short Title - 02"));
+
+        studies.get(0).setStatus("UPDATE");
+        studies.get(0).setId(90);
+
+        studies.get(0).getIdentifiers().get(0).setValue("ABC-01");
+        studies.get(0).setId(90);
+
+        studies.get(1).getIdentifiers().get(0).setValue("ABC-99");
+
+        return studies;
 	}
 	
 }

@@ -222,10 +222,14 @@ public class StudyQueryTest extends TestCase{
 		studyQuery.filterStudiesMatchingText("5876");
 		String[] organizationCodes = {"MN026"};
 		studyQuery.filterStudiesByOrganizations(organizationCodes);
-		
 		String expectedQuery = "select  distinct s from Study s left join fetch s.identifiers as identifier join s.studyOrganizations as ss WHERE (lower(s.shortTitle) LIKE :shortTitle or lower(s.longTitle) LIKE :longTitle or lower(identifier.value) LIKE :identifierValue) AND ss.organization.nciInstituteCode in (:OrganizationCodes)";
 		assertEquals(expectedQuery, studyQuery.getQueryString());
 	}
 	
-	
+    public void testFilterByShortTitleAndIdentifiers() {
+        StudyQuery q = new StudyQuery();
+        q.filterByShortTitleOrIdentifiers("abc");
+        assertEquals("select  distinct s from Study s join s.identifiers as identifier WHERE lower(s.shortTitle) LIKE :shortTitle OR lower(identifier.value) LIKE :identifierValue", q.getQueryString());
+    }
+
 }

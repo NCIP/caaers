@@ -240,7 +240,6 @@ public class StudyQuery extends AbstractQuery {
             String searchString = identifiervalue.toLowerCase();
             andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
             setParameter(STUDY_IDENTIFIER_VALUE, searchString);
-        
     }
 
     public void filterByIdentifierType(final String type) {
@@ -282,6 +281,14 @@ public class StudyQuery extends AbstractQuery {
         setParameter(STUDY_SHORT_TITLE, "%" + shortTitleText.toLowerCase() + "%");
     }
 
+    public void filterByShortTitleOrIdentifiers(String text) {
+        orWhere("lower(s.shortTitle) LIKE :" + STUDY_SHORT_TITLE);
+        setParameter(STUDY_SHORT_TITLE, "%" + text.toLowerCase() + "%");
+        leftOuterJoin(STUDY_ALIAS + ".identifiers as identifier");
+        orWhere("lower(identifier.value) LIKE :"  + IDENTIFIER_VALUE);
+        setParameter(IDENTIFIER_VALUE, "%" + text.toLowerCase() + "%");
+    }
+
     // longTitle
     public void filterByLongTitle(final String longTitleText) {
         andWhere("lower(s.shortTitle) LIKE :" + "LONG_SHORT_TITLE");
@@ -314,9 +321,7 @@ public class StudyQuery extends AbstractQuery {
     public void filterStudiesWithMatchingText(String text) {
     	joinIdentifier();
         String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-
-        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " +
-                "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " + "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
         setParameter(IDENTIFIER_VALUE, searchString);
         setParameter(STUDY_SHORT_TITLE, searchString);
         setParameter(STUDY_LONG_TITLE, searchString);
@@ -329,9 +334,7 @@ public class StudyQuery extends AbstractQuery {
     public void filterStudiesMatchingText(String text) {
     	leftJoinFetch(STUDY_ALIAS+".identifiers as identifier");
         String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-
-        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " +
-                "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " + "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
         setParameter(IDENTIFIER_VALUE, searchString);
         setParameter(STUDY_SHORT_TITLE, searchString);
         setParameter(STUDY_LONG_TITLE, searchString);

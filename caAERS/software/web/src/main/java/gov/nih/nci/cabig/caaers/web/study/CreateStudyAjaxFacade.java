@@ -11,6 +11,8 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
+import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
@@ -72,6 +74,7 @@ public class CreateStudyAjaxFacade {
     private StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
 
+    private AdeersIntegrationFacade proxyWebServiceFacade;
     /**
      * Retrieves StudySite's Investigators for the autocompleter through AJAX
      * */
@@ -869,6 +872,17 @@ public class CreateStudyAjaxFacade {
     	return out;
     }
 
+    /**
+     *
+     * @param studyIdentifier Study Funding Sponsor Identifier
+     * @param createOrUpdate It takes values if "CREATE" or "UPDATE
+     * @return
+     */
+    public String syncStudyWithAdEERS(String studyIdentifier, String createOrUpdate) {
+        String _result = proxyWebServiceFacade.syncStudy(studyIdentifier, createOrUpdate);
+        return _result;
+    }
+
     public List<Device> fetchDevicesByText(String text) {
         List<Device> l = deviceRepository.getByMatchText(text);
         l = RankBasedSorterUtils.sort(l , text, new Serializer<Device>(){
@@ -893,5 +907,13 @@ public class CreateStudyAjaxFacade {
 
     public void setDeviceRepository(DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
+    }
+
+    public AdeersIntegrationFacade getProxyWebServiceFacade() {
+        return proxyWebServiceFacade;
+    }
+
+    public void setProxyWebServiceFacade(AdeersIntegrationFacade proxyWebServiceFacade) {
+        this.proxyWebServiceFacade = proxyWebServiceFacade;
     }
 }

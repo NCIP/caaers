@@ -191,4 +191,13 @@ public class StudyRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
 			assertEquals(2, indList.size());
 		}
     }
+
+    public void testFilterByTitleAndIdentifier() {
+        StudyQuery q  = new StudyQuery();
+        q.filterByShortTitleOrIdentifiers("New");
+        List<Study> list = studyRepository.find(q);
+        assertEquals(1, list.size());
+        list = studyRepository.getAllStudies();
+        assertEquals(2, list.size());
+    }
 }
