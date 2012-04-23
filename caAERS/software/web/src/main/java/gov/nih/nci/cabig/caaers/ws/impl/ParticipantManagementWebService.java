@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.ws.impl;
 
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.cabig.caaers.ws.ParticipantService;
 
@@ -51,6 +52,17 @@ public class ParticipantManagementWebService implements ParticipantService {
     @WebMethod
     public CaaersServiceResponse deleteParticipant(@WebParam(name = "Participants", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/participant") Participants xmlParticipants) {
         return impl.deleteParticipant(xmlParticipants);
+    }
+    
+    /**
+     * This operation will take a jaxb Participant to retrieve and return the matching Participant in caAERS. It  retrieves the participant based on the MRN.
+     *
+     * @param xmlParticipants
+     */
+
+    @WebMethod
+    public CaaersServiceResponse getParticipant(@WebParam(name = "ParticipantRef", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/participant") ParticipantRef xmlParticipant) {
+        return impl.getParticipant(xmlParticipant);
     }
 
     public ParticipantServiceImpl getImpl() {

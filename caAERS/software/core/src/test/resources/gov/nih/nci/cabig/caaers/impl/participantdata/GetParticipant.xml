@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <par:participantRef xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://webservice.caaers.cabig.nci.nih.gov/participant ParticipantSchema.xsd ">
+    <identifiers>
+      <par:organizationAssignedIdentifier>
+        <type>MRN</type>
+        <value>barboza1</value>
+        <primaryIndicator>true</primaryIndicator>
+        <par:organization>
+          <name>Mayo Clinic Hospital</name>
+          <nciInstituteCode>MAYO</nciInstituteCode>
+        </par:organization>
+      </par:organizationAssignedIdentifier>
+      <par:systemAssignedIdentifier>
+        <type>MRN</type>
+        <value>barboza2</value>
+        <primaryIndicator>false</primaryIndicator>
+        <systemName>Yarois</systemName>
+      </par:systemAssignedIdentifier>
+    </identifiers>
+  </par:participantRef>
+  

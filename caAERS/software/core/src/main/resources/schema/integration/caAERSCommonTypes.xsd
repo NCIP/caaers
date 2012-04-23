@@ -562,10 +562,17 @@
     		<xs:element name="wsError" type="WsError" minOccurs="0" maxOccurs="unbounded"></xs:element>
     		<xs:element ref="entityProcessingOutcomes" minOccurs="0"></xs:element>
             <xs:element name="message" type="xs:string"  minOccurs="0"></xs:element>
-
+            <xs:element ref="responseData" minOccurs="0"/>
     	</xs:sequence>
         <!-- migrated from study xsd -->
         <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
+    </xs:complexType>
+    
+    <xs:element name="responseData" type="responseDataType"></xs:element>
+    <xs:complexType name="responseDataType">
+    		<xs:sequence>
+   				<xs:any minOccurs="0" maxOccurs="1"/>
+   			</xs:sequence>
     </xs:complexType>
     
     <xs:element name="CaaersServiceResponse">

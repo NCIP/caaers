@@ -11,7 +11,9 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
@@ -343,6 +345,36 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 				Helper.populateErrorOutcome(caaersServiceResponse, null, null, null, messages);
         	}
         }
+
+		return caaersServiceResponse;
+	}
+	
+	// returns the domain participant after converting to jaxb participant based on the input identifiers
+	public CaaersServiceResponse getParticipant(ParticipantRef xmlParticipantRefType) {
+		
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+		Participant participant = new Participant();
+		Participant dbParticipant = null;
+        try{
+        	participantConverter.convertParticipantRefToParticipantDomain(xmlParticipantRefType, participant);
+        }catch(CaaersSystemException caEX){
+        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
+        	caaersServiceResponse.getServiceResponse().setResponsecode("1");
+        	caaersServiceResponse.getServiceResponse().setMessage("ParticipantDto to ParticipantDomain Conversion Failed ");
+        }
+        
+        dbParticipant = fetchParticipant(participant);
+        
+		if(dbParticipant != null ){
+			caaersServiceResponse.getServiceResponse().setResponsecode("0");
+			 ParticipantType dbParticipantType = new ParticipantType();
+			 participantConverter.convertDomainParticipantToParticipantDto(dbParticipant, dbParticipantType);
+			 caaersServiceResponse.getServiceResponse().setResponseData(new ResponseDataType());
+			 caaersServiceResponse.getServiceResponse().getResponseData().setAny(dbParticipantType);
+		}else{
+			caaersServiceResponse.getServiceResponse().setResponsecode("1");
+			caaersServiceResponse.getServiceResponse().setMessage("Unable to retrieve participant");
+		}
 
 		return caaersServiceResponse;
 	}

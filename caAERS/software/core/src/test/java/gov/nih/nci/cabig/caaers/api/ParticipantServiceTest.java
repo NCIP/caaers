@@ -12,6 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +24,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -33,11 +35,13 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private gov.nih.nci.cabig.caaers.integration.schema.participant.Participants participants = null;
+    private gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef participantRef = null;
     private File xmlFile = null;
     private ParticipantDao participantDao;
     private ParticipantIndexDao participantIndexDao;
 	private StudyDao studyDao;
     Participant updatedParticipant = null;
+    Participant dbParticipant = null;
 
     @Override
     protected void setUp() throws Exception {
@@ -223,6 +227,67 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
         } finally {
             if (updatedParticipant != null) {
                 participantDao.delete(updatedParticipant);
+            }
+        }
+    }
+    
+    
+    public void testGetParticipant() {
+
+        try {
+
+        	createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
+
+            xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/GetParticipant.xml")[0].getFile();
+            participantRef = (gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef)unmarshaller.unmarshal(xmlFile);
+            
+            // load the saved db participant
+            dbParticipant = participantDao.getBySubnames(new String[]{"Richard"}).get(0);
+            assertNotNull("Participant with name Richard is not created",dbParticipant);
+            
+            String userName = "SYSTEM";
+            ParticipantIndex participantIndex = new ParticipantIndex();
+            participantIndex.setLoginId(userName);
+            participantIndex.setParticipant(dbParticipant);
+            participantIndex.setRoleCode(1);
+            
+            IndexEntry e1 = new IndexEntry(UserGroupType.system_administrator);
+            e1.addEntityId(dbParticipant.getId());
+            
+            participantIndexDao.updateIndex(userName, UserGroupType.system_administrator.getCode(),e1 , null);
+
+            caaersServiceResponse = participantService.getParticipant(participantRef);
+            
+            Participants participantsNew = new Participants();
+            participantsNew.getParticipant().add((ParticipantType)caaersServiceResponse.getServiceResponse().getResponseData().getAny());
+            assertEquals("Herd", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getLastName());
+            participantsNew.getParticipant().get(0).setLastName("UpdatedLastName");
+            participantService.updateParticipant(participantsNew);
+            
+            assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
+            assertNotNull(caaersServiceResponse.getServiceResponse().getResponseData().getAny());
+            assertEquals(ParticipantType.class, caaersServiceResponse.getServiceResponse().getResponseData().getAny().getClass());
+            assertEquals(1, ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().size());
+            assertEquals("DEFAULT", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().
+            		get(0).getStudySite().getOrganization().getNciInstituteCode());
+            assertEquals("WFCCC001", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().
+            		get(0).getStudySite().getStudy().getIdentifiers().getIdentifier().getValue());
+            assertEquals("001", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().
+            		get(0).getStudySubjectIdentifier());
+            assertEquals("Leing", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getMiddleName());
+            assertEquals("UpdatedLastName", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getLastName());
+            assertEquals(2001, ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBirthDate().getYear());
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Error running test: " + e.getMessage());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            fail("Error running test: " + e.getMessage());
+        } finally {
+            if (dbParticipant != null) {
+                participantDao.delete(dbParticipant);
             }
         }
     }
