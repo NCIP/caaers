@@ -63,12 +63,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         // .to("direct:adEERSRequestSink");
         
       //just for testing.. 
-    	from("timer://tutorial?fixedRate=true&delay=5000&period=300000")
-    		.setBody(constant(MockMessageGenerator.getAgentsRequest()))
-//        	.processRef("exchangePreProcessor")
-//    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
-            .to("log:SENDING===MESSAGE===============")
-    		.to("direct:adEERSRequestSink");
+//    	from("timer://tutorial?fixedRate=true&delay=5000&period=300000")
+//    		.setBody(constant(MockMessageGenerator.getAgentsRequest()))
+////        	.processRef("exchangePreProcessor")
+////    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
+//            .to("log:SENDING===MESSAGE===============")
+//    		.to("direct:adEERSRequestSink");
 
     	//just for testing.. 
 //    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
@@ -78,11 +78,14 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         //just for testing generic webservice
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
-    		.processRef("exchangePreProcessor")
-    		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
-    		.to("log:after-soap_filter")
-			.to("direct:adEERSRequestSink");
-
+		.processRef("exchangePreProcessor")
+		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
+		.choice()
+                .when(header("c2a_sync_mode").isEqualTo("sync")).to("log:after-soap_filter-and-before-sync").to("direct:adEERSRequestSink")
+                .otherwise()
+                	.to("log:after-soap_filter-and-before-async")
+                	.multicast(new UseFirstAggregationStrategy()).parallelProcessing().to("xslt:xslt/caaers/response/async_success_response.xsl", "direct:adEERSRequestSink");
+			
     	new ToAdeersRouteBuilder(this).configure();
     	new ToCaaersAsynchronousRouteBuilder(this).configure();
     	new ToCaaersSynchronousRouteBuilder(this).configure();

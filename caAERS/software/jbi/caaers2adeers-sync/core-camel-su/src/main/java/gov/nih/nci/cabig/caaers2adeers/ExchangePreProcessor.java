@@ -44,7 +44,7 @@ public class ExchangePreProcessor implements Processor {
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
         properties.put(ADEERS_WS_USERNAME, adeersWSUser);
         properties.put(ADEERS_WS_PASSWORD, adeersWSPassword);
-        boolean isSync = XPathBuilder.xpath("/payload/request/operation/@mode = 'sync'").matches(exchange);
+        boolean isSync = XPathBuilder.xpath("//payload/request/operation/@mode = 'sync'").matches(exchange);
         log.debug("syncMode = " + isSync);
         properties.put(SYNC_HEADER, isSync ? "sync" : "async");
         String operation = XPathBuilder.xpath("//payload/request/operation/@name").evaluate(exchange, String.class);
