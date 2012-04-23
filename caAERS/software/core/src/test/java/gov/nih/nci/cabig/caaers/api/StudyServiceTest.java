@@ -98,7 +98,7 @@ public class StudyServiceTest extends CaaersDbNoSecurityTestCase {
     }
 
     public void testSearchAdEERSStudyInCaAERS() {
-        StudyService svc = (StudyService) getApplicationContext().getBean("studyServiceAPI");
+        StudyService svc = (StudyService) getApplicationContext().getBean("studyServiceAPITarget");
 
         List<Study> studies = new ArrayList<Study>();
         studies.add(createStudy("Short Title - 01"));
@@ -118,7 +118,7 @@ public class StudyServiceTest extends CaaersDbNoSecurityTestCase {
 
         svc.searchAdEERSStudiesInCaAERS(studies, studiesCaAERS);
 
-        assertEquals("UPDATED", studies.get(1).getStatus());
+        assertEquals("IMPORT", studies.get(1).getStatus());
 
     }
 
