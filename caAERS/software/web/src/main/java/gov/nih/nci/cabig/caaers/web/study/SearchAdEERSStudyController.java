@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.api.impl.DefaultStudyService;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -33,6 +34,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
     private ListValues listValues;
     private ConfigProperty configurationProperty;
     AdeersIntegrationFacade adeersIntegrationFacade;
+    private DefaultStudyService defaultStudyService;
 
     public SearchAdEERSStudyController() {
         setCommandClass(SearchCommand.class);
@@ -67,47 +69,13 @@ public class SearchAdEERSStudyController extends SimpleFormController {
             System.out.println("Found in adEERS: " + studies.size());
             System.out.println("Found in caAERS: " + caaersStudies.size());
 
-            // ToDo this method has to be moved into some utility class
-            searchAdEERSStudiesInCaAERS(studies, caaersStudies);
-            //
+            defaultStudyService.searchAdEERSStudiesInCaAERS(studies, caaersStudies);
 
             map.put("studies", studies);
         }
 
         ModelAndView modelAndView = new ModelAndView(getSuccessView(), map);
         return modelAndView;
-    }
-
-    private String getStudyKey(Study s) {
-        String key = "";
-        OrganizationAssignedIdentifier i = s.getFundingSponsorIdentifier();
-        if (i != null) {
-            key = i.getOrganization().getNciInstituteCode() + ":" + i.getValue();
-        } else {
-            key = s.getShortTitle();
-        }
-        return key;
-    }
-
-    public void searchAdEERSStudiesInCaAERS(List<Study> adEERSStudies, List<Study> caAERSStudies) {
-
-        Set<String> set = new HashSet<String>();
-
-        // Build caAERS hash
-        for (Study s : caAERSStudies) {
-            String key = getStudyKey(s);
-            set.add(key);
-        }
-
-        for (Study s : adEERSStudies) {
-            String key = getStudyKey(s);
-            if (set.contains(key)) {
-                s.setStatus("UPDATE");
-            } else {
-                s.setStatus("IMPORT");
-            }
-        }
-
     }
 
     public void setListValues(final ListValues listValues) {
@@ -134,5 +102,13 @@ public class SearchAdEERSStudyController extends SimpleFormController {
 
     public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
         this.adeersIntegrationFacade = adeersIntegrationFacade;
+    }
+
+    public DefaultStudyService getDefaultStudyService() {
+        return defaultStudyService;
+    }
+
+    public void setDefaultStudyService(DefaultStudyService defaultStudyService) {
+        this.defaultStudyService = defaultStudyService;
     }
 }

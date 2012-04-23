@@ -171,6 +171,13 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
      */
 	public String syncStudy(String id, String createOrUpdate) {
         System.out.println("Synchronizing: " + id + ", " + createOrUpdate);
+        // Simulating response wait from ServiceMix :P
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+
+        }
+
         return createOrUpdate + "-91";
 	}
 
@@ -214,6 +221,13 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         studies.get(0).setId(90);
 
         studies.get(1).getIdentifiers().get(0).setValue("ABC-99");
+
+        // Simulating response wait from ServiceMix :P
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+
+        }
 
         return studies;
 	}

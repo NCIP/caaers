@@ -19,11 +19,8 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
  */
 public class StudyServiceTest extends CaaersDbNoSecurityTestCase {
 
-    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
-                    "organizationDao");
-
-    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean(
-                    "participantDao");
+    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
 
     public String getTestDataFileName() {
         String fileName = "testdata/StudyServiceTest.xml";
@@ -52,10 +49,8 @@ public class StudyServiceTest extends CaaersDbNoSecurityTestCase {
                 participant.setDateOfBirth(new DateValue());
                 participant.setGridId("gridParticipant");
 
-                StudyService svc = (StudyService) getApplicationContext()
-                                .getBean("studyServiceAPI");
-                StudyParticipantAssignment assignment = svc.assignParticipant(study, participant,
-                                organization, "gridRegistration");
+                StudyService svc = (StudyService) getApplicationContext().getBean("studyServiceAPI");
+                StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, organization, "gridRegistration");
                 assertNotNull("Assignment is null", assignment);
                 assertNotNull("Assignment not flushed", assignment.getId());
                 assertNotNull("Assignment gridId is null", assignment.getGridId());
@@ -79,6 +74,11 @@ public class StudyServiceTest extends CaaersDbNoSecurityTestCase {
             ex.printStackTrace();
             fail("Error running test: " + ex.getMessage());
         }
+
+    }
+
+    public void testSearchAdEERSStudyInCaAERS() {
+        StudyService svc = (StudyService) getApplicationContext().getBean("studyServiceAPI");
 
     }
 

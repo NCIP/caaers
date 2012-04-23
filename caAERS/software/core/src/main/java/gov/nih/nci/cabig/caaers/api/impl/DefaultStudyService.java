@@ -20,7 +20,9 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,8 +61,7 @@ public class DefaultStudyService implements StudyService {
      * @see gov.nih.nci.cabig.caaers.api.StudyService#assignParticipant(gov.nih.nci.cabig.caaers.domain.Study,
      *      gov.nih.nci.cabig.caaers.domain.Participant, gov.nih.nci.cabig.caaers.domain.Site)
      */
-    public StudyParticipantAssignment assignParticipant(Study study, Participant participant,
-                    Organization organization, String registrationGridId) {
+    public StudyParticipantAssignment assignParticipant(Study study, Participant participant, Organization organization, String registrationGridId) {
 
         StudyParticipantAssignment newAssignment = new StudyParticipantAssignment();
         if (registrationGridId != null) {
@@ -104,13 +105,54 @@ public class DefaultStudyService implements StudyService {
         return newAssignment;
     }
 
+    /**
+     * Build a hash usable key for the Study based on FSIdentifier value and ShortTitle
+     * @param s
+     * @return
+     */
+    public String getStudyKey(Study s) {
+        String key = "";
+        OrganizationAssignedIdentifier i = s.getFundingSponsorIdentifier();
+        if (i != null) {
+            key = i.getOrganization().getNciInstituteCode() + ":" + i.getValue();
+        } else {
+            key = s.getShortTitle();
+        }
+        return key;
+    }
+
+    /**
+     * Determines which studies from the adEERS list are to be imported as new (not present in caAERS)
+     * or otherwise updated.
+     * @param adEERSStudies List of adEERS studies
+     * @param caAERSStudies  List of caAERS studies
+     */
+    public void searchAdEERSStudiesInCaAERS(List<Study> adEERSStudies, List<Study> caAERSStudies) {
+
+        Set<String> set = new HashSet<String>();
+
+        // Build caAERS hash
+        for (Study s : caAERSStudies) {
+            String key = getStudyKey(s);
+            set.add(key);
+        }
+
+        for (Study s : adEERSStudies) {
+            String key = getStudyKey(s);
+            if (set.contains(key)) {
+                s.setStatus("UPDATE");
+            } else {
+                s.setStatus("IMPORT");
+            }
+        }
+    }
+
     // public StudyParticipantAssignment getStudyParticipantAssignment(Participant participant,
     // Study study){
     // return getStudyParticipantAssignmentDao().getAssignment(participant, study);
     // }
 
-    private <T extends DomainObject & GridIdentifiable> T load(T param, GridIdentifiableDao<T> dao,
-                    boolean required) {
+    private <T extends DomainObject & GridIdentifiable> T load(T param, GridIdentifiableDao<T> dao, boolean required) {
         checkForGridId(param);
         T loaded = null;
         if (param.getGridId() != null) {
@@ -124,9 +166,7 @@ public class DefaultStudyService implements StudyService {
 
     private void checkForGridId(GridIdentifiable gridIdentifiable) {
         if (!gridIdentifiable.hasGridId()) {
-            throw new IllegalArgumentException("No gridId on "
-                            + gridIdentifiable.getClass().getSimpleName().toLowerCase()
-                            + " parameter");
+            throw new IllegalArgumentException("No gridId on " + gridIdentifiable.getClass().getSimpleName().toLowerCase() + " parameter");
         }
     }
 
