@@ -174,6 +174,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         return createOrUpdate + "-91";
 	}
 
+    // ToDo This should be removed after the implementation of gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade.searchStudies
     private static Study createStudy(final String shortTitle) {
         Study s = new LocalStudy();
         s.setShortTitle(shortTitle);
