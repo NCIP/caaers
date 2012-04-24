@@ -15,7 +15,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name="integration_log_details")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_integration_log_details_id") })
-public class IntegrationLogDetails extends AbstractMutableDomainObject{
+public class IntegrationLogDetail extends AbstractMutableDomainObject{
 	
 	// business Id of the entity
 	private String businessId;
@@ -28,7 +28,7 @@ public class IntegrationLogDetails extends AbstractMutableDomainObject{
 	
 	private SynchStatus synchStatus;
 	
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public SynchStatus getSynchStatus() {
 		return synchStatus;
 	}
@@ -62,27 +62,5 @@ public class IntegrationLogDetails extends AbstractMutableDomainObject{
 	public void setIntegrationLog(IntegrationLog integrationLog) {
 		this.integrationLog = integrationLog;
 	}
-
-	public String getEntity() {
-		return entity;
-	}
-
-	public void setEntity(String entity) {
-		this.entity = entity;
-	}
-
-	public String getOperation() {
-		return operation;
-	}
-
-	public void setOperation(String operation) {
-		this.operation = operation;
-	}
-
-	// entity type
-	private String entity;
-	
-	// operation name
-	private String operation;
 
 }

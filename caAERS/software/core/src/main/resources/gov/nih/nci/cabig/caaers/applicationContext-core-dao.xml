@@ -237,7 +237,7 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile</value>
 				<value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
 				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLog</value>
-				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLogDetails</value>
+				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -653,6 +653,9 @@ This applicationContext contains the definition of the DAOs
 		
 	<bean id="treatmentAssignmentStudyInterventionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentStudyInterventionDao" />
 	<bean id="ruleSetDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RuleSetDao" />
+	<bean id="integrationLogDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.IntegrationLogDao"/>
+	<bean id="integrationLogDetailDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.IntegrationLogDetailDao"/>
+	
 
     <!-- Factory beans end here-->
 

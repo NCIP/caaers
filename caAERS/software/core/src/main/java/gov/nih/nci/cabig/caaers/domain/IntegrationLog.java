@@ -76,7 +76,7 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 		this.operation = operation;
 	}
 	
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public SynchStatus getSynchStatus() {
 		return synchStatus;
 	}

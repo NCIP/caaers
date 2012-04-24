@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 public enum SynchStatus implements CodedEnum<Integer> {
 	
+	 REQUEST_SENT_TO_SERVICEMIX(1,"caAERS sent request to Servicemix"),
 	 REQUEST_RECEIVED(5, "Message Received"),
      ROUTED_TO_ADEERS_SINK(10, "Message Routed to AdEERS Sink Channel"),
      ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL(20, "Routed to AdEERS Webservice Invocation route"),
