@@ -2,17 +2,13 @@
 
 <html>
 <head>
-<title>Track Reports</title>
-<tags:dwrJavascriptLink objects="reportDef"/>
-
+<title>CTEP-ESYS Data Integration Logs</title>
 <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 
-
 <style type="text/css">
-
 
     /*
     .notify-unit.success {
@@ -188,34 +184,42 @@ color:#0033FF;
 		showAndHideFields();		
 	}
 	
-	
-	
 	function showAndHideFields(){
 		
-		if ($('actions').value == 'report') {
-			$('reportIdDiv').show();
+		if ($('actions').value == 'businessId') {
+			$('businessIdDiv').show();
 			$('datesDiv').hide();
+			$('synchStatusDiv').hide();
+			$('outcomeDiv').hide();
+			$('entityDiv').hide();
 		} else if ($('actions').value == 'daterange') {
-			$('reportIdDiv').hide();
+			$('businessIdDiv').hide();
 			$('datesDiv').show();
-		} else {
-			$('reportIdDiv').hide();
-			$('datesDiv').hide();		
-		}
+			$('synchStatusDiv').hide();
+			$('outcomeDiv').hide();
+			$('entityDiv').hide();
+		} else if ($('actions').value == 'entity') {
+			$('businessIdDiv').hide();
+			$('datesDiv').hide();
+			$('synchStatusDiv').hide();
+			$('outcomeDiv').hide();
+			$('entityDiv').show();	
+		}else if ($('actions').value == 'synchStatus') {
+			$('businessIdDiv').hide();
+			$('datesDiv').hide();
+			$('synchStatusDiv').show();
+			$('outcomeDiv').hide();
+			$('entityDiv').hide();
+		} else if ($('actions').value == 'outcome') {
+			$('businessIdDiv').hide();
+			$('datesDiv').hide();
+			$('synchStatusDiv').hide();
+			$('outcomeDiv').show();
+			$('entityDiv').hide();
+		} 
 
 	}
 	
-	function showToolTip(text, title) {
-        Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
-    }
-    
-    function resetReports() {
-    			try {
-					reportDef.resetReports(function(values) { 
-						alert("Reports stuck for more than 5 minutes are reset to 'Failed' status , Please resubmit.");
-					})
-				} catch(e) {alert(e)}
-	}
 </script>
 </head>
 
@@ -229,11 +233,11 @@ color:#0033FF;
   	<li id="thirdlevelnav" class="tab"><div>
         <a href="ctepesysDataImport">CTEP-ESYS Data Import</a>
     </div></li>
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="#">Report Submission Logs</a>
-    </div></li>
     <li id="thirdlevelnav" class="tab"><div>
-        <a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a>
+        <a href="trackReports">Report Submission Logs</a>
+    </div></li>
+    <li id="thirdlevelnav" class="tab selected"><div>
+        <a href="#">CTEP-ESYS Data Integration Logs</a>
     </div></li>
     <li id="thirdlevelnav" class="tab"><div>
         <a href="happy">System Status</a>
@@ -247,8 +251,6 @@ color:#0033FF;
 <chrome:box title="Search" autopad="true">
    
         <div class="content">
-        
-        
               <table>
             		<tr>
             			<td>
@@ -258,31 +260,37 @@ color:#0033FF;
             				<tags:button color="blue" type="submit" value="Find" size="small" icon="search"/>
             			</td>
             		</tr>
-            		<tr id="reportIdDiv" style="display:none">
+            		<tr id="entityDiv" style="display:none">
             			<td>
 	            				<tags:renderRow field="${fieldGroups.main.fields[1]}"/>
             			</td>
             		</tr>
-            		<tr id="datesDiv" style="display:none">
+            		<tr id="outcomeDiv" style="display:none">
             			<td>
 	            				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
+            			</td>
+            		</tr>  
+            		<tr id="synchStatusDiv" style="display:none">
+            			<td>
 	            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
             			</td>
-            		</tr>   
-             		<tr id="reportResetDiv">
+            		</tr>            		
+            		<tr id="datesDiv" style="display:none">
             			<td>
-	            				<a href="javascript:resetReports()">Reset Stuck Reports ('Submission to AdEERS in process') </a>
+	            				<tags:renderRow field="${fieldGroups.main.fields[4]}"/>
+	            				<tags:renderRow field="${fieldGroups.main.fields[5]}"/>
             			</td>
-            		</tr>           		         		
+            		</tr> 
+            		<tr id="businessIdDiv" style="display:none">
+            			<td>
+	            				<tags:renderRow field="${fieldGroups.main.fields[6]}"/>
+            			</td>
+            		</tr>
              </table>	
 
         </div>
     
 </chrome:box>
-
-
-
-
 
 <div class="eXtremeTable" >
    <table width="100%" cellspacing="1" cellpadding="0" border="0">
@@ -298,22 +306,21 @@ color:#0033FF;
 			
 			<tr>
 				<td witdh="100%">
-
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
 					    <thead>
 					      <tr align="center" class="label">
-					        <td width="2%" class="tableHeader"></td>
-					        <td width="10%" class="tableHeader">Report ID</td>
-					        <td width="13%" class="tableHeader">Amendment #</td>
-					        <td width="25%" class="tableHeader">Submitter</td>
-					        <td width="15%" class="tableHeader">Status Date</td>
-					        <td width="20%" class="tableHeader">Submission Status</td>
-					        <td width="15%" class="tableHeader">More Info</td>
+					      	<td width="15%" class="tableHeader">Date</td>
+					        <td width="10%" class="tableHeader">Entity</td>
+					         <td width="15%" class="tableHeader">Business Id</td>
+					        <td width="20%" class="tableHeader">Synch Status</td>
+					        <td width="4%" class="tableHeader">Outcome</td>
+					        <td width="20%" class="tableHeader">Notes</td>
 					      </tr>
 					    </thead>
-				      <c:forEach items="${command.searchResultsDTO.filteredResultDto.results}" var="reportVersion" varStatus="rpStatus">
-				        <ae:oneListReportForTracking reportVersion="${reportVersion}" index="${rpStatus.index}"/>
+					    <c:forEach items="${command.searchResultsDTO.filteredResults}" var="integrationLogDetail" varStatus="rpStatus">
+				        <ae:oneListIntegrationLogDetail integrationLogDetail="${integrationLogDetail}" index="${rpStatus.index}"/>
 				      </c:forEach>	
+				     
 				   </table>
 
 				</td>

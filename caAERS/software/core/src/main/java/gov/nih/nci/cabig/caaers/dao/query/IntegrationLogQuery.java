@@ -17,7 +17,7 @@ public class IntegrationLogQuery extends AbstractQuery {
     private static final String OPERATION = "operation";
     
     private static final String LOGGED_ON = "loggedOn";
-
+    
     public IntegrationLogQuery() {
         super(queryString);
         orderBy("il.id");

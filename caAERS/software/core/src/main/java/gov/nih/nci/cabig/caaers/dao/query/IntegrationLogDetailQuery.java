@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import gov.nih.nci.cabig.caaers.domain.SynchStatus;
+
 import java.util.Date;
 
 public class IntegrationLogDetailQuery extends AbstractQuery {
@@ -43,9 +45,16 @@ public class IntegrationLogDetailQuery extends AbstractQuery {
         andWhere("lower(businessId) LIKE :" + BUSINESS_ID);
         setParameter(BUSINESS_ID, searchString);
     }
-
-    public void filterBySynchStatus(final String value) {
+    
+    public void filterByOutcome(final String value) {
+    	joinIntegrationLog();
         String searchString = "%" + value.toLowerCase() + "%";
+        andWhere("lower(outcome) LIKE :" + OUTCOME);
+        setParameter(OUTCOME, searchString);
+    }
+
+    public void filterBySynchStatus(final SynchStatus value) {
+        String searchString = "%" + value + "%";
         andWhere("lower(synchStatus) LIKE :" + SYNCH_STATUS);
         setParameter(SYNCH_STATUS, searchString);
     }
@@ -64,10 +73,19 @@ public class IntegrationLogDetailQuery extends AbstractQuery {
         setParameter(ENTITY, searchString);
     }
     
+    
     public void filterByLoggedOn(Date loggedOn, String operator) {
     	joinIntegrationLog();
     	andWhere("il.loggedOn "+operator+" :LOGGED_ON");
     		setParameter("LOGGED_ON", loggedOn);
+    }
+    
+    public void filterByLoggedOnStartDateAndEndDate(Date startDate, Date endDate) {
+    	joinIntegrationLog();
+    	andWhere("il.loggedOn >= " + " :START_DATE");
+    		setParameter("START_DATE", startDate);
+		andWhere("il.loggedOn <= " + " :END_DATE");
+		setParameter("END_DATE", endDate);
     }
     
 }

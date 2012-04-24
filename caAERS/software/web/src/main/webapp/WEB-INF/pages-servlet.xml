@@ -124,7 +124,7 @@
                   -->
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="IND#" p:linkName="searchINDController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Organization" p:linkName="searchOrganizationController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="System Integration" p:linkName="cTEPESYSDataImportController"/>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Interventions" p:linkName="asaelSearchController"/>
                 
           </list>
@@ -255,7 +255,7 @@
     <property name="taskList">
       <list>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure caAERS" p:linkName="configurationController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Track Reports" p:linkName="trackReportsController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="System Integration" p:linkName="cTEPESYSDataImportController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import" p:linkName="importController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Sites" p:linkName="createOrganizationController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Sites" p:linkName="searchOrganizationController"/>
@@ -334,7 +334,13 @@
 	    		<constructor-arg value="/pages/admin/createOrganization"/>
     		</bean>
     		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/ctepesysDataImport"/>
+    		</bean>
+    		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/trackReports"/>
+    		</bean>
+    		<bean class="java.lang.String">
+	    		<constructor-arg value="/pages/admin/ctepesysDataIntegrationLogs"/>
     		</bean>
     		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/happy"/>
@@ -436,7 +442,9 @@
   <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>
 
   <bean name="/admin/configure" id="configurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
+  <bean name="/admin/ctepesysDataImport" id="cTEPESYSDataImportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CTEPESYSDataImportController"/>
   <bean name="/admin/trackReports" id="trackReportsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.TrackReportsController"/>
+  <bean name="/admin/ctepesysDataIntegrationLogs" id="ctepesysDataIntegrationLogsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CTEPESYSDataIntegrationLogsController"/>
   <bean name="/admin/happy" id="diagnosticsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.DiagnosticsController">
 	<property name="caaersJavaMailSender" ref="mailer"/>
 	<property name="messageBroadcastService" ref="messageBroadcaster" />
@@ -459,13 +467,12 @@
   <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
-  
 
   <bean name="/admin/searchOrganization" id="searchOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchOrganizationController" />
   <bean name="/admin/searchResearchStaff" id="searchResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController" />
 
-    <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController" />
-    <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" />
+  <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController" />
+  <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" />
 
   <bean name="/admin/createIND" id="createINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
   <bean name="/admin/searchIND" id="searchINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>

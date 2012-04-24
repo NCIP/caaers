@@ -47,7 +47,13 @@
      <div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
     <li id="thirdlevelnav" class="tab"><div>
-        <a href="trackReports">Report Logs</a>
+        <a href="ctepesysDataImport">CTEP-ESYS Data Import</a>
+    </div></li>
+     <li id="thirdlevelnav" class="tab"><div>
+        <a href="trackReports">Report Submission Logs</a>
+    </div></li>
+    <li id="thirdlevelnav" class="tab"><div>
+        <a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a>
     </div></li>
     <li id="thirdlevelnav" class="tab selected"><div>
         <a href="#">System Status</a>

@@ -32,8 +32,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/editOrganization" value="person_and_organization_information_manager,data_reader"/>
 		<entry key="/pages/admin/configure" value="system_administrator,data_reader, business_administrator"/>
 		<entry key="/pages/admin/passwordPolicyConfigure" value="system_administrator,data_reader"/>
-		<entry key="/pages/admin/mandatoryFields" value="business_administrator,data_reader"/>        
-		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>		
+		<entry key="/pages/admin/mandatoryFields" value="business_administrator,data_reader"/>  
+		<entry key="/pages/admin/ctepesysDataImport" value="system_administrator,business_administrator"/>      
+		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>
+		<entry key="/pages/admin/ctepesysDataIntegrationLogs" value="system_administrator,business_administrator"/>		
 		<entry key="/pages/admin/asaelSearch" value="business_administrator,data_reader"/>
 		<entry key="/pages/admin/asaelCreate" value="business_administrator,data_reader"/>
         <entry key="/admin/asaelEdit" value="business_administrator,data_reader" />
@@ -151,7 +153,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/searchOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:READ"/>
 		<entry key="/pages/admin/createOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:CREATE"/>
         <entry key="/pages/admin/editOrganization" value="gov.nih.nci.cabig.caaers.domain.Organization:READ"/>
+        <entry key="/pages/admin/ctepesysDataImport" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>  
 		<entry key="/pages/admin/trackReports" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
+		<entry key="/pages/admin/ctepesysDataIntegrationLogs" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
 		<entry key="/pages/admin/happy" value="gov.nih.nci.cabig.caaers.domain.Notification:READ"/>
 		<entry key="/pages/admin/asaelSearch" value="gov.nih.nci.cabig.caaers.domain.Agent:READ"/>
 		<entry key="/pages/admin/asaelCreate" value="gov.nih.nci.cabig.caaers.domain.Agent:CREATE"/>
