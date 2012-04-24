@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Ramakrishna
  */
 @Transactional(readOnly = true)
-public class IntegrationLogDao extends CaaersDao<IntegrationLog> implements MutableDomainObjectDao<IntegrationLog> {
+public class IntegrationLogDao extends GridIdentifiableDao<IntegrationLog> implements MutableDomainObjectDao<IntegrationLog> {
 
     /**
      * Get the Class representation of the domain object that this DAO is representing.
@@ -56,10 +56,4 @@ public class IntegrationLogDao extends CaaersDao<IntegrationLog> implements Muta
         log.debug(">>> " + queryString.toString());
         return (List<IntegrationLog>) super.search(query);
     }
-
-	@Override
-	public IntegrationLog getByGridId(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
