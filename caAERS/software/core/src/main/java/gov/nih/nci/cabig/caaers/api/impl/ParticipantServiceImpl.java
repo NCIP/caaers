@@ -370,10 +370,12 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 			 ParticipantType dbParticipantType = new ParticipantType();
 			 participantConverter.convertDomainParticipantToParticipantDto(dbParticipant, dbParticipantType);
 			 caaersServiceResponse.getServiceResponse().setResponseData(new ResponseDataType());
-			 caaersServiceResponse.getServiceResponse().getResponseData().setAny(dbParticipantType);
+			 Participants participants = new Participants();
+			 participants.getParticipant().add(dbParticipantType);
+			 caaersServiceResponse.getServiceResponse().getResponseData().setAny(participants);
 		}else{
 			caaersServiceResponse.getServiceResponse().setResponsecode("1");
-			caaersServiceResponse.getServiceResponse().setMessage("Unable to retrieve participant");
+			caaersServiceResponse.getServiceResponse().setMessage("Unable to retrieve participant. Check the identifier");
 		}
 
 		return caaersServiceResponse;

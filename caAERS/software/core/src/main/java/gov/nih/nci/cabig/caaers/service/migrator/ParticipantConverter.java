@@ -122,9 +122,15 @@ public class ParticipantConverter {
 			if(participant.getBirthDate() != null){
 				DatatypeFactory dtf = DatatypeFactory.newInstance();
 				XMLGregorianCalendar xgc = dtf.newXMLGregorianCalendar();
-				xgc.setYear(participant.getDateOfBirth().getYear());
-				xgc.setDay(participant.getDateOfBirth().getDay());
-				xgc.setMonth(participant.getDateOfBirth().getMonth());
+				if(participant.getDateOfBirth().getYear() != null){
+					xgc.setYear(participant.getDateOfBirth().getYear());
+				}
+				if(participant.getDateOfBirth().getDay() != null){
+					xgc.setDay(participant.getDateOfBirth().getDay()); 
+				}
+				if(participant.getDateOfBirth().getMonth() != null){
+					xgc.setMonth(participant.getDateOfBirth().getMonth());
+				}
 				participantType.setBirthDate(xgc);
 			}
 			if(participant.getGender() != null){

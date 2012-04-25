@@ -259,24 +259,24 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             caaersServiceResponse = participantService.getParticipant(participantRef);
             
             Participants participantsNew = new Participants();
-            participantsNew.getParticipant().add((ParticipantType)caaersServiceResponse.getServiceResponse().getResponseData().getAny());
-            assertEquals("Herd", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getLastName());
+            participantsNew.getParticipant().add(((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0));
+            assertEquals("Herd", (((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getLastName()));
             participantsNew.getParticipant().get(0).setLastName("UpdatedLastName");
             participantService.updateParticipant(participantsNew);
             
             assertEquals("0", caaersServiceResponse.getServiceResponse().getResponsecode());
             assertNotNull(caaersServiceResponse.getServiceResponse().getResponseData().getAny());
-            assertEquals(ParticipantType.class, caaersServiceResponse.getServiceResponse().getResponseData().getAny().getClass());
-            assertEquals(1, ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().size());
-            assertEquals("DEFAULT", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().
+            assertEquals(Participants.class, caaersServiceResponse.getServiceResponse().getResponseData().getAny().getClass());
+            assertEquals(1, ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getAssignments().getAssignment().size());
+            assertEquals("DEFAULT", ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getAssignments().getAssignment().
             		get(0).getStudySite().getOrganization().getNciInstituteCode());
-            assertEquals("WFCCC001", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().
+            assertEquals("WFCCC001", ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getAssignments().getAssignment().
             		get(0).getStudySite().getStudy().getIdentifiers().getIdentifier().getValue());
-            assertEquals("001", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getAssignments().getAssignment().
+            assertEquals("001", ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getAssignments().getAssignment().
             		get(0).getStudySubjectIdentifier());
-            assertEquals("Leing", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getMiddleName());
-            assertEquals("UpdatedLastName", ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getLastName());
-            assertEquals(2001, ((ParticipantType)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBirthDate().getYear());
+            assertEquals("Leing", ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getMiddleName());
+            assertEquals("UpdatedLastName", ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getLastName());
+            assertEquals(2001, ((Participants)caaersServiceResponse.getServiceResponse().getResponseData().getAny()).getParticipant().get(0).getBirthDate().getYear());
 
 
         } catch (IOException e) {
