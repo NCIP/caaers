@@ -7,11 +7,11 @@
 
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
 
-    <xs:element name="devices" type="Devices"/>
-    <xs:complexType name="Devices" >
-        <xs:sequence>
-            <xs:element name="device" type="cct:DeviceType" maxOccurs="unbounded" />
-        </xs:sequence>
-    </xs:complexType>
-
+    <xs:element name="Devices">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="device" type="cct:DeviceType" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

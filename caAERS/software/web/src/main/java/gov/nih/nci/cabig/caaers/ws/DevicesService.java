@@ -15,5 +15,5 @@ import javax.jws.WebService;
 public interface DevicesService {
 
     @WebMethod
-    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") Devices inputMessage);
+    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "Devices", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") Devices devices);
 }

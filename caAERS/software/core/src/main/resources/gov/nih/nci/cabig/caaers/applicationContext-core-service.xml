@@ -32,6 +32,8 @@ default-lazy-init="true">
 	
 	<bean id="preExistingConditionLOVService" class="gov.nih.nci.cabig.caaers.api.impl.PreExistingConditionManagementServiceImpl">
 		<property name="preExistingConditionDao" ref="preExistingConditionDao"/>
+        <property name="preExistingConditionConverter" ref="preExistingConditionConverter"/>
+        <property name="preExistingConditionMigrator"  ref="preExistingConditionMigrator" />
 	</bean>
 	
 	<bean id="studyImportService" class="gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl">
@@ -235,7 +237,7 @@ default-lazy-init="true">
 	<bean id="agentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator"/>
 	<bean id="deviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.DeviceMigrator"/>
 	<bean id="priorTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.PriorTherapyMigrator"/>
-    <bean id="preExistingConditionMigrator"  class="gov.nih.nci.cabig.caaers.service.migrator.PreExistingConditionMigrator"/>
+    <bean id="preExistingConditionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.PreExistingConditionMigrator"/>
 
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter">
 		<property name="ctcTermDao" ref="ctcTermDao"/>
