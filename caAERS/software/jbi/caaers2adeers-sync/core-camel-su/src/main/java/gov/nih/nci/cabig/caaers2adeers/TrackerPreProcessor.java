@@ -33,6 +33,10 @@ public class TrackerPreProcessor implements Processor{
 	public TrackerPreProcessor(Stage stage, String notes) {
 		this(stage, null, null, notes);
 	}
+	
+	public TrackerPreProcessor(Stage stage) {
+		this(stage, null, null, null);
+	}
 
 	public void process(Exchange exchange) throws Exception {
 		//set the properties in the exchange

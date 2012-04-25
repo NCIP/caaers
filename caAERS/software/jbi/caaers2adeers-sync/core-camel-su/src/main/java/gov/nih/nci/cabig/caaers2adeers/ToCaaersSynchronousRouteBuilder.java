@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
+import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
+
 /**
  * @author Biju Joseph
  */
@@ -29,6 +31,7 @@ public class ToCaaersSynchronousRouteBuilder {
         //content based router
         routeBuilder.from("direct:caAERSSynchronousRequestSink")
                 .to("log:caaers.caaers-sync-request?showHeaders=true")
+                .process(new TrackerPreProcessor(Stage.ROUTED_TO_CAAERS_SINK)).to("bean:tracker?method=record")
                 .choice()
                 .when().xpath(xpathPredicate("study", "searchStudy")).to("direct:caaers-study-search-sync")
                 .otherwise().to("direct:morgue");

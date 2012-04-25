@@ -80,13 +80,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
 		.processRef("exchangePreProcessor")
-		.process(new TrackerPreProcessor(Stage.REQUEST_RECEIVED, "some notes")).to("bean:tracker?method=record")
+		.process(new TrackerPreProcessor(Stage.REQUEST_RECEIVED)).to("bean:tracker?method=record")
 		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
+		.process(new TrackerPreProcessor(Stage.ROUTED_TO_ADEERS_SINK)).to("bean:tracker?method=record")
 		.choice()
                 .when(header("c2a_sync_mode").isEqualTo("sync"))
                 	.to("log:after-soap_filter-and-before-sync")
-                	.process(new TrackerPreProcessor(Stage.REQUEST_RECEIVED, "some notes")).to("bean:tracker?method=record")
-                	.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
                 	.to("direct:adEERSRequestSink")
                 .otherwise()
                 	.to("log:after-soap_filter-and-before-async")
@@ -104,10 +103,11 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                     .otherwise().to("direct:caAERSAsynchronousRequestSink");
     	
     	//need to process caAERS results
-		from("direct:caAERSResponseSink").to("log:caaers.direct-caAERSResponseSink");
+		from("direct:caAERSResponseSink").process(new TrackerPreProcessor(Stage.CAAERS_WS_OUT_TRANSFORMATION)).to("bean:tracker?method=record").to("log:caaers.direct-caAERSResponseSink");
     	
 		//invalid requests
         from("direct:morgue")
+        		.process(new TrackerPreProcessor(Stage.REQUST_PROCESSING_ERROR)).to("bean:tracker?method=record")
                 .to("log:fromMorgue?showAll=true")
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to("log:after-unknown")

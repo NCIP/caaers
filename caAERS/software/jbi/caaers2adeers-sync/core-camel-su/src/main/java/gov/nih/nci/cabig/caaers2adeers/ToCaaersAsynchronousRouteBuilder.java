@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
+import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
+
 
 public class ToCaaersAsynchronousRouteBuilder {
 
@@ -35,6 +37,7 @@ public class ToCaaersAsynchronousRouteBuilder {
 		//content based router
 		routeBuilder.from("direct:caAERSAsynchronousRequestSink")
 		.to("log:caaers.caaers-request?showHeaders=true")
+		.process(new TrackerPreProcessor(Stage.ROUTED_TO_CAAERS_SINK)).to("bean:tracker?method=record")
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
 			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:caaers-organization-async")
