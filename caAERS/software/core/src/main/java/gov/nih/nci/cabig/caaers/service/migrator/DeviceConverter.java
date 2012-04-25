@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.domain.Device;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
 
 /**
@@ -9,20 +10,24 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
  */
 public class DeviceConverter {
 
-    public static Device convert(DeviceType d) {
-        Device o = new Device();
-        o.setBrandName(d.getBrandName());
-        o.setCommonName(d.getCommonName());
-        o.setType(d.getType());
-        return o;
+    public  Device convert(DeviceType deviceType) {
+        Device device = new Device();
+        device.setCtepDbIdentifier(deviceType.getCtepDbIdentifier());
+        device.setCommonName(deviceType.getCommonName());
+        device.setBrandName(deviceType.getBrandName());
+        device.setType(deviceType.getType());
+        device.setRetiredIndicator(deviceType.getStatus().equals(ActiveInactiveStatusType.INACTIVE));
+        return device;
     }
 
-    public static DeviceType convert(Device d) {
-        DeviceType o = new DeviceType();
-        o.setBrandName(d.getBrandName());
-        o.setCommonName(d.getCommonName());
-        o.setType(d.getType());
-        return o;
+    public static DeviceType convert(Device device) {
+        DeviceType deviceType = new DeviceType();
+        deviceType.setBrandName(device.getBrandName());
+        deviceType.setCommonName(device.getCommonName());
+        deviceType.setType(device.getType());
+        deviceType.setCtepDbIdentifier(device.getCtepDbIdentifier());
+        deviceType.setStatus(device.isRetired() ? ActiveInactiveStatusType.INACTIVE : ActiveInactiveStatusType.ACTIVE);
+        return deviceType;
     }
 
 }

@@ -40,6 +40,8 @@ public class PriorTherapy extends AbstractMutableDomainObject {
 
     /** The meddra term. */
     private String meddraTerm; // MedDRA v9.0 Lower Level Term (LLT)
+    
+    private String therapyType;
 
     /** The meddra code. */
     private String meddraCode; // MedDRA v9.0 LLT/CTEP Provisional Code
@@ -110,7 +112,15 @@ public class PriorTherapy extends AbstractMutableDomainObject {
     public void setMeddraTerm(String meddraTerm) {
         this.meddraTerm = meddraTerm;
     }
-    
+
+    public String getTherapyType() {
+        return therapyType;
+    }
+
+    public void setTherapyType(String therapyType) {
+        this.therapyType = therapyType;
+    }
+
     /**
      * Will tell whether this prior therapy can have agents associated to it.
      *
@@ -121,39 +131,28 @@ public class PriorTherapy extends AbstractMutableDomainObject {
     	int id = getId();
     	return !(id == SURGERY || id == RADIATION || id == NO_PRIOR_THERAPY);
     }
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((meddraCode == null) ? 0 : meddraCode.hashCode());
-        result = prime * result + ((meddraTerm == null) ? 0 : meddraTerm.hashCode());
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
-        return result;
-    }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        final PriorTherapy other = (PriorTherapy) obj;
-        if (meddraCode == null) {
-            if (other.meddraCode != null) return false;
-        } else if (!meddraCode.equals(other.meddraCode)) return false;
-        if (meddraTerm == null) {
-            if (other.meddraTerm != null) return false;
-        } else if (!meddraTerm.equals(other.meddraTerm)) return false;
-        if (text == null) {
-            if (other.text != null) return false;
-        } else if (!text.equals(other.text)) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PriorTherapy)) return false;
+
+        PriorTherapy that = (PriorTherapy) o;
+
+        if (meddraCode != null ? !meddraCode.equals(that.meddraCode) : that.meddraCode != null) return false;
+        if (meddraTerm != null ? !meddraTerm.equals(that.meddraTerm) : that.meddraTerm != null) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (therapyType != null ? !therapyType.equals(that.therapyType) : that.therapyType != null) return false;
+
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int result = text != null ? text.hashCode() : 0;
+        result = 31 * result + (meddraTerm != null ? meddraTerm.hashCode() : 0);
+        result = 31 * result + (therapyType != null ? therapyType.hashCode() : 0);
+        result = 31 * result + (meddraCode != null ? meddraCode.hashCode() : 0);
+        return result;
+    }
 }

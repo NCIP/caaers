@@ -7,11 +7,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import junit.framework.TestCase;
 
 /**
- * Created by IntelliJ IDEA.
- * User: BJW7
- * Date: 4/21/12
- * Time: 1:32 PM
- * To change this template use File | Settings | File Templates.
+ * @author Biju Joseph
  */
 public class HelperTest extends TestCase {
 
@@ -26,7 +22,7 @@ public class HelperTest extends TestCase {
     }
 
     public void testCreateProcessingOutcomeType() throws Exception {
-        EntityProcessingOutcomeType t = Helper.createProcessingOutcomeType("k","j","l","n", null);
+        EntityProcessingOutcomeType t = Helper.createProcessingOutcomeType(false, "k","j","l","n", null);
         assertEquals("k", t.getKlassName());
         assertEquals("j", t.getBusinessIdentifier());
         assertEquals("l", t.getDataBaseId());

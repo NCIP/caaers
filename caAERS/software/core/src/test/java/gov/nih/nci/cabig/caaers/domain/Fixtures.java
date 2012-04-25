@@ -14,6 +14,9 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -901,4 +904,23 @@ public class Fixtures {
 	  exp.setGrade5Frequency(6.0);
 	  return exp;
   }
+    
+    public static PriorTherapyType createPriorTherapyType(String meddraCode, String text, String meddraTerm){
+        PriorTherapyType xmlTherapy = new PriorTherapyType();
+        xmlTherapy.setMeddraCode(meddraCode);
+        xmlTherapy.setText(text);
+        xmlTherapy.setMeddraTerm(meddraTerm);
+        xmlTherapy.setTherapyType("OYT");
+        return xmlTherapy;
+    }
+    
+    public static DeviceType createDeviceType(String cn, String bn, String dt, String ctepId){
+        DeviceType d= new DeviceType();
+        d.setCommonName(cn);
+        d.setBrandName(bn);
+        d.setType(dt);
+        d.setCtepDbIdentifier(ctepId);
+        d.setStatus(ActiveInactiveStatusType.ACTIVE);
+        return d;
+    }
 }

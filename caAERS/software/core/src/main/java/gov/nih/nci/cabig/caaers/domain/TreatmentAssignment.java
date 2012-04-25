@@ -47,6 +47,8 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
 
     /** The comments. */
     private String comments;
+    
+    private String ctepDbIdentifier;
 
     protected List<TreatmentAssignmentStudyIntervention> treatmentAssignmentStudyInterventions = new ArrayList<TreatmentAssignmentStudyIntervention>();
     protected List<AbstractStudyInterventionExpectedAE> abstractStudyInterventionExpectedAEs = new ArrayList<AbstractStudyInterventionExpectedAE>();
@@ -185,6 +187,14 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
      */
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getCtepDbIdentifier() {
+        return ctepDbIdentifier;
+    }
+
+    public void setCtepDbIdentifier(String ctepDbIdentifier) {
+        this.ctepDbIdentifier = ctepDbIdentifier;
     }
 
     @OneToMany(mappedBy = "treatmentAssignment", fetch = FetchType.LAZY, orphanRemoval = true)

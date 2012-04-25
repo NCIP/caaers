@@ -26,12 +26,13 @@ public class Helper {
     }
 
 
-    public static EntityProcessingOutcomeType createProcessingOutcomeType(String klass, String businessId, String caaersId, String correlationId, List<String> messages){
+    public static EntityProcessingOutcomeType createProcessingOutcomeType(boolean failed, String klass, String businessId, String caaersId, String correlationId, List<String> messages){
         EntityProcessingOutcomeType  outcomeType = new EntityProcessingOutcomeType();
         outcomeType.setBusinessIdentifier(businessId);
         outcomeType.setCorrelationId(correlationId);
         outcomeType.setDataBaseId(caaersId);
         outcomeType.setKlassName(klass);
+        outcomeType.setFailed(failed);
         if(messages != null) {
             for(String m : messages) outcomeType.getMessage().add(m);
         }
@@ -68,7 +69,8 @@ public class Helper {
             entityProcessingOutcomes = new EntityProcessingOutcomes();
             serviceRespons.setEntityProcessingOutcomes(entityProcessingOutcomes);
         }
-        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType("NA", businessId, caaersId, corelationId, messages);
+        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(true, "NA",
+                businessId, caaersId, corelationId, messages);
         entityProcessingOutcomes.getEntityProcessingOutcome().add(entityProcessingOutcomeType);
 
         return response;
@@ -76,7 +78,8 @@ public class Helper {
 
     
     public static CaaersServiceResponse populateProcessingOutcome(CaaersServiceResponse response, ProcessingOutcome outcome){
-        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(outcome.getKlassName(), outcome.getBusinessId(), null, null, outcome.getMessages());
+        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(outcome.isFailed(), outcome.getKlassName(),
+                outcome.getBusinessId(), null, null, outcome.getMessages());
         response.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().add(entityProcessingOutcomeType);
         if(outcome.isFailed()) {
             response.getServiceResponse().setStatus(Status.PARTIALLY_PROCESSED);

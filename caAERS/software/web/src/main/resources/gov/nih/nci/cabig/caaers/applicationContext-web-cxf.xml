@@ -234,7 +234,7 @@
     </jaxws:endpoint>
     
      <bean id="priorTherapyManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.PriorTherapyManagementWebServiceImpl">
-        <property name="priorTherapyLOVService" ref="priorTherapyLOVService"/>
+        <property name="priorTherapyManagementService" ref="priorTherapyManagementService"/>
     </bean>
     <jaxws:endpoint
             id="priorTherapyWebService"

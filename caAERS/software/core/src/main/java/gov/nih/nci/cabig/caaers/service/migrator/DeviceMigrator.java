@@ -16,5 +16,6 @@ public class DeviceMigrator implements Migrator<Device>{
         dest.setType(src.getType());
         dest.setRetiredIndicator(src.getRetiredIndicator());
         dest.setLastSynchedDate(new Date());
+        dest.setCtepDbIdentifier(src.getCtepDbIdentifier());
 	}
 }

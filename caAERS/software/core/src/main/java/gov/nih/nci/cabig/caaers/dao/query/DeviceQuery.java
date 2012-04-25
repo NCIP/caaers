@@ -21,6 +21,14 @@ public class DeviceQuery extends AbstractQuery {
         }
     }
 
+    public void filterByCtepDbIdentifier(String ctepDbIdentifier){
+       if(StringUtils.isEmpty(ctepDbIdentifier)){
+           andWhere("d.ctepDbIdentifier is NULL OR d.ctepDbIdentifier = ''");
+       } else {
+           andWhere("d.ctepDbIdentifier = :dbId");
+           setParameter("dbId", ctepDbIdentifier);
+       }
+    }
     public void filterByCommonName(String commonName) {
         if (StringUtils.isBlank(commonName)) {
             andWhere("d.commonName IS NULL OR d.commonName = ''");

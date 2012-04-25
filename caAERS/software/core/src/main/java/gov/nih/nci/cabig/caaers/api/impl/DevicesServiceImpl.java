@@ -1,85 +1,80 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
 import gov.nih.nci.cabig.caaers.dao.query.DeviceQuery;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.integration.schema.device.*;
+import gov.nih.nci.cabig.caaers.service.migrator.DeviceConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.DeviceMigrator;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Ion C. Olaru
  *         Date: 4/3/12 -10:03 AM
+ * @author Biju Joseph
  */
-public class DevicesServiceImpl implements ApplicationContextAware {
+public class DevicesServiceImpl{
 
     private static Log log = LogFactory.getLog(DevicesServiceImpl.class);
 
-    private ApplicationContext applicationContext;
     private DeviceDao deviceDao;
+    private DeviceConverter deviceConverter;
+    private DeviceMigrator deviceMigrator;
 
-    public CaaersServiceResponse createOrUpdateDevices(DevicesType devices) {
-        CaaersServiceResponse csr = new CaaersServiceResponse();
-        csr.setServiceResponse(new ServiceResponse());
-        csr.getServiceResponse().setEntityProcessingOutcomes(new EntityProcessingOutcomes());
-        csr.getServiceResponse().setStatus(Status.PROCESSED);
-        List<EntityProcessingOutcomeType> errors = execute(devices);
-        csr.getServiceResponse().getEntityProcessingOutcomes().setEntityProcessingOutcome(errors);
-        return csr;
-    }
-
-    private EntityProcessingOutcomeType populateError(String cn, String bi, String message) {
-        EntityProcessingOutcomeType e = new EntityProcessingOutcomeType();
-        e.setBusinessIdentifier(bi);
-        e.setKlassName(cn);
-        e.setMessage(new ArrayList<String>(1));
-        e.getMessage().add(message);
-        return e;
-    }
-
-    public List<EntityProcessingOutcomeType> execute(DevicesType devices) {
-        List<EntityProcessingOutcomeType> errors = new ArrayList<EntityProcessingOutcomeType>();
-        if (devices == null || devices.getDevice() == null || devices.getDevice().size() == 0) return errors;
-
-        for (DeviceType xmlDevice : devices.getDevice()) {
-            Device d;
-            d = loadPersistentDeviceByCommonName(xmlDevice.getCommonName());
-            if (d == null) {
-                d = new Device();
-                d.setCommonName(xmlDevice.getCommonName());
-            }
-            d.setBrandName(xmlDevice.getBrandName());
-            d.setType(xmlDevice.getType());
-            d.setRetiredIndicator(xmlDevice.getStatus().equals(ActiveInactiveStatusType.INACTIVE));
-
+    public CaaersServiceResponse createOrUpdateDevices(Devices devices) {
+        CaaersServiceResponse response = Helper.createResponse();
+        for (DeviceType deviceType : devices.getDevice()) {
+            boolean failed = false;
+            Device inputDevice = deviceConverter.convert(deviceType);
             try {
-                deviceDao.save(d);
-                errors.add(populateError(Device.class.getName(), d.getCommonName(), ""));
+
+            
+                DeviceQuery dq = new DeviceQuery();
+                if(StringUtils.isNotEmpty(inputDevice.getCtepDbIdentifier())){
+                    dq.filterByCtepDbIdentifier(inputDevice.getCtepDbIdentifier());
+                }else{
+                    dq.filterByCtepDbIdentifier(null);
+                    dq.filterByCommonName(inputDevice.getCommonName());
+                    dq.filterByBrandName(inputDevice.getBrandName());
+                }
+                Device dbDevice = loadPersistentDevice(dq);
+
+                if(dbDevice == null){
+                    log.info("Could not find device with [commonName : " + inputDevice.getCommonName() + ", ctepDbIdentifier : " + inputDevice.getCtepDbIdentifier() +"], so creating new device");
+                    dbDevice = inputDevice;
+                }
+                //BJ: this is an overkill for new-device,
+                // but it is okay, (it will put the last sync date) and we are not loosing much processing power anyway.
+                deviceMigrator.migrate(inputDevice, dbDevice, null);
+
+
+                deviceDao.save(dbDevice);
             } catch (Exception e) {
-                errors.add(populateError(Device.class.getName(), d.getCommonName(), e.getStackTrace().toString()));
+                log.error("Error while saving a device [commonName : " + inputDevice.getCommonName() + "]");
+                failed = true;
             }
+
+            String businessIdentifier = (inputDevice.getCtepDbIdentifier() != null ? inputDevice.getCtepDbIdentifier() : inputDevice.getCommonName());
+            String message = "Device '" + inputDevice.getCommonName() + "' " + (failed ? "failed to create" :"created");
+            ProcessingOutcome outcome = Helper.createOutcome(Device.class, businessIdentifier, failed, message);
+            Helper.populateProcessingOutcome(response, outcome);
         }
-
-        return errors;
+        
+        return response;
     }
 
-    private Device loadPersistentDeviceByCommonName(String commonName) {
-        DeviceQuery q = new DeviceQuery();
-        q.filterByCommonName(commonName);
-        List rs = deviceDao.search(q);
-        if (rs.size() > 0) return (Device)rs.get(0);
-        return null;
+    private Device loadPersistentDevice(DeviceQuery dq){
+        List<Device> deviceList = (List<Device>) deviceDao.search(dq);
+        return CollectionUtils.isEmpty(deviceList) ? null : deviceList.get(0);
     }
 
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
 
     public DeviceDao getDeviceDao() {
         return deviceDao;
@@ -87,5 +82,21 @@ public class DevicesServiceImpl implements ApplicationContextAware {
 
     public void setDeviceDao(DeviceDao deviceDao) {
         this.deviceDao = deviceDao;
+    }
+
+    public DeviceConverter getDeviceConverter() {
+        return deviceConverter;
+    }
+
+    public void setDeviceConverter(DeviceConverter deviceConverter) {
+        this.deviceConverter = deviceConverter;
+    }
+
+    public DeviceMigrator getDeviceMigrator() {
+        return deviceMigrator;
+    }
+
+    public void setDeviceMigrator(DeviceMigrator deviceMigrator) {
+        this.deviceMigrator = deviceMigrator;
     }
 }

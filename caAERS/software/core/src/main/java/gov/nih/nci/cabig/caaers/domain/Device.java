@@ -33,6 +33,8 @@ public class Device extends AbstractMutableRetireableDomainObject implements Ser
     String type;
     
     Date lastSynchedDate;
+    
+    String ctepDbIdentifier;
 
     public Date getLastSynchedDate() {
 		return lastSynchedDate;
@@ -75,6 +77,7 @@ public class Device extends AbstractMutableRetireableDomainObject implements Ser
         result = prime * result + (brandName == null || brandName.trim().equals("") ? 0 : brandName.trim().hashCode());
         result = prime * result + (commonName == null || commonName.trim().equals("") ? 0 : commonName.trim().hashCode());
         result = prime * result + (type == null || type.trim().equals("") ? 0 : type.trim().hashCode());
+        result = prime * result + (ctepDbIdentifier == null || ctepDbIdentifier.trim().equals("") ? 0 : type.trim().hashCode());
         return result;
     }
 
@@ -94,6 +97,7 @@ public class Device extends AbstractMutableRetireableDomainObject implements Ser
         if (!(this.getBrandName() != null ? this.getBrandName().trim() : "").equals(other.getBrandName() != null ? other.getBrandName().trim() : "")) return false;
         if (!(this.getCommonName() != null ? this.getCommonName().trim() : "").equals(other.getCommonName() != null ? other.getCommonName().trim() : "")) return false;
         if (!(this.getType() != null ? this.getType().trim() : "").equals(other.getType() != null ? other.getType().trim() : "")) return false;
+        if (!(this.getCtepDbIdentifier() != null ? this.getCtepDbIdentifier().trim() : "").equals(other.getCtepDbIdentifier() != null ? other.getCtepDbIdentifier().trim() : "")) return false;
 
         return true;
     }
@@ -151,5 +155,13 @@ public class Device extends AbstractMutableRetireableDomainObject implements Ser
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCtepDbIdentifier() {
+        return ctepDbIdentifier;
+    }
+
+    public void setCtepDbIdentifier(String ctepDbIdentifier) {
+        this.ctepDbIdentifier = ctepDbIdentifier;
     }
 }

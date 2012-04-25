@@ -21,7 +21,7 @@ public class DevicesWebService implements DevicesService {
     private DevicesServiceImpl s;
 
     @WebMethod
-    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") DevicesType devices) {
+    public CaaersServiceResponse createOrUpdateDevices(@WebParam(name = "devices", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") Devices devices) {
         return s.createOrUpdateDevices(devices);
     }
 

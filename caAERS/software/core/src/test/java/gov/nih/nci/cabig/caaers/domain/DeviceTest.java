@@ -82,4 +82,17 @@ public class DeviceTest extends TestCase {
         device.setType("C");
         assertEquals("A, C", device.getDisplayName());
     }
+    
+    public void testEquals(){
+        Device d1 = new Device();
+        Device d2 = new Device();
+        Device d3 = new Device();
+        d1.setCommonName("x"); d2.setCommonName("x");   d3.setCommonName("y");
+        assertTrue(d1.equals(d2));
+        assertFalse(d1.equals(d3));
+        d1.setCtepDbIdentifier("121");
+        assertFalse(d1.equals(d2));
+        d2.setCtepDbIdentifier("121");
+        assertTrue(d1.equals(d2));
+    }
 }

@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.api.PriorTherapyManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapies;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
 import gov.nih.nci.cabig.caaers.ws.PriorTherapyManagementWebService;
@@ -14,6 +13,7 @@ import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -25,32 +25,19 @@ import org.apache.commons.logging.LogFactory;
 public class PriorTherapyManagementWebServiceImpl implements PriorTherapyManagementWebService{
 	
 	private static Log logger = LogFactory.getLog(PriorTherapyManagementWebServiceImpl.class);
-	private PriorTherapyManagementService priorTherapyLOVService;
+	private PriorTherapyManagementService priorTherapyManagementService;
 
-	public void setPriorTherapyLOVService(PriorTherapyManagementService priorTherapyLOVService) {
-		this.priorTherapyLOVService = priorTherapyLOVService;
-	}
+    public PriorTherapyManagementService getPriorTherapyManagementService() {
+        return priorTherapyManagementService;
+    }
 
-	public CaaersServiceResponse importPriorTherapies(PriorTherapies xmlPriorTherapies) throws SecurityExceptionFaultMessage {
-		CaaersServiceResponse caaersResponse = Helper.createResponse();
-		List<PriorTherapy> domainTherapies = new ArrayList<PriorTherapy>();
-		try {
-			for(PriorTherapyType priorTherapyDto: xmlPriorTherapies.getPriorTherapy()){
-				PriorTherapy domainTherapy = new PriorTherapy();
-				domainTherapy.setText(priorTherapyDto.getText());
-				domainTherapies.add(domainTherapy);
-			}
-			List<ProcessingOutcome> processingOutcomes = priorTherapyLOVService.importPriorTherapies(domainTherapies);
-            for(ProcessingOutcome outcome : processingOutcomes){
-                Helper.populateProcessingOutcome(caaersResponse, outcome);
-            }
-        } catch (Throwable e) {
-            logger.error(e);
-            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+    public void setPriorTherapyManagementService(PriorTherapyManagementService priorTherapyManagementService) {
+        this.priorTherapyManagementService = priorTherapyManagementService;
+    }
 
-		}
-		
-		return caaersResponse;
-	}
+    public CaaersServiceResponse createOrUpdatePriorTherapy(@WebParam(name = "PriorTherapies",targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") PriorTherapies xmlPriorTherapies)
+            throws SecurityExceptionFaultMessage {
+        return priorTherapyManagementService.importPriorTherapies(xmlPriorTherapies);
+    }
 
 }
