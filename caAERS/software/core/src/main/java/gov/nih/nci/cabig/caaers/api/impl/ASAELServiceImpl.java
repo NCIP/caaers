@@ -187,14 +187,14 @@ public class ASAELServiceImpl implements ApplicationContextAware {
         List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
 
         for (ExpectedAECtcTermType ctcTermType : xmlCtcTerms) {
-            String c = ctcTermType.getCategory();
-            Integer v = Integer.parseInt(ctcTermType.getCtcVersion());
-            String t = ctcTermType.getCtepTerm();
-            CtcTerm term = loadTerm(c, v, t);
+            String category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read = ctcTermType.getCategory();
+            Integer version_this_one_should_be_readable_as_well = Integer.parseInt(ctcTermType.getCtcVersion());
+            String term_I_could_not_find_a_better_name_for_this_one_SORRY = ctcTermType.getCtepTerm();
+            CtcTerm term = loadTerm(category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read, version_this_one_should_be_readable_as_well, term_I_could_not_find_a_better_name_for_this_one_SORRY);
 
             if (term == null) {
-                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", c, v, t));
-                errors.add(populateError(CtcTerm.class.getCanonicalName(), t, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", c, v, t)));
+                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read, version_this_one_should_be_readable_as_well, term_I_could_not_find_a_better_name_for_this_one_SORRY));
+                errors.add(populateError(CtcTerm.class.getCanonicalName(), term_I_could_not_find_a_better_name_for_this_one_SORRY, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read, version_this_one_should_be_readable_as_well, term_I_could_not_find_a_better_name_for_this_one_SORRY)));
                 continue;
             }
 
