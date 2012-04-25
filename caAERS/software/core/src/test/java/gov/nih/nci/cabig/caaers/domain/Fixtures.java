@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -858,7 +859,23 @@ public class Fixtures {
       return new PreExistingCondition(name);
   }
     
+  public static PreExistingCondition createPreExistingCondition(String name, String lltCode, String llt, String hlgt )  {
+      PreExistingCondition preCondition = new PreExistingCondition();
+      preCondition.setMeddraHlgt(hlgt);
+      preCondition.setMeddraLlt(llt);
+      preCondition.setMeddraLltCode(lltCode);
+      preCondition.setText(name);
+      return preCondition;
+  }
     
+  public static PreExistingConditionType createPreExistingConditionType(String name, String lltCode, String llt, String hlgt ) {
+      PreExistingConditionType preConditionType = new PreExistingConditionType();
+      preConditionType.setMeddraHlgt(hlgt);
+      preConditionType.setMeddraLlt(llt);
+      preConditionType.setMeddraLltCode(lltCode);
+      preConditionType.setText(name);
+      return preConditionType;
+  }
   public static AeTerminology createAeTerminology(Term t){
       AeTerminology aet  = new AeTerminology();
       aet.setTerm(t);

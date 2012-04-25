@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditions;
 
 import java.util.List;
 
@@ -11,6 +13,6 @@ import java.util.List;
  */
 public interface PreExistingConditionManagementService {
 	
-	public List<ProcessingOutcome> importPreExistingConditions(List<PreExistingCondition> importedPreExistingConditions);
+	public CaaersServiceResponse importPreExistingConditions(PreExistingConditions xmlPreExistingConditions);
 
 }

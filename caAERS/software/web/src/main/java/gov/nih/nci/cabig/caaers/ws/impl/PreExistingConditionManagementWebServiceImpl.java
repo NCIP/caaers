@@ -1,24 +1,16 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.PreExistingConditionManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
-import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditions;
 import gov.nih.nci.cabig.caaers.ws.PreExistingConditionManagementWebService;
 import gov.nih.nci.cabig.caaers.ws.faults.SecurityExceptionFaultMessage;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.PreExistingConditionManagementWebService", serviceName="PreExistingConditionManagementWebService", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
@@ -32,27 +24,19 @@ public class PreExistingConditionManagementWebServiceImpl implements PreExisting
 		this.preExistingConditionLOVService = preExistingConditionLOVService;
 	}
 
-	public CaaersServiceResponse importPreExistingConditions(PreExistingConditions xmlPreExistingConditions)
-			throws SecurityExceptionFaultMessage {
-		CaaersServiceResponse caaersResponse = Helper.createResponse();
+	public CaaersServiceResponse createOrUpdatePreExistingCondition(PreExistingConditions xmlPreExistingConditions) throws SecurityExceptionFaultMessage {
 
-		List<PreExistingCondition> domainConditions = new ArrayList<PreExistingCondition>();
+
 		try {
-			for(PreExistingConditionType conditionDto: xmlPreExistingConditions.getPreExistingCondition()){
-				PreExistingCondition domainCondition = new PreExistingCondition();
-				domainCondition.setText(conditionDto.getText());
-				domainConditions.add(domainCondition);
-			}
-			List<ProcessingOutcome> processingOutcomes = preExistingConditionLOVService.importPreExistingConditions(domainConditions);
-            for(ProcessingOutcome outcome : processingOutcomes){
-                Helper.populateProcessingOutcome(caaersResponse, outcome);
-            }
-		} catch (Throwable e) {
+			return preExistingConditionLOVService.importPreExistingConditions(xmlPreExistingConditions);
+		} catch (Exception e) {
             logger.error(e);
+            CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+            return caaersResponse;
 		}
 		
-		return caaersResponse;
+
 	}
 
 }

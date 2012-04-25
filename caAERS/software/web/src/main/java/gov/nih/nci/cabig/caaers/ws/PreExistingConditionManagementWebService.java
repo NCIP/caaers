@@ -24,7 +24,7 @@ public interface PreExistingConditionManagementWebService {
 	 * @param xmlPreExistingConditions
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse importPreExistingConditions(@WebParam(name="PreExistingConditions",
+	public gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse createOrUpdatePreExistingCondition(@WebParam(name="PreExistingConditions",
             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") PreExistingConditions xmlPreExistingConditions) throws SecurityExceptionFaultMessage;
 
 }

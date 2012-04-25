@@ -1,66 +1,92 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.PreExistingConditionManagementService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.query.PreExistingConditionQuery;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditions;
+import gov.nih.nci.cabig.caaers.service.migrator.PreExistingConditionConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.PreExistingConditionMigrator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public class PreExistingConditionManagementServiceImpl implements PreExistingConditionManagementService {
 	
 	private static Log logger = LogFactory.getLog(PreExistingConditionManagementServiceImpl.class);
 	private PreExistingConditionDao preExistingConditionDao;
+    private PreExistingConditionMigrator preExistingConditionMigrator;
+    private PreExistingConditionConverter preExistingConditionConverter;
 
-	@Transactional(readOnly=false)
-	public List<ProcessingOutcome> importPreExistingConditions(
-			List<PreExistingCondition> importedPreExistingConditions) {
-		List<ProcessingOutcome> errorMessages = new ArrayList<ProcessingOutcome>();
-		// load all pre-existing conditions from db and check if new ones need to be added
-		List<PreExistingCondition> existingConditions = new ArrayList<PreExistingCondition>();
-		existingConditions.addAll(preExistingConditionDao.getAll());
-		Set<String> preExistingConditionTextSet = new HashSet<String>();
-		for(PreExistingCondition condition : existingConditions){
-			preExistingConditionTextSet.add(condition.getText());
-		}
-		
-		// create new pre-existing condition and save it if it doesn't exist in db. this is case sensitive comparison so 
-		// it is possible to have 2 pre-existing conditions with texts of same character sequence but in different cases
-		for(PreExistingCondition importedPreExistingCondition : importedPreExistingConditions){
-			ProcessingOutcome errorMessage = new ProcessingOutcome();
-			errorMessage.setBusinessId(importedPreExistingCondition.getText());
-			errorMessage.setKlassName(PreExistingCondition.class.getName());
-			errorMessages.add(errorMessage);
-			// do a case sensitive comparison of condition text
-			if(!preExistingConditionTextSet.contains(importedPreExistingCondition.getText())){
-				logger.info("didn't find prior condition with text: " + importedPreExistingCondition.getText() + " in db. " +
-						"Creating new PreExisting Condition.");
-				try {
-					// didn't find a pre-existing condition in db with same case sensitive text. create new one and save.
-					PreExistingCondition newPreExistingCondition = new PreExistingCondition();
-					newPreExistingCondition.setText(importedPreExistingCondition.getText());
-					preExistingConditionDao.save(newPreExistingCondition);
-				
-				} catch (Exception e) {
-					// catch any exception in processing and return it in EntityErrorMessage object
-					errorMessage.addMessage(e.getMessage());
-					logger.error("encountered an error in importing pre-existing condition with text :" + importedPreExistingCondition.getText());
-					logger.error(e.getMessage());
-				}
-			} 
-		}
-		return errorMessages;
-	}
+    @Transactional(readOnly=false)
+    public CaaersServiceResponse importPreExistingConditions(PreExistingConditions xmlPreExistingConditions) {
 
-	public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
+        CaaersServiceResponse response = Helper.createResponse();
+        for(PreExistingConditionType xmlPreCondition : xmlPreExistingConditions.getPreExistingCondition()){
+
+            ProcessingOutcome outcome = null;
+
+            try{
+
+                PreExistingCondition inputPreCondition = preExistingConditionConverter.convert(xmlPreCondition);
+
+                PreExistingConditionQuery preConditionQuery = new PreExistingConditionQuery();
+                preConditionQuery.filterByMeddraCode(inputPreCondition.getMeddraLltCode());
+
+                PreExistingCondition dbPreCondition = fetchPreExistingCondition(preConditionQuery);
+                if(dbPreCondition == null){
+                    dbPreCondition = inputPreCondition;
+                }
+
+                preExistingConditionMigrator.migrate(inputPreCondition, dbPreCondition, null);
+                //BJ: this is an overkill for new-device,
+                // but it is okay, (it will put the last sync date) and we are not loosing much processing power anyway.
+                preExistingConditionDao.save(dbPreCondition);
+
+                outcome = Helper.createOutcome(PreExistingCondition.class, inputPreCondition.getMeddraLltCode(), false,
+                        "Processed " + inputPreCondition.getText());
+            }catch (Exception e){
+                logger.error("Error while processing PreExistingCondition therapy ", e);
+                String message = "Unable to process : " + e.getMessage();
+                outcome = Helper.createOutcome(PreExistingCondition.class, xmlPreCondition.getMeddraLltCode(), true, message);
+            }
+            Helper.populateProcessingOutcome(response, outcome);
+        }
+
+        return response;
+    }
+    public PreExistingCondition fetchPreExistingCondition(PreExistingConditionQuery preExistingConditionQuery){
+        List<PreExistingCondition> list = (List<PreExistingCondition>) preExistingConditionDao.search(preExistingConditionQuery);
+        return CollectionUtils.isEmpty(list) ? null : list.get(0);
+    }
+
+    public PreExistingConditionDao getPreExistingConditionDao() {
+        return preExistingConditionDao;
+    }
+
+    public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
 		this.preExistingConditionDao = preExistingConditionDao;
 	}
 
+    public PreExistingConditionMigrator getPreExistingConditionMigrator() {
+        return preExistingConditionMigrator;
+    }
+
+    public void setPreExistingConditionMigrator(PreExistingConditionMigrator preExistingConditionMigrator) {
+        this.preExistingConditionMigrator = preExistingConditionMigrator;
+    }
+
+    public PreExistingConditionConverter getPreExistingConditionConverter() {
+        return preExistingConditionConverter;
+    }
+
+    public void setPreExistingConditionConverter(PreExistingConditionConverter preExistingConditionConverter) {
+        this.preExistingConditionConverter = preExistingConditionConverter;
+    }
 }
