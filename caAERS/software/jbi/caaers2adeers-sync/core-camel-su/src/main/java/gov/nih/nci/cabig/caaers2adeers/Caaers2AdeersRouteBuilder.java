@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import gov.nih.nci.cabig.caaers2adeers.test.MockMessageGenerator;
+import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
+
 import org.apache.camel.ExchangePattern;
-import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 
 /**
@@ -77,11 +77,17 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 //    		.to("direct:adEERSRequestSink");
         
         //just for testing generic webservice
+        
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
 		.processRef("exchangePreProcessor")
+		.process(new TrackerPreProcessor(Stage.REQUEST_RECEIVED, "some notes")).to("bean:tracker?method=record")
 		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
 		.choice()
-                .when(header("c2a_sync_mode").isEqualTo("sync")).to("log:after-soap_filter-and-before-sync").to("direct:adEERSRequestSink")
+                .when(header("c2a_sync_mode").isEqualTo("sync"))
+                	.to("log:after-soap_filter-and-before-sync")
+                	.process(new TrackerPreProcessor(Stage.REQUEST_RECEIVED, "some notes")).to("bean:tracker?method=record")
+                	.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
+                	.to("direct:adEERSRequestSink")
                 .otherwise()
                 	.to("log:after-soap_filter-and-before-async")
                 	.multicast(new UseFirstAggregationStrategy()).parallelProcessing().to("xslt:xslt/caaers/response/async_success_response.xsl", "direct:adEERSRequestSink");

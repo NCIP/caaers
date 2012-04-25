@@ -33,8 +33,7 @@
     </bean>
 
     <bean id="tracker" class="gov.nih.nci.cabig.caaers2adeers.Tracker">
-       <constructor-arg index="0" ref="dataSource" />
-       <property name="datasourceDriverName" value="s[caaers.datasource.driver]" />
+       <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
     <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.HeaderGeneratorProcessor"/>
     <bean id="exchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.ExchangePreProcessor">
@@ -44,4 +43,53 @@
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.CustomXsltComponent" />
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource" />
+    	<property name="namingStrategy" ref="wonderfulNamingStrategy" />
+    	<property name="annotatedClasses">
+            <list>
+                <value>gov.nih.nci.cabig.caaers2adeers.IntegrationLog</value>
+                <value>gov.nih.nci.cabig.caaers2adeers.IntegrationLogDetail</value>
+            </list>
+		</property>
+		<property name="hibernateProperties" ref="hibernateProperties" /> 
+    </bean>
+    <bean id="wonderfulNamingStrategy" class="gov.nih.nci.cabig.caaers2adeers.WonderfulNamingStrategy">
+      <property name="uppercaseColumnNames">
+       <value>empty_empty</value>
+      </property>
+     </bean>
+     <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers2adeers.HibernatePropertiesFactoryBean">
+        <property name="dialectName">
+            <value>s[caaers.datasource.dialect]</value>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
+                <prop key="hibernate.jdbc.batch_size">30</prop>
+                <prop key="hibernate.jdbc.fetch_size">10</prop>
+
+                <!-- make sure the below properties are set to false in production -->
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.use_sql_comments">false</prop>
+                <prop key="hibernate.generate_statistics">false</prop>
+
+                <!-- caching -->
+                <!-- <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.SingletonEhCacheProvider</prop> -->
+
+            </props>
+        </property>
+    </bean>
+     
+     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="checkWriteOperations">
+            <value>false</value>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
 </beans>

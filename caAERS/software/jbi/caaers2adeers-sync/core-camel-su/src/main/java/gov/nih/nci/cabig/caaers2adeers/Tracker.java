@@ -1,126 +1,50 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.jdbc.core.JdbcTemplate;
+import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
 
-import javax.sql.DataSource;
 import java.util.Map;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Will record the status of each step in the database
  */
-public class Tracker implements InitializingBean {
+public class Tracker{
+	
+    public static final String TRACKER_STAGE_NAME_HEADER = "c2a_tracker_stage_name";
+    public static final String TRACKER_NOTES_HEADER = "c2a_tracker_notes";
     
-    private String trackTableSequenceName;
-    private String trackDetailsTableSequenceName;
-    private String trackTableName;
-    private String trackDetailsTableName;
-    private String datasourceDriverName;
+    protected static final Log log = LogFactory.getLog(Tracker.class);
+	
+	private HibernateTemplate hibernateTemplate;
 
-    private boolean oracleDB;
-    
-    private JdbcTemplate jdbc;
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
 
-    public Tracker(DataSource ds) {
-        this.jdbc = new JdbcTemplate(ds);
-    }
-
-    public void afterPropertiesSet() throws Exception {
-       trackDetailsTableName = isEmpty(trackDetailsTableName) ? "integration_log_details":trackDetailsTableName.trim();
-       trackTableName = isEmpty(trackTableName) ? "integration_logs":trackTableName.trim();
-
-       oracleDB = datasourceDriverName.contains("oracle");
-       if(oracleDB){
-
-       }else{
-
-       }
-       
-
-    }
-    
-    // should persist into integration_log_de
-
-    public void record(String corelationId, Stage stage, String note, Map<String, String> details){
-        // id, corelation_id, stage, description, on, details,
-
-        //insert into tacker values()
-    }
-
-    public String getTrackTableSequenceName() {
-        return trackTableSequenceName;
-    }
-
-    public void setTrackTableSequenceName(String trackTableSequenceName) {
-        this.trackTableSequenceName = trackTableSequenceName;
-    }
-
-    public String getTrackDetailsTableSequenceName() {
-        return trackDetailsTableSequenceName;
-    }
-
-    public void setTrackDetailsTableSequenceName(String trackDetailsTableSequenceName) {
-        this.trackDetailsTableSequenceName = trackDetailsTableSequenceName;
-    }
-
-    public String getDatasourceDriverName() {
-        return datasourceDriverName;
-    }
-
-    public void setDatasourceDriverName(String datasourceDriverName) {
-        this.datasourceDriverName = datasourceDriverName;
-    }
-
-    public String getTrackTableName() {
-        return trackTableName;
-    }
-
-    public void setTrackTableName(String trackTableName) {
-        this.trackTableName = trackTableName;
-    }
-
-    public String getTrackDetailsTableName() {
-        return trackDetailsTableName;
-    }
-
-    public void setTrackDetailsTableName(String trackDetailsTableName) {
-        this.trackDetailsTableName = trackDetailsTableName;
-    }
-
-    private boolean isEmpty(String s) {
-        return s == null || s.trim() == null;
-    }
-    
-    public static enum Stage{
-        REQUEST_RECEIVED(5, "Message Received"),
-        ROUTED_TO_ADEERS_SINK(10, "Message Routed to AdEERS Sink Channel"),
-        ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL(20, "Routed to AdEERS Webservice Invocation route"),
-        ADEERS_WS_IN_TRANSFORMATION(30, "AdEERS Webservice request transformation"),
-        ADEERS_WS_INVOCATION(35, "AdEERS Webservice invocation"),
-        ADEERS_WS_OUT_TRANSFORMATION(40, "AdEERS Webservice response transformation") ,
-        ROUTED_TO_CAAERS_SINK(50, "Message Routed to caAERS Sink Channel"),
-        CAAERS_WS_IN_TRANSFORMATION(60, "caAERS Webservice request transformation"),
-        CAAERS_WS_INVOCATION(65, "caAERS Webservice invocation"),
-        CAAERS_WS_OUT_TRANSFORMATION(70, "caAERS Webservice response transformation") ,
-
-        REQUST_PROCESSING_ERROR(900, "Error while processing request"),
-        REQUEST_COMPLETION(999, "Message processing complete")
-
-        ;
-        private int code;
-        private String stageName;
-
-         private Stage(int code, String stageName) {
-            this.code = code;
-            this.stageName = stageName;
+	public void record(Exchange exchange) throws Exception {
+		IntegrationLog integrationLog = getInstance(exchange);
+		hibernateTemplate.save(integrationLog);
+	}
+	
+	private static IntegrationLog getInstance(Exchange exchange){
+		//set the properties in the exchange
+        Map<String,Object> properties = exchange.getProperties();
+        String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
+		Stage stage = Stage.valueOf(properties.get(TRACKER_STAGE_NAME_HEADER)+"");
+		String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
+		String operationName = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
+		String notes = properties.get(TRACKER_NOTES_HEADER) == null ? null : properties.get(TRACKER_NOTES_HEADER)+"";
+        log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operationName+", " + notes + "]");
+        if(coorelationId == null || stage == null || entity == null || operationName == null){
+        	throw new RuntimeException("Cannot log in database. Required fields are missing");
         }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getStageName() {
-            return stageName;
-        }
-    }
+        IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operationName, notes);
+		return integrationLog;
+	}
+	
 }
