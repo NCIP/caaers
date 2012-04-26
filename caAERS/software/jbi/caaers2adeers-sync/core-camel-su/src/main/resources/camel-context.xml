@@ -32,35 +32,35 @@
         <property name="password" value="s[caaers.datasource.password]"/>
     </bean>
 
-    <bean id="tracker" class="gov.nih.nci.cabig.caaers2adeers.Tracker">
+    <bean id="tracker" class="gov.nih.nci.cabig.caaers2adeers.track.Tracker">
        <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
-    <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.HeaderGeneratorProcessor"/>
-    <bean id="exchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.ExchangePreProcessor">
+    <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor"/>
+    <bean id="exchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor">
         <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
         <property name="caaersWSPassword" value="s[CAAERS_WS_PASSWORD]" />
         <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
-    <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.CustomXsltComponent" />
+    <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
     	<property name="dataSource" ref="dataSource" />
     	<property name="namingStrategy" ref="wonderfulNamingStrategy" />
     	<property name="annotatedClasses">
             <list>
-                <value>gov.nih.nci.cabig.caaers2adeers.IntegrationLog</value>
-                <value>gov.nih.nci.cabig.caaers2adeers.IntegrationLogDetail</value>
+                <value>gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog</value>
+                <value>gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDetail</value>
             </list>
 		</property>
 		<property name="hibernateProperties" ref="hibernateProperties" /> 
     </bean>
-    <bean id="wonderfulNamingStrategy" class="gov.nih.nci.cabig.caaers2adeers.WonderfulNamingStrategy">
+    <bean id="wonderfulNamingStrategy" class="gov.nih.nci.cabig.caaers2adeers.hibernate.WonderfulNamingStrategy">
       <property name="uppercaseColumnNames">
        <value>empty_empty</value>
       </property>
      </bean>
-     <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers2adeers.HibernatePropertiesFactoryBean">
+     <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers2adeers.hibernate.HibernatePropertiesFactoryBean">
         <property name="dialectName">
             <value>s[caaers.datasource.dialect]</value>
         </property>

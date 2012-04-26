@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers2adeers;
+package gov.nih.nci.cabig.caaers2adeers.hibernate;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;

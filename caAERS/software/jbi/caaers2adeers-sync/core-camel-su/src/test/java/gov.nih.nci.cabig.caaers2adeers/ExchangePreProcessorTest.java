@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
+import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
 import junit.framework.TestCase;
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 
 /**
  * @author Biju Joseph

@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers2adeers;
+package gov.nih.nci.cabig.caaers2adeers.hibernate;
 
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.id.IdentityGenerator;

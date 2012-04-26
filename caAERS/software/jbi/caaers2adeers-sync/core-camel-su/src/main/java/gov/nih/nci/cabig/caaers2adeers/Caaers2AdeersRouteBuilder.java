@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
+import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
+import gov.nih.nci.cabig.caaers2adeers.track.TrackerPreProcessor;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
 
@@ -92,8 +93,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                 	.multicast(new UseFirstAggregationStrategy()).parallelProcessing().to("xslt:xslt/caaers/response/async_success_response.xsl", "direct:adEERSRequestSink");
 			
     	new ToAdeersRouteBuilder(this).configure();
-    	new ToCaaersAsynchronousRouteBuilder(this).configure();
-    	new ToCaaersSynchronousRouteBuilder(this).configure();
+    	new ToCaaersWebserviceRouteBuilder(this).configure();
+    	new ToCaaersClientRouteBuilder(this).configure();
 
     	//need to process AdEERS results, may be the SyncComponent...  
     	from("direct:adEERSResponseSink")

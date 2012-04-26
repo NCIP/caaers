@@ -1,8 +1,7 @@
-package gov.nih.nci.cabig.caaers2adeers;
+package gov.nih.nci.cabig.caaers2adeers.xslt;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 

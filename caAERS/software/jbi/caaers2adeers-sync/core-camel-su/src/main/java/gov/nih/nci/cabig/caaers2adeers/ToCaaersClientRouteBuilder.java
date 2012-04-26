@@ -1,18 +1,19 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
+import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
+import gov.nih.nci.cabig.caaers2adeers.track.TrackerPreProcessor;
 
 /**
  * @author Biju Joseph
  */
-public class ToCaaersSynchronousRouteBuilder {
+public class ToCaaersClientRouteBuilder {
 
 
     private String xslBase = "xslt/caaers/response/";
 
     private Caaers2AdeersRouteBuilder routeBuilder;
 
-    public ToCaaersSynchronousRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder) {
+    public ToCaaersClientRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder) {
         this.routeBuilder = routeBuilder;
     }
 

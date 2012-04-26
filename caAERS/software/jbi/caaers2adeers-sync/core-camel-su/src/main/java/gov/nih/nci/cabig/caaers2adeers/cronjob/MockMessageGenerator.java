@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers2adeers.test;
+package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
 
 public class MockMessageGenerator {

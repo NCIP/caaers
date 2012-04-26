@@ -1,7 +1,7 @@
-package gov.nih.nci.cabig.caaers2adeers;
+package gov.nih.nci.cabig.caaers2adeers.track;
 
 
-import gov.nih.nci.cabig.caaers2adeers.IntegrationLog.Stage;
+import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 

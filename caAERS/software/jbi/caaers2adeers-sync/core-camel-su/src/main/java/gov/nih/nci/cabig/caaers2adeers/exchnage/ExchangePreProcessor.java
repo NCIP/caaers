@@ -1,7 +1,6 @@
-package gov.nih.nci.cabig.caaers2adeers;
+package gov.nih.nci.cabig.caaers2adeers.exchnage;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.xml.XPathBuilder;
 import org.apache.commons.lang.StringUtils;

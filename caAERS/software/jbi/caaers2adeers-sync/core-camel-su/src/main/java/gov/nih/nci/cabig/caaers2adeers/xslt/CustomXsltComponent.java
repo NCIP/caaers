@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers2adeers;
+package gov.nih.nci.cabig.caaers2adeers.xslt;
 
 import org.apache.camel.Endpoint;
 import org.apache.camel.builder.xml.XsltBuilder;
@@ -9,12 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 
-import javax.xml.transform.Source;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamSource;
-import java.io.File;
 import java.util.Map;
 
 /**
