@@ -61,7 +61,7 @@
                     <xs:element name="fundingSponsor" type="FundingSponsorType" />
                     <xs:element name="coordinatingCenter" type="CoordinatingCenterType"/>
                     
-                    <xs:element name="studyOrganizations">
+                    <xs:element name="studyOrganizations" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="studySite" minOccurs="0" maxOccurs="unbounded"/>
