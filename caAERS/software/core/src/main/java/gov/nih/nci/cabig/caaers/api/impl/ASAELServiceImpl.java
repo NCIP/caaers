@@ -107,28 +107,25 @@ public class ASAELServiceImpl {
                 }
             }
 
-            List<CtcTerm> ctcTerms = loadCtcTerms(asaelAgent.getExpectedAECtcTerm(), csr);
-            log.debug("LOADED SIZE: " + ctcTerms.size());
+            List<AgentSpecificCtcTerm> asaelCtcTerms = loadCtcTerms(asaelAgent.getExpectedAECtcTerm(), csr);
+            log.debug("LOADED SIZE: " + asaelCtcTerms.size());
             log.debug("AGENT TERMS SIZE: " + agentTerms.size());
 
             // Add the new terms to agent
-            for (CtcTerm t : ctcTerms) {
-                AgentSpecificCtcTerm asaelTerm = new AgentSpecificCtcTerm();
-                asaelTerm.setAgent(a);
-                asaelTerm.setCtcTerm(t);
-                asaelTerm.setExpected(Boolean.TRUE);
+            for (AgentSpecificCtcTerm _asaelTerm : asaelCtcTerms) {
+                _asaelTerm.setAgent(a);
+                _asaelTerm.setExpected(Boolean.TRUE);
 
                 try {
-                    agentSpecificTermDao.save(asaelTerm);
-                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, asaelTerm.getFullName(), false, "To the agent (" + agentType.getNscNumber() + ") the expected term : " + asaelTerm.getFullName() + " got added");
+                    agentSpecificTermDao.save(_asaelTerm);
+                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, _asaelTerm.getFullName(), false, "To the agent (" + agentType.getNscNumber() + ") the expected term : " + _asaelTerm.getFullName() + " got added");
                     Helper.populateProcessingOutcome(csr, outcome);
-                    log.debug(String.format("NEW TERM ADDED: %s, %d", asaelTerm.getFullName(), asaelTerm.getId()));
-                    syncStudies(asaelTerm, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+                    log.debug(String.format("NEW TERM ADDED: %s, %d", _asaelTerm.getFullName(), _asaelTerm.getId()));
+                    syncStudies(_asaelTerm, AgentSpecificTerm.EXPTECTED_AE_ADDED);
                 } catch (Exception e) {
                     log.error("Exception occured while adding asael ", e);
-                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, asaelTerm.getFullName(), true, "Unable to add to the agent (" + agentType.getNscNumber() + ") the expected term : " + t );
+                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, _asaelTerm.getFullName(), true, "Unable to add to the agent (" + agentType.getNscNumber() + ") the expected term : " + _asaelTerm.getTerm());
                     Helper.populateProcessingOutcome(csr, outcome);
-
                 }
             }
         }
@@ -181,23 +178,37 @@ public class ASAELServiceImpl {
         return null;
     }
 
-    private List<CtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, CaaersServiceResponse csr) {
-        List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
+    /**
+     * Loads the list of CtcTerms, each element is wrapped in a AgentSpecificCtcTerm
+     * to be able to store the AgentSpecificCtcTerm related properties
+     * Populated properties are
+     * gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#term and
+     * gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#otherToxicity
+     * @param xmlCtcTerms XML AgentSpecificCtcTerm
+     * @param csr Place to store errors and messages
+     * @return
+     */
+    private List<AgentSpecificCtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, CaaersServiceResponse csr) {
+        List<AgentSpecificCtcTerm> ctcTerms = new ArrayList<AgentSpecificCtcTerm>();
 
         for (ExpectedAECtcTermType ctcTermType : xmlCtcTerms) {
-            String category = ctcTermType.getCategory();
-            Integer version = Integer.parseInt(ctcTermType.getCtcVersion());
-            String term = ctcTermType.getCtepTerm();
-            CtcTerm ctcTerm = loadTerm(category, version, term);
+            String _category = ctcTermType.getCategory();
+            Integer _version = Integer.parseInt(ctcTermType.getCtcVersion());
+            String _term = ctcTermType.getCtepTerm();
+            CtcTerm _ctcTerm = loadTerm(_category, _version, _term);
 
-            if (term == null) {
-                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category, version, term));
-                ProcessingOutcome outcome = Helper.createOutcome(CtcTerm.class, term, true, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category, version, term)) ;
+            if (_term == null) {
+                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", _category, _version, _term));
+                ProcessingOutcome outcome = Helper.createOutcome(CtcTerm.class, _term, true, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", _category, _version, _term)) ;
                 Helper.populateProcessingOutcome(csr, outcome);
                 continue;
             }
 
-            ctcTerms.add(ctcTerm);
+            AgentSpecificCtcTerm _asaelTerm = new AgentSpecificCtcTerm();
+            _asaelTerm.setTerm(_ctcTerm);
+            _asaelTerm.setOtherToxicity(ctcTermType.getOtherToxicity());
+
+            ctcTerms.add(_asaelTerm);
         }
 
         return ctcTerms;
