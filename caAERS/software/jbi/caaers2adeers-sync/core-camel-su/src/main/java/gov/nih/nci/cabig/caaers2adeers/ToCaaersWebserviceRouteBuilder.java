@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 
 public class ToCaaersWebserviceRouteBuilder {
 
@@ -37,7 +37,7 @@ public class ToCaaersWebserviceRouteBuilder {
 		//content based router
 		routeBuilder.from("direct:caaersWSRequestSink")
 		.to("log:caaers.caaers-request?showHeaders=true")
-		.process(track(ROUTED_TO_CAAERS_SINK))
+		.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
 			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:caaers-asael-async")
@@ -77,7 +77,8 @@ public class ToCaaersWebserviceRouteBuilder {
 				requestXSLBase + xslFileName, 
 				serviceURI, 
 				responseXSLBase + xslFileName, 
-				"direct:caAERSResponseSink");
+				"direct:caAERSResponseSink", 
+				CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED, CAAERS_WS_OUT_TRANSFORMATION, ROUTED_TO_CAAERS_RESPONSE_SINK);
 	}
 	
 	

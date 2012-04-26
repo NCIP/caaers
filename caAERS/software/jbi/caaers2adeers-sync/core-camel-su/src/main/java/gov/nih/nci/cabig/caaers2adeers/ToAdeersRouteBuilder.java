@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 public class ToAdeersRouteBuilder {
@@ -73,7 +73,8 @@ public class ToAdeersRouteBuilder {
 				requestXSLBase + xslFileName, 
 				adEERSLOVServiceJBIURL + serviceURI, 
 				responseXSLBase + xslFileName, 
-				"direct:adEERSResponseSink");
+				"direct:adEERSResponseSink",
+				ADEERS_WS_IN_TRANSFORMATION, ADEERS_WS_INVOCATION_INITIATED, ADEERS_WS_INVOCATION_COMPLETED, ADEERS_WS_OUT_TRANSFORMATION, ROUTED_TO_ADEERS_RESPONSE_SINK);
 	}
 
     private void configureStudyWSCallRoute(String fromSink, String xslFileName, String serviceURI){
@@ -81,6 +82,7 @@ public class ToAdeersRouteBuilder {
                 requestXSLBase + xslFileName,
                 adEERSStudyServiceJBIURL + serviceURI,
                 responseXSLBase + xslFileName,
-                "direct:adEERSResponseSink");
+                "direct:adEERSResponseSink",
+				ADEERS_WS_IN_TRANSFORMATION, ADEERS_WS_INVOCATION_INITIATED, ADEERS_WS_INVOCATION_COMPLETED, ADEERS_WS_OUT_TRANSFORMATION, ROUTED_TO_ADEERS_RESPONSE_SINK);
     }
 }

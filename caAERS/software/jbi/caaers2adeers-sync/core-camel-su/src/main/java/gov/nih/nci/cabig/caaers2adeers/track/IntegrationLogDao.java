@@ -21,12 +21,7 @@ public class IntegrationLogDao{
 		this.hibernateTemplate = hibernateTemplate;
 	}
 
-	public void record(String coorelationId, Stage stage, String entity, String operationName, String notes) throws Exception {
-		if(coorelationId == null || stage == null || entity == null || operationName == null){
-        	throw new RuntimeException("Cannot log in database. Required fields are missing");
-        }
-		log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operationName+", " + notes + "]");
-		IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operationName, notes);
+	public void save(IntegrationLog integrationLog) throws Exception {
 		hibernateTemplate.save(integrationLog);
 	}
 	

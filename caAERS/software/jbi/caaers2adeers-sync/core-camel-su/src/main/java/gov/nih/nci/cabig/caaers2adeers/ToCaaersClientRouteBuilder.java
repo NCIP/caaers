@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_SINK;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 /**
  * @author Biju Joseph
@@ -31,7 +31,7 @@ public class ToCaaersClientRouteBuilder {
         //content based router
         routeBuilder.from("direct:caaersClientRequestSink")
                 .to("log:caaers.caaers-sync-request?showHeaders=true")
-                .process(track(ROUTED_TO_CAAERS_SINK))
+                .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
                 .choice()
                 .when().xpath(xpathPredicate("study", "searchStudy")).to("direct:caaers-study-search-sync")
                 .otherwise().to("direct:morgue");

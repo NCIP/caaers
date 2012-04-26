@@ -1,10 +1,11 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import org.apache.camel.ExchangePattern;
-import org.apache.camel.builder.RouteBuilder;
-
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
+import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
+
+import org.apache.camel.ExchangePattern;
+import org.apache.camel.builder.RouteBuilder;
 
 /**
  * The basic flow can be classified into 3, a) towards adEERS b) towards caAERS c) towards SynchComponent.
@@ -30,15 +31,21 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	 * @param responseXSL - xslt file that can generate the internal xml from soap response
 	 * @param toSink - the channel through which the output is send. 
 	 */
-	public void configureWSCallRoute(String fromSink, String requestXSL, String serviceURI,  String responseXSL, String toSink){
+	public void configureWSCallRoute(String fromSink, String requestXSL, String serviceURI,  String responseXSL, String toSink, 
+			Stage xslInStage, Stage serviceInvocationStage, Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
 		from(fromSink)
         .to("log:caaers.beforeRequestXSL?showHeaders=true")
+        .process(track(xslInStage))
 		.to("xslt:" + requestXSL)
         .to("log:caaers.afterRequestXSL?showHeaders=true")
+        .process(track(serviceInvocationStage))
         .to(ExchangePattern.InOut, serviceURI).processRef("headerGeneratorProcessor")
         .to("log:caaers.beforeResponseXSL?showAll=true")
+        .process(track(serviceCompletionStage, true))
+        .process(track(xslOutStage))
 		.to("xslt:" + responseXSL)
         .to("log:caaers.afterResponseXSL?showHeaders=true")
+        .process(track(toSinkStage))
 		.to(toSink);
 	}
 
@@ -64,7 +71,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		.processRef("exchangePreProcessor")
 		.process(track(REQUEST_RECEIVED))
 		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
-		.process(track(ROUTED_TO_ADEERS_SINK))
+		.process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
 		.choice()
                 .when(header("c2a_sync_mode").isEqualTo("sync"))
                 	.to("log:after-soap_filter-and-before-sync")
@@ -81,17 +88,19 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	from("direct:adEERSResponseSink")
                 .to("log:caaers.synch-comp?showHeaders=true")
                 .choice()
-                    .when().xpath("not(//operation/data/child::*/child::*)")
-                        .process(track(NO_DATA_AVAILABLE))
-                        .to("direct:outputSink")
+//                    .when().xpath("not(//operation/data/child::*/child::*)")
+//                        .process(track(NO_DATA_AVAILABLE))
+//                        .to("direct:outputSink")
                     .when(header("c2a_sync_mode").isEqualTo("sync"))
+                    	.process(track(ROUTED_TO_CAAERS_REQUEST_SINK))
                         .to("direct:caaersWSRequestSink")
                     .otherwise()
+                    	.process(track(ROUTED_TO_CAAERS_REQUEST_SINK))
                         .to("direct:caaersClientRequestSink");
     	
     	//need to process caAERS results
 		from("direct:caAERSResponseSink")
-                .process(track(CAAERS_WS_OUT_TRANSFORMATION))
+//                .process(track(CAAERS_WS_OUT_TRANSFORMATION))
                 .to("log:caaers.direct-caAERSResponseSink")
                 .to("direct:outputSink");
 

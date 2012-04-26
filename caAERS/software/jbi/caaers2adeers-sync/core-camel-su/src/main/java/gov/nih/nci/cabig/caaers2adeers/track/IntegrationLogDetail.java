@@ -44,7 +44,14 @@ public class IntegrationLogDetail{
  	
  	private Stage stage;
  	
- 	@Enumerated(EnumType.STRING)
+ 	public IntegrationLogDetail(String businessId, String outcome) {
+		super();
+		this.businessId = businessId;
+		this.outcome = outcome;
+	}
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="synch_status")
  	public Stage getStage() {
  		return stage;
  	}
