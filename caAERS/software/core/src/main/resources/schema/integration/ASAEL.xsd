@@ -29,6 +29,7 @@
             <xs:element name="ctepCode" type="cct:CustomStringType" minOccurs="0"/>
             <xs:element name="category" type="cct:CustomStringType" minOccurs="0"/>
             <xs:element name="ctcVersion" type="cct:CustomStringType" minOccurs="0"/>
+            <xs:element name="otherToxicity" type="cct:CustomStringType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="status" type="cct:ActiveInactiveStatusType" minOccurs="1" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
