@@ -1,11 +1,4 @@
-<?xml version="1.0" ?>
-<wsdl:definitions name="StudyService"
-                             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study"
-                             xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
-                             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                             xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/study"
-                             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><wsdl:definitions name="StudyService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
 <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
@@ -70,7 +63,10 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="meddraLltCode" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -89,7 +85,10 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="meddraCode" type="CustomStringType"></xs:element>
+                    <xs:element name="meddraTerm" type="xs:string"></xs:element>
+                    <xs:element name="therapyType" type="xs:string"></xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -452,9 +451,14 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="commonName" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="brandName" type="xs:string"></xs:element>
+                    <xs:element minOccurs="1" name="commonName" type="xs:string"></xs:element>
+                    <xs:element minOccurs="1" name="brandName" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+                       <xs:annotation>
+                           <xs:documentation>An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.</xs:documentation>
+                       </xs:annotation>
+                    </xs:element>
                     <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
                 </xs:sequence>
             </xs:extension>
@@ -527,6 +531,7 @@
 	<xs:simpleType name="Status">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Processed"></xs:enumeration>
+			<xs:enumeration value="Partially Processed"></xs:enumeration>
 			<xs:enumeration value="Failed to Process"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
@@ -545,10 +550,11 @@
         <xs:sequence>
         	<xs:element maxOccurs="1" minOccurs="0" name="klassName" type="xs:string"></xs:element>
             <xs:element maxOccurs="1" minOccurs="1" name="businessIdentifier" type="xs:string"></xs:element>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"></xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="xs:string"></xs:element>
             <xs:element minOccurs="0" name="dataBaseId" type="xs:string"></xs:element>
             <xs:element minOccurs="0" name="correlationId" type="xs:string"></xs:element>
             <xs:element minOccurs="0" name="correlationDescription" type="xs:string"></xs:element>
+            <xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"></xs:element>
         </xs:sequence>
     </xs:complexType>
 
@@ -565,10 +571,17 @@
     		<xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"></xs:element>
     		<xs:element minOccurs="0" ref="entityProcessingOutcomes"></xs:element>
             <xs:element minOccurs="0" name="message" type="xs:string"></xs:element>
-
+            <xs:element minOccurs="0" ref="responseData"></xs:element>
     	</xs:sequence>
         <!-- migrated from study xsd -->
         <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
+    </xs:complexType>
+    
+    <xs:element name="responseData" type="responseDataType"></xs:element>
+    <xs:complexType name="responseDataType">
+    		<xs:sequence>
+   				<xs:any maxOccurs="1" minOccurs="0"></xs:any>
+   			</xs:sequence>
     </xs:complexType>
     
     <xs:element name="CaaersServiceResponse">
@@ -584,7 +597,7 @@
 	
 	<xs:complexType name="BaseFault">
 		<xs:sequence>
-			<xs:element name="message" type="xs:string"></xs:element>
+			<xs:element name="message" nillable="true" type="xs:string"></xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SecurityExceptionFault">

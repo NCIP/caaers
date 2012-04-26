@@ -1,11 +1,4 @@
-<?xml version="1.0" ?>
-<wsdl:definitions name="ASAELService"
-                  targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-                  xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><wsdl:definitions name="ASAELService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns0="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/asael"></xs:import>
@@ -64,6 +57,9 @@
 <xs:extension base="DomainObjectType">
 <xs:sequence>
 <xs:element name="text" type="CustomStringType"></xs:element>
+<xs:element name="meddraLltCode" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -81,6 +77,9 @@
 <xs:extension base="DomainObjectType">
 <xs:sequence>
 <xs:element name="text" type="CustomStringType"></xs:element>
+<xs:element name="meddraCode" type="CustomStringType"></xs:element>
+<xs:element name="meddraTerm" type="xs:string"></xs:element>
+<xs:element name="therapyType" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -418,9 +417,14 @@
 <xs:complexContent>
 <xs:extension base="MutableDomainObjectType">
 <xs:sequence>
-<xs:element minOccurs="0" name="commonName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="brandName" type="xs:string"></xs:element>
+<xs:element name="commonName" type="xs:string"></xs:element>
+<xs:element name="brandName" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+<xs:annotation>
+<xs:documentation>An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.</xs:documentation>
+</xs:annotation>
+</xs:element>
 <xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
 </xs:sequence>
 </xs:extension>
@@ -487,6 +491,7 @@
 <xs:simpleType name="Status">
 <xs:restriction base="xs:string">
 <xs:enumeration value="Processed"></xs:enumeration>
+<xs:enumeration value="Partially Processed"></xs:enumeration>
 <xs:enumeration value="Failed to Process"></xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
@@ -502,10 +507,11 @@
 <xs:sequence>
 <xs:element minOccurs="0" name="klassName" type="xs:string"></xs:element>
 <xs:element name="businessIdentifier" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="dataBaseId" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="correlationId" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="correlationDescription" type="xs:string"></xs:element>
+<xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:simpleType name="ResponseCodeType">
@@ -521,8 +527,15 @@
 <xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"></xs:element>
 <xs:element minOccurs="0" ref="entityProcessingOutcomes"></xs:element>
 <xs:element minOccurs="0" name="message" type="xs:string"></xs:element>
+<xs:element minOccurs="0" ref="responseData"></xs:element>
 </xs:sequence>
 <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
+</xs:complexType>
+<xs:element name="responseData" type="responseDataType"></xs:element>
+<xs:complexType name="responseDataType">
+<xs:sequence>
+<xs:any minOccurs="0"></xs:any>
+</xs:sequence>
 </xs:complexType>
 <xs:element name="CaaersServiceResponse">
 <xs:complexType>
@@ -534,7 +547,7 @@
 <xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"></xs:element>
 <xs:complexType name="BaseFault">
 <xs:sequence>
-<xs:element name="message" type="xs:string"></xs:element>
+<xs:element name="message" nillable="true" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SecurityExceptionFault">
@@ -545,7 +558,7 @@
 <xs:element name="createOrUpdateASAEL" type="createOrUpdateASAEL"></xs:element>
 <xs:complexType name="createOrUpdateASAEL">
 <xs:sequence>
-<xs:element form="qualified" minOccurs="0" name="asael" type="ns0:ASAELType"></xs:element>
+<xs:element minOccurs="0" ref="ns0:Asael"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:element name="createOrUpdateASAELResponse" type="createOrUpdateASAELResponse"></xs:element>
@@ -555,32 +568,36 @@
 </xs:sequence>
 </xs:complexType>
 </xs:schema>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
-<xs:element name="asael" type="ASAELType"></xs:element>
-<xs:complexType name="ASAELType">
-<xs:sequence>
-<xs:element maxOccurs="unbounded" ref="asaelAgent"></xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:element name="asaelAgent" type="ASAELAgentType"></xs:element>
-<xs:complexType name="ASAELAgentType">
-<xs:sequence>
-<xs:element ref="cct:agent"></xs:element>
-<xs:element maxOccurs="unbounded" ref="expectedAECtcTerm"></xs:element>
-<xs:element name="status" type="cct:ActiveInactiveStatusType"></xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:element name="expectedAECtcTerm" type="ExpectedAECtcTermType"></xs:element>
-<xs:complexType name="ExpectedAECtcTermType">
-<xs:sequence>
-<xs:element minOccurs="0" name="ctepTerm" type="cct:CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="ctepCode" type="cct:CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="category" type="cct:CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="ctcVersion" type="cct:CustomStringType"></xs:element>
-<xs:element name="status" type="cct:ActiveInactiveStatusType"></xs:element>
-</xs:sequence>
-</xs:complexType>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/asael" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
+
+    <xs:element name="Asael">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="asaelAgent" type="ASAELAgentType"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="ASAELAgentType">
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cct:agent"></xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="expectedAECtcTerm"></xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="status" type="cct:ActiveInactiveStatusType"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="expectedAECtcTerm" type="ExpectedAECtcTermType"></xs:element>
+    <xs:complexType name="ExpectedAECtcTermType">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ctepTerm" type="cct:CustomStringType"></xs:element>
+            <xs:element minOccurs="0" name="ctepCode" type="cct:CustomStringType"></xs:element>
+            <xs:element minOccurs="0" name="category" type="cct:CustomStringType"></xs:element>
+            <xs:element minOccurs="0" name="ctcVersion" type="cct:CustomStringType"></xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="status" type="cct:ActiveInactiveStatusType"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="createOrUpdateASAELResponse">

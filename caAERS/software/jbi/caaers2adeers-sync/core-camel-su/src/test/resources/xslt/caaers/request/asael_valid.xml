@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><system>adeers</system><response>
+    <entity>asael</entity><operation name="getASAEL">
+    <data><ASAEL xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://services.ctep.nci.nih.gov/">
+        <agent>
+            <name>RO4929097</name>
+            <nsc>749225</nsc>
+            <adverseEventList>
+                <adverseEvent updatedDate="09-10-2010 09:57:25" createdDate="12-18-2009 09:33:07">
+                    <aeTerm>Diarrhea</aeTerm>
+                    <category>Gastrointestinal disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="09-10-2010 09:57:25" createdDate="12-18-2009 09:33:07">
+                    <aeTerm>Nausea</aeTerm>
+                    <category>Gastrointestinal disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="" createdDate="09-10-2010 09:57:26">
+                    <aeTerm>Vomiting</aeTerm>
+                    <category>Gastrointestinal disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="09-10-2010 09:57:25" createdDate="12-18-2009 09:33:07">
+                    <aeTerm>Fatigue</aeTerm>
+                    <category>General disorders and administration site conditions</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="09-10-2010 09:57:25" createdDate="12-18-2009 09:33:07">
+                    <aeTerm>Anorexia</aeTerm>
+                    <category>Metabolism and nutrition disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="09-10-2010 09:57:25" createdDate="12-18-2009 09:33:07">
+                    <aeTerm>Hypophosphatemia</aeTerm>
+                    <category>Metabolism and nutrition disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="" createdDate="09-10-2010 09:57:26">
+                    <aeTerm>Headache</aeTerm>
+                    <category>Nervous system disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="" createdDate="09-10-2010 09:57:26">
+                    <aeTerm>Pruritus</aeTerm>
+                    <category>Skin and subcutaneous tissue disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="" createdDate="09-10-2010 09:57:26">
+                    <aeTerm>Rash maculo-papular</aeTerm>
+                    <category>Skin and subcutaneous tissue disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+            </adverseEventList>
+        </agent>
+        <agent>
+            <name>GDC-0449</name>
+            <nsc>747691</nsc>
+            <adverseEventList>
+                <adverseEvent updatedDate="10-07-2010 11:56:14" createdDate="12-18-2009 10:09:24">
+                    <aeTerm>Fatigue</aeTerm>
+                    <category>General disorders and administration site conditions</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="" createdDate="10-07-2010 11:56:14">
+                    <aeTerm>Anorexia</aeTerm>
+                    <category>Metabolism and nutrition disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="" createdDate="10-07-2010 11:56:14">
+                    <aeTerm>Musculoskeletal and connective tissue disorder -  Other, specify</aeTerm>
+                    <category>Musculoskeletal and connective tissue disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment>muscle spasms/twitching</otherToxicityComment>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="10-07-2010 11:56:14" createdDate="12-18-2009 10:09:24">
+                    <aeTerm>Dysgeusia</aeTerm>
+                    <category>Nervous system disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+                <adverseEvent updatedDate="10-07-2010 11:56:14" createdDate="12-18-2009 10:09:24">
+                    <aeTerm>Alopecia</aeTerm>
+                    <category>Skin and subcutaneous tissue disorders</category>
+                    <ctcVersion>4.0</ctcVersion>
+                    <otherToxicityComment/>
+                    <status>Active</status>
+                </adverseEvent>
+            </adverseEventList>
+        </agent>
+    </ASAEL></data>
+</operation>
+</response></payload>

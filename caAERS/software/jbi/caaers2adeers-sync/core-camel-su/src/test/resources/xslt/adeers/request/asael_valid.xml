@@ -1,0 +1,12 @@
+<payload>
+    <system>adeers</system>
+    <request>
+        <entity>asael</entity>
+        <operation mode="async" name="getASAEL">
+            <criteria>
+                <criterion name="createdDate">2001-10-26T21:32:52</criterion>
+                <criterion name="lastUpdatedDate">2001-10-26T21:32:52</criterion>
+            </criteria>
+        </operation>
+    </request>
+</payload>

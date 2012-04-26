@@ -1,0 +1,1574 @@
+<?xml version="1.0" encoding="UTF-8"?><payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><system>adeers</system><response>
+    <entity>device</entity><operation name="getDevicesLOV">
+    <data><Devices xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://services.ctep.nci.nih.gov/">
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>none</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>1</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>ZD1839</brandName>
+            <category/>
+            <commonName>Iressa</commonName>
+            <deviceDbId>2</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName/>
+            <category/>
+            <commonName>Gore Tex #10 biliary stent</commonName>
+            <deviceDbId>3</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>Devilbiss</brandName>
+            <category/>
+            <commonName>Pulmo Mate compressor/nebulizer</commonName>
+            <deviceDbId>4</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>N/A</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>5</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="09-23-2008 00:01:54" createdDate="09-22-2008 21:05:01">
+            <brandName>NONE</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>6</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>intrathecal catheter</brandName>
+            <category/>
+            <commonName>intrathecal catheter</commonName>
+            <deviceDbId>7</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>Not Applicable</brandName>
+            <category/>
+            <commonName>NA</commonName>
+            <deviceDbId>8</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>none</brandName>
+            <category/>
+            <commonName>none</commonName>
+            <deviceDbId>9</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>None</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>10</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>triporelin</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>11</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>n/a</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>12</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>Arrow</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>13</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>Cook</brandName>
+            <category/>
+            <commonName>PICC line</commonName>
+            <deviceDbId>14</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName/>
+            <category/>
+            <commonName>port-a-cath</commonName>
+            <deviceDbId>15</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName/>
+            <category/>
+            <commonName>Medi-Port</commonName>
+            <deviceDbId>16</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName/>
+            <category/>
+            <commonName>venous access device</commonName>
+            <deviceDbId>17</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>Peripherally Inserted Central Venous Catheter</brandName>
+            <category/>
+            <commonName>PICC</commonName>
+            <deviceDbId>18</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>Does not apply</brandName>
+            <category/>
+            <commonName>Does not apply</commonName>
+            <deviceDbId>19</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>irofulven</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>20</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>not applicable</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>21</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>unknown</brandName>
+            <category/>
+            <commonName>Biliary Stent</commonName>
+            <deviceDbId>22</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>divice not used</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>23</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:01">
+            <brandName>no devices used</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>24</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>ELOXATIN</brandName>
+            <category/>
+            <commonName>OXALIPLATIN</commonName>
+            <deviceDbId>25</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>PS341</brandName>
+            <category/>
+            <commonName>velcaid</commonName>
+            <deviceDbId>26</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>not used</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>27</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>no device used</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>28</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>DOES NOT APPLY</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>29</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Nil device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>30</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Hickman catheter</brandName>
+            <category/>
+            <commonName>Hickman catheter</commonName>
+            <deviceDbId>31</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Neostar Catheter</brandName>
+            <category/>
+            <commonName>Neostar catheter</commonName>
+            <deviceDbId>32</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>none</commonName>
+            <deviceDbId>33</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>None</brandName>
+            <category/>
+            <commonName>None</commonName>
+            <deviceDbId>34</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Bardport</brandName>
+            <category/>
+            <commonName>port-a-cath</commonName>
+            <deviceDbId>35</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>NA</brandName>
+            <category/>
+            <commonName>NA</commonName>
+            <deviceDbId>36</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>NA</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>37</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Gemcitabine +Bevacizumab vs Gemcitabine + Placebo</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>38</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>there is no device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>39</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Walkmed 350</brandName>
+            <category/>
+            <commonName>Infusystem Inc.</commonName>
+            <deviceDbId>40</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>unknown</brandName>
+            <category/>
+            <commonName>unknown</commonName>
+            <deviceDbId>41</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Epothilone B</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>42</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>infue a port</commonName>
+            <deviceDbId>43</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Gleevac</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>44</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>zosuquidar</commonName>
+            <deviceDbId>45</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Carboxypeptidase-G2</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>46</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Epothilone B</commonName>
+            <deviceDbId>47</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>CG8123 (Lung Cancer Vaccine)</brandName>
+            <category/>
+            <commonName>CG8123 (Lung Cancer Vaccine)</commonName>
+            <deviceDbId>48</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>N/A</brandName>
+            <category/>
+            <commonName>N/A</commonName>
+            <deviceDbId>49</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>No Medical Device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>50</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Port-A-Cath</brandName>
+            <category/>
+            <commonName>Port-A-Cath</commonName>
+            <deviceDbId>51</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Radiosuergery</brandName>
+            <category/>
+            <commonName>stereotactic  radiosurgery</commonName>
+            <deviceDbId>52</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Interferon Alfa-2B</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>53</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>No Medical Device</brandName>
+            <category/>
+            <commonName>None</commonName>
+            <deviceDbId>54</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>No Medical Device Used</brandName>
+            <category/>
+            <commonName>None</commonName>
+            <deviceDbId>55</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>PORT-A-CATH</brandName>
+            <category/>
+            <commonName>PAC</commonName>
+            <deviceDbId>56</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Cetuximab</brandName>
+            <category/>
+            <commonName>Erbitux</commonName>
+            <deviceDbId>57</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Anastrozole</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>58</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>no medical device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>59</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Not applicable (N/A)</brandName>
+            <category/>
+            <commonName>N/A</commonName>
+            <deviceDbId>60</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Not applicable</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>61</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Port A Cath</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>62</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>no medical device involved</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>63</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>venous access port</commonName>
+            <deviceDbId>64</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Balloon Kyphoplasty</commonName>
+            <deviceDbId>65</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>PICC line</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>66</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>SB-715990</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>67</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Mevatron</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>68</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>CC-5013</brandName>
+            <category/>
+            <commonName>Revalmid</commonName>
+            <deviceDbId>69</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>CADD-Legacy PLUS</brandName>
+            <category/>
+            <commonName>CADD-Legacy PLUS</commonName>
+            <deviceDbId>70</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="09-22-2008 23:10:35" createdDate="09-22-2008 21:05:02">
+            <brandName>LY335979 vs. placebo</brandName>
+            <category/>
+            <commonName>Zosuquidar Trihydrochloride vs. placebo</commonName>
+            <deviceDbId>71</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>not applicable</brandName>
+            <category/>
+            <commonName>not applicable</commonName>
+            <deviceDbId>72</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Medication electronic monitoring vial</commonName>
+            <deviceDbId>73</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Port-a-cath</commonName>
+            <deviceDbId>74</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>No device used</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>75</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Hickman Line</brandName>
+            <category/>
+            <commonName>Central Venous Catheter</commonName>
+            <deviceDbId>76</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Tarceva</brandName>
+            <category/>
+            <commonName>Erlotinib</commonName>
+            <deviceDbId>77</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Varian</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>78</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Cetuximab</brandName>
+            <category/>
+            <commonName>C225</commonName>
+            <deviceDbId>79</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Carboxypeptidase</commonName>
+            <deviceDbId>80</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>na</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>81</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Hickman</brandName>
+            <category/>
+            <commonName>port a cath</commonName>
+            <deviceDbId>82</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>n/a</brandName>
+            <category/>
+            <commonName>n/a</commonName>
+            <deviceDbId>83</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Anastrozole</brandName>
+            <category/>
+            <commonName>Arimidex</commonName>
+            <deviceDbId>84</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>unknown</brandName>
+            <category/>
+            <commonName>venous access port</commonName>
+            <deviceDbId>85</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Port a cath</commonName>
+            <deviceDbId>86</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName/>
+            <category/>
+            <commonName>Carboxypeptidase</commonName>
+            <deviceDbId>87</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>selected in error</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>88</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Alimta</brandName>
+            <category/>
+            <commonName>Petremexate</commonName>
+            <deviceDbId>89</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Alimta</brandName>
+            <category/>
+            <commonName>Pemetrexed</commonName>
+            <deviceDbId>90</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>portacath</brandName>
+            <category/>
+            <commonName>portacath</commonName>
+            <deviceDbId>91</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>na</brandName>
+            <category/>
+            <commonName>na</commonName>
+            <deviceDbId>92</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>NONE</brandName>
+            <category/>
+            <commonName>NONE</commonName>
+            <deviceDbId>93</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Hickman</brandName>
+            <category/>
+            <commonName>Port a Cath</commonName>
+            <deviceDbId>94</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:02">
+            <brandName>Bard Port</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>95</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Infuse-A-Port</brandName>
+            <category/>
+            <commonName>port with catheter</commonName>
+            <deviceDbId>96</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Hickman</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>97</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>24 gauge Iv cath</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>98</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BAY 43-9006</brandName>
+            <category/>
+            <commonName>Sorafenib</commonName>
+            <deviceDbId>99</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>NOT APPLICABLE</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>100</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Ps 341</brandName>
+            <category/>
+            <commonName>Velcade</commonName>
+            <deviceDbId>101</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Exemestane</brandName>
+            <category/>
+            <commonName>Aromosin</commonName>
+            <deviceDbId>102</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Taxol</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>103</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BardPort</brandName>
+            <category/>
+            <commonName>implanted port</commonName>
+            <deviceDbId>104</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>CADD Legacy PLUS</brandName>
+            <category/>
+            <commonName>CADD pumps</commonName>
+            <deviceDbId>105</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Bardport</brandName>
+            <category/>
+            <commonName>Infusaport</commonName>
+            <deviceDbId>106</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>CV device</commonName>
+            <deviceDbId>107</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>port-a-cath</brandName>
+            <category/>
+            <commonName>000000000</commonName>
+            <deviceDbId>108</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>No device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>109</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Bard</brandName>
+            <category/>
+            <commonName>Double Lumen Port-a-cath</commonName>
+            <deviceDbId>110</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>CC-5013</brandName>
+            <category/>
+            <commonName>Revlamid</commonName>
+            <deviceDbId>111</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>No medical device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>112</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>No Device</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>113</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>0</brandName>
+            <category/>
+            <commonName>0</commonName>
+            <deviceDbId>114</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BAY 43-9006</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>115</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>No Medical Device</brandName>
+            <category/>
+            <commonName>No Medical Device</commonName>
+            <deviceDbId>116</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Port a Cath</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>117</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Port A Cath</brandName>
+            <category/>
+            <commonName>R chest Port A Cath</commonName>
+            <deviceDbId>118</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Portacath</brandName>
+            <category/>
+            <commonName>Mediport</commonName>
+            <deviceDbId>119</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>HMP implanted device</brandName>
+            <category/>
+            <commonName>Mediport</commonName>
+            <deviceDbId>120</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Ethiofos</brandName>
+            <category/>
+            <commonName>Amifostine</commonName>
+            <deviceDbId>121</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>Mediport</commonName>
+            <deviceDbId>122</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BardPort</brandName>
+            <category/>
+            <commonName>Subcutaneous Port</commonName>
+            <deviceDbId>123</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>infusaport</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>124</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Infuse-A-Port with Site-Rite</brandName>
+            <category/>
+            <commonName>Port</commonName>
+            <deviceDbId>125</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Greenfield filter</brandName>
+            <category/>
+            <commonName>IVC filter</commonName>
+            <deviceDbId>126</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BardPort</brandName>
+            <category/>
+            <commonName>Port-a-cath</commonName>
+            <deviceDbId>127</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>Pot-a-cath</commonName>
+            <deviceDbId>128</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Siemens</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>129</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Bevacizumab</brandName>
+            <category/>
+            <commonName>Avastin</commonName>
+            <deviceDbId>130</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BAY 43-9006</brandName>
+            <category/>
+            <commonName>sorafenib</commonName>
+            <deviceDbId>131</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>Port-A-Cath</commonName>
+            <deviceDbId>132</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>none</brandName>
+            <category/>
+            <commonName>0</commonName>
+            <deviceDbId>133</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>--</brandName>
+            <category/>
+            <commonName>--</commonName>
+            <deviceDbId>134</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>tracheostomy</commonName>
+            <deviceDbId>135</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>No medical device used</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>136</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>CC-5013</brandName>
+            <category/>
+            <commonName>Revlimid</commonName>
+            <deviceDbId>137</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Azacitidine</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>138</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>none</brandName>
+            <category/>
+            <commonName>N/A</commonName>
+            <deviceDbId>139</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BardPort</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>140</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Next Generation</brandName>
+            <category/>
+            <commonName>total knee prothesis</commonName>
+            <deviceDbId>141</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Erbitux</brandName>
+            <category/>
+            <commonName>Cetuximab</commonName>
+            <deviceDbId>142</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>curlin pump</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>143</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Double Lumen Pic Line</brandName>
+            <category/>
+            <commonName>Pic Line</commonName>
+            <deviceDbId>144</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BardPort</brandName>
+            <category/>
+            <commonName>Implanted port</commonName>
+            <deviceDbId>145</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>CADD Legacy Pump</brandName>
+            <category/>
+            <commonName>Ambulatory pump</commonName>
+            <deviceDbId>146</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>N/a</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>147</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Bard</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>148</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>temozolomide</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>149</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>zoledronic acid</brandName>
+            <category/>
+            <commonName>zometa</commonName>
+            <deviceDbId>150</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 15:22:07" createdDate="09-22-2008 21:05:03">
+            <brandName>Cryocare Surgical System</brandName>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>cryoprobe</commonName>
+            <deviceDbId>151</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>sorafenib/placebo</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>152</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Groshong</brandName>
+            <category/>
+            <commonName>PICC</commonName>
+            <deviceDbId>153</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Sunitinib</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>154</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>power port</brandName>
+            <category/>
+            <commonName>port</commonName>
+            <deviceDbId>155</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>Single Lumen Mediport</commonName>
+            <deviceDbId>156</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Not known</brandName>
+            <category/>
+            <commonName>Infusaport</commonName>
+            <deviceDbId>157</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>There is no device applicable here</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>158</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BARDPORT Implanted Port</brandName>
+            <category/>
+            <commonName>Infusaport</commonName>
+            <deviceDbId>159</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>BardPort</brandName>
+            <category/>
+            <commonName>mediport</commonName>
+            <deviceDbId>160</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName/>
+            <category/>
+            <commonName>PICC line</commonName>
+            <deviceDbId>161</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>No medical device involve</brandName>
+            <category/>
+            <commonName>.</commonName>
+            <deviceDbId>162</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="09-22-2008 21:05:03">
+            <brandName>Mediport</brandName>
+            <category/>
+            <commonName>Mediport</commonName>
+            <deviceDbId>163</deviceDbId>
+            <displayFlag>No</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-23-2009 14:01:14">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>PET</commonName>
+            <deviceDbId>621</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 15:38:23" createdDate="01-23-2009 14:18:10">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>Magnetic Resonance Imaging-Spectroscopy (MRI-S)</commonName>
+            <deviceDbId>624</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-27-2009 08:29:17">
+            <brandName>Codetron</brandName>
+            <category>Other Device</category>
+            <commonName>TENS</commonName>
+            <deviceDbId>644</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 08:20:19" createdDate="01-29-2009 08:16:18">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>PET-CT</commonName>
+            <deviceDbId>664</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 08:28:22" createdDate="01-29-2009 08:17:45">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>PET-MRI</commonName>
+            <deviceDbId>667</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 08:27:53" createdDate="01-29-2009 08:17:45">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>X-Ray</commonName>
+            <deviceDbId>668</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:18:55">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>CT-Conventional</commonName>
+            <deviceDbId>671</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>CT-Spiral</commonName>
+            <deviceDbId>701</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>CT-Cone Beam</commonName>
+            <deviceDbId>702</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 15:08:53" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>Scintigraphy-Planar</commonName>
+            <deviceDbId>703</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>MUGA</commonName>
+            <deviceDbId>704</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>MRI</commonName>
+            <deviceDbId>705</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>MRI-Functional</commonName>
+            <deviceDbId>706</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-29-2009 08:38:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>MRI-DCE</commonName>
+            <deviceDbId>707</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="01-29-2009 15:14:00" createdDate="01-29-2009 15:08:53">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>Ultrasound</commonName>
+            <deviceDbId>717</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 15:45:59">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>SPECT</commonName>
+            <deviceDbId>773</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 15:46:25">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>SPECT-CT</commonName>
+            <deviceDbId>774</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="01-27-2010 14:35:49">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>CT-DCE</commonName>
+            <deviceDbId>1087</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 15:47:54">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>MRI-DW</commonName>
+            <deviceDbId>778</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 15:48:18">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>Mammography-Digital</commonName>
+            <deviceDbId>781</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 15:48:38">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>Mammography-Conventional</commonName>
+            <deviceDbId>782</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="03-03-2009 08:53:01" createdDate="02-04-2009 16:00:09">
+            <brandName>Flexitouch® System</brandName>
+            <category>Other Device</category>
+            <commonName>Pneumatic Compression Device</commonName>
+            <deviceDbId>788</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:00:44">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Ablation-Thermal-RF</commonName>
+            <deviceDbId>789</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:01:12">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Ablation-Thermal-Laser</commonName>
+            <deviceDbId>790</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:01:38">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Ablation-Thermal-Microwave</commonName>
+            <deviceDbId>791</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:02:22">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Ablation-Thermal-Focused US (FUS, HIFU)</commonName>
+            <deviceDbId>792</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:02:49">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Intraluminal-Balloon</commonName>
+            <deviceDbId>793</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:03:12">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Intraluminal-Stent</commonName>
+            <deviceDbId>794</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:03:40">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Intraluminal-Coil</commonName>
+            <deviceDbId>795</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:04:36">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>Drug-eluting device - Beads</commonName>
+            <deviceDbId>796</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="02-04-2009 16:04:53">
+            <brandName/>
+            <category>Image Guided Intervention (IGI) Device</category>
+            <commonName>TACE</commonName>
+            <deviceDbId>797</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="10-14-2009 14:15:43" createdDate="10-14-2009 13:04:38">
+            <brandName/>
+            <category>Imaging Device</category>
+            <commonName>MRI-DTI</commonName>
+            <deviceDbId>983</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+        <device updatedDate="" createdDate="08-11-2010 08:43:31">
+            <brandName>L-Dex UB500</brandName>
+            <category>Other Device</category>
+            <commonName>Bioimpedance Measurement</commonName>
+            <deviceDbId>1141</deviceDbId>
+            <displayFlag>Yes</displayFlag>
+            <status>Active</status>
+        </device>
+    </Devices></data>
+</operation>
+</response></payload>

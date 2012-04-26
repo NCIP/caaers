@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><system>adeers</system><response>
+
+    <entity>priortherapy</entity><operation name="getTherapiesLOV">
+    <data><Therapies>
+        <!--Zero or more repetitions:-->
+        <therapies>
+            <!--Optional:-->
+            <therapyName>Hai</therapyName>
+            <!--Optional:-->
+            <therapyType>Hello</therapyType>
+            <!--Optional:-->
+            <medDRACode>9999</medDRACode>
+            <!--Optional:-->
+            <status>Active</status>
+        </therapies>
+    </Therapies></data>
+</operation>
+</response></payload>

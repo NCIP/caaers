@@ -34,6 +34,9 @@ public class ToAdeersRouteBuilder {
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
+    			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:adeers-device-lov")
+    			.when().xpath(xpathPredicate("device", "getPreExistingConditionsLOV")).to("direct:adeers-condition-lov")
+    			.when().xpath(xpathPredicate("device", "getTherapiesLOV")).to("direct:adeers-therapy-lov")
     			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:adeers-organization-lov")
                 .when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:adeers-study-details")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
@@ -43,13 +46,22 @@ public class ToAdeersRouteBuilder {
     	configureLovWSCallRoute("direct:adeers-agent-lov", "agent_lov.xsl",  "getAgentsLOV");
 
     	//LOV - ASAEL
-//    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
+    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
+
+    	//LOV - Device
+    	configureLovWSCallRoute("direct:adeers-device-lov", "device_lov.xsl", "getDevicesLOV");
+
+    	//LOV - PreExistingCondition
+    	configureLovWSCallRoute("direct:adeers-condition-lov", "pre_existing_condition_lov.xsl", "getPreExistingConditionsLOV");
+
+    	//LOV - PriorTherapy
+    	configureLovWSCallRoute("direct:adeers-therapy-lov", "prior_therapy_lov.xsl", "getTherapiesLOV");
 
         //LOV - Organization
         configureLovWSCallRoute("direct:adeers-organization-lov", "organization_lov.xsl",  "getOrganizationsLOV");
 
         //LOV - Study Details
-        configureLovWSCallRoute("direct:adeers-study-details", "study_details.xsl",  "getStudyDetails");
+        configureStudyWSCallRoute("direct:adeers-study-details", "study_details.xsl",  "getStudyDetails");
 
         //Search Study
         configureStudyWSCallRoute("direct:adeers-study-search", "study_search.xsl", "searchStudy");

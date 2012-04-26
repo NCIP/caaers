@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.ctep.nci.nih.gov/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ser:getTherapiesLOVResponse>
+            <!--Optional:-->
+            <Therapies>
+                <!--Zero or more repetitions:-->
+                <therapies>
+                    <!--Optional:-->
+                    <therapyName>Hai</therapyName>
+                    <!--Optional:-->
+                    <therapyType>Hello</therapyType>
+                    <!--Optional:-->
+                    <medDRACode>9999</medDRACode>
+                    <!--Optional:-->
+                    <status>Active </status>
+                </therapies>
+            </Therapies>
+        </ser:getTherapiesLOVResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

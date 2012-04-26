@@ -1,0 +1,1189 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:createOrUpdateDevicesResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+            <ns1:CaaersServiceResponse xmlns:ns7="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator" xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/device">
+                <ns1:ServiceResponse responsecode="0">
+                    <status>Processed</status>
+                    <ns1:entityProcessingOutcomes>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>1</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>2</businessIdentifier>
+                            <message>Device 'Iressa' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>3</businessIdentifier>
+                            <message>Device 'Gore Tex #10 biliary stent' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>4</businessIdentifier>
+                            <message>Device 'Pulmo Mate compressor/nebulizer' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>5</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>6</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>7</businessIdentifier>
+                            <message>Device 'intrathecal catheter' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>8</businessIdentifier>
+                            <message>Device 'NA' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>9</businessIdentifier>
+                            <message>Device 'none' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>10</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>11</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>12</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>13</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>14</businessIdentifier>
+                            <message>Device 'PICC line' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>15</businessIdentifier>
+                            <message>Device 'port-a-cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>16</businessIdentifier>
+                            <message>Device 'Medi-Port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>17</businessIdentifier>
+                            <message>Device 'venous access device' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>18</businessIdentifier>
+                            <message>Device 'PICC' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>19</businessIdentifier>
+                            <message>Device 'Does not apply' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>20</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>21</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>22</businessIdentifier>
+                            <message>Device 'Biliary Stent' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>23</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>24</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>25</businessIdentifier>
+                            <message>Device 'OXALIPLATIN' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>26</businessIdentifier>
+                            <message>Device 'velcaid' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>27</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>28</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>29</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>30</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>31</businessIdentifier>
+                            <message>Device 'Hickman catheter' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>32</businessIdentifier>
+                            <message>Device 'Neostar catheter' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>33</businessIdentifier>
+                            <message>Device 'none' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>34</businessIdentifier>
+                            <message>Device 'None' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>35</businessIdentifier>
+                            <message>Device 'port-a-cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>36</businessIdentifier>
+                            <message>Device 'NA' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>37</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>38</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>39</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>40</businessIdentifier>
+                            <message>Device 'Infusystem Inc.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>41</businessIdentifier>
+                            <message>Device 'unknown' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>42</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>43</businessIdentifier>
+                            <message>Device 'infue a port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>44</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>45</businessIdentifier>
+                            <message>Device 'zosuquidar' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>46</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>47</businessIdentifier>
+                            <message>Device 'Epothilone B' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>48</businessIdentifier>
+                            <message>Device 'CG8123 (Lung Cancer Vaccine)' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>49</businessIdentifier>
+                            <message>Device 'N/A' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>50</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>51</businessIdentifier>
+                            <message>Device 'Port-A-Cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>52</businessIdentifier>
+                            <message>Device 'stereotactic  radiosurgery' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>53</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>54</businessIdentifier>
+                            <message>Device 'None' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>55</businessIdentifier>
+                            <message>Device 'None' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>56</businessIdentifier>
+                            <message>Device 'PAC' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>57</businessIdentifier>
+                            <message>Device 'Erbitux' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>58</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>59</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>60</businessIdentifier>
+                            <message>Device 'N/A' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>61</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>62</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>63</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>64</businessIdentifier>
+                            <message>Device 'venous access port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>65</businessIdentifier>
+                            <message>Device 'Balloon Kyphoplasty' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>66</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>67</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>68</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>69</businessIdentifier>
+                            <message>Device 'Revalmid' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>70</businessIdentifier>
+                            <message>Device 'CADD-Legacy PLUS' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>71</businessIdentifier>
+                            <message>Device 'Zosuquidar Trihydrochloride vs. placebo' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>72</businessIdentifier>
+                            <message>Device 'not applicable' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>73</businessIdentifier>
+                            <message>Device 'Medication electronic monitoring vial' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>74</businessIdentifier>
+                            <message>Device 'Port-a-cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>75</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>76</businessIdentifier>
+                            <message>Device 'Central Venous Catheter' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>77</businessIdentifier>
+                            <message>Device 'Erlotinib' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>78</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>79</businessIdentifier>
+                            <message>Device 'C225' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>80</businessIdentifier>
+                            <message>Device 'Carboxypeptidase' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>81</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>82</businessIdentifier>
+                            <message>Device 'port a cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>83</businessIdentifier>
+                            <message>Device 'n/a' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>84</businessIdentifier>
+                            <message>Device 'Arimidex' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>85</businessIdentifier>
+                            <message>Device 'venous access port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>86</businessIdentifier>
+                            <message>Device 'Port a cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>87</businessIdentifier>
+                            <message>Device 'Carboxypeptidase' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>88</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>89</businessIdentifier>
+                            <message>Device 'Petremexate' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>90</businessIdentifier>
+                            <message>Device 'Pemetrexed' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>91</businessIdentifier>
+                            <message>Device 'portacath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>92</businessIdentifier>
+                            <message>Device 'na' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>93</businessIdentifier>
+                            <message>Device 'NONE' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>94</businessIdentifier>
+                            <message>Device 'Port a Cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>95</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>96</businessIdentifier>
+                            <message>Device 'port with catheter' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>97</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>98</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>99</businessIdentifier>
+                            <message>Device 'Sorafenib' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>100</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>101</businessIdentifier>
+                            <message>Device 'Velcade' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>102</businessIdentifier>
+                            <message>Device 'Aromosin' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>103</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>104</businessIdentifier>
+                            <message>Device 'implanted port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>105</businessIdentifier>
+                            <message>Device 'CADD pumps' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>106</businessIdentifier>
+                            <message>Device 'Infusaport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>107</businessIdentifier>
+                            <message>Device 'CV device' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>108</businessIdentifier>
+                            <message>Device '000000000' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>109</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>110</businessIdentifier>
+                            <message>Device 'Double Lumen Port-a-cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>111</businessIdentifier>
+                            <message>Device 'Revlamid' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>112</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>113</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>114</businessIdentifier>
+                            <message>Device '0' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>115</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>116</businessIdentifier>
+                            <message>Device 'No Medical Device' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>117</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>118</businessIdentifier>
+                            <message>Device 'R chest Port A Cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>119</businessIdentifier>
+                            <message>Device 'Mediport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>120</businessIdentifier>
+                            <message>Device 'Mediport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>121</businessIdentifier>
+                            <message>Device 'Amifostine' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>122</businessIdentifier>
+                            <message>Device 'Mediport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>123</businessIdentifier>
+                            <message>Device 'Subcutaneous Port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>124</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>125</businessIdentifier>
+                            <message>Device 'Port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>126</businessIdentifier>
+                            <message>Device 'IVC filter' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>127</businessIdentifier>
+                            <message>Device 'Port-a-cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>128</businessIdentifier>
+                            <message>Device 'Pot-a-cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>129</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>130</businessIdentifier>
+                            <message>Device 'Avastin' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>131</businessIdentifier>
+                            <message>Device 'sorafenib' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>132</businessIdentifier>
+                            <message>Device 'Port-A-Cath' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>133</businessIdentifier>
+                            <message>Device '0' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>134</businessIdentifier>
+                            <message>Device '--' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>135</businessIdentifier>
+                            <message>Device 'tracheostomy' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>136</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>137</businessIdentifier>
+                            <message>Device 'Revlimid' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>138</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>139</businessIdentifier>
+                            <message>Device 'N/A' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>140</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>141</businessIdentifier>
+                            <message>Device 'total knee prothesis' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>142</businessIdentifier>
+                            <message>Device 'Cetuximab' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>143</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>144</businessIdentifier>
+                            <message>Device 'Pic Line' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>145</businessIdentifier>
+                            <message>Device 'Implanted port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>146</businessIdentifier>
+                            <message>Device 'Ambulatory pump' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>147</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>148</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>149</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>150</businessIdentifier>
+                            <message>Device 'zometa' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>151</businessIdentifier>
+                            <message>Device 'cryoprobe' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>152</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>153</businessIdentifier>
+                            <message>Device 'PICC' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>154</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>155</businessIdentifier>
+                            <message>Device 'port' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>156</businessIdentifier>
+                            <message>Device 'Single Lumen Mediport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>157</businessIdentifier>
+                            <message>Device 'Infusaport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>158</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>159</businessIdentifier>
+                            <message>Device 'Infusaport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>160</businessIdentifier>
+                            <message>Device 'mediport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>161</businessIdentifier>
+                            <message>Device 'PICC line' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>162</businessIdentifier>
+                            <message>Device '.' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>163</businessIdentifier>
+                            <message>Device 'Mediport' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>621</businessIdentifier>
+                            <message>Device 'PET' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>624</businessIdentifier>
+                            <message>Device 'Magnetic Resonance Imaging-Spectroscopy (MRI-S)' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>644</businessIdentifier>
+                            <message>Device 'TENS' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>664</businessIdentifier>
+                            <message>Device 'PET-CT' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>667</businessIdentifier>
+                            <message>Device 'PET-MRI' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>668</businessIdentifier>
+                            <message>Device 'X-Ray' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>671</businessIdentifier>
+                            <message>Device 'CT-Conventional' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>701</businessIdentifier>
+                            <message>Device 'CT-Spiral' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>702</businessIdentifier>
+                            <message>Device 'CT-Cone Beam' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>703</businessIdentifier>
+                            <message>Device 'Scintigraphy-Planar' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>704</businessIdentifier>
+                            <message>Device 'MUGA' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>705</businessIdentifier>
+                            <message>Device 'MRI' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>706</businessIdentifier>
+                            <message>Device 'MRI-Functional' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>707</businessIdentifier>
+                            <message>Device 'MRI-DCE' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>717</businessIdentifier>
+                            <message>Device 'Ultrasound' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>773</businessIdentifier>
+                            <message>Device 'SPECT' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>774</businessIdentifier>
+                            <message>Device 'SPECT-CT' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>1087</businessIdentifier>
+                            <message>Device 'CT-DCE' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>778</businessIdentifier>
+                            <message>Device 'MRI-DW' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>781</businessIdentifier>
+                            <message>Device 'Mammography-Digital' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>782</businessIdentifier>
+                            <message>Device 'Mammography-Conventional' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>788</businessIdentifier>
+                            <message>Device 'Pneumatic Compression Device' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>789</businessIdentifier>
+                            <message>Device 'Ablation-Thermal-RF' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>790</businessIdentifier>
+                            <message>Device 'Ablation-Thermal-Laser' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>791</businessIdentifier>
+                            <message>Device 'Ablation-Thermal-Microwave' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>792</businessIdentifier>
+                            <message>Device 'Ablation-Thermal-Focused US (FUS, HIFU)' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>793</businessIdentifier>
+                            <message>Device 'Intraluminal-Balloon' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>794</businessIdentifier>
+                            <message>Device 'Intraluminal-Stent' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>795</businessIdentifier>
+                            <message>Device 'Intraluminal-Coil' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>796</businessIdentifier>
+                            <message>Device 'Drug-eluting device - Beads' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>797</businessIdentifier>
+                            <message>Device 'TACE' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>983</businessIdentifier>
+                            <message>Device 'MRI-DTI' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.Device</klassName>
+                            <businessIdentifier>1141</businessIdentifier>
+                            <message>Device 'Bioimpedance Measurement' created</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                    </ns1:entityProcessingOutcomes>
+                </ns1:ServiceResponse>
+            </ns1:CaaersServiceResponse>
+        </ns1:createOrUpdateDevicesResponse>
+    </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,19 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:createOrUpdatePriorTherapyResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+            <ns1:CaaersServiceResponse xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/investigator">
+                <ns1:ServiceResponse responsecode="0">
+                    <status>Processed</status>
+                    <ns1:entityProcessingOutcomes>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.PriorTherapy</klassName>
+                            <businessIdentifier>9999</businessIdentifier>
+                            <message>Processed Hai</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                    </ns1:entityProcessingOutcomes>
+                </ns1:ServiceResponse>
+            </ns1:CaaersServiceResponse>
+        </ns1:createOrUpdatePriorTherapyResponse>
+    </soap:Body>
+</soap:Envelope>

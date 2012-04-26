@@ -1,27 +1,107 @@
-<?xml version="1.0"?>
-<labels>
-    <label>
-        <name>Thomas Eliot</name>
-        <address>
-            <street>3 Prufrock Lane</street>
-            <city>Hartford</city>
-            <state>CT</state>
-        </address>
-    </label>
-    <label>
-        <name>Ezra Pound</name>
-        <address>
-            <street>45 Usura Place</street>
-            <city>Hailey</city>
-            <state>ID</state>
-        </address>
-    </label>
-    <label>
-        <name>William Williams</name>
-        <address>
-            <street>100 Wheelbarrow Blvd</street>
-            <city>Patterson</city>
-            <state>NJ</state>
-        </address>
-    </label>
-</labels>
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Body>
+        <com:createOrUpdateASAEL xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:asa="http://schema.integration.caaers.cabig.nci.nih.gov/asael">
+            <com:asael>
+                <asa:asaelAgent>
+                    <com:agent>
+                        <name>RO4929097</name>
+                        <nscNumber>749225</nscNumber>
+                    </com:agent>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Diarrhea</ctepTerm>
+                        <category>Gastrointestinal disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Nausea</ctepTerm>
+                        <category>Gastrointestinal disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Vomiting</ctepTerm>
+                        <category>Gastrointestinal disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Fatigue</ctepTerm>
+                        <category>General disorders and administration site conditions</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Anorexia</ctepTerm>
+                        <category>Metabolism and nutrition disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Hypophosphatemia</ctepTerm>
+                        <category>Metabolism and nutrition disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Headache</ctepTerm>
+                        <category>Nervous system disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Pruritus</ctepTerm>
+                        <category>Skin and subcutaneous tissue disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Rash maculo-papular</ctepTerm>
+                        <category>Skin and subcutaneous tissue disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <status>Active</status>
+                </asa:asaelAgent>
+                <asa:asaelAgent>
+                    <com:agent>
+                        <name>GDC-0449</name>
+                        <nscNumber>747691</nscNumber>
+                    </com:agent>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Fatigue</ctepTerm>
+                        <category>General disorders and administration site conditions</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Anorexia</ctepTerm>
+                        <category>Metabolism and nutrition disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Musculoskeletal and connective tissue disorder -  Other, specify</ctepTerm>
+                        <category>Musculoskeletal and connective tissue disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Dysgeusia</ctepTerm>
+                        <category>Nervous system disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <asa:expectedAECtcTerm>
+                        <ctepTerm>Alopecia</ctepTerm>
+                        <category>Skin and subcutaneous tissue disorders</category>
+                        <ctcVersion>4</ctcVersion>
+                        <status>Active</status>
+                    </asa:expectedAECtcTerm>
+                    <status>Active</status>
+                </asa:asaelAgent>
+            </com:asael>
+        </com:createOrUpdateASAEL>
+    </soapenv:Body>
+</soapenv:Envelope>

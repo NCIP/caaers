@@ -40,15 +40,31 @@ public class ToCaaersAsynchronousRouteBuilder {
 		.process(new TrackerPreProcessor(Stage.ROUTED_TO_CAAERS_SINK)).to("bean:tracker?method=record")
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
+			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:caaers-asael-async")
 			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:caaers-organization-async")
+			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:caaers-device-async")
+			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:caaers-condition-async")
+			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:caaers-therapy-async")
 			.when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:caaers-studydetails-async")
 			.otherwise().to("direct:morgue");
 		
 		//caAERS - createOrUpdateAgents
 		configureWSCallRoute("direct:caaers-agent-async", "agent_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );
 
+		//caAERS - createOrUpdateASAEL
+		configureWSCallRoute("direct:caaers-asael-async", "asael_async.xsl", caAERSASAELServiceJBIURL + "createOrUpdateASAEL" );
+
         //caAERS - createOrUpdateOrganization
         configureWSCallRoute("direct:caaers-organization-async", "organization_async.xsl", caAERSOrganizationServiceJBIURL + "createOrUpdateOrganization" );
+
+        //caAERS - createOrUpdateDevices
+        configureWSCallRoute("direct:caaers-device-async", "device_async.xsl", caAERSDeviceServiceJBIURL + "createOrUpdateDevices" );
+
+        //caAERS - createOrUpdatePreExistingCondition
+        configureWSCallRoute("direct:caaers-condition-async", "pre_existing_condition_async.xsl", caAERSAgentPreExistingConditionServiceJBIURL + "createOrUpdatePreExistingCondition" );
+
+        //caAERS - createOrUpdatePriorTherapy
+        configureWSCallRoute("direct:caaers-therapy-async", "prior_therapy_async.xsl", caAERSPriorTherapyServiceJBIURL + "createOrUpdatePriorTherapy" );
 
         //caAERS - getStudyDetails
         configureWSCallRoute("direct:caaers-studydetails-async", "study_details_async.xsl", caAERSStudyServiceJBIURL + "createStudy" );

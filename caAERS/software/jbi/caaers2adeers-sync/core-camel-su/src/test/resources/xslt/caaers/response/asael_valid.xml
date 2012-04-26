@@ -1,0 +1,97 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:createOrUpdateASAELResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+            <ns1:CaaersServiceResponse xmlns:ns7="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator" xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/asael">
+                <ns1:ServiceResponse responsecode="0">
+                    <status>Processed</status>
+                    <ns1:entityProcessingOutcomes>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Diarrhea</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Diarrhea got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Nausea</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Nausea got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Vomiting</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Vomiting got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Fatigue</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Fatigue got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Anorexia</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Anorexia got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Hypophosphatemia</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Hypophosphatemia got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Headache</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Headache got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Pruritus</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Pruritus got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Rash maculo-papular</businessIdentifier>
+                            <message>To the agent (749225) the expected term : Rash maculo-papular got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Fatigue</businessIdentifier>
+                            <message>To the agent (747691) the expected term : Fatigue got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Anorexia</businessIdentifier>
+                            <message>To the agent (747691) the expected term : Anorexia got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Musculoskeletal and connective tissue disorder -  Other, specify</businessIdentifier>
+                            <message>To the agent (747691) the expected term : Musculoskeletal and connective tissue disorder -  Other, specify got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Dysgeusia</businessIdentifier>
+                            <message>To the agent (747691) the expected term : Dysgeusia got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm</klassName>
+                            <businessIdentifier>Alopecia</businessIdentifier>
+                            <message>To the agent (747691) the expected term : Alopecia got added</message>
+                            <failed>false</failed>
+                        </ns1:entityProcessingOutcome>
+                    </ns1:entityProcessingOutcomes>
+                </ns1:ServiceResponse>
+            </ns1:CaaersServiceResponse>
+        </ns1:createOrUpdateASAELResponse>
+    </soap:Body>
+</soap:Envelope>

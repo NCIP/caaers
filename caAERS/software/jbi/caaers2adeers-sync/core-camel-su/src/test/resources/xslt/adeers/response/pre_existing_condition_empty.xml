@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.ctep.nci.nih.gov/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ser:getPreExistingConditionsLOVResponse>
+            <PreExistingConditions />
+        </ser:getPreExistingConditionsLOVResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

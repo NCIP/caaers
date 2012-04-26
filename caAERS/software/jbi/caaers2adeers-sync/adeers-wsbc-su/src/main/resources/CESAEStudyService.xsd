@@ -89,6 +89,7 @@
 <xs:complexContent>
 <xs:extension base="tns:abstractDTO">
 <xs:sequence>
+<xs:element name="diseaseName" type="xs:string" minOccurs="0"/>
 <xs:element name="reportingMedDRA" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 <xs:attribute name="lead" type="xs:string"/>
@@ -185,7 +186,7 @@
 <xs:element name="localDocumentNumber" type="xs:string" minOccurs="0"/>
 <xs:element name="monitoringMethod" type="xs:string" minOccurs="0"/>
 <xs:element name="nciDocumentNum" type="xs:string" minOccurs="0"/>
-<xs:element name="participantionType" type="xs:string" minOccurs="0"/>
+<xs:element name="participationType" type="xs:string" minOccurs="0"/>
 <xs:element name="phase" type="xs:string" minOccurs="0"/>
 <xs:element name="primaryStudyType" type="xs:string" minOccurs="0"/>
 <xs:element name="sponsorOrganization" type="xs:string" minOccurs="0"/>
@@ -378,6 +379,7 @@
 <xs:extension base="tns:abstractDTO">
 <xs:sequence>
 <xs:element name="nciDocumentNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="sponsorOrganization" type="xs:string" minOccurs="0"/>
 <xs:element name="localDocumentNumberList" type="tns:localDocumentNumbersDTO" minOccurs="0"/>
 <xs:element name="documentTitle" type="xs:string" minOccurs="0"/>
 <xs:element name="currentStatus" type="xs:string" minOccurs="0"/>
@@ -418,8 +420,18 @@
 
 <xs:complexType name="getStudyTreatmentAssignments">
 <xs:sequence>
-<xs:element name="StudyCriteria" type="tns:studyCriteria" minOccurs="0"/>
+<xs:element name="StudyCriteria" type="tns:studyTACCriteria" minOccurs="0"/>
 </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyTACCriteria">
+<xs:complexContent>
+<xs:extension base="tns:studyCriteria">
+<xs:sequence>
+<xs:element name="tacDbId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
 </xs:complexType>
 
 <xs:complexType name="getStudyTreatmentAssignmentsResponse">

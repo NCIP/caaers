@@ -1,0 +1,33 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:importPreExistingConditionsResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+            <ns1:CaaersServiceResponse xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/investigator">
+                <ns1:ServiceResponse responsecode="0">
+                    <status>Processed</status>
+                    <ns1:entityProcessingOutcomes>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</klassName>
+                            <businessIdentifier>Headache</businessIdentifier>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</klassName>
+                            <businessIdentifier>Anemia</businessIdentifier>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</klassName>
+                            <businessIdentifier>Piles</businessIdentifier>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</klassName>
+                            <businessIdentifier>Eczema</businessIdentifier>
+                        </ns1:entityProcessingOutcome>
+                        <ns1:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</klassName>
+                            <businessIdentifier>Heart Burn</businessIdentifier>
+                        </ns1:entityProcessingOutcome>
+                    </ns1:entityProcessingOutcomes>
+                </ns1:ServiceResponse>
+            </ns1:CaaersServiceResponse>
+        </ns1:importPreExistingConditionsResponse>
+    </soap:Body>
+</soap:Envelope>

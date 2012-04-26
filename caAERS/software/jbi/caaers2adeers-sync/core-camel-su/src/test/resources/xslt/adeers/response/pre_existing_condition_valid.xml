@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.ctep.nci.nih.gov/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ser:getPreExistingConditionsLOVResponse>
+            <PreExistingConditions>
+                <existingConditions>
+                    <categoryDBCode>111</categoryDBCode>
+                    <conditionName>Solid Tumor</conditionName>
+                    <description>Hello</description>
+                    <medraCode>11111</medraCode>
+                </existingConditions>
+                <existingConditions>
+                    <categoryDBCode>112</categoryDBCode>
+                    <conditionName>Nausea</conditionName>
+                    <description>Hai</description>
+                    <medraCode>11112</medraCode>
+                </existingConditions>
+            </PreExistingConditions>
+        </ser:getPreExistingConditionsLOVResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

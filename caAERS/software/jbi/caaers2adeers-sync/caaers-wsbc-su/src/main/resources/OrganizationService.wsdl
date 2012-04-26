@@ -1,11 +1,4 @@
-<?xml version="1.0" ?>
-<wsdl:definitions name="OrganizationManagementWebService"
-                                        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-                                        xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
-                                        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                                        xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-                                        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                                        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><wsdl:definitions name="OrganizationManagementWebService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns0="http://schema.integration.caaers.cabig.nci.nih.gov/organization" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/organization"></xs:import>
@@ -64,6 +57,9 @@
 <xs:extension base="DomainObjectType">
 <xs:sequence>
 <xs:element name="text" type="CustomStringType"></xs:element>
+<xs:element name="meddraLltCode" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -81,6 +77,9 @@
 <xs:extension base="DomainObjectType">
 <xs:sequence>
 <xs:element name="text" type="CustomStringType"></xs:element>
+<xs:element name="meddraCode" type="CustomStringType"></xs:element>
+<xs:element name="meddraTerm" type="xs:string"></xs:element>
+<xs:element name="therapyType" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -418,9 +417,14 @@
 <xs:complexContent>
 <xs:extension base="MutableDomainObjectType">
 <xs:sequence>
-<xs:element minOccurs="0" name="commonName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="brandName" type="xs:string"></xs:element>
+<xs:element name="commonName" type="xs:string"></xs:element>
+<xs:element name="brandName" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+<xs:annotation>
+<xs:documentation>An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.</xs:documentation>
+</xs:annotation>
+</xs:element>
 <xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
 </xs:sequence>
 </xs:extension>
@@ -487,6 +491,7 @@
 <xs:simpleType name="Status">
 <xs:restriction base="xs:string">
 <xs:enumeration value="Processed"></xs:enumeration>
+<xs:enumeration value="Partially Processed"></xs:enumeration>
 <xs:enumeration value="Failed to Process"></xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
@@ -502,10 +507,11 @@
 <xs:sequence>
 <xs:element minOccurs="0" name="klassName" type="xs:string"></xs:element>
 <xs:element name="businessIdentifier" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="dataBaseId" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="correlationId" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="correlationDescription" type="xs:string"></xs:element>
+<xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:simpleType name="ResponseCodeType">
@@ -521,8 +527,15 @@
 <xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"></xs:element>
 <xs:element minOccurs="0" ref="entityProcessingOutcomes"></xs:element>
 <xs:element minOccurs="0" name="message" type="xs:string"></xs:element>
+<xs:element minOccurs="0" ref="responseData"></xs:element>
 </xs:sequence>
 <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
+</xs:complexType>
+<xs:element name="responseData" type="responseDataType"></xs:element>
+<xs:complexType name="responseDataType">
+<xs:sequence>
+<xs:any minOccurs="0"></xs:any>
+</xs:sequence>
 </xs:complexType>
 <xs:element name="CaaersServiceResponse">
 <xs:complexType>
@@ -534,13 +547,25 @@
 <xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"></xs:element>
 <xs:complexType name="BaseFault">
 <xs:sequence>
-<xs:element name="message" type="xs:string"></xs:element>
+<xs:element name="message" nillable="true" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SecurityExceptionFault">
 <xs:complexContent>
 <xs:extension base="BaseFault"></xs:extension>
 </xs:complexContent>
+</xs:complexType>
+<xs:element name="mergeOrganization" type="mergeOrganization"></xs:element>
+<xs:complexType name="mergeOrganization">
+<xs:sequence>
+<xs:element minOccurs="0" ref="ns0:Organizations"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="mergeOrganizationResponse" type="mergeOrganizationResponse"></xs:element>
+<xs:complexType name="mergeOrganizationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="CaaersServiceResponse"></xs:element>
+</xs:sequence>
 </xs:complexType>
 <xs:element name="createOrUpdateOrganization" type="createOrUpdateOrganization"></xs:element>
 <xs:complexType name="createOrUpdateOrganization">
@@ -574,11 +599,27 @@
     <wsdl:part element="tns:createOrUpdateOrganization" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="mergeOrganization">
+    <wsdl:part element="tns:mergeOrganization" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="mergeOrganizationResponse">
+    <wsdl:part element="tns:mergeOrganizationResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="SecurityExceptionFaultMessage">
     <wsdl:part element="tns:SecurityExceptionFault" name="SecurityExceptionFaultMessage">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="OrganizationServiceInterface">
+    <wsdl:operation name="mergeOrganization">
+      <wsdl:input message="tns:mergeOrganization" name="mergeOrganization">
+    </wsdl:input>
+      <wsdl:output message="tns:mergeOrganizationResponse" name="mergeOrganizationResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:SecurityExceptionFaultMessage" name="SecurityExceptionFaultMessage">
+    </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="createOrUpdateOrganization">
       <wsdl:input message="tns:createOrUpdateOrganization" name="createOrUpdateOrganization">
     </wsdl:input>
@@ -590,6 +631,18 @@
   </wsdl:portType>
   <wsdl:binding name="OrganizationManagementWebServiceSoapBinding" type="tns:OrganizationServiceInterface">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <wsdl:operation name="mergeOrganization">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="mergeOrganization">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="mergeOrganizationResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+      <wsdl:fault name="SecurityExceptionFaultMessage">
+        <soap:fault name="SecurityExceptionFaultMessage" use="literal"></soap:fault>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="createOrUpdateOrganization">
       <soap:operation soapAction="" style="document"></soap:operation>
       <wsdl:input name="createOrUpdateOrganization">
